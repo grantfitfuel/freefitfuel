@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2000" height="620" viewBox="0 0 2000 620" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .free { fill:#141414; font:800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
+      .fit  { fill:#ff6a00; font:800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
+      .fuel { fill:#141414; font:800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
+    </style>
+  </defs>
+
+  <!-- One single horizontal line -->
+  <text class="free" x="80"   y="360">Free</text>
+  <text class="fit"  x="870"  y="360">Fit</text>
+  <text class="fuel" x="1180" y="360">Fuel</text>
+</svg>

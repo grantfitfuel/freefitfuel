@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreeFitFuel — Preview</title>
+<style>
+  :root{
+    --bg:#0e0e12; --ink:#f7f7fb; --muted:#c7c7d3;
+    --accent1:#FF6A00; --accent2:#FF9A3D;
+    --glass: rgba(255,255,255,.08); --stroke: rgba(255,255,255,.14);
+    --ring: 2px solid rgba(255,255,255,.9); --maxw:1140px;
+  }
+  *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
+  a{color:#a8c7ff;text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:1rem 1.25rem}
+
+  /* HERO with photographic background */
+  .hero{position:relative;min-height:66vh;display:grid;align-items:end;border-bottom:1px solid #1b1b22}
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:
+      linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55)),
+      /* FEMALE HOME WORKOUT IMAGE */
+      url("https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600");
+    background-size:cover;background-position:center 35%;
+    filter:saturate(1.05);
+  }
+  .hero > .wrap{position:relative;padding:3.5rem 1.25rem 2.25rem}
+  .eyebrow{display:inline-block;background:rgba(255,255,255,.09);border:1px solid var(--stroke);padding:.35rem .7rem;border-radius:999px;color:#ddd}
+  h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
+     font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
+  .accent{background:linear-gradient(90deg,var(--accent2),var(--accent1));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{max-width:70ch;color:var(--muted);font-size:1.05rem}
+  .cta-row{margin:1.1rem 0 0;display:flex;gap:.75rem;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 1.15rem;border-radius:12px;font-weight:700}
+  .btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent1));color:#141417}
+  .btn.ghost{background:rgba(255,255,255,.10);border:1px solid var(--stroke);color:#fff}
+
+  /* GRID CARDS */
+  .grid{display:grid;gap:1rem;margin:1.75rem 0}
+  @media(min-width:780px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:1rem 1.1rem}
+  .card h2{font-size:1.12rem;margin:.1rem 0 .4rem}
+  .meta{font-size:.92rem;color:#b6b6c6}
+  .card .btn{margin-top:.65rem}
+
+  /* SPLIT with male image */
+  .split{display:grid;gap:1rem;align-items:center;margin:2rem 0}
+  @media(min-width:900px){.split{grid-template-columns:1.15fr 1fr}}
+  .split .img{
+    min-height:320px;border-radius:16px;border:1px solid var(--stroke);background:
+     linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.25)),
+     /* MALE HOME GYM IMAGE */
+     url("https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600");
+    background-size:cover;background-position:center 45%;
+  }
+  .split .copy{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:1.1rem}
+
+  /* Motion */
+  @media (prefers-reduced-motion:no-preference){
+    .card,.split .copy,.split .img{transform:translateY(0);transition:transform .18s ease, box-shadow .18s ease}
+    .card:hover,.split .copy:hover,.split .img:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  }
+
+  footer{border-top:1px solid #1b1b22;margin-top:2.5rem;background:#0c0c10}
+  footer p{font-size:.9em;color:#9a9aa6}
+</style>
+</head>
+<body>
+<header class="hero" role="banner" aria-label="FreeFitFuel preview hero">
+  <div class="wrap">
+    <span class="eyebrow">Healthy body & mind</span>
+    <h1><span class="accent">Simple guidance</span> for real life results</h1>
+    <p class="lead">Workouts, nutrition, sleep and emotional support — written for busy humans in the UK, ad-free and easy to read.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="../carer-support/">Open Carer Support</a>
+      <a class="btn ghost" href="../carer-support/emotional-support/">Emotional Support</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="grid" aria-label="Key sections">
+    <article class="card">
+      <h2>Carer Support</h2>
+      <p class="meta">Anticipatory grief, burnout, guilt & staying connected — gentle, practical help.</p>
+      <a class="btn primary" href="../carer-support/emotional-support/">Read the guide</a>
+    </article>
+    <article class="card">
+      <h2>Workouts</h2>
+      <p class="meta">Smart dumbbell & bodyweight routines, warm-ups & cool-downs that fit your day.</p>
+      <a class="btn ghost" href="../">Browse (coming)</a>
+    </article>
+    <article class="card">
+      <h2>Nutrition</h2>
+      <p class="meta">Budget-friendly recipes with allergens labelled, plus hydration helpers.</p>
+      <a class="btn ghost" href="../">See recipes (coming)</a>
+    </article>
+  </section>
+
+  <section class="split" aria-label="Male home workout highlight">
+    <div class="img" role="img" aria-label="Man training with dumbbells in a home space"></div>
+    <div class="copy">
+      <h2>Move better at home</h2>
+      <p class="meta">Short, effective sessions you can do with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
+      <a class="btn primary" href="../">See workout plans (coming)</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© <a href="../" style="color:#9a9aa6;text-decoration:none;">FreeFitFuel</a> | Grant Cameron Anthony</p>
+  </div>
+</footer>
+</body>
+</html>

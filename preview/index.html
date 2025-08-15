@@ -16,30 +16,23 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:1rem 1.25rem}
 
   @media (prefers-reduced-motion:no-preference){
-    .fade-in{opacity:0; transform:translateY(8px); animation:fade .7s ease .1s forwards}
-    @keyframes fade{to{opacity:1; transform:none}}
+    .fade-in{opacity:0;transform:translateY(8px);animation:fade .7s ease .1s forwards}
+    @keyframes fade{to{opacity:1;transform:none}}
     .card{transition:transform .18s ease, box-shadow .18s ease}
     .card:hover{transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.35)}
   }
 
-  /* HERO */
-  .hero{position:relative;min-height:66vh;display:grid;align-items:end;border-bottom:1px solid #1b1b22}
-  .hero::before{
-    content:"";position:absolute;inset:0;
-    background:
-      linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)),
-      url("https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600");
-    background-size:cover;background-position:center 35%;
-    filter:saturate(1.05);
-  }
-  .hero > .wrap{position:relative;padding:3.5rem 1.25rem 2.25rem}
-  .eyebrow{display:inline-block;background:rgba(255,255,255,.10);border:1px solid var(--stroke);
-           padding:.35rem .7rem;border-radius:999px;color:#ddd}
-  h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
-     font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
+  /* HERO uses real <img> to avoid BG/caption mismatches */
+  .hero{position:relative;border-bottom:1px solid #1b1b22}
+  .hero figure{position:relative;margin:0}
+  .hero img{width:100%;height:64vh;min-height:420px;object-fit:cover;object-position:center 35%;display:block;filter:saturate(1.05) brightness(.9)}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
+  .hero .content{position:absolute;left:0;right:0;bottom:0}
+  .eyebrow{display:inline-block;background:rgba(255,255,255,.10);border:1px solid var(--stroke);padding:.35rem .7rem;border-radius:999px;color:#ddd}
+  h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
   .accent{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
   .lead{max-width:70ch;color:var(--muted);font-size:1.05rem}
-  .cta-row{margin:1.1rem 0 0;display:flex;gap:.75rem;flex-wrap:wrap}
+  .cta-row{margin:1.1rem 0 1.6rem;display:flex;gap:.75rem;flex-wrap:wrap}
   .btn{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 1.15rem;border-radius:12px;font-weight:700;border:0}
   .btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent));color:#111}
   .btn.ghost{background:rgba(255,255,255,.10);border:1px solid var(--stroke);color:#fff}
@@ -53,19 +46,15 @@
 
   .split{display:grid;gap:1rem;align-items:center;margin:2rem 0}
   @media(min-width:900px){.split{grid-template-columns:1.15fr 1fr}}
-  .split .img{
-    min-height:320px;border-radius:16px;border:1px solid var(--stroke);background:
-     linear-gradient(180deg,rgba(0,0,0,.20),rgba(0,0,0,.20)),
-     url("https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600");
-    background-size:cover;background-position:center 45%;
-  }
+  .split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);overflow:hidden;background:var(--glass)}
+  .split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
   .split .copy{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:1.1rem}
 
-  /* SCROLLER GALLERY */
+  /* SCROLLER GALLERY with <img> + figcaption */
   .strip{scroll-margin-top:70px}
   .scroller{display:flex;gap:1rem;overflow-x:auto;padding:.25rem;scroll-snap-type:x mandatory}
   .tile{min-width:260px;flex:0 0 auto;scroll-snap-align:center;border-radius:14px;border:1px solid var(--stroke);background:var(--glass);overflow:hidden}
-  .tile .ph{height:170px;background-size:cover;background-position:center}
+  .tile img{width:100%;height:170px;object-fit:cover}
   .tile .cap{padding:.7rem 0.9rem;color:var(--muted);font-size:.95rem}
 
   footer{border-top:1px solid #1b1b22;margin-top:2.5rem;background:#0c0c10}
@@ -73,14 +62,22 @@
 </style>
 </head>
 <body>
-<header class="hero" role="banner" aria-label="FreeFitFuel preview hero (woman training at home)">
-  <div class="wrap fade-in">
-    <span class="eyebrow">Healthy body & mind</span>
-    <h1><span class="accent">Stronger, Healthier, You</span></h1>
-    <p class="lead">Home workouts and balanced meals to fuel your body and mind — UK-friendly, ad-free, and easy to follow.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="../">Start Training</a>
-      <a class="btn ghost" href="#ideas">See More Ideas</a>
+<header class="hero" role="banner" aria-label="FreeFitFuel preview hero">
+  <figure>
+    <!-- FEMALE home workout image -->
+    <img src="https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600&v=fff-hero-female1"
+         alt="Woman training at home on a mat with dumbbells nearby">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content">
+    <div class="wrap fade-in">
+      <span class="eyebrow">Healthy body & mind</span>
+      <h1><span class="accent">Stronger, Healthier, You</span></h1>
+      <p class="lead">Home workouts and balanced meals to fuel your body and mind — UK-friendly, ad-free, and easy to follow.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="../">Start Training</a>
+        <a class="btn ghost" href="#ideas">See More Ideas</a>
+      </div>
     </div>
   </div>
 </header>
@@ -105,10 +102,14 @@
   </section>
 
   <section class="split" aria-label="Male home workout highlight (seated bicep curl)">
-    <div class="img" role="img" aria-label="Seated bicep curl in a home space"></div>
+    <figure>
+      <!-- MALE seated curl image -->
+      <img src="https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600&v=fff-curl1"
+           alt="Man doing a seated dumbbell curl at home">
+    </figure>
     <div class="copy">
       <h2>Move better at home</h2>
-      <p class="meta">Short, effective sessions you can do with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
+      <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
       <a class="btn primary" href="../">See workout plans (coming)</a>
     </div>
   </section>
@@ -119,32 +120,38 @@
     <div class="scroller">
       <!-- Resistance bands -->
       <figure class="tile" aria-label="Home resistance band workout">
-        <div class="ph" style="background-image:url('https://images.pexels.com/photos/4761354/pexels-photo-4761354.jpeg?auto=compress&cs=tinysrgb&w=1200');" role="img" aria-label="Woman training with resistance bands in a living room"></div>
+        <img src="https://images.pexels.com/photos/4761354/pexels-photo-4761354.jpeg?auto=compress&cs=tinysrgb&w=1200&v=fff-bands1"
+             alt="Woman training with resistance bands in a living room">
         <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
       </figure>
       <!-- Skipping rope -->
       <figure class="tile" aria-label="Skipping rope cardio">
-        <div class="ph" style="background-image:url('https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg?auto=compress&cs=tinysrgb&w=1200');" role="img" aria-label="Person holding a skipping rope on a mat"></div>
+        <img src="https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg?auto=compress&cs=tinysrgb&w=1200&v=fff-skip1"
+             alt="Person holding a skipping rope on a mat">
         <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
       </figure>
       <!-- Dumbbell floor press -->
       <figure class="tile" aria-label="Dumbbell floor press">
-        <div class="ph" style="background-image:url('https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg?auto=compress&cs=tinysrgb&w=1200');" role="img" aria-label="Pressing dumbbells while lying on the floor"></div>
+        <img src="https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg?auto=compress&cs=tinysrgb&w=1200&v=fff-press1"
+             alt="Pressing dumbbells while lying on the floor">
         <figcaption class="cap">Floor press — chest & triceps without a bench</figcaption>
       </figure>
       <!-- Yoga -->
       <figure class="tile" aria-label="Yoga session at home">
-        <div class="ph" style="background-image:url('https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=1200');" role="img" aria-label="Yoga on a mat in a living room"></div>
+        <img src="https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=1200&v=fff-yoga1"
+             alt="Yoga on a mat in a living room">
         <figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption>
       </figure>
-      <!-- Healthy meal prep -->
+      <!-- Meal prep -->
       <figure class="tile" aria-label="Healthy meal prep">
-        <div class="ph" style="background-image:url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200');" role="img" aria-label="Bowls of fresh salad and veggies on a table"></div>
+        <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200&v=fff-meal1"
+             alt="Bowls of fresh salad and veggies on a table">
         <figcaption class="cap">Meal prep — quick bowls, clear portions, real food</figcaption>
       </figure>
-      <!-- Seated bicep curl (matches split image) -->
+      <!-- Seated bicep curl -->
       <figure class="tile" aria-label="Seated dumbbell curl at home">
-        <div class="ph" style="background-image:url('https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1200');" role="img" aria-label="Man doing seated dumbbell curl at home"></div>
+        <img src="https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1200&v=fff-curl2"
+             alt="Man doing seated dumbbell curl at home">
         <figcaption class="cap">Seated curls — simple strength you can feel</figcaption>
       </figure>
     </div>
@@ -153,7 +160,7 @@
 
 <footer>
   <div class="wrap">
-    <p>© <a href="../" style="color:var(--inkdim); text-decoration:none;">FreeFitFuel</a> | Grant Cameron Anthony</p>
+    <p style="font-size:.9em; color:var(--inkdim);">© <a href="../" style="color:var(--inkdim); text-decoration:none;">FreeFitFuel</a> | Grant Cameron Anthony</p>
   </div>
 </footer>
 </body>

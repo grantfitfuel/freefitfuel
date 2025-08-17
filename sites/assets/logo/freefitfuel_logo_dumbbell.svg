@@ -2,26 +2,25 @@
 <svg width="2000" height="620" viewBox="0 0 2000 620" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      /* Bold, modern, chunky */
       .word { font: 800 260px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif; }
     </style>
   </defs>
 
-  <!-- Single horizontal line (no gap between Fit and Fuel) -->
+  <!-- One single horizontal line -->
   <text x="80" y="360" class="word">
     <tspan fill="#141414">Free</tspan><tspan fill="#FF6A00">Fit</tspan><tspan fill="#141414">Fuel</tspan>
   </text>
 
-  <!-- FLAT, CHUNKY black dumbbell centered under “Fit” -->
-  <!-- Positions tuned to sit directly under the orange 'Fit' above -->
+  <!-- FLAT, CHUNKY dumbbell; large plates INSIDE; centered under FIT -->
+  <!-- Centered by aligning bar to the middle of the 'Fit' span area -->
   <g fill="#141414" aria-label="dumbbell">
-    <!-- Bar (flat rectangle, rounded ends) -->
-    <rect x="930" y="416" width="300" height="38" rx="19" ry="19"/>
-    <!-- Left plates: outer + inner (flat rectangles) -->
-    <rect x="880"  y="372" width="50" height="132" rx="8"/>
-    <rect x="840"  y="392" width="44" height="92"  rx="6"/>
-    <!-- Right plates: inner + outer (flat rectangles) -->
-    <rect x="1240" y="392" width="44" height="92"  rx="6"/>
-    <rect x="1286" y="372" width="50" height="132" rx="8"/>
+    <!-- BAR (moved slightly left so it's directly under 'Fit') -->
+    <rect x="880" y="416" width="300" height="38" rx="19" ry="19"/>
+    <!-- LEFT side: INNER (LARGE) plate next to bar, then OUTER (SMALL) plate -->
+    <rect x="820"  y="360" width="58" height="140" rx="10"/>  <!-- inner LARGE -->
+    <rect x="772"  y="390" width="44" height="92"  rx="8"/>   <!-- outer SMALL -->
+    <!-- RIGHT side: INNER (LARGE) plate next to bar, then OUTER (SMALL) plate -->
+    <rect x="1180" y="360" width="58" height="140" rx="10"/>  <!-- inner LARGE -->
+    <rect x="1240" y="390" width="44" height="92"  rx="8"/>   <!-- outer SMALL -->
   </g>
 </svg>

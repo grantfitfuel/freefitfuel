@@ -13,15 +13,15 @@
     <tspan fill="#141414">Fuel</tspan>
   </text>
 
-  <!-- DUMBBELL directly under "Fit" -->
-  <g fill="#141414" aria-label="dumbbell">
-    <!-- BAR (shorter, centered under 'Fit') -->
+  <!-- DUMBBELL shifted left to align directly under "Fit" -->
+  <g fill="#141414" aria-label="dumbbell" transform="translate(-120,0)">
+    <!-- BAR -->
     <rect x="950" y="420" width="180" height="36" rx="18" ry="18"/>
     <!-- LEFT plates -->
-    <rect x="910" y="370" width="40" height="130" rx="8"/>  <!-- inner LARGE -->
-    <rect x="880" y="395" width="28" height="80"  rx="6"/>  <!-- outer SMALL -->
+    <rect x="910" y="370" width="40" height="130" rx="8"/>  
+    <rect x="880" y="395" width="28" height="80"  rx="6"/>  
     <!-- RIGHT plates -->
-    <rect x="1130" y="370" width="40" height="130" rx="8"/> <!-- inner LARGE -->
-    <rect x="1172" y="395" width="28" height="80"  rx="6"/> <!-- outer SMALL -->
+    <rect x="1130" y="370" width="40" height="130" rx="8"/> 
+    <rect x="1172" y="395" width="28" height="80"  rx="6"/> 
   </g>
 </svg>

@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreeFitFuel</title>
+<!-- No-cache headers to avoid stale HTML -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<style>
+  :root{
+    --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
+    --accent:#FF6A00; --accent2:#FF9A3D; --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
+    --maxw:1140px; --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;scroll-behavior:smooth}
+  a{color:#a8c7ff;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
 
+  @media (prefers-reduced-motion:no-preference){
+    .fade-in{opacity:0;transform:translateY(8px);animation:fade .7s ease .1s forwards}
+    .fade-in-tiles .tile{opacity:0;transform:translateY(10px)}
+    .fade-in-tiles .tile:nth-child(1){animation:fade .5s ease .10s forwards}
+    .fade-in-tiles .tile:nth-child(2){animation:fade .5s ease .18s forwards}
+    .fade-in-tiles .tile:nth-child(3){animation:fade .5s ease .26s forwards}
+    .fade-in-tiles .tile:nth-child(4){animation:fade .5s ease .34s forwards}
+    .fade-in-tiles .tile:nth-child(5){animation:fade .5s ease .42s forwards}
+    .fade-in-tiles .tile:nth-child(6){animation:fade .5s ease .50s forwards}
+    @keyframes fade{to{opacity:1;transform:none}}
+  }
+
+  /* HERO (real <img>) */
+  .hero{position:relative;border-bottom:1px solid #1b1b22}
+  .hero figure{position:relative;margin:0}
+  .hero img{width:100%;height:64vh;min-height:420px;object-fit:cover;object-position:center 35%;display:block;filter:brightness(.88) saturate(1.05)}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
+  .hero .content{position:absolute;left:0;right:0;bottom:0}
+
+  .eyebrow{display:inline-block;background:rgba(255,255,255,.10);border:1px solid var(--stroke);padding:.35rem .7rem;border-radius:999px;color:#ddd}
+  h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
+  .accent{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{max-width:70ch;color:#c8c8d2;font-size:1.05rem}
+  .cta-row{margin:1.1rem 0 1.6rem;display:flex;gap:.75rem;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 1.15rem;border-radius:12px;font-weight:700;border:0}
+  .btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent));color:#111}
+  .btn.ghost{background:rgba(255,255,255,.10);border:1px solid var(--stroke);color:#fff}
+
+  /* CARDS */
+  .grid{display:grid;gap:14px;margin:22px 0}
+  @media(min-width:780px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);padding:14px}
+  .card h2{font-size:1.12rem;margin:.1rem 0 .4rem}
+  .meta{font-size:.92rem;color:#b6b6c6}
+
+  /* SPLIT */
+  .split{display:grid;gap:14px;align-items:center;margin:26px 0}
+  @media(min-width:900px){.split{grid-template-columns:1.15fr 1fr}}
+  .split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);overflow:hidden;background:var(--glass)}
+  .split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
+
+  /* GALLERY */
+  .strip{scroll-margin-top:70px}
+  .scroller{display:flex;gap:12px;overflow-x:auto;padding:.25rem;scroll-snap-type:x mandatory}
+  .tile{min-width:260px;flex:0 0 auto;scroll-snap-align:center;border-radius:14px;border:1px solid var(--stroke);background:var(--glass);overflow:hidden}
+  .tile img{width:100%;height:170px;object-fit:cover;display:block}
+  .cap{padding:.7rem .9rem;color:#c8c8d2;font-size:.95rem}
+
+  footer{border-top:1px solid #1b1b22;margin-top:28px;background:#0c0c10}
+  footer p{font-size:.9em;color:#9a9aa6;margin:0;padding:12px 0}
+</style>
+</head>
+<body>
+
+<header class="hero" role="banner" aria-label="FreeFitFuel hero">
+  <figure>
+    <img src="https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600"
+         alt="Woman training at home on a mat with dumbbells nearby">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content">
+    <div class="wrap fade-in">
+      <span class="eyebrow">Healthy body & mind</span>
+      <h1><span class="accent">Stronger, Healthier, You</span></h1>
+      <p class="lead">Home workouts and balanced meals to fuel your body and mind — UK-friendly, ad-free, and easy to follow.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#">Start Training</a>
+        <a class="btn ghost" href="#ideas">See More Ideas</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="grid" aria-label="Key sections">
+    <article class="card">
+      <h2>Carer Support</h2>
+      <p class="meta">Anticipatory grief, burnout, guilt & staying connected — gentle, practical help.</p>
+      <a class="btn primary" href="#">Open Emotional Support</a>
+    </article>
+    <article class="card">
+      <h2>Workouts</h2>
+      <p class="meta">Smart dumbbell & bodyweight routines with warm-ups and cool-downs.</p>
+      <a class="btn ghost" href="#">Browse (coming)</a>
+    </article>
+    <article class="card">
+      <h2>Nutrition</h2>
+      <p class="meta">Budget-friendly recipes with allergens labelled, plus hydration helpers.</p>
+      <a class="btn ghost" href="#">See recipes (coming)</a>
+    </article>
+  </section>
+
+  <section class="split" aria-label="Male home workout highlight (seated bicep curl)">
+    <figure>
+      <img src="https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600"
+           alt="Man doing a seated dumbbell curl at home">
+    </figure>
+    <div>
+      <h2>Move better at home</h2>
+      <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
+      <a class="btn primary" href="#">See workout plans (coming)</a>
+    </div>
+  </section>
+
+  <section id="ideas" class="strip" aria-label="Inspiration gallery">
+    <h2 class="fade-in">Ideas you can start this week</h2>
+    <div class="scroller fade-in-tiles">
+      <figure class="tile"><img src="https://images.pexels.com/photos/4761354/pexels-photo-4761354.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Woman training with resistance bands in a living room"><figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption></figure>
+      <figure class="tile"><img src="https://images.pexels.com/photos/414029/pexels-photo-414029.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Person holding a skipping rope on a mat"><figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+      <figure class="tile"><img src="https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Pressing dumbbells while lying on the floor"><figcaption class="cap">Floor press — chest & triceps without a bench</figcaption></figure>
+      <figure class="tile"><img src="https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Yoga on a mat in a living room"><figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+      <figure class="tile"><img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Bowls of fresh salad and veggies on a table"><figcaption class="cap">Meal prep — quick bowls, clear portions, real food</figcaption></figure>
+      <figure class="tile"><img src="https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Man doing seated dumbbell curl at home"><figcaption class="cap">Seated curls — simple strength you can feel</figcaption></figure>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© <span>FreeFitFuel</span> | Grant Cameron Anthony</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FreeFitFuel</title>
-<!-- No-cache to avoid stale HTML on Pages -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <style>
   :root{
     --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
-    --accent:#FF6A00; --accent2:#FF9A3D;
-    --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
+    --accent:#FF6A00; --accent2:#FF9A3D; --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
     --maxw:1140px; --radius:16px;
   }
   *{box-sizing:border-box}
@@ -20,7 +17,6 @@
   a{color:#a8c7ff;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
 
-  /* Animations */
   @media (prefers-reduced-motion:no-preference){
     .fade-in{opacity:0;transform:translateY(8px);animation:fade .7s ease .1s forwards}
     @keyframes fade{to{opacity:1;transform:none}}
@@ -59,10 +55,7 @@
 
   /* CAROUSEL (local photos) */
   .strip{scroll-margin-top:70px}
-  .scroller{
-    display:flex;gap:12px;overflow-x:auto;padding:.25rem;
-    scroll-snap-type:x proximity;
-  }
+  .scroller{display:flex;gap:12px;overflow-x:auto;padding:.25rem;scroll-snap-type:x proximity}
   .tile{
     flex:0 0 auto;width:280px;
     border-radius:14px;border:1px solid var(--stroke);background:var(--glass);
@@ -74,8 +67,7 @@
   }
   .thumb img{
     width:100%;height:100%;
-    object-fit:cover;        /* pro look; choose centered-subject photos */
-    object-position:center;display:block;
+    object-fit:cover;object-position:center;display:block;
   }
   .cap{padding:.7rem .9rem;color:#c8c8d2;font-size:.95rem}
 
@@ -87,9 +79,7 @@
 
 <header class="hero" role="banner" aria-label="FreeFitFuel hero">
   <figure>
-    <!-- You can also replace this hero with a local photo later -->
-    <img src="sites/img/hero.jpg" alt="Home training on a mat with dumbbells"
-         onerror="this.onerror=null;this.src='https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600';">
+    <img src="img/hero.jpg" alt="Home training on a mat with dumbbells">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content">
@@ -126,8 +116,7 @@
 
   <section class="split" aria-label="Male home workout highlight (seated bicep curl)">
     <figure>
-      <img src="sites/img/curl.jpg" alt="Seated dumbbell curl at home"
-           onerror="this.onerror=null;this.src='https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600';">
+      <img src="img/curl.jpg" alt="Seated dumbbell curl at home">
     </figure>
     <div>
       <h2>Move better at home</h2>
@@ -140,32 +129,32 @@
     <h2 class="fade-in">Ideas you can start this week</h2>
     <div class="scroller">
       <figure class="tile" aria-label="Home resistance band workout">
-        <span class="thumb"><img src="sites/img/bands.jpg" alt="Resistance bands workout at home"></span>
+        <span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span>
         <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
       </figure>
 
       <figure class="tile" aria-label="Skipping rope cardio">
-        <span class="thumb"><img src="sites/img/rope.jpg" alt="Skipping rope cardio"></span>
+        <span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span>
         <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
       </figure>
 
       <figure class="tile" aria-label="Dumbbell floor press">
-        <span class="thumb"><img src="sites/img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span>
+        <span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span>
         <figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption>
       </figure>
 
       <figure class="tile" aria-label="Yoga session at home">
-        <span class="thumb"><img src="sites/img/yoga.jpg" alt="Yoga pose on a mat at home"></span>
+        <span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span>
         <figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption>
       </figure>
 
       <figure class="tile" aria-label="Healthy meal prep">
-        <span class="thumb"><img src="sites/img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span>
+        <span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span>
         <figcaption class="cap">Meal prep — quick bowls, clear portions, real food</figcaption>
       </figure>
 
       <figure class="tile" aria-label="Seated dumbbell curl at home">
-        <span class="thumb"><img src="sites/img/curl.jpg" alt="Seated dumbbell curl at home"></span>
+        <span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span>
         <figcaption class="cap">Seated curls — simple strength you can feel</figcaption>
       </figure>
     </div>

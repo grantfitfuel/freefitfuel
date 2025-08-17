@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2000" height="620" viewBox="0 0 2000 620" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      /* Bold, modern, chunky */
+      .word { font: 800 260px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Single horizontal line (no gap between Fit and Fuel) -->
+  <text x="80" y="360" class="word">
+    <tspan fill="#141414">Free</tspan><tspan fill="#FF6A00">Fit</tspan><tspan fill="#141414">Fuel</tspan>
+  </text>
+
+  <!-- FLAT, CHUNKY black dumbbell centered under “Fit” -->
+  <!-- Positions tuned to sit directly under the orange 'Fit' above -->
+  <g fill="#141414" aria-label="dumbbell">
+    <!-- Bar (flat rectangle, rounded ends) -->
+    <rect x="930" y="416" width="300" height="38" rx="19" ry="19"/>
+    <!-- Left plates: outer + inner (flat rectangles) -->
+    <rect x="880"  y="372" width="50" height="132" rx="8"/>
+    <rect x="840"  y="392" width="44" height="92"  rx="6"/>
+    <!-- Right plates: inner + outer (flat rectangles) -->
+    <rect x="1240" y="392" width="44" height="92"  rx="6"/>
+    <rect x="1286" y="372" width="50" height="132" rx="8"/>
+  </g>
+</svg>

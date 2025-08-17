@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FreeFitFuel</title>
+<!-- No-cache to avoid stale HTML on Pages -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <style>
-  :root{--bg:#0e0e12;--ink:#f7f7fb;--muted:#c8c8d2;--inkdim:#9a9aa6;--accent:#FF6A00;--accent2:#FF9A3D;--glass:rgba(255,255,255,.08);--stroke:rgba(255,255,255,.14);--maxw:1140px;--radius:16px}
+  :root{
+    --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
+    --accent:#FF6A00; --accent2:#FF9A3D;
+    --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
+    --maxw:1140px; --radius:16px;
+  }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;scroll-behavior:smooth}
   a{color:#a8c7ff;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
 
+  /* Animations */
   @media (prefers-reduced-motion:no-preference){
     .fade-in{opacity:0;transform:translateY(8px);animation:fade .7s ease .1s forwards}
     @keyframes fade{to{opacity:1;transform:none}}
+    .card{transition:transform .18s ease, box-shadow .18s ease}
+    .card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
   }
 
   /* HERO */
@@ -24,6 +34,7 @@
   .hero img{width:100%;height:64vh;min-height:420px;object-fit:cover;object-position:center 35%;display:block;filter:brightness(.88) saturate(1.05)}
   .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
   .hero .content{position:absolute;left:0;right:0;bottom:0}
+
   .eyebrow{display:inline-block;background:rgba(255,255,255,.10);border:1px solid var(--stroke);padding:.35rem .7rem;border-radius:999px;color:#ddd}
   h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
   .accent{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -46,27 +57,24 @@
   .split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);overflow:hidden;background:var(--glass)}
   .split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
 
-  /* CAROUSEL — show multiple tiles, no cropping, captions visible */
+  /* CAROUSEL (local photos) */
   .strip{scroll-margin-top:70px}
-  .scroller{display:flex;gap:12px;overflow-x:auto;padding:.25rem;scroll-snap-type:x proximity}
-.tile{flex:0 0 auto;width:280px;border-radius:14px;border:1px solid var(--stroke);background:var(--glass);display:flex;flex-direction:column;overflow:visible;scroll-snap-align:center}
-.thumb{aspect-ratio:16/9;background:#0c0c10;border-bottom:1px solid var(--stroke);display:block;overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px}
-.cap{padding:.7rem .9rem;color:#c8c8d2;font-size:.95rem}
+  .scroller{
+    display:flex;gap:12px;overflow-x:auto;padding:.25rem;
+    scroll-snap-type:x proximity;
+  }
   .tile{
-    flex:0 0 auto; width:280px; /* wide enough to show multiple per screen */
+    flex:0 0 auto;width:280px;
     border-radius:14px;border:1px solid var(--stroke);background:var(--glass);
-    display:flex;flex-direction:column;overflow:visible; /* keep caption visible */
-    scroll-snap-align:center;
+    display:flex;flex-direction:column;overflow:visible;scroll-snap-align:center;
   }
   .thumb{
-    aspect-ratio:16/9; /* consistent visual height */
-    background:#0c0c10; /* subtle letterbox */
-    border-bottom:1px solid var(--stroke);
+    aspect-ratio:16/9;background:#0c0c10;border-bottom:1px solid var(--stroke);
     display:block;overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;
   }
   .thumb img{
     width:100%;height:100%;
-    object-fit:contain; /* no cropping */
+    object-fit:cover;        /* pro look; choose centered-subject photos */
     object-position:center;display:block;
   }
   .cap{padding:.7rem .9rem;color:#c8c8d2;font-size:.95rem}
@@ -79,8 +87,9 @@
 
 <header class="hero" role="banner" aria-label="FreeFitFuel hero">
   <figure>
-    <img src="https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600"
-         alt="Woman training at home on a mat with dumbbells nearby">
+    <!-- You can also replace this hero with a local photo later -->
+    <img src="sites/img/hero.jpg" alt="Home training on a mat with dumbbells"
+         onerror="this.onerror=null;this.src='https://images.pexels.com/photos/4498606/pexels-photo-4498606.jpeg?auto=compress&cs=tinysrgb&w=1600';">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content">
@@ -117,8 +126,8 @@
 
   <section class="split" aria-label="Male home workout highlight (seated bicep curl)">
     <figure>
-      <img src="https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600"
-           alt="Man doing a seated dumbbell curl at home">
+      <img src="sites/img/curl.jpg" alt="Seated dumbbell curl at home"
+           onerror="this.onerror=null;this.src='https://images.pexels.com/photos/4498152/pexels-photo-4498152.jpeg?auto=compress&cs=tinysrgb&w=1600';">
     </figure>
     <div>
       <h2>Move better at home</h2>
@@ -127,94 +136,40 @@
     </div>
   </section>
 
- <section id="ideas" class="strip" aria-label="Inspiration gallery">
-  <h2 class="fade-in">Ideas you can start this week</h2>
-  <div class="scroller">
-    <!-- Resistance bands -->
-    <figure class="tile" aria-label="Home resistance band workout">
-      <span class="thumb" aria-hidden="true">
-        <!-- Inline SVG: resistance band -->
-        <svg viewBox="0 0 120 68" width="100%" height="100%" role="img" aria-label="Resistance band icon">
-          <rect x="2" y="2" width="116" height="64" rx="8" fill="#111"/>
-          <path d="M16,34 C30,10 90,10 104,34" fill="none" stroke="#FF9A3D" stroke-width="6" />
-          <circle cx="16" cy="34" r="5" fill="#FF6A00"/>
-          <circle cx="104" cy="34" r="5" fill="#FF6A00"/>
-        </svg>
-      </span>
-      <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
-    </figure>
+  <section id="ideas" class="strip" aria-label="Inspiration gallery">
+    <h2 class="fade-in">Ideas you can start this week</h2>
+    <div class="scroller">
+      <figure class="tile" aria-label="Home resistance band workout">
+        <span class="thumb"><img src="sites/img/bands.jpg" alt="Resistance bands workout at home"></span>
+        <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
+      </figure>
 
-    <!-- Skipping rope -->
-    <figure class="tile" aria-label="Skipping rope cardio">
-      <span class="thumb" aria-hidden="true">
-        <svg viewBox="0 0 120 68" width="100%" height="100%" role="img" aria-label="Skipping rope icon">
-          <rect x="2" y="2" width="116" height="64" rx="8" fill="#111"/>
-          <path d="M22,18 C22,54 98,54 98,18" fill="none" stroke="#FF9A3D" stroke-width="4"/>
-          <rect x="14" y="14" width="8" height="18" rx="2" fill="#FF6A00"/>
-          <rect x="98" y="14" width="8" height="18" rx="2" fill="#FF6A00"/>
-        </svg>
-      </span>
-      <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
-    </figure>
+      <figure class="tile" aria-label="Skipping rope cardio">
+        <span class="thumb"><img src="sites/img/rope.jpg" alt="Skipping rope cardio"></span>
+        <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
+      </figure>
 
-    <!-- Dumbbell floor press -->
-    <figure class="tile" aria-label="Dumbbell floor press">
-      <span class="thumb" aria-hidden="true">
-        <svg viewBox="0 0 120 68" width="100%" height="100%" role="img" aria-label="Dumbbell floor press icon">
-          <rect x="2" y="2" width="116" height="64" rx="8" fill="#111"/>
-          <rect x="38" y="30" width="44" height="8" rx="4" fill="#FF6A00"/>
-          <rect x="30" y="28" width="6" height="12" rx="2" fill="#FF9A3D"/>
-          <rect x="86" y="28" width="6" height="12" rx="2" fill="#FF9A3D"/>
-          <circle cx="36" cy="46" r="6" fill="#888"/>
-          <rect x="40" y="44" width="28" height="4" rx="2" fill="#777"/>
-        </svg>
-      </span>
-      <figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption>
-    </figure>
+      <figure class="tile" aria-label="Dumbbell floor press">
+        <span class="thumb"><img src="sites/img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span>
+        <figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption>
+      </figure>
 
-    <!-- Yoga flow -->
-    <figure class="tile" aria-label="Yoga session at home">
-      <span class="thumb" aria-hidden="true">
-        <svg viewBox="0 0 120 68" width="100%" height="100%" role="img" aria-label="Yoga pose icon">
-          <rect x="2" y="2" width="116" height="64" rx="8" fill="#111"/>
-          <circle cx="60" cy="22" r="6" fill="#FF9A3D"/>
-          <path d="M60,28 L60,44 M48,36 L72,36" stroke="#FF6A00" stroke-width="4" stroke-linecap="round"/>
-          <path d="M40,54 H80" stroke="#666" stroke-width="6" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption>
-    </figure>
+      <figure class="tile" aria-label="Yoga session at home">
+        <span class="thumb"><img src="sites/img/yoga.jpg" alt="Yoga pose on a mat at home"></span>
+        <figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption>
+      </figure>
 
-    <!-- Meal prep -->
-    <figure class="tile" aria-label="Healthy meal prep">
-      <span class="thumb" aria-hidden="true">
-        <svg viewBox="0 0 120 68" width="100%" height="100%" role="img" aria-label="Meal prep bowl icon">
-          <rect x="2" y="2" width="116" height="64" rx="8" fill="#111"/>
-          <rect x="28" y="30" width="64" height="18" rx="6" fill="#FF9A3D"/>
-          <rect x="24" y="26" width="72" height="6" rx="3" fill="#FF6A00"/>
-          <circle cx="46" cy="38" r="4" fill="#222"/>
-          <circle cx="60" cy="38" r="4" fill="#222"/>
-          <circle cx="74" cy="38" r="4" fill="#222"/>
-        </svg>
-      </span>
-      <figcaption class="cap">Meal prep — quick bowls, clear portions, real food</figcaption>
-    </figure>
+      <figure class="tile" aria-label="Healthy meal prep">
+        <span class="thumb"><img src="sites/img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span>
+        <figcaption class="cap">Meal prep — quick bowls, clear portions, real food</figcaption>
+      </figure>
 
-    <!-- Seated curls -->
-    <figure class="tile" aria-label="Seated dumbbell curl at home">
-      <span class="thumb" aria-hidden="true">
-        <svg viewBox="0 0 120 68" width="100%" height="100%" role="img" aria-label="Seated curl icon">
-          <rect x="2" y="2" width="116" height="64" rx="8" fill="#111"/>
-          <circle cx="52" cy="26" r="6" fill="#FF9A3D"/>
-          <path d="M52,32 L52,48" stroke="#FF6A00" stroke-width="4" stroke-linecap="round"/>
-          <path d="M52,38 Q60,42 68,38" stroke="#FF6A00" stroke-width="4" fill="none" stroke-linecap="round"/>
-          <rect x="46" y="48" width="12" height="6" rx="2" fill="#777"/>
-        </svg>
-      </span>
-      <figcaption class="cap">Seated curls — simple strength you can feel</figcaption>
-    </figure>
-  </div>
-</section>
+      <figure class="tile" aria-label="Seated dumbbell curl at home">
+        <span class="thumb"><img src="sites/img/curl.jpg" alt="Seated dumbbell curl at home"></span>
+        <figcaption class="cap">Seated curls — simple strength you can feel</figcaption>
+      </figure>
+    </div>
+  </section>
 </main>
 
 <footer>

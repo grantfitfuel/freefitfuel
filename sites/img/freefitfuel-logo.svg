@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="2000" height="700" viewBox="0 0 2000 700" xmlns="http://www.w3.org/2000/svg">
+<svg width="2000" height="720" viewBox="0 0 2000 720" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .logo { font: 800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
+      .logo { font: 800 260px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif; }
     </style>
   </defs>
 
-  <!-- One horizontal line, sane spacing -->
-  <text class="logo" y="360">
-    <tspan x="80"  fill="#141414">FREE</tspan>
-    <tspan x="740" fill="#FF6A00">FIT</tspan>
-    <tspan x="1060" fill="#141414">FUEL</tspan>
-  </text>
+  <!-- === TEXT: one horizontal line, sane spacing ===
+       Tune these if needed:
+         FREE_X = 80
+         FIT_X  = 880
+         FUEL_X = 1220
+       Baseline = 360
+  -->
+  <text class="logo" x="80"  y="360" fill="#141414">FREE</text>
+  <text class="logo" x="880" y="360" fill="#FF6A00">FIT</text>
+  <text class="logo" x="1220" y="360" fill="#141414">FUEL</text>
 
-  <!-- Dumbbell centered under FIT -->
-  <!-- Tweak these if needed: HSHIFT (+/- px), VSHIFT (+/- px) -->
-  <g id="dumbbell" fill="#141414" transform="translate(0,0)">
-    <!-- Center reference under 'FIT':
-         FIT starts at x=740; approximate FIT width ≈ 300 at this size,
-         so center ≈ 740 + 150 = 890. Adjust via HSHIFT if needed. -->
-    <!-- HSHIFT moves left/right; VSHIFT moves up/down (positive is down). -->
-    <g transform="translate(0,0)"> <!-- HSHIFT, VSHIFT -->
-      <!-- Position dumbbell by its visual center at x=890, below baseline y=360 + 90 -->
-      <g transform="translate(890, 450)">
-        <!-- BAR: centered on (0,0), width 200, height 40 -->
-        <rect x="-100" y="0" width="200" height="40" rx="20" ry="20"/>
-        <!-- LEFT plates: INNER (large) then OUTER (small) -->
-        <rect x="-100 - 10 - 48" y="-45" width="48" height="130" rx="10"/>
-        <rect x="-100 - 10 - 48 - 10 - 32" y="-20" width="32" height="80" rx="8"/>
-        <!-- RIGHT plates: INNER (large) then OUTER (small) -->
-        <rect x="100 + 10" y="-45" width="48" height="130" rx="10"/>
-        <rect x="100 + 10 + 48 + 10" y="-20" width="32" height="80" rx="8"/>
+  <!-- === DUMBBELL under FIT ===
+       Center under FIT using a fixed center X that matches the FIT block.
+       If you want a tiny L/R nudge, change HSHIFT (e.g., -12 or +12).
+       If you want more vertical gap, change GAP (bigger = lower).
+         HSHIFT = 0
+         GAP    = 100  (≈ 20–25 mm visual space below baseline)
+  -->
+  <g fill="#141414" transform="translate(0,0)">
+    <!-- FIT approx center: FIT_X (880) + half estimated FIT width (~300) ≈ 1030 -->
+    <!-- Apply HSHIFT and GAP below -->
+    <g transform="translate(1030, 360)">
+      <g transform="translate(0, 100)"> <!-- GAP -->
+        <g transform="translate(0, 0)"> <!-- HSHIFT -->
+          <!-- BAR: centered on (0,0); width=200, height=40 -->
+          <rect x="-100" y="0" width="200" height="40" rx="20" ry="20"/>
+          <!-- LEFT plates: INNER (large) then OUTER (small) -->
+          <rect x="-158" y="-45" width="48" height="130" rx="10" ry="10"/>
+          <rect x="-200" y="-20" width="32" height="80"  rx="8"  ry="8"/>
+          <!-- RIGHT plates: INNER (large) then OUTER (small) -->
+          <rect x="110"  y="-45" width="48" height="130" rx="10" ry="10"/>
+          <rect x="160"  y="-20" width="32" height="80"  rx="8"  ry="8"/>
+        </g>
       </g>
     </g>
   </g>

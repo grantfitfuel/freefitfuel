@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="2000" height="620" viewBox="0 0 2000 620" xmlns="http://www.w3.org/2000/svg">
+<svg width="2000" height="700" viewBox="0 0 2000 700" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .w { font: 800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
+      .logo-text { font: 800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
     </style>
   </defs>
 
-  <!-- One horizontal line: FREE (black) | FIT (orange) | FUEL (black) -->
-  <text x="80" y="360" class="w">
-    <tspan fill="#141414">Free</tspan><tspan fill="#FF6A00">Fit</tspan><tspan fill="#141414">Fuel</tspan>
+  <!-- FREE FIT FUEL lettering -->
+  <text x="100" y="360" class="logo-text">
+    <tspan fill="#141414">FREE</tspan>
+    <tspan fill="#FF6A00">FIT</tspan>
+    <tspan fill="#141414">FUEL</tspan>
   </text>
 
-  <!-- Dumbbell: flat, chunky, heavy plates INSIDE; centered under FIT; DROPPED ~20mm -->
-  <!-- (Dropped generously to avoid clipping; centred on 'Fit') -->
-  <g fill="#141414" aria-label="dumbbell" transform="translate(0,20)">
-    <!-- Short bar -->
-    <rect x="960" y="448" width="180" height="36" rx="18" ry="18"/>
-    <!-- LEFT: inner (large), then outer (small) -->
-    <rect x="920" y="398" width="40"  height="130" rx="8"/>
-    <rect x="890" y="423" width="28"  height="80"  rx="6"/>
-    <!-- RIGHT: inner (large), then outer (small) -->
-    <rect x="1140" y="398" width="40" height="130" rx="8"/>
-    <rect x="1182" y="423" width="28" height="80"  rx="6"/>
+  <!-- Dumbbell positioned under FIT -->
+  <g fill="#141414" aria-label="dumbbell">
+    <!-- Bar -->
+    <rect x="900" y="430" width="200" height="40" rx="20"/>
+    <!-- Left inner (large) -->
+    <rect x="860" y="385" width="40" height="130" rx="8"/>
+    <!-- Left outer (small) -->
+    <rect x="830" y="410" width="30" height="80" rx="6"/>
+    <!-- Right inner (large) -->
+    <rect x="1100" y="385" width="40" height="130" rx="8"/>
+    <!-- Right outer (small) -->
+    <rect x="1140" y="410" width="30" height="80" rx="6"/>
   </g>
 </svg>

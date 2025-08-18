@@ -2,28 +2,57 @@
 <svg width="2000" height="700" viewBox="0 0 2000 700" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .logo-text { font: 800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
+      .logo { font: 800 260px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; }
     </style>
+    <!-- TWEAK POINTS (if you want tiny nudges later):
+         - Change FIT_X to slide the word FIT (and thus the dumbbell target)
+         - Change FIT_W if your renderer measures the word a bit differently
+         - Change GAP_PX to increase/decrease the vertical space below FIT baseline
+    -->
   </defs>
 
-  <!-- FREE FIT FUEL lettering -->
-  <text x="100" y="360" class="logo-text">
-    <tspan fill="#141414">FREE</tspan>
-    <tspan fill="#FF6A00">FIT</tspan>
-    <tspan fill="#141414">FUEL</tspan>
-  </text>
+  <!-- Layout numbers (picked to keep FREE/FIT/FUEL on one line and give FIT its own x) -->
+  <!-- If you ever need to nudge horizontally, change FIT_X below and/or HSHIFT -->
+  <!-- Baseline is y=360 for all three words -->
+  <text x="100" y="360" class="logo" fill="#141414">FREE</text>
+  <text id="fit"  x="980" y="360" class="logo" fill="#FF6A00">FIT</text>
+  <text x="1310" y="360" class="logo" fill="#141414">FUEL</text>
 
-  <!-- Dumbbell positioned under FIT -->
-  <g fill="#141414" aria-label="dumbbell">
-    <!-- Bar -->
-    <rect x="900" y="430" width="200" height="40" rx="20"/>
-    <!-- Left inner (large) -->
-    <rect x="860" y="385" width="40" height="130" rx="8"/>
-    <!-- Left outer (small) -->
-    <rect x="830" y="410" width="30" height="80" rx="6"/>
-    <!-- Right inner (large) -->
-    <rect x="1100" y="385" width="40" height="130" rx="8"/>
-    <!-- Right outer (small) -->
-    <rect x="1140" y="410" width="30" height="80" rx="6"/>
+  <!-- === Dumbbell centered under FIT ===
+       We center on FIT by calculating its center: FIT_CENTER = FIT_X + FIT_W/2
+       Here we set FIT_X = 980 and assume FIT_W ≈ 360 at this font size,
+       so FIT_CENTER ≈ 1160. If it looks a hair off on your machine,
+       tweak HSHIFT by ±10~20.
+  -->
+  <!-- CONFIG -->
+  <!-- FIT_X and FIT_W are documented above; we encode the resulting center here -->
+  <!-- FIT_CENTER -->
+  <!-- For tiny horizontal tweak, change HSHIFT (e.g., -10 or +10) -->
+  <!-- Vertical gap below baseline: GAP_PX ~ 76px (~20 mm at 96dpi) -->
+  <!-- Using transform on a CENTERED coordinate system so the dumbbell really centers under FIT -->
+  <g fill="#141414"
+     transform="translate(1160, 360)">
+    <!-- apply final nudges: HSHIFT (x), GAP_PX (y) -->
+    <g transform="translate(0, 76)">
+      <!-- HSHIFT lives here: change 0 to -10 or +10 if you want a hair left/right -->
+      <g transform="translate(0,0)">
+        <!-- Dumbbell drawn around the CENTER (0,0):
+             - Bar centered at x=0
+             - Plates symmetric, heavy INNER, small OUTER
+        -->
+        <!-- Bar (short, chunky), top aligned at y=0 -->
+        <rect x="-100" y="0" width="200" height="40" rx="20" ry="20"/>
+
+        <!-- LEFT INNER (large, next to bar) -->
+        <rect x="-100 - 10 - 48" y="-45" width="48" height="130" rx="10"/>
+        <!-- LEFT OUTER (small) -->
+        <rect x="-100 - 10 - 48 - 10 - 32" y="-20" width="32" height="80" rx="8"/>
+
+        <!-- RIGHT INNER (large, next to bar) -->
+        <rect x="100 + 10" y="-45" width="48" height="130" rx="10"/>
+        <!-- RIGHT OUTER (small) -->
+        <rect x="100 + 10 + 48 + 10" y="-20" width="32" height="80" rx="8"/>
+      </g>
+    </g>
   </g>
 </svg>

@@ -1,0 +1,61 @@
+name: Auto export PNG/JPG from SVGs
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "sites/img/*.svg"          # only run when SVGs change
+  workflow_dispatch:               # allow manual run from Actions tab
+
+permissions:
+  contents: write                  # needed to commit generated files
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install converters (librsvg & imagemagick)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin imagemagick
+
+      # Generate PNG/JPG for each SVG in sites/img
+      - name: Export assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd sites/img
+
+          # sizes to export
+          SIZES=(32 48 120 180 240 512 1024)
+
+          for SVG in *.svg; do
+            [ -e "$SVG" ] || continue
+            BASENAME="${SVG%.svg}"
+
+            echo "Processing $SVG → ${BASENAME}-{size}.png/jpg"
+
+            for SZ in "${SIZES[@]}"; do
+              # PNG (transparent; preserves aspect, width-driven)
+              rsvg-convert -w "$SZ" "$SVG" -o "${BASENAME}-${SZ}.png"
+
+              # JPG (white background)
+              convert "${BASENAME}-${SZ}.png" -background white -alpha remove -alpha off "${BASENAME}-${SZ}.jpg"
+            done
+          done
+
+      # Commit only newly generated files, skip if nothing changed
+      - name: Commit generated images
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-export PNG/JPG from SVG [skip ci]"
+          file_pattern: "sites/img/*.png sites/img/*.jpg"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          skip_fetch: true

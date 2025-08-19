@@ -2,6 +2,16 @@
 <html lang="en-GB">
 <head>
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* Highest-specificity test override */
+  body > header.site-header,
+  header.site-header {
+    background-color: #e6f0f5 !important;   /* light blue/grey */
+    border-bottom: 1px solid #ccc !important;
+  }
+  /* ensure no inner element is painting white */
+  header.site-header .container { background: transparent !important; }
+</style>
   <!-- Favicons & app icons (use generated logo PNGs) -->
 <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 <link rel="icon" type="image/png" sizes="32x32"  href="/img/freefitfuel-logo-32.png">

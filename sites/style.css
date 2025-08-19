@@ -131,17 +131,36 @@ footer{border-top:1px solid #1b1b22; margin-top:28px; background:#0c0c10}
 .footer-icon{height:40px; width:auto; display:block; opacity:.95}
 footer p{font-size:.9em; color:#9a9aa6; margin:0; padding:12px 0}
 
-/* === FORCE HEADER BACKGROUND === */
-html body header.site-header {
-  background-color: #e6f0f5 !important; /* light blue-grey */
-  border-bottom: 1px solid #ccc !important;
-}
-
-html body header.site-header .container {
-  background: transparent !important;
-}
-
+/* === FINAL HEADER STYLES === */
 header.site-header {
-  background-color: #e6f0f5 !important;
-  border-bottom: 1px solid #ccc !important;
+  background:#e6f0f5;         /* light blue-grey */
+  border-bottom:1px solid #ccc;
+}
+
+header.site-header .container {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  max-width:1140px;
+  margin:0 auto;
+  padding:0 20px;
+  background:transparent;
+}
+
+header.site-header nav {
+  display:flex;
+  gap:12px;
+  margin-left:auto;
+}
+
+header.site-header nav a {
+  color:#222;
+  padding:0 12px;
+  text-decoration:none;
+}
+
+header.site-header nav a:hover {
+  color:#ff6a00;
+  text-decoration:underline;
 }

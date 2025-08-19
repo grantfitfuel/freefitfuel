@@ -1,11 +1,12 @@
-name: Deploy GitHub Pages from /sites
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
     paths:
-      - "sites/**"
-      - ".github/workflows/pages.yml"
+      - 'sites/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -13,56 +14,21 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-              - name: Inject shared <head> snippet into every HTML in /sites
-        run: |
-          cat > inject-head.js <<'JS'
-          const fs = require('fs'), p = require('path');
-          const ROOT='sites', SNIP=p.join(ROOT,'_head-snippet.html');
-          const BEGIN='<!-- BEGIN: HEAD-SHARED -->', END='<!-- END: HEAD-SHARED -->';
-          const snip = fs.readFileSync(SNIP,'utf8');
-          (function walk(dir){
-            for (const e of fs.readdirSync(dir,{withFileTypes:true})) {
-              const f=p.join(dir,e.name);
-              if(e.isDirectory()) walk(f);
-              else if(e.isFile() && f.toLowerCase().endsWith('.html')) {
-                let html=fs.readFileSync(f,'utf8');
-                const b=html.indexOf(BEGIN), e2=html.indexOf(END);
-                if(b!==-1 && e2!==-1 && e2>b) html=html.slice(0,b)+html.slice(e2+END.length);
-                const m=html.match(/<head[^>]*>/i); if(!m) continue;
-                const i=m.index+m[0].length;
-                html=html.slice(0,i)+'\n'+snip+'\n'+html.slice(i);
-                fs.writeFileSync(f,html);
-                console.log('Injected:',f);
-              }
-            }
-          })(ROOT);
-          JS
-          node inject-head.js
-
-      # (Optional) inject shared <head> snippet step would go here
-
-      - name: Upload /sites as artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: sites
 
   deploy:
-    needs: build
     runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4

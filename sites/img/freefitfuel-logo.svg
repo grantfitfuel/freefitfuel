@@ -1,21 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="360" viewBox="0 0 1400 360">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="360" viewBox="0 0 1600 360">
+  <!-- Background is transparent -->
   <defs>
     <style>
-      .txt{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:800}
+      .word { font-family: Montserrat, "Segoe UI", Arial, sans-serif; font-weight: 900; }
     </style>
   </defs>
-  <!-- Wordmark -->
-  <text x="50" y="170" font-size="140" class="txt" fill="#000000">FREE</text>
-  <text id="fit" x="520" y="170" font-size="140" class="txt" fill="#ff6a00">FIT</text>
-  <text x="815" y="170" font-size="140" class="txt" fill="#000000">FUEL</text>
 
-  <!-- Dumbbell centered under FIT -->
+  <!-- WORDMARK (one line) -->
+  <!-- FREE (black) -->
+  <text x="40" y="170" font-size="150" class="word" fill="#000000">FREE</text>
+  <!-- FIT (orange) -->
+  <text id="FIT" x="620" y="170" font-size="150" class="word" fill="#FF6A00">FIT</text>
+  <!-- FUEL (black) -->
+  <text x="935" y="170" font-size="150" class="word" fill="#000000">FUEL</text>
+
+  <!-- DUMBBELL under FIT (chunky, centered under the FIT block) -->
+  <!-- We place it under the FIT text block (x ~ 620 → ~ 860) -->
   <!-- Bar -->
-  <rect x="560" y="210" width="220" height="26" rx="6" fill="#000000"/>
-  <!-- Plates (left) -->
-  <rect x="520" y="197" width="30" height="52" rx="4" fill="#000000"/>
-  <rect x="540" y="202" width="14" height="42" rx="3" fill="#000000"/>
-  <!-- Plates (right) -->
-  <rect x="780" y="197" width="30" height="52" rx="4" fill="#000000"/>
-  <rect x="766" y="202" width="14" height="42" rx="3" fill="#000000"/>
+  <rect x="640" y="210" width="260" height="36" rx="10" fill="#000000"/>
+  <!-- Left plates -->
+  <rect x="600" y="198" width="34" height="60" rx="6" fill="#000000"/>
+  <rect x="618" y="204" width="18" height="48" rx="5" fill="#000000"/>
+  <!-- Right plates -->
+  <rect x="904" y="198" width="34" height="60" rx="6" fill="#000000"/>
+  <rect x="884" y="204" width="18" height="48" rx="5" fill="#000000"/>
 </svg>

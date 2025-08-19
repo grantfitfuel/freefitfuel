@@ -23,25 +23,19 @@
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
 </head>
-<body>
-
-  <!-- HEADER START (single header, not nested) -->
-  <header class="site-header">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="48">
-      </a>
-      <nav class="main-nav" aria-label="Primary">
-        <a href="ideas.html">Ideas</a>
-        <a href="guides.html">Guides</a>
-        <a href="workouts.html">Workouts</a>
-        <a href="nutrition.html">Nutrition</a>
-        <a href="wellbeing.html">Wellbeing</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
-  <!-- HEADER END -->
+  
+/* Force header background + nav contrast */
+header.site-header {
+  background:#e6f0f5;
+  border-bottom:1px solid #ccc;
+}
+header.site-header .container {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  max-width:1140px; margin:0 auto; padding:0 20px; background:transparent;
+}
+header.site-header nav { display:flex; gap:12px; margin-left:auto; }
+header.site-header nav a { color:#222; padding:0 12px; text-decoration:none; }
+header.site-header nav a:hover { color:#ff6a00; text-decoration:underline; }
 
   <!-- HERO -->
   <header class="hero" role="banner" aria-label="FreeFitFuel hero">

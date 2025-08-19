@@ -1,29 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="360" viewBox="0 0 1600 360">
   <defs>
     <style>
-      .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.2px}
+      .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.6px}
     </style>
   </defs>
 
-  <!-- ONE CONTINUOUS LINE (no spaces) -->
-  <!-- We center FIT at x=800 and build FREE/FUEL around it via tspans. -->
-  <text y="168" font-size="156" class="w">
-    <!-- FREE ends exactly at x=800 minus half FIT width (approx via hand-set position) -->
-    <tspan x="80"  fill="#000000">FREE</tspan>
-    <tspan x="650" fill="#FF6A00">FIT</tspan>
-    <tspan x="980" fill="#000000">FUEL</tspan>
-  </text>
+  <!-- WORDMARK: drawn as three pieces but aligned to read as one word “FREEFITFUEL” (no gaps) -->
+  <!-- We lock the optical centre at x=800 and build around it -->
+  <!-- FREE (black) – right-aligned up to the left edge of FIT -->
+  <text x="720" y="168" font-size="156" class="w" fill="#000000" text-anchor="end">FREE</text>
+  <!-- FIT (orange) – centred on x=800 -->
+  <text x="800" y="168" font-size="156" class="w" fill="#FF6A00" text-anchor="middle">FIT</text>
+  <!-- FUEL (black) – left-aligned starting at the right edge of FIT -->
+  <text x="880" y="168" font-size="156" class="w" fill="#000000" text-anchor="start">FUEL</text>
 
-  <!-- DUMBBELL: centered under FIT (same optical center), SHORT bar, CHUNKY plates -->
-  <g transform="translate(0,0)" fill="#000000" aria-label="dumbbell under FIT">
-    <!-- center of FIT ~ x=800; we place bar centered there -->
-    <!-- handle -->
-    <rect x="700" y="206" width="200" height="54" rx="16"/>
-    <!-- LEFT: larger inner, smaller outer -->
-    <rect x="660" y="180" width="64" height="110" rx="10"/>  <!-- inner large -->
-    <rect x="630" y="194" width="34" height="86"  rx="9"/>   <!-- outer small -->
-    <!-- RIGHT: mirror -->
-    <rect x="936" y="180" width="64" height="110" rx="10"/>  <!-- inner large -->
-    <rect x="1004" y="194" width="34" height="86" rx="9"/>   <!-- outer small -->
+  <!-- DUMBBELL: centred under FIT (same centre x=800) -->
+  <!-- Short, thick handle; very chunky plates; larger plates inside, smaller outside -->
+  <g fill="#000000" aria-label="dumbbell under FIT">
+    <!-- HANDLE (centre on 800) -->
+    <rect x="700" y="208" width="200" height="54" rx="16"/>
+    <!-- LEFT plates -->
+    <!-- inner LARGE (closer to grip) -->
+    <rect x="660" y="180" width="60" height="112" rx="10"/>
+    <!-- outer SMALL (further from grip) -->
+    <rect x="628" y="194" width="34" height="84" rx="8"/>
+    <!-- RIGHT plates -->
+    <!-- inner LARGE -->
+    <rect x="940" y="180" width="60" height="112" rx="10"/>
+    <!-- outer SMALL -->
+    <rect x="1008" y="194" width="34" height="84" rx="8"/>
   </g>
 </svg>

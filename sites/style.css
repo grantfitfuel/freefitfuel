@@ -1,50 +1,62 @@
-:root{
+:root {
   --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
   --accent:#FF6A00; --accent2:#FF9A3D; --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
   --maxw:1140px; --radius:16px;
 }
-* { 
-  box-sizing: border-box; 
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, Arial, sans-serif;
 }
 
-html, body { 
-  margin: 0; 
-  background: var(--bg); 
-  color: var(--ink); 
-  font-family: Inter, Arial, sans-serif; 
-}
-
-a { 
-  color: inherit;          /* no forced blue, just inherit from parent */
-  text-decoration: none; 
+a {
+  color: inherit;
+  text-decoration: none;
 }
 a:hover {
-  color: #ff6a00;   /* your bright orange accent */
+  color: #ff6a00;
   text-decoration: underline;
 }
 
-.wrap { 
-  max-width: var(--maxw); 
-  margin: 0 auto; 
-  padding: 16px 20px; 
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 16px 20px;
 }
 
 /* === HEADER STYLES === */
-/* === HEADER STYLES === */
 .site-header {
-  background-color: #e6f0f5 !important;  /* light blue/grey */
+  background-color: #e6f0f5; /* light blue/grey */
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
   width: 100%;
-  display: block;
 }
 
-/* Make sure nothing inside paints white */
-.site-header .container { background: transparent !important; }
+.site-header .container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* logo left, nav right */
+  background: transparent;
+}
 
-/* Nav links inside header */
+.site-header .logo img {
+  height: 60px;
+  vertical-align: middle;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 12px;
+}
+
 .site-header nav a {
-  color: #222;
+  color: #222;  /* dark grey for contrast on light bg */
   text-decoration: none;
   padding: 0 12px;
   transition: color 0.3s ease;
@@ -53,24 +65,8 @@ a:hover {
   color: #ff6a00;
   text-decoration: underline;
 }
-/* Nav links inside header */
-.site-header nav a {
-  color: #222;  /* dark grey so visible on light background */
-  text-decoration: none;
-  padding: 0 12px;
-  transition: color 0.3s ease;
-}
 
-.site-header nav a:hover {
-  color: #ff6a00;  /* bright orange accent */
-  text-decoration: underline;
-}
-.site-header .logo img {
-  height: 60px;
-  vertical-align: middle;
-}
-
-/* Hero */
+/* === HERO === */
 .hero{position:relative;border-bottom:1px solid #1b1b22}
 .hero-media{position:relative;margin:0}
 .hero-media img{
@@ -88,20 +84,20 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
 .btn.primary{background:linear-gradient(180deg,var(--accent2),var(--accent));color:#111}
 .btn.ghost{background:rgba(255,255,255,.10);border:1px solid var(--stroke);color:#fff}
 
-/* Cards */
+/* === CARDS === */
 .grid{display:grid;gap:14px;margin:22px 0}
 @media(min-width:780px){.grid{grid-template-columns:repeat(3,1fr)}}
 .card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);padding:14px}
 .card h2{font-size:1.12rem;margin:.1rem 0 .4rem}
 .meta{font-size:.92rem;color:#b6b6c6}
 
-/* Split feature */
+/* === SPLIT FEATURE === */
 .split{display:grid;gap:14px;align-items:center;margin:26px 0}
 @media(min-width:900px){.split{grid-template-columns:1.15fr 1fr}}
 .split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);overflow:hidden;background:var(--glass)}
 .split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
 
-/* Carousel */
+/* === CAROUSEL === */
 .strip{scroll-margin-top:70px}
 .scroller{display:flex;gap:12px;overflow-x:auto;padding:.25rem;scroll-snap-type:x proximity}
 .tile{flex:0 0 auto;width:280px;border-radius:14px;border:1px solid var(--stroke);background:var(--glass);display:flex;flex-direction:column;overflow:visible;scroll-snap-align:center}
@@ -109,7 +105,7 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
 .thumb img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .cap{padding:.7rem .9rem;color:#c8c8d2;font-size:.95rem}
 
-/* Footer */
+/* === FOOTER === */
 footer{border-top:1px solid #1b1b22;margin-top:28px;background:#0c0c10}
 .footer-inner{display:flex;align-items:center;gap:12px;justify-content:space-between}
 .footer-icon{height:40px;width:auto;display:block;opacity:.95}

@@ -35,6 +35,9 @@ a:hover {
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
 }
+.site-header {
+  background-color: #e6f0f5 !important;  /* force light blue/grey */
+}
 /* Nav links inside header */
 .site-header nav a {
   color: #222;  /* dark grey so visible on light background */

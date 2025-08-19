@@ -38,6 +38,10 @@ a:hover {
 .site-header {
   background-color: #e6f0f5 !important;  /* force light blue/grey */
 }
+.site-header {
+  width: 100%;
+  display: block;
+}
 /* Nav links inside header */
 .site-header nav a {
   color: #222;  /* dark grey so visible on light background */

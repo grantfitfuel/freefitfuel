@@ -1,111 +1,117 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreeFitFuel — Home</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- TEMP override to force the blue/grey header while we debug -->
   <style>
-  /* Highest-specificity test override */
-  body > header.site-header,
-  header.site-header {
-    background-color: #e6f0f5 !important;   /* light blue/grey */
-    border-bottom: 1px solid #ccc !important;
-  }
-  /* ensure no inner element is painting white */
-  header.site-header .container { background: transparent !important; }
-</style>
-  <!-- Favicons & app icons (use generated logo PNGs) -->
-<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-<link rel="icon" type="image/png" sizes="32x32"  href="/img/freefitfuel-logo-32.png">
-<link rel="icon" type="image/png" sizes="48x48"  href="/img/freefitfuel-logo-48.png">
-<link rel="apple-touch-icon" sizes="180x180"      href="/img/freefitfuel-logo-180.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/img/freefitfuel-logo-512.png">
-<meta name="theme-color" content="#FF6A00">
+    header.site-header {
+      background-color: #e6f0f5 !important;  /* light blue/grey */
+      border-bottom: 1px solid #ccc !important;
+    }
+    header.site-header .container { background: transparent !important; }
+  </style>
+
+  <!-- Favicons & app icons -->
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180"      href="img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
 </head>
 <body>
-<header class="site-header">
-  <!-- HEADER START -->
-<header class="site-header">
-  <div class="container">
-    <a href="/index.html" class="logo">
-      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="48">
-    </a>
-    <nav class="main-nav" aria-label="Primary">
-      <a href="/ideas.html">Ideas</a>
-      <a href="/guides.html">Guides</a>
-      <a href="/workouts.html">Workouts</a>
-      <a href="/nutrition.html">Nutrition</a>
-      <a href="/wellbeing.html">Wellbeing</a>
-      <a href="/contact.html">Contact</a>
-    </nav>
-  </div>
-</header>
-<!-- HEADER END -->
-</header>
 
-<header class="hero" role="banner" aria-label="FreeFitFuel hero">
-  <figure class="hero-media">
-    <img src="img/hero.jpg" alt="Home training on a mat with dumbbells">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="hero-content wrap">
-    <span class="eyebrow">Healthy body & mind</span>
-    <h1><span class="accent">Stronger, Healthier, You</span></h1>
-    <p class="lead">Home workouts and balanced meals to fuel your body and mind — friendly, free, and easy to follow.</p>
-    <div class="cta-row">
-      <a class="btn primary" href="/fitness/">Start Training</a>
-      <a class="btn ghost" href="/fuel/">See Meal Ideas</a>
+  <!-- HEADER START (single header, not nested) -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="48">
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="ideas.html">Ideas</a>
+        <a href="guides.html">Guides</a>
+        <a href="workouts.html">Workouts</a>
+        <a href="nutrition.html">Nutrition</a>
+        <a href="wellbeing.html">Wellbeing</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </div>
-  </div>
-</header>
+  </header>
+  <!-- HEADER END -->
 
-<main class="wrap">
-  <section class="grid" aria-label="Key sections">
-    <article class="card">
-      <h2>Wellbeing</h2>
-      <p class="meta">Carer Support, Neuroscience, and Mental Health — practical tools for tough days.</p>
-      <a class="btn primary" href="/wellbeing/">Open Wellbeing</a>
-    </article>
-    <article class="card">
-      <h2>Workouts</h2>
-      <p class="meta">Smart dumbbell &amp; bodyweight routines with warm-ups and cool-downs.</p>
-      <a class="btn ghost" href="/fitness/">Browse Fitness</a>
-    </article>
-    <article class="card">
-      <h2>Nutrition</h2>
-      <p class="meta">Budget-friendly recipes with allergens labelled, plus hydration helpers.</p>
-      <a class="btn ghost" href="/fuel/">See Fuel</a>
-    </article>
-  </section>
-
-  <section class="split" id="workouts" aria-label="Home workout highlight">
-    <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
-    <div>
-      <h2>Move better at home</h2>
-      <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
-      <a class="btn primary" href="/fitness/">See workout plans</a>
+  <!-- HERO -->
+  <header class="hero" role="banner" aria-label="FreeFitFuel hero">
+    <figure class="hero-media">
+      <img src="img/hero.jpg" alt="Home training on a mat with dumbbells">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="hero-content wrap">
+      <span class="eyebrow">Healthy body & mind</span>
+      <h1><span class="accent">Stronger, Healthier, You</span></h1>
+      <p class="lead">Home workouts and balanced meals to fuel your body and mind — friendly, free, and easy to follow.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="workouts.html">Start Training</a>
+        <a class="btn ghost" href="nutrition.html">See Meal Ideas</a>
+      </div>
     </div>
-  </section>
+  </header>
 
-  <section id="ideas" class="strip" aria-label="Inspiration gallery">
-    <h2>Ideas you can start this week</h2>
-    <div class="scroller">
-      <figure class="tile"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption></figure>
-      <figure class="tile"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption></figure>
-      <figure class="tile"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption></figure>
-      <figure class="tile"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
-      <figure class="tile"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption class="cap">Meal prep — clear portions, real food</figcaption></figure>
-      <figure class="tile"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption class="cap">Seated curls — simple strength you can feel</figcaption></figure>
+  <main class="wrap">
+    <section class="grid" aria-label="Key sections">
+      <article class="card">
+        <h2>Wellbeing</h2>
+        <p class="meta">Carer Support, Neuroscience, and Mental Health — practical tools for tough days.</p>
+        <a class="btn primary" href="wellbeing.html">Open Wellbeing</a>
+      </article>
+      <article class="card">
+        <h2>Workouts</h2>
+        <p class="meta">Smart dumbbell &amp; bodyweight routines with warm-ups and cool-downs.</p>
+        <a class="btn ghost" href="workouts.html">Browse Fitness</a>
+      </article>
+      <article class="card">
+        <h2>Nutrition</h2>
+        <p class="meta">Budget-friendly recipes with allergens labelled, plus hydration helpers.</p>
+        <a class="btn ghost" href="nutrition.html">See Fuel</a>
+      </article>
+    </section>
+
+    <section class="split" id="workouts" aria-label="Home workout highlight">
+      <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
+      <div>
+        <h2>Move better at home</h2>
+        <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
+        <a class="btn primary" href="workouts.html">See workout plans</a>
+      </div>
+    </section>
+
+    <section id="ideas" class="strip" aria-label="Inspiration gallery">
+      <h2>Ideas you can start this week</h2>
+      <div class="scroller">
+        <figure class="tile"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption></figure>
+        <figure class="tile"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+        <figure class="tile"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption></figure>
+        <figure class="tile"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+        <figure class="tile"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption class="cap">Meal prep — clear portions, real food</figcaption></figure>
+        <figure class="tile"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption class="cap">Seated curls — simple strength you can feel</figcaption></figure>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER START -->
+  <footer class="site-footer">
+    <div class="container">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="72">
+      <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
-  </section>
-</main>
+  </footer>
+  <!-- FOOTER END -->
 
-<<!-- FOOTER START -->
-<footer class="site-footer">
-  <div class="container">
-    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="72">
-    <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
-<!-- FOOTER END -->
 </body>
 </html>

@@ -6,32 +6,26 @@
     </style>
   </defs>
 
-  <!-- WORDMARK -->
+  <!-- TEXT -->
   <text x="80" y="360" class="word">
     <tspan fill="#000000">Free </tspan>
-    <tspan id="fit-span" fill="#FF6A00">Fit</tspan>
+    <tspan fill="#FF6A00">Fit</tspan>
     <tspan fill="#000000"> Fuel</tspan>
   </text>
 
-  <!-- DUMBBELL (centered under 'Fit'; short handle, chunky plates, gap between plates) -->
-  <!-- DUMB_OFS: nudge left(-)/right(+) if needed for perfect optical centering under your renderer -->
-  <g id="dumbbell" fill="#000000" transform="translate(0,0)">
-    <!-- Set the visual center ~1040; DUMB_OFS lets you tweak without touching geometry -->
-    <g transform="translate(0,0)">
-      <!-- HANDLE (short & thick) : center at 1040 => x = 1040 - 170/2 = 955 -->
-      <rect x="955" y="420" width="170" height="58" rx="29"/>
+  <!-- CHUNKY DUMBBELL -->
+  <g fill="#000000" transform="translate(0,0)">
+    <!-- HANDLE (short + thick) -->
+    <rect x="920" y="420" width="200" height="70" rx="35"/>
 
-      <!-- LEFT plates: INNER large (touches handle), GAP, OUTER smaller -->
-      <!-- inner large: right edge flush to handle left (955) -->
-      <rect x="895" y="368" width="60" height="156" rx="12"/>
-      <!-- small gap (8px) then outer smaller -->
-      <rect x="827" y="392" width="34" height="110" rx="10"/>
+    <!-- LEFT inner plate -->
+    <rect x="860" y="360" width="60" height="190" rx="12"/>
+    <!-- LEFT outer plate -->
+    <rect x="820" y="390" width="40" height="130" rx="10"/>
 
-      <!-- RIGHT plates (mirror): inner large + gap + outer small -->
-      <!-- inner large: starts at handle right (955+170=1125) -->
-      <rect x="1125" y="368" width="60" height="156" rx="12"/>
-      <!-- small gap (8px) then outer smaller -->
-      <rect x="1239" y="392" width="34" height="110" rx="10"/>
-    </g>
+    <!-- RIGHT inner plate -->
+    <rect x="1120" y="360" width="60" height="190" rx="12"/>
+    <!-- RIGHT outer plate -->
+    <rect x="1180" y="390" width="40" height="130" rx="10"/>
   </g>
 </svg>

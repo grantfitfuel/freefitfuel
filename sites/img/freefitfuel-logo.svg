@@ -1,25 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="360" viewBox="0 0 1600 360">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2000" height="620" viewBox="0 0 2000 620" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.2px}
+      .word { font: 800 260px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif; }
     </style>
   </defs>
 
-  <!-- ONE CONTINUOUS LINE (no spaces, no overlay) -->
-  <text x="120" y="168" class="w" font-size="156">
-    <tspan fill="#000000">FREE</tspan><tspan fill="#FF6A00">FIT</tspan><tspan fill="#000000">FUEL</tspan>
+  <!-- WORDMARK -->
+  <text x="80" y="360" class="word">
+    <tspan fill="#000000">Free</tspan>
+    <tspan fill="#FF6A00">Fit</tspan>
+    <tspan fill="#000000">Fuel</tspan>
   </text>
 
-  <!-- DUMBBELL: short bar, very chunky plates, larger plates inside, centred under FIT -->
-  <!-- Positioned so the handle sits under the middle of the 'FIT' span -->
-  <g fill="#000000">
-    <!-- handle -->
-    <rect x="690" y="210" width="220" height="56" rx="16"/>
-    <!-- left plates (inner large, outer small) -->
-    <rect x="648" y="178" width="66" height="116" rx="10"/>  <!-- inner large -->
-    <rect x="612" y="194" width="36" height="88"  rx="9"/>   <!-- outer small -->
-    <!-- right plates (mirror) -->
-    <rect x="924" y="178" width="66" height="116" rx="10"/>  <!-- inner large -->
-    <rect x="994" y="194" width="36" height="88"  rx="9"/>   <!-- outer small -->
+  <!-- DUMBBELL (shorter, thicker; larger INNER plates, smaller OUTER plates) -->
+  <!-- Center of this layout ~= 1040; the geometry below is symmetric around 1040 -->
+  <g fill="#000000" aria-label="dumbbell">
+    <!-- HANDLE (short & thick) -->
+    <!-- center 1040 => x = 1040 - 160/2 = 960 -->
+    <rect x="960" y="420" width="160" height="56" rx="28"/>
+
+    <!-- LEFT plates -->
+    <!-- inner LARGE should touch handle: right edge = 960, width = 56 => x = 904 -->
+    <rect x="904" y="370" width="56" height="150" rx="12"/>
+    <!-- outer SMALL sits outside inner: right edge = 904, width = 36 => x = 868 -->
+    <rect x="868" y="392" width="36" height="106" rx="10"/>
+
+    <!-- RIGHT plates (mirror) -->
+    <!-- inner LARGE starts at handle right: x = 960 + 160 = 1120 -->
+    <rect x="1120" y="370" width="56" height="150" rx="12"/>
+    <!-- outer SMALL sits outside inner: x = 1120 + 56 = 1176 -->
+    <rect x="1176" y="392" width="36" height="106" rx="10"/>
   </g>
 </svg>

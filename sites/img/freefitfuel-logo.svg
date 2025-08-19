@@ -1,30 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="340" viewBox="0 0 1600 340">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="360" viewBox="0 0 1600 360">
   <defs>
     <style>
       .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.2px}
     </style>
   </defs>
 
-  <!-- ONE HORIZONTAL LINE -->
-  <text x="80"  y="168" font-size="156" class="w" fill="#000000">FREE</text>
-  <text id="fit" x="650" y="168" font-size="156" class="w" fill="#FF6A00">FIT</text>
-  <text x="980" y="168" font-size="156" class="w" fill="#000000">FUEL</text>
+  <!-- ONE CONTINUOUS LINE (no spaces) -->
+  <text x="80" y="170" font-size="156" class="w">
+    <tspan fill="#000000">FREE</tspan><tspan fill="#FF6A00">FIT</tspan><tspan fill="#000000">FUEL</tspan>
+  </text>
 
-  <!-- DUMBBELL UNDER 'FIT' (slightly wider than 'FIT') -->
-  <!-- FIT spans approx 650..930; bar extends a touch wider to read as dumbbell, not barbell -->
-  <g fill="#000000" aria-label="dumbbell under FIT">
-    <!-- handle -->
-    <rect x="630" y="206" width="360" height="44" rx="14"/>
+  <!-- DUMBBELL under FIT (short bar, very chunky plates, larger inside) -->
+  <!-- FIT starts roughly after 'FREE' and spans ~650..930; we place a shorter bar centered there -->
+  <g fill="#000000" aria-label="dumbbell">
+    <!-- handle (shorter) -->
+    <rect x="680" y="210" width="240" height="52" rx="16"/>
     <!-- LEFT plates: larger INNER, smaller OUTER -->
-    <!-- inner (larger, close to handle) -->
-    <rect x="594" y="190" width="38" height="76" rx="8"/>
-    <!-- outer (smaller, further from handle) -->
-    <rect x="570" y="198" width="22" height="60" rx="6"/>
-
+    <rect x="642" y="186" width="56" height="104" rx="10"/>  <!-- inner large -->
+    <rect x="616" y="198" width="30" height="80"  rx="8"/>   <!-- outer small -->
     <!-- RIGHT plates: mirror -->
-    <!-- inner (larger) -->
-    <rect x="992" y="190" width="38" height="76" rx="8"/>
-    <!-- outer (smaller) -->
-    <rect x="1032" y="198" width="22" height="60" rx="6"/>
+    <rect x="956" y="186" width="56" height="104" rx="10"/>  <!-- inner large -->
+    <rect x="1016" y="198" width="30" height="80" rx="8"/>   <!-- outer small -->
   </g>
 </svg>

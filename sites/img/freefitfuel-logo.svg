@@ -1,13 +1,29 @@
-<!-- DUMBBELL (short, chunky; larger inner plates, smaller outer plates) -->
-<g fill="#000000" aria-label="dumbbell">
-  <!-- HANDLE (center 1040 → 1040 - 160/2 = 960) -->
-  <rect x="960" y="420" width="160" height="56" rx="28"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2000" height="620" viewBox="0 0 2000 620" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .word { font: 800 260px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif; }
+    </style>
+  </defs>
 
-  <!-- LEFT plates (inner LARGE touches handle, outer SMALL outside) -->
-  <rect x="904" y="370" width="56" height="150" rx="12"/>  <!-- inner large -->
-  <rect x="868" y="392" width="36" height="106" rx="10"/>  <!-- outer small -->
+  <!-- FREE FIT FUEL -->
+  <text x="80" y="360" class="word">
+    <tspan fill="#141414">Free</tspan>
+    <tspan fill="#FF6A00">Fit</tspan>
+    <tspan fill="#141414">Fuel</tspan>
+  </text>
 
-  <!-- RIGHT plates (mirror) -->
-  <rect x="1120" y="370" width="56" height="150" rx="12"/> <!-- inner large -->
-  <rect x="1176" y="392" width="36" height="106" rx="10"/> <!-- outer small -->
-</g>
+  <!-- DUMBBELL (centered under "FIT", chunky style) -->
+  <g fill="#141414" aria-label="dumbbell">
+    <!-- HANDLE -->
+    <rect x="960" y="420" width="160" height="56" rx="28"/>
+
+    <!-- LEFT plates -->
+    <rect x="904" y="370" width="56" height="150" rx="12"/>  <!-- inner large -->
+    <rect x="868" y="392" width="36" height="106" rx="10"/>  <!-- outer small -->
+
+    <!-- RIGHT plates -->
+    <rect x="1120" y="370" width="56" height="150" rx="12"/> <!-- inner large -->
+    <rect x="1176" y="392" width="36" height="106" rx="10"/> <!-- outer small -->
+  </g>
+</svg>

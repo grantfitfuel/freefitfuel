@@ -130,3 +130,13 @@ footer{border-top:1px solid #1b1b22; margin-top:28px; background:#0c0c10}
 .footer-inner{display:flex; align-items:center; gap:12px; justify-content:space-between}
 .footer-icon{height:40px; width:auto; display:block; opacity:.95}
 footer p{font-size:.9em; color:#9a9aa6; margin:0; padding:12px 0}
+
+/* === FORCE HEADER BACKGROUND === */
+html body header.site-header {
+  background-color: #e6f0f5 !important; /* light blue-grey */
+  border-bottom: 1px solid #ccc !important;
+}
+
+html body header.site-header .container {
+  background: transparent !important;
+}

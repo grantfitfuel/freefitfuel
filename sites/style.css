@@ -35,7 +35,18 @@ a:hover {
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
 }
+/* Nav links inside header */
+.site-header nav a {
+  color: #222;  /* dark grey so visible on light background */
+  text-decoration: none;
+  padding: 0 12px;
+  transition: color 0.3s ease;
+}
 
+.site-header nav a:hover {
+  color: #ff6a00;  /* bright orange accent */
+  text-decoration: underline;
+}
 .site-header .logo img {
   height: 60px;
   vertical-align: middle;

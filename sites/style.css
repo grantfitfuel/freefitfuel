@@ -31,9 +31,11 @@ a:hover {
 
 /* === HEADER STYLES === */
 .site-header {
-  background: #e6f0f5;   /* light blue/grey */
+  background-color: #e6f0f5 !important;  /* light blue/grey */
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
+  width: 100%;
+  display: block;
 }
 .site-header {
   background-color: #e6f0f5 !important;  /* force light blue/grey */

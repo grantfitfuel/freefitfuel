@@ -1,36 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="360" viewBox="0 0 1600 360">
   <defs>
     <style>
-      .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.4px}
+      .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.2px}
     </style>
   </defs>
 
-  <!-- Choose one anchor X for FIT. Everything else is placed around it. -->
-  <!-- You can nudge the whole mark left/right by changing FIT_X only. -->
-  <g id="wordmark" transform="translate(0,0)">
-    <!-- Center X for FIT -->
-    <g id="FIT-GROUP" transform="translate(800,0)">
-      <!-- FREE (ends exactly where FIT begins visually) -->
-      <text x="-520" y="168" font-size="156" class="w" fill="#000000" text-anchor="end">FREE</text>
-      <!-- FIT (centered) -->
-      <text id="FIT" x="0" y="168" font-size="156" class="w" fill="#FF6A00" text-anchor="middle">FIT</text>
-      <!-- FUEL (starts exactly where FIT ends visually) -->
-      <text x="520" y="168" font-size="156" class="w" fill="#000000" text-anchor="start">FUEL</text>
-    </g>
-  </g>
+  <!-- ONE CONTINUOUS LINE (no spaces) -->
+  <!-- We center FIT at x=800 and build FREE/FUEL around it via tspans. -->
+  <text y="168" font-size="156" class="w">
+    <!-- FREE ends exactly at x=800 minus half FIT width (approx via hand-set position) -->
+    <tspan x="80"  fill="#000000">FREE</tspan>
+    <tspan x="650" fill="#FF6A00">FIT</tspan>
+    <tspan x="980" fill="#000000">FUEL</tspan>
+  </text>
 
-  <!-- DUMBBELL: perfectly centered under FIT (same anchor X), short bar, chunky plates -->
-  <g id="dumbbell" transform="translate(800,0)" fill="#000000" aria-label="dumbbell under FIT">
-    <!-- dimensions you can tweak if needed -->
-    <!-- bar: centered at x=0 -->
-    <rect x="-120" y="208" width="240" height="52" rx="16"/>
-    <!-- LEFT plates (larger inner, smaller outer) -->
-    <!-- inner large: closer to bar -->
-    <rect x="-180" y="182" width="56" height="104" rx="10"/>
-    <!-- outer small -->
-    <rect x="-220" y="196" width="32" height="76" rx="8"/>
-    <!-- RIGHT plates (mirror) -->
-    <rect x="124" y="182" width="56" height="104" rx="10"/>
-    <rect x="188" y="196" width="32" height="76" rx="8"/>
+  <!-- DUMBBELL: centered under FIT (same optical center), SHORT bar, CHUNKY plates -->
+  <g transform="translate(0,0)" fill="#000000" aria-label="dumbbell under FIT">
+    <!-- center of FIT ~ x=800; we place bar centered there -->
+    <!-- handle -->
+    <rect x="700" y="206" width="200" height="54" rx="16"/>
+    <!-- LEFT: larger inner, smaller outer -->
+    <rect x="660" y="180" width="64" height="110" rx="10"/>  <!-- inner large -->
+    <rect x="630" y="194" width="34" height="86"  rx="9"/>   <!-- outer small -->
+    <!-- RIGHT: mirror -->
+    <rect x="936" y="180" width="64" height="110" rx="10"/>  <!-- inner large -->
+    <rect x="1004" y="194" width="34" height="86" rx="9"/>   <!-- outer small -->
   </g>
 </svg>

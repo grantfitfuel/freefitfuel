@@ -30,6 +30,7 @@ a:hover {
 }
 
 /* === HEADER STYLES === */
+/* === HEADER STYLES === */
 .site-header {
   background-color: #e6f0f5 !important;  /* light blue/grey */
   border-bottom: 1px solid #ccc;
@@ -37,12 +38,20 @@ a:hover {
   width: 100%;
   display: block;
 }
-.site-header {
-  background-color: #e6f0f5 !important;  /* force light blue/grey */
+
+/* Make sure nothing inside paints white */
+.site-header .container { background: transparent !important; }
+
+/* Nav links inside header */
+.site-header nav a {
+  color: #222;
+  text-decoration: none;
+  padding: 0 12px;
+  transition: color 0.3s ease;
 }
-.site-header {
-  width: 100%;
-  display: block;
+.site-header nav a:hover {
+  color: #ff6a00;
+  text-decoration: underline;
 }
 /* Nav links inside header */
 .site-header nav a {

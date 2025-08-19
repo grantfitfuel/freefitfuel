@@ -6,36 +6,23 @@
     </style>
   </defs>
 
-  <!-- ===== TYPO ===== -->
-  <!-- We place each word by anchor so spacing is stable and the middle word has a known centre (cx). -->
-  <!-- Set the centre of “Fit” here (change this one number to nudge everything): -->
-  <g id="type" data-cx="1040">
-    <!-- FREE ends at cx-220 -->
-    <text x="860" y="360" class="word" fill="#000000" text-anchor="end">Free</text>
-    <!-- FIT is centred at cx -->
-    <text id="fit" x="1040" y="360" class="word" fill="#FF6A00" text-anchor="middle">Fit</text>
-    <!-- FUEL begins at cx+220 -->
-    <text x="1220" y="360" class="word" fill="#000000" text-anchor="start">Fuel</text
-  </g>
+  <!-- WORDS (tighter spacing) -->
+  <text x="860" y="360" class="word" fill="#000000" text-anchor="end">Free</text>
+  <text x="1040" y="360" class="word" fill="#FF6A00" text-anchor="middle">Fit</text>
+  <text x="1220" y="360" class="word" fill="#000000" text-anchor="start">Fuel</text>
 
-  <!-- ===== DUMBBELL (centred under FIT @ same cx) ===== -->
-  <!-- Geometry is symmetric around cx=1040. Make the dumbbell chunkier by increasing heights/widths. -->
-  <g id="dumbbell" fill="#000000">
-    <!-- set cx here; change this if you change the type cx -->
-    <!-- cx = 1040 -->
-    <!-- HANDLE (short & thick) -->
-    <!-- bar width 180 → left = cx-90 = 950 -->
-    <rect x="950" y="420" width="180" height="72" rx="36"/>
+  <!-- DUMBBELL (dropped ~20px; short thick handle; big inner plates, smaller outers with a gap) -->
+  <!-- Center is the same as "Fit" (cx=1040); geometry is symmetric -->
+  <g fill="#000000" aria-label="dumbbell">
+    <!-- HANDLE: width 180 → left x = 1040 - 90 = 950 -->
+    <rect x="950" y="440" width="180" height="72" rx="36"/>
 
-    <!-- DIMENSIONS -->
-    <!-- inner plate: 70×180, touches handle (10px gap from bar edge) -->
-    <!-- outer plate: 40×120, 12px away from inner -->
-    <!-- LEFT (inner large then outer small) -->
-    <rect x="870" y="350" width="70" height="180" rx="12"/>          <!-- inner large -->
-    <rect x="818" y="380" width="40" height="120" rx="10"/>          <!-- outer small -->
+    <!-- LEFT plates -->
+    <rect x="870" y="370" width="70" height="180" rx="12"/>      <!-- inner large (touches handle) -->
+    <rect x="818" y="400" width="40" height="120" rx="10"/>      <!-- outer small (visible gap) -->
 
-    <!-- RIGHT (mirror) -->
-    <rect x="1140" y="350" width="70" height="180" rx="12"/>         <!-- inner large -->
-    <rect x="1222" y="380" width="40" height="120" rx="10"/>         <!-- outer small -->
+    <!-- RIGHT plates (mirror) -->
+    <rect x="1140" y="370" width="70" height="180" rx="12"/>     <!-- inner large -->
+    <rect x="1222" y="400" width="40" height="120" rx="10"/>     <!-- outer small -->
   </g>
 </svg>

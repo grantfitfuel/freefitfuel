@@ -5,29 +5,24 @@
     </style>
   </defs>
 
-  <!-- WORDMARK: drawn as three pieces but aligned to read as one word “FREEFITFUEL” (no gaps) -->
-  <!-- We lock the optical centre at x=800 and build around it -->
-  <!-- FREE (black) – right-aligned up to the left edge of FIT -->
-  <text x="720" y="168" font-size="156" class="w" fill="#000000" text-anchor="end">FREE</text>
-  <!-- FIT (orange) – centred on x=800 -->
-  <text x="800" y="168" font-size="156" class="w" fill="#FF6A00" text-anchor="middle">FIT</text>
-  <!-- FUEL (black) – left-aligned starting at the right edge of FIT -->
-  <text x="880" y="168" font-size="156" class="w" fill="#000000" text-anchor="start">FUEL</text>
+  <!-- WORDMARK: one continuous line (no spaces); FIT overlay in orange -->
+  <!-- Draw full word in black first -->
+  <text id="word" x="120" y="168" font-size="156" class="w" fill="#000000">FREEFITFUEL</text>
+  <!-- Repaint just FIT in orange at its optical center (cx). 
+       If needed, tweak cx by ±8–12 to perfectly overlay in your renderer. -->
+  <text id="fit" x="800" y="168" font-size="156" class="w" fill="#FF6A00" text-anchor="middle">FIT</text>
 
-  <!-- DUMBBELL: centred under FIT (same centre x=800) -->
-  <!-- Short, thick handle; very chunky plates; larger plates inside, smaller outside -->
-  <g fill="#000000" aria-label="dumbbell under FIT">
-    <!-- HANDLE (centre on 800) -->
-    <rect x="700" y="208" width="200" height="54" rx="16"/>
-    <!-- LEFT plates -->
-    <!-- inner LARGE (closer to grip) -->
-    <rect x="660" y="180" width="60" height="112" rx="10"/>
-    <!-- outer SMALL (further from grip) -->
-    <rect x="628" y="194" width="34" height="84" rx="8"/>
-    <!-- RIGHT plates -->
-    <!-- inner LARGE -->
-    <rect x="940" y="180" width="60" height="112" rx="10"/>
-    <!-- outer SMALL -->
-    <rect x="1008" y="194" width="34" height="84" rx="8"/>
+  <!-- DUMBBELL: short, chunky; centered under FIT (same cx=800) -->
+  <!-- If it looks a hair off in your preview, change DUMB_CX only. -->
+  <!-- DUMB_CX -->
+  <g id="dumbbell" transform="translate(800,0)" fill="#000000" aria-label="dumbbell under FIT">
+    <!-- handle (short, thick) -->
+    <rect x="-110" y="208" width="220" height="56" rx="16"/>
+    <!-- left plates: larger inner, smaller outer -->
+    <rect x="-180" y="178" width="64"  height="116" rx="10"/>  <!-- inner large -->
+    <rect x="-222" y="194" width="36"  height="88"  rx="9"/>   <!-- outer small -->
+    <!-- right plates: mirror -->
+    <rect x="116"  y="178" width="64"  height="116" rx="10"/>  <!-- inner large -->
+    <rect x="186"  y="194" width="36"  height="88"  rx="9"/>   <!-- outer small -->
   </g>
 </svg>

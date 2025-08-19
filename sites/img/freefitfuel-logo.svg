@@ -1,24 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="360" viewBox="0 0 1600 360">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="380" viewBox="0 0 1600 380">
   <defs>
     <style>
-      .word { font-family: Montserrat, "Segoe UI", Arial, sans-serif; font-weight: 900; letter-spacing:-2px; }
+      .w{font-family:Montserrat,Segoe UI,Arial,sans-serif;font-weight:900;letter-spacing:-1.5px}
     </style>
   </defs>
 
-  <!-- ONE-LINE WORDMARK (no extra spaces) -->
-  <text x="60" y="170" font-size="150" class="word">
-    <tspan fill="#000000">FREE</tspan><tspan fill="#FF7A00">FIT</tspan><tspan fill="#000000">FUEL</tspan>
-  </text>
+  <!-- ONE HORIZONTAL LINE -->
+  <text x="80" y="170" font-size="160" class="w" fill="#000000">FREE</text>
+  <text id="fit" x="650" y="170" font-size="160" class="w" fill="#FF6A00">FIT</text>
+  <text x="980" y="170" font-size="160" class="w" fill="#000000">FUEL</text>
 
-  <!-- CHUNKY DUMBBELL directly under FIT -->
-  <!-- Adjust these two numbers if you need to nudge left/right or thickness -->
-  <!-- FIT block approx center: x from 650 to 940 in this layout -->
-  <!-- Bar -->
-  <rect x="665" y="215" width="270" height="44" rx="12" fill="#000000"/>
-  <!-- Plates (left) -->
-  <rect x="618" y="200" width="36" height="74" rx="8" fill="#000000"/>
-  <rect x="640" y="206" width="20" height="62" rx="6" fill="#000000"/>
-  <!-- Plates (right) -->
-  <rect x="938" y="200" width="36" height="74" rx="8" fill="#000000"/>
-  <rect x="916" y="206" width="20" height="62" rx="6" fill="#000000"/>
+  <!-- DUMBBELL: centered under FIT, short bar -->
+  <!-- FIT spans approx x=650..930; place bar slightly wider than FIT -->
+  <g id="dumbbell" fill="#000000">
+    <!-- bar -->
+    <rect x="638" y="210" width="304" height="42" rx="12"/>
+    <!-- LEFT: larger inner plate + smaller outer plate -->
+    <!-- larger inner (closer to grip) -->
+    <rect x="604" y="196" width="30" height="70" rx="7"/>
+    <!-- smaller outer (farther from grip) -->
+    <rect x="580" y="204" width="18" height="54" rx="6"/>
+
+    <!-- RIGHT: larger inner plate + smaller outer plate -->
+    <!-- larger inner (closer to grip) -->
+    <rect x="1010" y="196" width="30" height="70" rx="7"/>
+    <!-- smaller outer (farther from grip) -->
+    <rect x="1044" y="204" width="18" height="54" rx="6"/>
+  </g>
 </svg>

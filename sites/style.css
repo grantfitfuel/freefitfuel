@@ -164,3 +164,22 @@ header.site-header nav a:hover {
   color:#ff6a00;
   text-decoration:underline;
 }
+
+/* === FINAL HEADER BACKGROUND + NAV RIGHT === */
+header.site-header{
+  background:#e6f0f5;
+  border-bottom:1px solid #ccc;
+}
+header.site-header .container{
+  max-width:1140px;
+  margin:0 auto;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between; /* nav to the right */
+  gap:12px;
+  background:transparent;
+}
+header.site-header nav{ display:flex; gap:12px; margin-left:auto; }
+header.site-header nav a{ color:#222; padding:0 12px; text-decoration:none; }
+header.site-header nav a:hover{ color:#ff6a00; text-decoration:underline; }

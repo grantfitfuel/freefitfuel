@@ -3,10 +3,31 @@
   --accent:#FF6A00; --accent2:#FF9A3D; --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
   --maxw:1140px; --radius:16px;
 }
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6}
-a{color:#a8c7ff;text-decoration:none}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
+* { 
+  box-sizing: border-box; 
+}
+
+html, body { 
+  margin: 0; 
+  background: var(--bg); 
+  color: var(--ink); 
+  font-family: Inter, Arial, sans-serif; 
+}
+
+a { 
+  color: inherit;          /* no forced blue, just inherit from parent */
+  text-decoration: none; 
+}
+a:hover {
+  color: #ff6a00;   /* your bright orange accent */
+  text-decoration: underline;
+}
+
+.wrap { 
+  max-width: var(--maxw); 
+  margin: 0 auto; 
+  padding: 16px 20px; 
+}
 
 /* === HEADER STYLES === */
 .site-header {

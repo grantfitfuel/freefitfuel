@@ -8,21 +8,32 @@
   <!-- CSS (single link, with cache-buster) -->
   <link rel="stylesheet" href="style.css?v=10">
 
-  <!-- (optional while debugging)
-  <style>
-    header.site-header { background:#e6f0f5 !important; border-bottom:1px solid #ccc !important; }
-    header.site-header .container { background:transparent !important; }
-  </style>
-  -->
-
   <!-- Favicons & app icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
   <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
   <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
-  <link rel="apple-touch-icon" sizes="180x180"      href="img/freefitfuel-logo-180.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
 </head>
+
+<body>
+  <!-- SITE HEADER (logo left, nav right) -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="60">
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="ideas.html">Ideas</a>
+        <a href="guides.html">Guides</a>
+        <a href="workouts.html">Workouts</a>
+        <a href="nutrition.html">Nutrition</a>
+        <a href="wellbeing.html">Wellbeing</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
 
   <!-- HERO -->
   <header class="hero" role="banner" aria-label="FreeFitFuel hero">
@@ -82,7 +93,7 @@
     </section>
   </main>
 
-  <!-- FOOTER START -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="72">
@@ -90,7 +101,5 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
-  <!-- FOOTER END -->
-
 </body>
 </html>

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FreeFitFuel — Home</title>
 
-  <!-- Single stylesheet (cache-busted) -->
-  <link rel="stylesheet" href="style.css?v=20">
+  <!-- CSS (single link, with cache-buster) -->
+  <link rel="stylesheet" href="style.css?v=13">
 
   <!-- Favicons & app icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
@@ -18,12 +18,16 @@
 </head>
 
 <body>
-  <!-- SITE HEADER (logo left, nav right) -->
+  <!-- SITE HEADER -->
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo">
         <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="60">
       </a>
+
+      <!-- Hamburger for mobile -->
+      <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
       <nav class="main-nav" aria-label="Primary">
         <a href="ideas.html">Ideas</a>
         <a href="guides.html">Guides</a>
@@ -71,29 +75,33 @@
       </article>
     </section>
 
-    <section class="split" id="workouts" aria-label="Home workout highlight">
-      <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
-      <div>
-        <h2>Move better at home</h2>
-        <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
-        <a class="btn primary" href="workouts.html">See workout plans</a>
-      </div>
-    </section>
-
+    <!-- CAROUSEL -->
     <section id="ideas" class="strip" aria-label="Inspiration gallery">
       <h2>Ideas you can start this week</h2>
-      <div class="scroller">
-        <figure class="tile"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption class="cap">Meal prep — clear portions, real food</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption class="cap">Seated curls — simple strength you can feel</figcaption></figure>
+      <div class="carousel">
+        <button class="car-btn prev" aria-label="Scroll left" type="button">‹</button>
+
+        <div class="scroller" id="ideas-scroller">
+          <figure class="tile"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption></figure>
+          <figure class="tile"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+          <figure class="tile"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press"></span><figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption></figure>
+          <figure class="tile"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat"></span><figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+          <figure class="tile"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls"></span><figcaption class="cap">Meal prep — clear portions, real food</figcaption></figure>
+          <figure class="tile"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl"></span><figcaption class="cap">Seated curls — simple strength you can feel</figcaption></figure>
+        </div>
+
+        <button class="car-btn next" aria-label="Scroll right" type="button">›</button>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <span>Swipe</span><i class="chev">›</i><i class="chev">›</i>
+        </div>
+        <div class="edge-fade left" aria-hidden="true"></div>
+        <div class="edge-fade right" aria-hidden="true"></div>
       </div>
     </section>
   </main>
 
-  <!-- SITE FOOTER (same colour as header) -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="72">
@@ -101,5 +109,49 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <!-- JS -->
+  <script>
+  (function(){
+    // mobile menu toggle
+    const btn = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.main-nav');
+    if(btn && nav){
+      btn.addEventListener('click', function(){
+        const isOpen = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    }
+
+    // carousel controls
+    const scroller = document.getElementById('ideas-scroller');
+    const prev = document.querySelector('.car-btn.prev');
+    const next = document.querySelector('.car-btn.next');
+    const hint = document.querySelector('.scroll-hint');
+
+    if(scroller && prev && next){
+      const step = () => Math.max(280, Math.round(scroller.clientWidth * 0.8));
+
+      prev.addEventListener('click', () => {
+        scroller.scrollBy({ left: -step(), behavior: 'smooth' });
+        hideHintSoon();
+      });
+      next.addEventListener('click', () => {
+        scroller.scrollBy({ left:  step(), behavior: 'smooth' });
+        hideHintSoon();
+      });
+
+      let hinted = false;
+      function hideHintSoon(){
+        if(hinted || !hint) return;
+        hinted = true;
+        setTimeout(() => hint.style.display = 'none', 400);
+      }
+      scroller.addEventListener('wheel', hideHintSoon, { passive:true });
+      scroller.addEventListener('touchstart', hideHintSoon, { passive:true });
+      scroller.addEventListener('mousedown', hideHintSoon, { passive:true });
+    }
+  })();
+  </script>
 </body>
 </html>

@@ -29,8 +29,8 @@ a:hover{ color:var(--accent); text-decoration:underline }
   padding:10px 0;
   width:100%;
   display:block;
-  position:relative;
-  z-index:1000;
+  position:relative;   /* stacking context for dropdown */
+  z-index:1000;        /* above hero */
 }
 .site-header .container{
   max-width:var(--maxw);
@@ -43,6 +43,7 @@ a:hover{ color:var(--accent); text-decoration:underline }
 }
 .logo img{ height:60px; vertical-align:middle }
 
+/* Desktop / default */
 .main-nav{ display:flex; gap:12px; margin-left:auto }
 .main-nav a{
   color:#fff;
@@ -52,7 +53,7 @@ a:hover{ color:var(--accent); text-decoration:underline }
 }
 .main-nav a:hover{ color:var(--accent) }
 
-/* Hamburger */
+/* Hamburger button (hidden by default, enabled on ≤1024px) */
 .hamburger{
   display:none;
   flex-direction:column;
@@ -62,7 +63,8 @@ a:hover{ color:var(--accent); text-decoration:underline }
   border:none;
   cursor:pointer;
   padding:0;
-  z-index:1100;
+  position:relative;
+  z-index:1100;  /* above dropdown */
 }
 .hamburger span{
   display:block;
@@ -72,7 +74,7 @@ a:hover{ color:var(--accent); text-decoration:underline }
   transition: all 0.3s ease;
 }
 
-/* Transform into X */
+/* Turn into X when open */
 .hamburger.open span:nth-child(1){
   transform:rotate(45deg) translate(5px, 5px);
 }
@@ -83,8 +85,8 @@ a:hover{ color:var(--accent); text-decoration:underline }
   transform:rotate(-45deg) translate(6px, -6px);
 }
 
-/* Mobile nav */
-@media (max-width:768px){
+/* Mobile / tablet breakpoint */
+@media (max-width:1024px){
   .hamburger{ display:flex }
   .main-nav{
     flex-direction:column;
@@ -92,7 +94,11 @@ a:hover{ color:var(--accent); text-decoration:underline }
     top:100%; left:0; right:0;
     background:#7fb2eb;
     padding:10px 0;
-    display:none;
+    display:none;           /* hidden until toggled */
+    border-bottom:1px solid #ccc;
+  }
+  .main-nav a{
+    padding:10px 16px;
   }
   .main-nav.open{ display:flex }
 }
@@ -157,7 +163,7 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
   position:relative;
 }
 .scroller::after{
-  content:"\21E0 swipe \21E2";
+  content:"\\21E0 swipe \\21E2"; /* safe Unicode arrows */
   color:var(--accent);
   font-size:.9rem;
   font-weight:600;
@@ -186,3 +192,6 @@ footer.site-footer .container{ max-width:var(--maxw); margin:0 auto; padding:0 2
 footer.site-footer img{ height:72px; margin-bottom:12px }
 footer.site-footer p{ font-size:.9em; color:#fff; margin:6px 0 }
 footer.site-footer .credit{ color:#222; font-weight:600 }
+
+/* ===== Optional debug: force-show burger at all widths ===== */
+/* .hamburger{ display:flex !important }  */

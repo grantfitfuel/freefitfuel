@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FreeFitFuel — Home</title>
 
-  <!-- CSS -->
+  <!-- CSS (cache-busted) -->
   <link rel="stylesheet" href="style.css?v=15">
 
   <!-- Favicons -->
@@ -15,6 +15,14 @@
   <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
+
+  <!-- SAFETY: ensure hamburger is visible while testing -->
+  <style>
+    /* Remove this block after confirming it shows */
+    @media (max-width: 1024px) {
+      .hamburger{ display:flex !important }
+    }
+  </style>
 </head>
 
 <body>
@@ -25,7 +33,7 @@
         <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="60">
       </a>
 
-      <!-- Hamburger (mobile only) -->
+      <!-- Hamburger (mobile/tablet) -->
       <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -87,6 +95,7 @@
       </div>
     </section>
 
+    <!-- Carousel / Ideas -->
     <section id="ideas" class="strip" aria-label="Inspiration gallery">
       <h2>Ideas you can start this week</h2>
       <div class="scroller">
@@ -109,16 +118,20 @@
     </div>
   </footer>
 
-  <!-- JS for Hamburger -->
+  <!-- JS: hamburger toggle -->
   <script>
-    const burger = document.querySelector(".hamburger");
-    const nav = document.querySelector(".main-nav");
-    burger.addEventListener("click", () => {
-      nav.classList.toggle("open");
-      burger.classList.toggle("open");
-      const expanded = burger.getAttribute("aria-expanded") === "true";
-      burger.setAttribute("aria-expanded", !expanded);
-    });
+    (function(){
+      const burger = document.querySelector(".hamburger");
+      const nav = document.querySelector(".main-nav");
+      if(burger && nav){
+        burger.addEventListener("click", () => {
+          nav.classList.toggle("open");
+          burger.classList.toggle("open");
+          const expanded = burger.getAttribute("aria-expanded") === "true";
+          burger.setAttribute("aria-expanded", (!expanded).toString());
+        });
+      }
+    })();
   </script>
 </body>
 </html>

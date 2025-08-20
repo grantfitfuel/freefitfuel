@@ -4,34 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FreeFitFuel — Home</title>
-
-  <!-- CSS (cache-busted) -->
-  <link rel="stylesheet" href="style.css?v=16">
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/freefitfuel-logo-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="img/freefitfuel-logo-48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
-  <meta name="theme-color" content="#FF6A00">
+  <link rel="stylesheet" href="style.css?v=20">
 </head>
 
 <body>
-  <!-- SITE HEADER -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo">
         <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="60">
       </a>
 
-      <!-- Hamburger (forced visible inline while debugging) -->
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"
-              style="display:flex; width:32px; height:28px;">
+      <!-- Hamburger -->
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
 
-      <!-- Navigation -->
       <nav class="main-nav" aria-label="Primary">
         <a href="ideas.html">Ideas</a>
         <a href="guides.html">Guides</a>
@@ -44,10 +32,10 @@
   </header>
 
   <!-- HERO -->
-  <header class="hero" role="banner" aria-label="FreeFitFuel hero">
+  <header class="hero">
     <figure class="hero-media">
       <img src="img/hero.jpg" alt="Home training on a mat with dumbbells">
-      <div class="overlay" aria-hidden="true"></div>
+      <div class="overlay"></div>
     </figure>
     <div class="hero-content wrap">
       <span class="eyebrow">Healthy body & mind</span>
@@ -61,45 +49,10 @@
   </header>
 
   <main class="wrap">
-    <section class="grid" aria-label="Key sections">
-      <article class="card">
-        <h2>Wellbeing</h2>
-        <p class="meta">Carer Support, Neuroscience, and Mental Health — practical tools for tough days.</p>
-        <a class="btn primary" href="wellbeing.html">Open Wellbeing</a>
-      </article>
-      <article class="card">
-        <h2>Workouts</h2>
-        <p class="meta">Smart dumbbell &amp; bodyweight routines with warm-ups and cool-downs.</p>
-        <a class="btn ghost" href="workouts.html">Browse Fitness</a>
-      </article>
-      <article class="card">
-        <h2>Nutrition</h2>
-        <p class="meta">Budget-friendly recipes with allergens labelled, plus hydration helpers.</p>
-        <a class="btn ghost" href="nutrition.html">See Fuel</a>
-      </article>
-    </section>
-
-    <!-- Split feature -->
-    <section class="split" id="workouts" aria-label="Home workout highlight">
-      <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
-      <div>
-        <h2>Move better at home</h2>
-        <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
-        <a class="btn primary" href="workouts.html">See workout plans</a>
-      </div>
-    </section>
-
-    <!-- Carousel / Ideas -->
-    <section id="ideas" class="strip" aria-label="Inspiration gallery">
-      <h2>Ideas you can start this week</h2>
-      <div class="scroller">
-        <figure class="tile"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption class="cap">Floor press — chest &amp; triceps without a bench</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption class="cap">Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption class="cap">Meal prep — clear portions, real food</figcaption></figure>
-        <figure class="tile"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption class="cap">Seated curls — simple strength you can feel</figcaption></figure>
-      </div>
+    <section class="grid">
+      <article class="card"><h2>Wellbeing</h2><p class="meta">Carer Support, Neuroscience, and Mental Health.</p></article>
+      <article class="card"><h2>Workouts</h2><p class="meta">Smart dumbbell & bodyweight routines.</p></article>
+      <article class="card"><h2>Nutrition</h2><p class="meta">Budget-friendly recipes, hydration helpers.</p></article>
     </section>
   </main>
 
@@ -112,20 +65,14 @@
     </div>
   </footer>
 
-  <!-- JS: hamburger toggle -->
   <script>
-    (function(){
-      const burger = document.querySelector(".hamburger");
-      const nav = document.querySelector(".main-nav");
-      if(burger && nav){
-        burger.addEventListener("click", () => {
-          nav.classList.toggle("open");
-          burger.classList.toggle("open");
-          const expanded = burger.getAttribute("aria-expanded") === "true";
-          burger.setAttribute("aria-expanded", (!expanded).toString());
-        });
-      }
-    })();
+    const burger = document.querySelector(".hamburger");
+    const nav = document.querySelector(".main-nav");
+    burger.addEventListener("click", () => {
+      burger.classList.toggle("open");
+      nav.classList.toggle("open");
+      burger.setAttribute("aria-expanded", burger.classList.contains("open"));
+    });
   </script>
 </body>
 </html>

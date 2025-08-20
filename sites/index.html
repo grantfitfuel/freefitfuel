@@ -4,7 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FreeFitFuel — Home</title>
-  <link rel="stylesheet" href="style.css?v=25">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=15">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
 </head>
 
 <body>
@@ -12,23 +22,24 @@
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo">
-        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="60">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo">
       </a>
 
-      <!-- Hamburger -->
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
+      <!-- HAMBURGER -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-      <nav class="main-nav" aria-label="Primary">
-        <a href="ideas.html" class="btn">Ideas</a>
-        <a href="guides.html" class="btn">Guides</a>
-        <a href="workouts.html" class="btn">Workouts</a>
-        <a href="nutrition.html" class="btn">Nutrition</a>
-        <a href="wellbeing.html" class="btn">Wellbeing</a>
-        <a href="contact.html" class="btn">Contact</a>
+      <!-- NAV -->
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <a href="ideas.html">Ideas</a>
+        <a href="guides.html">Guides</a>
+        <a href="workouts.html">Workouts</a>
+        <a href="nutrition.html">Nutrition</a>
+        <a href="wellbeing.html">Wellbeing</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </div>
   </header>
@@ -50,7 +61,9 @@
     </div>
   </header>
 
+  <!-- MAIN -->
   <main class="wrap">
+    <!-- GRID CARDS -->
     <section class="grid" aria-label="Key sections">
       <article class="card">
         <h2>Wellbeing</h2>
@@ -69,6 +82,7 @@
       </article>
     </section>
 
+    <!-- SPLIT FEATURE -->
     <section class="split" id="workouts" aria-label="Home workout highlight">
       <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
       <div>
@@ -78,6 +92,7 @@
       </div>
     </section>
 
+    <!-- CAROUSEL -->
     <section id="ideas" class="strip" aria-label="Inspiration gallery">
       <h2>Ideas you can start this week</h2>
       <div class="scroller">
@@ -100,19 +115,14 @@
     </div>
   </footer>
 
-  <!-- JS: hamburger toggle -->
+  <!-- SCRIPT -->
   <script>
-    (function(){
-      const burger = document.querySelector(".hamburger");
-      const nav = document.querySelector(".main-nav");
-      if (burger && nav) {
-        burger.addEventListener("click", () => {
-          burger.classList.toggle("open");
-          nav.classList.toggle("open");
-          burger.setAttribute("aria-expanded", burger.classList.contains("open"));
-        });
-      }
-    })();
+    const hamburger = document.getElementById('hamburger');
+    const nav = document.getElementById('main-nav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      nav.classList.toggle('open');
+    });
   </script>
 </body>
 </html>

@@ -1,74 +1,84 @@
-body{margin:0;font-family:Arial,sans-serif;background:#0e0e12;color:#fff}
+/* Basic reset */
+*{ box-sizing:border-box }
+html,body{ margin:0; font-family:Arial,Helvetica,sans-serif; background:#0e0e12; color:#fff }
 
-/* HEADER */
+/* Header */
 .site-header{
   background:#7fb2eb;
   padding:10px 20px;
-  display:flex; justify-content:center;
   position:relative; z-index:2000;
+  display:flex; justify-content:center;
 }
 .site-header .container{
   max-width:1140px; width:100%;
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
 }
-.logo img{height:60px}
+.logo img{ height:60px; display:block }
 
-/* NAV */
-.main-nav{display:flex;gap:12px}
-.main-nav a{color:#fff;font-weight:bold;padding:0 10px}
-.main-nav a:hover{color:#FF6A00}
+/* Nav */
+.main-nav{ display:flex; gap:12px }
+.main-nav a{ color:#fff; font-weight:bold; padding:0 10px; text-decoration:none }
+.main-nav a:hover{ color:#FF6A00 }
 
-/* HAMBURGER */
+/* Hamburger (debug-visible) */
 .hamburger{
-  display:none;
-  flex-direction:column;
-  justify-content:space-between;
+  display:flex;           /* force visible while we debug */
+  align-items:center;
+  justify-content:center;
   width:40px; height:34px;
-  background:#fff; /* force visible background */
-  border:2px solid #000;
-  border-radius:6px;
-  padding:6px;
+  background:#fff;        /* white box so you can't miss it */
+  border:2px solid #000; border-radius:6px;
+  padding:4px;
   cursor:pointer;
-  z-index:3000;
+  position:relative; z-index:3000;
 }
-.hamburger span{
-  display:block;
-  height:4px;
-  background:#000;
+.hamburger .bar{
+  width:24px; height:4px;           /* explicit width/height */
+  background:#000;                  /* solid black bars */
   border-radius:2px;
-  transition:.3s;
+  display:block;
+  margin:3px 0;                     /* spacing between bars */
+  transition:transform .3s ease, opacity .3s ease;
+}
+.burger-fallback{
+  position:absolute; inset:0;       /* sits underneath bars */
+  margin:auto;
+  pointer-events:none;
 }
 
 /* X animation */
-.hamburger.open span:nth-child(1){
-  transform:rotate(45deg) translate(6px,6px)
-}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){
-  transform:rotate(-45deg) translate(6px,-6px)
-}
+.hamburger.open .bar:nth-child(1){ transform:rotate(45deg) translate(5px,6px) }
+.hamburger.open .bar:nth-child(2){ opacity:0 }
+.hamburger.open .bar:nth-child(3){ transform:rotate(-45deg) translate(5px,-6px) }
 
-/* MOBILE MENU */
+/* Mobile menu */
 @media (max-width:1024px){
-  .hamburger{display:flex}
   .main-nav{
-    position:absolute;
-    top:100%; left:0; right:0;
+    position:absolute; top:100%; left:0; right:0;
     background:#7fb2eb;
     flex-direction:column;
     display:none;
     padding:10px 0;
+    border-bottom:1px solid #ccc;
   }
-  .main-nav.open{display:flex}
+  .main-nav.open{ display:flex }
 }
 
-/* HERO */
-.hero{position:relative}
-.hero-media img{width:100%;height:60vh;object-fit:cover;display:block}
-.hero-media .overlay{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+/* Hero */
+.hero{ position:relative }
+.hero-media{ position:relative; margin:0 }
+.hero-media img{ width:100%; height:60vh; object-fit:cover; display:block }
+.hero-media .overlay{ position:absolute; inset:0; background:rgba(0,0,0,.4) }
 
-/* FOOTER */
-.site-footer{
-  background:#7fb2eb;
-  padding:20px; text-align:center;
-}
+/* Cards demo */
+.wrap{ max-width:1140px; margin:0 auto; padding:16px 20px }
+.grid{ display:grid; gap:14px; margin:22px 0 }
+@media (min-width:780px){ .grid{ grid-template-columns:repeat(3,1fr) } }
+.card{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:14px }
+.meta{ color:#c8c8d2; font-size:.95rem }
+
+/* Footer */
+.site-footer{ background:#7fb2eb; padding:20px; text-align:center }
+.site-footer img{ height:72px; display:block; margin:0 auto 12px }
+.site-footer p{ margin:6px 0; color:#fff }
+.site-footer .credit{ color:#222; font-weight:600 }

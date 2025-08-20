@@ -6,9 +6,9 @@
   <title>FreeFitFuel — Home</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="style.css?v=20">
 
-  <!-- Favicons -->
+  <!-- Favicons & app icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
   <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
   <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
@@ -22,18 +22,16 @@
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo">
-        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
       </a>
 
-      <!-- HAMBURGER -->
-      <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+      <!-- Hamburger (mobile) -->
+      <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
 
-      <!-- NAV -->
-      <nav class="main-nav" id="main-nav" aria-label="Primary">
+      <!-- Primary nav -->
+      <nav id="primary-nav" class="main-nav" aria-label="Primary">
         <a href="ideas.html">Ideas</a>
         <a href="guides.html">Guides</a>
         <a href="workouts.html">Workouts</a>
@@ -61,9 +59,7 @@
     </div>
   </header>
 
-  <!-- MAIN -->
   <main class="wrap">
-    <!-- GRID CARDS -->
     <section class="grid" aria-label="Key sections">
       <article class="card">
         <h2>Wellbeing</h2>
@@ -82,7 +78,6 @@
       </article>
     </section>
 
-    <!-- SPLIT FEATURE -->
     <section class="split" id="workouts" aria-label="Home workout highlight">
       <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
       <div>
@@ -92,7 +87,6 @@
       </div>
     </section>
 
-    <!-- CAROUSEL -->
     <section id="ideas" class="strip" aria-label="Inspiration gallery">
       <h2>Ideas you can start this week</h2>
       <div class="scroller">
@@ -109,19 +103,24 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
-      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="72">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
       <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- Minimal JS for hamburger toggle -->
   <script>
-    const hamburger = document.getElementById('hamburger');
-    const nav = document.getElementById('main-nav');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      nav.classList.toggle('open');
+    document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.querySelector('.hamburger');
+      const nav = document.querySelector('.main-nav');
+      if (!btn || !nav) return;
+
+      btn.addEventListener('click', () => {
+        const open = btn.classList.toggle('active');
+        nav.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     });
   </script>
 </body>

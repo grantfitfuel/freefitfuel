@@ -29,8 +29,8 @@ a:hover{ color:var(--accent); text-decoration:underline }
   padding:10px 0;
   width:100%;
   display:block;
-  position:relative;   /* stacking context for dropdown */
-  z-index:1000;        /* above hero */
+  position:relative;  /* dropdown stacks from header */
+  z-index:1000;       /* above hero */
 }
 .site-header .container{
   max-width:var(--maxw);
@@ -43,7 +43,7 @@ a:hover{ color:var(--accent); text-decoration:underline }
 }
 .logo img{ height:60px; vertical-align:middle }
 
-/* Desktop / default */
+/* Desktop / default nav */
 .main-nav{ display:flex; gap:12px; margin-left:auto }
 .main-nav a{
   color:#fff;
@@ -53,7 +53,7 @@ a:hover{ color:var(--accent); text-decoration:underline }
 }
 .main-nav a:hover{ color:var(--accent) }
 
-/* Hamburger button (hidden by default, enabled on ≤1024px) */
+/* Hamburger button (hidden by default; shown at ≤1024px) */
 .hamburger{
   display:none;
   flex-direction:column;
@@ -94,12 +94,10 @@ a:hover{ color:var(--accent); text-decoration:underline }
     top:100%; left:0; right:0;
     background:#7fb2eb;
     padding:10px 0;
-    display:none;           /* hidden until toggled */
+    display:none;     /* hidden until toggled via .open */
     border-bottom:1px solid #ccc;
   }
-  .main-nav a{
-    padding:10px 16px;
-  }
+  .main-nav a{ padding:10px 16px }
   .main-nav.open{ display:flex }
 }
 
@@ -193,5 +191,24 @@ footer.site-footer img{ height:72px; margin-bottom:12px }
 footer.site-footer p{ font-size:.9em; color:#fff; margin:6px 0 }
 footer.site-footer .credit{ color:#222; font-weight:600 }
 
-/* ===== Optional debug: force-show burger at all widths ===== */
-/* .hamburger{ display:flex !important }  */
+/* ===== DEBUG: FORCE HAMBURGER VISIBLE (remove after confirmed) ===== */
+.hamburger{
+  display:flex !important;
+  width:32px; height:28px;
+  position:relative;
+  z-index:2000;
+}
+.hamburger span{
+  height:4px; background:#fff; border-radius:2px;
+}
+@media (min-width:1025px){
+  .main-nav{ display:flex !important; }
+}
+@media (max-width:1024px){
+  .main-nav{
+    position:absolute; top:100%; left:0; right:0;
+    display:none; background:#7fb2eb; border-bottom:1px solid #ccc;
+    z-index:1500;
+  }
+  .main-nav.open{ display:flex; flex-direction:column; }
+}

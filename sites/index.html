@@ -6,7 +6,7 @@
   <title>FreeFitFuel — Home</title>
 
   <!-- CSS (cache-busted) -->
-  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="style.css?v=16">
 
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
@@ -15,14 +15,6 @@
   <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
-
-  <!-- SAFETY: ensure hamburger is visible while testing -->
-  <style>
-    /* Remove this block after confirming it shows */
-    @media (max-width: 1024px) {
-      .hamburger{ display:flex !important }
-    }
-  </style>
 </head>
 
 <body>
@@ -33,8 +25,9 @@
         <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="60">
       </a>
 
-      <!-- Hamburger (mobile/tablet) -->
-      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <!-- Hamburger (forced visible inline while debugging) -->
+      <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"
+              style="display:flex; width:32px; height:28px;">
         <span></span><span></span><span></span>
       </button>
 
@@ -86,6 +79,7 @@
       </article>
     </section>
 
+    <!-- Split feature -->
     <section class="split" id="workouts" aria-label="Home workout highlight">
       <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
       <div>

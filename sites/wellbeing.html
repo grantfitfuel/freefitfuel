@@ -6,33 +6,31 @@
   <title>Wellbeing – FreeFitFuel</title>
 
   <!-- Main CSS -->
-  <link rel="stylesheet" href="style.css?v=wb5">
+  <link rel="stylesheet" href="style.css?v=wb6">
 
   <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="img/favicon-512.png">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
 
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
     .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .75rem}
     .mini-nav a{background:#4CAF50;color:#fff;text-decoration:none;padding:.45rem .8rem;border-radius:6px;font-size:.9rem}
     .mini-nav a:hover{background:#45a049}
-
     .card{background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:1rem;margin:1rem 0;color:#eaeaea}
     .card h2,.card h3{color:#fff;margin-top:0}
     .meta{color:#d6d6d6}
-
     .practice-pdfs ul{list-style:none;padding:0;margin:.25rem 0 1rem}
     .practice-pdfs li{margin:.3rem 0}
     .practice-pdfs a{color:#4CAF50;text-decoration:none}
     .practice-pdfs a:hover{text-decoration:underline}
     .practice-pdfs h3{margin:.8rem 0 .4rem}
-
     .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden}
     .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-
     .disclaimer{background:#161616;border-left:4px solid #555;padding:.8rem;margin:2rem 0 1rem;font-size:.95rem;color:#e8e8e8}
   </style>
 </head>
@@ -49,8 +47,9 @@
       <span></span><span></span><span></span>
     </button>
 
-    <!-- Primary nav -->
+    <!-- Nav with Home link -->
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
       <a href="ideas.html">Ideas</a>
       <a href="guides.html">Guides</a>
       <a href="workouts.html">Workouts</a>
@@ -137,7 +136,6 @@
   </section>
 </main>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="container">
     <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
@@ -146,7 +144,7 @@
   </div>
 </footer>
 
-<!-- Minimal JS for hamburger toggle -->
+<!-- Hamburger / mobile nav -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const btn = document.querySelector('.hamburger');

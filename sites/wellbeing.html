@@ -4,36 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wellbeing – FreeFitFuel</title>
-  <link rel="stylesheet" href="style.css?v=wb1">
+  <link rel="stylesheet" href="style.css?v=wb3">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/favicon-512.png">
   <style>
-    /* Match homepage header */
     .site-header {
-      background: #111;
-      color: #fff;
+      background: #87CEFA;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: .75rem 1rem;
     }
-    .brand { display: flex; align-items: center; gap: .5rem; }
-    .brand img.logo { height: 36px; }
-    .site-title { font-size: 1.3rem; font-weight: 700; color: #fff; }
+    .brand { display: flex; align-items: center; gap:.5rem; }
+    .brand img.logo { height: 38px; }
+    .site-title { font-size: 1.3rem; font-weight: 700; color:#000; }
 
-    .nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 1rem;
-      font-weight: 500;
-    }
-    .nav a:hover {
-      color: #FF6A00;
+    .menu-toggle { background:none;border:0;cursor:pointer;display:none; }
+    .menu-ico span{display:block;width:24px;height:3px;background:#000;margin:5px 0;border-radius:2px;}
+
+    .nav { display:flex; gap:1rem; }
+    .nav a{color:#000;text-decoration:none;font-weight:500;}
+    .nav a:hover{color:#FF6A00;}
+
+    /* Mobile */
+    @media(max-width:768px){
+      .menu-toggle{display:block;}
+      .nav{display:none;flex-direction:column;gap:0;background:#87CEFA;position:absolute;top:60px;right:0;left:0;padding:1rem;}
+      .site-header.menu-open .nav{display:flex;}
     }
 
-    /* wellbeing section styles */
+    /* wellbeing section */
     .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .75rem}
     .mini-nav a{background:#4CAF50;color:#fff;text-decoration:none;padding:.45rem .8rem;border-radius:6px;font-size:.9rem}
     .mini-nav a:hover{background:#45a049}
@@ -55,6 +57,9 @@
     <img src="img/freefitfuel-logo.png" alt="FreeFitFuel logo" class="logo" onerror="this.style.display='none'">
     <span class="site-title">FreeFitFuel</span>
   </div>
+  <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">
+    <span class="menu-ico"><span></span><span></span><span></span></span>
+  </button>
   <nav class="nav" id="primaryNav" aria-label="Primary">
     <a href="index.html">Home</a>
     <a href="workouts.html">Workouts</a>
@@ -148,6 +153,20 @@
     <p>Created by Grant Cameron Anthony</p>
   </div>
 </footer>
+
+<script>
+  (function(){
+    const header=document.getElementById('siteHeader');
+    const toggle=header.querySelector('.menu-toggle');
+    const nav=document.getElementById('primaryNav');
+    function setExpanded(on){
+      if(on){ header.classList.add('menu-open'); toggle.classList.add('menu-open'); toggle.setAttribute('aria-expanded','true'); }
+      else { header.classList.remove('menu-open'); toggle.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); }
+    }
+    toggle?.addEventListener('click',()=>setExpanded(!header.classList.contains('menu-open')));
+    nav?.addEventListener('click',e=>{ if(e.target.tagName==='A') setExpanded(false); });
+  })();
+</script>
 
 </body>
 </html>

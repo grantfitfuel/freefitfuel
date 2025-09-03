@@ -4,50 +4,65 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wellbeing – FreeFitFuel</title>
-  <link rel="stylesheet" href="style.css?v=wb4">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css?v=wb5">
+
+  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/favicon-512.png">
+
   <style>
-    .site-header {
-      background: #87CEFA;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .75rem 1rem;
+    /* Header mirrors the homepage */
+    .site-header{
+      background:#87CEFA;               /* same light blue */
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.75rem 1rem; position:relative; z-index:100;
     }
-    .brand { display: flex; align-items: center; gap:.5rem; }
-    .logo-text { font-size: 1.4rem; font-weight: 800; color:#000; display:flex; flex-direction:column; align-items:center; line-height:1.2; }
-    .logo-text span.fit { color:#FF6A00; }
-    .dumbbell { height:18px; margin-top:2px; }
+    .brand{display:flex;align-items:center;gap:.75rem}
+    .brand a{display:inline-flex;align-items:center;text-decoration:none}
+    .brand img.logo{height:32px;width:auto;display:block}
+    .brand .logo-fallback{display:none;font-weight:800;font-size:1.35rem;color:#000;line-height:1}
+    .brand .logo-fallback .fit{color:#FF6A00}
 
-    .menu-toggle { background:none;border:0;cursor:pointer;display:none; }
-    .menu-ico span{display:block;width:24px;height:3px;background:#000;margin:5px 0;border-radius:2px;}
+    .menu-toggle{background:none;border:0;cursor:pointer;display:none}
+    .menu-ico span{display:block;width:26px;height:3px;background:#000;margin:5px 0;border-radius:2px}
 
-    .nav { display:flex; gap:1rem; }
-    .nav a{color:#000;text-decoration:none;font-weight:500;}
-    .nav a:hover{color:#FF6A00;}
+    .nav{display:flex;gap:1.1rem}
+    .nav a{color:#000;text-decoration:none;font-weight:600}
+    .nav a:hover{color:#FF6A00}
 
-    /* Mobile */
-    @media(max-width:768px){
-      .menu-toggle{display:block;}
-      .nav{display:none;flex-direction:column;gap:0;background:#87CEFA;position:absolute;top:60px;right:0;left:0;padding:1rem;}
-      .site-header.menu-open .nav{display:flex;}
+    @media (max-width:768px){
+      .menu-toggle{display:block}
+      .nav{
+        display:none;flex-direction:column;gap:.5rem;
+        background:#87CEFA; position:absolute; left:0; right:0; top:60px; padding:1rem 1rem 1.25rem;
+        border-top:1px solid rgba(0,0,0,.08);
+      }
+      .site-header.menu-open .nav{display:flex}
     }
 
-    /* wellbeing section */
+    /* Page bits kept from your working version */
+    .wrap{max-width:1024px;margin:0 auto;padding:0 1rem}
     .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .75rem}
     .mini-nav a{background:#4CAF50;color:#fff;text-decoration:none;padding:.45rem .8rem;border-radius:6px;font-size:.9rem}
     .mini-nav a:hover{background:#45a049}
+
     .card{background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:1rem;margin:1rem 0;color:#eaeaea}
     .card h2,.card h3{color:#fff;margin-top:0}
     .meta{color:#d6d6d6}
+
     .practice-pdfs ul{list-style:none;padding:0;margin:.25rem 0 1rem}
     .practice-pdfs li{margin:.3rem 0}
     .practice-pdfs a{color:#4CAF50;text-decoration:none}
     .practice-pdfs a:hover{text-decoration:underline}
     .practice-pdfs h3{margin:.8rem 0 .4rem}
+
+    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden}
+    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
     .disclaimer{background:#161616;border-left:4px solid #555;padding:.8rem;margin:2rem 0 1rem;font-size:.95rem;color:#e8e8e8}
   </style>
 </head>
@@ -55,21 +70,24 @@
 
 <header class="site-header" id="siteHeader">
   <div class="brand">
-    <div class="logo-text">
-      <div><span>Free</span> <span class="fit">Fit</span> <span>Fuel</span></div>
-      <img src="img/dumbbell.png" alt="Dumbbell icon" class="dumbbell" onerror="this.style.display='none'">
-    </div>
+    <!-- Use the SAME logo file your homepage uses -->
+    <a href="index.html" aria-label="FreeFitFuel home">
+      <img src="img/freefitfuel-logo.png" alt="FreeFitFuel logo" class="logo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block'">
+      <span class="logo-fallback">Free<span class="fit">Fit</span>Fuel</span>
+    </a>
   </div>
+
   <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">
     <span class="menu-ico"><span></span><span></span><span></span></span>
   </button>
+
   <nav class="nav" id="primaryNav" aria-label="Primary">
     <a href="index.html">Home</a>
+    <a href="guides.html">Guides</a>
     <a href="workouts.html">Workouts</a>
     <a href="nutrition.html">Nutrition</a>
     <a href="wellbeing.html" aria-current="page">Wellbeing</a>
-    <a href="guides.html">Guides</a>
-    <a href="ideas.html">Ideas</a>
     <a href="contact.html">Contact</a>
   </nav>
 </header>
@@ -104,7 +122,8 @@
   <section class="card">
     <h2>Grounding technique — 5-4-3-2-1</h2>
     <div class="video-wrap">
-      <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/30VMIEmA114" title="Grounding technique video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe src="https://www.youtube-nocookie.com/embed/30VMIEmA114"
+        title="Grounding technique video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </section>
 
@@ -157,17 +176,20 @@
   </div>
 </footer>
 
+<!-- Hamburger / mobile nav -->
 <script>
   (function(){
-    const header=document.getElementById('siteHeader');
-    const toggle=header.querySelector('.menu-toggle');
-    const nav=document.getElementById('primaryNav');
+    const header = document.getElementById('siteHeader');
+    const toggle = header.querySelector('.menu-toggle');
+    const nav = document.getElementById('primaryNav');
+
     function setExpanded(on){
-      if(on){ header.classList.add('menu-open'); toggle.classList.add('menu-open'); toggle.setAttribute('aria-expanded','true'); }
-      else { header.classList.remove('menu-open'); toggle.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); }
+      if(on){ header.classList.add('menu-open'); toggle.setAttribute('aria-expanded','true'); }
+      else  { header.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); }
     }
-    toggle?.addEventListener('click',()=>setExpanded(!header.classList.contains('menu-open')));
-    nav?.addEventListener('click',e=>{ if(e.target.tagName==='A') setExpanded(false); });
+
+    if(toggle){ toggle.addEventListener('click',()=>setExpanded(!header.classList.contains('menu-open'))); }
+    if(nav){ nav.addEventListener('click',e=>{ if(e.target.tagName==='A') setExpanded(false); }); }
   })();
 </script>
 

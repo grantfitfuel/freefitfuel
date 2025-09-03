@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workouts – FreeFitFuel</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=wo1">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
+
+  <style>
+    /* Page helpers only (header/footer styles come from style.css) */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
+    .section-note{color:#c8c8d2;font-size:.95rem;margin:.4rem 0 1rem}
+    .badge{display:inline-block;background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.25rem .6rem;font-size:.85rem;margin-left:.35rem}
+    .list-tight li{margin:.2rem 0}
+    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .plan h3{margin:.3rem 0 .4rem}
+    .plan .move{margin:.35rem 0}
+    .plan .move strong{display:inline-block;min-width:170px}
+    .plan .tip{color:#b6b6c6;font-size:.92rem;margin:.15rem 0 0}
+    .grid-2{display:grid;gap:14px}
+    @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+    .callout{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .cap{color:#c8c8d2;font-size:.95rem}
+    .divider{border-top:1px solid var(--stroke); margin:18px 0}
+    .tiny{font-size:.88rem;color:#b6b6c6}
+    .ok{color:#6ee7a8}
+    .warn{color:#ffd166}
+    .danger{color:#ff6b6b}
+  </style>
+</head>
+<body>
+
+<!-- HEADER (identical to Home) -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+    </a>
+
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html" aria-current="page">Workouts</a>
+      <a href="nutrition.html">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<header class="hero" role="banner" aria-label="Workouts hero">
+  <figure class="hero-media">
+    <img src="img/curl.jpg" alt="Home workout scene with dumbbells">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="hero-content wrap">
+    <span class="eyebrow">Stronger at home</span>
+    <h1><span class="accent">Smart, Simple Training Plans</span></h1>
+    <p class="lead">Short, effective routines for busy days. Clear progressions, safe technique, and options for every level.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Quick index -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#get-started">Getting started</a>
+    <a href="#warmup">Warm-up (6–8 min)</a>
+    <a href="#beginner">Beginner plan</a>
+    <a href="#intermediate">Intermediate plan</a>
+    <a href="#advanced">Advanced plan</a>
+    <a href="#mobility">Mobility & recovery</a>
+    <a href="#form">Form cues</a>
+    <a href="#safety">Safety</a>
+    <a href="#faq">FAQs</a>
+  </nav>
+
+  <!-- Getting started -->
+  <section id="get-started">
+    <h2>Getting started</h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>What you need</h3>
+        <ul class="list-tight">
+          <li>Mat or carpeted space</li>
+          <li>Optional: pair of dumbbells (light/medium), resistance band</li>
+          <li>Timer (phone) and water</li>
+        </ul>
+        <p class="section-note">No kit? Use the bodyweight versions in each plan.</p>
+      </article>
+      <article class="card">
+        <h3>How to progress</h3>
+        <ul class="list-tight">
+          <li>When all sets feel <em>solid</em>, add +1–2 reps or +1 set</li>
+          <li>Or increase load by the smallest step (0.5–2 kg)</li>
+          <li>Keep reps in reserve: stop with ~1–2 reps left in the tank</li>
+        </ul>
+        <p class="tiny">Consistency beats perfection. Aim for 2–4 sessions/week.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Warm-up -->
+  <section id="warmup">
+    <h2>Warm-up (6–8 minutes)</h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>Flow</h3>
+        <ol class="list-tight">
+          <li>Neck/shoulder rolls × 8</li>
+          <li>Arm swings & thoracic rotations × 8</li>
+          <li>Hip circles × 8 each direction</li>
+          <li>World’s greatest stretch × 4 each side</li>
+          <li>Glute bridge × 10</li>
+          <li>March in place × 30–45s</li>
+        </ol>
+        <p class="tiny">Breathe slow; exhale on the effort.</p>
+      </article>
+      <article class="card">
+        <h3>Demo (YouTube)</h3>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube-nocookie.com/embed/q-_BWXpM-Y0"
+                  title="Gentle warm-up demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        <p class="cap">Any light mobility sequence that warms joints and raises pulse gently is fine.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Beginner -->
+  <section id="beginner" class="plan">
+    <h2>Beginner Plan <span class="badge">2–3× / week • ~20–25 min</span></h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>Full-body A</h3>
+        <p class="move"><strong>1) Sit-to-Stand</strong> 3×8–12 (slow lower)</p>
+        <p class="move"><strong>2) Incline Push-up</strong> 3×6–10 (wall/counter)</p>
+        <p class="move"><strong>3) Hip Hinge</strong> 3×8–12 (hands on thighs)</p>
+        <p class="move"><strong>4) Dead Bug</strong> 3×6–10 / side</p>
+        <p class="move"><strong>5) March & Balance</strong> 2×30–45s</p>
+        <p class="tip">Rest 45–60s. If breathless, extend rest; quality over speed.</p>
+      </article>
+      <article class="card">
+        <h3>Full-body B (optional swap)</h3>
+        <p class="move"><strong>1) Split-Squat (assisted)</strong> 3×6–10 / leg</p>
+        <p class="move"><strong>2) Band Row</strong> 3×10–12</p>
+        <p class="move"><strong>3) Wall Press</strong> 3×10–12</p>
+        <p class="move"><strong>4) Glute Bridge</strong> 3×10–15</p>
+        <p class="move"><strong>5) Farmer Carry (light)</strong> 2×20–40m</p>
+        <p class="tip">Alternate A/B across the week. Keep 1–2 reps in reserve.</p>
+      </article>
+    </div>
+    <div class="callout">
+      <strong>Bodyweight only?</strong> Use wall/counter variations and bands. Add dumbbells later for progressive overload.
+    </div>
+  </section>
+
+  <!-- Intermediate -->
+  <section id="intermediate" class="plan">
+    <h2>Intermediate Plan <span class="badge">3× / week • ~30–40 min</span></h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>Push–Pull–Legs (Day 1)</h3>
+        <p class="move"><strong>1) Push-up (knees/high)</strong> 4×6–10</p>
+        <p class="move"><strong>2) DB Row</strong> 4×8–12 / side</p>
+        <p class="move"><strong>3) Goblet Squat</strong> 4×8–12</p>
+        <p class="move"><strong>4) DB Overhead Press</strong> 3×8–10</p>
+        <p class="move"><strong>5) Side Plank</strong> 3×20–40s / side</p>
+      </article>
+      <article class="card">
+        <h3>Hinge–Carry–Core (Day 2)</h3>
+        <p class="move"><strong>1) Romanian Deadlift (DB)</strong> 4×8–12</p>
+        <p class="move"><strong>2) Split Squat</strong> 3×8–10 / leg</p>
+        <p class="move"><strong>3) Band Pulldown / Door-row</strong> 4×10–12</p>
+        <p class="move"><strong>4) Farmer Carry (moderate)</strong> 3×40–60m</p>
+        <p class="move"><strong>5) Dead Bug / Hollow Hold</strong> 3×8–12 or 20–40s</p>
+      </article>
+    </div>
+    <p class="tiny">Progression: when top reps are solid, add load or one extra set.</p>
+  </section>
+
+  <!-- Advanced -->
+  <section id="advanced" class="plan">
+    <h2>Advanced Plan <span class="badge">3–4× / week • ~40–55 min</span></h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>Upper (Strength bias)</h3>
+        <p class="move"><strong>1) Push-up / Weighted</strong> 5×5–8</p>
+        <p class="move"><strong>2) Single-arm Row (heavier)</strong> 5×6–8 / side</p>
+        <p class="move"><strong>3) DB Overhead Press</strong> 4×6–8</p>
+        <p class="move"><strong>4) Chest-supported Row</strong> 4×8–10</p>
+        <p class="move"><strong>5) Plank Variations</strong> 3×40–60s</p>
+      </article>
+      <article class="card">
+        <h3>Lower (Strength + power)</h3>
+        <p class="move"><strong>1) Goblet Squat (heavy)</strong> 5×5–8</p>
+        <p class="move"><strong>2) RDL (heavy)</strong> 4×6–8</p>
+        <p class="move"><strong>3) Split Squat</strong> 4×8–10 / leg</p>
+        <p class="move"><strong>4) Hip Thrust / Bridge</strong> 4×8–12</p>
+        <p class="move"><strong>5) Farmer or Rack Carry</strong> 3×60–80m</p>
+      </article>
+    </div>
+    <div class="callout">
+      <strong>Conditioning finisher (optional):</strong> 6–10 minutes of intervals (20s brisk / 40s easy) on a walk, step, or bike.
+    </div>
+  </section>
+
+  <!-- Mobility & recovery -->
+  <section id="mobility">
+    <h2>Mobility & recovery</h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>Post-session cool-down (4–6 min)</h3>
+        <ul class="list-tight">
+          <li>Calf stretch (wall) 2×20–30s / side</li>
+          <li>Hip flexor stretch (half-kneel) 2×20–30s / side</li>
+          <li>Child’s pose / thoracic rotations × 6–8</li>
+          <li>Box breathing 1–2 minutes (inhale 4, hold 4, exhale 4, hold 4)</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Active recovery days</h3>
+        <ul class="list-tight">
+          <li>20–40 min easy walk or swim</li>
+          <li>Light mobility flow or yoga</li>
+          <li>Tai Chi / Qi Gong for balance & calm</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Form cues -->
+  <section id="form">
+    <h2>Form cues (quick wins)</h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>Hinge & Squat</h3>
+        <ul class="list-tight">
+          <li><strong>Hinge:</strong> “Push hips back, soft knees, long spine.”</li>
+          <li><strong>Squat:</strong> “Knees track over mid-feet, chest proud, full foot on floor.”</li>
+          <li><strong>Depth:</strong> Pain-free range > depth at any cost.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Push & Pull</h3>
+        <ul class="list-tight">
+          <li><strong>Push:</strong> Wrists stacked, ribs down, exhale on press.</li>
+          <li><strong>Pull:</strong> Start with shoulder blade; squeeze, then arm.</li>
+          <li><strong>Tempo:</strong> 2s up, 2–3s down (own the negative).</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Safety -->
+  <section id="safety">
+    <h2>Safety</h2>
+    <div class="card">
+      <p class="tiny"><span class="ok">OK:</span> normal muscle effort, light burn, breathing faster.</p>
+      <p class="tiny"><span class="warn">Caution:</span> sharp joint pain, dizziness, chest tightness — <em>stop, rest, assess</em>.</p>
+      <p class="tiny"><span class="danger">Urgent:</span> chest pain, severe breathlessness, fainting — seek medical help.</p>
+      <div class="divider"></div>
+      <p class="tiny">New or multiple conditions? Check with your clinician. Progress gradually. Hydrate and sleep.</p>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section id="faq">
+    <h2>FAQs</h2>
+    <div class="grid-2">
+      <article class="card">
+        <h3>How long until I notice changes?</h3>
+        <p>Often 2–3 weeks for energy and mood; 4–8 weeks for visible strength and shape, assuming 2–4 sessions per week.</p>
+      </article>
+      <article class="card">
+        <h3>What if I have no dumbbells?</h3>
+        <p>Start with bodyweight and bands. Add load later for steady progression.</p>
+      </article>
+      <article class="card">
+        <h3>How sore is too sore?</h3>
+        <p>Light next-day muscle soreness is normal. Joint pain or sharp pain is not — scale back or change the movement.</p>
+      </article>
+      <article class="card">
+        <h3>Can I mix cardio with these plans?</h3>
+        <p>Yes: walk most days; add brisk intervals 1–2× weekly. Keep at least one full rest day.</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Hamburger toggle -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.querySelector('.hamburger');
+    const nav = document.querySelector('.main-nav');
+    if (!btn || !nav) return;
+
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+</script>
+
+</body>
+</html>

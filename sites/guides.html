@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guides – FreeFitFuel</title>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css?v=gd1">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+    </a>
+
+    <!-- Hamburger (mobile) -->
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Primary nav with Home link -->
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html" aria-current="page">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="nutrition.html">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Guides</h1>
+  <p class="lead">Step-by-step resources to help you build healthy habits — nutrition, exercise, recovery, and more.</p>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Nutrition Basics</h2>
+      <p class="meta">Macros explained, hydration tips, and portion control made simple.</p>
+      <a class="btn" href="nutrition.html">Explore Nutrition</a>
+    </article>
+    <article class="card">
+      <h2>Exercise Technique</h2>
+      <p class="meta">Form and safety guides for dumbbells, bodyweight, and stretching routines.</p>
+      <a class="btn" href="workouts.html">See Workouts</a>
+    </article>
+    <article class="card">
+      <h2>Mental Wellbeing</h2>
+      <p class="meta">Therapies, tools, and strategies to manage stress, anxiety, and low mood.</p>
+      <a class="btn" href="wellbeing.html">Open Wellbeing</a>
+    </article>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>&copy; 2025 FreeFitFuel</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Hamburger / mobile nav -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.querySelector('.hamburger');
+    const nav = document.querySelector('.main-nav');
+    if (!btn || !nav) return;
+
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+</script>
+
+</body>
+</html>

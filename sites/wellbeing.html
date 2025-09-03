@@ -5,46 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wellbeing – FreeFitFuel</title>
 
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="style.css?v=wb5">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=wb6">
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="img/favicon-512.png">
+  <!-- Favicons & app icons -->
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
 
   <style>
-    /* Header mirrors the homepage */
-    .site-header{
-      background:#87CEFA;               /* same light blue */
-      display:flex;align-items:center;justify-content:space-between;
-      padding:.75rem 1rem; position:relative; z-index:100;
-    }
-    .brand{display:flex;align-items:center;gap:.75rem}
-    .brand a{display:inline-flex;align-items:center;text-decoration:none}
-    .brand img.logo{height:32px;width:auto;display:block}
-    .brand .logo-fallback{display:none;font-weight:800;font-size:1.35rem;color:#000;line-height:1}
-    .brand .logo-fallback .fit{color:#FF6A00}
-
-    .menu-toggle{background:none;border:0;cursor:pointer;display:none}
-    .menu-ico span{display:block;width:26px;height:3px;background:#000;margin:5px 0;border-radius:2px}
-
-    .nav{display:flex;gap:1.1rem}
-    .nav a{color:#000;text-decoration:none;font-weight:600}
-    .nav a:hover{color:#FF6A00}
-
-    @media (max-width:768px){
-      .menu-toggle{display:block}
-      .nav{
-        display:none;flex-direction:column;gap:.5rem;
-        background:#87CEFA; position:absolute; left:0; right:0; top:60px; padding:1rem 1rem 1.25rem;
-        border-top:1px solid rgba(0,0,0,.08);
-      }
-      .site-header.menu-open .nav{display:flex}
-    }
-
-    /* Page bits kept from your working version */
+    /* Page-specific helpers (do NOT touch header – it inherits from style.css like Home) */
     .wrap{max-width:1024px;margin:0 auto;padding:0 1rem}
     .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .75rem}
     .mini-nav a{background:#4CAF50;color:#fff;text-decoration:none;padding:.45rem .8rem;border-radius:6px;font-size:.9rem}
@@ -63,131 +36,131 @@
     .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden}
     .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-    .disclaimer{background:#161616;border-left:4px solid #555;padding:.8rem;margin:2rem 0 1rem;font-size:.95rem;color:#e8e8e8}
+    .site-footer .container{max-width:1024px;margin:0 auto;padding:0 1rem}
   </style>
 </head>
+
 <body>
+  <!-- HEADER (identical to Home) -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+      </a>
 
-<header class="site-header" id="siteHeader">
-  <div class="brand">
-    <img src="img/freefitfuel-logo-180.png" alt="FreeFitFuel logo" class="logo">
-  </div>
+      <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
 
-  <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">
-    <span class="menu-ico"><span></span><span></span><span></span></span>
-  </button>
-
-  <nav class="nav" id="primaryNav" aria-label="Primary">
-    <a href="index.html">Home</a>
-    <a href="guides.html">Guides</a>
-    <a href="workouts.html">Workouts</a>
-    <a href="nutrition.html">Nutrition</a>
-    <a href="wellbeing.html" aria-current="page">Wellbeing</a>
-    <a href="ideas.html">Ideas</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-</header>
-
-<main class="wrap">
-  <h1>Wellbeing</h1>
-  <p class="lead">Practical tools for mind and body — grounding, breathing, movement, and clear guides you can use today.</p>
-
-  <nav class="mini-nav" aria-label="Wellbeing topics">
-    <a href="wellbeing/anxiety.html">Anxiety</a>
-    <a href="wellbeing/depression.html">Depression</a>
-    <a href="wellbeing/grief.html">Grief</a>
-    <a href="wellbeing/suicide-bereavement.html">Suicide Bereavement</a>
-    <a href="wellbeing/suicide-survivors.html">After a Suicide Attempt</a>
-    <a href="wellbeing/crisis.html">Crisis</a>
-    <a href="wellbeing/abuse.html">Abuse</a>
-    <a href="wellbeing/carers.html">Carer Support</a>
-    <a href="wellbeing/bullying.html">Bullying &amp; Online Safety</a>
-    <a href="wellbeing/addictions.html">Addictions &amp; Compulsions</a>
-    <a href="wellbeing/neuroscience.html">Neuroscience</a>
-    <a href="wellbeing/neurolinguistics.html">Neurolinguistics</a>
-    <a href="wellbeing/affirmations.html">Affirmations &amp; Reframing</a>
-    <a href="wellbeing/neurodiversity.html">Neurodiversity</a>
-    <a href="wellbeing/healthy-ageing.html">Healthy Ageing</a>
-    <a href="wellbeing/ptsd.html">PTSD &amp; Trauma</a>
-    <a href="wellbeing/therapies-tools.html">Therapies &amp; Tools</a>
-  </nav>
-
-  <p class="meta">Choose a topic above to open the detailed page. Each page includes practical steps, scripts, and regional links.</p>
-
-  <!-- Grounding video -->
-  <section class="card">
-    <h2>Grounding technique — 5-4-3-2-1</h2>
-    <div class="video-wrap">
-      <iframe src="https://www.youtube-nocookie.com/embed/30VMIEmA114"
-        title="Grounding technique video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <nav id="primary-nav" class="main-nav" aria-label="Primary">
+        <a href="ideas.html">Ideas</a>
+        <a href="guides.html">Guides</a>
+        <a href="workouts.html">Workouts</a>
+        <a href="nutrition.html">Nutrition</a>
+        <a href="wellbeing.html" aria-current="page">Wellbeing</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <!-- Practice Guides -->
-  <section class="card practice-pdfs">
-    <h2>Practice Guides (Downloadable PDFs)</h2>
-    <p>Illustrated step-by-step guides for Tai Chi, Qi Gong, Chair Yoga, and Healthy Ageing.</p>
+  <main class="wrap">
+    <h1>Wellbeing</h1>
+    <p class="lead">Practical tools for mind and body — grounding, breathing, movement, and clear guides you can use today.</p>
 
-    <h3>Tai Chi</h3>
-    <ul>
-      <li><a href="./pdf/tai-chi-beginner.pdf" target="_blank" rel="noopener">Tai Chi – Beginner (PDF)</a></li>
-      <li><a href="./pdf/tai-chi-intermediate.pdf" target="_blank" rel="noopener">Tai Chi – Intermediate (PDF)</a></li>
-      <li><a href="./pdf/tai-chi-advanced.pdf" target="_blank" rel="noopener">Tai Chi – Advanced (PDF)</a></li>
-    </ul>
+    <nav class="mini-nav" aria-label="Wellbeing topics">
+      <a href="wellbeing/anxiety.html">Anxiety</a>
+      <a href="wellbeing/depression.html">Depression</a>
+      <a href="wellbeing/grief.html">Grief</a>
+      <a href="wellbeing/suicide-bereavement.html">Suicide Bereavement</a>
+      <a href="wellbeing/suicide-survivors.html">After a Suicide Attempt</a>
+      <a href="wellbeing/crisis.html">Crisis</a>
+      <a href="wellbeing/abuse.html">Abuse</a>
+      <a href="wellbeing/carers.html">Carer Support</a>
+      <a href="wellbeing/bullying.html">Bullying &amp; Online Safety</a>
+      <a href="wellbeing/addictions.html">Addictions &amp; Compulsions</a>
+      <a href="wellbeing/neuroscience.html">Neuroscience</a>
+      <a href="wellbeing/neurolinguistics.html">Neurolinguistics</a>
+      <a href="wellbeing/affirmations.html">Affirmations &amp; Reframing</a>
+      <a href="wellbeing/neurodiversity.html">Neurodiversity</a>
+      <a href="wellbeing/healthy-ageing.html">Healthy Ageing</a>
+      <a href="wellbeing/ptsd.html">PTSD &amp; Trauma</a>
+      <a href="wellbeing/therapies-tools.html">Therapies &amp; Tools</a>
+    </nav>
 
-    <h3>Qi Gong</h3>
-    <ul>
-      <li><a href="./pdf/qi-gong-beginner.pdf" target="_blank" rel="noopener">Qi Gong – Beginner (PDF)</a></li>
-      <li><a href="./pdf/qi-gong-intermediate.pdf" target="_blank" rel="noopener">Qi Gong – Intermediate (PDF)</a></li>
-      <li><a href="./pdf/qi-gong-advanced.pdf" target="_blank" rel="noopener">Qi Gong – Advanced (PDF)</a></li>
-    </ul>
+    <p class="meta">Choose a topic above to open the detailed page. Each page includes practical steps, scripts, and regional links.</p>
 
-    <h3>Chair Yoga</h3>
-    <ul>
-      <li><a href="./pdf/chair-yoga-beginner.pdf" target="_blank" rel="noopener">Chair Yoga – Beginner (PDF)</a></li>
-      <li><a href="./pdf/chair-yoga-intermediate.pdf" target="_blank" rel="noopener">Chair Yoga – Intermediate (PDF)</a></li>
-      <li><a href="./pdf/chair-yoga-advanced.pdf" target="_blank" rel="noopener">Chair Yoga – Advanced (PDF)</a></li>
-    </ul>
+    <!-- Grounding video -->
+    <section class="card">
+      <h2>Grounding technique — 5-4-3-2-1</h2>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/30VMIEmA114"
+          title="Grounding technique video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </section>
 
-    <h3>Healthy Ageing</h3>
-    <ul>
-      <li><a href="./pdf/healthy-ageing-beginner.pdf" target="_blank" rel="noopener">Healthy Ageing – Beginner (PDF)</a></li>
-      <li><a href="./pdf/healthy-ageing-intermediate.pdf" target="_blank" rel="noopener">Healthy Ageing – Intermediate (PDF)</a></li>
-      <li><a href="./pdf/healthy-ageing-advanced.pdf" target="_blank" rel="noopener">Healthy Ageing – Advanced (PDF)</a></li>
-    </ul>
-  </section>
+    <!-- Practice Guides -->
+    <section class="card practice-pdfs">
+      <h2>Practice Guides (Downloadable PDFs)</h2>
+      <p>Illustrated step-by-step guides for Tai Chi, Qi Gong, Chair Yoga, and Healthy Ageing.</p>
 
-  <section class="disclaimer">
-    <h2>Important Note</h2>
-    <p>The information across these pages is for <strong>general understanding and support</strong>. It is <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. If you are outside the UK, contact your local emergency number.</p>
-    <p>For non-emergency concerns, consider speaking with a qualified health professional or one of the support services linked on the relevant pages.</p>
-  </section>
-</main>
+      <h3>Tai Chi</h3>
+      <ul>
+        <li><a href="./pdf/tai-chi-beginner.pdf" target="_blank" rel="noopener">Tai Chi – Beginner (PDF)</a></li>
+        <li><a href="./pdf/tai-chi-intermediate.pdf" target="_blank" rel="noopener">Tai Chi – Intermediate (PDF)</a></li>
+        <li><a href="./pdf/tai-chi-advanced.pdf" target="_blank" rel="noopener">Tai Chi – Advanced (PDF)</a></li>
+      </ul>
 
-<footer>
-  <div class="wrap footer-inner">
-    <img src="img/freefitfuel-icon.png" alt="FreeFitFuel icon" class="footer-icon" onerror="this.style.display='none'">
-    <p>© 2025 FreeFitFuel</p>
-    <p>Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
+      <h3>Qi Gong</h3>
+      <ul>
+        <li><a href="./pdf/qi-gong-beginner.pdf" target="_blank" rel="noopener">Qi Gong – Beginner (PDF)</a></li>
+        <li><a href="./pdf/qi-gong-intermediate.pdf" target="_blank" rel="noopener">Qi Gong – Intermediate (PDF)</a></li>
+        <li><a href="./pdf/qi-gong-advanced.pdf" target="_blank" rel="noopener">Qi Gong – Advanced (PDF)</a></li>
+      </ul>
 
-<!-- Hamburger / mobile nav -->
-<script>
-  (function(){
-    const header = document.getElementById('siteHeader');
-    const toggle = header.querySelector('.menu-toggle');
-    const nav = document.getElementById('primaryNav');
+      <h3>Chair Yoga</h3>
+      <ul>
+        <li><a href="./pdf/chair-yoga-beginner.pdf" target="_blank" rel="noopener">Chair Yoga – Beginner (PDF)</a></li>
+        <li><a href="./pdf/chair-yoga-intermediate.pdf" target="_blank" rel="noopener">Chair Yoga – Intermediate (PDF)</a></li>
+        <li><a href="./pdf/chair-yoga-advanced.pdf" target="_blank" rel="noopener">Chair Yoga – Advanced (PDF)</a></li>
+      </ul>
 
-    function setExpanded(on){
-      if(on){ header.classList.add('menu-open'); toggle.setAttribute('aria-expanded','true'); }
-      else  { header.classList.remove('menu-open'); toggle.setAttribute('aria-expanded','false'); }
-    }
+      <h3>Healthy Ageing</h3>
+      <ul>
+        <li><a href="./pdf/healthy-ageing-beginner.pdf" target="_blank" rel="noopener">Healthy Ageing – Beginner (PDF)</a></li>
+        <li><a href="./pdf/healthy-ageing-intermediate.pdf" target="_blank" rel="noopener">Healthy Ageing – Intermediate (PDF)</a></li>
+        <li><a href="./pdf/healthy-ageing-advanced.pdf" target="_blank" rel="noopener">Healthy Ageing – Advanced (PDF)</a></li>
+      </ul>
+    </section>
 
-    if(toggle){ toggle.addEventListener('click',()=>setExpanded(!header.classList.contains('menu-open'))); }
-    if(nav){ nav.addEventListener('click',e=>{ if(e.target.tagName==='A') setExpanded(false); }); }
-  })();
-</script>
+    <section class="disclaimer">
+      <h2>Important Note</h2>
+      <p>The information across these pages is for <strong>general understanding and support</strong>. It is <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. If you are outside the UK, contact your local emergency number.</p>
+      <p>For non-emergency concerns, consider speaking with a qualified health professional or one of the support services linked on the relevant pages.</p>
+    </section>
+  </main>
 
+  <!-- FOOTER (same component styling as Home) -->
+  <footer class="site-footer">
+    <div class="container">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
+
+  <!-- Hamburger toggle (identical to Home) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.querySelector('.hamburger');
+      const nav = document.querySelector('.main-nav');
+      if (!btn || !nav) return;
+
+      btn.addEventListener('click', () => {
+        const open = btn.classList.toggle('active');
+        nav.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+  </script>
 </body>
 </html>

@@ -3,556 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Workouts – FreeFitFuel</title>
+  <title>Wellbeing – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=22">
-  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css?v=wb5">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="img/favicon-512.png">
 
   <style>
-    /* Page-only styling */
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-    .lead{color:var(--inkdim)}
-    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-    .hero-mini figure{margin:0;position:relative}
-    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
-    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
-    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    .hero-mini h1{margin:0 0 .35rem}
-    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 .75rem}
+    .mini-nav a{background:#4CAF50;color:#fff;text-decoration:none;padding:.45rem .8rem;border-radius:6px;font-size:.9rem}
+    .mini-nav a:hover{background:#45a049}
 
-    .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 1.1rem}
-    .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
-    .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
-    .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+    .card{background:#1a1a1a;border:1px solid #333;border-radius:8px;padding:1rem;margin:1rem 0;color:#eaeaea}
+    .card h2,.card h3{color:#fff;margin-top:0}
+    .meta{color:#d6d6d6}
 
-    /* Equipment pills in one line (scrolls on small screens) */
-    .equip{display:flex;flex-wrap:nowrap;gap:.6rem;overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
-    .equip::-webkit-scrollbar{height:6px}
-    .equip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:999px}
+    .practice-pdfs ul{list-style:none;padding:0;margin:.25rem 0 1rem}
+    .practice-pdfs li{margin:.3rem 0}
+    .practice-pdfs a{color:#4CAF50;text-decoration:none}
+    .practice-pdfs a:hover{text-decoration:underline}
+    .practice-pdfs h3{margin:.8rem 0 .4rem}
 
-    .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .65rem;font-size:.92rem}
-    .pill input{accent-color:var(--accent)}
+    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden}
+    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-    .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
-    .plan{display:grid;gap:12px}
-    @media (min-width:780px){.plan{grid-template-columns:repeat(2,1fr)}}
-    .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .block h3{margin:.1rem 0 .35rem;font-size:1.05rem}
-    .mov{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem .55rem;border:1px dashed var(--stroke);border-radius:8px;margin:.35rem 0}
-    .mov .name{font-weight:600}
-    .mov .rx{opacity:.9}
-
-    .timer{display:flex;gap:.4rem;align-items:center;margin-top:.5rem}
-    .timer input{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:6px;color:var(--ink);padding:.35rem .45rem}
-    .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
-    .timer .left{min-width:60px;text-align:right;opacity:.85}
-
-    .grid{display:grid;gap:14px}
-    @media (min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
-    .card h4{margin:.7rem .9rem .35rem}
-    .tile{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
-    .tile button.play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
-    .tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.88)}
-    .tile iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none}
-
-    .tile .openers{position:absolute;right:.45rem;bottom:.45rem;display:flex;gap:.35rem;z-index:2}
-    .tile .openers a{background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:.8rem;padding:.25rem .45rem;border-radius:6px;text-decoration:none}
-
-    .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem .9rem .6rem}
-    .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.18rem .55rem;font-size:.82rem}
-
-    .anatomy{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .85rem}
-    .anatomy img{width:92px;height:auto;border-radius:8px;border:1px solid var(--stroke);background:#0b0f14}
-    .anatomy .notes{font-size:.9rem;color:var(--inkdim)}
-    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0}
+    .disclaimer{background:#161616;border-left:4px solid #555;padding:.8rem;margin:2rem 0 1rem;font-size:.95rem;color:#e8e8e8}
   </style>
 </head>
 <body>
 
-<!-- HEADER (same as home) -->
-<header class="site-header">
+<header class="site-header" id="siteHeader">
   <div class="container">
-    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+    <a href="index.html" class="logo">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+    </a>
+
+    <!-- Hamburger (mobile) -->
     <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+
+    <!-- Primary nav -->
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
-      <a href="index.html">Home</a>
       <a href="ideas.html">Ideas</a>
       <a href="guides.html">Guides</a>
-      <a href="workouts.html" aria-current="page">Workouts</a>
+      <a href="workouts.html">Workouts</a>
       <a href="nutrition.html">Nutrition</a>
-      <a href="wellbeing.html">Wellbeing</a>
+      <a href="wellbeing.html" aria-current="page">Wellbeing</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
 </header>
 
-<!-- HERO -->
-<header class="hero-mini" role="banner" aria-label="Workouts hero">
-  <figure>
-    <img src="img/hero.jpg" alt="Rolling out a mat with dumbbells">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="content wrap">
-    <h1><span class="accent">Workouts that fit life</span></h1>
-    <p>Clear plans, video form, anatomy diagrams, and audible timers. Train smart at home with dumbbells, bands, or bodyweight.</p>
-  </div>
-</header>
-
 <main class="wrap">
-  <p class="lead">Pick your <strong>difficulty</strong>, <strong>goal</strong>, and <strong>equipment</strong>. Plans update instantly. Tap a tile to play the clip. If a video is blocked, use “Open on YouTube” or “Search”.</p>
+  <h1>Wellbeing</h1>
+  <p class="lead">Practical tools for mind and body — grounding, breathing, movement, and clear guides you can use today.</p>
 
-  <!-- Global controls -->
-  <div class="toolbar" aria-label="Workout controls">
-    <!-- Difficulty -->
-    <div class="seg" role="tablist" aria-label="Difficulty">
-      <button role="tab" aria-pressed="true"  data-level="beginner">Beginner</button>
-      <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
-      <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
+  <nav class="mini-nav" aria-label="Wellbeing topics">
+    <a href="wellbeing/anxiety.html">Anxiety</a>
+    <a href="wellbeing/depression.html">Depression</a>
+    <a href="wellbeing/grief.html">Grief</a>
+    <a href="wellbeing/suicide-bereavement.html">Suicide Bereavement</a>
+    <a href="wellbeing/suicide-survivors.html">After a Suicide Attempt</a>
+    <a href="wellbeing/crisis.html">Crisis</a>
+    <a href="wellbeing/abuse.html">Abuse</a>
+    <a href="wellbeing/carers.html">Carer Support</a>
+    <a href="wellbeing/bullying.html">Bullying &amp; Online Safety</a>
+    <a href="wellbeing/addictions.html">Addictions &amp; Compulsions</a>
+    <a href="wellbeing/neuroscience.html">Neuroscience</a>
+    <a href="wellbeing/neurolinguistics.html">Neurolinguistics</a>
+    <a href="wellbeing/affirmations.html">Affirmations &amp; Reframing</a>
+    <a href="wellbeing/neurodiversity.html">Neurodiversity</a>
+    <a href="wellbeing/healthy-ageing.html">Healthy Ageing</a>
+    <a href="wellbeing/ptsd.html">PTSD &amp; Trauma</a>
+    <a href="wellbeing/therapies-tools.html">Therapies &amp; Tools</a>
+  </nav>
+
+  <p class="meta">Choose a topic above to open the detailed page. Each page includes practical steps, scripts, and regional links.</p>
+
+  <!-- Grounding video -->
+  <section class="card">
+    <h2>Grounding technique — 5-4-3-2-1</h2>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube-nocookie.com/embed/30VMIEmA114"
+        title="Grounding technique video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
+  </section>
 
-    <!-- Goals -->
-    <div class="seg" role="tablist" aria-label="Goal">
-      <button role="tab" aria-pressed="true"  data-goal="maintain">Maintain</button>
-      <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
-      <button role="tab" aria-pressed="false" data-goal="bulk">Build (Bulk)</button>
-      <button role="tab" aria-pressed="false" data-goal="transform">Transform</button>
-    </div>
+  <!-- Practice Guides -->
+  <section class="card practice-pdfs">
+    <h2>Practice Guides (Downloadable PDFs)</h2>
+    <p>Illustrated step-by-step guides for Tai Chi, Qi Gong, Chair Yoga, and Healthy Ageing.</p>
 
-    <!-- Equipment (single line; scrolls on mobile) -->
-    <div class="equip">
-      <span class="pill"><input type="checkbox" id="f-db" checked>    <label for="f-db">Dumbbells</label></span>
-      <span class="pill"><input type="checkbox" id="f-band" checked>  <label for="f-band">Bands</label></span>
-      <span class="pill"><input type="checkbox" id="f-bw" checked>    <label for="f-bw">Bodyweight / Calisthenics</label></span>
-      <span class="pill"><input type="checkbox" id="f-rack">          <label for="f-rack">Bar / Door anchor</label></span>
-    </div>
-  </div>
+    <h3>Tai Chi</h3>
+    <ul>
+      <li><a href="./pdf/tai-chi-beginner.pdf" target="_blank" rel="noopener">Tai Chi – Beginner (PDF)</a></li>
+      <li><a href="./pdf/tai-chi-intermediate.pdf" target="_blank" rel="noopener">Tai Chi – Intermediate (PDF)</a></li>
+      <li><a href="./pdf/tai-chi-advanced.pdf" target="_blank" rel="noopener">Tai Chi – Advanced (PDF)</a></li>
+    </ul>
 
-  <!-- Weekly split -->
-  <div class="section">
-    <h2>Weekly Split</h2>
-    <div class="plan" id="plan"></div>
-    <p class="meta">Short on time? Do the <strong>Full-Body</strong> day 2–3×/week with a walk or mobility between.</p>
-  </div>
+    <h3>Qi Gong</h3>
+    <ul>
+      <li><a href="./pdf/qi-gong-beginner.pdf" target="_blank" rel="noopener">Qi Gong – Beginner (PDF)</a></li>
+      <li><a href="./pdf/qi-gong-intermediate.pdf" target="_blank" rel="noopener">Qi Gong – Intermediate (PDF)</a></li>
+      <li><a href="./pdf/qi-gong-advanced.pdf" target="_blank" rel="noopener">Qi Gong – Advanced (PDF)</a></li>
+    </ul>
 
-  <!-- Calisthenics -->
-  <div class="section">
-    <h2>Calisthenics Progressions</h2>
-    <div class="plan" id="cal"></div>
-    <p class="meta">Start comfortably; progress when all reps are clean with full range.</p>
-  </div>
+    <h3>Chair Yoga</h3>
+    <ul>
+      <li><a href="./pdf/chair-yoga-beginner.pdf" target="_blank" rel="noopener">Chair Yoga – Beginner (PDF)</a></li>
+      <li><a href="./pdf/chair-yoga-intermediate.pdf" target="_blank" rel="noopener">Chair Yoga – Intermediate (PDF)</a></li>
+      <li><a href="./pdf/chair-yoga-advanced.pdf" target="_blank" rel="noopener">Chair Yoga – Advanced (PDF)</a></li>
+    </ul>
 
-  <!-- Library -->
-  <div class="section" id="library">
-    <h2>Form Library (watch & copy)</h2>
-    <div class="grid" id="lib"></div>
-  </div>
+    <h3>Healthy Ageing</h3>
+    <ul>
+      <li><a href="./pdf/healthy-ageing-beginner.pdf" target="_blank" rel="noopener">Healthy Ageing – Beginner (PDF)</a></li>
+      <li><a href="./pdf/healthy-ageing-intermediate.pdf" target="_blank" rel="noopener">Healthy Ageing – Intermediate (PDF)</a></li>
+      <li><a href="./pdf/healthy-ageing-advanced.pdf" target="_blank" rel="noopener">Healthy Ageing – Advanced (PDF)</a></li>
+    </ul>
+  </section>
 
-  <!-- Disclaimer -->
-  <section class="section">
+  <section class="disclaimer">
     <h2>Important Note</h2>
-    <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+    <p>The information across these pages is for <strong>general understanding and support</strong>. It is <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. If you are outside the UK, contact your local emergency number.</p>
+    <p>For non-emergency concerns, consider speaking with a qualified health professional or one of the support services linked on the relevant pages.</p>
   </section>
 </main>
 
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="container">
     <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p>&copy; 2025 FreeFitFuel</p>
     <p class="credit">Created by Grant Cameron Anthony</p>
   </div>
 </footer>
 
+<!-- Minimal JS for hamburger toggle -->
 <script>
-/* ===== Header burger ===== */
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector('.hamburger');
-  const nav = document.querySelector('.main-nav');
-  if(btn && nav){
+  document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.querySelector('.hamburger');
+    const nav = document.querySelector('.main-nav');
+    if (!btn || !nav) return;
+
     btn.addEventListener('click', () => {
       const open = btn.classList.toggle('active');
       nav.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-  }
-});
-
-/* ===== Data ===== */
-/* GRANULAR anatomy PNG filenames expected in /img/anatomy/ :
-   Push:
-     muscles-front-chest-pecs.png
-     muscles-front-deltoids-front.png
-     muscles-front-deltoids-mid.png
-     muscles-back-deltoids-rear.png
-     muscles-back-triceps-long.png
-     muscles-back-triceps-lateral.png
-     muscles-back-triceps-medial.png
-   Pull:
-     muscles-back-lats-upper.png
-     muscles-back-lats-lower.png
-     muscles-back-traps-upper.png
-     muscles-back-traps-mid.png
-     muscles-back-traps-lower.png
-     muscles-back-rhomboids.png
-     muscles-front-biceps-short.png
-     muscles-front-biceps-long.png
-     muscles-front-forearms-flexors.png
-     muscles-back-forearms-extensors.png
-   Legs:
-     muscles-front-quads-rectus.png
-     muscles-front-quads-vastus-lateral.png
-     muscles-front-quads-vastus-medial.png
-     muscles-back-hamstrings-biceps-femoris.png
-     muscles-back-hamstrings-semitendinosus.png
-     muscles-back-hamstrings-semimembranosus.png
-     muscles-back-glutes-maximus.png
-     muscles-front-hip-flexors.png
-     muscles-back-calves-gastrocnemius.png
-     muscles-back-calves-soleus.png
-   Core:
-     muscles-front-abs-upper.png
-     muscles-front-abs-lower.png
-     muscles-front-obliques-external.png
-     muscles-front-obliques-internal.png
-     muscles-back-erector-spinae.png
-*/
-
-const EX = [
-  /* ===== PUSH ===== */
-  {k:'pushup',  n:'Push-up', eq:'bw', cat:'push', yt:'IODxDxX7oi4',
-   muscles:[
-     'muscles-front-chest-pecs.png',
-     'muscles-back-triceps-lateral.png',
-     'muscles-front-deltoids-front.png'
-   ]},
-  {k:'dbfloor', n:'DB Floor Press', eq:'db', cat:'push', yt:'Y-s9AyDhs4I',
-   muscles:[
-     'muscles-front-chest-pecs.png',
-     'muscles-back-triceps-long.png',
-     'muscles-front-deltoids-front.png'
-   ]},
-  {k:'dbbench', n:'DB Bench Press', eq:'db', cat:'push', yt:'gRVjAtPip0Y',
-   muscles:[
-     'muscles-front-chest-pecs.png',
-     'muscles-back-triceps-long.png',
-     'muscles-front-deltoids-front.png'
-   ]},
-  {k:'arnold',  n:'Arnold Press', eq:'db', cat:'push', yt:'3ml7BH7mNwQ',
-   muscles:[
-     'muscles-front-deltoids-front.png',
-     'muscles-front-deltoids-mid.png',
-     'muscles-back-deltoids-rear.png'
-   ]},
-  {k:'latraise',n:'Lateral Raise', eq:'db', cat:'push', yt:'3VcKaXpzqRo',
-   muscles:[
-     'muscles-front-deltoids-mid.png',
-     'muscles-back-deltoids-rear.png'
-   ]},
-  {k:'thruster',n:'DB Thruster', eq:'db', cat:'push', yt:'QZEqB6wUPxQ',
-   muscles:[
-     'muscles-front-quads-rectus.png',
-     'muscles-back-glutes-maximus.png',
-     'muscles-front-deltoids-front.png'
-   ]},
-
-  /* ===== PULL ===== */
-  {k:'bandrow', n:'Band Row', eq:'band', cat:'pull', yt:'uUjQ0n0J1sE',
-   muscles:[
-     'muscles-back-lats-upper.png',
-     'muscles-back-rhomboids.png',
-     'muscles-back-traps-mid.png'
-   ]},
-  {k:'doorrow', n:'Doorway Row', eq:'bw', cat:'pull', yt:'c0G3N5aV5lY',
-   muscles:[
-     'muscles-back-lats-upper.png',
-     'muscles-back-rhomboids.png',
-     'muscles-back-traps-mid.png'
-   ]},
-  {k:'bandlat', n:'Band Lat Pulldown', eq:'band', cat:'pull', yt:'f4ZkQem6FGo',
-   muscles:[
-     'muscles-back-lats-lower.png',
-     'muscles-front-biceps-long.png',
-     'muscles-back-traps-lower.png'
-   ]},
-  {k:'anchorpd',n:'Door Anchor Pull-down', eq:'band', cat:'pull', yt:'h2f_v6v3OQI',
-   muscles:[
-     'muscles-back-lats-lower.png',
-     'muscles-front-biceps-long.png',
-     'muscles-back-traps-lower.png'
-   ]},
-  {k:'chin',    n:'Chin-up (band assist)', eq:'rack', cat:'pull', yt:'z9x2rYc4qYI',
-   muscles:[
-     'muscles-back-lats-upper.png',
-     'muscles-front-biceps-long.png',
-     'muscles-back-traps-mid.png'
-   ]},
-  {k:'csrow',   n:'Chest-Supported DB Row', eq:'db', cat:'pull', yt:'wzj8gBqGxF4',
-   muscles:[
-     'muscles-back-lats-upper.png',
-     'muscles-back-rhomboids.png',
-     'muscles-back-traps-mid.png'
-   ]},
-  {k:'renrow',  n:'Renegade Row', eq:'db', cat:'pull', yt:'R5rj8m9r-1g',
-   muscles:[
-     'muscles-back-lats-upper.png',
-     'muscles-back-erector-spinae.png',
-     'muscles-front-obliques-external.png'
-   ]},
-  {k:'zott',    n:'Zottman Curl', eq:'db', cat:'pull', yt:'l0gDqsSUtWo',
-   muscles:[
-     'muscles-front-biceps-short.png',
-     'muscles-front-forearms-flexors.png',
-     'muscles-back-forearms-extensors.png'
-   ]},
-
-  /* ===== LEGS / CORE ===== */
-  {k:'stepup',  n:'Step-up', eq:'db', cat:'legs', yt:'yQ0Z5zq2mTw',
-   muscles:[
-     'muscles-front-quads-rectus.png',
-     'muscles-back-glutes-maximus.png',
-     'muscles-back-hamstrings-biceps-femoris.png'
-   ]},
-  {k:'dbrdl',   n:'DB Romanian Deadlift', eq:'db', cat:'legs', yt:'v0QZrS5rG9A',
-   muscles:[
-     'muscles-back-hamstrings-biceps-femoris.png',
-     'muscles-back-hamstrings-semitendinosus.png',
-     'muscles-back-erector-spinae.png'
-   ]},
-  {k:'sidepl',  n:'Side Plank', eq:'bw', cat:'legs', yt:'K2VljzCC16g',
-   muscles:[
-     'muscles-front-obliques-external.png',
-     'muscles-front-obliques-internal.png',
-     'muscles-front-abs-lower.png'
-   ]},
-
-  /* ===== FULL BODY ===== */
-  {k:'manmaker',n:'Man Maker', eq:'db', cat:'full', yt:'wV2bF1X8Y4M',
-   muscles:[
-     'muscles-front-abs-upper.png',
-     'muscles-front-abs-lower.png',
-     'muscles-front-deltoids-front.png'
-   ]},
-  {k:'dbcp',    n:'DB Clean & Press', eq:'db', cat:'full', yt:'zQ6ZlJkFQ3E',
-   muscles:[
-     'muscles-front-deltoids-front.png',
-     'muscles-front-quads-rectus.png',
-     'muscles-back-glutes-maximus.png'
-   ]},
-  {k:'hswall',  n:'Wall Handstand (beginner)', eq:'bw', cat:'full', yt:'tZyq3x1y9mQ',
-   muscles:[
-     'muscles-front-deltoids-front.png',
-     'muscles-back-triceps-long.png'
-   ]},
-
-  /* ===== CALISTHENICS FOCUS ===== */
-  {k:'dipbench',n:'Bench Dip (calisthenics)', eq:'bw', cat:'cal', yt:'6kALZikXxLc',
-   muscles:[
-     'muscles-back-triceps-long.png',
-     'muscles-front-chest-pecs.png',
-     'muscles-front-deltoids-front.png'
-   ]},
-  {k:'hollow',  n:'Hollow Body Hold', eq:'bw', cat:'cal', yt:'o-qlBV4J6To',
-   muscles:[
-     'muscles-front-abs-lower.png',
-     'muscles-front-abs-upper.png'
-   ]},
-  {k:'lsit',    n:'L-sit (tuck progression)', eq:'bw', cat:'cal', yt:'F3tGqV4wJ2E',
-   muscles:[
-     'muscles-front-abs-lower.png',
-     'muscles-front-hip-flexors.png',
-     'muscles-back-triceps-long.png'
-   ]},
-  {k:'pistol',  n:'Pistol Squat (progression)', eq:'bw', cat:'cal', yt:'YlH3z9JvNlg',
-   muscles:[
-     'muscles-front-quads-vastus-medial.png',
-     'muscles-front-quads-vastus-lateral.png',
-     'muscles-back-glutes-maximus.png'
-   ]}
-];
-
-/* Base prescriptions */
-const RX = {
-  push:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'arnold',rx:'4×8–12'},{k:'latraise',rx:'3×12–15'},{k:'thruster',rx:'3×8–12',finisher:true}],
-    advanced:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×12–15'},{k:'thruster',rx:'4×10–12'}]
-  },
-  pull:{
-    beginner:[{k:'bandrow',rx:'3×10–12'},{k:'zott',rx:'3×10–12'}],
-    intermediate:[{k:'doorrow',rx:'4×8–12'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×10–12'}],
-    advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'},{k:'renrow',rx:'4×8–12'}]
-  },
-  legs:{
-    beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'sidepl',rx:'3×30–45s'}],
-    advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'thruster',rx:'4×10–12'}]
-  },
-  full:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
-    advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
-  }
-};
-
-/* Goal-specific overrides/swaps:
-   - cut: more metabolic finishers, swaps toward thrusters/manmakers/rows you can circuit
-   - bulk: heavier compounds, fewer finishers
-   - transform: add complexes/finishers broadly
-   (maintain: base RX)
-*/
-const GOAL = {
-  push:{
-    cut:{
-      beginner:[{k:'pushup',rx:'3×8–12'},{k:'dbfloor',rx:'3×10–15'},{k:'thruster',rx:'2×12–15',finisher:true}],
-      intermediate:[{k:'dbbench',rx:'4×8–12'},{k:'arnold',rx:'4×10–12'},{k:'thruster',rx:'3×12–15',finisher:true}],
-      advanced:[{k:'dbbench',rx:'5×6–10'},{k:'arnold',rx:'5×8–12'},{k:'thruster',rx:'4×12'}]
-    },
-    bulk:{
-      beginner:[{k:'dbfloor',rx:'4×6–10'},{k:'pushup',rx:'3×6–10'},{k:'latraise',rx:'3×10–15'}],
-      intermediate:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×10–15'}],
-      advanced:[{k:'dbbench',rx:'5×4–6'},{k:'arnold',rx:'5×5–8'},{k:'latraise',rx:'4×10–12'}]
-    },
-    transform:{
-      beginner:[{k:'pushup',rx:'3×10–15'},{k:'thruster',rx:'3×12–15'},{k:'sidepl',rx:'3×30–45s'}],
-      intermediate:[{k:'dbbench',rx:'4×8–12'},{k:'thruster',rx:'4×10–12'},{k:'sidepl',rx:'3×40–60s'}],
-      advanced:[{k:'dbcp',rx:'5×3–5'},{k:'thruster',rx:'4×12'},{k:'manmaker',rx:'3×12'}]
-    }
-  },
-  pull:{
-    cut:{
-      beginner:[{k:'bandrow',rx:'3×12–15'},{k:'renrow',rx:'3×10–12'}],
-      intermediate:[{k:'doorrow',rx:'4×10–15'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×12–15'}],
-      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'renrow',rx:'4×10–12'}]
-    },
-    bulk:{
-      beginner:[{k:'bandrow',rx:'4×8–12'},{k:'zott',rx:'3×8–12'}],
-      intermediate:[{k:'csrow',rx:'5×6–10'},{k:'doorrow',rx:'4×8–12'},{k:'zott',rx:'3×8–10'}],
-      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–8'}]
-    },
-    transform:{
-      beginner:[{k:'bandrow',rx:'3×12–15'},{k:'doorrow',rx:'3×12–15'}],
-      intermediate:[{k:'doorrow',rx:'4×12–15'},{k:'renrow',rx:'4×10–12'}],
-      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'renrow',rx:'4×12'}]
-    }
-  },
-  legs:{
-    cut:{
-      beginner:[{k:'stepup',rx:'3×12–15'},{k:'dbrdl',rx:'3×10–15'},{k:'thruster',rx:'2×12–15',finisher:true}],
-      intermediate:[{k:'stepup',rx:'4×10–15'},{k:'dbrdl',rx:'4×8–12'},{k:'thruster',rx:'3×12–15'}],
-      advanced:[{k:'stepup',rx:'5×10–15'},{k:'dbrdl',rx:'5×6–10'},{k:'thruster',rx:'4×12'}]
-    },
-    bulk:{
-      beginner:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'}],
-      intermediate:[{k:'stepup',rx:'5×8–10'},{k:'dbrdl',rx:'5×6–8'}],
-      advanced:[{k:'dbrdl',rx:'5×5–8'},{k:'stepup',rx:'5×8–10'}]
-    },
-    transform:{
-      beginner:[{k:'stepup',rx:'3×12–15'},{k:'thruster',rx:'3×12–15'},{k:'sidepl',rx:'3×40–60s'}],
-      intermediate:[{k:'stepup',rx:'4×12–15'},{k:'thruster',rx:'4×12'},{k:'sidepl',rx:'3×45–60s'}],
-      advanced:[{k:'thruster',rx:'5×12'},{k:'dbrdl',rx:'4×8–10'},{k:'manmaker',rx:'3×12'}]
-    }
-  },
-  full:{
-    cut:{
-      beginner:[{k:'pushup',rx:'3×10–15'},{k:'bandrow',rx:'3×12–15'},{k:'stepup',rx:'3×12–15'},{k:'thruster',rx:'2×12–15'}],
-      intermediate:[{k:'dbbench',rx:'4×8–12'},{k:'doorrow',rx:'4×10–15'},{k:'stepup',rx:'4×12–15'},{k:'thruster',rx:'3×12–15'}],
-      advanced:[{k:'dbcp',rx:'4×5–8'},{k:'csrow',rx:'4×8–12'},{k:'thruster',rx:'4×12'}]
-    },
-    bulk:{
-      beginner:[{k:'dbfloor',rx:'4×6–10'},{k:'bandrow',rx:'4×8–12'},{k:'stepup',rx:'4×8–12'}],
-      intermediate:[{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'dbrdl',rx:'5×6–8'}],
-      advanced:[{k:'dbbench',rx:'5×4–6'},{k:'csrow',rx:'5×5–8'},{k:'dbrdl',rx:'5×5–8'}]
-    },
-    transform:{
-      beginner:[{k:'pushup',rx:'3×12–15'},{k:'bandrow',rx:'3×12–15'},{k:'thruster',rx:'3×12–15'}],
-      intermediate:[{k:'dbcp',rx:'4×5–8'},{k:'thruster',rx:'4×12'},{k:'manmaker',rx:'3×12'}],
-      advanced:[{k:'dbcp',rx:'5×3–5'},{k:'manmaker',rx:'4×12'},{k:'thruster',rx:'4×12'}]
-    }
-  }
-};
-
-const CAL = [
-  {title:'Push', items:[
-    {k:'pushup',  rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
-    {k:'dipbench',rxB:'Bench dip 3×8–12',       rxI:'Feet-elevated dip 4×8–12', rxA:'Parallel bar dip 5×6–10'}
-  ]},
-  {title:'Pull', items:[
-    {k:'doorrow', rxB:'Table/door row 3×8–12',  rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
-  ]},
-  {title:'Core', items:[
-    {k:'hollow',  rxB:'Hollow tuck 3×20–30s',   rxI:'Hollow body 4×20–40s',     rxA:'Hollow + rocks 4×30–45s'},
-    {k:'lsit',    rxB:'Tuck L-sit 6×10–15s',    rxI:'One-leg L-sit 6×10–15s',   rxA:'Full L-sit 6×10–20s'}
-  ]},
-  {title:'Legs', items:[
-    {k:'pistol',  rxB:'Box pistol 3×6–10/leg',  rxI:'Assisted pistol 4×6–10',   rxA:'Pistol 5×5–8'}
-  ]},
-  {title:'Skills', items:[
-    {k:'hswall',  rxB:'Wall handstand hold 5×20–30s', rxI:'Wall shoulder taps 4×10/side', rxA:'Freestanding attempts 8–10×15s'}
-  ]}
-];
-
-/* ===== State & controls ===== */
-const planEl = document.getElementById('plan');
-const calEl  = document.getElementById('cal');
-const libEl  = document.getElementById('lib');
-
-let level = 'beginner';
-let goal  = 'maintain';
-
-document.querySelectorAll('.seg [data-level]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    level = b.dataset.level;
-    renderPlan(); renderCal();
   });
-});
+</script>
 
-document.querySelectorAll('.seg [data-goal]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    goal = b.dataset.goal;
-    renderPlan(); renderCal();
-  });
-});
-
-function getFilters(){
-  return {
-    db: document.getElementById('f-db').checked,
-    band: document.getElementById('f-band').checked,
-    bw: document.getElementById('f-bw').checked,
-    rack: document.getElementById('f-rack').checked
-  };
-}
-['f-db','f-band','f-bw','f-rack'].forEach(id=>{
-  document.getElementById(id).addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); });
-});
-
-/* ===== Helpers ===== */
-function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ').replace('.png','')).join(', '); }
-function anatomy(ms){
-  // show up to 3 thumbnails; filenames are already granular
-  const imgs = ms.slice(0,3).map(file=>`<img src="img/anatomy/${file}" alt="${file.replace('.png','')}" onerror="this.style.display='none'">`).join('');
-  return `<div class="anatomy">${imgs}<div class="notes"><strong>Target:</strong> ${muscleList(ms)}</div></div>`;
-}
-
-/* Adjust prescription text for goal (rep/time cues) */
-function modRx(base, goal){
-  if(/AMRAP/i.test(base)){
-    if(goal==='cut')       return base+' · steady tempo';
-    if(goal==='bulk')      return base+' · add weight if 8+';
-    if(goal==='transform') return base+' · EMOM 10–15m';
-    return base;
-  }
-  const m = base.match(/^(\d+)×(\d+)(?:–(\d+))?(s)?$/i);
-  if(!m) return base;
-  let sets = +m[1], low = +m[2], hi = m[3]? +m[3] : +m[2], sec = !!m[4];
-
-  switch(goal){
-    case 'cut':
-      if(sec){ low+=5; hi+=10; } else { low+=2; hi+=2; }
-      return `${sets
+</body>
+</html>

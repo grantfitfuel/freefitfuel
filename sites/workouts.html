@@ -23,6 +23,7 @@
     @media(min-width:900px){ .grid-2{grid-template-columns:1.15fr 1fr} }
     .card h3{margin:.1rem 0 .5rem}
     .tiny{font-size:.9rem;color:var(--muted)}
+    .hidden{display:none !important}
 
     /* Global level switch */
     .level-switch{display:flex;flex-wrap:wrap;gap:.45rem;margin:.4rem 0 .6rem}
@@ -79,7 +80,7 @@
     .rest .count{font-variant-numeric:tabular-nums;opacity:.9}
 
     /* Video tiles (robust lazy) */
-    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--stroke)}
+    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--stroke);min-height:220px}
     .video-thumb{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer}
     .video-thumb img{width:100%;height:100%;object-fit:cover;filter:brightness(.85)}
     .play-btn{position:absolute; width:68px; height:48px; border:0; border-radius:12px; background:rgba(0,0,0,.55); cursor:pointer; display:flex; align-items:center; justify-content:center}
@@ -551,7 +552,7 @@
     </div>
   </footer>
 
-  <!-- JS: menu, level+equipment filters, timers w/ bell, robust lazy YouTube -->
+  <!-- JS: menu, unified filters, timers w/ bell, robust lazy YouTube -->
   <script>
     // Hamburger
     (function(){
@@ -565,49 +566,77 @@
         });
       }
     })();
+  </script>
 
-    // Global Level Switch (memory)
+  <script>
+    // ===== Level + Equipment filters (unified & state-aware) =====
     (function(){
-      const KEY='fff-level';
-      const pills=[...document.querySelectorAll('.level-switch .pill')];
-      let level = localStorage.getItem(KEY) || 'beginner';
-      const set = (lvl)=>{
-        level = lvl; localStorage.setItem(KEY,lvl);
-        pills.forEach(p=>p.classList.toggle('active', p.dataset.level===lvl));
-        document.querySelectorAll('.opt').forEach(opt=>{
-          const lv = opt.getAttribute('data-level') || 'all';
-          opt.classList.toggle('hidden', !(lv==='all' || lv===level));
+      const LVL_KEY='fff-level';
+      const EQ_KEY='fff-eq-memory'; // { push:'all', pull:'bands', legs:'dumbbells', full:'all' }
+
+      // read memory
+      let level = (localStorage.getItem(LVL_KEY) || 'beginner');
+      let eqMem = {}; try{ eqMem = JSON.parse(localStorage.getItem(EQ_KEY) || '{}'); }catch(e){ eqMem={} }
+
+      // write helpers
+      function setLevel(lvl){
+        level = lvl;
+        localStorage.setItem(LVL_KEY, lvl);
+        document.documentElement.dataset.fffLevel = lvl; // expose for others if needed
+        document.querySelectorAll('.level-switch .pill').forEach(p=>{
+          p.classList.toggle('active', p.dataset.level===lvl);
         });
-      };
-      pills.forEach(p=>p.addEventListener('click',()=>set(p.dataset.level)));
-      // init
-      if(!pills.some(p=>p.dataset.level===level)) level='beginner';
-      set(level);
-    })();
+        updateAllSections();
+      }
+      function setEq(sectionEl, eq){
+        const key = sectionEl.getAttribute('data-section');
+        eqMem[key] = eq;
+        localStorage.setItem(EQ_KEY, JSON.stringify(eqMem));
+        // chip UI
+        sectionEl.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.eq===eq));
+        updateSection(sectionEl);
+      }
 
-    // Equipment filter + memory per section
-    (function(){
-      const KEY='fff-eq-memory'; // { push:'dumbbells', pull:'bands', legs:'all', full:'bodyweight' }
-      let mem={}; try{mem=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-      function findSection(el){ while(el && el!==document && !(el.matches && el.matches('details.block[data-section]'))) el=el.parentNode; return (el && el.matches)?el:null; }
-      function apply(sec, eq){
-        sec.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.eq===eq));
-        sec.querySelectorAll('.opt').forEach(opt=>{
-          const has=opt.getAttribute('data-equip');
-          if(eq==='all'||has===eq) opt.classList.remove('hidden'); else opt.classList.add('hidden');
+      // show/hide respecting BOTH filters
+      function updateSection(sectionEl){
+        const key = sectionEl.getAttribute('data-section');
+        const eq = eqMem[key] || 'all';
+        sectionEl.querySelectorAll('.opt').forEach(opt=>{
+          const optEq  = opt.getAttribute('data-equip')  || 'all';
+          const optLvl = opt.getAttribute('data-level')  || 'all';
+          const eqOk   = (eq==='all' || eq===optEq);
+          const lvlOk  = (optLvl==='all' || optLvl===level);
+          opt.classList.toggle('hidden', !(eqOk && lvlOk));
         });
       }
+      function updateAllSections(){
+        document.querySelectorAll('details.block[data-section]').forEach(updateSection);
+      }
+
+      // init level UI
+      const pills = [...document.querySelectorAll('.level-switch .pill')];
+      if(!pills.some(p=>p.dataset.level===level)) level='beginner';
+      pills.forEach(p=>p.addEventListener('click', ()=> setLevel(p.dataset.level)));
+      setLevel(level); // initial paint
+
+      // init each section’s equipment from memory (default 'all')
       document.querySelectorAll('details.block[data-section]').forEach(sec=>{
-        const key=sec.getAttribute('data-section'); const want=mem[key]||'all'; apply(sec,want);
-      });
-      document.addEventListener('click',e=>{
-        const chip=e.target.closest('.chip'); if(!chip) return;
-        const sec=findSection(chip); if(!sec) return;
-        const eq=chip.dataset.eq; apply(sec,eq);
-        mem[sec.getAttribute('data-section')]=eq; localStorage.setItem(KEY,JSON.stringify(mem));
+        const key = sec.getAttribute('data-section');
+        if(!eqMem[key]) eqMem[key] = 'all';
+        // bind chip clicks
+        sec.addEventListener('click', (e)=>{
+          const chip = e.target.closest('.chip');
+          if(!chip) return;
+          e.preventDefault();
+          setEq(sec, chip.dataset.eq);
+        });
+        // paint initial chips & visibility
+        setEq(sec, eqMem[key]);
       });
     })();
+  </script>
 
+  <script>
     // Rest timers with bell via WebAudio (no external files)
     (function(){
       let activeTimer=null;
@@ -634,53 +663,65 @@
         },1000);
       });
     })();
+  </script>
 
-    // Robust lazy YouTube with multiple fallbacks + thumbnail + local SVG placeholder
-    (function(){
-      const FALLBACK_SVG='data:image/svg+xml;base64,'+
-        'PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIw'+
-        'MDAvc3ZnIiBmaWxsPSIjMTExIj48cmVjdCB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgZmlsbD0i'+
-        'IzIyMiIvPjxwYXRoIGQ9Ik0yNzAgMTM1bDExMCA0NS0xMTAgNDV6IiBmaWxsPSIjZmZmIi8+PC9z'+
-        'dmc+';
-      function mount(el){
-        const list=(el.getAttribute('data-yt')||'').split(',').map(s=>s.trim()).filter(Boolean);
-        if(!list.length) return;
-        const id=list[0];
-        const thumb=document.createElement('div'); thumb.className='video-thumb';
-        const img=document.createElement('img');
-        img.alt='Video thumbnail';
-        img.referrerPolicy='no-referrer';
-        img.src='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';
-        img.onerror=()=>{ img.src=FALLBACK_SVG; };
-        const play=document.createElement('button'); play.className='play-btn'; play.setAttribute('aria-label','Play video');
-        thumb.appendChild(img); thumb.appendChild(play); el.appendChild(thumb);
+  <script>
+  /* Robust lazy YouTube: thumbnail + play + visible fallback button (iPad-safe) */
+  (function(){
+    const PLACEHOLDER = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsPSIjMTExIj48cmVjdCB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgZmlsbD0iIzIyMiIvPjxwYXRoIGQ9Ik0yNzAgMTM1bDExMCA0NS0xMTAgNDV6IiBmaWxsPSIjZmZmIi8+PC9zdmc+';
 
-        const note=document.createElement('div'); note.className='note'; note.textContent='Tap to play';
-        el.appendChild(note);
+    function makeBtn(href){
+      const a=document.createElement('a');
+      a.className='btn'; a.target='_blank'; a.rel='noopener';
+      a.textContent='Open on YouTube'; a.href=href;
+      return a;
+    }
 
-        function tryEmbed(i){
-          if(i>=list.length){ // fallback link
-            el.innerHTML='';
-            const fb=document.createElement('div'); fb.className='vid-fallback';
-            const a=document.createElement('a'); a.className='btn'; a.target='_blank'; a.rel='noopener';
-            a.textContent='Open on YouTube';
-            a.href=el.getAttribute('data-watch') || ('https://www.youtube.com/watch?v='+list[0]);
-            fb.appendChild(a); el.appendChild(fb);
-            return;
-          }
-          const iframe=document.createElement('iframe');
-          iframe.src='https://www.youtube-nocookie.com/embed/'+list[i]+'?rel=0&modestbranding=1&autoplay=1';
-          iframe.title='YouTube video';
-          iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-          iframe.allowFullscreen=true;
-          iframe.onerror=()=>{ el.innerHTML=''; tryEmbed(i+1); };
-          el.innerHTML=''; el.appendChild(iframe);
+    function mount(el){
+      const ids=(el.getAttribute('data-yt')||'').split(',').map(s=>s.trim()).filter(Boolean);
+      if(!ids.length) return;
+      const primary = ids[0];
+      const watch = el.getAttribute('data-watch') || ('https://www.youtube.com/watch?v='+primary);
+
+      // Thumb layer
+      const thumb=document.createElement('div'); thumb.className='video-thumb';
+      const img=document.createElement('img'); img.alt='Video thumbnail';
+      img.referrerPolicy='no-referrer';
+      img.src='https://i.ytimg.com/vi/'+primary+'/hqdefault.jpg';
+      img.onerror=()=>{ img.src=PLACEHOLDER; };
+      const play=document.createElement('button'); play.className='play-btn'; play.setAttribute('aria-label','Play video');
+      thumb.appendChild(img); thumb.appendChild(play);
+
+      // Always-visible fallback row
+      const fb=document.createElement('div'); fb.className='vid-fallback';
+      fb.appendChild(makeBtn(watch));
+
+      // Note label
+      const note=document.createElement('div'); note.className='note'; note.textContent='Tap to play';
+
+      el.innerHTML=''; el.appendChild(thumb); el.appendChild(note); el.appendChild(fb);
+
+      function tryEmbed(list, i){
+        if(i>=list.length){
+          // keep fallback button visible (already there)
+          el.querySelector('.note')?.remove();
+          return;
         }
-
-        thumb.addEventListener('click', ()=> tryEmbed(0));
+        const id=list[i];
+        const frame=document.createElement('iframe');
+        frame.src='https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
+        frame.title='YouTube video';
+        frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        frame.allowFullscreen=true;
+        frame.onerror=()=>{ el.innerHTML=''; el.appendChild(fb); tryEmbed(list, i+1); };
+        el.innerHTML=''; el.appendChild(frame);
       }
-      document.querySelectorAll('.video-wrap[data-yt]').forEach(mount);
-    })();
+
+      thumb.addEventListener('click', ()=> tryEmbed(ids,0));
+    }
+
+    document.querySelectorAll('.video-wrap[data-yt]').forEach(mount);
+  })();
   </script>
 </body>
 </html>

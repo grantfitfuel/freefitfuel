@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Endurance – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+
+    /* HERO */
+    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    .hero-mini figure{margin:0;position:relative}
+    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
+    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
+    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    .hero-mini h1{margin:0 0 .35rem}
+    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+
+    /* Tabs / filters */
+    .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0 1.1rem}
+    .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
+    .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
+    .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    .mini-nav a{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);text-decoration:none;padding:.45rem .8rem;border-radius:999px;font-size:.92rem}
+    .mini-nav a:hover{color:var(--accent)}
+
+    /* Sections */
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
+    .grid{display:grid;gap:12px}
+    @media (min-width:880px){.grid{grid-template-columns:repeat(2,1fr)}}
+
+    /* Plan cards */
+    .plan{display:grid;gap:10px}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .card h3{margin:.2rem 0 .35rem}
+    .meta{color:var(--inkdim);font-size:.92rem}
+
+    table.plan{width:100%;border-collapse:collapse;margin:.35rem 0 .1rem}
+    .plan th,.plan td{border:1px solid var(--stroke);padding:.5rem .6rem;text-align:left;vertical-align:top}
+    .plan th{background:rgba(255,255,255,.06)}
+    .badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:.35rem 0}
+    .badge{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem}
+
+    /* Pace/Calc widgets */
+    .calc{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0}
+    .calc input,.calc select{background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:.45rem .55rem}
+    .calc .btn{padding:.55rem .8rem;border-radius:8px;background:var(--accent);color:#111;border:0;font-weight:800;cursor:pointer}
+    .out{margin-top:.35rem;color:var(--inkdim)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER (same as home) -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="nutrition.html">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Endurance hero">
+  <figure>
+    <img src="img/hero-endurance.jpg" alt="Running, walking, swimming, cycling collage">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Endurance that fits your life</span></h1>
+    <p>Structured walking, running, swimming and cycling plans with clear weekly targets and simple calculators. Pick a distance, choose your level, and go.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead">Use the mini-nav to jump to a discipline. Switch <strong>level</strong> to reshape the plans.</p>
+
+  <nav class="mini-nav" aria-label="Sections">
+    <a href="#walk">Walking (6k–15k steps)</a>
+    <a href="#run">Running (5K • 10K • Half • Marathon)</a>
+    <a href="#swim">Swimming</a>
+    <a href="#cycle">Cycling</a>
+    <a href="#tools">Pace & time tools</a>
+  </nav>
+
+  <!-- Global Level Selector -->
+  <div class="toolbar" aria-label="Level selector">
+    <div class="seg" role="tablist" aria-label="Difficulty">
+      <button role="tab" aria-pressed="true" data-level="beginner">Beginner</button>
+      <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
+      <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
+    </div>
+  </div>
+
+  <!-- WALKING -->
+  <section id="walk" class="section">
+    <h2>Walking (6,000 → 15,000 steps)</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Weekly Targets</h3>
+        <p class="meta">Progress gradually. If any week feels too much, repeat it before moving on.</p>
+        <table class="plan" id="walk-table"></table>
+        <div class="badges">
+          <span class="badge">Cadence bursts: 30–60s brisk</span>
+          <span class="badge">Hills: optional</span>
+          <span class="badge">Footcare matters</span>
+        </div>
+      </article>
+      <article class="card">
+        <h3>Tips for success</h3>
+        <ul>
+          <li>Posture tall, easy arm swing, roll through the foot.</li>
+          <li>Add 2–5 brisk bursts per walk; recover until talkable.</li>
+          <li>Mix surfaces: park paths, gentle trails, pavements.</li>
+          <li>Shoes that fit; swap socks if they get damp.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- RUNNING -->
+  <section id="run" class="section">
+    <h2>Running (choose your distance)</h2>
+
+    <div class="toolbar" aria-label="Distance selector">
+      <div class="seg" role="tablist" aria-label="Distance">
+        <button role="tab" aria-pressed="true" data-dist="5k">5K</button>
+        <button role="tab" aria-pressed="false" data-dist="10k">10K</button>
+        <button role="tab" aria-pressed="false" data-dist="hm">Half</button>
+        <button role="tab" aria-pressed="false" data-dist="fm">Marathon</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <h3 id="run-title">5K Plan</h3>
+        <p class="meta" id="run-meta">3 runs/week · easy + intervals + long easy</p>
+        <table class="plan" id="run-table"></table>
+        <div class="badges">
+          <span class="badge">Easy pace = talkable</span>
+          <span class="badge">Long run slow</span>
+          <span class="badge">Rest & fuel</span>
+        </div>
+      </article>
+      <article class="card">
+        <h3>Technique & safety</h3>
+        <ul>
+          <li>Warm up 5–10 min walk/jog; finish with light mobility.</li>
+          <li>Intervals: keep form tall; recover fully.</li>
+          <li>Build long-run time, not speed.</li>
+          <li>If niggles persist, scale back or rest.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- SWIMMING -->
+  <section id="swim" class="section">
+    <h2>Swimming</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Time-based sessions</h3>
+        <p class="meta">2–3 swims/week · include technique drills and easy aerobic lengths.</p>
+        <table class="plan" id="swim-table"></table>
+      </article>
+      <article class="card">
+        <h3>Tips</h3>
+        <ul>
+          <li>Warm shoulders/hips; exit the pool slowly.</li>
+          <li>Alternate stroke focus weeks (freestyle → back → mix).</li>
+          <li>Use pull buoy or fins sparingly to groove technique.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- CYCLING -->
+  <section id="cycle" class="section">
+    <h2>Cycling</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Weekly structure</h3>
+        <p class="meta">3 rides/week · endurance + cadence/intervals + long ride.</p>
+        <table class="plan" id="cycle-table"></table>
+      </article>
+      <article class="card">
+        <h3>Tips</h3>
+        <ul>
+          <li>Cadence 85–95rpm on flats; spin easy up gentle hills.</li>
+          <li>Fuel >90 min: water + carbs + a pinch of salt.</li>
+          <li>Check tyres/brakes weekly; lights for dawn/dusk.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="tools" class="section">
+    <h2>Pace & Time Tools</h2>
+    <article class="card">
+      <h3>Run pace calculator</h3>
+      <div class="calc">
+        <label>Distance
+          <select id="dist">
+            <option value="5">5K</option>
+            <option value="10">10K</option>
+            <option value="21.097">Half (21.097K)</option>
+            <option value="42.195">Marathon (42.195K)</option>
+          </select>
+        </label>
+        <label>Time (hh:mm:ss) <input id="time" placeholder="00:30:00"></label>
+        <button class="btn" id="calc">Calculate</button>
+      </div>
+      <p class="out" id="paceOut">Pace: —</p>
+    </article>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any session that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script>
+/* Header burger */
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.hamburger');
+  const nav = document.querySelector('.main-nav');
+  if(btn && nav){
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+});
+
+/* ===== State ===== */
+let level = 'beginner';
+let runDist = '5k';
+
+document.querySelectorAll('[data-level]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    level = b.dataset.level;
+    renderAll();
+  });
+});
+
+document.querySelectorAll('[data-dist]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-dist]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    runDist = b.dataset.dist;
+    renderRun();
+  });
+});
+
+/* ===== Plans ===== */
+
+/* Walking: 8-week template, auto scales by level */
+const WALK = {
+  beginner:  [
+    ['Week','Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    ['1','Rest','6k easy','Rest','6k easy','Rest','8k easy','8k easy'],
+    ['2','Rest','6.5k easy','Rest','6.5k easy','Rest','9k easy','9k easy'],
+    ['3','Rest','7k easy','Rest','7k easy','Rest','10k easy','10k easy'],
+    ['4','Rest','7.5k w/ bursts','Rest','7.5k easy','Rest','11k easy','8k easy'],
+    ['5','Rest','8k w/ bursts','Rest','8k easy','Rest','12k easy','8k easy'],
+    ['6','Rest','9k easy','Rest','8k w/ hills','Rest','13k easy','8k easy'],
+    ['7','Rest','10k easy','Rest','9k w/ bursts','Rest','14k easy','8k easy'],
+    ['8','Rest','10k easy','Rest','10k easy','Rest','15k easy','8k easy']
+  ],
+  intermediate:[
+    ['Week','Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    ['1','Rest','7k easy','Cross','7k easy','Rest','9k easy','9k easy'],
+    ['2','Rest','7.5k bursts','Cross','7.5k easy','Rest','10k easy','9k easy'],
+    ['3','Rest','8k easy','Cross','8k hills','Rest','11k easy','9k easy'],
+    ['4','Rest','8.5k bursts','Cross','8.5k easy','Rest','12k easy','8k easy'],
+    ['5','Rest','9k hills','Cross','9k easy','Rest','13k easy','8k easy'],
+    ['6','Rest','10k bursts','Cross','9k easy','Rest','14k easy','8k easy'],
+    ['7','Rest','10k hills','Cross','10k easy','Rest','15k easy','8k easy'],
+    ['8','Rest','10k easy','Cross','10k easy','Rest','15k easy','8k easy']
+  ],
+  advanced:[
+    ['Week','Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    ['1','Rest','8k bursts','Cross','8k hills','Rest','10k easy','10k easy'],
+    ['2','Rest','9k bursts','Cross','9k hills','Rest','12k easy','10k easy'],
+    ['3','Rest','10k hills','Cross','9k easy','Rest','13k easy','10k easy'],
+    ['4','Rest','10k bursts','Cross','10k hills','Rest','14k easy','9k easy'],
+    ['5','Rest','11k hills','Cross','10k bursts','Rest','15k easy','9k easy'],
+    ['6','Rest','12k easy','Cross','10k hills','Rest','15k easy','9k easy'],
+    ['7','Rest','12k bursts','Cross','11k hills','Rest','15k easy','9k easy'],
+    ['8','Rest','12k easy','Cross','10k easy','Rest','15k easy','9k easy']
+  ]
+};
+
+/* Running templates (per distance and level) — compact but useful */
+const RUN = {
+  '5k': {
+    title:'5K Plan', meta:'3 runs/week · easy + intervals + long easy',
+    beginner:[
+      ['Week','Run 1','Run 2','Run 3'],
+      ['1','Run/walk 20–25m','Easy 20m','Easy 25m'],
+      ['2','Run/walk 25–28m','Easy 22m','Easy 28m'],
+      ['3','Easy 25m','6×1m hard / 1m easy','Easy 30m'],
+      ['4','Easy 25m','7×1m hard / 1m easy','Easy 32m'],
+      ['5','Easy 28m','5×2m hard / 90s easy','Easy 34m'],
+      ['6','Easy 30m','6×2m hard / 90s easy','Easy 36m'],
+      ['7','Easy 30m','8×1m hard / 1m easy','Easy 38m'],
+      ['8','Easy 20m','4×90s brisk / 90s','Easy 20m (taper)']
+    ],
+    intermediate:[
+      ['Week','Run 1','Run 2','Run 3'],
+      ['1','Easy 30m','8×1m hard / 1m easy','Easy 35m'],
+      ['2','Easy 30m','6×2m hard / 90s','Easy 38m'],
+      ['3','Tempo 15m','10×1m hard / 1m','Easy 40m'],
+      ['4','Easy 30m','6×3m hard / 90s','Easy 42m'],
+      ['5','Tempo 20m','12×1m hard / 1m','Easy 45m'],
+      ['6','Easy 32m','5×4m hard / 2m','Easy 45m'],
+      ['7','Tempo 20m','8×2m hard / 90s','Easy 40m'],
+      ['8','Easy 20m','4×90s brisk / 90s','Easy 20m (taper)']
+    ],
+    advanced:[
+      ['Week','Run 1','Run 2','Run 3'],
+      ['1','Tempo 20m','12×1m hard / 1m','Easy 45m'],
+      ['2','Easy 35m','8×2m hard / 90s','Easy 45m'],
+      ['3','Tempo 25m','5×4m hard / 2m','Easy 48m'],
+      ['4','Easy 35m','6×3m hard / 90s','Easy 48m'],
+      ['5','Tempo 25m','16×1m hard / 1m','Easy 50m'],
+      ['6','Easy 35m','6×4m hard / 2m','Easy 50m'],
+      ['7','Tempo 20m','10×2m hard / 90s','Easy 45m'],
+      ['8','Easy 25m','6×90s brisk / 90s','Easy 20m (taper)']
+    ]
+  },
+  '10k': {
+    title:'10K Plan', meta:'4 runs/week · easy + intervals + tempo + long',
+    beginner:[
+      ['Week','EASY','INTERVALS','TEMPO','LONG'],
+      ['1','25m','6×1m / 1m','—','35m'],
+      ['2','28m','7×1m / 1m','—','38m'],
+      ['3','30m','6×2m / 90s','—','40m'],
+      ['4','30m','8×1m / 1m','15m','42m'],
+      ['5','32m','5×3m / 90s','15m','45m'],
+      ['6','32m','6×3m / 90s','18m','48m'],
+      ['7','30m','10×1m / 1m','20m','45m'],
+      ['8','20m','4×90s / 90s','—','30m (taper)']
+    ],
+    intermediate:[
+      ['Week','EASY','INTERVALS','TEMPO','LONG'],
+      ['1','30m','10×1m / 1m','15m','45m'],
+      ['2','30m','6×3m / 90s','18m','48m'],
+      ['3','32m','5×4m / 2m','20m','50m'],
+      ['4','30m','12×1m / 1m','20m','50m'],
+      ['5','32m','6×4m / 2m','22m','55m'],
+      ['6','32m','8×3m / 90s','24m','55m'],
+      ['7','30m','12×1m / 1m','20m','50m'],
+      ['8','20m','6×90s / 90s','—','35m (taper)']
+    ],
+    advanced:[
+      ['Week','EASY','INTERVALS','TEMPO','LONG'],
+      ['1','35m','12×1m / 1m','20m','55m'],
+      ['2','35m','8×3m / 90s','22m','58m'],
+      ['3','35m','6×4m / 2m','25m','60m'],
+      ['4','32m','14×1m / 1m','25m','60m'],
+      ['5','32m','6×5m / 2m','28m','65m'],
+      ['6','30m','10×3m / 90s','30m','65m'],
+      ['7','30m','16×1m / 1m','22m','55m'],
+      ['8','25m','6×90s / 90s','—','40m (taper)']
+    ]
+  },
+  'hm': {
+    title:'Half Marathon Plan', meta:'4 runs/week · easy + intervals + tempo + long',
+    beginner:[
+      ['Week','EASY','INTERVALS','TEMPO','LONG (time)'],
+      ['1','30m','6×2m / 90s','—','60m'],
+      ['2','30m','8×2m / 90s','—','70m'],
+      ['3','32m','5×4m / 2m','15m','75m'],
+      ['4','32m','10×2m / 1m','18m','80m'],
+      ['5','30m','6×4m / 2m','20m','85m'],
+      ['6','30m','12×2m / 1m','22m','90m'],
+      ['7','28m','8×3m / 90s','20m','75m'],
+      ['8','25m','6×90s / 90s','—','50m (taper)']
+    ],
+    intermediate:[
+      ['Week','EASY','INTERVALS','TEMPO','LONG'],
+      ['1','35m','12×1m / 1m','18m','75m'],
+      ['2','35m','8×3m / 90s','20m','80m'],
+      ['3','35m','6×4m / 2m','22m','85m'],
+      ['4','32m','14×1m / 1m','24m','90m'],
+      ['5','32m','6×5m / 2m','26m','95m'],
+      ['6','30m','10×3m / 90s','28m','100m'],
+      ['7','30m','16×1m / 1m','22m','85m'],
+      ['8','25m','6×90s / 90s','—','60m (taper)']
+    ],
+    advanced:[
+      ['Week','EASY','INTERVALS','TEMPO','LONG'],
+      ['1','35m','12×2m / 1m','22m','90m'],
+      ['2','35m','8×4m / 2m','24m','95m'],
+      ['3','35m','6×5m / 2m','26m','100m'],
+      ['4','32m','16×2m / 1m','28m','105m'],
+      ['5','32m','10×4m / 2m','30m','110m'],
+      ['6','30m','8×5m / 2m','32m','110m'],
+      ['7','30m','12×3m / 90s','24m','95m'],
+      ['8','25m','6×90s / 90s','—','70m (taper)']
+    ]
+  },
+  'fm': {
+    title:'Marathon Plan', meta:'5 runs/week · easy + intervals + tempo + medium + long',
+    beginner:[
+      ['Week','EASY','INTERVALS','TEMPO','MEDIUM','LONG (time)'],
+      ['1','30m','6×2m / 90s','—','45m','90m'],
+      ['2','30m','8×2m / 90s','—','50m','100m'],
+      ['3','32m','5×4m / 2m','15m','50m','110m'],
+      ['4','32m','10×2m / 1m','18m','55m','120m'],
+      ['5','30m','6×4m / 2m','20m','55m','130m'],
+      ['6','30m','12×2m / 1m','22m','60m','140m'],
+      ['7','28m','8×3m / 90s','20m','50m','110m'],
+      ['8','25m','6×90s / 90s','—','40m','75m (taper)']
+    ],
+    intermediate:[
+      ['Week','EASY','INTERVALS','TEMPO','MEDIUM','LONG'],
+      ['1','35m','12×1m / 1m','18m','55m','110m'],
+      ['2','35m','8×3m / 90s','20m','55m','120m'],
+      ['3','35m','6×4m / 2m','22m','60m','130m'],
+      ['4','32m','14×1m / 1m','24m','60m','140m'],
+      ['5','32m','6×5m / 2m','26m','60m','150m'],
+      ['6','30m','10×3m / 90s','28m','60m','150m'],
+      ['7','30m','16×1m / 1m','22m','55m','120m'],
+      ['8','25m','6×90s / 90s','—','45m','90m (taper)']
+    ],
+    advanced:[
+      ['Week','EASY','INTERVALS','TEMPO','MEDIUM','LONG'],
+      ['1','35m','12×2m / 1m','22m','65m','140m'],
+      ['2','35m','8×4m / 2m','24m','65m','150m'],
+      ['3','35m','6×5m / 2m','26m','65m','160m'],
+      ['4','32m','16×2m / 1m','28m','65m','165m'],
+      ['5','32m','10×4m / 2m','30m','65m','170m'],
+      ['6','30m','8×5m / 2m','32m','65m','170m'],
+      ['7','30m','12×3m / 90s','24m','60m','140m'],
+      ['8','25m','6×90s / 90s','—','50m','100m (taper)']
+    ]
+  }
+};
+
+/* Swimming: 2–3 sessions/week */
+const SWIM = {
+  beginner:[
+    ['Week','Session A','Session B','Session C'],
+    ['1','20m easy + drills 4×25','20–25m easy','—'],
+    ['2','20m easy + drills 6×25','25m easy','—'],
+    ['3','25m easy + 4×50 mod','25–30m easy','—'],
+    ['4','25m easy + 6×50 mod','30m easy','—'],
+    ['5','25m easy + 8×50 mod','30–35m easy','—'],
+    ['6','30m easy + 4×75 mod','30–35m easy','—'],
+    ['7','30m easy + 6×75 mod','35m easy','—'],
+    ['8','30m easy + 8×75 mod','35–40m easy','—']
+  ],
+  intermediate:[
+    ['Week','Session A','Session B','Session C'],
+    ['1','30m easy + 8×50 mod','30–35m easy','Technique 20m'],
+    ['2','30m easy + 10×50 mod','35m easy','Tech 20–25m'],
+    ['3','30m easy + 6×75 mod','35–40m easy','Tech 25m'],
+    ['4','30m easy + 8×75 mod','40m easy','Tech 25–30m'],
+    ['5','30m easy + 10×75 mod','40–45m easy','Tech 25–30m'],
+    ['6','30m easy + 6×100 mod','45m easy','Tech 30m'],
+    ['7','30m easy + 8×100 mod','45–50m easy','Tech 30m'],
+    ['8','30m easy + 10×100 mod','40m easy','Tech 20m (taper)']
+  ],
+  advanced:[
+    ['Week','Session A','Session B','Session C'],
+    ['1','35m easy + 10×75 mod','40m easy','Tech 25m'],
+    ['2','35m easy + 12×75 mod','45m easy','Tech 30m'],
+    ['3','35m easy + 8×100 mod','45–50m easy','Tech 30m'],
+    ['4','35m easy + 10×100 mod','50m easy','Tech 30–35m'],
+    ['5','35m easy + 12×100 mod','50–55m easy','Tech 35m'],
+    ['6','35m easy + 8×125 mod','55m easy','Tech 35m'],
+    ['7','35m easy + 10×125 mod','55–60m easy','Tech 35–40m'],
+    ['8','30m easy + 8×75 mod','40m easy','Tech 25m (taper)']
+  ]
+};
+
+/* Cycling: 3 rides/week */
+const CYCLE = {
+  beginner:[
+    ['Week','Endurance','Cadence/Intervals','Long'],
+    ['1','40–50m easy','6×1m high-cad / 2m easy','60–75m easy'],
+    ['2','45–55m easy','8×1m / 2m','70–80m easy'],
+    ['3','50–60m easy','6×2m / 2m','80–90m easy'],
+    ['4','50–60m easy','8×2m / 2m','90–100m easy'],
+    ['5','55–65m easy','6×3m / 2m','95–110m easy'],
+    ['6','55–65m easy','8×3m / 2m','100–115m easy'],
+    ['7','50–60m easy','10×1m / 1m','80–90m easy'],
+    ['8','40–50m easy','4×1m / 1m','60–75m easy (taper)']
+  ],
+  intermediate:[
+    ['Week','Endurance','Cadence/Intervals','Long'],
+    ['1','60m easy','10×1m / 1m','90–105m easy'],
+    ['2','60m easy','6×3m / 2m','100–115m easy'],
+    ['3','65m easy','8×3m / 2m','110–125m easy'],
+    ['4','65m easy','10×2m / 1m','120–135m easy'],
+    ['5','70m easy','6×4m / 2m','130–145m easy'],
+    ['6','70m easy','8×4m / 2m','135–150m easy'],
+    ['7','60m easy','12×1m / 1m','110–125m easy'],
+    ['8','50m easy','6×1m / 1m','80–95m easy (taper)']
+  ],
+  advanced:[
+    ['Week','Endurance','Cadence/Intervals','Long'],
+    ['1','70m easy','12×1m / 1m','120–135m easy'],
+    ['2','70m easy','8×3m / 2m','130–150m easy'],
+    ['3','75m easy','10×3m / 2m','140–160m easy'],
+    ['4','75m easy','10×4m / 2m','150–165m easy'],
+    ['5','75m easy','8×5m / 2m','160–175m easy'],
+    ['6','70m easy','10×4m / 2m','165–180m easy'],
+    ['7','60m easy','14×1m / 1m','130–150m easy'],
+    ['8','50m easy','6×1m / 1m','90–110m easy (taper)']
+  ]
+};
+
+/* ===== Render helpers ===== */
+function renderTable(el, rows){
+  if(!el || !rows || !rows.length) return;
+  el.innerHTML = rows.map((r,i)=>`<tr>${r.map((c,j)=> i===0||j===0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('');
+}
+
+/* ===== Renderers ===== */
+function renderWalk(){ renderTable(document.getElementById('walk-table'), WALK[level]); }
+
+function renderRun(){
+  const cfg = RUN[runDist];
+  document.getElementById('run-title').textContent = cfg.title;
+  document.getElementById('run-meta').textContent = cfg.meta;
+  renderTable(document.getElementById('run-table'), cfg[level]);
+}
+
+function renderSwim(){ renderTable(document.getElementById('swim-table'), SWIM[level]); }
+function renderCycle(){ renderTable(document.getElementById('cycle-table'), CYCLE[level]); }
+
+function renderAll(){ renderWalk(); renderRun(); renderSwim(); renderCycle(); }
+
+/* Pace calc */
+document.getElementById('calc').addEventListener('click', ()=>{
+  const dist = parseFloat(document.getElementById('dist').value); // km
+  const t = document.getElementById('time').value.trim();
+  const m = t.split(':').map(x=>parseInt(x||'0',10));
+  const secs = (m.length===3? (m[0]*3600+m[1]*60+m[2]) : (m.length===2? (m[0]*60+m[1]) : parseInt(t,10)||0));
+  if(!dist || !secs){ document.getElementById('paceOut').textContent='Pace: —'; return; }
+  const paceSec = Math.round(secs / dist);
+  const mm = Math.floor(paceSec/60), ss = ('0'+(paceSec%60)).slice(-2);
+  document.getElementById('paceOut').textContent = `Pace: ${mm}:${ss} / km`;
+});
+
+/* Boot */
+renderAll();
+</script>
+</body>
+</html>

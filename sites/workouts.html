@@ -181,52 +181,199 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ===== Data ===== */
-/* Anatomy PNGs currently map to simple names (place these in /img/anatomy/):
-   chest.png, front-delts.png, side-delts.png, rear-delts.png,
-   lats.png, mid-back.png, low-back.png, biceps.png, triceps.png,
-   forearms.png, glutes.png, hamstrings.png, quads.png, calves.png,
-   core.png, obliques.png, full-body.png, shoulders.png
-   → If you want to use your granular set (e.g., muscles-front-quads-rectus.png),
-     say the word and I’ll swap the mapping to those filenames.
+/* GRANULAR anatomy PNG filenames expected in /img/anatomy/ :
+   Push:
+     muscles-front-chest-pecs.png
+     muscles-front-deltoids-front.png
+     muscles-front-deltoids-mid.png
+     muscles-back-deltoids-rear.png
+     muscles-back-triceps-long.png
+     muscles-back-triceps-lateral.png
+     muscles-back-triceps-medial.png
+   Pull:
+     muscles-back-lats-upper.png
+     muscles-back-lats-lower.png
+     muscles-back-traps-upper.png
+     muscles-back-traps-mid.png
+     muscles-back-traps-lower.png
+     muscles-back-rhomboids.png
+     muscles-front-biceps-short.png
+     muscles-front-biceps-long.png
+     muscles-front-forearms-flexors.png
+     muscles-back-forearms-extensors.png
+   Legs:
+     muscles-front-quads-rectus.png
+     muscles-front-quads-vastus-lateral.png
+     muscles-front-quads-vastus-medial.png
+     muscles-back-hamstrings-biceps-femoris.png
+     muscles-back-hamstrings-semitendinosus.png
+     muscles-back-hamstrings-semimembranosus.png
+     muscles-back-glutes-maximus.png
+     muscles-front-hip-flexors.png
+     muscles-back-calves-gastrocnemius.png
+     muscles-back-calves-soleus.png
+   Core:
+     muscles-front-abs-upper.png
+     muscles-front-abs-lower.png
+     muscles-front-obliques-external.png
+     muscles-front-obliques-internal.png
+     muscles-back-erector-spinae.png
 */
 
 const EX = [
-  // PUSH
-  {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',   yt:'IODxDxX7oi4',   muscles:['chest','triceps','front-delts']},
-  {k:'dbfloor', n:'DB Floor Press',         cat:'push',  eq:'db',   yt:'Y-s9AyDhs4I',   muscles:['chest','triceps','front-delts']},
-  {k:'dbbench', n:'DB Bench Press',         cat:'push',  eq:'db',   yt:'gRVjAtPip0Y',   muscles:['chest','triceps','front-delts']},
-  {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db',   yt:'3ml7BH7mNwQ',   muscles:['front-delts','side-delts','rear-delts']},
-  {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db',   yt:'3VcKaXpzqRo',   muscles:['side-delts']},
-  {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db',   yt:'QZEqB6wUPxQ',   muscles:['quads','glutes','shoulders','core']},
+  /* ===== PUSH ===== */
+  {k:'pushup',  n:'Push-up', eq:'bw', cat:'push', yt:'IODxDxX7oi4',
+   muscles:[
+     'muscles-front-chest-pecs.png',
+     'muscles-back-triceps-lateral.png',
+     'muscles-front-deltoids-front.png'
+   ]},
+  {k:'dbfloor', n:'DB Floor Press', eq:'db', cat:'push', yt:'Y-s9AyDhs4I',
+   muscles:[
+     'muscles-front-chest-pecs.png',
+     'muscles-back-triceps-long.png',
+     'muscles-front-deltoids-front.png'
+   ]},
+  {k:'dbbench', n:'DB Bench Press', eq:'db', cat:'push', yt:'gRVjAtPip0Y',
+   muscles:[
+     'muscles-front-chest-pecs.png',
+     'muscles-back-triceps-long.png',
+     'muscles-front-deltoids-front.png'
+   ]},
+  {k:'arnold',  n:'Arnold Press', eq:'db', cat:'push', yt:'3ml7BH7mNwQ',
+   muscles:[
+     'muscles-front-deltoids-front.png',
+     'muscles-front-deltoids-mid.png',
+     'muscles-back-deltoids-rear.png'
+   ]},
+  {k:'latraise',n:'Lateral Raise', eq:'db', cat:'push', yt:'3VcKaXpzqRo',
+   muscles:[
+     'muscles-front-deltoids-mid.png',
+     'muscles-back-deltoids-rear.png'
+   ]},
+  {k:'thruster',n:'DB Thruster', eq:'db', cat:'push', yt:'QZEqB6wUPxQ',
+   muscles:[
+     'muscles-front-quads-rectus.png',
+     'muscles-back-glutes-maximus.png',
+     'muscles-front-deltoids-front.png'
+   ]},
 
-  // PULL
-  {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band', yt:'uUjQ0n0J1sE',   muscles:['lats','mid-back','rear-delts']},
-  {k:'doorrow', n:'Doorway Row',            cat:'pull',  eq:'bw',   yt:'c0G3N5aV5lY',   muscles:['lats','mid-back','rear-delts']},
-  {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band', yt:'f4ZkQem6FGo',   muscles:['lats','mid-back','biceps']},
-  {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'band', yt:'h2f_v6v3OQI',   muscles:['lats','biceps','mid-back']},
-  {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack', yt:'z9x2rYc4qYI',   muscles:['lats','biceps','mid-back']},
-  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',   yt:'wzj8gBqGxF4',   muscles:['lats','mid-back','rear-delts']},
-  {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db',   yt:'R5rj8m9r-1g',   muscles:['lats','mid-back','core']},
-  {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db',   yt:'l0gDqsSUtWo',   muscles:['biceps','forearms']},
+  /* ===== PULL ===== */
+  {k:'bandrow', n:'Band Row', eq:'band', cat:'pull', yt:'uUjQ0n0J1sE',
+   muscles:[
+     'muscles-back-lats-upper.png',
+     'muscles-back-rhomboids.png',
+     'muscles-back-traps-mid.png'
+   ]},
+  {k:'doorrow', n:'Doorway Row', eq:'bw', cat:'pull', yt:'c0G3N5aV5lY',
+   muscles:[
+     'muscles-back-lats-upper.png',
+     'muscles-back-rhomboids.png',
+     'muscles-back-traps-mid.png'
+   ]},
+  {k:'bandlat', n:'Band Lat Pulldown', eq:'band', cat:'pull', yt:'f4ZkQem6FGo',
+   muscles:[
+     'muscles-back-lats-lower.png',
+     'muscles-front-biceps-long.png',
+     'muscles-back-traps-lower.png'
+   ]},
+  {k:'anchorpd',n:'Door Anchor Pull-down', eq:'band', cat:'pull', yt:'h2f_v6v3OQI',
+   muscles:[
+     'muscles-back-lats-lower.png',
+     'muscles-front-biceps-long.png',
+     'muscles-back-traps-lower.png'
+   ]},
+  {k:'chin',    n:'Chin-up (band assist)', eq:'rack', cat:'pull', yt:'z9x2rYc4qYI',
+   muscles:[
+     'muscles-back-lats-upper.png',
+     'muscles-front-biceps-long.png',
+     'muscles-back-traps-mid.png'
+   ]},
+  {k:'csrow',   n:'Chest-Supported DB Row', eq:'db', cat:'pull', yt:'wzj8gBqGxF4',
+   muscles:[
+     'muscles-back-lats-upper.png',
+     'muscles-back-rhomboids.png',
+     'muscles-back-traps-mid.png'
+   ]},
+  {k:'renrow',  n:'Renegade Row', eq:'db', cat:'pull', yt:'R5rj8m9r-1g',
+   muscles:[
+     'muscles-back-lats-upper.png',
+     'muscles-back-erector-spinae.png',
+     'muscles-front-obliques-external.png'
+   ]},
+  {k:'zott',    n:'Zottman Curl', eq:'db', cat:'pull', yt:'l0gDqsSUtWo',
+   muscles:[
+     'muscles-front-biceps-short.png',
+     'muscles-front-forearms-flexors.png',
+     'muscles-back-forearms-extensors.png'
+   ]},
 
-  // LEGS / CORE
-  {k:'stepup',  n:'Step-up',                cat:'legs',  eq:'db',   yt:'yQ0Z5zq2mTw',   muscles:['quads','glutes','hamstrings']},
-  {k:'dbrdl',   n:'DB Romanian Deadlift',   cat:'legs',  eq:'db',   yt:'v0QZrS5rG9A',   muscles:['hamstrings','glutes','low-back']},
-  {k:'sidepl',  n:'Side Plank',             cat:'legs',  eq:'bw',   yt:'K2VljzCC16g',   muscles:['obliques','core']},
+  /* ===== LEGS / CORE ===== */
+  {k:'stepup',  n:'Step-up', eq:'db', cat:'legs', yt:'yQ0Z5zq2mTw',
+   muscles:[
+     'muscles-front-quads-rectus.png',
+     'muscles-back-glutes-maximus.png',
+     'muscles-back-hamstrings-biceps-femoris.png'
+   ]},
+  {k:'dbrdl',   n:'DB Romanian Deadlift', eq:'db', cat:'legs', yt:'v0QZrS5rG9A',
+   muscles:[
+     'muscles-back-hamstrings-biceps-femoris.png',
+     'muscles-back-hamstrings-semitendinosus.png',
+     'muscles-back-erector-spinae.png'
+   ]},
+  {k:'sidepl',  n:'Side Plank', eq:'bw', cat:'legs', yt:'K2VljzCC16g',
+   muscles:[
+     'muscles-front-obliques-external.png',
+     'muscles-front-obliques-internal.png',
+     'muscles-front-abs-lower.png'
+   ]},
 
-  // FULL BODY
-  {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db',   yt:'wV2bF1X8Y4M',   muscles:['full-body','core']},
-  {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db',   yt:'zQ6ZlJkFQ3E',   muscles:['full-body','core','front-delts']},
-  {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw',   yt:'tZyq3x1y9mQ',   muscles:['shoulders','front-delts','triceps']},
+  /* ===== FULL BODY ===== */
+  {k:'manmaker',n:'Man Maker', eq:'db', cat:'full', yt:'wV2bF1X8Y4M',
+   muscles:[
+     'muscles-front-abs-upper.png',
+     'muscles-front-abs-lower.png',
+     'muscles-front-deltoids-front.png'
+   ]},
+  {k:'dbcp',    n:'DB Clean & Press', eq:'db', cat:'full', yt:'zQ6ZlJkFQ3E',
+   muscles:[
+     'muscles-front-deltoids-front.png',
+     'muscles-front-quads-rectus.png',
+     'muscles-back-glutes-maximus.png'
+   ]},
+  {k:'hswall',  n:'Wall Handstand (beginner)', eq:'bw', cat:'full', yt:'tZyq3x1y9mQ',
+   muscles:[
+     'muscles-front-deltoids-front.png',
+     'muscles-back-triceps-long.png'
+   ]},
 
-  // CALISTHENICS FOCUS
-  {k:'dipbench',n:'Bench Dip (calisthenics)',cat:'cal',  eq:'bw',   yt:'6kALZikXxLc',   muscles:['triceps','chest','front-delts']},
-  {k:'hollow',  n:'Hollow Body Hold',       cat:'cal',   eq:'bw',   yt:'o-qlBV4J6To',   muscles:['core']},
-  {k:'lsit',    n:'L-sit (tuck progression)',cat:'cal',  eq:'bw',   yt:'F3tGqV4wJ2E',   muscles:['core','hip-flexors','triceps']},
-  {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',   yt:'YlH3z9JvNlg',   muscles:['quads','glutes','hamstrings','calves']}
+  /* ===== CALISTHENICS FOCUS ===== */
+  {k:'dipbench',n:'Bench Dip (calisthenics)', eq:'bw', cat:'cal', yt:'6kALZikXxLc',
+   muscles:[
+     'muscles-back-triceps-long.png',
+     'muscles-front-chest-pecs.png',
+     'muscles-front-deltoids-front.png'
+   ]},
+  {k:'hollow',  n:'Hollow Body Hold', eq:'bw', cat:'cal', yt:'o-qlBV4J6To',
+   muscles:[
+     'muscles-front-abs-lower.png',
+     'muscles-front-abs-upper.png'
+   ]},
+  {k:'lsit',    n:'L-sit (tuck progression)', eq:'bw', cat:'cal', yt:'F3tGqV4wJ2E',
+   muscles:[
+     'muscles-front-abs-lower.png',
+     'muscles-front-hip-flexors.png',
+     'muscles-back-triceps-long.png'
+   ]},
+  {k:'pistol',  n:'Pistol Squat (progression)', eq:'bw', cat:'cal', yt:'YlH3z9JvNlg',
+   muscles:[
+     'muscles-front-quads-vastus-medial.png',
+     'muscles-front-quads-vastus-lateral.png',
+     'muscles-back-glutes-maximus.png'
+   ]}
 ];
 
-/* Base prescriptions; goal will adjust display (see modRx) */
+/* Base prescriptions */
 const RX = {
   push:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
@@ -247,6 +394,83 @@ const RX = {
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
     intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
     advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
+  }
+};
+
+/* Goal-specific overrides/swaps:
+   - cut: more metabolic finishers, swaps toward thrusters/manmakers/rows you can circuit
+   - bulk: heavier compounds, fewer finishers
+   - transform: add complexes/finishers broadly
+   (maintain: base RX)
+*/
+const GOAL = {
+  push:{
+    cut:{
+      beginner:[{k:'pushup',rx:'3×8–12'},{k:'dbfloor',rx:'3×10–15'},{k:'thruster',rx:'2×12–15',finisher:true}],
+      intermediate:[{k:'dbbench',rx:'4×8–12'},{k:'arnold',rx:'4×10–12'},{k:'thruster',rx:'3×12–15',finisher:true}],
+      advanced:[{k:'dbbench',rx:'5×6–10'},{k:'arnold',rx:'5×8–12'},{k:'thruster',rx:'4×12'}]
+    },
+    bulk:{
+      beginner:[{k:'dbfloor',rx:'4×6–10'},{k:'pushup',rx:'3×6–10'},{k:'latraise',rx:'3×10–15'}],
+      intermediate:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×10–15'}],
+      advanced:[{k:'dbbench',rx:'5×4–6'},{k:'arnold',rx:'5×5–8'},{k:'latraise',rx:'4×10–12'}]
+    },
+    transform:{
+      beginner:[{k:'pushup',rx:'3×10–15'},{k:'thruster',rx:'3×12–15'},{k:'sidepl',rx:'3×30–45s'}],
+      intermediate:[{k:'dbbench',rx:'4×8–12'},{k:'thruster',rx:'4×10–12'},{k:'sidepl',rx:'3×40–60s'}],
+      advanced:[{k:'dbcp',rx:'5×3–5'},{k:'thruster',rx:'4×12'},{k:'manmaker',rx:'3×12'}]
+    }
+  },
+  pull:{
+    cut:{
+      beginner:[{k:'bandrow',rx:'3×12–15'},{k:'renrow',rx:'3×10–12'}],
+      intermediate:[{k:'doorrow',rx:'4×10–15'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×12–15'}],
+      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'renrow',rx:'4×10–12'}]
+    },
+    bulk:{
+      beginner:[{k:'bandrow',rx:'4×8–12'},{k:'zott',rx:'3×8–12'}],
+      intermediate:[{k:'csrow',rx:'5×6–10'},{k:'doorrow',rx:'4×8–12'},{k:'zott',rx:'3×8–10'}],
+      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–8'}]
+    },
+    transform:{
+      beginner:[{k:'bandrow',rx:'3×12–15'},{k:'doorrow',rx:'3×12–15'}],
+      intermediate:[{k:'doorrow',rx:'4×12–15'},{k:'renrow',rx:'4×10–12'}],
+      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'renrow',rx:'4×12'}]
+    }
+  },
+  legs:{
+    cut:{
+      beginner:[{k:'stepup',rx:'3×12–15'},{k:'dbrdl',rx:'3×10–15'},{k:'thruster',rx:'2×12–15',finisher:true}],
+      intermediate:[{k:'stepup',rx:'4×10–15'},{k:'dbrdl',rx:'4×8–12'},{k:'thruster',rx:'3×12–15'}],
+      advanced:[{k:'stepup',rx:'5×10–15'},{k:'dbrdl',rx:'5×6–10'},{k:'thruster',rx:'4×12'}]
+    },
+    bulk:{
+      beginner:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'}],
+      intermediate:[{k:'stepup',rx:'5×8–10'},{k:'dbrdl',rx:'5×6–8'}],
+      advanced:[{k:'dbrdl',rx:'5×5–8'},{k:'stepup',rx:'5×8–10'}]
+    },
+    transform:{
+      beginner:[{k:'stepup',rx:'3×12–15'},{k:'thruster',rx:'3×12–15'},{k:'sidepl',rx:'3×40–60s'}],
+      intermediate:[{k:'stepup',rx:'4×12–15'},{k:'thruster',rx:'4×12'},{k:'sidepl',rx:'3×45–60s'}],
+      advanced:[{k:'thruster',rx:'5×12'},{k:'dbrdl',rx:'4×8–10'},{k:'manmaker',rx:'3×12'}]
+    }
+  },
+  full:{
+    cut:{
+      beginner:[{k:'pushup',rx:'3×10–15'},{k:'bandrow',rx:'3×12–15'},{k:'stepup',rx:'3×12–15'},{k:'thruster',rx:'2×12–15'}],
+      intermediate:[{k:'dbbench',rx:'4×8–12'},{k:'doorrow',rx:'4×10–15'},{k:'stepup',rx:'4×12–15'},{k:'thruster',rx:'3×12–15'}],
+      advanced:[{k:'dbcp',rx:'4×5–8'},{k:'csrow',rx:'4×8–12'},{k:'thruster',rx:'4×12'}]
+    },
+    bulk:{
+      beginner:[{k:'dbfloor',rx:'4×6–10'},{k:'bandrow',rx:'4×8–12'},{k:'stepup',rx:'4×8–12'}],
+      intermediate:[{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'dbrdl',rx:'5×6–8'}],
+      advanced:[{k:'dbbench',rx:'5×4–6'},{k:'csrow',rx:'5×5–8'},{k:'dbrdl',rx:'5×5–8'}]
+    },
+    transform:{
+      beginner:[{k:'pushup',rx:'3×12–15'},{k:'bandrow',rx:'3×12–15'},{k:'thruster',rx:'3×12–15'}],
+      intermediate:[{k:'dbcp',rx:'4×5–8'},{k:'thruster',rx:'4×12'},{k:'manmaker',rx:'3×12'}],
+      advanced:[{k:'dbcp',rx:'5×3–5'},{k:'manmaker',rx:'4×12'},{k:'thruster',rx:'4×12'}]
+    }
   }
 };
 
@@ -309,185 +533,26 @@ function getFilters(){
 });
 
 /* ===== Helpers ===== */
-function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ')).join(', '); }
+function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ').replace('.png','')).join(', '); }
 function anatomy(ms){
-  const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}.png" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
+  // show up to 3 thumbnails; filenames are already granular
+  const imgs = ms.slice(0,3).map(file=>`<img src="img/anatomy/${file}" alt="${file.replace('.png','')}" onerror="this.style.display='none'">`).join('');
   return `<div class="anatomy">${imgs}<div class="notes"><strong>Target:</strong> ${muscleList(ms)}</div></div>`;
 }
 
-/* Adjust the printed prescription based on goal */
+/* Adjust prescription text for goal (rep/time cues) */
 function modRx(base, goal){
-  // AMRAP or seconds stay mostly as-is, add a cue note
   if(/AMRAP/i.test(base)){
     if(goal==='cut')       return base+' · steady tempo';
-    if(goal==='bulk')      return base+' · add weight if 8+ reps';
-    if(goal==='transform') return base+' · EMOM 10–15min';
+    if(goal==='bulk')      return base+' · add weight if 8+';
+    if(goal==='transform') return base+' · EMOM 10–15m';
     return base;
   }
-  // Match forms like "4×6–10" or "2×25–40s"
   const m = base.match(/^(\d+)×(\d+)(?:–(\d+))?(s)?$/i);
   if(!m) return base;
   let sets = +m[1], low = +m[2], hi = m[3]? +m[3] : +m[2], sec = !!m[4];
 
   switch(goal){
-    case 'cut':       // slightly higher reps / time, same sets
-      if(sec){ low+=5; hi+=10; }
-      else   { low+=2; hi+=2; }
-      return `${sets}×${low}–${hi}${sec?'s':''} · short rest`;
-    case 'bulk':      // heavier: fewer reps, maybe an extra set
-      if(sec){ /* keep time */ }
-      else   { low=Math.max(3,low-2); hi=Math.max(low,hi-2); }
-      sets += 0; // keep sets stable (home training)
-      return `${sets}×${low}–${hi}${sec?'s':''} · slow lower, full range`;
-    case 'transform': // conditioning bias
-      if(sec){ low+=5; hi+=10; }
-      else   { /* reps ok */ }
-      return `${sets}×${low}–${hi}${sec?'s':''} · finisher 3–5 min`;
-    default: // maintain
-      return base;
-  }
-}
-
-function timerHTML(id){ return `
-  <div class="timer" data-timer="${id}">
-    <label for="t-${id}" class="visually-hidden">Timer (seconds)</label>
-    <input id="t-${id}" type="number" min="5" step="5" value="60">
-    <button data-act="start">Start</button>
-    <button data-act="stop">Stop</button>
-    <span class="left" aria-live="polite">60s</span>
-  </div>`; }
-
-function exByKey(k){ return EX.find(x=>x.k===k); }
-
-/* ===== Renderers ===== */
-function renderPlan(){
-  const f = getFilters(); planEl.innerHTML='';
-  ['push','pull','legs','full'].forEach(group=>{
-    const blk = document.createElement('div'); blk.className='block';
-    const title = group==='full'?'Full-Body Day Combination':
-                  group==='legs'?'Legs Day · Quads • Glutes • Hamstrings • Calves':
-                  group[0].toUpperCase()+group.slice(1)+' Day';
-    blk.innerHTML = `<h3>${title}</h3>`;
-    const list = document.createElement('div');
-    RX[group][level].forEach(it=>{
-      const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${modRx(it.rx, goal)}</span>`;
-      list.appendChild(row);
-    });
-    blk.appendChild(list);
-    blk.insertAdjacentHTML('beforeend', timerHTML('tm-'+group));
-    planEl.appendChild(blk);
-  });
-  hookTimers();
-}
-
-function renderCal(){
-  const f = getFilters(); calEl.innerHTML='';
-  CAL.forEach(col=>{
-    const b = document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
-    col.items.forEach(it=>{
-      const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      let rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
-      rx = modRx(rx.replace(/^.*? /,''), goal); // display just numbers + note
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${rx}</span>`;
-      b.appendChild(row);
-    });
-    b.insertAdjacentHTML('beforeend', timerHTML('cal-'+col.title));
-    calEl.appendChild(b);
-  });
-  hookTimers();
-}
-
-function renderLibrary(){
-  const f = getFilters(); libEl.innerHTML='';
-  EX.forEach(e=>{
-    if(!f[e.eq]) return;
-    const card = document.createElement('article'); card.className='card';
-    const thumb = `https://img.youtube.com/vi/${e.yt}/hqdefault.jpg`;
-    card.innerHTML = `
-      <h4>${e.n}</h4>
-      <div class="tile" data-yt="${e.yt}">
-        <img class="thumb" src="${thumb}" alt="${e.n} thumbnail" loading="lazy">
-        <button class="play" aria-label="Play ${e.n}">
-          <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-            <circle cx="36" cy="36" r="34" stroke="white" stroke-opacity=".85" stroke-width="3"/>
-            <polygon points="30,24 52,36 30,48" fill="white" />
-          </svg>
-        </button>
-        <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                title="${e.n} form video"></iframe>
-        <div class="openers">
-          <a href="https://www.youtube.com/watch?v=${e.yt}" target="_blank" rel="noopener">Open on YouTube</a>
-          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Search</a>
-        </div>
-      </div>
-      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replace(/-/g,' ')}</span>`).join('')}</div>
-      ${anatomy(e.muscles)}
-    `;
-    libEl.appendChild(card);
-  });
-
-  // lazy-load on click to reduce “unavailable” embeds
-  libEl.querySelectorAll('.tile').forEach(tile=>{
-    const id = tile.dataset.yt;
-    const btn = tile.querySelector('.play');
-    const iframe = tile.querySelector('iframe');
-    btn.addEventListener('click', ()=>{
-      iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
-      iframe.style.display='block';
-      btn.style.display='none';
-    });
-  });
-}
-
-/* ===== Audible timers (3-beep finish) ===== */
-let audioCtx, unlocked=false;
-function ensureAudio(){
-  if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
-  if(audioCtx.state==='suspended'){ audioCtx.resume(); }
-  unlocked=true;
-}
-function beepAt(t, freq, dur){
-  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.type='sine'; o.frequency.value=freq; g.gain.value=0.0001;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start(t); g.gain.exponentialRampToValueAtTime(0.2, t+.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.stop(t+dur+.01);
-}
-function chime(){
-  if(!unlocked) return; // must have been started by a user tap first
-  const now = audioCtx.currentTime;
-  beepAt(now+0.00, 880, .15);
-  beepAt(now+0.25, 880, .15);
-  beepAt(now+0.55, 660, .25);
-}
-function hookTimers(){
-  document.querySelectorAll('[data-timer]').forEach(box=>{
-    const input = box.querySelector('input');
-    const left  = box.querySelector('.left');
-    let t=null, end=0;
-    function fmt(s){ return s+'s'; }
-    function tick(){
-      const remain = Math.max(0, Math.ceil((end - Date.now())/1000));
-      left.textContent = fmt(remain);
-      if(remain<=0){ clearInterval(t); t=null; chime(); }
-    }
-    box.querySelector('[data-act="start"]').onclick = ()=>{
-      if(!unlocked){ ensureAudio(); }
-      const sec = Math.max(5, parseInt(input.value||'60',10));
-      left.textContent = fmt(sec); end = Date.now()+sec*1000;
-      clearInterval(t); t=setInterval(tick, 200);
-    };
-    box.querySelector('[data-act="stop"]').onclick = ()=>{ clearInterval(t); t=null; left.textContent = fmt(parseInt(input.value||'60',10)); };
-  });
-}
-
-/* ===== Boot ===== */
-renderPlan(); renderCal(); renderLibrary();
-</script>
-</body>
-</html>
+    case 'cut':
+      if(sec){ low+=5; hi+=10; } else { low+=2; hi+=2; }
+      return `${sets

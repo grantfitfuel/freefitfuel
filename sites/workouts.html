@@ -9,7 +9,6 @@
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
-    /* Page-only styling */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
@@ -25,16 +24,10 @@
     .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
     .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
     .label{font-size:.9rem;opacity:.85;margin-right:.25rem}
-    /* Equipment row – slimmer pills, single line with gentle scroll on mobile */
     .equip{display:flex;gap:.35rem;flex-wrap:nowrap;overflow-x:auto;padding:.1rem .2rem;border-radius:999px}
     .equip::-webkit-scrollbar{height:6px}
     .equip::-webkit-scrollbar-thumb{background:var(--stroke);border-radius:999px}
-    .pill{
-      display:inline-flex;align-items:center;gap:.35rem;
-      background:var(--glass);border:1px solid var(--stroke);
-      border-radius:999px;padding:.28rem .55rem;font-size:.88rem;line-height:1;
-      white-space:nowrap
-    }
+    .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.28rem .55rem;font-size:.88rem;line-height:1;white-space:nowrap}
     .pill input{accent-color:var(--accent);transform:scale(.95)}
     @media (max-width: 640px){
       .label.equip-label{display:block;width:100%;margin:.2rem 0 .2rem}
@@ -88,7 +81,6 @@
 </head>
 <body>
 
-<!-- HEADER (same as home) -->
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
@@ -107,7 +99,6 @@
   </div>
 </header>
 
-<!-- HERO -->
 <header class="hero-mini" role="banner" aria-label="Workouts hero">
   <figure>
     <img src="img/workouts-hero.jpg" alt="Home workout setting with mat and dumbbells" onerror="this.src='img/hero.jpg'">
@@ -120,9 +111,9 @@
 </header>
 
 <main class="wrap">
-  <p class="lead">Pick your <strong>goal</strong>, <strong>difficulty</strong>, and <strong>equipment</strong>. Plans update instantly. Tap a tile to play the clip. If a video is blocked, use “Open on YouTube” or “Search”.</p>
+  <p class="lead">Pick your <strong>goal</strong>, <strong>difficulty</strong>, and <strong>equipment</strong>. Plans update instantly. Tap a tile to play the clip. If a video’s blocked, use “Open on YouTube” or “Search”.</p>
 
-  <!-- Global controls -->
+  <!-- Controls -->
   <div class="toolbar" aria-label="Workout controls">
     <span class="label">Goal</span>
     <div class="seg" role="tablist" aria-label="Goal">
@@ -144,29 +135,29 @@
       <span class="pill"><input type="checkbox" id="f-db" checked>   <label for="f-db">Dumbbells</label></span>
       <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
       <span class="pill"><input type="checkbox" id="f-bw" checked>   <label for="f-bw">Bodyweight</label></span>
-      <span class="pill"><input type="checkbox" id="f-rack">         <label for="f-rack">Rack / Door anchor</label></span>
+      <span class="pill"><input type="checkbox" id="f-rack" checked> <label for="f-rack">Rack / Door anchor / Rings</label></span>
     </div>
   </div>
 
-  <!-- Goal explainer -->
+  <!-- What goals mean -->
   <section class="section" aria-labelledby="goal-explain">
     <h2 id="goal-explain">What do these goals mean?</h2>
     <div class="goals">
       <div class="row">
         <h3>Maintain<span class="badge">Balance</span></h3>
-        <p class="meta">Keep strength and fitness steady with moderate sets/reps and comfortable rest. Great during busy weeks or between phases.</p>
+        <p class="meta">Keep strength & cardio steady with moderate sets/reps and comfortable rest. Great during busy weeks or between phases.</p>
       </div>
       <div class="row">
         <h3>Cut<span class="badge">Fat loss</span></h3>
-        <p class="meta">Slightly higher reps, shorter rests, and optional finishers or brisk walks. Purpose: burn more calories while preserving muscle.</p>
+        <p class="meta">Slightly higher reps, shorter rests, optional finishers or brisk walks. Aim: increase energy expenditure while preserving muscle.</p>
       </div>
       <div class="row">
         <h3>Build (Bulk)<span class="badge">Muscle gain</span></h3>
-        <p class="meta">Lower–moderate reps with controlled tempo and longer rests (90–150s) on big lifts. Focus on progressive overload and recovery.</p>
+        <p class="meta">Lower–moderate reps, controlled tempo, and longer rests (90–150s) on big moves. Aim: progressive overload + recovery.</p>
       </div>
       <div class="row">
         <h3>Transform<span class="badge">Recomposition</span></h3>
-        <p class="meta">Circuit feel with minimal rests and mixed patterns. Goal: improve muscle, fitness, and body comp together. Keep form pristine.</p>
+        <p class="meta">Circuit pace with minimal rest and mixed patterns. Aim: improve muscle, fitness, and body composition together.</p>
       </div>
     </div>
   </section>
@@ -183,7 +174,7 @@
   <div class="section">
     <h2>Calisthenics Progressions</h2>
     <div class="plan" id="cal"></div>
-    <p class="meta">Progress when all reps are clean, with full range and no pain.</p>
+    <p class="meta">Progress when all reps are clean, with full range and no pain. Use the equipment filter to show ring/bar options.</p>
   </div>
 
   <!-- Library -->
@@ -221,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ===== Data ===== */
-/* Anatomy PNGs should be in /img/anatomy/ using your granular names. */
+/* Anatomy PNGs must live in /img/anatomy/ with your granular names (as provided). */
 const EX = [
   /* ========= PUSH ========= */
   {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',   yt:'IODxDxX7oi4',   muscles:['muscles-front-chest-pecs.png','muscles-back-triceps-long.png','muscles-front-deltoids-front.png']},
@@ -234,6 +225,10 @@ const EX = [
   {k:'b-ohp',   n:'Band Overhead Press',    cat:'push',  eq:'band', yt:'DXSG5qLzZCw',   muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-back-triceps-lateral.png']},
   {k:'b-fly',   n:'Band Fly',               cat:'push',  eq:'band', yt:'UpyX0O740Gg',   muscles:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png']},
   {k:'b-kb',    n:'Band Triceps Kickback',  cat:'push',  eq:'band', yt:'RGqznhXhtJE',   muscles:['muscles-back-triceps-long.png','muscles-back-triceps-lateral.png','muscles-back-triceps-medial.png']},
+  /* Calisthenics push */
+  {k:'pike',    n:'Pike Push-up',           cat:'cal',   eq:'bw',   yt:'21rb9aIFbJY',   muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-back-triceps-long.png']},
+  {k:'pppu',    n:'Pseudo Planche Push-up', cat:'cal',   eq:'bw',   yt:'',              muscles:['muscles-front-deltoids-front.png','muscles-front-chest-pecs.png','muscles-front-abs-upper.png']},
+  {k:'ringdip', n:'Ring Dip',               cat:'cal',   eq:'rack', yt:'',              muscles:['muscles-front-chest-pecs.png','muscles-back-triceps-long.png','muscles-front-deltoids-front.png']},
 
   /* ========= PULL ========= */
   {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band', yt:'uUjQ0n0J1sE',   muscles:['muscles-back-lats-upper.png','muscles-back-rhomboids.png','muscles-back-deltoids-rear.png']},
@@ -241,6 +236,9 @@ const EX = [
   {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band', yt:'f4ZkQem6FGo',   muscles:['muscles-back-lats-upper.png','muscles-back-lats-lower.png','muscles-front-biceps-long.png']},
   {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'band', yt:'h2f_v6v3OQI',   muscles:['muscles-back-lats-upper.png','muscles-front-biceps-long.png']},
   {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack', yt:'z9x2rYc4qYI',   muscles:['muscles-back-lats-upper.png','muscles-front-biceps-long.png']},
+  {k:'pullup',  n:'Pull-up (strict)',       cat:'cal',   eq:'rack', yt:'eGo4IYlbE5g',   muscles:['muscles-back-lats-upper.png','muscles-back-traps-mid.png','muscles-front-biceps-long.png']},
+  {k:'ringrow', n:'Ring Row',               cat:'cal',   eq:'rack', yt:'',              muscles:['muscles-back-lats-upper.png','muscles-back-rhomboids.png','muscles-back-deltoids-rear.png']},
+  {k:'muscleup',n:'Muscle-up (progression)',cat:'cal',   eq:'rack', yt:'',              muscles:['muscles-back-lats-upper.png','muscles-front-chest-pecs.png','muscles-back-triceps-long.png']},
   {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',   yt:'wzj8gBqGxF4',   muscles:['muscles-back-lats-upper.png','muscles-back-rhomboids.png','muscles-back-deltoids-rear.png']},
   {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db',   yt:'R5rj8m9r-1g',   muscles:['muscles-back-lats-upper.png','muscles-back-rhomboids.png','muscles-front-abs-lower.png']},
   {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db',   yt:'l0gDqsSUtWo',   muscles:['muscles-front-biceps-long.png','muscles-front-biceps-short.png','muscles-front-forearms-flexors.png']},
@@ -259,20 +257,24 @@ const EX = [
   {k:'b-ext',   n:'Band Leg Extension',     cat:'legs',  eq:'band', yt:'d8eg6t1i6Qc',   muscles:['muscles-front-quads-rectus.png','muscles-front-quads-vastus-lateral.png','muscles-front-quads-vastus-medial.png']},
   {k:'b-curl',  n:'Band Leg Curl (lying)',  cat:'legs',  eq:'band', yt:'8HhZzQ8mV-A',   muscles:['muscles-back-hamstrings-biceps-femoris.png','muscles-back-hamstrings-semitendinosus.png','muscles-back-hamstrings-semimembranosus.png']},
   {k:'b-calf',  n:'Band Calf Raise',        cat:'legs',  eq:'band', yt:'7eTDEyrnCxo',   muscles:['muscles-back-calves-gastrocnemius.png','muscles-back-calves-soleus.png']},
+  /* Calisthenics legs/core */
+  {k:'pistol',  n:'Pistol Squat',           cat:'cal',   eq:'bw',   yt:'YlH3z9JvNlg',   muscles:['muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png','muscles-back-hamstrings-biceps-femoris.png']},
+  {k:'shrimp',  n:'Shrimp Squat',           cat:'cal',   eq:'bw',   yt:'',              muscles:['muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png']},
+  {k:'nordic',  n:'Nordic Curl (assisted)', cat:'cal',   eq:'bw',   yt:'',              muscles:['muscles-back-hamstrings-biceps-femoris.png','muscles-back-hamstrings-semitendinosus.png']},
+  {k:'hlr',     n:'Hanging Leg Raise',      cat:'cal',   eq:'rack', yt:'',              muscles:['muscles-front-abs-lower.png','muscles-front-hip-flexors.png']},
+  {k:'ttb',     n:'Toes-to-Bar (prog.)',    cat:'cal',   eq:'rack', yt:'',              muscles:['muscles-front-abs-lower.png','muscles-front-abs-upper.png','muscles-front-hip-flexors.png']},
+  {k:'dragon',  n:'Dragon Flag (prog.)',    cat:'cal',   eq:'bw',   yt:'',              muscles:['muscles-front-abs-lower.png','muscles-front-abs-upper.png']},
 
   /* ========= FULL BODY / SKILL ========= */
   {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db',   yt:'wV2bF1X8Y4M',   muscles:['muscles-front-abs-lower.png','muscles-front-deltoids-mid.png','muscles-front-chest-pecs.png']},
   {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db',   yt:'zQ6ZlJkFQ3E',   muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-front-abs-upper.png']},
   {k:'hswall',  n:'Wall Handstand (beginner)',cat:'skill',eq:'bw',  yt:'tZyq3x1y9mQ',   muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-back-triceps-long.png']},
-
-  /* ========= CALISTHENICS LIB ========= */
-  {k:'dipbench',n:'Bench Dip',              cat:'cal',   eq:'bw',   yt:'6kALZikXxLc',   muscles:['muscles-back-triceps-long.png','muscles-front-chest-pecs.png']},
-  {k:'hollow',  n:'Hollow Body Hold',       cat:'cal',   eq:'bw',   yt:'o-qlBV4J6To',   muscles:['muscles-front-abs-lower.png','muscles-front-abs-upper.png']},
-  {k:'lsit',    n:'L-sit (tuck → full)',    cat:'cal',   eq:'bw',   yt:'F3tGqV4wJ2E',   muscles:['muscles-front-abs-lower.png','muscles-front-hip-flexors.png']},
-  {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',   yt:'YlH3z9JvNlg',   muscles:['muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png','muscles-back-hamstrings-biceps-femoris.png']}
+  {k:'hspu',    n:'Handstand Push-up (prog.)',cat:'skill',eq:'bw',  yt:'',              muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-back-triceps-long.png']},
+  {k:'flhold',  n:'Front Lever (tuck→)',    cat:'skill', eq:'rack', yt:'',              muscles:['muscles-back-lats-upper.png','muscles-back-traps-mid.png','muscles-front-abs-upper.png']},
+  {k:'planche', n:'Planche Lean (tuck→)',   cat:'skill', eq:'bw',   yt:'',              muscles:['muscles-front-deltoids-front.png','muscles-front-chest-pecs.png','muscles-front-abs-upper.png']}
 ];
 
-/* prescriptions by group/level (base) */
+/* Base prescriptions by group/level */
 const RX = {
   push:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true}],
@@ -290,9 +292,9 @@ const RX = {
     advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'b-calf',rx:'4×12–20'}]
   },
   core:{
-    beginner:[{k:'sidepl',rx:'3×20–30s/side'},{k:'hollow',rx:'3×20–30s'}],
-    intermediate:[{k:'sidepl',rx:'4×30–45s/side'},{k:'hollow',rx:'4×30–45s'}],
-    advanced:[{k:'sidepl',rx:'5×45–60s/side'},{k:'hollow',rx:'5×45–60s'}]
+    beginner:[{k:'sidepl',rx:'3×20–30s/side'}],
+    intermediate:[{k:'sidepl',rx:'4×30–45s/side'}],
+    advanced:[{k:'sidepl',rx:'5×45–60s/side'}]
   },
   full:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'b-squat',rx:'3×10–15'},{k:'sidepl',rx:'2×25–40s'}],
@@ -301,24 +303,32 @@ const RX = {
   }
 };
 
-/* Calisthenics progressions follow the chosen level */
+/* Expanded calisthenics progressions (follow chosen level & filters) */
 const CAL = [
   {title:'Push', items:[
-    {k:'pushup', rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / rings 5×6–10'},
-    {k:'dipbench', rxB:'Bench dip 3×8–12', rxI:'Feet-elevated dip 4×8–12', rxA:'Parallel bar dip 5×6–10'}
+    {k:'pushup',  rxB:'Incline push-up 3×8–12',              rxI:'Flat push-up 4×8–12',                  rxA:'Feet-elevated / rings 5×6–10'},
+    {k:'pike',    rxB:'Pike push-up (hips high) 3×6–10',     rxI:'Elevated pike 4×6–10',                  rxA:'Wall HSPU partials 5×3–6'},
+    {k:'ringdip', rxB:'Bench dip 3×8–12',                    rxI:'Band-assisted ring dip 4×6–10',         rxA:'Strict ring dip 5×4–8'}
   ]},
   {title:'Pull', items:[
-    {k:'doorrow', rxB:'Table/door row 3×8–12', rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
+    {k:'ringrow', rxB:'Ring row (high) 4×8–12',              rxI:'Ring row feet-forward 4×8–12',          rxA:'Ring row feet-elevated 5×6–10'},
+    {k:'chin',    rxB:'Band-assisted chin-up 4×AMRAP',       rxI:'Chin-up 5×AMRAP',                        rxA:'Weighted chin-up 5×3–6'},
+    {k:'pullup',  rxB:'Band-assisted pull-up 4×AMRAP',       rxI:'Strict pull-up 5×AMRAP',                 rxA:'Chest-to-bar pull-up 5×3–6'}
   ]},
   {title:'Core', items:[
-    {k:'hollow', rxB:'Hollow tuck 3×20–30s', rxI:'Hollow body 4×20–40s', rxA:'Hollow rocks 4×30–45s'},
-    {k:'lsit', rxB:'Tuck L-sit 6×10–15s', rxI:'One-leg L-sit 6×10–15s', rxA:'Full L-sit 6×10–20s'}
+    {k:'hollow',  rxB:'Hollow tuck 3×20–30s',                rxI:'Hollow body 4×20–40s',                  rxA:'Hollow rocks 4×30–45s'},
+    {k:'lsit',    rxB:'Tuck L-sit 6×10–15s',                 rxI:'Advanced tuck/one-leg 6×10–15s',        rxA:'Full L-sit 6×10–20s'},
+    {k:'hlr',     rxB:'Hanging knee raise 4×8–12',           rxI:'Hanging leg raise 4×6–10',              rxA:'Toes-to-bar 5×3–8'}
   ]},
   {title:'Legs', items:[
-    {k:'pistol', rxB:'Box pistol 3×6–10/leg', rxI:'Assisted pistol 4×6–10', rxA:'Pistol 5×5–8'}
+    {k:'pistol',  rxB:'Box pistol 3×6–10/leg',               rxI:'Assisted pistol 4×6–10',                rxA:'Full pistol 5×5–8'},
+    {k:'shrimp',  rxB:'Assisted shrimp 3×6–10/leg',          rxI:'Shrimp squat 4×6–10',                   rxA:'Deep shrimp 5×5–8'},
+    {k:'nordic',  rxB:'Nordic (band/partner) 4×4–6 partial', rxI:'Nordic 4×3–6 controlled',                rxA:'Nordic eccentrics 5×3–5'}
   ]},
   {title:'Skills', items:[
-    {k:'hswall', rxB:'Wall handstand hold 5×20–30s', rxI:'Shoulder taps 4×10/side', rxA:'Freestanding attempts 8–10×15s'}
+    {k:'hswall',  rxB:'Wall handstand hold 5×20–30s',        rxI:'Wall shoulder taps 4×10/side',          rxA:'Freestanding entries 8–10×15s'},
+    {k:'flhold',  rxB:'Front-lever tuck holds 6×8–12s',      rxI:'Advanced tuck/one-leg 6×6–10s',         rxA:'Straddle/half 6×5–8s'},
+    {k:'muscleup',rxB:'Ring transition drills 6×3–5',        rxI:'Band muscle-up 6×2–4',                   rxA:'Strict muscle-up 6×1–3'}
   ]}
 ];
 
@@ -485,7 +495,6 @@ function renderLibrary(){
     libEl.appendChild(card);
   });
 
-  // lazy-load on click to reduce “unavailable” embeds
   libEl.querySelectorAll('.tile').forEach(tile=>{
     const id = tile.dataset.yt;
     const btn = tile.querySelector('.play');

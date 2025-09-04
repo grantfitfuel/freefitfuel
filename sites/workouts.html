@@ -5,72 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Workouts – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=22">
+  <!-- Shared site CSS (same file as Home uses) -->
+  <link rel="stylesheet" href="style.css?v=23">
+
+  <!-- Icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
 
   <style>
-    /* Page-only styling */
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-    .lead{color:var(--inkdim)}
+    /* Page-specific light styling */
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     .hero-mini figure{margin:0;position:relative}
-    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
+    .hero-mini img{width:100%;height:45vh;min-height:320px;object-fit:cover;filter:brightness(.88)}
     .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
-    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    .hero-mini h1{margin:0 0 .35rem}
-    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:18px 20px}
+    .eyebrow{display:inline-block;background:rgba(255,255,255,.10);border:1px solid var(--stroke);padding:.35rem .7rem;border-radius:999px;color:#ddd}
 
-    .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 1.1rem}
-    .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
-    .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
-    .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
-    .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .65rem;font-size:.92rem}
-    .pill input{accent-color:var(--accent)}
+    .controls{display:flex;flex-wrap:wrap;gap:.6rem;margin:12px 0 6px}
+    .controls .group{display:flex;gap:.35rem;align-items:center;background:var(--glass);border:1px solid var(--stroke);padding:.4rem .55rem;border-radius:12px}
+    .seg{display:flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
+    .seg button{padding:.35rem .65rem;border:0;background:transparent;color:#eaeaea}
+    .seg button.active{background:var(--accent);color:#111}
+    .seg button:not(.active):hover{filter:brightness(1.1)}
+    .equip input{margin-right:.3rem}
 
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-    .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
-    .plan{display:grid;gap:12px}
-    @media (min-width:780px){.plan{grid-template-columns:repeat(2,1fr)}}
-    .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .block h3{margin:.1rem 0 .35rem;font-size:1.05rem}
-    .mov{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem .55rem;border:1px dashed var(--stroke);border-radius:8px;margin:.35rem 0}
-    .mov .name{font-weight:600}
-    .mov .rx{opacity:.85}
+    .plan{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:14px;margin:14px 0}
+    .plan h3{margin:.1rem 0 .5rem}
+    .grid3{display:grid;gap:12px}
+    @media(min-width:900px){.grid3{grid-template-columns:repeat(3,1fr)}}
 
-    .timer{display:flex;gap:.4rem;align-items:center;margin-top:.5rem}
-    .timer input{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:6px;color:var(--ink);padding:.35rem .45rem}
-    .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
-    .timer .left{min-width:60px;text-align:right;opacity:.85}
+    .lib{margin:18px 0}
+    .tile{background:#15151b;border:1px solid #2a2a34;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px}
+    .tile h4{margin:.15rem 0}
+    .thumb{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+    .thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .thumb .playbtn{position:absolute;inset:auto 10px 10px auto;background:rgba(0,0,0,.55);color:#fff;border:1px solid #666;border-radius:999px;padding:.3rem .6rem;font-size:.85rem}
+    .tile .tags{display:flex;flex-wrap:wrap;gap:.35rem}
+    .tag{background:rgba(255,255,255,.10);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .55rem;font-size:.8rem;color:#cfd2df}
+    .muscle-badges{display:flex;align-items:center;gap:8px;margin-top:2px}
+    .muscle-badges img{height:28px;width:auto;display:none}
+    .tile .fallback{display:flex;gap:.5rem;flex-wrap:wrap}
+    .tile .fallback a{font-size:.85rem;color:#9bc4f0;text-decoration:none}
+    .tile .fallback a:hover{text-decoration:underline}
 
-    .grid{display:grid;gap:14px}
-    @media (min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
-    .card h4{margin:.7rem .9rem .35rem}
-    .tile{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
-    .tile button.play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
-    .tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.88)}
-    .tile iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none}
-
-    .tile .openers{position:absolute;right:.45rem;bottom:.45rem;display:flex;gap:.35rem;z-index:2}
-    .tile .openers a{background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:.8rem;padding:.25rem .45rem;border-radius:6px;text-decoration:none}
-
-    .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem .9rem .6rem}
-    .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.18rem .55rem;font-size:.82rem}
-
-    .anatomy{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .85rem}
-    .anatomy img{width:92px;height:auto;border-radius:8px;border:1px solid var(--stroke);background:#0b0f14}
-    .anatomy .notes{font-size:.9rem;color:var(--inkdim)}
+    .timer{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:12px;margin:16px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .timer .time{font-size:1.6rem;font-weight:800;letter-spacing:.5px}
+    .timer button{background:#2a2a34;color:#eaeaea;border:1px solid #3a3a46;border-radius:8px;padding:.5rem .7rem}
+    .timer button.primary{background:var(--accent);color:#111;border-color:transparent;font-weight:800}
   </style>
 </head>
 <body>
 
-<!-- HEADER (same as home) -->
+<!-- HEADER (shared) -->
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
-    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"><span></span><span></span><span></span></button>
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="ideas.html">Ideas</a>
@@ -86,57 +77,132 @@
 <!-- HERO -->
 <header class="hero-mini" role="banner" aria-label="Workouts hero">
   <figure>
-    <img src="img/hero.jpg" alt="Rolling out a mat with dumbbells">
+    <img src="img/floorpress.jpg" alt="Rolling out a mat at home">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content wrap">
-    <h1><span class="accent">Workouts that fit life</span></h1>
-    <p>Clear plans, video form, anatomy diagrams, and audible timers. Train smart at home with dumbbells, bands, or bodyweight.</p>
+    <span class="eyebrow">Smart split • Home-friendly</span>
+    <h1><span class="accent">Workouts that Adapt to Your Goal</span></h1>
+    <p class="lead">Choose your goal and difficulty. Equipment is optional. Every plan keeps joints happy and form clear.</p>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="lead">Pick your <strong>difficulty</strong> and <strong>equipment</strong>. Plans update instantly. Tap a tile to play the clip. If a video is blocked, use “Open on YouTube” or “Search”.</p>
 
-  <!-- Global controls -->
-  <div class="toolbar" aria-label="Workout controls">
-    <div class="seg" role="tablist" aria-label="Difficulty">
-      <button role="tab" aria-pressed="true" data-level="beginner">Beginner</button>
-      <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
-      <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
+  <!-- GLOBAL CONTROLS -->
+  <section aria-label="Workout controls" class="controls">
+    <div class="group">
+      <strong>Goal:</strong>
+      <div class="seg" id="goalSeg">
+        <button class="active" data-goal="cut">Cut</button>
+        <button data-goal="recomp">Recomp</button>
+        <button data-goal="bulk">Lean Bulk</button>
+      </div>
     </div>
-    <span class="pill"><input type="checkbox" id="f-db" checked> <label for="f-db">Dumbbells</label></span>
-    <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
-    <span class="pill"><input type="checkbox" id="f-bw" checked> <label for="f-bw">Bodyweight / Calisthenics</label></span>
-    <span class="pill"><input type="checkbox" id="f-rack"> <label for="f-rack">Bar / Door anchor</label></span>
-  </div>
+    <div class="group">
+      <strong>Difficulty:</strong>
+      <div class="seg" id="diffSeg">
+        <button class="active" data-diff="beg">Beginner</button>
+        <button data-diff="int">Intermediate</button>
+        <button data-diff="adv">Advanced</button>
+      </div>
+    </div>
+    <div class="group equip" id="equipBox" aria-label="Equipment">
+      <label><input type="checkbox" value="db" checked> Dumbbells</label>
+      <label><input type="checkbox" value="bands" checked> Bands</label>
+      <label><input type="checkbox" value="bw" checked> Bodyweight</label>
+      <label><input type="checkbox" value="bar"> Bar / Pull-up</label>
+      <label><input type="checkbox" value="bench"> Bench / Chair</label>
+    </div>
+  </section>
 
-  <!-- Weekly split -->
-  <div class="section">
+  <!-- GOAL PANELS (calories/macros at a glance) -->
+  <section class="grid3" id="goalPanels" aria-label="Goal guidance">
+    <article class="plan" data-panel="cut">
+      <h3>Cut — keep strength, drop fat</h3>
+      <ul>
+        <li>Calories: maintenance −10–20% · Protein 1.8–2.2 g/kg</li>
+        <li>Rest: mains 60–120s · accessories 45–75s</li>
+        <li>Cardio: 2–4× Zone 2 · Steps 8–12k/day</li>
+      </ul>
+    </article>
+    <article class="plan" data-panel="recomp" hidden>
+      <h3>Recomp — hold weight, improve body comp</h3>
+      <ul>
+        <li>Calories: around maintenance · Protein ~2.0 g/kg</li>
+        <li>Rest: mains 90–150s · accessories 60–90s</li>
+        <li>Cardio: 2–3× Zone 2 · Steps 7–10k/day</li>
+      </ul>
+    </article>
+    <article class="plan" data-panel="bulk" hidden>
+      <h3>Lean Bulk — build muscle, recover well</h3>
+      <ul>
+        <li>Calories: maintenance +5–15% · Protein 1.6–2.0 g/kg</li>
+        <li>Rest: mains 120–180s · accessories 75–120s</li>
+        <li>Cardio: 1–2× light Zone 2 · Steps 7–9k/day</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- WEEKLY SPLIT -->
+  <section class="plan" aria-label="Weekly split">
     <h2>Weekly Split</h2>
-    <div class="plan" id="plan"></div>
-    <p class="meta">Short on time? Do the <strong>Full-Body</strong> day 2–3×/week with a walk or mobility between.</p>
-  </div>
+    <div class="grid3">
+      <article>
+        <h3>Push Day — Chest • Shoulders • Triceps</h3>
+        <ul class="rx" data-day="push"></ul>
+      </article>
+      <article>
+        <h3>Pull Day — Back • Biceps</h3>
+        <ul class="rx" data-day="pull"></ul>
+      </article>
+      <article>
+        <h3>Legs Day — Quads • Glutes • Hamstrings • Calves</h3>
+        <ul class="rx" data-day="legs"></ul>
+      </article>
+      <article>
+        <h3>Core Day — Abs • Obliques • Low Back</h3>
+        <ul class="rx" data-day="core"></ul>
+      </article>
+      <article>
+        <h3>Full-Body Day (optional)</h3>
+        <ul class="rx" data-day="full"></ul>
+      </article>
+    </div>
+    <p class="meta">The sets × reps below adapt to your **Goal** and **Difficulty**. Swap any movement using the drop-downs.</p>
+  </section>
 
-  <!-- Calisthenics -->
-  <div class="section">
-    <h2>Calisthenics Progressions</h2>
-    <div class="plan" id="cal"></div>
-    <p class="meta">Start comfortably; progress when all reps are clean with full range.</p>
-  </div>
+  <!-- INTERVAL TIMER (with sound) -->
+  <section class="timer" aria-label="Interval timer">
+    <strong>Rest Timer</strong>
+    <span class="time" id="tTime">01:00</span>
+    <button class="primary" id="tStart">Start</button>
+    <button id="tStop">Stop</button>
+    <button id="t60">60s</button>
+    <button id="t90">90s</button>
+    <button id="t120">120s</button>
+    <audio id="beep" preload="auto">
+      <!-- Soft bell (base64 WAV) -->
+      <source src="data:audio/wav;base64,UklGRmQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYBYWFhYWFhYQAAAACAgICAgP8AAP8A//////////8AAAAAAP8A////AP8A////AAAAAP8AAP8A////AAAAAP///wD///8A" type="audio/wav">
+    </audio>
+  </section>
 
-  <!-- Library -->
-  <div class="section" id="library">
-    <h2>Form Library (watch & copy)</h2>
-    <div class="grid" id="lib"></div>
-  </div>
+  <!-- FORM LIBRARY -->
+  <section class="lib" aria-labelledby="form-title">
+    <h2 id="form-title">Form Library (watch & copy)</h2>
+    <p class="meta">Tap a tile to load the clip. If a video is unavailable, use the built-in buttons to open the clip on YouTube or search the exercise name.</p>
 
-  <section class="section">
+    <div class="grid3" id="libGrid"></div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="plan">
     <h2>Important Note</h2>
     <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
   </section>
 </main>
 
+<!-- FOOTER (shared) -->
 <footer class="site-footer">
   <div class="container">
     <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
@@ -145,278 +211,204 @@
   </div>
 </footer>
 
+<!-- JS: hamburger, goal/diff logic, timer, library -->
 <script>
-/* ===== Header burger ===== */
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector('.hamburger');
-  const nav = document.querySelector('.main-nav');
-  if(btn && nav){
+  // Hamburger
+  (function(){
+    const btn = document.querySelector('.hamburger');
+    const nav = document.querySelector('.main-nav');
+    if (!btn || !nav) return;
     btn.addEventListener('click', () => {
       const open = btn.classList.toggle('active');
       nav.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-  }
-});
+  })();
 
-/* ===== Data ===== */
-/* Anatomy PNGs live in /img/anatomy/ with these names:
-   chest.png, front-delts.png, side-delts.png, rear-delts.png,
-   lats.png, mid-back.png, low-back.png, biceps.png, triceps.png,
-   forearms.png, glutes.png, hamstrings.png, quads.png, calves.png,
-   core.png, obliques.png, full-body.png, shoulders.png
-*/
-
-const EX = [
-  // PUSH
-  {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',   yt:'IODxDxX7oi4',   muscles:['chest','triceps','front-delts']},
-  {k:'dbfloor', n:'DB Floor Press',         cat:'push',  eq:'db',   yt:'Y-s9AyDhs4I',   muscles:['chest','triceps','front-delts']},
-  {k:'dbbench', n:'DB Bench Press',         cat:'push',  eq:'db',   yt:'gRVjAtPip0Y',   muscles:['chest','triceps','front-delts']},
-  {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db',   yt:'3ml7BH7mNwQ',   muscles:['front-delts','side-delts','rear-delts']},
-  {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db',   yt:'3VcKaXpzqRo',   muscles:['side-delts']},
-  {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db',   yt:'QZEqB6wUPxQ',   muscles:['quads','glutes','shoulders','core']},
-
-  // PULL
-  {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band', yt:'uUjQ0n0J1sE',   muscles:['lats','mid-back','rear-delts']},
-  {k:'doorrow', n:'Doorway Row',            cat:'pull',  eq:'bw',   yt:'c0G3N5aV5lY',   muscles:['lats','mid-back','rear-delts']},
-  {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band', yt:'f4ZkQem6FGo',   muscles:['lats','mid-back','biceps']},
-  {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'band', yt:'h2f_v6v3OQI',   muscles:['lats','biceps','mid-back']},
-  {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack', yt:'z9x2rYc4qYI',   muscles:['lats','biceps','mid-back']},
-  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',   yt:'wzj8gBqGxF4',   muscles:['lats','mid-back','rear-delts']},
-  {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db',   yt:'R5rj8m9r-1g',   muscles:['lats','mid-back','core']},
-  {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db',   yt:'l0gDqsSUtWo',   muscles:['biceps','forearms']},
-
-  // LEGS / CORE
-  {k:'stepup',  n:'Step-up',                cat:'legs',  eq:'db',   yt:'yQ0Z5zq2mTw',   muscles:['quads','glutes','hamstrings']},
-  {k:'dbrdl',   n:'DB Romanian Deadlift',   cat:'legs',  eq:'db',   yt:'v0QZrS5rG9A',   muscles:['hamstrings','glutes','low-back']},
-  {k:'sidepl',  n:'Side Plank',             cat:'legs',  eq:'bw',   yt:'K2VljzCC16g',   muscles:['obliques','core']},
-
-  // FULL BODY
-  {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db',   yt:'wV2bF1X8Y4M',   muscles:['full-body','core']},
-  {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db',   yt:'zQ6ZlJkFQ3E',   muscles:['full-body','core','front-delts']},
-  {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw',   yt:'tZyq3x1y9mQ',   muscles:['shoulders','front-delts','triceps']},
-
-  // CALISTHENICS FOCUS
-  {k:'dipbench',n:'Bench Dip (calisthenics)',cat:'cal',  eq:'bw',   yt:'6kALZikXxLc',   muscles:['triceps','chest','front-delts']},
-  {k:'hollow',  n:'Hollow Body Hold',       cat:'cal',   eq:'bw',   yt:'o-qlBV4J6To',   muscles:['core']},
-  {k:'lsit',    n:'L-sit (tuck progression)',cat:'cal',  eq:'bw',   yt:'F3tGqV4wJ2E',   muscles:['core','hip-flexors','triceps']},
-  {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',   yt:'YlH3z9JvNlg',   muscles:['quads','glutes','hamstrings','calves']}
-];
-
-// prescriptions
-const RX = {
-  push:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'arnold',rx:'4×8–12'},{k:'latraise',rx:'3×12–15'},{k:'thruster',rx:'3×8–12',finisher:true}],
-    advanced:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×12–15'},{k:'thruster',rx:'4×10–12'}]
-  },
-  pull:{
-    beginner:[{k:'bandrow',rx:'3×10–12'},{k:'zott',rx:'3×10–12'}],
-    intermediate:[{k:'doorrow',rx:'4×8–12'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×10–12'}],
-    advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'},{k:'renrow',rx:'4×8–12'}]
-  },
-  legs:{
-    beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'sidepl',rx:'3×30–45s'}],
-    advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'thruster',rx:'4×10–12'}]
-  },
-  full:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
-    advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
-  }
-};
-
-const CAL = [
-  {title:'Push', items:[
-    {k:'pushup', rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
-    {k:'dipbench', rxB:'Bench dip 3×8–12', rxI:'Feet-elevated dip 4×8–12', rxA:'Parallel bar dip 5×6–10'}
-  ]},
-  {title:'Pull', items:[
-    {k:'doorrow', rxB:'Table/door row 3×8–12', rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
-  ]},
-  {title:'Core', items:[
-    {k:'hollow', rxB:'Hollow tuck 3×20–30s', rxI:'Hollow body 4×20–40s', rxA:'Hollow + rocks 4×30–45s'},
-    {k:'lsit', rxB:'Tuck L-sit 6×10–15s', rxI:'One-leg L-sit 6×10–15s', rxA:'Full L-sit 6×10–20s'}
-  ]},
-  {title:'Legs', items:[
-    {k:'pistol', rxB:'Box pistol 3×6–10/leg', rxI:'Assisted pistol 4×6–10', rxA:'Pistol 5×5–8'}
-  ]},
-  {title:'Skills', items:[
-    {k:'hswall', rxB:'Wall handstand hold 5×20–30s', rxI:'Wall shoulder taps 4×10/side', rxA:'Freestanding attempts 8–10×15s'}
-  ]}
-];
-
-/* ===== Rendering ===== */
-const planEl = document.getElementById('plan');
-const calEl  = document.getElementById('cal');
-const libEl  = document.getElementById('lib');
-
-let level = 'beginner';
-document.querySelectorAll('.seg [data-level]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    level = b.dataset.level;
-    renderPlan(); renderCal();
-  });
-});
-
-function getFilters(){
-  return {
-    db: document.getElementById('f-db').checked,
-    band: document.getElementById('f-band').checked,
-    bw: document.getElementById('f-bw').checked,
-    rack: document.getElementById('f-rack').checked
+  // ======= DATA =======
+  // Reps & sets per goal + difficulty (applies to all days)
+  const RX = {
+    cut:   { beg:{main:'3×6–8',  acc:'2×10–12', restMain:60, restAcc:45},
+            int:{main:'4×5–8',  acc:'3×10–12', restMain:75, restAcc:60},
+            adv:{main:'5×4–8',  acc:'3–4×10–15',restMain:90, restAcc:60} },
+    recomp:{ beg:{main:'3×6–10', acc:'3×10–12', restMain:90, restAcc:60},
+            int:{main:'4×6–10', acc:'3–4×10–15',restMain:105,restAcc:75},
+            adv:{main:'5×5–8',  acc:'4×10–15',  restMain:120,restAcc:90} },
+    bulk:  { beg:{main:'4×6–8',  acc:'3×10–15', restMain:120,restAcc:75},
+            int:{main:'5×5–8',  acc:'4×10–15', restMain:150,restAcc:90},
+            adv:{main:'5–6×4–8',acc:'4–5×12–15',restMain:180,restAcc:105} }
   };
-}
-['f-db','f-band','f-bw','f-rack'].forEach(id=>{
-  document.getElementById(id).addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); });
-});
 
-function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ')).join(', '); }
-function anatomy(ms){
-  const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}.png" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
-  return `<div class="anatomy">${imgs}<div class="notes"><strong>Target:</strong> ${muscleList(ms)}</div></div>`;
-}
-function timerHTML(id){ return `
-  <div class="timer" data-timer="${id}">
-    <label for="t-${id}" class="visually-hidden">Timer (seconds)</label>
-    <input id="t-${id}" type="number" min="5" step="5" value="60">
-    <button data-act="start">Start</button>
-    <button data-act="stop">Stop</button>
-    <span class="left" aria-live="polite">60s</span>
-  </div>`; }
+  // Exercise pools (each has type, muscle tags, optional YouTube id)
+  // Tip: if a specific ID ever breaks, the tile still offers "Open on YouTube" + Search.
+  const EXS = [
+    // PUSH
+    {name:'DB Floor Press', day:'push', type:'db', main:true, tags:['chest','triceps','front delts'], yt:'xwWfXfW8qGQ'},
+    {name:'DB Bench Press', day:'push', type:'db', main:true, tags:['chest','triceps','front delts'], yt:'tuwHzzPdaGc'},
+    {name:'Push-up',        day:'push', type:'bw', main:true, tags:['chest','triceps','front delts'], yt:'IODxDxX7oi4'},
+    {name:'Arnold Press',   day:'push', type:'db', main:false, tags:['front delts','side delts','rear delts'], yt:'3ml7BH7mNwQ'},
+    {name:'Lateral Raise',  day:'push', type:'db', main:false, tags:['side delts'], yt:'3VcKaXpzqRo'},
 
-function exByKey(k){ return EX.find(x=>x.k===k); }
+    // PULL
+    {name:'Doorway Row',          day:'pull', type:'bw', main:true,  tags:['lats','mid back','rear delts'], yt:'OTk7F6XYxJY'},
+    {name:'Band Row',             day:'pull', type:'bands', main:true, tags:['lats','mid back','rear delts'], yt:'6oFzlxh8G0I'},
+    {name:'Band Lat Pulldown',    day:'pull', type:'bands', main:true, tags:['lats','biceps','mid back'], yt:'xK9Qv2s4h3s'},
+    {name:'Chest-Supported DB Row',day:'pull', type:'db', main:false, tags:['lats','mid back','rear delts'], yt:'dypKx0R2G8A'},
+    {name:'Chin-up (band assist)',day:'pull', type:'bar bands', main:true, tags:['lats','biceps'], yt:'9YFzV9bQh5g'},
+    {name:'Zottman Curl',         day:'pull', type:'db', main:false, tags:['biceps','forearms'], yt:'Z_7e9Kp0EiE'},
 
-function renderPlan(){
-  const f = getFilters(); planEl.innerHTML='';
-  ['push','pull','legs','full'].forEach(group=>{
-    const blk = document.createElement('div'); blk.className='block';
-    const title = group==='full'?'Full-Body Day Combination':
-                  group==='legs'?'Legs Day · Quads • Glutes • Hamstrings • Calves':
-                  group[0].toUpperCase()+group.slice(1)+' Day';
-    blk.innerHTML = `<h3>${title}</h3>`;
-    const list = document.createElement('div');
-    RX[group][level].forEach(it=>{
-      const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${it.rx}</span>`;
-      list.appendChild(row);
+    // LEGS
+    {name:'Step-up',           day:'legs', type:'bench db', main:true, tags:['quads','glutes','hamstrings'], yt:'qHOk2sM0g4Q'},
+    {name:'DB Romanian Deadlift',day:'legs', type:'db', main:true, tags:['hamstrings','glutes','low back'], yt:'DJqB4Q8h3FQ'},
+    {name:'DB Thruster',       day:'legs', type:'db', main:false, tags:['quads','glutes','shoulders'], yt:'2yjwXTZQDDI'},
+
+    // CORE
+    {name:'Side Plank',        day:'core', type:'bw', main:true, tags:['obliques','core'], yt:'K2VljzCC16g'},
+    {name:'Dead Bug',          day:'core', type:'bw', main:true, tags:['core','hip flexors'], yt:'4botcY9DPnA'},
+    {name:'Hollow Hold',       day:'core', type:'bw', main:false, tags:['core'], yt:'vz3D36VXefI'},
+
+    // FULL
+    {name:'Man Maker',         day:'full', type:'db', main:true, tags:['full body','core','shoulders'], yt:'l0qZt5QhZ6M'},
+    {name:'DB Clean & Press',  day:'full', type:'db', main:true, tags:['hamstrings','glutes','shoulders'], yt:'5qJk9wO6P9Q'},
+
+    // CALISTHENICS (progressions)
+    {name:'Wall Handstand (beginner)', day:'push', type:'bw', main:false, tags:['shoulders','front delts','triceps'], yt:'VQJ9h3bV1yU'},
+    {name:'Ring Row (progression)',    day:'pull', type:'bw', main:false, tags:['lats','mid back','biceps'], yt:'6f0G3RZyq5I'}
+  ];
+
+  // ======= RENDER WEEKLY RX =======
+  const rxLists = document.querySelectorAll('.rx');
+  function fillRX(){
+    const goal = document.querySelector('#goalSeg .active').dataset.goal;
+    const diff = document.querySelector('#diffSeg .active').dataset.diff;
+    const cfg  = RX[goal][diff];
+
+    rxLists.forEach(ul=>{
+      const day = ul.dataset.day;
+      const pool = EXS.filter(e=>e.day===day);
+      // Pick 2 mains + 2 accessories where available
+      const mains = pool.filter(e=>e.main).slice(0,2);
+      const accs  = pool.filter(e=>!e.main).slice(0,2);
+      const rows = [...mains.map(e=>[e, cfg.main]), ...accs.map(e=>[e, cfg.acc])];
+
+      ul.innerHTML = rows.map(([e, dose]) => {
+        // equipment selector
+        const opts = [['db','DB'],['bands','Bands'],['bw','Bodyweight'],['bar','Bar'],['bench','Bench']]
+          .map(([v,l])=>`<option ${e.type.includes(v)?'selected':''} value="${v}">${l}</option>`).join('');
+        // simple swap dropdown (same day pool)
+        const options = EXS.filter(x=>x.day===day).map(x=>`<option ${x.name===e.name?'selected':''}>${x.name}</option>`).join('');
+
+        return `<li>
+          <strong>${e.name}</strong> — <em>${dose}</em>
+          <div style="display:flex;gap:.5rem;margin:.25rem 0 .4rem;flex-wrap:wrap">
+            <label>Swap: <select class="swap" data-day="${day}">${options}</select></label>
+            <label>Equip: <select class="equipchoose">${opts}</select></label>
+          </div>
+          <div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        </li>`;
+      }).join('');
     });
-    blk.appendChild(list);
-    blk.insertAdjacentHTML('beforeend', timerHTML('tm-'+group));
-    planEl.appendChild(blk);
-  });
-  hookTimers();
-}
+  }
+  fillRX();
 
-function renderCal(){
-  const f = getFilters(); calEl.innerHTML='';
-  CAL.forEach(col=>{
-    const b = document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
-    col.items.forEach(it=>{
-      const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${rx}</span>`;
-      b.appendChild(row);
+  document.getElementById('goalSeg').addEventListener('click', e=>{
+    if(e.target.tagName!=='BUTTON') return;
+    [...e.currentTarget.children].forEach(b=>b.classList.toggle('active', b===e.target));
+    // toggle goal panels
+    document.querySelectorAll('[data-panel]').forEach(p=>{
+      p.hidden = p.dataset.panel !== e.target.dataset.goal;
     });
-    b.insertAdjacentHTML('beforeend', timerHTML('cal-'+col.title));
-    calEl.appendChild(b);
+    fillRX();
   });
-  hookTimers();
-}
+  document.getElementById('diffSeg').addEventListener('click', e=>{
+    if(e.target.tagName!=='BUTTON') return;
+    [...e.currentTarget.children].forEach(b=>b.classList.toggle('active', b===e.target));
+    fillRX();
+  });
 
-function renderLibrary(){
-  const f = getFilters(); libEl.innerHTML='';
-  EX.forEach(e=>{
-    if(!f[e.eq]) return;
-    const card = document.createElement('article'); card.className='card';
-    const thumb = `https://img.youtube.com/vi/${e.yt}/hqdefault.jpg`;
-    card.innerHTML = `
-      <h4>${e.n}</h4>
-      <div class="tile" data-yt="${e.yt}">
-        <img class="thumb" src="${thumb}" alt="${e.n} thumbnail" loading="lazy">
-        <button class="play" aria-label="Play ${e.n}">
-          <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-            <circle cx="36" cy="36" r="34" stroke="white" stroke-opacity=".85" stroke-width="3"/>
-            <polygon points="30,24 52,36 30,48" fill="white" />
-          </svg>
-        </button>
-        <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                title="${e.n} form video"></iframe>
-        <div class="openers">
-          <a href="https://www.youtube.com/watch?v=${e.yt}" target="_blank" rel="noopener">Open on YouTube</a>
-          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Search</a>
+  // ======= TIMER =======
+  (function(){
+    const t = document.getElementById('tTime');
+    const beep = document.getElementById('beep');
+    let remain = 60, id=null;
+
+    function fmt(s){const m=Math.floor(s/60), r=(s%60).toString().padStart(2,'0'); return `${m}:${r}`;}
+    function set(s){ remain=s; t.textContent=fmt(remain); }
+    function tick(){ if(remain>0){ remain--; t.textContent=fmt(remain); if(remain===0){ try{beep.currentTime=0;beep.play().catch(()=>{});}catch(e){} clearInterval(id); id=null; } } }
+
+    document.getElementById('tStart').onclick=()=>{ if(id) return; id=setInterval(tick,1000); };
+    document.getElementById('tStop').onclick =()=>{ if(id){ clearInterval(id); id=null; } };
+    document.getElementById('t60').onclick  =()=>set(60);
+    document.getElementById('t90').onclick  =()=>set(90);
+    document.getElementById('t120').onclick =()=>set(120);
+  })();
+
+  // ======= FORM LIBRARY =======
+  const lib = document.getElementById('libGrid');
+  function ytThumb(id){ return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; }
+  function renderLib(){
+    lib.innerHTML = EXS.map(e=>{
+      const q = encodeURIComponent(e.name + ' exercise form');
+      const yid = e.yt || '';
+      const thumb = yid ? `<img alt="" src="${ytThumb(yid)}" style="width:100%;height:100%;object-fit:cover">` : '';
+      return `<article class="tile" data-name="${e.name}">
+        <h4>${e.name}</h4>
+        <div class="thumb" data-yt="${yid}">
+          ${thumb}
+          <button class="playbtn" title="Play">Play</button>
         </div>
-      </div>
-      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replace(/-/g,' ')}</span>`).join('')}</div>
-      ${anatomy(e.muscles)}
-    `;
-    libEl.appendChild(card);
+        <div class="muscle-badges">
+          <!-- If you add PNGs (e.g., img/muscles/front-delts.png), they’ll show automatically -->
+        </div>
+        <div class="tags">${e.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="fallback">
+          ${yid ? `<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${yid}">Open on YouTube</a>` : ''}
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${q}">Try a search</a>
+        </div>
+      </article>`;
+    }).join('');
+  }
+  renderLib();
+
+  // lazy load on click + handle blocked embeds
+  lib.addEventListener('click', e=>{
+    const btn = e.target.closest('.playbtn');
+    if(!btn) return;
+    const box = btn.closest('.thumb');
+    const id  = box.dataset.yt;
+    if(!id){ window.open(box.parentElement.querySelector('.fallback a[href*="results?"]').href, '_blank'); return; }
+    box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1"
+      title="Exercise video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
   });
 
-  // lazy-load on click to reduce “unavailable” embeds
-  libEl.querySelectorAll('.tile').forEach(tile=>{
-    const id = tile.dataset.yt;
-    const btn = tile.querySelector('.play');
-    const iframe = tile.querySelector('iframe');
-    btn.addEventListener('click', ()=>{
-      iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
-      iframe.style.display='block';
-      btn.style.display='none';
-    });
-  });
-}
-
-/* ===== Audible timers (3-beep finish) ===== */
-let audioCtx, unlocked=false;
-function ensureAudio(){
-  if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
-  if(audioCtx.state==='suspended'){ audioCtx.resume(); }
-  unlocked=true;
-}
-function beepAt(t, freq, dur){
-  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.type='sine'; o.frequency.value=freq; g.gain.value=0.0001;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start(t); g.gain.exponentialRampToValueAtTime(0.2, t+.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.stop(t+dur+.01);
-}
-function chime(){
-  if(!unlocked) return; // must have been started by a user tap first
-  const now = audioCtx.currentTime;
-  beepAt(now+0.00, 880, .15);
-  beepAt(now+0.25, 880, .15);
-  beepAt(now+0.55, 660, .25);
-}
-function hookTimers(){
-  document.querySelectorAll('[data-timer]').forEach(box=>{
-    const input = box.querySelector('input');
-    const left  = box.querySelector('.left');
-    let t=null, end=0;
-    function fmt(s){ return s+'s'; }
-    function tick(){
-      const remain = Math.max(0, Math.ceil((end - Date.now())/1000));
-      left.textContent = fmt(remain);
-      if(remain<=0){ clearInterval(t); t=null; chime(); }
-    }
-    box.querySelector('[data-act="start"]').onclick = ()=>{
-      if(!unlocked){ ensureAudio(); }  // unlock audio on first user gesture
-      const sec = Math.max(5, parseInt(input.value||'60',10));
-      left.textContent = fmt(sec); end = Date.now()+sec*1000;
-      clearInterval(t); t=setInterval(tick, 200);
+  // auto-show muscle PNGs if present
+  (function(){
+    const MAP = {
+      'front delts':'img/muscles/front-delts.png',
+      'side delts':'img/muscles/side-delts.png',
+      'rear delts':'img/muscles/rear-delts.png',
+      'chest':'img/muscles/chest.png',
+      'triceps':'img/muscles/triceps.png',
+      'biceps':'img/muscles/biceps.png',
+      'lats':'img/muscles/lats.png',
+      'mid back':'img/muscles/mid-back.png',
+      'low back':'img/muscles/low-back.png',
+      'quads':'img/muscles/quads.png',
+      'hamstrings':'img/muscles/hamstrings.png',
+      'glutes':'img/muscles/glutes.png',
+      'core':'img/muscles/core.png',
+      'obliques':'img/muscles/obliques.png',
+      'hip flexors':'img/muscles/hip-flexors.png',
+      'full body':'img/muscles/full-body.png'
     };
-    box.querySelector('[data-act="stop"]').onclick = ()=>{ clearInterval(t); t=null; left.textContent = fmt(parseInt(input.value||'60',10)); };
-  });
-}
-
-/* ===== Boot ===== */
-renderPlan(); renderCal(); renderLibrary();
+    document.querySelectorAll('#libGrid .tile').forEach(tile=>{
+      const badges = tile.querySelector('.muscle-badges');
+      tile.querySelectorAll('.tag').forEach(tag=>{
+        const src = MAP[tag.textContent.trim().toLowerCase()];
+        if(src){ const img=new Image(); img.src=src; img.alt=tag.textContent; img.onload=()=>{ img.style.display='block'; }; badges.appendChild(img); }
+      });
+    });
+  })();
 </script>
 </body>
 </html>

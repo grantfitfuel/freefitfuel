@@ -6,7 +6,7 @@
   <title>Workouts — FreeFitFuel</title>
 
   <!-- Site CSS -->
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=20">
 
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
@@ -18,41 +18,33 @@
 
   <style>
     html{scroll-behavior:smooth}
-    .section-note{color:var(--muted); margin:.25rem 0 .75rem}
+    .hidden{display:none!important}
+    .wrap h2{margin-top:.4rem}
+    .section-note{color:var(--muted);margin:.3rem 0 .8rem}
     .grid-2{display:grid;gap:14px}
-    @media(min-width:900px){ .grid-2{grid-template-columns:1.15fr 1fr} }
-    .card h3{margin:.1rem 0 .5rem}
-    .tiny{font-size:.9rem;color:var(--muted)}
-    .hidden{display:none !important}
+    @media(min-width:900px){.grid-2{grid-template-columns:1.15fr 1fr}}
 
-    /* Global level switch */
-    .level-switch{display:flex;flex-wrap:wrap;gap:.45rem;margin:.4rem 0 .6rem}
-    .pill{
-      border:1px solid var(--stroke);border-radius:999px;padding:.35rem .75rem;
-      background:var(--glass);cursor:pointer;font-weight:800
-    }
+    /* Level switch */
+    .level-switch{display:flex;flex-wrap:wrap;gap:.45rem;margin:.5rem 0 .8rem}
+    .pill{border:1px solid var(--stroke);border-radius:999px;padding:.4rem .8rem;background:var(--glass);font-weight:800;cursor:pointer}
     .pill.active{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
-    .pill:focus{outline:2px solid var(--accent)}
 
-    /* Equipment chips (per section) */
+    /* Equipment chips */
     .chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.55rem 0 .4rem}
-    .chip{
-      border:1px solid var(--stroke);border-radius:999px;padding:.35rem .7rem;font-size:.92rem;
-      background:var(--glass);cursor:pointer;user-select:none;line-height:1.1
-    }
+    .chip{border:1px solid var(--stroke);border-radius:999px;padding:.32rem .7rem;background:var(--glass);cursor:pointer}
     .chip.active{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
-    .chip:focus{outline:2px solid var(--accent)}
 
-    /* Blocks & layouts */
-    details.block{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;margin:.65rem 0}
-    details.block > summary{cursor:pointer;font-weight:800;list-style:none}
-    details.block > summary::-webkit-details-marker{display:none}
-    .lvl{display:grid;gap:10px;margin:.6rem 0 0}
-    @media(min-width:760px){ .lvl{grid-template-columns:repeat(2,1fr)} }
+    /* Blocks */
+    details.block{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;margin:.7rem 0}
+    details.block>summary{cursor:pointer;font-weight:800;list-style:none}
+    details.block>summary::-webkit-details-marker{display:none}
+
+    .lvl{display:grid;gap:12px;margin-top:.6rem}
+    @media(min-width:760px){.lvl{grid-template-columns:repeat(2,1fr)}}
     .opt{background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:10px;padding:10px}
     .title{font-weight:800;display:flex;align-items:center;gap:.5rem}
-    .eq{font-size:.76rem;opacity:.85;border:1px solid var(--stroke);border-radius:999px;padding:.05rem .45rem}
-    .meta-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:.25rem 0}
+    .eq{font-size:.76rem;opacity:.9;border:1px solid var(--stroke);border-radius:999px;padding:.05rem .45rem}
+    .meta-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:.2rem 0}
     .meta-badges .tag{font-size:.78rem;opacity:.9;border:1px dashed var(--stroke);border-radius:999px;padding:.05rem .45rem}
     .desc{color:#c8c8d2;font-size:.95rem;margin:.2rem 0 .35rem}
     .links a{color:var(--accent);text-decoration:none}
@@ -63,36 +55,32 @@
     .muscles .i{width:18px;height:18px;display:inline-flex;color:#cfd9e6}
     .muscles .label{font-size:.8rem;opacity:.9}
 
-    /* Swap details */
+    /* Swaps */
     details.swap{margin:.25rem 0 0}
-    details.swap > summary{list-style:none;cursor:pointer;color:var(--ink);font-weight:700}
-    details.swap > summary::-webkit-details-marker{display:none}
-    details.swap .alts{margin:.35rem 0 0}
-    .alts a{color:var(--accent)}
+    details.swap>summary{list-style:none;cursor:pointer;font-weight:700}
+    details.swap>summary::-webkit-details-marker{display:none}
+    .alts{margin:.35rem 0 0}
     .alts li{margin:.15rem 0}
 
-    /* Rest timers */
+    /* Timers */
     .rest{display:flex;align-items:center;gap:.5rem;margin-top:.35rem}
-    .rest button{
-      border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
-      padding:.25rem .6rem;border-radius:8px;cursor:pointer
-    }
+    .rest button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.25rem .6rem;border-radius:8px;cursor:pointer}
     .rest .count{font-variant-numeric:tabular-nums;opacity:.9}
 
     /* Video tiles (robust lazy) */
     .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--stroke);min-height:220px}
-    .video-thumb{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .video-thumb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
     .video-thumb img{width:100%;height:100%;object-fit:cover;filter:brightness(.85)}
-    .play-btn{position:absolute; width:68px; height:48px; border:0; border-radius:12px; background:rgba(0,0,0,.55); cursor:pointer; display:flex; align-items:center; justify-content:center}
-    .play-btn:before{content:""; display:block; width:0; height:0; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:3px}
-    .vid-fallback{display:flex;gap:.5rem;align-items:center;justify-content:center;padding:.5rem}
+    .play-btn{position:absolute;width:68px;height:48px;border:0;border-radius:12px;background:rgba(0,0,0,.55);cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .play-btn:before{content:"";width:0;height:0;border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:3px}
+    .vid-fallback{display:flex;gap:.5rem;align-items:center;justify-content:center;padding:.5rem;flex-wrap:wrap}
     .vid-fallback a.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .7rem;border-radius:8px;background:var(--accent);color:#111;border:0;text-decoration:none}
     .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
     .video-wrap .note{position:absolute;bottom:6px;left:8px;font-size:.8rem;color:#ddd;background:rgba(0,0,0,.45);padding:.1rem .4rem;border-radius:6px}
 
     /* Print */
     @media print{
-      .site-header,.hero,.video-wrap,.chips,.rest,.main-nav,.hamburger{display:none !important}
+      .site-header,.hero,.video-wrap,.chips,.rest,.main-nav,.hamburger{display:none!important}
       .opt{break-inside:avoid}
       a{color:#000;text-decoration:underline}
       body{background:#fff;color:#000}
@@ -101,7 +89,7 @@
 </head>
 <body>
 
-  <!-- HEADER (matches home) -->
+  <!-- HEADER (matches home, Home link restored) -->
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="logo" aria-label="FreeFitFuel — Home">
@@ -113,6 +101,7 @@
       </button>
 
       <nav id="primary-nav" class="main-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
         <a href="ideas.html">Ideas</a>
         <a href="guides.html">Guides</a>
         <a href="workouts.html" aria-current="page">Workouts</a>
@@ -132,11 +121,11 @@
     <div class="hero-content wrap">
       <span class="eyebrow">Train smart • recover well</span>
       <h1><span class="accent">Workouts that fit your life</span></h1>
-      <p class="lead">Clear warm-ups, global level switch, equipment filters, muscle-group visuals, and solid form demos.</p>
+      <p class="lead">Clear warm-ups, a global level selector, equipment filters, muscle-group visuals, and solid form demos.</p>
     </div>
   </header>
 
-  <!-- SVG muscle icon sprite -->
+  <!-- Muscle icons -->
   <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
     <symbol id="m-chest" viewBox="0 0 24 24"><path fill="currentColor" d="M4 9c2-3 6-4 8-4s6 1 8 4l-2 6c-1 2-3 3-6 3s-5-1-6-3L4 9z"/></symbol>
     <symbol id="m-shoulders" viewBox="0 0 24 24"><path fill="currentColor" d="M12 5a4 4 0 1 1 0 8a4 4 0 0 1 0-8zm-8 9c2-3 6-3 8-3s6 0 8 3l-1 4H5l-1-4z"/></symbol>
@@ -151,7 +140,7 @@
   </svg>
 
   <main class="wrap">
-    <!-- WARM-UP -->
+    <!-- Warm-up -->
     <section id="warmup">
       <h2>Warm-up (6–8 minutes)</h2>
       <div class="grid-2">
@@ -165,20 +154,20 @@
             <li>Glute bridge × 10</li>
             <li>March in place × 30–45 s</li>
           </ol>
-          <p class="tiny">Breathe slow; exhale on the effort. Keep ranges comfy, no bouncing.</p>
+          <p class="meta">Breathe slow; exhale on the effort. Keep ranges comfy, no bouncing.</p>
         </article>
         <article class="card">
           <h3>Demo (All Adults)</h3>
           <div class="video-wrap" data-yt="f3zOrYCwquE,3uEbG8TlJ7Y" data-watch="https://www.youtube.com/watch?v=f3zOrYCwquE" aria-label="Warm-up video"></div>
-          <p class="tiny">A 5-minute full-body warm-up suitable for most adults (approx ages 16–60).</p>
+          <p class="meta">A 5-minute full-body warm-up suitable for most adults (approx ages 16–60).</p>
         </article>
       </div>
     </section>
 
-    <!-- WEEKLY SPLIT with GLOBAL LEVEL SWITCH -->
+    <!-- Weekly split & global level switch -->
     <section id="split">
       <h2>Weekly Split</h2>
-      <p class="section-note">Run a 4-day week (Mon Push · Tue Pull · Thu Legs · Sat Full-Body), or a 3-day rotation by dropping one day each week. Keep 1–2 reps “in reserve”.</p>
+      <p class="section-note">Run a 4-day week (Mon Push • Tue Pull • Thu Legs • Sat Full-Body), or a 3-day rotation by dropping one day each week. Keep 1–2 reps “in reserve”.</p>
 
       <div class="level-switch" role="group" aria-label="Choose difficulty level">
         <button class="pill" data-level="beginner">Beginner</button>
@@ -189,41 +178,38 @@
       <!-- PUSH -->
       <details class="block" open data-section="push" aria-labelledby="push-title">
         <summary id="push-title">Push Day <span class="badge">Chest • Shoulders • Triceps</span></summary>
-        <div class="chips" role="group" aria-label="Filter Push exercises by equipment">
+        <div class="chips" role="group" aria-label="Filter Push by equipment">
           <button class="chip active" data-eq="all">All</button>
           <button class="chip" data-eq="bodyweight">Bodyweight</button>
           <button class="chip" data-eq="bands">Bands</button>
           <button class="chip" data-eq="dumbbells">Dumbbells</button>
           <button class="chip" data-eq="mixed">Mixed</button>
         </div>
-        <p class="tiny">Pick 1 press, 1 overhead, and 1–2 accessories.</p>
+        <p class="meta">Pick 1 press, 1 overhead, and 1–2 accessories.</p>
 
         <div class="lvl">
-          <!-- BEGINNER -->
+          <!-- Beginner -->
           <div class="opt" data-equip="bodyweight" data-level="beginner">
             <div class="title">Wall Push-up <span class="eq">(BW)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span><span class="label">Chest • Shoulders • Triceps</span></div>
-            <div class="meta-badges"><span class="tag">RPE 6–7</span><span class="tag">Form</span></div>
             <div class="desc">Groove alignment with low load; great entry for shoulders and core.</div>
             <div class="links"><a href="#form-pushup">Form demo</a> • 3–4×10–15</div>
-            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No wall? Try incline on a counter.</li></ul></details>
-            <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count" aria-live="polite"></span></div>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No wall? Use a countertop for incline push-ups.</li></ul></details>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
           </div>
 
           <div class="opt" data-equip="bands" data-level="beginner">
             <div class="title">Band Chest Press <span class="eq">(Band)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Tempo 2-1-1</span><span class="tag">Hypertrophy</span></div>
-            <div class="desc">Anchor band behind; ribs down; steady press path.</div>
+            <div class="desc">Anchor behind; ribs down; steady press path.</div>
             <div class="links"><a href="#form-floor-press">Alt: DB floor press</a> • 3–4×10–14</div>
             <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
           </div>
 
-          <!-- INTERMEDIATE -->
+          <!-- Intermediate -->
           <div class="opt" data-equip="bodyweight" data-level="intermediate">
             <div class="title">Push-up (Standard) <span class="eq">(BW)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Tempo 2-0-1</span><span class="tag">RPE 7–8</span></div>
             <div class="desc">Body in one line; elbows ~45°; smooth reps.</div>
             <div class="links"><a href="#form-pushup">Form demo</a> • 4×8–12</div>
             <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
@@ -232,17 +218,15 @@
           <div class="opt" data-equip="dumbbells" data-level="intermediate">
             <div class="title">DB Floor Press <span class="eq">(DB)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Tempo 2-1-1</span></div>
             <div class="desc">Chest press without a bench; pause near floor.</div>
             <div class="links"><a href="#form-floor-press">Form demo</a> • 4×6–10</div>
             <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
           </div>
 
-          <!-- ADVANCED -->
+          <!-- Advanced -->
           <div class="opt" data-equip="dumbbells" data-level="advanced">
             <div class="title">DB Bench Press (heavy) <span class="eq">(DB)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">RPE 8</span><span class="tag">Power</span></div>
             <div class="desc">Add load carefully; soft touch; even press.</div>
             <div class="links"><a href="#form-bench-press">Form demo</a> • 5×5–8</div>
             <div class="rest"><button data-t="120">Start 120s</button><span class="count"></span></div>
@@ -251,7 +235,6 @@
           <div class="opt" data-equip="dumbbells" data-level="advanced">
             <div class="title">Arnold Press <span class="eq">(DB)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Tempo 2-0-2</span></div>
             <div class="desc">Front/side delt focus; rotate palms during press.</div>
             <div class="links"><a href="#form-arnold">Form demo</a> • 3×8–10</div>
             <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
@@ -262,20 +245,19 @@
       <!-- PULL -->
       <details class="block" data-section="pull" aria-labelledby="pull-title">
         <summary id="pull-title">Pull Day <span class="badge">Back • Rear delts • Biceps</span></summary>
-        <div class="chips" role="group" aria-label="Filter Pull exercises by equipment">
+        <div class="chips" role="group" aria-label="Filter Pull by equipment">
           <button class="chip active" data-eq="all">All</button>
           <button class="chip" data-eq="bodyweight">Bodyweight</button>
           <button class="chip" data-eq="bands">Bands</button>
           <button class="chip" data-eq="dumbbells">Dumbbells</button>
           <button class="chip" data-eq="mixed">Mixed</button>
         </div>
-        <p class="tiny">Choose 1 main row, 1 vertical pull, and 1–2 accessories (include biceps).</p>
+        <p class="meta">Choose 1 main row, 1 vertical pull, and 1–2 accessories (include biceps).</p>
 
         <div class="lvl">
           <div class="opt" data-equip="bands" data-level="beginner">
             <div class="title">Standing Band Row <span class="eq">(Band)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Mid-back • Biceps</span></div>
-            <div class="meta-badges"><span class="tag">Tempo 2-1-2</span></div>
             <div class="desc">Initiate with the shoulder blade; keep ribs down.</div>
             <div class="links"><a href="#form-band-row">Form demo</a> • 4×10–12</div>
             <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
@@ -308,7 +290,6 @@
           <div class="opt" data-equip="mixed" data-level="advanced">
             <div class="title">Chin-up / Band-Assisted <span class="eq">(Mix)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="i"><svg><use href="#m-biceps"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Power</span></div>
             <div class="desc">Underhand grip; chest tall; full hang to chest up.</div>
             <div class="links"><a href="#form-chinup">Form demo</a> • 4×AMRAP</div>
             <div class="rest"><button data-t="120">Start 120s</button><span class="count"></span></div>
@@ -317,7 +298,6 @@
           <div class="opt" data-equip="dumbbells" data-level="all">
             <div class="title">Biceps Curl <span class="eq">(DB)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-biceps"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Tempo 2-0-3</span></div>
             <div class="desc">Elbows by sides; control the lower.</div>
             <div class="links"><a href="#form-biceps-curl">Form demo</a> • 3×10–12</div>
             <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
@@ -335,7 +315,7 @@
       <!-- LEGS -->
       <details class="block" data-section="legs" aria-labelledby="legs-title">
         <summary id="legs-title">Legs Day <span class="badge">Quads • Glutes • Hamstrings • Calves</span></summary>
-        <div class="chips" role="group" aria-label="Filter Legs exercises by equipment">
+        <div class="chips" role="group" aria-label="Filter Legs by equipment">
           <button class="chip active" data-eq="all">All</button>
           <button class="chip" data-eq="bodyweight">Bodyweight</button>
           <button class="chip" data-eq="bands">Bands</button>
@@ -397,7 +377,7 @@
       <!-- FULL BODY -->
       <details class="block" data-section="full" aria-labelledby="full-title">
         <summary id="full-title">Full-Body Day <span class="badge">Combination</span></summary>
-        <div class="chips" role="group" aria-label="Filter Full-body exercises by equipment">
+        <div class="chips" role="group" aria-label="Filter Full-Body by equipment">
           <button class="chip active" data-eq="all">All</button>
           <button class="chip" data-eq="bodyweight">Bodyweight</button>
           <button class="chip" data-eq="bands">Bands</button>
@@ -416,7 +396,6 @@
           <div class="opt" data-equip="dumbbells" data-level="intermediate">
             <div class="title">DB Thruster (Squat + Press) <span class="eq">(DB)</span></div>
             <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-core"/></svg></span></div>
-            <div class="meta-badges"><span class="tag">Power</span></div>
             <div class="desc">Total-body power; moderate load.</div>
             <div class="links"><a href="#form-thruster">Form demo</a> • 3–4×8–10</div>
             <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
@@ -453,56 +432,46 @@
       </details>
     </section>
 
-    <!-- FORM LIBRARY (includes calisthenics) -->
+    <!-- FORM LIBRARY (with calisthenics) -->
     <section id="form-library">
       <h2>Form Library (watch &amp; copy)</h2>
-      <p class="section-note">Tap a tile to load the video. If unavailable, use the YouTube button — each tile has alternates and a safe fallback.</p>
+      <p class="section-note">Tap a tile to play. If a video is unavailable, use the built-in buttons to open the clip on YouTube or search the exercise name.</p>
 
       <div class="grid">
-        <!-- Push / Chest / Shoulders -->
+        <!-- Push -->
         <article class="card" id="form-pushup"><h3>Push-up</h3><div class="video-wrap" data-yt="_l3ySVKYVJ8,rMvwVtlqjTE" data-watch="https://www.youtube.com/watch?v=_l3ySVKYVJ8"></div></article>
         <article class="card" id="form-floor-press"><h3>DB Floor Press</h3><div class="video-wrap" data-yt="m3XG-sXKTA0,8Qz2r7Yv7Cw" data-watch="https://www.youtube.com/watch?v=m3XG-sXKTA0"></div></article>
         <article class="card" id="form-bench-press"><h3>DB Bench Press</h3><div class="video-wrap" data-yt="VMqnyf69XnU,gRVjAtPip0Y" data-watch="https://www.youtube.com/watch?v=VMqnyf69XnU"></div></article>
-        <article class="card" id="form-incline-press"><h3>DB Incline Press</h3><div class="video-wrap" data-yt="8iPEnn-ltC8,Pn4VYxW6fKw" data-watch="https://www.youtube.com/watch?v=8iPEnn-ltC8"></div></article>
-        <article class="card" id="form-ohp"><h3>DB Overhead Press</h3><div class="video-wrap" data-yt="B-aVuyhvLHU,2yjwXTZQDDI" data-watch="https://www.youtube.com/watch?v=B-aVuyhvLHU"></div></article>
         <article class="card" id="form-arnold"><h3>Arnold Press</h3><div class="video-wrap" data-yt="6Z15_WdXmVw,sqZ9xIYpYxA" data-watch="https://www.youtube.com/watch?v=6Z15_WdXmVw"></div></article>
         <article class="card" id="form-lateral-raise"><h3>Lateral Raise</h3><div class="video-wrap" data-yt="3VcKaXpzqRo,0G2_XV7slIg" data-watch="https://www.youtube.com/watch?v=3VcKaXpzqRo"></div></article>
 
-        <!-- Pull / Back / Biceps -->
+        <!-- Pull -->
         <article class="card" id="form-band-row"><h3>Band Row</h3><div class="video-wrap" data-yt="aptW3fPa5WM,8R7g8rO1b1E" data-watch="https://www.youtube.com/watch?v=aptW3fPa5WM"></div></article>
         <article class="card" id="form-door-row"><h3>Doorway Row</h3><div class="video-wrap" data-yt="qv8T1iWJ3tM,W5B9uO1m1mA" data-watch="https://www.youtube.com/watch?v=qv8T1iWJ3tM"></div></article>
         <article class="card" id="form-band-pulldown"><h3>Band Lat Pulldown</h3><div class="video-wrap" data-yt="Hv2gJ1UsxSY,lm4Oa8LwF7M" data-watch="https://www.youtube.com/watch?v=Hv2gJ1UsxSY"></div></article>
-        <article class="card" id="form-db-row"><h3>One-arm DB Row</h3><div class="video-wrap" data-yt="pYcpY20QaE8,tbqa9j6Hn7A" data-watch="https://www.youtube.com/watch?v=pYcpY20QaE8"></div></article>
         <article class="card" id="form-chest-row"><h3>Chest-Supported DB Row</h3><div class="video-wrap" data-yt="8iJEVijSsGY,9bOm1dK1T2M" data-watch="https://www.youtube.com/watch?v=8iJEVijSsGY"></div></article>
-        <article class="card" id="form-door-pulldown"><h3>Door-Anchor Pulldown</h3><div class="video-wrap" data-yt="8TRxUQH7ZCk,2p5dQ2lDLP0" data-watch="https://www.youtube.com/watch?v=8TRxUQH7ZCk"></div></article>
         <article class="card" id="form-chinup"><h3>Chin-up (band assist)</h3><div class="video-wrap" data-yt="bJZfH_RpGdQ,hrl5R8rP2p0" data-watch="https://www.youtube.com/watch?v=bJZfH_RpGdQ"></div></article>
         <article class="card" id="form-biceps-curl"><h3>Biceps Curl</h3><div class="video-wrap" data-yt="in7PaeYlhrM,ykJmrZ5v0Oo" data-watch="https://www.youtube.com/watch?v=in7PaeYlhrM"></div></article>
         <article class="card" id="form-hammer-curl"><h3>Hammer Curl</h3><div class="video-wrap" data-yt="zC3nLlEvin4,ER7H54L1cQk" data-watch="https://www.youtube.com/watch?v=zC3nLlEvin4"></div></article>
-        <article class="card" id="form-reverse-fly"><h3>Reverse Fly</h3><div class="video-wrap" data-yt="ttvfGg9d76c,Ud0y3YqJ3so" data-watch="https://www.youtube.com/watch?v=ttvfGg9d76c"></div></article>
 
         <!-- Legs -->
         <article class="card" id="form-sit-stand"><h3>Sit-to-Stand</h3><div class="video-wrap" data-yt="eutszbtbJM8,2wz2fK3Wv78" data-watch="https://www.youtube.com/watch?v=eutszbtbJM8"></div></article>
-        <article class="card" id="form-bridge"><h3>Glute Bridge</h3><div class="video-wrap" data-yt="OUgsJ8-Vi0E,9qo48CYN06w" data-watch="https://www.youtube.com/watch?v=OUgsJ8-Vi0E"></div></article>
         <article class="card" id="form-step-up"><h3>Step-up</h3><div class="video-wrap" data-yt="DP7E3w1K0mA,CbZzW2Z-1nE" data-watch="https://www.youtube.com/watch?v=DP7E3w1K0mA"></div></article>
         <article class="card" id="form-goblet"><h3>Goblet Squat</h3><div class="video-wrap" data-yt="MeIiIdhvXT4,6xwGFn-J_Qo" data-watch="https://www.youtube.com/watch?v=MeIiIdhvXT4"></div></article>
         <article class="card" id="form-rdl"><h3>DB Romanian Deadlift</h3><div class="video-wrap" data-yt="hQgFixeXdZo,6q2mvR8k2Xo" data-watch="https://www.youtube.com/watch?v=hQgFixeXdZo"></div></article>
         <article class="card" id="form-deadlift"><h3>DB Deadlift</h3><div class="video-wrap" data-yt="t7k8l8M2V44,EEqGdS7Z1g4" data-watch="https://www.youtube.com/watch?v=t7k8l8M2V44"></div></article>
-        <article class="card" id="form-split-squat"><h3>Split Squat</h3><div class="video-wrap" data-yt="m8mQ_92_Ylg,5wJ8k1Wqgmc" data-watch="https://www.youtube.com/watch?v=m8mQ_92_Ylg"></div></article>
-        <article class="card" id="form-bulgarian"><h3>Bulgarian Split Squat</h3><div class="video-wrap" data-yt="2C-uNgKwPLE,l0o-Sg2sYp0" data-watch="https://www.youtube.com/watch?v=2C-uNgKwPLE"></div></article>
-        <article class="card" id="form-hip-thrust"><h3>Hip Thrust</h3><div class="video-wrap" data-yt="MVMNk0HiTMg,SEdqd1n0cvg" data-watch="https://www.youtube.com/watch?v=MVMNk0HiTMg"></div></article>
-        <article class="card" id="form-jump-squat"><h3>Jump Squat</h3><div class="video-wrap" data-yt="A-cFYWvaHr0,1u6QO5Z8nYo" data-watch="https://www.youtube.com/watch?v=A-cFYWvaHr0"></div></article>
         <article class="card" id="form-calf-raise"><h3>Calf Raise</h3><div class="video-wrap" data-yt="YMmgqO8Jo-k,1wxfIduY7uU" data-watch="https://www.youtube.com/watch?v=YMmgqO8Jo-k"></div></article>
 
         <!-- Full body / Core -->
         <article class="card" id="form-squat"><h3>Bodyweight Squat</h3><div class="video-wrap" data-yt="aclHkVaku9U,gsNoPYwWXeM" data-watch="https://www.youtube.com/watch?v=aclHkVaku9U"></div></article>
         <article class="card" id="form-thruster"><h3>DB Thruster</h3><div class="video-wrap" data-yt="0yH4m3mY1bE,qQbVTO4GfXk" data-watch="https://www.youtube.com/watch?v=0yH4m3mY1bE"></div></article>
         <article class="card" id="form-side-plank"><h3>Side Plank</h3><div class="video-wrap" data-yt="Lm8Can8q2l4,IDi1s0q0G9k" data-watch="https://www.youtube.com/watch?v=Lm8Can8q2l4"></div></article>
+        <article class="card" id="form-renegade-row"><h3>Renegade Row</h3><div class="video-wrap" data-yt="ojF1rG7ZB7c,8u6A2c4jGg4" data-watch="https://www.youtube.com/watch?v=ojF1rG7ZB7c"></div></article>
         <article class="card" id="form-manmaker"><h3>Man Maker</h3><div class="video-wrap" data-yt="0HkK3nB4O5o,9fRz8cIh8EM" data-watch="https://www.youtube.com/watch?v=0HkK3nB4O5o"></div></article>
         <article class="card" id="form-clean-press"><h3>DB Clean &amp; Press</h3><div class="video-wrap" data-yt="GRX2N3PzQnA,3d-3Bnq0sY8" data-watch="https://www.youtube.com/watch?v=GRX2N3PzQnA"></div></article>
         <article class="card" id="form-handstand"><h3>Handstand (wall)</h3><div class="video-wrap" data-yt="0L7qsUqvW6Y,5Q5b7c9e9mI" data-watch="https://www.youtube.com/watch?v=0L7qsUqvW6Y"></div></article>
-        <article class="card" id="form-renegade-row"><h3>Renegade Row</h3><div class="video-wrap" data-yt="ojF1rG7ZB7c,8u6A2c4jGg4" data-watch="https://www.youtube.com/watch?v=ojF1rG7ZB7c"></div></article>
 
-        <!-- CALISTHENICS CORE SET -->
+        <!-- Calisthenics -->
         <article class="card" id="cal-pullup"><h3>Pull-up Progression</h3><div class="video-wrap" data-yt="eGo4IYlbE5g,2QfS8iH0Y2c" data-watch="https://www.youtube.com/watch?v=eGo4IYlbE5g"></div></article>
         <article class="card" id="cal-dip"><h3>Parallel Bar Dip</h3><div class="video-wrap" data-yt="2z8JmcrW-As,6kALZikXxLc" data-watch="https://www.youtube.com/watch?v=2z8JmcrW-As"></div></article>
         <article class="card" id="cal-inverted"><h3>Inverted Row</h3><div class="video-wrap" data-yt="G6eY9lCw6rY,NS6FZxG0Y6g" data-watch="https://www.youtube.com/watch?v=G6eY9lCw6rY"></div></article>
@@ -512,7 +481,7 @@
       </div>
     </section>
 
-    <!-- SAFETY -->
+    <!-- Safety -->
     <section id="safety">
       <h2>Safety first</h2>
       <ul>
@@ -522,7 +491,7 @@
       </ul>
     </section>
 
-    <!-- DISCLAIMER -->
+    <!-- Disclaimer -->
     <section class="disclaimer" role="note">
       <h2>Important Note</h2>
       <p>
@@ -552,172 +521,150 @@
     </div>
   </footer>
 
-  <!-- JS: menu, unified filters, timers w/ bell, robust lazy YouTube -->
+  <!-- JS: hamburger -->
   <script>
-    // Hamburger
     (function(){
-      const btn = document.querySelector('.hamburger');
-      const nav = document.querySelector('.main-nav');
-      if(btn && nav){
-        btn.addEventListener('click',()=>{
-          const open = btn.classList.toggle('active');
-          nav.classList.toggle('open', open);
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-      }
-    })();
-  </script>
-
-  <script>
-    // ===== Level + Equipment filters (unified & state-aware) =====
-    (function(){
-      const LVL_KEY='fff-level';
-      const EQ_KEY='fff-eq-memory'; // { push:'all', pull:'bands', legs:'dumbbells', full:'all' }
-
-      // read memory
-      let level = (localStorage.getItem(LVL_KEY) || 'beginner');
-      let eqMem = {}; try{ eqMem = JSON.parse(localStorage.getItem(EQ_KEY) || '{}'); }catch(e){ eqMem={} }
-
-      // write helpers
-      function setLevel(lvl){
-        level = lvl;
-        localStorage.setItem(LVL_KEY, lvl);
-        document.documentElement.dataset.fffLevel = lvl; // expose for others if needed
-        document.querySelectorAll('.level-switch .pill').forEach(p=>{
-          p.classList.toggle('active', p.dataset.level===lvl);
-        });
-        updateAllSections();
-      }
-      function setEq(sectionEl, eq){
-        const key = sectionEl.getAttribute('data-section');
-        eqMem[key] = eq;
-        localStorage.setItem(EQ_KEY, JSON.stringify(eqMem));
-        // chip UI
-        sectionEl.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.eq===eq));
-        updateSection(sectionEl);
-      }
-
-      // show/hide respecting BOTH filters
-      function updateSection(sectionEl){
-        const key = sectionEl.getAttribute('data-section');
-        const eq = eqMem[key] || 'all';
-        sectionEl.querySelectorAll('.opt').forEach(opt=>{
-          const optEq  = opt.getAttribute('data-equip')  || 'all';
-          const optLvl = opt.getAttribute('data-level')  || 'all';
-          const eqOk   = (eq==='all' || eq===optEq);
-          const lvlOk  = (optLvl==='all' || optLvl===level);
-          opt.classList.toggle('hidden', !(eqOk && lvlOk));
-        });
-      }
-      function updateAllSections(){
-        document.querySelectorAll('details.block[data-section]').forEach(updateSection);
-      }
-
-      // init level UI
-      const pills = [...document.querySelectorAll('.level-switch .pill')];
-      if(!pills.some(p=>p.dataset.level===level)) level='beginner';
-      pills.forEach(p=>p.addEventListener('click', ()=> setLevel(p.dataset.level)));
-      setLevel(level); // initial paint
-
-      // init each section’s equipment from memory (default 'all')
-      document.querySelectorAll('details.block[data-section]').forEach(sec=>{
-        const key = sec.getAttribute('data-section');
-        if(!eqMem[key]) eqMem[key] = 'all';
-        // bind chip clicks
-        sec.addEventListener('click', (e)=>{
-          const chip = e.target.closest('.chip');
-          if(!chip) return;
-          e.preventDefault();
-          setEq(sec, chip.dataset.eq);
-        });
-        // paint initial chips & visibility
-        setEq(sec, eqMem[key]);
+      const btn=document.querySelector('.hamburger');
+      const nav=document.querySelector('.main-nav');
+      if(!btn||!nav) return;
+      btn.addEventListener('click',()=>{
+        const open=btn.classList.toggle('active');
+        nav.classList.toggle('open',open);
+        btn.setAttribute('aria-expanded',open?'true':'false');
       });
     })();
   </script>
 
+  <!-- JS: level + equipment filters (global, persistent) -->
   <script>
-    // Rest timers with bell via WebAudio (no external files)
+    (function(){
+      const LVL_KEY='fff-level';
+      const EQ_KEY='fff-eq-memory'; // { push:'all', pull:'all', legs:'all', full:'all' }
+
+      let level=(localStorage.getItem(LVL_KEY)||'beginner');
+      let eqMem={}; try{eqMem=JSON.parse(localStorage.getItem(EQ_KEY)||'{}')}catch(e){eqMem={}}
+
+      function setLevel(lvl){
+        level=lvl; localStorage.setItem(LVL_KEY,lvl);
+        document.querySelectorAll('.level-switch .pill').forEach(p=>p.classList.toggle('active',p.dataset.level===lvl));
+        updateAll();
+      }
+      function setEq(sectionEl, eq){
+        const key=sectionEl.getAttribute('data-section');
+        eqMem[key]=eq; localStorage.setItem(EQ_KEY,JSON.stringify(eqMem));
+        sectionEl.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.eq===eq));
+        updateSection(sectionEl);
+      }
+      function updateSection(sectionEl){
+        const key=sectionEl.getAttribute('data-section');
+        const eq=eqMem[key]||'all';
+        sectionEl.querySelectorAll('.opt').forEach(opt=>{
+          const oe=opt.getAttribute('data-equip')||'all';
+          const ol=opt.getAttribute('data-level')||'all';
+          const show=( (eq==='all'||eq===oe) && (ol==='all'||ol===level) );
+          opt.classList.toggle('hidden',!show);
+        });
+      }
+      function updateAll(){ document.querySelectorAll('details.block[data-section]').forEach(updateSection); }
+
+      // init level
+      if(!['beginner','intermediate','advanced'].includes(level)) level='beginner';
+      document.querySelectorAll('.level-switch .pill').forEach(p=>p.addEventListener('click',()=>setLevel(p.dataset.level)));
+      setLevel(level);
+
+      // init equipment per section
+      document.querySelectorAll('details.block[data-section]').forEach(sec=>{
+        const key=sec.getAttribute('data-section');
+        if(!eqMem[key]) eqMem[key]='all';
+        sec.addEventListener('click',e=>{
+          const chip=e.target.closest('.chip'); if(!chip) return;
+          e.preventDefault(); setEq(sec,chip.dataset.eq);
+        });
+        setEq(sec,eqMem[key]);
+      });
+    })();
+  </script>
+
+  <!-- JS: rest timers with bell -->
+  <script>
     (function(){
       let activeTimer=null;
-      const beep=()=>{
+      function beep(){
         try{
           const ctx=new (window.AudioContext||window.webkitAudioContext)();
-          const o=ctx.createOscillator(); const g=ctx.createGain();
+          const o=ctx.createOscillator(), g=ctx.createGain();
           o.type='sine'; o.frequency.value=880;
-          g.gain.setValueAtTime(0.0001, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
-          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+0.25);
+          g.gain.setValueAtTime(0.0001,ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.2,ctx.currentTime+0.01);
+          g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.25);
           o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.27);
         }catch(e){}
-      };
-      document.addEventListener('click', function(e){
+      }
+      document.addEventListener('click',e=>{
         const btn=e.target.closest('.rest button[data-t]'); if(!btn) return;
-        const block=btn.closest('.rest'); const out=block.querySelector('.count');
-        const secs=parseInt(btn.getAttribute('data-t'),10)||60;
+        const out=btn.parentElement.querySelector('.count');
+        const secs=+btn.getAttribute('data-t')||60;
         if(activeTimer) clearInterval(activeTimer);
-        let remain=secs; out.textContent=remain+'s'; out.dataset.running='1';
+        let t=secs; out.textContent=t+'s';
         activeTimer=setInterval(()=>{
-          remain--; if(remain<=0){ clearInterval(activeTimer); activeTimer=null; out.textContent='Go!'; delete out.dataset.running; beep(); return; }
-          out.textContent=remain+'s';
+          t--; if(t<=0){ clearInterval(activeTimer); activeTimer=null; out.textContent='Go!'; beep(); return; }
+          out.textContent=t+'s';
         },1000);
       });
     })();
   </script>
 
+  <!-- JS: robust lazy YouTube with thumbnail and dual fallbacks -->
   <script>
-  /* Robust lazy YouTube: thumbnail + play + visible fallback button (iPad-safe) */
   (function(){
-    const PLACEHOLDER = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsPSIjMTExIj48cmVjdCB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgZmlsbD0iIzIyMiIvPjxwYXRoIGQ9Ik0yNzAgMTM1bDExMCA0NS0xMTAgNDV6IiBmaWxsPSIjZmZmIi8+PC9zdmc+';
+    const PLACEHOLDER='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBmaWxsPSIjMTExIj48cmVjdCB3aWR0aD0iNjQwIiBoZWlnaHQ9IjM2MCIgZmlsbD0iIzIyMiIvPjxwYXRoIGQ9Ik0yNzAgMTM1bDExMCA0NS0xMTAgNDV6IiBmaWxsPSIjZmZmIi8+PC9zdmc+';
 
-    function makeBtn(href){
+    function makeBtn(label, href){
       const a=document.createElement('a');
       a.className='btn'; a.target='_blank'; a.rel='noopener';
-      a.textContent='Open on YouTube'; a.href=href;
+      a.textContent=label; a.href=href;
       return a;
     }
 
     function mount(el){
       const ids=(el.getAttribute('data-yt')||'').split(',').map(s=>s.trim()).filter(Boolean);
       if(!ids.length) return;
-      const primary = ids[0];
-      const watch = el.getAttribute('data-watch') || ('https://www.youtube.com/watch?v='+primary);
+      const primary=ids[0];
+      const watch=el.getAttribute('data-watch')||('https://www.youtube.com/watch?v='+primary);
 
-      // Thumb layer
+      const title=el.closest('.card')?.querySelector('h3')?.textContent?.trim()||'exercise form';
+      const searchUrl='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' tutorial');
+
+      // thumb
       const thumb=document.createElement('div'); thumb.className='video-thumb';
-      const img=document.createElement('img'); img.alt='Video thumbnail';
-      img.referrerPolicy='no-referrer';
+      const img=document.createElement('img'); img.alt='Video thumbnail'; img.referrerPolicy='no-referrer';
       img.src='https://i.ytimg.com/vi/'+primary+'/hqdefault.jpg';
       img.onerror=()=>{ img.src=PLACEHOLDER; };
       const play=document.createElement('button'); play.className='play-btn'; play.setAttribute('aria-label','Play video');
       thumb.appendChild(img); thumb.appendChild(play);
 
-      // Always-visible fallback row
+      // fallback bar
       const fb=document.createElement('div'); fb.className='vid-fallback';
-      fb.appendChild(makeBtn(watch));
+      fb.appendChild(makeBtn('Open on YouTube',watch));
+      fb.appendChild(makeBtn('Search on YouTube',searchUrl));
 
-      // Note label
       const note=document.createElement('div'); note.className='note'; note.textContent='Tap to play';
 
       el.innerHTML=''; el.appendChild(thumb); el.appendChild(note); el.appendChild(fb);
 
-      function tryEmbed(list, i){
-        if(i>=list.length){
-          // keep fallback button visible (already there)
-          el.querySelector('.note')?.remove();
-          return;
-        }
+      function tryEmbed(list,i){
+        if(i>=list.length){ el.querySelector('.note')?.remove(); return; }
         const id=list[i];
         const frame=document.createElement('iframe');
         frame.src='https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
         frame.title='YouTube video';
         frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
         frame.allowFullscreen=true;
-        frame.onerror=()=>{ el.innerHTML=''; el.appendChild(fb); tryEmbed(list, i+1); };
+        frame.onerror=()=>{ el.innerHTML=''; el.appendChild(fb); tryEmbed(list,i+1); };
         el.innerHTML=''; el.appendChild(frame);
       }
 
-      thumb.addEventListener('click', ()=> tryEmbed(ids,0));
+      thumb.addEventListener('click',()=>tryEmbed(ids,0));
     }
 
     document.querySelectorAll('.video-wrap[data-yt]').forEach(mount);

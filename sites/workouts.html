@@ -36,8 +36,6 @@
       white-space:nowrap
     }
     .pill input{accent-color:var(--accent);transform:scale(.95)}
-
-    /* Stack Equipment label above on small screens for cleaner alignment */
     @media (max-width: 640px){
       .label.equip-label{display:block;width:100%;margin:.2rem 0 .2rem}
       .equip{padding-left:0}
@@ -52,7 +50,9 @@
     .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .block h3{margin:.1rem 0 .35rem;font-size:1.05rem}
     .mov{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem .55rem;border:1px dashed var(--stroke);border-radius:8px;margin:.35rem 0}
-    .mov .name{font-weight:600}
+    .mov .name{font-weight:700}
+    .mov .name a{color:var(--ink);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.25)}
+    .mov .name a:hover{color:var(--accent);text-decoration:none;border-bottom-color:var(--accent)}
     .mov .rx{opacity:.9}
 
     .timer{display:flex;gap:.4rem;align-items:center;margin-top:.5rem;flex-wrap:wrap}
@@ -80,7 +80,6 @@
     .meta{color:var(--inkdim);font-size:.92rem}
     .muted{opacity:.8}
 
-    /* Goal explainer card */
     .goals{display:grid;gap:.5rem}
     .goals .row{display:grid;gap:.35rem}
     @media (min-width:700px){ .goals{grid-template-columns:repeat(2,1fr)} }
@@ -223,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* ===== Data ===== */
 /* Anatomy PNGs should be in /img/anatomy/ using your granular names. */
-
 const EX = [
   /* ========= PUSH ========= */
   {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',   yt:'IODxDxX7oi4',   muscles:['muscles-front-chest-pecs.png','muscles-back-triceps-long.png','muscles-front-deltoids-front.png']},
@@ -232,8 +230,6 @@ const EX = [
   {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db',   yt:'3ml7BH7mNwQ',   muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-back-deltoids-rear.png']},
   {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db',   yt:'3VcKaXpzqRo',   muscles:['muscles-front-deltoids-mid.png']},
   {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db',   yt:'QZEqB6wUPxQ',   muscles:['muscles-front-deltoids-mid.png','muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png']},
-
-  /* Bands – Push */
   {k:'b-chest', n:'Band Chest Press',       cat:'push',  eq:'band', yt:'POx0bVn823Q',   muscles:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png','muscles-back-triceps-long.png']},
   {k:'b-ohp',   n:'Band Overhead Press',    cat:'push',  eq:'band', yt:'DXSG5qLzZCw',   muscles:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png','muscles-back-triceps-lateral.png']},
   {k:'b-fly',   n:'Band Fly',               cat:'push',  eq:'band', yt:'UpyX0O740Gg',   muscles:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png']},
@@ -360,9 +356,10 @@ function getFilters(){
     rack: document.getElementById('f-rack').checked
   };
 }
-function muscleList(ms){ return ms.map(x=>x.replace(/muscles-|front-|back-|\.png/gi,'').replace(/-/g,' ')).join(', '); }
+function muscleLabel(m){return m.replace(/muscles-|front-|back-|\.png/gi,'').replace(/-/g,' ')}
+function muscleList(ms){ return ms.map(muscleLabel).join(', '); }
 function anatomy(ms){
-  const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
+  const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}" alt="${muscleLabel(m)} diagram" onerror="this.style.display='none'">`).join('');
   return `<div class="anatomy">${imgs}<div class="notes"><strong>Target:</strong> ${muscleList(ms)}</div></div>`;
 }
 function timerHTML(id){ return `
@@ -374,17 +371,20 @@ function timerHTML(id){ return `
     <span class="left" aria-live="polite">60s</span>
   </div>`; }
 function exByKey(k){ return EX.find(x=>x.k===k); }
+function exHref(e){
+  return e.yt ? `https://www.youtube.com/watch?v=${e.yt}`
+              : `https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}`;
+}
 function goalNote(){
   const el = document.getElementById('goal-note');
   const map = {
     maintain:'Maintain: moderate sets, steady tempo, 60–90s rest.',
-    cut:'Cut: higher reps, shorter rests, optional finishers or brisk walk after.',
+    cut:'Cut: higher reps, shorter rests, optional finisher or brisk walk after.',
     build:'Build: lower–moderate reps, controlled tempo, 90–150s rest on big moves.',
     transform:'Transform: circuit pace, minimal rest; keep form pristine.'
   };
   el.textContent = map[goal] || '';
 }
-/* tweak RX text by goal (visual hint only) */
 function adjRx(text){
   if(goal==='cut')       return text + ' · short rest';
   if(goal==='build')     return text + ' · longer rest';
@@ -414,7 +414,8 @@ function renderPlan(){
       const e = exByKey(it.k); if(!e) return;
       if(!f[e.eq]) return;
       const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${adjRx(it.rx)}</span>`;
+      const link = `<a href="${exHref(e)}" target="_blank" rel="noopener" aria-label="Open ${e.n} on YouTube">${e.n}</a>`;
+      row.innerHTML = `<span class="name">${link}</span><span class="rx">${adjRx(it.rx)}</span>`;
       list.appendChild(row);
     });
     if(!list.children.length){
@@ -440,7 +441,8 @@ function renderCal(){
       if(!f[e.eq]) return;
       const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
       const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${adjRx(rx)}</span>`;
+      const link = `<a href="${exHref(e)}" target="_blank" rel="noopener" aria-label="Open ${e.n} on YouTube">${e.n}</a>`;
+      row.innerHTML = `<span class="name">${link}</span><span class="rx">${adjRx(rx)}</span>`;
       b.appendChild(row);
     });
     if(b.children.length===1){
@@ -473,16 +475,17 @@ function renderLibrary(){
         <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 title="${e.n} form video"></iframe>
         <div class="openers">
-          <a href="${e.yt ? 'https://www.youtube.com/watch?v='+e.yt : 'https://www.youtube.com/results?search_query='+encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Open on YouTube</a>
+          <a href="${exHref(e)}" target="_blank" rel="noopener">Open on YouTube</a>
           <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Search</a>
         </div>
       </div>
-      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replace(/muscles-|front-|back-|\.png/gi,'').replace(/-/g,' ')}</span>`).join('')}</div>
+      <div class="tags">${e.muscles.map(m=>`<span class="tag">${muscleLabel(m)}</span>`).join('')}</div>
       ${anatomy(e.muscles)}
     `;
     libEl.appendChild(card);
   });
 
+  // lazy-load on click to reduce “unavailable” embeds
   libEl.querySelectorAll('.tile').forEach(tile=>{
     const id = tile.dataset.yt;
     const btn = tile.querySelector('.play');
@@ -493,8 +496,8 @@ function renderLibrary(){
         iframe.style.display='block';
         btn.style.display='none';
       } else {
-        const a = tile.querySelector('.openers a:last-child');
-        if(a) a.click();
+        const opener = tile.querySelector('.openers a');
+        if(opener) opener.click();
       }
     });
   });

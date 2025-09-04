@@ -10,6 +10,17 @@
 
   <style>
     /* Page-only styling */
+    /* Keep equipment pills in one row; allow horizontal scroll on small screens */
+.equip{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:.6rem;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+}
+.equip::-webkit-scrollbar{height:6px}
+.equip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:999px}
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
@@ -104,26 +115,21 @@
 
   <!-- Global controls -->
   <div class="toolbar" aria-label="Workout controls">
-    <span class="label">Goal</span>
-    <div class="seg" role="tablist" aria-label="Goal">
-      <button role="tab" aria-pressed="true"  data-goal="maintain">Maintain</button>
-      <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
-      <button role="tab" aria-pressed="false" data-goal="build">Build</button>
-      <button role="tab" aria-pressed="false" data-goal="transform">Transform</button>
-    </div>
+  <!-- Difficulty -->
+  <div class="seg" role="tablist" aria-label="Difficulty">
+    <button role="tab" aria-pressed="true" data-level="beginner">Beginner</button>
+    <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
+    <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
+  </div>
 
-    <span class="label" style="margin-left:.6rem">Difficulty</span>
-    <div class="seg" role="tablist" aria-label="Difficulty">
-      <button role="tab" aria-pressed="true"  data-level="beginner">Beginner</button>
-      <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
-      <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
-    </div>
-
+  <!-- Equipment (single line, scrolls on small screens) -->
+  <div class="equip">
     <span class="pill"><input type="checkbox" id="f-db" checked> <label for="f-db">Dumbbells</label></span>
     <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
     <span class="pill"><input type="checkbox" id="f-bw" checked> <label for="f-bw">Bodyweight / Calisthenics</label></span>
     <span class="pill"><input type="checkbox" id="f-rack"> <label for="f-rack">Bar / Door anchor</label></span>
   </div>
+</div>
 
   <!-- Weekly split -->
   <div class="section">

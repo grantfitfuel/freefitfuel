@@ -17,7 +17,6 @@
   <meta name="theme-color" content="#FF6A00">
 
   <style>
-    /* Page-local helpers (minimal; uses site tokens) */
     html{scroll-behavior:smooth}
     .section-note{color:var(--muted); margin:.25rem 0 .75rem}
     .grid-2{display:grid;gap:14px}
@@ -29,7 +28,6 @@
     details.block{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;margin:.65rem 0}
     details.block > summary{cursor:pointer;font-weight:800;list-style:none;outline:none}
     details.block > summary::-webkit-details-marker{display:none}
-    details.block[open] > summary{outline:none}
     .badge{display:inline-block;margin-left:.5rem;border:1px solid var(--stroke);border-radius:999px;padding:.1rem .5rem;font-size:.8rem;opacity:.9}
 
     /* Equipment chips */
@@ -82,8 +80,16 @@
       content:""; display:block; width:0; height:0; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:3px
     }
     .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .vid-fallback{display:flex;gap:.5rem;align-items:center;justify-content:center;padding:.5rem}
+    .vid-fallback a.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .7rem;border-radius:8px;background:var(--accent);color:#111;border:0;text-decoration:none}
+    .video-wrap .note{position:absolute;bottom:6px;left:8px;font-size:.8rem;color:#ddd;background:rgba(0,0,0,.45);padding:.1rem .4rem;border-radius:6px}
 
-    /* Print: compact, no videos, keep plan */
+    /* Muscle icons */
+    .muscles{display:flex;gap:.35rem;align-items:center;margin:.25rem 0 .35rem}
+    .muscles .i{width:18px;height:18px;display:inline-flex;color:#cfd9e6}
+    .muscles .label{font-size:.8rem;opacity:.9}
+
+    /* Print */
     @media print{
       .site-header,.hero,.video-wrap,.chips,.rest,.main-nav,.hamburger{display:none !important}
       .opt{break-inside:avoid}
@@ -129,6 +135,20 @@
     </div>
   </header>
 
+  <!-- === MUSCLE ICON SPRITE (once per page) ==================== -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="m-chest" viewBox="0 0 24 24"><path fill="currentColor" d="M4 9c2-3 6-4 8-4s6 1 8 4l-2 6c-1 2-3 3-6 3s-5-1-6-3L4 9z"/></symbol>
+    <symbol id="m-shoulders" viewBox="0 0 24 24"><path fill="currentColor" d="M12 5a4 4 0 1 1 0 8a4 4 0 0 1 0-8zm-8 9c2-3 6-3 8-3s6 0 8 3l-1 4H5l-1-4z"/></symbol>
+    <symbol id="m-triceps" viewBox="0 0 24 24"><path fill="currentColor" d="M5 13c3-3 6-4 9-4l5 2l-2 6l-6 2l-3-6z"/></symbol>
+    <symbol id="m-back" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4l5 2l5-2l1 8l-6 8l-6-8l1-8z"/></symbol>
+    <symbol id="m-biceps" viewBox="0 0 24 24"><path fill="currentColor" d="M4 14c2-4 5-6 9-6h2l3 4l-2 4l-6 2H7l-3-4z"/></symbol>
+    <symbol id="m-core" viewBox="0 0 24 24"><path fill="currentColor" d="M9 4h6l2 4l-2 8l-6 0l-2-8l2-4z"/></symbol>
+    <symbol id="m-quads" viewBox="0 0 24 24"><path fill="currentColor" d="M6 5h12l1 6l-4 8H9L5 11l1-6z"/></symbol>
+    <symbol id="m-hams" viewBox="0 0 24 24"><path fill="currentColor" d="M6 6h12l-2 7l-4 5l-4-5l-2-7z"/></symbol>
+    <symbol id="m-glutes" viewBox="0 0 24 24"><path fill="currentColor" d="M5 9c2-3 4-4 7-4s5 1 7 4l-2 6c-2 2-4 3-5 3s-3-1-5-3L5 9z"/></symbol>
+    <symbol id="m-calves" viewBox="0 0 24 24"><path fill="currentColor" d="M9 4h6l1 6l-3 10H11L8 10l1-6z"/></symbol>
+  </svg>
+
   <main class="wrap">
 
     <!-- WARM-UP -->
@@ -149,7 +169,7 @@
         </article>
         <article class="card">
           <h3>Demo (All Adults)</h3>
-          <div class="video-wrap" data-yt="f3zOrYCwquE" aria-label="Warm-up video"></div>
+          <div class="video-wrap" data-yt="f3zOrYCwquE,2tM1LFFxpLw" data-watch="https://www.youtube.com/watch?v=f3zOrYCwquE" aria-label="Warm-up video"></div>
           <p class="tiny">A 5-minute full-body warm-up suitable for most adults (approx ages 16–60).</p>
         </article>
       </div>
@@ -164,7 +184,6 @@
       <details class="block" open data-section="push" aria-labelledby="push-title">
         <summary id="push-title">Push Day <span class="badge">Chest • Shoulders • Triceps</span></summary>
 
-        <!-- Equipment chips -->
         <div class="chips" role="group" aria-label="Filter Push exercises by equipment">
           <button class="chip active" data-eq="all">All</button>
           <button class="chip" data-eq="bodyweight">Bodyweight</button>
@@ -174,7 +193,6 @@
         </div>
         <p class="tiny">Pick 1 press, 1 overhead, and 1–2 accessories.</p>
 
-        <!-- BEGINNER / CORE SET -->
         <div class="lvl">
           <div class="opt" data-equip="bodyweight">
             <div class="title">Wall Push-up <span class="eq">(BW)</span></div>
@@ -189,7 +207,7 @@
             <div class="title">Band Chest Press <span class="eq">(Band)</span></div>
             <div class="meta-badges"><span class="tag">Tempo 2-1-1</span><span class="tag">Hypertrophy</span></div>
             <div class="desc">Anchor band behind; ribs down; steady press path.</div>
-            <div class="links"><a href="#form-band-press">Form demo</a> • 3–4×10–14</div>
+            <div class="links"><a href="#form-band-row">Row pair</a> • 3–4×10–14</div>
             <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No anchor? Use <a href="#form-floor-press">DB floor press</a>.</li></ul></details>
             <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count"></span></div>
           </div>
@@ -208,12 +226,11 @@
             <div class="meta-badges"><span class="tag">Tempo 2-1-3</span><span class="tag">Shoulders</span></div>
             <div class="desc">Small ROM, slow tempo; no shrug.</div>
             <div class="links"><a href="#form-lateral-raise">Form demo</a> • 2–3×12–15</div>
-            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No DBs? Use <a href="#form-band-row">band pull-aparts</a>.</li></ul></details>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No DBs? Use band pull-aparts.</li></ul></details>
             <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count"></span></div>
           </div>
         </div>
 
-        <!-- INTERMEDIATE -->
         <details class="block">
           <summary>Intermediate options</summary>
           <div class="lvl">
@@ -249,7 +266,6 @@
           </div>
         </details>
 
-        <!-- ADVANCED -->
         <details class="block">
           <summary>Advanced / Elite options</summary>
           <div class="lvl">
@@ -430,60 +446,270 @@
           </div>
         </div>
       </details>
-
-      <div class="tiny">Deload every 4–6 weeks: reduce sets or load by ~30%, keep technique sharp, no grinders.</div>
     </section>
 
-    <!-- FORM LIBRARY (YouTube, lazy loaded) -->
+    <!-- FORM LIBRARY (YouTube, lazy loaded with fallbacks) -->
     <section id="form-library">
       <h2>Form Library (watch &amp; copy)</h2>
-      <p class="section-note">Tap a tile to load the video. Learn the setup, do 2–3 clean reps, then train.</p>
+      <p class="section-note">Tap a tile to load the video. If a clip is unavailable, the tile will try alternates or offer a button to open YouTube.</p>
 
       <div class="grid">
         <!-- Push / chest / shoulders -->
-        <article class="card" id="form-pushup"><h3>Push-up</h3><div class="video-wrap" data-yt="_l3ySVKYVJ8" aria-label="Push-up video"></div></article>
-        <article class="card" id="form-floor-press"><h3>DB Floor Press</h3><div class="video-wrap" data-yt="m3XG-sXKTA0"></div></article>
-        <article class="card" id="form-incline-press"><h3>DB Incline Press</h3><div class="video-wrap" data-yt="8iPEnn-ltC8"></div></article>
-        <article class="card" id="form-bench-press"><h3>DB Bench Press</h3><div class="video-wrap" data-yt="VMqnyf69XnU"></div></article>
-        <article class="card" id="form-ohp"><h3>DB Overhead Press</h3><div class="video-wrap" data-yt="B-aVuyhvLHU"></div></article>
-        <article class="card" id="form-arnold"><h3>Arnold Press</h3><div class="video-wrap" data-yt="6Z15_WdXmVw"></div></article>
-        <article class="card" id="form-lateral-raise"><h3>Lateral Raise</h3><div class="video-wrap" data-yt="3VcKaXpzqRo"></div></article>
+        <article class="card" id="form-pushup">
+          <h3>Push-up</h3>
+          <div class="muscles">
+            <span class="i"><svg><use href="#m-chest"/></svg></span>
+            <span class="i"><svg><use href="#m-shoulders"/></svg></span>
+            <span class="i"><svg><use href="#m-triceps"/></svg></span>
+            <span class="label">Chest • Shoulders • Triceps</span>
+          </div>
+          <div class="video-wrap" data-yt="_l3ySVKYVJ8,rMvwVtlqjTE" data-watch="https://www.youtube.com/watch?v=_l3ySVKYVJ8"></div>
+        </article>
+
+        <article class="card" id="form-floor-press">
+          <h3>DB Floor Press</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span><span class="label">Chest • Triceps</span></div>
+          <div class="video-wrap" data-yt="m3XG-sXKTA0,8Qz2r7Yv7Cw" data-watch="https://www.youtube.com/watch?v=m3XG-sXKTA0"></div>
+        </article>
+
+        <article class="card" id="form-bench-press">
+          <h3>DB Bench Press</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span><span class="label">Chest • Triceps</span></div>
+          <div class="video-wrap" data-yt="VMqnyf69XnU,gRVjAtPip0Y" data-watch="https://www.youtube.com/watch?v=VMqnyf69XnU"></div>
+        </article>
+
+        <article class="card" id="form-incline-press">
+          <h3>DB Incline Press</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-chest"/></svg></span><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="label">Upper Chest • Front Delts</span></div>
+          <div class="video-wrap" data-yt="8iPEnn-ltC8,Pn4VYxW6fKw" data-watch="https://www.youtube.com/watch?v=8iPEnn-ltC8"></div>
+        </article>
+
+        <article class="card" id="form-ohp">
+          <h3>DB Overhead Press</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-triceps"/></svg></span><span class="label">Shoulders • Triceps</span></div>
+          <div class="video-wrap" data-yt="B-aVuyhvLHU,2yjwXTZQDDI" data-watch="https://www.youtube.com/watch?v=B-aVuyhvLHU"></div>
+        </article>
+
+        <article class="card" id="form-arnold">
+          <h3>Arnold Press</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="label">Delts</span></div>
+          <div class="video-wrap" data-yt="6Z15_WdXmVw,sqZ9xIYpYxA" data-watch="https://www.youtube.com/watch?v=6Z15_WdXmVw"></div>
+        </article>
+
+        <article class="card" id="form-lateral-raise">
+          <h3>Lateral Raise</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="label">Side Delts</span></div>
+          <div class="video-wrap" data-yt="3VcKaXpzqRo,0G2_XV7slIg" data-watch="https://www.youtube.com/watch?v=3VcKaXpzqRo"></div>
+        </article>
 
         <!-- Pull / back / biceps -->
-        <article class="card" id="form-band-row"><h3>Band Row</h3><div class="video-wrap" data-yt="aptW3fPa5WM"></div></article>
-        <article class="card" id="form-door-row"><h3>Doorway Row</h3><div class="video-wrap" data-yt="qv8T1iWJ3tM"></div></article>
-        <article class="card" id="form-band-pulldown"><h3>Band Lat Pulldown</h3><div class="video-wrap" data-yt="Hv2gJ1UsxSY"></div></article>
-        <article class="card" id="form-db-row"><h3>One-arm DB Row</h3><div class="video-wrap" data-yt="pYcpY20QaE8"></div></article>
-        <article class="card" id="form-chest-row"><h3>Chest-Supported DB Row</h3><div class="video-wrap" data-yt="8iJEVijSsGY"></div></article>
-        <article class="card" id="form-door-pulldown"><h3>Door-Anchor Pulldown</h3><div class="video-wrap" data-yt="8TRxUQH7ZCk"></div></article>
-        <article class="card" id="form-chinup"><h3>Chin-up (band assist)</h3><div class="video-wrap" data-yt="bJZfH_RpGdQ"></div></article>
-        <article class="card" id="form-biceps-curl"><h3>Biceps Curl</h3><div class="video-wrap" data-yt="in7PaeYlhrM"></div></article>
-        <article class="card" id="form-hammer-curl"><h3>Hammer Curl</h3><div class="video-wrap" data-yt="zC3nLlEvin4"></div></article>
-        <article class="card" id="form-reverse-fly"><h3>Reverse Fly</h3><div class="video-wrap" data-yt="ttvfGg9d76c"></div></article>
-        <article class="card" id="form-renegade-row"><h3>Renegade Row</h3><div class="video-wrap" data-yt="ojF1rG7ZB7c"></div></article>
-        <article class="card" id="form-zottman"><h3>Zottman Curl</h3><div class="video-wrap" data-yt="3c9sJH3DdoQ"></div></article>
+        <article class="card" id="form-band-row">
+          <h3>Band Row</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Mid-back • Biceps</span></div>
+          <div class="video-wrap" data-yt="aptW3fPa5WM,8R7g8rO1b1E" data-watch="https://www.youtube.com/watch?v=aptW3fPa5WM"></div>
+        </article>
+
+        <article class="card" id="form-door-row">
+          <h3>Doorway Row</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Back • Biceps</span></div>
+          <div class="video-wrap" data-yt="qv8T1iWJ3tM,W5B9uO1m1mA" data-watch="https://www.youtube.com/watch?v=qv8T1iWJ3tM"></div>
+        </article>
+
+        <article class="card" id="form-band-pulldown">
+          <h3>Band Lat Pulldown</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="label">Lats</span></div>
+          <div class="video-wrap" data-yt="Hv2gJ1UsxSY,lm4Oa8LwF7M" data-watch="https://www.youtube.com/watch?v=Hv2gJ1UsxSY"></div>
+        </article>
+
+        <article class="card" id="form-db-row">
+          <h3>One-arm DB Row</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Lats • Biceps</span></div>
+          <div class="video-wrap" data-yt="pYcpY20QaE8,tbqa9j6Hn7A" data-watch="https://www.youtube.com/watch?v=pYcpY20QaE8"></div>
+        </article>
+
+        <article class="card" id="form-chest-row">
+          <h3>Chest-Supported DB Row</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="label">Mid-back</span></div>
+          <div class="video-wrap" data-yt="8iJEVijSsGY,9bOm1dK1T2M" data-watch="https://www.youtube.com/watch?v=8iJEVijSsGY"></div>
+        </article>
+
+        <article class="card" id="form-door-pulldown">
+          <h3>Door-Anchor Pulldown</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="label">Lats</span></div>
+          <div class="video-wrap" data-yt="8TRxUQH7ZCk,2p5dQ2lDLP0" data-watch="https://www.youtube.com/watch?v=8TRxUQH7ZCk"></div>
+        </article>
+
+        <article class="card" id="form-chinup">
+          <h3>Chin-up (band assist)</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-back"/></svg></span><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Lats • Biceps</span></div>
+          <div class="video-wrap" data-yt="bJZfH_RpGdQ,hrl5R8rP2p0" data-watch="https://www.youtube.com/watch?v=bJZfH_RpGdQ"></div>
+        </article>
+
+        <article class="card" id="form-biceps-curl">
+          <h3>Biceps Curl</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Biceps</span></div>
+          <div class="video-wrap" data-yt="in7PaeYlhrM,ykJmrZ5v0Oo" data-watch="https://www.youtube.com/watch?v=in7PaeYlhrM"></div>
+        </article>
+
+        <article class="card" id="form-hammer-curl">
+          <h3>Hammer Curl</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-biceps"/></svg></span><span class="label">Biceps • Brachialis</span></div>
+          <div class="video-wrap" data-yt="zC3nLlEvin4,ER7H54L1cQk" data-watch="https://www.youtube.com/watch?v=zC3nLlEvin4"></div>
+        </article>
+
+        <article class="card" id="form-reverse-fly">
+          <h3>Reverse Fly</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="label">Rear Delts</span></div>
+          <div class="video-wrap" data-yt="ttvfGg9d76c,Ud0y3YqJ3so" data-watch="https://www.youtube.com/watch?v=ttvfGg9d76c"></div>
+        </article>
+
+        <article class="card" id="form-renegade-row">
+          <h3>Renegade Row</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-core"/></svg></span><span class="i"><svg><use href="#m-back"/></svg></span><span class="label">Core • Back</span></div>
+          <div class="video-wrap" data-yt="ojF1rG7ZB7c,8u6A2c4jGg4" data-watch="https://www.youtube.com/watch?v=ojF1rG7ZB7c"></div>
+        </article>
 
         <!-- Legs -->
-        <article class="card" id="form-sit-stand"><h3>Sit-to-Stand</h3><div class="video-wrap" data-yt="eutszbtbJM8"></div></article>
-        <article class="card" id="form-bridge"><h3>Glute Bridge</h3><div class="video-wrap" data-yt="OUgsJ8-Vi0E"></div></article>
-        <article class="card" id="form-step-up"><h3>Step-up</h3><div class="video-wrap" data-yt="DP7E3w1K0mA"></div></article>
-        <article class="card" id="form-goblet"><h3>Goblet Squat</h3><div class="video-wrap" data-yt="MeIiIdhvXT4"></div></article>
-        <article class="card" id="form-rdl"><h3>DB Romanian Deadlift</h3><div class="video-wrap" data-yt="hQgFixeXdZo"></div></article>
-        <article class="card" id="form-split-squat"><h3>Split Squat</h3><div class="video-wrap" data-yt="m8mQ_92_Ylg"></div></article>
-        <article class="card" id="form-bulgarian"><h3>Bulgarian Split Squat</h3><div class="video-wrap" data-yt="2C-uNgKwPLE"></div></article>
-        <article class="card" id="form-deadlift"><h3>DB Deadlift</h3><div class="video-wrap" data-yt="t7k8l8M2V44"></div></article>
-        <article class="card" id="form-hip-thrust"><h3>Hip Thrust</h3><div class="video-wrap" data-yt="MVMNk0HiTMg"></div></article>
-        <article class="card" id="form-jump-squat"><h3>Jump Squat</h3><div class="video-wrap" data-yt="A-cFYWvaHr0"></div></article>
-        <article class="card" id="form-calf-raise"><h3>Calf Raise</h3><div class="video-wrap" data-yt="YMmgqO8Jo-k"></div></article>
+        <article class="card" id="form-sit-stand">
+          <h3>Sit-to-Stand</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="label">Quads • Glutes</span></div>
+          <div class="video-wrap" data-yt="eutszbtbJM8,8TqjzC3qfPA" data-watch="https://www.youtube.com/watch?v=eutszbtbJM8"></div>
+        </article>
+
+        <article class="card" id="form-bridge">
+          <h3>Glute Bridge</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="i"><svg><use href="#m-hams"/></svg></span><span class="label">Glutes • Hamstrings</span></div>
+          <div class="video-wrap" data-yt="OUgsJ8-Vi0E,Dl7kS3oQv18" data-watch="https://www.youtube.com/watch?v=OUgsJ8-Vi0E"></div>
+        </article>
+
+        <article class="card" id="form-step-up">
+          <h3>Step-up</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="label">Quads • Glutes</span></div>
+          <div class="video-wrap" data-yt="DP7E3w1K0mA,0y2Z8b4eK3k" data-watch="https://www.youtube.com/watch?v=DP7E3w1K0mA"></div>
+        </article>
+
+        <article class="card" id="form-goblet">
+          <h3>Goblet Squat</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="label">Quads • Glutes</span></div>
+          <div class="video-wrap" data-yt="MeIiIdhvXT4,wxS3o9Y9t3E" data-watch="https://www.youtube.com/watch?v=MeIiIdhvXT4"></div>
+        </article>
+
+        <article class="card" id="form-rdl">
+          <h3>DB Romanian Deadlift</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-hams"/></svg></span><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="label">Hamstrings • Glutes</span></div>
+          <div class="video-wrap" data-yt="hQgFixeXdZo,7B6d0mYH1nU" data-watch="https://www.youtube.com/watch?v=hQgFixeXdZo"></div>
+        </article>
+
+        <article class="card" id="form-split-squat">
+          <h3>Split Squat</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="label">Quads</span></div>
+          <div class="video-wrap" data-yt="m8mQ_92_Ylg,7VQyU3M3O5w" data-watch="https://www.youtube.com/watch?v=m8mQ_92_Ylg"></div>
+        </article>
+
+        <article class="card" id="form-bulgarian">
+          <h3>Bulgarian Split Squat</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="label">Quads • Glutes</span></div>
+          <div class="video-wrap" data-yt="2C-uNgKwPLE,bO3l7sY0E5U" data-watch="https://www.youtube.com/watch?v=2C-uNgKwPLE"></div>
+        </article>
+
+        <article class="card" id="form-deadlift">
+          <h3>DB Deadlift</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-hams"/></svg></span><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="label">Hamstrings • Glutes</span></div>
+          <div class="video-wrap" data-yt="t7k8l8M2V44,otJfIS3dH3Y" data-watch="https://www.youtube.com/watch?v=t7k8l8M2V44"></div>
+        </article>
+
+        <article class="card" id="form-hip-thrust">
+          <h3>Hip Thrust</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-glutes"/></svg></span><span class="i"><svg><use href="#m-hams"/></svg></span><span class="label">Glutes • Hamstrings</span></div>
+          <div class="video-wrap" data-yt="MVMNk0HiTMg,PM4GkVhWk2A" data-watch="https://www.youtube.com/watch?v=MVMNk0HiTMg"></div>
+        </article>
+
+        <article class="card" id="form-jump-squat">
+          <h3>Jump Squat</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="label">Quads</span></div>
+          <div class="video-wrap" data-yt="A-cFYWvaHr0,2QMooxk3TQg" data-watch="https://www.youtube.com/watch?v=A-cFYWvaHr0"></div>
+        </article>
+
+        <article class="card" id="form-calf-raise">
+          <h3>Calf Raise</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-calves"/></svg></span><span class="label">Calves</span></div>
+          <div class="video-wrap" data-yt="YMmgqO8Jo-k,0LJr8U7bdv4" data-watch="https://www.youtube.com/watch?v=YMmgqO8Jo-k"></div>
+        </article>
 
         <!-- Full body / core -->
-        <article class="card" id="form-squat"><h3>Bodyweight Squat</h3><div class="video-wrap" data-yt="aclHkVaku9U"></div></article>
-        <article class="card" id="form-thruster"><h3>DB Thruster</h3><div class="video-wrap" data-yt="Mh5LY4Mz15o"></div></article>
-        <article class="card" id="form-side-plank"><h3>Side Plank</h3><div class="video-wrap" data-yt="Lm8Can8q2l4"></div></article>
-        <article class="card" id="form-manmaker"><h3>Man Maker</h3><div class="video-wrap" data-yt="0HkK3nB4O5o"></div></article>
-        <article class="card" id="form-clean-press"><h3>DB Clean &amp; Press</h3><div class="video-wrap" data-yt="GRX2N3PzQnA"></div></article>
-        <article class="card" id="form-lunge"><h3>Lunge</h3><div class="video-wrap" data-yt="QOVaHwm-Q6U"></div></article>
-        <article class="card" id="form-handstand"><h3>Handstand (wall)</h3><div class="video-wrap" data-yt="0L7qsUqvW6Y"></div></article>
+        <article class="card" id="form-squat">
+          <h3>Bodyweight Squat</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="label">Quads</span></div>
+          <div class="video-wrap" data-yt="aclHkVaku9U,YaXPRqUwItQ" data-watch="https://www.youtube.com/watch?v=aclHkVaku9U"></div>
+        </article>
+
+        <article class="card" id="form-thruster">
+          <h3>DB Thruster</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="label">Quads • Shoulders</span></div>
+          <div class="video-wrap" data-yt="Mh5LY4Mz15o,9kJrZK8rIG4" data-watch="https://www.youtube.com/watch?v=Mh5LY4Mz15o"></div>
+        </article>
+
+        <article class="card" id="form-side-plank">
+          <h3>Side Plank</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-core"/></svg></span><span class="label">Core</span></div>
+          <div class="video-wrap" data-yt="Lm8Can8q2l4,5oZyq8pZ8js" data-watch="https://www.youtube.com/watch?v=Lm8Can8q2l4"></div>
+        </article>
+
+        <article class="card" id="form-manmaker">
+          <h3>Man Maker</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-core"/></svg></span><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-back"/></svg></span><span class="label">Full body</span></div>
+          <div class="video-wrap" data-yt="0HkK3nB4O5o,7T7d1Hk9xKI" data-watch="https://www.youtube.com/watch?v=0HkK3nB4O5o"></div>
+        </article>
+
+        <article class="card" id="form-clean-press">
+          <h3>DB Clean &amp; Press</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-back"/></svg></span><span class="label">Shoulders • Back</span></div>
+          <div class="video-wrap" data-yt="GRX2N3PzQnA,6nJ5R5-0R8U" data-watch="https://www.youtube.com/watch?v=GRX2N3PzQnA"></div>
+        </article>
+
+        <article class="card" id="form-lunge">
+          <h3>Lunge</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-quads"/></svg></span><span class="label">Quads</span></div>
+          <div class="video-wrap" data-yt="QOVaHwm-Q6U,wrwwXE_x-pQ" data-watch="https://www.youtube.com/watch?v=QOVaHwm-Q6U"></div>
+        </article>
+
+        <article class="card" id="form-handstand">
+          <h3>Handstand (wall)</h3>
+          <div class="muscles"><span class="i"><svg><use href="#m-shoulders"/></svg></span><span class="i"><svg><use href="#m-core"/></svg></span><span class="label">Shoulders • Core</span></div>
+          <div class="video-wrap" data-yt="0L7qsUqvW6Y,0fQzZ3fV7xE" data-watch="https://www.youtube.com/watch?v=0L7qsUqvW6Y"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CALISTHENICS SECTION -->
+    <section id="calisthenics">
+      <h2>Calisthenics (bodyweight skills)</h2>
+      <p class="section-note">Build joint-friendly strength and control. Start where you are; add range &amp; reps slowly.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Foundation</h3>
+          <ul>
+            <li>Squat (full depth if comfy), Hip hinge, Hollow hold</li>
+            <li>Scapular shrugs (hang or band), Wall handstand holds</li>
+            <li>Assisted pull-up (band) or row</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Progressions</h3>
+          <ul>
+            <li>Push-up → Decline → Ring push-up</li>
+            <li>Chin-up → Pull-up → Archer pull-up</li>
+            <li>Pike push-up → Wall HSPU (partial) → HSPU</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Form checks</h3>
+          <ul>
+            <li>Shoulders packed; ribs down on pushing/pulling</li>
+            <li>Range with control over momentum</li>
+            <li>Stop 1–2 reps before form breaks</li>
+          </ul>
+        </article>
       </div>
     </section>
 
@@ -497,7 +723,7 @@
       </ul>
     </section>
 
-    <!-- DISCLAIMER (standard) -->
+    <!-- DISCLAIMER -->
     <section class="disclaimer" role="note">
       <h2>Important Note</h2>
       <p>
@@ -527,9 +753,9 @@
     </div>
   </footer>
 
-  <!-- JS: hamburger, equipment filter + memory, smooth anchor scroll, rest timers, lazy YT -->
+  <!-- JS: hamburger, equipment filter + memory, smooth anchor scroll, rest timers, lazy YT (with fallbacks) -->
   <script>
-    // Hamburger menu
+    // Hamburger
     document.addEventListener('DOMContentLoaded', function () {
       const btn = document.querySelector('.hamburger');
       const nav = document.querySelector('.main-nav');
@@ -542,19 +768,18 @@
       }
     });
 
-    // Find nearest section (details[data-section])
+    // Helpers
     function findSection(el){
       while (el && el !== document && !(el.matches && el.matches('details.block[data-section]'))) el = el.parentNode;
       return el && el.matches ? el : null;
     }
 
-    // Equipment filter + memory (per section)
+    // Equipment filter + memory
     (function(){
-      const KEY = 'fff-eq-memory'; // { push:'dumbbells', pull:'bands', legs:'all', full:'bodyweight' }
+      const KEY = 'fff-eq-memory';
       let mem = {};
       try { mem = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){}
 
-      // Apply saved state
       document.querySelectorAll('details.block[data-section]').forEach(sec => {
         const secKey = sec.getAttribute('data-section');
         const want = mem[secKey] || 'all';
@@ -562,7 +787,6 @@
         if (chip) activateChip(chip, false);
       });
 
-      // Click handler
       document.addEventListener('click', function(e){
         const chip = e.target.closest('.chip');
         if(!chip) return;
@@ -574,14 +798,11 @@
       function activateChip(chip, save){
         const sec = findSection(chip);
         const eq = chip.getAttribute('data-eq');
-        // visual state
         sec.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c===chip));
-        // show/hide opts
         sec.querySelectorAll('.opt').forEach(opt => {
           const has = opt.getAttribute('data-equip');
           if(eq==='all' || has===eq) opt.classList.remove('hidden'); else opt.classList.add('hidden');
         });
-        // memory
         if(save){
           const id = sec.getAttribute('data-section');
           mem[id] = eq;
@@ -590,7 +811,7 @@
       }
     })();
 
-    // Smooth jump to #form-* (compensate sticky header + highlight)
+    // Smooth jump to #form-* with sticky offset
     document.addEventListener('click', function(e){
       const a = e.target.closest('a[href^="#form-"]');
       if(!a) return;
@@ -599,63 +820,4 @@
       if(!target) return;
       e.preventDefault();
       const header = document.querySelector('.site-header');
-      const headerH = header ? header.getBoundingClientRect().height : 0;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - (headerH + 10);
-      window.scrollTo({top, behavior:'smooth'});
-      target.style.outline = '2px solid var(--accent)';
-      setTimeout(()=> target.style.outline = 'none', 1600);
-    });
-
-    // Rest timers
-    (function(){
-      let activeTimer = null;
-      document.addEventListener('click', function(e){
-        const btn = e.target.closest('.rest button[data-t]');
-        if(!btn) return;
-        const block = btn.closest('.rest');
-        const out = block.querySelector('.count');
-        const secs = parseInt(btn.getAttribute('data-t'), 10) || 60;
-        if (activeTimer) clearInterval(activeTimer);
-        let remain = secs;
-        out.textContent = remain + 's';
-        activeTimer = setInterval(()=>{
-          remain--;
-          if(remain <= 0){ clearInterval(activeTimer); activeTimer = null; out.textContent = 'Go!'; return; }
-          out.textContent = remain + 's';
-        }, 1000);
-      });
-    })();
-
-    // Lazy YouTube: build nocookie iframe on click (uses YouTube’s default thumbnail)
-    (function(){
-      function buildThumb(el){
-        const id = el.getAttribute('data-yt');
-        if(!id) return;
-        const thumb = document.createElement('div');
-        thumb.className = 'video-thumb';
-        const img = document.createElement('img');
-        img.alt = 'Video thumbnail';
-        img.referrerPolicy = 'no-referrer';
-        img.src = 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';
-        const play = document.createElement('button');
-        play.className = 'play-btn';
-        play.setAttribute('aria-label','Play video');
-        thumb.appendChild(img); thumb.appendChild(play);
-        el.appendChild(thumb);
-
-        thumb.addEventListener('click', ()=>{
-          const iframe = document.createElement('iframe');
-          iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
-          iframe.title = 'YouTube video';
-          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-          iframe.allowFullscreen = true;
-          el.innerHTML = '';
-          el.appendChild(iframe);
-        });
-      }
-
-      document.querySelectorAll('.video-wrap[data-yt]').forEach(buildThumb);
-    })();
-  </script>
-</body>
-</html>
+      const headerH = header ? header.getBoundingClientRect().height : 0

@@ -3,467 +3,659 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Workouts – FreeFitFuel</title>
+  <title>Workouts — FreeFitFuel</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=wo1">
+  <link rel="stylesheet" href="style.css?v=22">
 
-  <!-- Favicons -->
+  <!-- Favicons & app icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/freefitfuel-logo-32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="img/freefitfuel-logo-48.png">
+  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
 
   <style>
-    /* Page helpers only (header/footer styles come from style.css) */
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
-    .section-note{color:#c8c8d2;font-size:.95rem;margin:.4rem 0 1rem}
-    .badge{display:inline-block;background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.25rem .6rem;font-size:.85rem;margin-left:.35rem}
-    .list-tight li{margin:.2rem 0}
-    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
-    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    .plan h3{margin:.3rem 0 .4rem}
-    .plan .move{margin:.35rem 0}
-    .plan .move strong{display:inline-block;min-width:170px}
-    .plan .tip{color:#b6b6c6;font-size:.92rem;margin:.15rem 0 0}
+    /* Page-local helpers (minimal; uses site tokens) */
+    html{scroll-behavior:smooth}
+    .section-note{color:var(--muted); margin:.25rem 0 .75rem}
     .grid-2{display:grid;gap:14px}
-    @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
-    .callout{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .cap{color:#c8c8d2;font-size:.95rem}
-    .divider{border-top:1px solid var(--stroke); margin:18px 0}
-    .tiny{font-size:.88rem;color:#b6b6c6}
-    .ok{color:#6ee7a8}
-    .warn{color:#ffd166}
-    .danger{color:#ff6b6b}
+    @media(min-width:900px){ .grid-2{grid-template-columns:1.15fr 1fr} }
+    .card h3{margin:.1rem 0 .5rem}
+    .tiny{font-size:.9rem;color:var(--muted)}
+
+    /* Blocks & badges */
+    details.block{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;margin:.65rem 0}
+    details.block > summary{cursor:pointer;font-weight:800;list-style:none;outline:none}
+    details.block > summary::-webkit-details-marker{display:none}
+    details.block[open] > summary{outline:none}
+    .badge{display:inline-block;margin-left:.5rem;border:1px solid var(--stroke);border-radius:999px;padding:.1rem .5rem;font-size:.8rem;opacity:.9}
+
+    /* Equipment chips */
+    .chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.55rem 0 .4rem}
+    .chip{
+      border:1px solid var(--stroke);border-radius:999px;padding:.35rem .7rem;font-size:.92rem;
+      background:var(--glass);cursor:pointer;user-select:none;line-height:1.1
+    }
+    .chip:focus{outline:2px solid var(--accent)}
+    .chip.active{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
+
+    /* Movement list */
+    .lvl{display:grid;gap:10px;margin:.6rem 0 0}
+    @media(min-width:760px){ .lvl{grid-template-columns:repeat(2,1fr)} }
+    .opt{background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:10px;padding:10px}
+    .title{font-weight:800;display:flex;align-items:center;gap:.5rem}
+    .eq{font-size:.76rem;opacity:.85;border:1px solid var(--stroke);border-radius:999px;padding:.05rem .45rem}
+    .meta-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:.25rem 0}
+    .meta-badges .tag{font-size:.78rem;opacity:.9;border:1px dashed var(--stroke);border-radius:999px;padding:.05rem .45rem}
+    .desc{color:#c8c8d2;font-size:.95rem;margin:.2rem 0 .35rem}
+    .links a{color:var(--accent);text-decoration:none}
+    .links a:hover{text-decoration:underline}
+
+    /* Swap details */
+    details.swap{margin:.25rem 0 0}
+    details.swap > summary{list-style:none;cursor:pointer;color:var(--ink);font-weight:700}
+    details.swap > summary::-webkit-details-marker{display:none}
+    details.swap .alts{margin:.35rem 0 0}
+    .alts a{color:var(--accent)}
+    .alts li{margin:.15rem 0}
+
+    /* Rest timers */
+    .rest{display:flex;align-items:center;gap:.5rem;margin-top:.35rem}
+    .rest button{
+      border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
+      padding:.25rem .6rem;border-radius:8px;cursor:pointer
+    }
+    .rest button:hover{filter:brightness(1.05)}
+    .count{font-variant-numeric:tabular-nums;opacity:.9}
+
+    /* Lazy video */
+    .video-wrap{position:relative;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--stroke)}
+    .video-thumb{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .video-thumb img{width:100%;height:100%;object-fit:cover;filter:brightness(.85)}
+    .play-btn{
+      position:absolute; width:68px; height:48px; border:0; border-radius:12px; background:rgba(0,0,0,.55); cursor:pointer;
+      display:flex; align-items:center; justify-content:center
+    }
+    .play-btn:before{
+      content:""; display:block; width:0; height:0; border-left:18px solid #fff; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:3px
+    }
+    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+    /* Print: compact, no videos, keep plan */
+    @media print{
+      .site-header,.hero,.video-wrap,.chips,.rest,.main-nav,.hamburger{display:none !important}
+      .opt{break-inside:avoid}
+      a{color:#000;text-decoration:underline}
+      body{background:#fff;color:#000}
+    }
   </style>
 </head>
+
 <body>
+  <!-- HEADER (mirrors home) -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo" aria-label="FreeFitFuel — Home">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+      </a>
 
-<!-- HEADER (identical to Home) -->
-<header class="site-header">
-  <div class="container">
-    <a href="index.html" class="logo">
-      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
-    </a>
+      <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
 
-    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-
-    <nav id="primary-nav" class="main-nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="ideas.html">Ideas</a>
-      <a href="guides.html">Guides</a>
-      <a href="workouts.html" aria-current="page">Workouts</a>
-      <a href="nutrition.html">Nutrition</a>
-      <a href="wellbeing.html">Wellbeing</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </div>
-</header>
-
-<!-- HERO -->
-<header class="hero" role="banner" aria-label="Workouts hero">
-  <figure class="hero-media">
-    <img src="img/curl.jpg" alt="Home workout scene with dumbbells">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="hero-content wrap">
-    <span class="eyebrow">Stronger at home</span>
-    <h1><span class="accent">Smart, Simple Training Plans</span></h1>
-    <p class="lead">Short, effective routines for busy days. Clear progressions, safe technique, and options for every level.</p>
-  </div>
-</header>
-
-<main class="wrap">
-
-  <!-- Quick index -->
-  <nav class="mini-nav" aria-label="On this page">
-    <a href="#get-started">Getting started</a>
-    <a href="#warmup">Warm-up (6–8 min)</a>
-    <a href="#beginner">Beginner plan</a>
-    <a href="#intermediate">Intermediate plan</a>
-    <a href="#advanced">Advanced plan</a>
-    <a href="#mobility">Mobility & recovery</a>
-    <a href="#form">Form cues</a>
-    <a href="#safety">Safety</a>
-    <a href="#faq">FAQs</a>
-  </nav>
-
-  <!-- Getting started -->
-  <section id="get-started">
-    <h2>Getting started</h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>What you need</h3>
-        <ul class="list-tight">
-          <li>Mat or carpeted space</li>
-          <li>Optional: pair of dumbbells (light/medium), resistance band</li>
-          <li>Timer (phone) and water</li>
-        </ul>
-        <p class="section-note">No kit? Use the bodyweight versions in each plan.</p>
-      </article>
-      <article class="card">
-        <h3>How to progress</h3>
-        <ul class="list-tight">
-          <li>When all sets feel <em>solid</em>, add +1–2 reps or +1 set</li>
-          <li>Or increase load by the smallest step (0.5–2 kg)</li>
-          <li>Keep reps in reserve: stop with ~1–2 reps left in the tank</li>
-        </ul>
-        <p class="tiny">Consistency beats perfection. Aim for 2–4 sessions/week.</p>
-      </article>
+      <nav id="primary-nav" class="main-nav" aria-label="Primary">
+        <a href="ideas.html">Ideas</a>
+        <a href="guides.html">Guides</a>
+        <a href="workouts.html" aria-current="page">Workouts</a>
+        <a href="nutrition.html">Nutrition</a>
+        <a href="wellbeing.html">Wellbeing</a>
+        <a href="contact.html">Contact</a>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <!-- Warm-up -->
-  <section id="warmup">
-  <h2>Warm-up (6–8 minutes)</h2>
-  <div class="grid-2">
-    <article class="card">
-      <h3>Flow</h3>
-      <ol class="list-tight">
-        <li>Neck/shoulder rolls × 8</li>
-        <li>Arm swings & thoracic rotations × 8</li>
-        <li>Hip circles × 8 each direction</li>
-        <li>World’s greatest stretch × 4 each side</li>
-        <li>Glute bridge × 10</li>
-        <li>March in place × 30–45 s</li>
-      </ol>
-      <p class="tiny">Breathe slow; exhale on the effort.</p>
-    </article>
-    <article class="card">
-      <h3>Demo (All Ages)</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/f3zOrYCwquE"
-                title="5 min full-body warm up"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-      </div>
-      <p class="cap">An effective 5-minute warm-up suitable for most adults preparing for strength or cardio work.</p>
-    </article>
-  </div>
-</section>
-
-  <!-- Beginner -->
-  <section id="beginner" class="plan">
-    <h2>Beginner Plan <span class="badge">2–3× / week • ~20–25 min</span></h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>Full-body A</h3>
-        <p class="move"><strong>1) Sit-to-Stand</strong> 3×8–12 (slow lower)</p>
-        <p class="move"><strong>2) Incline Push-up</strong> 3×6–10 (wall/counter)</p>
-        <p class="move"><strong>3) Hip Hinge</strong> 3×8–12 (hands on thighs)</p>
-        <p class="move"><strong>4) Dead Bug</strong> 3×6–10 / side</p>
-        <p class="move"><strong>5) March & Balance</strong> 2×30–45s</p>
-        <p class="tip">Rest 45–60s. If breathless, extend rest; quality over speed.</p>
-      </article>
-      <article class="card">
-        <h3>Full-body B (optional swap)</h3>
-        <p class="move"><strong>1) Split-Squat (assisted)</strong> 3×6–10 / leg</p>
-        <p class="move"><strong>2) Band Row</strong> 3×10–12</p>
-        <p class="move"><strong>3) Wall Press</strong> 3×10–12</p>
-        <p class="move"><strong>4) Glute Bridge</strong> 3×10–15</p>
-        <p class="move"><strong>5) Farmer Carry (light)</strong> 2×20–40m</p>
-        <p class="tip">Alternate A/B across the week. Keep 1–2 reps in reserve.</p>
-      </article>
+  <!-- HERO -->
+  <header class="hero" role="banner" aria-label="Workouts hero">
+    <figure class="hero-media">
+      <img src="img/rope.jpg" alt="Dynamic warm-up and training at home">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="hero-content wrap">
+      <span class="eyebrow">Train smart • recover well</span>
+      <h1><span class="accent">Workouts that fit your life</span></h1>
+      <p class="lead">Clear warm-ups, dropdown exercise options by level, and visual form demos — safe, scalable strength you can feel.</p>
     </div>
-    <div class="callout">
-      <strong>Bodyweight only?</strong> Use wall/counter variations and bands. Add dumbbells later for progressive overload.
+  </header>
+
+  <main class="wrap">
+
+    <!-- WARM-UP -->
+    <section id="warmup">
+      <h2>Warm-up (6–8 minutes)</h2>
+      <div class="grid-2">
+        <article class="card">
+          <h3>Flow</h3>
+          <ol class="list-tight">
+            <li>Neck &amp; shoulder rolls × 8</li>
+            <li>Arm swings &amp; thoracic rotations × 8</li>
+            <li>Hip circles × 8 each</li>
+            <li>World’s greatest stretch × 4 each side</li>
+            <li>Glute bridge × 10</li>
+            <li>March in place × 30–45 s</li>
+          </ol>
+          <p class="tiny">Breathe slow; exhale on the effort. Keep ranges comfy, no bouncing.</p>
+        </article>
+        <article class="card">
+          <h3>Demo (All Adults)</h3>
+          <div class="video-wrap" data-yt="f3zOrYCwquE" aria-label="Warm-up video"></div>
+          <p class="tiny">A 5-minute full-body warm-up suitable for most adults (approx ages 16–60).</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROGRAM SPLIT -->
+    <section id="split">
+      <h2>Weekly Split</h2>
+      <p class="section-note">Run a 4-day week (Mon Push · Tue Pull · Thu Legs · Sat Full-Body), or a 3-day rotation by dropping one day each week. Keep 1–2 reps “in reserve”.</p>
+
+      <!-- PUSH -->
+      <details class="block" open data-section="push" aria-labelledby="push-title">
+        <summary id="push-title">Push Day <span class="badge">Chest • Shoulders • Triceps</span></summary>
+
+        <!-- Equipment chips -->
+        <div class="chips" role="group" aria-label="Filter Push exercises by equipment">
+          <button class="chip active" data-eq="all">All</button>
+          <button class="chip" data-eq="bodyweight">Bodyweight</button>
+          <button class="chip" data-eq="bands">Bands</button>
+          <button class="chip" data-eq="dumbbells">Dumbbells</button>
+          <button class="chip" data-eq="mixed">Mixed</button>
+        </div>
+        <p class="tiny">Pick 1 press, 1 overhead, and 1–2 accessories.</p>
+
+        <!-- BEGINNER / CORE SET -->
+        <div class="lvl">
+          <div class="opt" data-equip="bodyweight">
+            <div class="title">Wall Push-up <span class="eq">(BW)</span></div>
+            <div class="meta-badges"><span class="tag">RPE 6–7</span><span class="tag">Form</span></div>
+            <div class="desc">Groove alignment with low load; great entry for shoulders and core.</div>
+            <div class="links"><a href="#form-pushup">Form demo</a> • 3–4×10–15</div>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No wall? Try <a href="#form-pushup">knee push-ups</a>.</li><li>Need gentler? Do incline on a table.</li></ul></details>
+            <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count" aria-live="polite"></span></div>
+          </div>
+
+          <div class="opt" data-equip="bands">
+            <div class="title">Band Chest Press <span class="eq">(Band)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 2-1-1</span><span class="tag">Hypertrophy</span></div>
+            <div class="desc">Anchor band behind; ribs down; steady press path.</div>
+            <div class="links"><a href="#form-band-press">Form demo</a> • 3–4×10–14</div>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No anchor? Use <a href="#form-floor-press">DB floor press</a>.</li></ul></details>
+            <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">Seated DB Shoulder Press <span class="eq">(DB)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 3-0-1</span><span class="tag">RPE 7–8</span></div>
+            <div class="desc">Back supported helps learn overhead path safely.</div>
+            <div class="links"><a href="#form-ohp">Form demo</a> • 3×8–12</div>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No bench? Try <a href="#form-ohp">standing press</a> with lighter DBs.</li></ul></details>
+            <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">DB Lateral Raise <span class="eq">(DB)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 2-1-3</span><span class="tag">Shoulders</span></div>
+            <div class="desc">Small ROM, slow tempo; no shrug.</div>
+            <div class="links"><a href="#form-lateral-raise">Form demo</a> • 2–3×12–15</div>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>No DBs? Use <a href="#form-band-row">band pull-aparts</a>.</li></ul></details>
+            <div class="rest"><button data-t="60">Start 60s</button><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+        </div>
+
+        <!-- INTERMEDIATE -->
+        <details class="block">
+          <summary>Intermediate options</summary>
+          <div class="lvl">
+            <div class="opt" data-equip="bodyweight">
+              <div class="title">Push-up (Standard) <span class="eq">(BW)</span></div>
+              <div class="meta-badges"><span class="tag">Tempo 2-0-1</span><span class="tag">RPE 7–8</span></div>
+              <div class="desc">Body in one line; elbows ~45°; smooth reps.</div>
+              <div class="links"><a href="#form-pushup">Form demo</a> • 4×8–12</div>
+              <details class="swap"><summary>Swap it</summary><ul class="alts"><li>Too tough? Do incline push-ups.</li></ul></details>
+              <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+            </div>
+            <div class="opt" data-equip="dumbbells">
+              <div class="title">DB Floor Press <span class="eq">(DB)</span></div>
+              <div class="meta-badges"><span class="tag">Tempo 2-1-1</span></div>
+              <div class="desc">Chest press without a bench; pause near floor.</div>
+              <div class="links"><a href="#form-floor-press">Form demo</a> • 4×6–10</div>
+              <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+            </div>
+            <div class="opt" data-equip="dumbbells">
+              <div class="title">Standing DB Overhead Press <span class="eq">(DB)</span></div>
+              <div class="meta-badges"><span class="tag">Tempo 2-0-1</span></div>
+              <div class="desc">Glutes/abs on; press slightly back to stack joints.</div>
+              <div class="links"><a href="#form-ohp">Form demo</a> • 4×8–10</div>
+              <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+            </div>
+            <div class="opt" data-equip="dumbbells">
+              <div class="title">Arnold Press <span class="eq">(DB)</span></div>
+              <div class="meta-badges"><span class="tag">Tempo 2-0-2</span></div>
+              <div class="desc">Front/side delt focus; rotate palms during press.</div>
+              <div class="links"><a href="#form-arnold">Form demo</a> • 3×8–10</div>
+              <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- ADVANCED -->
+        <details class="block">
+          <summary>Advanced / Elite options</summary>
+          <div class="lvl">
+            <div class="opt" data-equip="bodyweight">
+              <div class="title">Decline Push-up <span class="eq">(BW)</span></div>
+              <div class="meta-badges"><span class="tag">Power</span></div>
+              <div class="desc">Feet elevated 15–30 cm; keep ribs down.</div>
+              <div class="links"><a href="#form-pushup">Form demo</a> • 4×6–10</div>
+              <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+            </div>
+            <div class="opt" data-equip="dumbbells">
+              <div class="title">DB Bench Press (heavy) <span class="eq">(DB)</span></div>
+              <div class="meta-badges"><span class="tag">RPE 8</span></div>
+              <div class="desc">Add load carefully; soft touch; even press.</div>
+              <div class="links"><a href="#form-bench-press">Form demo</a> • 5×5–8</div>
+              <div class="rest"><button data-t="120">Start 120s</button><span class="count"></span></div>
+            </div>
+            <div class="opt" data-equip="bodyweight">
+              <div class="title">Diamond Push-up <span class="eq">(BW)</span></div>
+              <div class="meta-badges"><span class="tag">Triceps</span></div>
+              <div class="desc">Elbows track back; lock the core.</div>
+              <div class="links"><a href="#form-pushup">Form demo</a> • 3–4×6–10</div>
+              <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+            </div>
+          </div>
+        </details>
+      </details>
+
+      <!-- PULL -->
+      <details class="block" data-section="pull" aria-labelledby="pull-title">
+        <summary id="pull-title">Pull Day <span class="badge">Back • Rear delts • Biceps</span></summary>
+
+        <div class="chips" role="group" aria-label="Filter Pull exercises by equipment">
+          <button class="chip active" data-eq="all">All</button>
+          <button class="chip" data-eq="bodyweight">Bodyweight</button>
+          <button class="chip" data-eq="bands">Bands</button>
+          <button class="chip" data-eq="dumbbells">Dumbbells</button>
+          <button class="chip" data-eq="mixed">Mixed</button>
+        </div>
+        <p class="tiny">Choose 1 main row, 1 vertical pull, and 1–2 accessories (include biceps).</p>
+
+        <div class="lvl">
+          <div class="opt" data-equip="bands">
+            <div class="title">Standing Band Row <span class="eq">(Band)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 2-1-2</span></div>
+            <div class="desc">Initiate with the shoulder blade; keep ribs down.</div>
+            <div class="links"><a href="#form-band-row">Form demo</a> • 4×10–12</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="mixed">
+            <div class="title">Doorway Row (towel/band) <span class="eq">(Mix)</span></div>
+            <div class="meta-badges"><span class="tag">Home setup</span></div>
+            <div class="desc">Anchor safely over a closed door; test before use.</div>
+            <div class="links"><a href="#form-door-row">Form demo</a> • 3–4×10–12</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="bands">
+            <div class="title">Band Lat Pulldown (high) <span class="eq">(Band)</span></div>
+            <div class="desc">Elbows down/back; avoid neck shrug.</div>
+            <div class="links"><a href="#form-band-pulldown">Form demo</a> • 3×10–14</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">Biceps Curl (DB) <span class="eq">(DB)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 2-0-3</span></div>
+            <div class="desc">Elbows by sides; control the lower.</div>
+            <div class="links"><a href="#form-biceps-curl">Form demo</a> • 3×10–12</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">Hammer Curl <span class="eq">(DB)</span></div>
+            <div class="desc">Forearm + biceps; wrists neutral.</div>
+            <div class="links"><a href="#form-hammer-curl">Form demo</a> • 3×10–12</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">Reverse Fly <span class="eq">(DB)</span></div>
+            <div class="desc">Rear delts/posture; light weights, slow.</div>
+            <div class="links"><a href="#form-reverse-fly">Form demo</a> • 2–3×12–15</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="mixed">
+            <div class="title">Chin-up / Band-Assisted <span class="eq">(Mix)</span></div>
+            <div class="meta-badges"><span class="tag">Power</span></div>
+            <div class="desc">Underhand grip; chest tall; full hang to chest up.</div>
+            <div class="links"><a href="#form-chinup">Form demo</a> • 4×AMRAP</div>
+            <div class="rest"><button data-t="120">Start 120s</button><span class="count"></span></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- LEGS -->
+      <details class="block" data-section="legs" aria-labelledby="legs-title">
+        <summary id="legs-title">Legs Day <span class="badge">Quads • Glutes • Hamstrings • Calves</span></summary>
+
+        <div class="chips" role="group" aria-label="Filter Legs exercises by equipment">
+          <button class="chip active" data-eq="all">All</button>
+          <button class="chip" data-eq="bodyweight">Bodyweight</button>
+          <button class="chip" data-eq="bands">Bands</button>
+          <button class="chip" data-eq="dumbbells">Dumbbells</button>
+          <button class="chip" data-eq="mixed">Mixed</button>
+        </div>
+
+        <div class="lvl">
+          <div class="opt" data-equip="bodyweight">
+            <div class="title">Sit-to-Stand (chair) <span class="eq">(BW)</span></div>
+            <div class="desc">Depth guide and safety net; control the lower.</div>
+            <div class="links"><a href="#form-sit-stand">Form demo</a> • 3–4×8–12</div>
+            <details class="swap"><summary>Swap it</summary><ul class="alts"><li>Hard? Add <a href="#form-step-up">low step-ups</a> instead.</li></ul></details>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">Goblet Squat <span class="eq">(DB)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 3-1-1</span><span class="tag">RPE 7</span></div>
+            <div class="desc">Great all-rounder; weight close to chest.</div>
+            <div class="links"><a href="#form-goblet">Form demo</a> • 4×8–12</div>
+            <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">DB Romanian Deadlift <span class="eq">(DB)</span></div>
+            <div class="meta-badges"><span class="tag">Tempo 3-0-2</span><span class="tag">Hinge</span></div>
+            <div class="desc">Hips back; shins near vertical; DBs track thighs.</div>
+            <div class="links"><a href="#form-rdl">Form demo</a> • 4×8–12</div>
+            <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="mixed">
+            <div class="title">Split Squat <span class="eq">(Mix)</span></div>
+            <div class="desc">Long stance; torso tall; knee tracks.</div>
+            <div class="links"><a href="#form-split-squat">Form demo</a> • 3×8–10 / leg</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="bodyweight">
+            <div class="title">Calf Raise (BW) <span class="eq">(BW)</span></div>
+            <div class="desc">Full foot control; pause at top.</div>
+            <div class="links"><a href="#form-calf-raise">Form demo</a> • 3×12–15</div>
+            <div class="rest"><button data-t="45">Start 45s</button><span class="count"></span></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- FULL BODY -->
+      <details class="block" data-section="full" aria-labelledby="full-title">
+        <summary id="full-title">Full-Body Day <span class="badge">Combination</span></summary>
+
+        <div class="chips" role="group" aria-label="Filter Full-body exercises by equipment">
+          <button class="chip active" data-eq="all">All</button>
+          <button class="chip" data-eq="bodyweight">Bodyweight</button>
+          <button class="chip" data-eq="bands">Bands</button>
+          <button class="chip" data-eq="dumbbells">Dumbbells</button>
+          <button class="chip" data-eq="mixed">Mixed</button>
+        </div>
+
+        <div class="lvl">
+          <div class="opt" data-equip="bodyweight">
+            <div class="title">Bodyweight Squat + Overhead Reach <span class="eq">(BW)</span></div>
+            <div class="desc">Mobility + patterning in one.</div>
+            <div class="links"><a href="#form-squat">Form demo</a> • 3×10–12</div>
+            <div class="rest"><button data-t="60">Start 60s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="dumbbells">
+            <div class="title">DB Thruster (Squat + Press) <span class="eq">(DB)</span></div>
+            <div class="meta-badges"><span class="tag">Power</span></div>
+            <div class="desc">Total-body power; moderate load.</div>
+            <div class="links"><a href="#form-thruster">Form demo</a> • 3–4×8–10</div>
+            <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="mixed">
+            <div class="title">Renegade Row <span class="eq">(Mix)</span></div>
+            <div class="desc">Core + back; strict control.</div>
+            <div class="links"><a href="#form-renegade-row">Form demo</a> • 3×6–10 / arm</div>
+            <div class="rest"><button data-t="90">Start 90s</button><span class="count"></span></div>
+          </div>
+          <div class="opt" data-equip="bodyweight">
+            <div class="title">Side Plank (with reach) <span class="eq">(BW)</span></div>
+            <div class="desc">Lateral core stability; breathe.</div>
+            <div class="links"><a href="#form-side-plank">Form demo</a> • 3×20–40s / side</div>
+            <div class="rest"><button data-t="45">Start 45s</button><span class="count"></span></div>
+          </div>
+        </div>
+      </details>
+
+      <div class="tiny">Deload every 4–6 weeks: reduce sets or load by ~30%, keep technique sharp, no grinders.</div>
+    </section>
+
+    <!-- FORM LIBRARY (YouTube, lazy loaded) -->
+    <section id="form-library">
+      <h2>Form Library (watch &amp; copy)</h2>
+      <p class="section-note">Tap a tile to load the video. Learn the setup, do 2–3 clean reps, then train.</p>
+
+      <div class="grid">
+        <!-- Push / chest / shoulders -->
+        <article class="card" id="form-pushup"><h3>Push-up</h3><div class="video-wrap" data-yt="_l3ySVKYVJ8" aria-label="Push-up video"></div></article>
+        <article class="card" id="form-floor-press"><h3>DB Floor Press</h3><div class="video-wrap" data-yt="m3XG-sXKTA0"></div></article>
+        <article class="card" id="form-incline-press"><h3>DB Incline Press</h3><div class="video-wrap" data-yt="8iPEnn-ltC8"></div></article>
+        <article class="card" id="form-bench-press"><h3>DB Bench Press</h3><div class="video-wrap" data-yt="VMqnyf69XnU"></div></article>
+        <article class="card" id="form-ohp"><h3>DB Overhead Press</h3><div class="video-wrap" data-yt="B-aVuyhvLHU"></div></article>
+        <article class="card" id="form-arnold"><h3>Arnold Press</h3><div class="video-wrap" data-yt="6Z15_WdXmVw"></div></article>
+        <article class="card" id="form-lateral-raise"><h3>Lateral Raise</h3><div class="video-wrap" data-yt="3VcKaXpzqRo"></div></article>
+
+        <!-- Pull / back / biceps -->
+        <article class="card" id="form-band-row"><h3>Band Row</h3><div class="video-wrap" data-yt="aptW3fPa5WM"></div></article>
+        <article class="card" id="form-door-row"><h3>Doorway Row</h3><div class="video-wrap" data-yt="qv8T1iWJ3tM"></div></article>
+        <article class="card" id="form-band-pulldown"><h3>Band Lat Pulldown</h3><div class="video-wrap" data-yt="Hv2gJ1UsxSY"></div></article>
+        <article class="card" id="form-db-row"><h3>One-arm DB Row</h3><div class="video-wrap" data-yt="pYcpY20QaE8"></div></article>
+        <article class="card" id="form-chest-row"><h3>Chest-Supported DB Row</h3><div class="video-wrap" data-yt="8iJEVijSsGY"></div></article>
+        <article class="card" id="form-door-pulldown"><h3>Door-Anchor Pulldown</h3><div class="video-wrap" data-yt="8TRxUQH7ZCk"></div></article>
+        <article class="card" id="form-chinup"><h3>Chin-up (band assist)</h3><div class="video-wrap" data-yt="bJZfH_RpGdQ"></div></article>
+        <article class="card" id="form-biceps-curl"><h3>Biceps Curl</h3><div class="video-wrap" data-yt="in7PaeYlhrM"></div></article>
+        <article class="card" id="form-hammer-curl"><h3>Hammer Curl</h3><div class="video-wrap" data-yt="zC3nLlEvin4"></div></article>
+        <article class="card" id="form-reverse-fly"><h3>Reverse Fly</h3><div class="video-wrap" data-yt="ttvfGg9d76c"></div></article>
+        <article class="card" id="form-renegade-row"><h3>Renegade Row</h3><div class="video-wrap" data-yt="ojF1rG7ZB7c"></div></article>
+        <article class="card" id="form-zottman"><h3>Zottman Curl</h3><div class="video-wrap" data-yt="3c9sJH3DdoQ"></div></article>
+
+        <!-- Legs -->
+        <article class="card" id="form-sit-stand"><h3>Sit-to-Stand</h3><div class="video-wrap" data-yt="eutszbtbJM8"></div></article>
+        <article class="card" id="form-bridge"><h3>Glute Bridge</h3><div class="video-wrap" data-yt="OUgsJ8-Vi0E"></div></article>
+        <article class="card" id="form-step-up"><h3>Step-up</h3><div class="video-wrap" data-yt="DP7E3w1K0mA"></div></article>
+        <article class="card" id="form-goblet"><h3>Goblet Squat</h3><div class="video-wrap" data-yt="MeIiIdhvXT4"></div></article>
+        <article class="card" id="form-rdl"><h3>DB Romanian Deadlift</h3><div class="video-wrap" data-yt="hQgFixeXdZo"></div></article>
+        <article class="card" id="form-split-squat"><h3>Split Squat</h3><div class="video-wrap" data-yt="m8mQ_92_Ylg"></div></article>
+        <article class="card" id="form-bulgarian"><h3>Bulgarian Split Squat</h3><div class="video-wrap" data-yt="2C-uNgKwPLE"></div></article>
+        <article class="card" id="form-deadlift"><h3>DB Deadlift</h3><div class="video-wrap" data-yt="t7k8l8M2V44"></div></article>
+        <article class="card" id="form-hip-thrust"><h3>Hip Thrust</h3><div class="video-wrap" data-yt="MVMNk0HiTMg"></div></article>
+        <article class="card" id="form-jump-squat"><h3>Jump Squat</h3><div class="video-wrap" data-yt="A-cFYWvaHr0"></div></article>
+        <article class="card" id="form-calf-raise"><h3>Calf Raise</h3><div class="video-wrap" data-yt="YMmgqO8Jo-k"></div></article>
+
+        <!-- Full body / core -->
+        <article class="card" id="form-squat"><h3>Bodyweight Squat</h3><div class="video-wrap" data-yt="aclHkVaku9U"></div></article>
+        <article class="card" id="form-thruster"><h3>DB Thruster</h3><div class="video-wrap" data-yt="Mh5LY4Mz15o"></div></article>
+        <article class="card" id="form-side-plank"><h3>Side Plank</h3><div class="video-wrap" data-yt="Lm8Can8q2l4"></div></article>
+        <article class="card" id="form-manmaker"><h3>Man Maker</h3><div class="video-wrap" data-yt="0HkK3nB4O5o"></div></article>
+        <article class="card" id="form-clean-press"><h3>DB Clean &amp; Press</h3><div class="video-wrap" data-yt="GRX2N3PzQnA"></div></article>
+        <article class="card" id="form-lunge"><h3>Lunge</h3><div class="video-wrap" data-yt="QOVaHwm-Q6U"></div></article>
+        <article class="card" id="form-handstand"><h3>Handstand (wall)</h3><div class="video-wrap" data-yt="0L7qsUqvW6Y"></div></article>
+      </div>
+    </section>
+
+    <!-- SAFETY -->
+    <section id="safety">
+      <h2>Safety first</h2>
+      <ul>
+        <li>Stop if you feel sharp pain, dizziness, chest pain, or numbness/tingling — seek medical advice.</li>
+        <li>Leave 1–2 reps “in reserve” on strength sets; avoid grinding/failing reps.</li>
+        <li>Recover well: sleep, hydration, balanced meals (see <a href="nutrition.html">Nutrition</a>).</li>
+      </ul>
+    </section>
+
+    <!-- DISCLAIMER (standard) -->
+    <section class="disclaimer" role="note">
+      <h2>Important Note</h2>
+      <p>
+        FreeFitFuel provides information for <strong>general wellbeing and educational purposes only</strong>.
+        It is <strong>not</strong> a substitute for professional medical, nutritional, or mental health advice.
+        Always consult your GP or another qualified health professional before starting any new exercise programme,
+        making significant dietary changes, or if you have existing health conditions.
+      </p>
+      <p>
+        If you ever feel unable to keep yourself safe or believe someone else may be at risk,
+        call <strong>999</strong> in the UK immediately. If you are outside the UK, please dial your local emergency number.
+        For non-emergency support, contact your GP or one of the helplines listed on our Wellbeing pages.
+      </p>
+      <p class="meta">
+        By using this site, you accept that FreeFitFuel and its contributors are <strong>not responsible for any injury, loss, or outcome</strong>
+        arising from the use of information provided here.
+      </p>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
-  </section>
+  </footer>
 
-  <!-- Intermediate -->
-  <section id="intermediate" class="plan">
-    <h2>Intermediate Plan <span class="badge">3× / week • ~30–40 min</span></h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>Push–Pull–Legs (Day 1)</h3>
-        <p class="move"><strong>1) Push-up (knees/high)</strong> 4×6–10</p>
-        <p class="move"><strong>2) DB Row</strong> 4×8–12 / side</p>
-        <p class="move"><strong>3) Goblet Squat</strong> 4×8–12</p>
-        <p class="move"><strong>4) DB Overhead Press</strong> 3×8–10</p>
-        <p class="move"><strong>5) Side Plank</strong> 3×20–40s / side</p>
-      </article>
-      <article class="card">
-        <h3>Hinge–Carry–Core (Day 2)</h3>
-        <p class="move"><strong>1) Romanian Deadlift (DB)</strong> 4×8–12</p>
-        <p class="move"><strong>2) Split Squat</strong> 3×8–10 / leg</p>
-        <p class="move"><strong>3) Band Pulldown / Door-row</strong> 4×10–12</p>
-        <p class="move"><strong>4) Farmer Carry (moderate)</strong> 3×40–60m</p>
-        <p class="move"><strong>5) Dead Bug / Hollow Hold</strong> 3×8–12 or 20–40s</p>
-      </article>
-    </div>
-    <p class="tiny">Progression: when top reps are solid, add load or one extra set.</p>
-  </section>
-
-  <!-- Advanced -->
-  <section id="advanced" class="plan">
-    <h2>Advanced Plan <span class="badge">3–4× / week • ~40–55 min</span></h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>Upper (Strength bias)</h3>
-        <p class="move"><strong>1) Push-up / Weighted</strong> 5×5–8</p>
-        <p class="move"><strong>2) Single-arm Row (heavier)</strong> 5×6–8 / side</p>
-        <p class="move"><strong>3) DB Overhead Press</strong> 4×6–8</p>
-        <p class="move"><strong>4) Chest-supported Row</strong> 4×8–10</p>
-        <p class="move"><strong>5) Plank Variations</strong> 3×40–60s</p>
-      </article>
-      <article class="card">
-        <h3>Lower (Strength + power)</h3>
-        <p class="move"><strong>1) Goblet Squat (heavy)</strong> 5×5–8</p>
-        <p class="move"><strong>2) RDL (heavy)</strong> 4×6–8</p>
-        <p class="move"><strong>3) Split Squat</strong> 4×8–10 / leg</p>
-        <p class="move"><strong>4) Hip Thrust / Bridge</strong> 4×8–12</p>
-        <p class="move"><strong>5) Farmer or Rack Carry</strong> 3×60–80m</p>
-      </article>
-    </div>
-    <div class="callout">
-      <strong>Conditioning finisher (optional):</strong> 6–10 minutes of intervals (20s brisk / 40s easy) on a walk, step, or bike.
-    </div>
-  </section>
-
-  <!-- Mobility & recovery -->
-  <section id="mobility">
-    <h2>Mobility & recovery</h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>Post-session cool-down (4–6 min)</h3>
-        <ul class="list-tight">
-          <li>Calf stretch (wall) 2×20–30s / side</li>
-          <li>Hip flexor stretch (half-kneel) 2×20–30s / side</li>
-          <li>Child’s pose / thoracic rotations × 6–8</li>
-          <li>Box breathing 1–2 minutes (inhale 4, hold 4, exhale 4, hold 4)</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Active recovery days</h3>
-        <ul class="list-tight">
-          <li>20–40 min easy walk or swim</li>
-          <li>Light mobility flow or yoga</li>
-          <li>Tai Chi / Qi Gong for balance & calm</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <!-- Form cues -->
-  <section id="form">
-    <h2>Form cues (quick wins)</h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>Hinge & Squat</h3>
-        <ul class="list-tight">
-          <li><strong>Hinge:</strong> “Push hips back, soft knees, long spine.”</li>
-          <li><strong>Squat:</strong> “Knees track over mid-feet, chest proud, full foot on floor.”</li>
-          <li><strong>Depth:</strong> Pain-free range > depth at any cost.</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Push & Pull</h3>
-        <ul class="list-tight">
-          <li><strong>Push:</strong> Wrists stacked, ribs down, exhale on press.</li>
-          <li><strong>Pull:</strong> Start with shoulder blade; squeeze, then arm.</li>
-          <li><strong>Tempo:</strong> 2s up, 2–3s down (own the negative).</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section id="form-library">
-  <h2>Form Library (watch & copy)</h2>
-  <p class="cap">Short, precise demos for each move in your plans. Learn the setup, do 2–3 clean reps, then try it.</p>
-
-  <div class="grid">
-    <!-- Sit-to-Stand -->
-    <article class="card">
-      <h3>Sit-to-Stand</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/eutszbtbJM8" title="Sit-to-Stand form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Feet under knees • full-foot push • slow lower. <em>Source: Wellen PT</em>.</p>
-    </article>
-
-    <!-- Incline Push-up -->
-    <article class="card">
-      <h3>Incline Push-up</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/76TQU7iZlsI" title="Incline Push-up form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Wrists stacked • body in one line • elbows ~45°. <em>Source: Performance Revolution</em>.</p>
-    </article>
-
-    <!-- Hip Hinge -->
-    <article class="card">
-      <h3>Hip Hinge</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/JLBaBgDwjnQ" title="Hip hinge form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Hips back • soft knees • long spine. <em>Source: Dark Horse Rowing</em>.</p>
-    </article>
-
-    <!-- Dead Bug -->
-    <article class="card">
-      <h3>Dead Bug</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/g_BYB0R-4Ws" title="Dead bug form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Ribs gently down • opposite arm/leg • don’t let back lift. <em>Source: Gillette Children’s</em>.</p>
-    </article>
-
-    <!-- March & Balance -->
-    <article class="card">
-      <h3>March &amp; Balance</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/ns7i65g5gDM" title="March in place for balance" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Tall posture • lift through hips • light support if needed. <em>Source: More Life Health</em>.</p>
-    </article>
-
-    <!-- Split Squat -->
-    <article class="card">
-      <h3>Split Squat</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/m8mQ_92_Ylg" title="Split squat form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Long stance • knee over mid-foot • torso tall. <em>Source: Precision Movement</em>.</p>
-    </article>
-
-    <!-- Band Row -->
-    <article class="card">
-      <h3>Band Row</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/aptW3fPa5WM" title="Standing band row form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Initiate with shoulder blade • row to ribs • no shrug. <em>Source: Upright Health</em>.</p>
-    </article>
-
-    <!-- Wall Press / Scapular Push -->
-    <article class="card">
-      <h3>Wall Scapular Push</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/MtNsnW7Q7Fo" title="Scapular wall push drill" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Protract/retract without elbow bend • ribs down. <em>Source: E3 Rehab</em>.</p>
-    </article>
-
-    <!-- Glute Bridge -->
-    <article class="card">
-      <h3>Glute Bridge</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/OUgsJ8-Vi0E" title="Glute bridge form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Exhale to lift • ribs stay down • pause at top. <em>Source: Squat University</em>.</p>
-    </article>
-
-    <!-- Farmer Carry -->
-    <article class="card">
-      <h3>Farmer Carry</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/z7E_YU9P1jU" title="Farmer's carry form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Tall posture • short quiet steps • don’t lean. <em>Source: Evolve PT & Performance</em>.</p>
-    </article>
-
-    <!-- Goblet Squat -->
-    <article class="card">
-      <h3>Goblet Squat</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/MeIiIdhvXT4" title="Goblet squat form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Weight close to chest • knees track • full foot grounded. <em>Source: ScottHermanFitness</em>.</p>
-    </article>
-
-    <!-- Dumbbell Row -->
-    <article class="card">
-      <h3>One-arm Dumbbell Row</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/pYcpY20QaE8" title="Single arm DB row form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Support torso • row to hip • control lower. <em>Source: ScottHermanFitness</em>.</p>
-    </article>
-
-    <!-- Overhead Press -->
-    <article class="card">
-      <h3>Overhead Press (DB)</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/B-aVuyhvLHU" title="DB shoulder press form" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Glutes/abs on • press up & slightly back • no lean-back. <em>Source: ScottHermanFitness</em>.</p>
-    </article>
-
-    <!-- Romanian Deadlift (DB) -->
-    <article class="card">
-      <h3>Romanian Deadlift (DB)</h3>
-      <div class="video-wrap">
-        <iframe src="https://www.youtube-nocookie.com/embed/hQgFixeXdZo" title="DB RDL form (beginner)" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <p class="tiny">Hips back • shins near vertical • DBs track thighs. <em>Source: Mark Carroll</em>.</p>
-    </article>
-  </div>
-</section>
-  
-  <!-- Safety -->
-  <section id="safety">
-    <h2>Safety</h2>
-    <div class="card">
-      <p class="tiny"><span class="ok">OK:</span> normal muscle effort, light burn, breathing faster.</p>
-      <p class="tiny"><span class="warn">Caution:</span> sharp joint pain, dizziness, chest tightness — <em>stop, rest, assess</em>.</p>
-      <p class="tiny"><span class="danger">Urgent:</span> chest pain, severe breathlessness, fainting — seek medical help.</p>
-      <div class="divider"></div>
-      <p class="tiny">New or multiple conditions? Check with your clinician. Progress gradually. Hydrate and sleep.</p>
-    </div>
-  </section>
-
-  <!-- FAQs -->
-  <section id="faq">
-    <h2>FAQs</h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>How long until I notice changes?</h3>
-        <p>Often 2–3 weeks for energy and mood; 4–8 weeks for visible strength and shape, assuming 2–4 sessions per week.</p>
-      </article>
-      <article class="card">
-        <h3>What if I have no dumbbells?</h3>
-        <p>Start with bodyweight and bands. Add load later for steady progression.</p>
-      </article>
-      <article class="card">
-        <h3>How sore is too sore?</h3>
-        <p>Light next-day muscle soreness is normal. Joint pain or sharp pain is not — scale back or change the movement.</p>
-      </article>
-      <article class="card">
-        <h3>Can I mix cardio with these plans?</h3>
-        <p>Yes: walk most days; add brisk intervals 1–2× weekly. Keep at least one full rest day.</p>
-      </article>
-    </div>
-  </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="container">
-    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
-
-<!-- Hamburger toggle -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.querySelector('.hamburger');
-    const nav = document.querySelector('.main-nav');
-    if (!btn || !nav) return;
-
-    btn.addEventListener('click', () => {
-      const open = btn.classList.toggle('active');
-      nav.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  <!-- JS: hamburger, equipment filter + memory, smooth anchor scroll, rest timers, lazy YT -->
+  <script>
+    // Hamburger menu
+    document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.querySelector('.hamburger');
+      const nav = document.querySelector('.main-nav');
+      if (btn && nav) {
+        btn.addEventListener('click', () => {
+          const open = btn.classList.toggle('active');
+          nav.classList.toggle('open', open);
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      }
     });
-  });
-</script>
 
+    // Find nearest section (details[data-section])
+    function findSection(el){
+      while (el && el !== document && !(el.matches && el.matches('details.block[data-section]'))) el = el.parentNode;
+      return el && el.matches ? el : null;
+    }
+
+    // Equipment filter + memory (per section)
+    (function(){
+      const KEY = 'fff-eq-memory'; // { push:'dumbbells', pull:'bands', legs:'all', full:'bodyweight' }
+      let mem = {};
+      try { mem = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){}
+
+      // Apply saved state
+      document.querySelectorAll('details.block[data-section]').forEach(sec => {
+        const secKey = sec.getAttribute('data-section');
+        const want = mem[secKey] || 'all';
+        const chip = sec.querySelector('.chip[data-eq="'+want+'"]') || sec.querySelector('.chip[data-eq="all"]');
+        if (chip) activateChip(chip, false);
+      });
+
+      // Click handler
+      document.addEventListener('click', function(e){
+        const chip = e.target.closest('.chip');
+        if(!chip) return;
+        const sec = findSection(chip);
+        if(!sec) return;
+        activateChip(chip, true);
+      });
+
+      function activateChip(chip, save){
+        const sec = findSection(chip);
+        const eq = chip.getAttribute('data-eq');
+        // visual state
+        sec.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c===chip));
+        // show/hide opts
+        sec.querySelectorAll('.opt').forEach(opt => {
+          const has = opt.getAttribute('data-equip');
+          if(eq==='all' || has===eq) opt.classList.remove('hidden'); else opt.classList.add('hidden');
+        });
+        // memory
+        if(save){
+          const id = sec.getAttribute('data-section');
+          mem[id] = eq;
+          localStorage.setItem(KEY, JSON.stringify(mem));
+        }
+      }
+    })();
+
+    // Smooth jump to #form-* (compensate sticky header + highlight)
+    document.addEventListener('click', function(e){
+      const a = e.target.closest('a[href^="#form-"]');
+      if(!a) return;
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if(!target) return;
+      e.preventDefault();
+      const header = document.querySelector('.site-header');
+      const headerH = header ? header.getBoundingClientRect().height : 0;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - (headerH + 10);
+      window.scrollTo({top, behavior:'smooth'});
+      target.style.outline = '2px solid var(--accent)';
+      setTimeout(()=> target.style.outline = 'none', 1600);
+    });
+
+    // Rest timers
+    (function(){
+      let activeTimer = null;
+      document.addEventListener('click', function(e){
+        const btn = e.target.closest('.rest button[data-t]');
+        if(!btn) return;
+        const block = btn.closest('.rest');
+        const out = block.querySelector('.count');
+        const secs = parseInt(btn.getAttribute('data-t'), 10) || 60;
+        if (activeTimer) clearInterval(activeTimer);
+        let remain = secs;
+        out.textContent = remain + 's';
+        activeTimer = setInterval(()=>{
+          remain--;
+          if(remain <= 0){ clearInterval(activeTimer); activeTimer = null; out.textContent = 'Go!'; return; }
+          out.textContent = remain + 's';
+        }, 1000);
+      });
+    })();
+
+    // Lazy YouTube: build nocookie iframe on click (uses YouTube’s default thumbnail)
+    (function(){
+      function buildThumb(el){
+        const id = el.getAttribute('data-yt');
+        if(!id) return;
+        const thumb = document.createElement('div');
+        thumb.className = 'video-thumb';
+        const img = document.createElement('img');
+        img.alt = 'Video thumbnail';
+        img.referrerPolicy = 'no-referrer';
+        img.src = 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';
+        const play = document.createElement('button');
+        play.className = 'play-btn';
+        play.setAttribute('aria-label','Play video');
+        thumb.appendChild(img); thumb.appendChild(play);
+        el.appendChild(thumb);
+
+        thumb.addEventListener('click', ()=>{
+          const iframe = document.createElement('iframe');
+          iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
+          iframe.title = 'YouTube video';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          iframe.allowFullscreen = true;
+          el.innerHTML = '';
+          el.appendChild(iframe);
+        });
+      }
+
+      document.querySelectorAll('.video-wrap[data-yt]').forEach(buildThumb);
+    })();
+  </script>
 </body>
 </html>

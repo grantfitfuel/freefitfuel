@@ -25,9 +25,25 @@
     .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
     .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
     .label{font-size:.9rem;opacity:.85;margin-right:.25rem}
-    .equip{display:flex;gap:.4rem;flex-wrap:nowrap}
-    .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .65rem;font-size:.92rem;white-space:nowrap}
-    .pill input{accent-color:var(--accent)}
+    /* Equipment row – slimmer pills, single line with gentle scroll on mobile */
+    .equip{display:flex;gap:.35rem;flex-wrap:nowrap;overflow-x:auto;padding:.1rem .2rem;border-radius:999px}
+    .equip::-webkit-scrollbar{height:6px}
+    .equip::-webkit-scrollbar-thumb{background:var(--stroke);border-radius:999px}
+    .pill{
+      display:inline-flex;align-items:center;gap:.35rem;
+      background:var(--glass);border:1px solid var(--stroke);
+      border-radius:999px;padding:.28rem .55rem;font-size:.88rem;line-height:1;
+      white-space:nowrap
+    }
+    .pill input{accent-color:var(--accent);transform:scale(.95)}
+
+    /* Stack Equipment label above on small screens for cleaner alignment */
+    @media (max-width: 640px){
+      .label.equip-label{display:block;width:100%;margin:.2rem 0 .2rem}
+      .equip{padding-left:0}
+      .pill{padding:.25rem .5rem;font-size:.86rem}
+      .seg button{padding:.40rem .7rem}
+    }
 
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
@@ -63,6 +79,12 @@
     .anatomy .notes{font-size:.9rem;color:var(--inkdim)}
     .meta{color:var(--inkdim);font-size:.92rem}
     .muted{opacity:.8}
+
+    /* Goal explainer card */
+    .goals{display:grid;gap:.5rem}
+    .goals .row{display:grid;gap:.35rem}
+    @media (min-width:700px){ .goals{grid-template-columns:repeat(2,1fr)} }
+    .badge{display:inline-block;background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;font-size:.82rem;margin-left:.35rem}
   </style>
 </head>
 <body>
@@ -118,14 +140,37 @@
       <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
     </div>
 
-    <span class="label" style="margin-left:.6rem">Equipment</span>
-    <div class="equip">
+    <span class="label equip-label" style="margin-left:.6rem">Equipment</span>
+    <div class="equip" aria-label="Equipment filters">
       <span class="pill"><input type="checkbox" id="f-db" checked>   <label for="f-db">Dumbbells</label></span>
       <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
       <span class="pill"><input type="checkbox" id="f-bw" checked>   <label for="f-bw">Bodyweight</label></span>
       <span class="pill"><input type="checkbox" id="f-rack">         <label for="f-rack">Rack / Door anchor</label></span>
     </div>
   </div>
+
+  <!-- Goal explainer -->
+  <section class="section" aria-labelledby="goal-explain">
+    <h2 id="goal-explain">What do these goals mean?</h2>
+    <div class="goals">
+      <div class="row">
+        <h3>Maintain<span class="badge">Balance</span></h3>
+        <p class="meta">Keep strength and fitness steady with moderate sets/reps and comfortable rest. Great during busy weeks or between phases.</p>
+      </div>
+      <div class="row">
+        <h3>Cut<span class="badge">Fat loss</span></h3>
+        <p class="meta">Slightly higher reps, shorter rests, and optional finishers or brisk walks. Purpose: burn more calories while preserving muscle.</p>
+      </div>
+      <div class="row">
+        <h3>Build (Bulk)<span class="badge">Muscle gain</span></h3>
+        <p class="meta">Lower–moderate reps with controlled tempo and longer rests (90–150s) on big lifts. Focus on progressive overload and recovery.</p>
+      </div>
+      <div class="row">
+        <h3>Transform<span class="badge">Recomposition</span></h3>
+        <p class="meta">Circuit feel with minimal rests and mixed patterns. Goal: improve muscle, fitness, and body comp together. Keep form pristine.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- Weekly split -->
   <div class="section">
@@ -177,22 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ===== Data ===== */
-/* Anatomy PNGs live in /img/anatomy/ with your names, for example:
-   muscles-front-chest-pecs.png, muscles-front-deltoids-front.png, muscles-front-deltoids-mid.png,
-   muscles-back-deltoids-rear.png, muscles-back-triceps-long.png, muscles-back-triceps-lateral.png,
-   muscles-back-triceps-medial.png, muscles-back-lats-upper.png, muscles-back-lats-lower.png,
-   muscles-back-traps-upper.png, muscles-back-traps-mid.png, muscles-back-traps-lower.png,
-   muscles-back-rhomboids.png, muscles-front-biceps-short.png, muscles-front-biceps-long.png,
-   muscles-front-forearms-flexors.png, muscles-back-forearms-extensors.png, muscles-front-quads-rectus.png,
-   muscles-front-quads-vastus-lateral.png, muscles-front-quads-vastus-medial.png,
-   muscles-back-hamstrings-biceps-femoris.png, muscles-back-hamstrings-semitendinosus.png,
-   muscles-back-hamstrings-semimembranosus.png, muscles-back-glutes-maximus.png, muscles-front-hip-flexors.png,
-   muscles-back-calves-gastrocnemius.png, muscles-back-calves-soleus.png, muscles-front-abs-upper.png,
-   muscles-front-abs-lower.png, muscles-front-obliques-external.png, muscles-front-obliques-internal.png,
-   muscles-back-erector-spinae.png
-*/
+/* Anatomy PNGs should be in /img/anatomy/ using your granular names. */
 
-/* Exercises (some IDs are rock-solid; if any block in your region, the card offers Open/Search) */
 const EX = [
   /* ========= PUSH ========= */
   {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',   yt:'IODxDxX7oi4',   muscles:['muscles-front-chest-pecs.png','muscles-back-triceps-long.png','muscles-front-deltoids-front.png']},
@@ -329,7 +360,7 @@ function getFilters(){
     rack: document.getElementById('f-rack').checked
   };
 }
-function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ').replace(/muscles|front|back|\.png/gi,'').trim()).join(', '); }
+function muscleList(ms){ return ms.map(x=>x.replace(/muscles-|front-|back-|\.png/gi,'').replace(/-/g,' ')).join(', '); }
 function anatomy(ms){
   const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
   return `<div class="anatomy">${imgs}<div class="notes"><strong>Target:</strong> ${muscleList(ms)}</div></div>`;
@@ -347,17 +378,16 @@ function goalNote(){
   const el = document.getElementById('goal-note');
   const map = {
     maintain:'Maintain: moderate sets, steady tempo, 60–90s rest.',
-    cut:'Cut: slightly higher reps, shorter rests, optional finishers or brisk walk after.',
-    build:'Build: lower–moderate reps with controlled tempo; rest 90–150s for big moves.',
-    transform:'Transform: circuit feel with minimal rest; keep form pristine.'
+    cut:'Cut: higher reps, shorter rests, optional finishers or brisk walk after.',
+    build:'Build: lower–moderate reps, controlled tempo, 90–150s rest on big moves.',
+    transform:'Transform: circuit pace, minimal rest; keep form pristine.'
   };
   el.textContent = map[goal] || '';
 }
-
-/* apply goal tweak to displayed RX (text-only hint) */
+/* tweak RX text by goal (visual hint only) */
 function adjRx(text){
-  if(goal==='cut')       return text + ' · short rests';
-  if(goal==='build')     return text + ' · longer rests';
+  if(goal==='cut')       return text + ' · short rest';
+  if(goal==='build')     return text + ' · longer rest';
   if(goal==='transform') return text + ' · circuit pace';
   return text;
 }
@@ -413,7 +443,7 @@ function renderCal(){
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${adjRx(rx)}</span>`;
       b.appendChild(row);
     });
-    if(b.children.length===1){ // only h3
+    if(b.children.length===1){
       const none = document.createElement('div');
       none.className='meta'; none.textContent='No matching options for the current equipment filters.';
       b.appendChild(none);
@@ -447,13 +477,12 @@ function renderLibrary(){
           <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Search</a>
         </div>
       </div>
-      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replaceAll('muscles-','').replaceAll('.png','').replaceAll('-',' ')}</span>`).join('')}</div>
+      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replace(/muscles-|front-|back-|\.png/gi,'').replace(/-/g,' ')}</span>`).join('')}</div>
       ${anatomy(e.muscles)}
     `;
     libEl.appendChild(card);
   });
 
-  // lazy-load on click (handles unavailable-embed cases better)
   libEl.querySelectorAll('.tile').forEach(tile=>{
     const id = tile.dataset.yt;
     const btn = tile.querySelector('.play');
@@ -464,7 +493,6 @@ function renderLibrary(){
         iframe.style.display='block';
         btn.style.display='none';
       } else {
-        // no id — open search in new tab
         const a = tile.querySelector('.openers a:last-child');
         if(a) a.click();
       }
@@ -505,7 +533,7 @@ function hookTimers(){
       if(remain<=0){ clearInterval(t); t=null; chime(); }
     }
     box.querySelector('[data-act="start"]').onclick = ()=>{
-      if(!unlocked){ ensureAudio(); }  // user gesture unlocks audio
+      if(!unlocked){ ensureAudio(); }
       const sec = Math.max(5, parseInt(input.value||'60',10));
       left.textContent = fmt(sec); end = Date.now()+sec*1000;
       clearInterval(t); t=setInterval(tick, 200);

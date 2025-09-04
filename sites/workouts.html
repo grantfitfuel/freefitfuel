@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Workouts – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
@@ -59,9 +59,11 @@
     .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem .9rem .6rem}
     .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.18rem .55rem;font-size:.82rem}
 
-    .anatomy{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .85rem}
+    .anatomy{display:flex;gap:.5rem;flex-wrap:wrap;padding:.4rem .9rem .85rem}
+    .anatomy .col{display:flex;align-items:flex-start;gap:.5rem}
+    .anatomy h5{margin:.2rem 0;font-size:.88rem;color:#ddd}
     .anatomy img{width:92px;height:auto;border-radius:8px;border:1px solid var(--stroke);background:#0b0f14}
-    .anatomy .notes{font-size:.9rem;color:var(--inkdim)}
+    .anatomy .notes{font-size:.9rem;color:var(--inkdim);flex:1;min-width:180px}
   </style>
 </head>
 <body>
@@ -173,56 +175,105 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===== Data ===== */
-/* Anatomy PNGs live in /img/anatomy/ with these names:
-   chest.png, front-delts.png, side-delts.png, rear-delts.png,
-   lats.png, mid-back.png, low-back.png, biceps.png, triceps.png,
-   forearms.png, glutes.png, hamstrings.png, quads.png, calves.png,
-   core.png, obliques.png, full-body.png, shoulders.png
-*/
+/* ===== Anatomy images live in /img/anatomy/ with EXACT names you provided ===== */
 
+/* ===== Exercise data with Primary/Secondary muscle PNGs ===== */
 const EX = [
-  // PUSH
-  {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',   yt:'IODxDxX7oi4',   muscles:['chest','triceps','front-delts']},
-  {k:'dbfloor', n:'DB Floor Press',         cat:'push',  eq:'db',   yt:'Y-s9AyDhs4I',   muscles:['chest','triceps','front-delts']},
-  {k:'dbbench', n:'DB Bench Press',         cat:'push',  eq:'db',   yt:'gRVjAtPip0Y',   muscles:['chest','triceps','front-delts']},
-  {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db',   yt:'3ml7BH7mNwQ',   muscles:['front-delts','side-delts','rear-delts']},
-  {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db',   yt:'3VcKaXpzqRo',   muscles:['side-delts']},
-  {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db',   yt:'QZEqB6wUPxQ',   muscles:['quads','glutes','shoulders','core']},
+  // PUSH (Chest, Shoulders, Triceps)
+  {k:'pushup',  n:'Push-up', cat:'push', eq:'bw', yt:'IODxDxX7oi4',
+    prim:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png','muscles-back-triceps-long.png'],
+    sec:['muscles-back-triceps-lateral.png','muscles-back-triceps-medial.png']},
+  {k:'dbfloor', n:'DB Floor Press', cat:'push', eq:'db', yt:'Y-s9AyDhs4I',
+    prim:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png','muscles-back-triceps-long.png'],
+    sec:['muscles-back-triceps-lateral.png','muscles-back-triceps-medial.png']},
+  {k:'dbbench', n:'DB Bench Press', cat:'push', eq:'db', yt:'gRVjAtPip0Y',
+    prim:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png','muscles-back-triceps-long.png'],
+    sec:['muscles-back-triceps-lateral.png','muscles-back-triceps-medial.png']},
+  {k:'arnold',  n:'Arnold Press', cat:'push', eq:'db', yt:'3ml7BH7mNwQ',
+    prim:['muscles-front-deltoids-front.png','muscles-front-deltoids-mid.png'],
+    sec:['muscles-back-triceps-long.png','muscles-back-traps-upper.png']},
+  {k:'latraise',n:'Lateral Raise', cat:'push', eq:'db', yt:'3VcKaXpzqRo',
+    prim:['muscles-front-deltoids-mid.png'],
+    sec:['muscles-back-traps-upper.png']},
+  {k:'thruster',n:'DB Thruster', cat:'push', eq:'db', yt:'QZEqB6wUPxQ',
+    prim:['muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png','muscles-front-deltoids-front.png'],
+    sec:['muscles-front-abs-lower.png','muscles-back-erector-spinae.png']},
 
-  // PULL
-  {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band', yt:'uUjQ0n0J1sE',   muscles:['lats','mid-back','rear-delts']},
-  {k:'doorrow', n:'Doorway Row',            cat:'pull',  eq:'bw',   yt:'c0G3N5aV5lY',   muscles:['lats','mid-back','rear-delts']},
-  {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band', yt:'f4ZkQem6FGo',   muscles:['lats','mid-back','biceps']},
-  {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'band', yt:'h2f_v6v3OQI',   muscles:['lats','biceps','mid-back']},
-  {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack', yt:'z9x2rYc4qYI',   muscles:['lats','biceps','mid-back']},
-  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',   yt:'wzj8gBqGxF4',   muscles:['lats','mid-back','rear-delts']},
-  {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db',   yt:'R5rj8m9r-1g',   muscles:['lats','mid-back','core']},
-  {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db',   yt:'l0gDqsSUtWo',   muscles:['biceps','forearms']},
+  // PULL (Back, Biceps, Rear Delts, Forearms)
+  {k:'bandrow', n:'Band Row', cat:'pull', eq:'band', yt:'uUjQ0n0J1sE',
+    prim:['muscles-back-lats-upper.png','muscles-back-traps-mid.png','muscles-back-rhomboids.png'],
+    sec:['muscles-back-deltoids-rear.png','muscles-front-biceps-long.png']},
+  {k:'doorrow', n:'Doorway Row', cat:'pull', eq:'bw', yt:'c0G3N5aV5lY',
+    prim:['muscles-back-lats-upper.png','muscles-back-traps-mid.png','muscles-back-rhomboids.png'],
+    sec:['muscles-back-deltoids-rear.png','muscles-front-biceps-long.png']},
+  {k:'bandlat', n:'Band Lat Pulldown', cat:'pull', eq:'band', yt:'f4ZkQem6FGo',
+    prim:['muscles-back-lats-lower.png','muscles-front-biceps-long.png'],
+    sec:['muscles-back-traps-mid.png','muscles-back-deltoids-rear.png']},
+  {k:'anchorpd',n:'Door Anchor Pull-down', cat:'pull', eq:'band', yt:'h2f_v6v3OQI',
+    prim:['muscles-back-lats-lower.png','muscles-front-biceps-long.png'],
+    sec:['muscles-back-traps-mid.png','muscles-back-rhomboids.png']},
+  {k:'chin',    n:'Chin-up (band assist)', cat:'pull', eq:'rack', yt:'z9x2rYc4qYI',
+    prim:['muscles-back-lats-lower.png','muscles-front-biceps-long.png'],
+    sec:['muscles-back-traps-mid.png','muscles-back-rhomboids.png']},
+  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull', eq:'db', yt:'wzj8gBqGxF4',
+    prim:['muscles-back-lats-upper.png','muscles-back-traps-mid.png','muscles-back-rhomboids.png'],
+    sec:['muscles-back-deltoids-rear.png','muscles-front-biceps-long.png']},
+  {k:'renrow',  n:'Renegade Row', cat:'pull', eq:'db', yt:'R5rj8m9r-1g',
+    prim:['muscles-back-lats-upper.png','muscles-back-traps-mid.png'],
+    sec:['muscles-front-abs-lower.png','muscles-back-erector-spinae.png']},
+  {k:'zott',    n:'Zottman Curl', cat:'pull', eq:'db', yt:'l0gDqsSUtWo',
+    prim:['muscles-front-biceps-short.png','muscles-front-biceps-long.png'],
+    sec:['muscles-front-forearms-flexors.png','muscles-back-forearms-extensors.png']},
 
-  // LEGS
-  {k:'stepup',  n:'Step-up',                cat:'legs',  eq:'db',   yt:'yQ0Z5zq2mTw',   muscles:['quads','glutes','hamstrings']},
-  {k:'dbrdl',   n:'DB Romanian Deadlift',   cat:'legs',  eq:'db',   yt:'v0QZrS5rG9A',   muscles:['hamstrings','glutes','low-back']},
+  // LEGS (Quads, Hamstrings, Glutes, Calves)
+  {k:'stepup',  n:'Step-up', cat:'legs', eq:'db', yt:'yQ0Z5zq2mTw',
+    prim:['muscles-front-quads-rectus.png','muscles-front-quads-vastus-medial.png','muscles-back-glutes-maximus.png'],
+    sec:['muscles-front-quads-vastus-lateral.png','muscles-back-hamstrings-biceps-femoris.png','muscles-back-calves-gastrocnemius.png']},
+  {k:'dbrdl',   n:'DB Romanian Deadlift', cat:'legs', eq:'db', yt:'v0QZrS5rG9A',
+    prim:['muscles-back-hamstrings-biceps-femoris.png','muscles-back-hamstrings-semitendinosus.png','muscles-back-hamstrings-semimembranosus.png'],
+    sec:['muscles-back-glutes-maximus.png','muscles-back-erector-spinae.png']},
 
-  // CORE (new)
-  {k:'plank',   n:'Front Plank',            cat:'core',  eq:'bw',   yt:'ASdvN_XEl_c',   muscles:['core','obliques']},
-  {k:'sidepl',  n:'Side Plank',             cat:'core',  eq:'bw',   yt:'K2VljzCC16g',   muscles:['obliques','core']},
-  {k:'deadbug', n:'Dead Bug',               cat:'core',  eq:'bw',   yt:'4bot9oex9Yg',   muscles:['core']},
-  {k:'pallof',  n:'Band Pallof Press',      cat:'core',  eq:'band', yt:'Y2xHjRD6cGA',   muscles:['core','obliques']},
+  // CORE (Abs, Obliques, Spinal Erectors)
+  {k:'plank',   n:'Front Plank', cat:'core', eq:'bw', yt:'ASdvN_XEl_c',
+    prim:['muscles-front-abs-lower.png'],
+    sec:['muscles-front-abs-upper.png','muscles-front-obliques-internal.png','muscles-back-erector-spinae.png']},
+  {k:'sidepl',  n:'Side Plank', cat:'core', eq:'bw', yt:'K2VljzCC16g',
+    prim:['muscles-front-obliques-external.png','muscles-front-obliques-internal.png'],
+    sec:['muscles-front-abs-lower.png']},
+  {k:'deadbug', n:'Dead Bug', cat:'core', eq:'bw', yt:'4bot9oex9Yg',
+    prim:['muscles-front-abs-lower.png'],
+    sec:['muscles-front-obliques-internal.png','muscles-front-hip-flexors.png']},
+  {k:'pallof',  n:'Band Pallof Press', cat:'core', eq:'band', yt:'Y2xHjRD6cGA',
+    prim:['muscles-front-obliques-internal.png','muscles-front-obliques-external.png'],
+    sec:['muscles-front-abs-lower.png','muscles-back-erector-spinae.png']},
 
   // FULL BODY
-  {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db',   yt:'wV2bF1X8Y4M',   muscles:['full-body','core']},
-  {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db',   yt:'zQ6ZlJkFQ3E',   muscles:['full-body','core','front-delts']},
-  {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw',   yt:'tZyq3x1y9mQ',   muscles:['shoulders','front-delts','triceps']},
+  {k:'manmaker',n:'Man Maker', cat:'full', eq:'db', yt:'wV2bF1X8Y4M',
+    prim:['muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png','muscles-back-lats-upper.png'],
+    sec:['muscles-front-abs-lower.png','muscles-back-traps-upper.png']},
+  {k:'dbcp',    n:'DB Clean & Press', cat:'full', eq:'db', yt:'zQ6ZlJkFQ3E',
+    prim:['muscles-front-quads-rectus.png','muscles-back-glutes-maximus.png','muscles-front-deltoids-front.png'],
+    sec:['muscles-back-traps-upper.png','muscles-back-erector-spinae.png']},
+  {k:'hswall',  n:'Wall Handstand (beginner)', cat:'full', eq:'bw', yt:'tZyq3x1y9mQ',
+    prim:['muscles-front-deltoids-front.png','muscles-back-triceps-long.png'],
+    sec:['muscles-back-traps-upper.png','muscles-back-forearms-extensors.png']},
 
   // CALISTHENICS FOCUS
-  {k:'dipbench',n:'Bench Dip (calisthenics)',cat:'cal',  eq:'bw',   yt:'6kALZikXxLc',   muscles:['triceps','chest','front-delts']},
-  {k:'hollow',  n:'Hollow Body Hold',       cat:'cal',   eq:'bw',   yt:'o-qlBV4J6To',   muscles:['core']},
-  {k:'lsit',    n:'L-sit (tuck progression)',cat:'cal',  eq:'bw',   yt:'F3tGqV4wJ2E',   muscles:['core','hip-flexors','triceps']},
-  {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',   yt:'YlH3z9JvNlg',   muscles:['quads','glutes','hamstrings','calves']}
+  {k:'dipbench',n:'Bench Dip (calisthenics)', cat:'cal', eq:'bw', yt:'6kALZikXxLc',
+    prim:['muscles-back-triceps-long.png','muscles-back-triceps-lateral.png','muscles-back-triceps-medial.png'],
+    sec:['muscles-front-chest-pecs.png','muscles-front-deltoids-front.png']},
+  {k:'hollow',  n:'Hollow Body Hold', cat:'cal', eq:'bw', yt:'o-qlBV4J6To',
+    prim:['muscles-front-abs-lower.png','muscles-front-abs-upper.png'],
+    sec:['muscles-front-obliques-internal.png']},
+  {k:'lsit',    n:'L-sit (tuck progression)', cat:'cal', eq:'bw', yt:'F3tGqV4wJ2E',
+    prim:['muscles-front-hip-flexors.png','muscles-front-abs-lower.png'],
+    sec:['muscles-back-triceps-long.png']},
+  {k:'pistol',  n:'Pistol Squat (progression)', cat:'cal', eq:'bw', yt:'YlH3z9JvNlg',
+    prim:['muscles-front-quads-vastus-medial.png','muscles-front-quads-vastus-lateral.png','muscles-back-glutes-maximus.png'],
+    sec:['muscles-back-hamstrings-biceps-femoris.png','muscles-back-calves-soleus.png']}
 ];
 
-// prescriptions per day + difficulty
+/* ===== Day prescriptions (unchanged behaviour) ===== */
 const RX = {
   push:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true}],
@@ -239,7 +290,7 @@ const RX = {
     intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'}],
     advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'}]
   },
-  core:{ /* NEW core day */
+  core:{
     beginner:[{k:'plank',rx:'3×25–40s'},{k:'deadbug',rx:'3×8–12/side'}],
     intermediate:[{k:'plank',rx:'4×30–45s'},{k:'sidepl',rx:'3×25–40s/side'},{k:'deadbug',rx:'3×10–14/side'}],
     advanced:[{k:'plank',rx:'5×40–60s'},{k:'sidepl',rx:'4×30–45s/side'},{k:'pallof',rx:'4×10–14/side'}]
@@ -251,6 +302,7 @@ const RX = {
   }
 };
 
+/* Calisthenics progressions (same) */
 const CAL = [
   {title:'Push', items:[
     {k:'pushup', rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
@@ -288,7 +340,6 @@ document.querySelectorAll('[data-level]').forEach(b=>{
     renderAll();
   });
 });
-
 document.querySelectorAll('[data-goal]').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('[data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -297,41 +348,16 @@ document.querySelectorAll('[data-goal]').forEach(b=>{
     renderAll();
   });
 });
-
-function getFilters(){
-  return {
-    db: document.getElementById('f-db').checked,
-    band: document.getElementById('f-band').checked,
-    bw: document.getElementById('f-bw').checked,
-    rack: document.getElementById('f-rack').checked
-  };
-}
 ['f-db','f-band','f-bw','f-rack'].forEach(id=>{
   document.getElementById(id).addEventListener('change', renderAll);
 });
-
-function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ')).join(', '); }
-function anatomy(ms){
-  const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}.png" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
-  return `<div class="anatomy">${imgs}<div class="notes"><strong>Target:</strong> ${muscleList(ms)}</div></div>`;
-}
-function timerHTML(id){ return `
-  <div class="timer" data-timer="${id}">
-    <label for="t-${id}" class="visually-hidden">Timer (seconds)</label>
-    <input id="t-${id}" type="number" min="5" step="5" value="${goalDefaultRest()}">
-    <button data-act="start">Start</button>
-    <button data-act="stop">Stop</button>
-    <span class="left" aria-live="polite">${goalDefaultRest()}s</span>
-  </div>`; }
-
-function exByKey(k){ return EX.find(x=>x.k===k); }
 
 function goalDefaultRest(){
   switch(goal){
     case 'cut': return 45;
     case 'build': return 90;
     case 'transform': return 60;
-    default: return 60; // maintain
+    default: return 60;
   }
 }
 function goalBlurb(){
@@ -343,9 +369,42 @@ function goalBlurb(){
   }
 }
 
+function exByKey(k){ return EX.find(x=>x.k===k); }
+function muscleLabel(fn){ return fn.replace(/[-_]/g,' ').replace('.png',''); }
+
+function anatomy(prim=[], sec=[]){
+  const primImgs = prim.slice(0,4).map(m=>`<img src="img/anatomy/${m}" alt="${muscleLabel(m)} (primary)" onerror="this.style.display='none'">`).join('');
+  const secImgs  = sec.slice(0,3).map(m=>`<img src="img/anatomy/${m}" alt="${muscleLabel(m)} (secondary)" onerror="this.style.display='none'">`).join('');
+  return `
+    <div class="anatomy">
+      <div class="col"><div>
+        <h5>Primary</h5>
+        <div>${primImgs || '<span class="notes">—</span>'}</div>
+      </div></div>
+      <div class="col"><div>
+        <h5>Secondary</h5>
+        <div>${secImgs || '<span class="notes">—</span>'}</div>
+      </div></div>
+    </div>`;
+}
+
+function timerHTML(id){ const def=goalDefaultRest(); return `
+  <div class="timer" data-timer="${id}">
+    <label for="t-${id}" class="visually-hidden">Timer (seconds)</label>
+    <input id="t-${id}" type="number" min="5" step="5" value="${def}">
+    <button data-act="start">Start</button>
+    <button data-act="stop">Stop</button>
+    <span class="left" aria-live="polite">${def}s</span>
+  </div>`; }
+
 function renderPlan(){
-  const f = getFilters(); planEl.innerHTML='';
-  goalNote.textContent = goalBlurb();
+  const f = {
+    db: document.getElementById('f-db').checked,
+    band: document.getElementById('f-band').checked,
+    bw: document.getElementById('f-bw').checked,
+    rack: document.getElementById('f-rack').checked
+  };
+  planEl.innerHTML=''; goalNote.textContent = goalBlurb();
 
   const days = [
     ['Push Day — Chest • Shoulders • Triceps', 'push'],
@@ -359,7 +418,6 @@ function renderPlan(){
     const blk = document.createElement('div'); blk.className='block';
     blk.innerHTML = `<h3>${title}</h3>`;
     const list = document.createElement('div');
-
     RX[key][level].forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
       if(!f[e.eq]) return;
@@ -367,7 +425,6 @@ function renderPlan(){
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${it.rx}</span>`;
       list.appendChild(row);
     });
-
     blk.appendChild(list);
     blk.insertAdjacentHTML('beforeend', timerHTML('tm-'+key));
     planEl.appendChild(blk);
@@ -376,7 +433,13 @@ function renderPlan(){
 }
 
 function renderCal(){
-  const f = getFilters(); calEl.innerHTML='';
+  const f = {
+    db: document.getElementById('f-db').checked,
+    band: document.getElementById('f-band').checked,
+    bw: document.getElementById('f-bw').checked,
+    rack: document.getElementById('f-rack').checked
+  };
+  calEl.innerHTML='';
   CAL.forEach(col=>{
     const b = document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
     col.items.forEach(it=>{
@@ -394,7 +457,13 @@ function renderCal(){
 }
 
 function renderLibrary(){
-  const f = getFilters(); libEl.innerHTML='';
+  const f = {
+    db: document.getElementById('f-db').checked,
+    band: document.getElementById('f-band').checked,
+    bw: document.getElementById('f-bw').checked,
+    rack: document.getElementById('f-rack').checked
+  };
+  libEl.innerHTML='';
   EX.forEach(e=>{
     if(!f[e.eq]) return;
     const card = document.createElement('article'); card.className='card';
@@ -416,8 +485,8 @@ function renderLibrary(){
           <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Search</a>
         </div>
       </div>
-      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replace(/-/g,' ')}</span>`).join('')}</div>
-      ${anatomy(e.muscles)}
+      <div class="tags">${[...(e.prim||[]),...(e.sec||[])].slice(0,6).map(m=>`<span class="tag">${muscleLabel(m)}</span>`).join('')}</div>
+      ${anatomy(e.prim, e.sec)}
     `;
     libEl.appendChild(card);
   });
@@ -450,7 +519,7 @@ function beepAt(t, freq, dur){
   g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.stop(t+dur+.01);
 }
 function chime(){
-  if(!unlocked) return; // needs user gesture first
+  if(!unlocked) return;
   const now = audioCtx.currentTime;
   beepAt(now+0.00, 880, .15);
   beepAt(now+0.25, 880, .15);

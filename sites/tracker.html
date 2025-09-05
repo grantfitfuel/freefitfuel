@@ -140,6 +140,9 @@
           </select>
         </label>
         <button class="btn secondary" id="clearHist">Clear history</button>
+        <button class="btn secondary" id="exportAll">Export JSON</button>
+<label class="btn secondary" for="importAll" style="cursor:pointer">Import JSON</label>
+<input id="importAll" type="file" accept="application/json" style="display:none">
       </div>
     </div>
     <div class="history-grid" id="hist"></div>
@@ -515,6 +518,39 @@ document.addEventListener('touchstart', function once(){
 
 /* Initial draws */
 renderHistory(); renderPBs();
+</script>
+  <script>
+const SKEY = 'fff.sessions.v1'; // (already defined above; keep only one definition, not two)
+
+// Export
+document.getElementById('exportAll')?.addEventListener('click', ()=>{
+  const data = localStorage.getItem(SKEY) || '[]';
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'freefitfuel-sessions.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// Import
+document.getElementById('importAll')?.addEventListener('change', async (e)=>{
+  const file = e.target.files?.[0]; if(!file) return;
+  const text = await file.text();
+  try{
+    const arr = JSON.parse(text);
+    if(!Array.isArray(arr)) throw new Error('Invalid data');
+    localStorage.setItem(SKEY, JSON.stringify(arr));
+    alert('Sessions imported successfully.');
+    // Repaint UI if your tracker shows PBs/history immediately:
+    if(typeof renderHistory==='function') renderHistory();
+    if(typeof renderPBs==='function') renderPBs();
+  }catch(err){
+    alert('Import failed: ' + err.message);
+  }finally{
+    e.target.value = '';
+  }
+});
 </script>
 </body>
 </html>

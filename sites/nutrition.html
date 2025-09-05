@@ -38,6 +38,17 @@
     @media(min-width:900px){.cols-2{grid-template-columns:1.1fr 1fr}}
     @media(min-width:980px){.cols-3{grid-template-columns:repeat(3,1fr)}}
 
+    .plan-grid{display:grid;gap:10px}
+@media(min-width:900px){.plan-grid{grid-template-columns:repeat(7,1fr)}}
+.day-col{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:.5rem}
+.day-col h3{margin:.1rem 0 .25rem;font-size:1rem}
+.slot{border:1px dashed var(--stroke);border-radius:8px;padding:.45rem}
+.slot .row{display:flex;justify-content:space-between;gap:.4rem;align-items:center}
+.slot .name{font-weight:600}
+.slot .cal{opacity:.85;font-size:.9rem}
+.slot .swap{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.2rem .5rem;border-radius:8px;cursor:pointer;font-size:.86rem}
+.total{margin-top:auto;font-weight:700;opacity:.9}
+
     /* Calculator */
     .calc{display:grid;gap:.6rem}
     .calc .row{display:flex;flex-wrap:wrap;gap:.6rem}
@@ -280,7 +291,154 @@ function makeBudgetVersion(rec){
 /* Track per-card toggle state in memory + localStorage */
 const budgetState = JSON.parse(localStorage.getItem('pp-budget-state')||'{}');
 function setBudgetState(k,on){ budgetState[k]=!!on; localStorage.setItem('pp-budget-state', JSON.stringify(budgetState)); }
+/* ========== Categorisation (light-touch map) ========== */
+/* If you already store course/category on each recipe, use that instead. */
+const CATEGORY = {
+  breakfast: new Set(['overnight-oats','smoothie-green','baked-oats','egg-muffins','yoghurt-parfait','chia-pudding']),
+  lunch:     new Set(['tuna-sweetcorn-sand','falafel-wrap','nicoise','bulgur-feta','prawn-stirfry','caprese-chicken','salmon-rice-bowl']),
+  dinner:    new Set(['sheet-chicken','beef-stirfry','turkey-meatballs','paneer-peas','tofu-stirfry','stuffed-peppers','kimchi-fried-rice','minestrone','dhal','dhansak','yakisoba','stirfry-udon','shepherds-lite','tuna-pasta','quorn-chilli','harissa-bowl','sweet-pot-chickpea','pho-chicken','rice-chicken-ez','pasta-tuna-peas']),
+  snack:     new Set(['roast-veg','rice-coconut','banana-ice'])
+};
+function guessCategory(k){
+  if(CATEGORY.breakfast.has(k)) return 'breakfast';
+  if(CATEGORY.lunch.has(k))     return 'lunch';
+  if(CATEGORY.snack.has(k))     return 'snack';
+  return 'dinner';
+}
 
+/* Pools by category */
+function poolByCat(cat){
+  return (RECIPES||[]).filter(r=>guessCategory(r.k)===cat);
+}
+
+/* kcal helper from recipe (serving assumed as defined) */
+function kcalOf(rec){ return (rec && rec.macros && rec.macros.kcal) ? rec.macros.kcal : 400; }
+
+/* Build week structure */
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const emptyWeek = ()=>DAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+
+/* LocalStorage */
+const PLAN_KEY = 'pp-meal-plan-v1';
+function savePlan(plan){ localStorage.setItem(PLAN_KEY, JSON.stringify(plan)); }
+function loadPlan(){ try{return JSON.parse(localStorage.getItem(PLAN_KEY)||'null')}catch(e){return null}}
+
+/* Pick items to roughly hit target */
+function autoPlanDay(kcalTarget){
+  // simple targets: 25% breakfast, 30% lunch, 35% dinner, 10% snack
+  const targets = {breakfast:.25, lunch:.30, dinner:.35, snack:.10};
+  const out = {breakfast:null,lunch:null,dinner:null,snack:null,total:0};
+  for(const cat of ['breakfast','lunch','dinner','snack']){
+    const pool = poolByCat(cat);
+    if(!pool.length) continue;
+    const want = kcalTarget * targets[cat];
+    // pick item with kcal closest to want (respecting budget toggle)
+    let best=null, bestDiff=9e9;
+    for(const r of pool){
+      const rr = getRecipeByKeyRespectingBudget(r.k);
+      const diff = Math.abs(kcalOf(rr)-want);
+      if(diff<bestDiff){ best=rr; bestDiff=diff; }
+    }
+    out[cat]=best;
+  }
+  out.total = [out.breakfast,out.lunch,out.dinner,out.snack].filter(Boolean).reduce((a,r)=>a+kcalOf(r),0);
+  return out;
+}
+
+/* Whole week */
+function autoPlanWeek(kcalTarget){
+  return DAYS.map(()=>autoPlanDay(kcalTarget));
+}
+
+/* Render planner */
+const planGrid = document.getElementById('plan-grid');
+let PLAN = loadPlan() || emptyWeek();
+
+function renderPlanner(){
+  planGrid.innerHTML = '';
+  PLAN.forEach((day,idx)=>{
+    const col = document.createElement('div'); col.className='day-col';
+    col.innerHTML = `<h3>${DAYS[idx]}</h3>
+      ${renderSlotHTML(day.breakfast,'breakfast',idx)}
+      ${renderSlotHTML(day.lunch,'lunch',idx)}
+      ${renderSlotHTML(day.dinner,'dinner',idx)}
+      ${renderSlotHTML(day.snack,'snack',idx)}
+      <div class="total">≈ ${Math.round(dayTotal(day))} kcal</div>`;
+    planGrid.appendChild(col);
+  });
+  hookSwaps();
+}
+
+function dayTotal(d){ return ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (d[k]?kcalOf(d[k]):0),0); }
+
+function renderSlotHTML(rec,cat,dayIndex){
+  if(!rec){
+    // pick a placeholder name
+    const nice = cat[0].toUpperCase()+cat.slice(1);
+    return `<div class="slot" data-day="${dayIndex}" data-cat="${cat}">
+      <div class="row"><span class="name">${nice}</span><button class="swap" data-swap>Swap</button></div>
+      <div class="cal">—</div>
+    </div>`;
+  }
+  const link = `https://www.youtube.com/results?search_query=${encodeURIComponent(rec.name+' recipe')}`; // optional help link
+  return `<div class="slot" data-day="${dayIndex}" data-cat="${cat}">
+    <div class="row">
+      <span class="name">${rec.name}</span>
+      <button class="swap" data-swap>Swap</button>
+    </div>
+    <div class="cal">${kcalOf(rec)} kcal · <a href="${link}" target="_blank" rel="noopener">ideas</a></div>
+  </div>`;
+}
+
+/* Swap logic: cycle same-category alternatives (respect budget toggle) */
+function hookSwaps(){
+  planGrid.querySelectorAll('[data-swap]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const slot = btn.closest('.slot');
+      const day = parseInt(slot.dataset.day,10);
+      const cat = slot.dataset.cat;
+      const pool = poolByCat(cat);
+      if(!pool.length) return;
+      const current = PLAN[day][cat];
+      let i = current ? pool.findIndex(r=>r.k === current.k) : -1;
+      // next different option (respecting budget)
+      for(let j=1;j<=pool.length;j++){
+        const cand = pool[(i+j)%pool.length];
+        const rr = getRecipeByKeyRespectingBudget(cand.k);
+        if(!current || rr.k !== current.k){ PLAN[day][cat] = rr; break; }
+      }
+      PLAN[day].total = dayTotal(PLAN[day]);
+      savePlan(PLAN); renderPlanner();
+    };
+  });
+}
+
+/* Buttons */
+document.getElementById('plan-generate').addEventListener('click', ()=>{
+  const kcal = parseInt(document.getElementById('plan-kcal').value||'2200',10);
+  PLAN = autoPlanWeek(kcal); savePlan(PLAN); renderPlanner();
+});
+document.getElementById('plan-clear').addEventListener('click', ()=>{
+  PLAN = emptyWeek(); savePlan(PLAN); renderPlanner();
+});
+
+/* “Add to Planner” from card (adds to next empty slot of same category today) */
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('.btn-add-plan'); if(!btn) return;
+  const rec = getRecipeByKeyRespectingBudget(btn.dataset.k); if(!rec) return;
+  const today = new Date().getDay(); // 0 Sun..6 Sat
+  const dayIndex = (today+6)%7; // make Monday=0
+  const cat = guessCategory(rec.k);
+  const order = ['breakfast','lunch','dinner','snack'];
+  // put into first empty slot of today for that category, else replace same category
+  if(!PLAN[dayIndex][cat]) PLAN[dayIndex][cat]=rec; else PLAN[dayIndex][cat]=rec;
+  PLAN[dayIndex].total = dayTotal(PLAN[dayIndex]);
+  savePlan(PLAN); renderPlanner();
+});
+
+/* Boot */
+renderPlanner();
+    
 /* Hook buttons after cards render */
 function hookBudgetButtons(){
   document.querySelectorAll('.btn-budget').forEach(btn=>{
@@ -326,7 +484,22 @@ function getRecipeByKeyRespectingBudget(k){
       </table>
     </div>
   </section>
+<section class="card" id="meal-planner">
+  <h2>7-Day Meal Planner</h2>
+  <p class="meta">Auto-plans to your calorie goal; click <em>Swap</em> to change any slot.</p>
 
+  <div class="planner-controls" style="display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1rem">
+    <label>Daily kcal target
+      <input id="plan-kcal" type="number" min="1200" max="4500" step="50" value="2200"
+             style="background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.45rem .55rem;width:110px;margin-left:.35rem">
+    </label>
+    <button id="plan-generate" class="btn">Generate plan</button>
+    <button id="plan-clear" class="btn" style="background:rgba(255,255,255,.1);color:var(--ink);border:1px solid var(--stroke)">Clear</button>
+  </div>
+
+  <div id="plan-grid" class="plan-grid"></div>
+  <p class="meta">Tip: toggle “£ Budget swap” on a recipe **before** adding it to the planner to use the cheaper version.</p>
+</section>
   <!-- Food Log (per day) -->
   <section class="section" id="foodlog">
     <h2>Daily Food Log</h2>

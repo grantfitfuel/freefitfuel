@@ -702,3 +702,399 @@ function apPoolBy(cat){ return RECIPES.filter(r => apGuessCategory(r)===cat); }
 function apKcal(r){ return r?.macros?.kcal || 400; }
 function apPickClosest(pool, targetKcal){
   let best=null
+  let diff=1e9, idx=-1;
+  pool.forEach((r,i)=>{
+    const d = Math.abs(apKcal(r) - targetKcal);
+    if(d < diff){ diff=d; best=r; idx=i; }
+  });
+  return {best, index:idx};
+}
+
+/* Build one day using simple kcal shares */
+function apBuildDay(kcalTarget, currentDay){
+  const shares = {breakfast:.25, lunch:.30, dinner:.35, snack:.10};
+  const out = {breakfast:null,lunch:null,dinner:null,snack:null,total:0};
+
+  ['breakfast','lunch','dinner','snack'].forEach(cat=>{
+    const pool = apPoolBy(cat);
+    if(!pool.length) return;
+    const want = kcalTarget * shares[cat];
+
+    // keep existing pick if regenerating, else choose a close match
+    const existing = currentDay?.[cat];
+    out[cat] = existing ? existing : apPickClosest(pool, want).best;
+  });
+
+  out.total = ['breakfast','lunch','dinner','snack']
+    .reduce((a,k)=> a + (out[k]?apKcal(out[k]):0),0);
+  return out;
+}
+
+/* ===== Auto Planner state & storage ===== */
+const AP_KEY = 'fff-aplan-v1';
+let AP_PLAN = loadAP() || WEEKDAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+function saveAP(){ localStorage.setItem(AP_KEY, JSON.stringify(AP_PLAN)); }
+function loadAP(){ try{ return JSON.parse(localStorage.getItem(AP_KEY)||'null'); }catch(e){ return null; } }
+
+/* ===== Auto Planner rendering ===== */
+const apGrid = document.getElementById('ap-grid');
+
+function apDayTotal(day){
+  return ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (day[k]?apKcal(day[k]):0),0);
+}
+
+function apSlotHTML(rec,cat,dayIndex){
+  if(!rec){
+    const nice = cat[0].toUpperCase()+cat.slice(1);
+    return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+      <div class="row"><span class="name">${nice}</span><button class="ap-swap" data-swap>Swap</button></div>
+      <div class="cal">—</div>
+    </div>`;
+  }
+  return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+    <div class="row">
+      <span class="name">${rec.name}</span>
+      <button class="ap-swap" data-swap>Swap</button>
+    </div>
+    <div class="cal">${apKcal(rec)} kcal</div>
+  </div>`;
+}
+
+function apRender(){
+  apGrid.innerHTML = '';
+  WEEKDAYS.forEach((d,dayIdx)=>{
+    const day = AP_PLAN[dayIdx] || {};
+    const col = document.createElement('div');
+    col.className = 'ap-day-col';
+    col.innerHTML = `
+      <h3>${d}</h3>
+      ${apSlotHTML(day.breakfast,'breakfast',dayIdx)}
+      ${apSlotHTML(day.lunch,'lunch',dayIdx)}
+      ${apSlotHTML(day.dinner,'dinner',dayIdx)}
+      ${apSlotHTML(day.snack,'snack',dayIdx)}
+      <div class="ap-total">≈ ${Math.round(apDayTotal(day))} kcal</div>
+    `;
+    apGrid.appendChild(col);
+  });
+  apHookSwaps();
+}
+
+/* Swap button handlers (cycle through same-category options) */
+function apHookSwaps(){
+  apGrid.querySelectorAll('[data-swap]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const slot = btn.closest('.ap-slot');
+      const day = parseInt(slot.dataset.day,10);
+      const cat = slot.dataset.cat;
+
+      const pool = apPoolBy(cat);
+      if(!pool.length) return;
+
+      const current = AP_PLAN[day][cat];
+      let i = current ? pool.findIndex(r=>r.k===current.k) : -1;
+
+      // next distinct option (wrap)
+      for(let j=1;j<=pool.length;j++){
+        const cand = pool[(i+j)%pool.length];
+        if(!current || cand.k !== current.k){ AP_PLAN[day][cat] = cand; break; }
+      }
+      AP_PLAN[day].total = apDayTotal(AP_PLAN[day]);
+      saveAP(); apRender();
+    };
+  });
+}
+
+/* Generate & Clear wired up */
+document.getElementById('ap-generate').addEventListener('click', ()=>{
+  const kcal = +document.getElementById('ap-kcal').value || 2200;
+  AP_PLAN = WEEKDAYS.map((_,i)=> apBuildDay(kcal, AP_PLAN[i]) );
+  saveAP(); apRender();
+});
+document.getElementById('ap-clear').addEventListener('click', ()=>{
+  if(!confirm('Clear auto-plan for the whole week?')) return;
+  AP_PLAN = WEEKDAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+  saveAP(); apRender();
+});
+
+/* Initial paint (auto planner) */
+apRender();
+    let diff=1e9, idx=-1;
+  pool.forEach((r,i)=>{
+    const d = Math.abs(apKcal(r) - targetKcal);
+    if(d < diff){ diff=d; best=r; idx=i; }
+  });
+  return {best, index:idx};
+}
+
+/* Build one day using simple kcal shares */
+function apBuildDay(kcalTarget, currentDay){
+  const shares = {breakfast:.25, lunch:.30, dinner:.35, snack:.10};
+  const out = {breakfast:null,lunch:null,dinner:null,snack:null,total:0};
+
+  ['breakfast','lunch','dinner','snack'].forEach(cat=>{
+    const pool = apPoolBy(cat);
+    if(!pool.length) return;
+    const want = kcalTarget * shares[cat];
+
+    // keep existing pick if regenerating, else choose a close match
+    const existing = currentDay?.[cat];
+    out[cat] = existing ? existing : apPickClosest(pool, want).best;
+  });
+
+  out.total = ['breakfast','lunch','dinner','snack']
+    .reduce((a,k)=> a + (out[k]?apKcal(out[k]):0),0);
+  return out;
+}
+
+/* ===== Auto Planner state & storage ===== */
+const AP_KEY = 'fff-aplan-v1';
+let AP_PLAN = loadAP() || WEEKDAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+function saveAP(){ localStorage.setItem(AP_KEY, JSON.stringify(AP_PLAN)); }
+function loadAP(){ try{ return JSON.parse(localStorage.getItem(AP_KEY)||'null'); }catch(e){ return null; } }
+
+/* ===== Auto Planner rendering ===== */
+const apGrid = document.getElementById('ap-grid');
+
+function apDayTotal(day){
+  return ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (day[k]?apKcal(day[k]):0),0);
+}
+
+function apSlotHTML(rec,cat,dayIndex){
+  if(!rec){
+    const nice = cat[0].toUpperCase()+cat.slice(1);
+    return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+      <div class="row"><span class="name">${nice}</span><button class="ap-swap" data-swap>Swap</button></div>
+      <div class="cal">—</div>
+    </div>`;
+  }
+  return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+    <div class="row">
+      <span class="name">${rec.name}</span>
+      <button class="ap-swap" data-swap>Swap</button>
+    </div>
+    <div class="cal">${apKcal(rec)} kcal</div>
+  </div>`;
+}
+
+function apRender(){
+  apGrid.innerHTML = '';
+  WEEKDAYS.forEach((d,dayIdx)=>{
+    const day = AP_PLAN[dayIdx] || {};
+    const col = document.createElement('div');
+    col.className = 'ap-day-col';
+    col.innerHTML = `
+      <h3>${d}</h3>
+      ${apSlotHTML(day.breakfast,'breakfast',dayIdx)}
+      ${apSlotHTML(day.lunch,'lunch',dayIdx)}
+      ${apSlotHTML(day.dinner,'dinner',dayIdx)}
+      ${apSlotHTML(day.snack,'snack',dayIdx)}
+      <div class="ap-total">≈ ${Math.round(apDayTotal(day))} kcal</div>
+    `;
+    apGrid.appendChild(col);
+  });
+  apHookSwaps();
+}
+
+/* Swap button handlers (cycle through same-category options) */
+function apHookSwaps(){
+  apGrid.querySelectorAll('[data-swap]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const slot = btn.closest('.ap-slot');
+      const day = parseInt(slot.dataset.day,10);
+      const cat = slot.dataset.cat;
+
+      const pool = apPoolBy(cat);
+      if(!pool.length) return;
+
+      const current = AP_PLAN[day][cat];
+      let i = current ? pool.findIndex(r=>r.k===current.k) : -1;
+
+      // next distinct option (wrap)
+      for(let j=1;j<=pool.length;j++){
+        const cand = pool[(i+j)%pool.length];
+        if(!current || cand.k !== current.k){ AP_PLAN[day][cat] = cand; break; }
+      }
+      AP_PLAN[day].total = apDayTotal(AP_PLAN[day]);
+      saveAP(); apRender();
+    };
+  });
+}
+
+/* Generate & Clear wired up */
+document.getElementById('ap-generate').addEventListener('click', ()=>{
+  const kcal = +document.getElementById('ap-kcal').value || 2200;
+  AP_PLAN = WEEKDAYS.map((_,i)=> apBuildDay(kcal, AP_PLAN[i]) );
+  saveAP(); apRender();
+});
+document.getElementById('ap-clear').addEventListener('click', ()=>{
+  if(!confirm('Clear auto-plan for the whole week?')) return;
+  AP_PLAN = WEEKDAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+  saveAP(); apRender();
+});
+
+/* Initial paint (auto planner) */
+apRender();
+  /* ===== Progress bars helpers ===== */
+function pct(a,b){ return b? Math.max(0, Math.min(100, Math.round(100*a/b))) : 0; }
+function setBar(id, v){ const el=document.getElementById(id); if(el) el.style.width = v+'%'; }
+
+/* ===== Food Log (data + UI) ===== */
+const logKey = 'fff-foodlog';
+const dateInput = document.getElementById('logDate');
+if(dateInput){ dateInput.valueAsNumber = Date.now() - (new Date()).getTimezoneOffset()*60000; } // today
+
+function getLogStore(){
+  try{ const raw=localStorage.getItem(logKey); if(raw) return JSON.parse(raw); }catch(e){}
+  return {};
+}
+function saveLogStore(s){ localStorage.setItem(logKey, JSON.stringify(s)); }
+function logFor(dateStr){ const s=getLogStore(); return s[dateStr] || {items:[]}; }
+function saveLog(dateStr, data){ const s=getLogStore(); s[dateStr]=data; saveLogStore(s); }
+
+function sumDay(ds){
+  const data = logFor(ds);
+  return data.items.reduce((a,x)=>({kcal:a.kcal+x.kcal,p:a.p+x.p,c:a.c+x.c,f:a.f+x.f}),{kcal:0,p:0,c:0,f:0});
+}
+
+function renderLog(){
+  if(!dateInput) return;
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  const box = document.getElementById('logItems');
+  if(!box) return;
+  if(!data.items.length){
+    box.innerHTML='<p class="note">No items logged yet. Use “＋ Log 1 serving” on a recipe or add a custom item.</p>';
+    updateLogBars(); return;
+  }
+  box.innerHTML = data.items.map((it,i)=>`
+    <div class="slot item">
+      <div><strong>${it.name}</strong> — ${it.kcal} kcal · ${it.p}P / ${it.c}C / ${it.f}F</div>
+      <button title="Remove" data-del="${i}">✕</button>
+    </div>
+  `).join('');
+  box.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = +btn.getAttribute('data-del');
+      const data = logFor(ds);
+      data.items.splice(idx,1); saveLog(ds,data); renderLog(); updateLogBars();
+    });
+  });
+}
+
+function updateLogBars(){
+  const ds = (dateInput && dateInput.value) || new Date().toISOString().slice(0,10);
+  const t = targets || {cal:0,p:0,c:0,f:0};
+  const s = sumDay(ds);
+  const setTx = (id,txt)=>{ const el=document.getElementById(id); if(el) el.textContent = txt; };
+
+  setTx('txCal',  `${s.kcal} / ${t.cal||0}`);
+  setTx('txProt', `${s.p} / ${t.p||0}g`);
+  setTx('txCarb', `${s.c} / ${t.c||0}g`);
+  setTx('txFat',  `${s.f} / ${t.f||0}g`);
+
+  setBar('pbCal',  pct(s.kcal, t.cal||0));
+  setBar('pbProt', pct(s.p,   t.p||0));
+  setBar('pbCarb', pct(s.c,   t.c||0));
+  setBar('pbFat',  pct(s.f,   t.f||0));
+}
+
+/* Wire up day controls if present */
+const addBtn = document.getElementById('addCustom');
+const clrBtn = document.getElementById('clearLog');
+const expBtn = document.getElementById('exportLog');
+
+function logRecipeServing(k, servings){
+  const r = RECIPES.find(x=>x.k===k); if(!r) return;
+  const ds = (dateInput && dateInput.value) || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  const m = r.macros, s = servings||1;
+  data.items.push({type:'recipe', name:r.name, servings:s, kcal:m.kcal*s, p:m.p*s, c:m.c*s, f:m.f*s});
+  saveLog(ds, data); renderLog(); updateLogBars();
+}
+function addCustomItem(){
+  const name = prompt('Food name (e.g., Apple 150g or “Custom shake”)','Custom');
+  if(!name) return;
+  const kcal = +prompt('Calories (kcal per entry):','150')||0;
+  const p = +prompt('Protein (g):','2')||0;
+  const c = +prompt('Carbs (g):','32')||0;
+  const f = +prompt('Fats (g):','1')||0;
+  const ds = (dateInput && dateInput.value) || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  data.items.push({type:'custom', name, servings:1, kcal, p, c, f});
+  saveLog(ds, data); renderLog(); updateLogBars();
+}
+
+if(addBtn){ addBtn.addEventListener('click', addCustomItem); }
+if(clrBtn){ clrBtn.addEventListener('click', ()=>{
+  const ds = (dateInput && dateInput.value) || new Date().toISOString().slice(0,10);
+  if(confirm('Clear all logged items for '+ds+'?')){ saveLog(ds,{items:[]}); renderLog(); updateLogBars(); }
+});}
+if(expBtn){ expBtn.addEventListener('click', ()=>{
+  const ds = (dateInput && dateInput.value) || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  const csv = 'name,servings,kcal,protein,carbs,fats\n' + data.items.map(it=>
+    [it.name,it.servings,it.kcal,it.p,it.c,it.f].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')
+  ).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='foodlog-'+ds+'.csv'; a.click(); URL.revokeObjectURL(url);
+});}
+if(dateInput){ dateInput.addEventListener('change', ()=>{ renderLog(); updateLogBars(); }); }
+  function printRecipe(k){
+  const r = RECIPES.find(x=>x.k===k); if(!r) return;
+  const s = +prompt('Servings for print (default '+r.servings+'):', r.servings) || r.servings;
+  const scale = s / r.servings;
+  const fmtQty = v => {
+    if(typeof v!=='number') return v;
+    const n = Math.round(v*10)/10;
+    return (n % 1 === 0)? n.toString(): n.toFixed(1);
+  };
+  let adds = r.adds || [];
+  if(budgetMode){
+    adds = adds.map(x=>{
+      const key = Object.keys(budgetSwaps).find(k=>x.toLowerCase().includes(k));
+      return key ? (budgetSwaps[key] + ' (swap)') : x;
+    });
+  }
+  const win = window.open('','PRINT','width=720,height=900');
+  if(!win) return;
+  win.document.write(`
+    <h2>${r.name}</h2>
+    <p><strong>Cuisine:</strong> ${r.cuisine} · <strong>Servings:</strong> ${s}</p>
+    <p><strong>Macros/serving (base):</strong> ${r.macros.kcal} kcal — ${r.macros.p}P / ${r.macros.c}C / ${r.macros.f}F</p>
+    <p><strong>Allergens:</strong> ${r.allergens.length?r.allergens.join(', '):'none listed'} (check labels & cross-contamination)</p>
+    <h3>Ingredients</h3>
+    <ul>
+      ${(r.ingredients||[]).map(it=>`<li>${fmtQty(it.qty*scale)} ${it.unit} ${it.item}</li>`).join('')}
+    </ul>
+    <h3>Method</h3>
+    <ol>${(r.steps||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
+    <h3>Shopping items</h3>
+    <ul>${(adds||[]).map(a=>`<li>${a}</li>`).join('')}</ul>
+    <hr>
+    <p style="font-size:0.9rem;color:#555">
+      Nutrition values are estimates. Adjust for your ingredients. Allergens vary by brand; check labels.
+    </p>
+  `);
+  win.document.close(); win.focus(); win.print();
+}
+  /* ===== Page boot ===== */
+(function boot(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('fff-targets')||'null');
+    if(saved && saved.targets){
+      goal = saved.goal || goal;
+      targets = saved.targets;
+      document.querySelectorAll('[data-goal]').forEach(x=>{
+        x.setAttribute('aria-pressed', x.dataset.goal===goal ? 'true':'false');
+      });
+      document.getElementById('outGoal').textContent = goal[0].toUpperCase()+goal.slice(1);
+      document.getElementById('outCals').textContent = targets.cal+' kcal / day';
+      document.getElementById('outP').textContent = targets.p+' g';
+      document.getElementById('outC').textContent = targets.c+' g';
+      document.getElementById('outF').textContent = targets.f+' g';
+      lastCalc=true;
+    }
+  }catch(e){}
+  renderRecipes(); renderPlanner(); renderLog(); updateLogBars();
+})();
+  

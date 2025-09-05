@@ -504,6 +504,278 @@ const RECIPES = [
     macros:{kcal:520,p:35,c:50,f:18}, adds:['wrap','chicken','hummus','lettuce','tomato'],
     ingredients:[{qty:1,unit:'',item:'wrap'},{qty:120,unit:'g',item:'cooked chicken'},{qty:40,unit:'g',item:'hummus'},{qty:2,unit:'leaves',item:'lettuce'},{qty:2,unit:'slices',item:'tomato'}],
     steps:['Spread hummus, add chicken & veg, wrap tightly.']}
+  // === EXTRA RECIPES PACK ===
+RECIPES = RECIPES.concat([
+  /* --- Breakfasts & Quick Bites --- */
+  {k:'overnight-oats', name:'Overnight Oats (PB & Banana)', cuisine:'UK', tags:['budget','veg','quick','simple'], allergens:['gluten (oats*)','peanuts*','dairy*'], img:'img/recipes/overnight-oats.jpg', servings:1,
+    macros:{kcal:420,p:20,c:55,f:14},
+    adds:['oats','milk or alt','peanut butter','banana'],
+    ingredients:[{qty:60,unit:'g',item:'oats'},{qty:180,unit:'ml',item:'milk (or alt)'},{qty:1,unit:'tbsp',item:'peanut butter'},{qty:1,unit:'',item:'banana (sliced)'}],
+    steps:['Combine oats & milk in jar.','Top with PB & banana.','Chill overnight.']},
+
+  {k:'egg-muffins', name:'Veggie Egg Muffins', cuisine:'UK', tags:['high-protein','gluten-free','quick','simple'], allergens:['egg','dairy*'], img:'img/recipes/egg-muffins.jpg', servings:3,
+    macros:{kcal:260,p:22,c:6,f:16},
+    adds:['eggs','mixed veg','cheese*'],
+    ingredients:[{qty:6,unit:'',item:'eggs'},{qty:1,unit:'cup',item:'mixed veg (chopped)'},{qty:30,unit:'g',item:'grated cheese*'}],
+    steps:['Beat eggs; fold veg & cheese.','Bake in muffin tin 15–18 min @180°C.']},
+
+  {k:'smoothie-green', name:'Green Protein Smoothie', cuisine:'Global', tags:['quick','high-protein','gluten-free','simple'], allergens:['dairy*'], img:'img/recipes/green-smoothie.jpg', servings:1,
+    macros:{kcal:330,p:30,c:40,f:6},
+    adds:['protein powder','spinach','frozen mango','yoghurt or alt','water'],
+    ingredients:[{qty:25,unit:'g',item:'protein powder'},{qty:1,unit:'handful',item:'spinach'},{qty:150,unit:'g',item:'frozen mango'},{qty:100,unit:'g',item:'greek yoghurt (or alt)'},{qty:150,unit:'ml',item:'water'}],
+    steps:['Blend until smooth.']},
+
+  /* --- Sandwiches / Light Meals --- */
+  {k:'tuna-sweetcorn-sand', name:'Tuna & Sweetcorn Sandwich (light mayo)', cuisine:'UK', tags:['budget','simple','quick','high-protein'], allergens:['fish','gluten (bread)','egg*'], img:'img/recipes/tuna-sweetcorn.jpg', servings:1,
+    macros:{kcal:430,p:28,c:48,f:12},
+    adds:['wholemeal bread','tuna','sweetcorn','light mayo'],
+    ingredients:[{qty:2,unit:'slices',item:'wholemeal bread'},{qty:1,unit:'tin',item:'tuna (drained)'},{qty:50,unit:'g',item:'sweetcorn'},{qty:15,unit:'g',item:'light mayo'}],
+    steps:['Mix tuna, corn, mayo.','Assemble sandwich.']},
+
+  {k:'falafel-wrap', name:'Falafel Hummus Wrap', cuisine:'Middle Eastern', tags:['vegan','world','quick','simple'], allergens:['gluten (wrap)','sesame'], img:'img/recipes/falafel-wrap.jpg', servings:1,
+    macros:{kcal:520,p:16,c:68,f:18},
+    adds:['wrap','falafel','hummus','lettuce','tomato','onion'],
+    ingredients:[{qty:1,unit:'',item:'wrap'},{qty:4,unit:'',item:'falafel'},{qty:40,unit:'g',item:'hummus'},{qty:2,unit:'leaves',item:'lettuce'},{qty:2,unit:'slices',item:'tomato'},{qty:2,unit:'rings',item:'onion'}],
+    steps:['Warm wrap & falafel.','Spread hummus; add veg/falafel; roll.']},
+
+  /* --- Hearty Bowls --- */
+  {k:'salmon-rice-bowl', name:'Salmon Rice Bowl', cuisine:'Japanese', tags:['high-protein','gluten-free','world','simple'], allergens:['fish','soy*','sesame*'], img:'img/recipes/salmon-bowl.jpg', servings:1,
+    macros:{kcal:610,p:38,c:65,f:18},
+    adds:['salmon','rice','soy or tamari','edamame*','cucumber'],
+    ingredients:[{qty:150,unit:'g',item:'salmon fillet'},{qty:150,unit:'g',item:'cooked rice'},{qty:1,unit:'tbsp',item:'soy/tamari'},{qty:60,unit:'g',item:'edamame (optional)'},{qty:0.5,unit:'',item:'cucumber (sliced)'}],
+    steps:['Pan-cook salmon.','Serve over rice with toppings & soy.']},
+
+  {k:'kimchi-fried-rice', name:'Kimchi Fried Rice (egg or tofu)', cuisine:'Korean', tags:['world','quick','simple'], allergens:['egg*','soy*','sesame*','gluten*'], img:'img/recipes/kimchi-rice.jpg', servings:2,
+    macros:{kcal:520,p:18,c:78,f:14},
+    adds:['rice','kimchi','egg or tofu','spring onion'],
+    ingredients:[{qty:300,unit:'g',item:'cooked rice (day-old ideal)'},{qty:150,unit:'g',item:'kimchi (chopped)'},{qty:2,unit:'',item:'eggs or 200 g tofu'},{qty:2,unit:'',item:'spring onions'}],
+    steps:['Stir-fry kimchi; add rice; push aside & scramble egg / add tofu.','Combine; season.']},
+
+  /* --- Batch Curries, Stews & Soups --- */
+  {k:'dhal', name:'Red Lentil Dhal', cuisine:'Indian', tags:['vegan','budget','batch','gluten-free','world'], allergens:[], img:'img/recipes/dhal.jpg', servings:4,
+    macros:{kcal:460,p:24,c:70,f:10},
+    adds:['red lentils','onion','garlic','turmeric','cumin','stock'],
+    ingredients:[{qty:300,unit:'g',item:'red lentils'},{qty:1,unit:'',item:'onion (diced)'},{qty:2,unit:'cloves',item:'garlic (minced)'},{qty:1,unit:'tsp',item:'turmeric'},{qty:1,unit:'tsp',item:'cumin'},{qty:900,unit:'ml',item:'veg stock'}],
+    steps:['Rinse lentils.','Simmer all 18–22 min till creamy; season.']},
+
+  {k:'tomato-soup', name:'Roasted Tomato & Basil Soup', cuisine:'Italian', tags:['veg','budget','gluten-free','simple','batch'], allergens:[], img:'img/recipes/tomato-soup.jpg', servings:4,
+    macros:{kcal:210,p:6,c:30,f:8},
+    adds:['tomatoes','onion','garlic','basil','stock'],
+    ingredients:[{qty:1,unit:'kg',item:'tomatoes'},{qty:1,unit:'',item:'onion'},{qty:3,unit:'cloves',item:'garlic'},{qty:600,unit:'ml',item:'veg stock'},{qty:1,unit:'handful',item:'basil'}],
+    steps:['Roast tomatoes/onion/garlic 25m.','Blend with stock & basil.']},
+
+  {k:'minestrone', name:'Minestrone (beans & pasta)', cuisine:'Italian', tags:['veg','world','budget','simple','batch'], allergens:['gluten (pasta)'], img:'img/recipes/minestrone.jpg', servings:6,
+    macros:{kcal:360,p:16,c:60,f:6},
+    adds:['mixed veg','beans','tomatoes','pasta','stock'],
+    ingredients:[{qty:2,unit:'cups',item:'mixed veg (chopped)'},{qty:2,unit:'tins',item:'beans (cannellini/kidney)'},{qty:1,unit:'tin',item:'tomatoes'},{qty:120,unit:'g',item:'small pasta'},{qty:1,unit:'L',item:'veg stock'}],
+    steps:['Simmer veg/stock 10m.','Add beans, pasta; cook to al dente.']},
+
+  {k:'pho-chicken', name:'Chicken Pho (simple)', cuisine:'Vietnamese', tags:['world','gluten-free','high-protein','simple'], allergens:['soy*','fish*'], img:'img/recipes/pho-chicken.jpg', servings:2,
+    macros:{kcal:520,p:35,c:80,f:8},
+    adds:['rice noodles','stock','chicken','spices (five-spice/anise)','herbs'],
+    ingredients:[{qty:160,unit:'g',item:'rice noodles'},{qty:800,unit:'ml',item:'chicken stock'},{qty:250,unit:'g',item:'chicken breast (sliced)'},{qty:1,unit:'tsp',item:'five-spice'},{qty:1,unit:'handful',item:'herbs/bean sprouts'}],
+    steps:['Simmer stock + spice.','Poach chicken; add noodles; top herbs.']},
+
+  /* --- Sheet-pan / One-pan --- */
+  {k:'sheet-chicken', name:'Sheet-Pan Chicken & Veg', cuisine:'Global', tags:['high-protein','simple','batch','gluten-free'], allergens:[], img:'img/recipes/sheet-chicken.jpg', servings:4,
+    macros:{kcal:490,p:42,c:38,f:16},
+    adds:['chicken thighs','potatoes','carrots','onion','spice mix'],
+    ingredients:[{qty:800,unit:'g',item:'chicken thighs'},{qty:600,unit:'g',item:'potatoes (chunks)'},{qty:2,unit:'',item:'carrots (chunks)'},{qty:1,unit:'',item:'onion (wedges)'},{qty:2,unit:'tbsp',item:'spice mix'}],
+    steps:['Toss all on tray; roast 35–40m @200°C, turn once.']},
+
+  {k:'sausage-tray', name:'Sausage, Apple & Onion Traybake', cuisine:'UK', tags:['simple','budget'], allergens:['gluten*','sulphites*'], img:'img/recipes/sausage-tray.jpg', servings:4,
+    macros:{kcal:560,p:24,c:60,f:22},
+    adds:['sausages','apples','onion','potatoes'],
+    ingredients:[{qty:8,unit:'',item:'sausages'},{qty:3,unit:'',item:'apples (wedges)'},{qty:2,unit:'',item:'onions (wedges)'},{qty:600,unit:'g',item:'potatoes (chunks)'}],
+    steps:['Tray everything with oil/salt/pepper; roast 35–40m @200°C.']},
+
+  /* --- Fish & Seafood --- */
+  {k:'prawn-stirfry', name:'Garlic Prawn Stir-fry & Rice', cuisine:'Asian', tags:['high-protein','quick','gluten-free'], allergens:['crustaceans','soy*','sesame*'], img:'img/recipes/prawn-stirfry.jpg', servings:2,
+    macros:{kcal:520,p:34,c:74,f:8},
+    adds:['prawns','veg mix','soy/tamari','rice'],
+    ingredients:[{qty:250,unit:'g',item:'prawns'},{qty:300,unit:'g',item:'mixed stir-fry veg'},{qty:2,unit:'tbsp',item:'soy/tamari'},{qty:300,unit:'g',item:'cooked rice'}],
+    steps:['Stir-fry prawns, add veg, sauce; serve with rice.']},
+
+  {k:'tuna-pasta', name:'Tuna Sweetcorn Pasta', cuisine:'UK', tags:['budget','high-protein','simple'], allergens:['fish','gluten (pasta)','dairy*'], img:'img/recipes/tuna-pasta.jpg', servings:3,
+    macros:{kcal:560,p:32,c:78,f:12},
+    adds:['pasta','tuna','sweetcorn','yoghurt or light mayo'],
+    ingredients:[{qty:300,unit:'g',item:'pasta'},{qty:2,unit:'tins',item:'tuna (drained)'},{qty:1,unit:'tin',item:'sweetcorn'},{qty:120,unit:'g',item:'greek yoghurt / light mayo'}],
+    steps:['Boil pasta; fold through tuna, corn, yoghurt; season.']},
+
+  /* --- Meat / Protein mains --- */
+  {k:'beef-stirfry', name:'Beef & Broccoli Stir-fry', cuisine:'Chinese', tags:['high-protein','world','quick'], allergens:['soy','gluten*','sesame*'], img:'img/recipes/beef-broccoli.jpg', servings:2,
+    macros:{kcal:580,p:40,c:60,f:16},
+    adds:['beef strips','broccoli','soy/ginger/garlic','rice'],
+    ingredients:[{qty:300,unit:'g',item:'beef strips'},{qty:300,unit:'g',item:'broccoli florets'},{qty:2,unit:'tbsp',item:'soy sauce'},{qty:1,unit:'tsp',item:'ginger/garlic'}],
+    steps:['Sear beef; remove. Stir-fry broccoli; return beef with sauce. Serve rice.']},
+
+  {k:'turkey-meatballs', name:'Turkey Meatballs in Tomato Sauce', cuisine:'Italian', tags:['high-protein','batch','simple'], allergens:['egg*','gluten*'], img:'img/recipes/turkey-meatballs.jpg', servings:4,
+    macros:{kcal:520,p:42,c:48,f:16},
+    adds:['turkey mince','egg*','breadcrumbs*','tomatoes','garlic'],
+    ingredients:[{qty:500,unit:'g',item:'turkey mince'},{qty:1,unit:'',item:'egg* (optional)'},{qty:40,unit:'g',item:'breadcrumbs* (or oats)'},{qty:2,unit:'tins',item:'tomatoes'},{qty:2,unit:'cloves',item:'garlic'}],
+    steps:['Mix, roll balls, brown.','Simmer 15m in tomatoes.']},
+
+  /* --- Veg & Vegan mains --- */
+  {k:'tofu-stirfry', name:'Crispy Tofu Veg Stir-fry', cuisine:'Asian', tags:['vegan','world','quick','simple'], allergens:['soy'], img:'img/recipes/tofu-stirfry.jpg', servings:2,
+    macros:{kcal:520,p:28,c:60,f:16},
+    adds:['firm tofu','stir-fry veg','soy/tamari','rice or noodles*'],
+    ingredients:[{qty:300,unit:'g',item:'firm tofu (pressed, cubed)'},{qty:300,unit:'g',item:'stir-fry veg'},{qty:2,unit:'tbsp',item:'soy/tamari'},{qty:300,unit:'g',item:'cooked rice/noodles*'}],
+    steps:['Crisp tofu in pan.','Add veg; finish with sauce; serve.']},
+
+  {k:'stuffed-peppers', name:'Stuffed Peppers (rice & beans)', cuisine:'Mediterranean', tags:['veg','vegan','gluten-free','simple'], allergens:[], img:'img/recipes/stuffed-peppers.jpg', servings:4,
+    macros:{kcal:440,p:16,c:72,f:10},
+    adds:['peppers','rice','beans','tomatoes','cheese*'],
+    ingredients:[{qty:4,unit:'',item:'peppers (halved)'},{qty:400,unit:'g',item:'cooked rice'},{qty:1,unit:'tin',item:'beans'},{qty:1,unit:'tin',item:'tomatoes'},{qty:40,unit:'g',item:'cheese* (optional)'}],
+    steps:['Bake peppers 10m.','Fill with mix; bake 15m more.']},
+
+  {k:'sweet-pot-chickpea', name:'Sweet Potato & Chickpea Tray', cuisine:'Global', tags:['vegan','budget','gluten-free','simple','batch'], allergens:[], img:'img/recipes/sweetpot-chickpea.jpg', servings:4,
+    macros:{kcal:480,p:16,c:78,f:12},
+    adds:['sweet potato','chickpeas','spices','greens'],
+    ingredients:[{qty:800,unit:'g',item:'sweet potatoes (chunks)'},{qty:2,unit:'tins',item:'chickpeas (drained)'},{qty:2,unit:'tsp',item:'spice mix'},{qty:120,unit:'g',item:'greens (spinach/kale)'}],
+    steps:['Roast potatoes & chickpeas 30m @200°C.','Toss through greens to wilt.']},
+
+  /* --- Salads / Bowls --- */
+  {k:'nicoise', name:'Tuna Niçoise Salad (easy)', cuisine:'French', tags:['gluten-free','simple','high-protein','world'], allergens:['fish','egg'], img:'img/recipes/nicoise.jpg', servings:2,
+    macros:{kcal:520,p:36,c:40,f:22},
+    adds:['tuna','new potatoes','eggs','green beans','olives'],
+    ingredients:[{qty:2,unit:'',item:'eggs'},{qty:300,unit:'g',item:'new potatoes'},{qty:150,unit:'g',item:'green beans'},{qty:1,unit:'tin',item:'tuna'},{qty:40,unit:'g',item:'olives'}],
+    steps:['Boil potatoes/eggs; steam beans.','Assemble with tuna/olives; dress.']},
+
+  {k:'bulgur-feta', name:'Bulgur, Feta & Chickpea Bowl', cuisine:'Mediterranean', tags:['veg','world','simple'], allergens:['gluten (bulgur)','dairy'], img:'img/recipes/bulgur-feta.jpg', servings:3,
+    macros:{kcal:520,p:20,c:74,f:14},
+    adds:['bulgur','chickpeas','feta','tomatoes','cucumber','herbs'],
+    ingredients:[{qty:240,unit:'g',item:'bulgur (cooked weight ~600 g)'},{qty:1,unit:'tin',item:'chickpeas'},{qty:120,unit:'g',item:'feta'},{qty:2,unit:'',item:'tomatoes'},{qty:0.5,unit:'',item:'cucumber'}],
+    steps:['Cook bulgur; toss with chopped veg, feta, herbs.']},
+
+  /* --- Air-fryer / Oven Hacks --- */
+  {k:'air-chicken', name:'Air-Fryer Chicken & Greens', cuisine:'Global', tags:['high-protein','simple','quick','gluten-free'], allergens:[], img:'img/recipes/air-chicken.jpg', servings:2,
+    macros:{kcal:480,p:46,c:14,f:24},
+    adds:['chicken breast','broccoli','oil','spice mix'],
+    ingredients:[{qty:2,unit:'',item:'chicken breasts'},{qty:300,unit:'g',item:'broccoli'},{qty:1,unit:'tbsp',item:'oil'},{qty:1,unit:'tbsp',item:'spice mix'}],
+    steps:['Air-fry chicken ~12–15m @190°C.','Toss broccoli 8–10m; season.']},
+
+  {k:'air-tofu', name:'Air-Fryer Tofu Nuggets', cuisine:'Global', tags:['vegan','gluten-free','simple','quick'], allergens:['soy'], img:'img/recipes/air-tofu.jpg', servings:2,
+    macros:{kcal:420,p:28,c:30,f:18},
+    adds:['firm tofu','cornflour','spices','dip'],
+    ingredients:[{qty:400,unit:'g',item:'firm tofu (pressed, cubed)'},{qty:2,unit:'tbsp',item:'cornflour'},{qty:1,unit:'tsp',item:'paprika/garlic powder'},{qty:2,unit:'tbsp',item:'dip (yoghurt or vegan)'}],
+    steps:['Coat tofu in cornflour + spices.','Air-fry 12–15m @190°C, shake halfway.']},
+
+  /* --- Sides & Carb Bases --- */
+  {k:'rice-coconut', name:'Coconut Rice', cuisine:'Asian', tags:['world','simple','gluten-free'], allergens:[], img:'img/recipes/coconut-rice.jpg', servings:4,
+    macros:{kcal:330,p:6,c:58,f:8},
+    adds:['rice','coconut milk','water','salt'],
+    ingredients:[{qty:300,unit:'g',item:'rice (rinsed)'},{qty:200,unit:'ml',item:'coconut milk'},{qty:300,unit:'ml',item:'water'},{qty:0.5,unit:'tsp',item:'salt'}],
+    steps:['Simmer covered 12m; rest 10m; fluff.']},
+
+  {k:'roast-veg', name:'Roast Veg Mix', cuisine:'Global', tags:['vegan','simple','gluten-free','batch','budget'], allergens:[], img:'img/recipes/roast-veg.jpg', servings:4,
+    macros:{kcal:160,p:4,c:28,f:4},
+    adds:['root veg mix','oil','herbs/spices'],
+    ingredients:[{qty:800,unit:'g',item:'mixed veg (carrot, parsnip, peppers, courgette)'},{qty:1,unit:'tbsp',item:'oil'},{qty:1,unit:'tsp',item:'herbs/spices'}],
+    steps:['Roast 25–30m @200°C; season.']},
+
+  /* --- Vegetarian Proteins --- */
+  {k:'paneer-peas', name:'Paneer & Peas Curry', cuisine:'Indian', tags:['veg','world','high-protein','simple'], allergens:['dairy'], img:'img/recipes/paneer-peas.jpg', servings:3,
+    macros:{kcal:560,p:32,c:36,f:30},
+    adds:['paneer','peas','tomatoes','spices'],
+    ingredients:[{qty:300,unit:'g',item:'paneer (cubed)'},{qty:200,unit:'g',item:'peas'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'tbsp',item:'curry powder'}],
+    steps:['Brown paneer; add peas, tomatoes, spices; simmer 10m.']},
+
+  {k:'quorn-chilli', name:'Quorn (or Bean) Chilli', cuisine:'UK', tags:['veg','budget','batch','high-protein'], allergens:['egg* (some quorn)'], img:'img/recipes/quorn-chilli.jpg', servings:4,
+    macros:{kcal:480,p:32,c:60,f:10},
+    adds:['quorn mince or beans','kidney beans','tomatoes','spices'],
+    ingredients:[{qty:300,unit:'g',item:'quorn mince (or 2 tins beans)'},{qty:1,unit:'tin',item:'kidney beans'},{qty:1,unit:'tin',item:'tomatoes'},{qty:2,unit:'tsp',item:'chilli powder'}],
+    steps:['Simmer everything 15–20m; season.']},
+
+  /* --- World Favourites --- */
+  {k:'yakisoba', name:'Chicken Yakisoba (noodle stir-fry)', cuisine:'Japanese', tags:['world','quick'], allergens:['gluten (noodles)','soy','sesame*'], img:'img/recipes/yakisoba.jpg', servings:2,
+    macros:{kcal:580,p:32,c:86,f:12},
+    adds:['wheat noodles','chicken','cabbage','soy/worcestershire*'],
+    ingredients:[{qty:250,unit:'g',item:'noodles (cooked)'},{qty:250,unit:'g',item:'chicken strips'},{qty:200,unit:'g',item:'cabbage/carrot mix'},{qty:2,unit:'tbsp',item:'yaki sauce (soy/worcestershire*)'}],
+    steps:['Stir-fry chicken; add veg & noodles; sauce to finish.']},
+
+  {k:'shredded-chicken-tacos', name:'Shredded Chicken Tacos', cuisine:'Mexican', tags:['world','high-protein','quick'], allergens:['gluten* (tortillas)'], img:'img/recipes/chicken-tacos.jpg', servings:3,
+    macros:{kcal:520,p:38,c:56,f:14},
+    adds:['tortillas','chicken','spice mix','salsa','lettuce'],
+    ingredients:[{qty:6,unit:'',item:'small tortillas'},{qty:450,unit:'g',item:'cooked shredded chicken'},{qty:1,unit:'tbsp',item:'taco spice'},{qty:1,unit:'cup',item:'salsa'},{qty:2,unit:'leaves',item:'lettuce (shredded)'}],
+    steps:['Warm chicken with spice.','Fill tortillas with chicken, lettuce, salsa.']},
+
+  {k:'dhansak', name:'Chicken or Lentil Dhansak', cuisine:'Parsi/Indian', tags:['world','batch'], allergens:[], img:'img/recipes/dhansak.jpg', servings:4,
+    macros:{kcal:540,p:34,c:62,f:14},
+    adds:['chicken or lentils','pumpkin/squash','tomatoes','spices'],
+    ingredients:[{qty:400,unit:'g',item:'chicken thigh (or 250 g lentils)'},{qty:300,unit:'g',item:'pumpkin/squash (diced)'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'tbsp',item:'dhansak spice or curry powder'}],
+    steps:['Simmer all 25–30m until tender.']},
+
+  {k:'harissa-bowl', name:'Harissa Chickpea Grain Bowl', cuisine:'North African', tags:['vegan','world','simple'], allergens:['gluten* (some grains)'], img:'img/recipes/harissa-bowl.jpg', servings:3,
+    macros:{kcal:520,p:18,c:78,f:14},
+    adds:['grain (couscous/bulgur/quinoa)','chickpeas','harissa','veg'],
+    ingredients:[{qty:450,unit:'g',item:'cooked grain'},{qty:1,unit:'tin',item:'chickpeas'},{qty:1,unit:'tbsp',item:'harissa'},{qty:1,unit:'cup',item:'mixed veg (roasted/steamed)'}],
+    steps:['Toss grain with harissa; top with chickpeas & veg.']},
+
+  /* --- Light & Fresh --- */
+  {k:'shrimp-avocado', name:'Prawn & Avocado Salad', cuisine:'Global', tags:['gluten-free','quick','simple'], allergens:['crustaceans'], img:'img/recipes/prawn-avocado.jpg', servings:2,
+    macros:{kcal:420,p:26,c:16,f:26},
+    adds:['prawns','avocado','greens','citrus dressing'],
+    ingredients:[{qty:250,unit:'g',item:'prawns (cooked)'},{qty:1,unit:'',item:'ripe avocado'},{qty:2,unit:'cups',item:'mixed greens'},{qty:1,unit:'tbsp',item:'lemon juice + oil'}],
+    steps:['Toss everything; season.']},
+
+  {k:'caprese-chicken', name:'Caprese Chicken (skillet)', cuisine:'Italian', tags:['high-protein','gluten-free','quick'], allergens:['dairy'], img:'img/recipes/caprese-chicken.jpg', servings:2,
+    macros:{kcal:520,p:46,c:16,f:26},
+    adds:['chicken breast','tomatoes','mozzarella','basil','balsamic'],
+    ingredients:[{qty:2,unit:'',item:'chicken breasts'},{qty:2,unit:'',item:'tomatoes (sliced)'},{qty:100,unit:'g',item:'mozzarella'},{qty:1,unit:'handful',item:'basil'},{qty:1,unit:'tsp',item:'balsamic'}],
+    steps:['Pan-cook chicken; top with tomato, mozzarella; cover to melt; basil & balsamic to finish.']},
+
+  /* --- Comfort / Classic --- */
+  {k:'shepherds-lite', name:'Shepherd’s Pie (lighter)', cuisine:'UK', tags:['batch','simple'], allergens:['gluten*','dairy'], img:'img/recipes/shepherds-pie.jpg', servings:4,
+    macros:{kcal:560,p:36,c:58,f:18},
+    adds:['lean mince or lentils','onion','carrot','peas','potatoes'],
+    ingredients:[{qty:500,unit:'g',item:'lean lamb/beef mince (or 300 g lentils)'},{qty:1,unit:'',item:'onion'},{qty:2,unit:'',item:'carrots'},{qty:150,unit:'g',item:'peas'},{qty:700,unit:'g',item:'potatoes'}],
+    steps:['Cook filling; top with mash; bake till golden.']},
+
+  {k:'stirfry-udon', name:'Veg Udon Stir-fry', cuisine:'Japanese', tags:['veg','world','quick','simple'], allergens:['gluten (udon)','soy','sesame*'], img:'img/recipes/udon.jpg', servings:2,
+    macros:{kcal:540,p:16,c:92,f:10},
+    adds:['udon noodles','veg','soy/ginger/garlic'],
+    ingredients:[{qty:400,unit:'g',item:'udon noodles (cooked)'},{qty:300,unit:'g',item:'stir-fry veg'},{qty:2,unit:'tbsp',item:'soy sauce'},{qty:1,unit:'tsp',item:'ginger/garlic'}],
+    steps:['Stir-fry veg; add noodles & sauce; toss hot.']},
+
+  /* --- Sweet / Snacks --- */
+  {k:'baked-oats', name:'Baked Oats (1-pan)', cuisine:'UK', tags:['veg','budget','simple'], allergens:['gluten (oats*)','dairy*','egg*'], img:'img/recipes/baked-oats.jpg', servings:2,
+    macros:{kcal:380,p:18,c:56,f:10},
+    adds:['oats','milk','egg*','banana','baking powder'],
+    ingredients:[{qty:100,unit:'g',item:'oats (blended fine)'} ,{qty:200,unit:'ml',item:'milk'},{qty:1,unit:'',item:'egg* (or flax egg)'},{qty:1,unit:'',item:'banana (mashed)'},{qty:0.5,unit:'tsp',item:'baking powder'}],
+    steps:['Mix, pour into dish; bake 18–20m @180°C.']},
+
+  {k:'chia-pudding', name:'Chia Pudding (2-ingredient)', cuisine:'Global', tags:['vegan','gluten-free','simple','quick'], allergens:['dairy*'], img:'img/recipes/chia.jpg', servings:2,
+    macros:{kcal:280,p:10,c:24,f:14},
+    adds:['chia seeds','milk or alt','sweetener*'],
+    ingredients:[{qty:40,unit:'g',item:'chia seeds'},{qty:300,unit:'ml',item:'milk (or alt)'},{qty:1,unit:'tsp',item:'honey/syrup (optional)'}],
+    steps:['Stir chia + milk; rest 10m; stir; chill until set.']},
+
+  /* --- Extras for athletes --- */
+  {k:'pasta-tuna-peas', name:'Endurance Carb Load: Pasta Tuna & Peas', cuisine:'UK', tags:['high-protein','world','simple'], allergens:['gluten (pasta)','fish','dairy*'], img:'img/recipes/pasta-tuna-peas.jpg', servings:3,
+    macros:{kcal:660,p:36,c:100,f:12},
+    adds:['pasta','tuna','peas','yoghurt or light mayo'],
+    ingredients:[{qty:360,unit:'g',item:'pasta'},{qty:2,unit:'tins',item:'tuna'},{qty:180,unit:'g',item:'peas'},{qty:150,unit:'g',item:'greek yoghurt / light mayo'}],
+    steps:['Boil pasta; fold through tuna/peas/yoghurt; season.']},
+
+  {k:'rice-chicken-ez', name:'Simple Rice & Chicken (prep box)', cuisine:'Global', tags:['high-protein','batch','gluten-free','simple'], allergens:[], img:'img/recipes/rice-chicken.jpg', servings:4,
+    macros:{kcal:520,p:40,c:62,f:10},
+    adds:['rice','chicken breast','spice mix','veg'],
+    ingredients:[{qty:600,unit:'g',item:'cooked rice'},{qty:600,unit:'g',item:'chicken breast (cubed)'},{qty:1,unit:'tbsp',item:'spice mix'},{qty:400,unit:'g',item:'mixed veg (steamed)'}],
+    steps:['Grill/pan chicken with spice.','Serve with rice & veg.']},
+
+  /* --- Desserts / Treats (balanced) --- */
+  {k:'yoghurt-parfait', name:'Yoghurt Parfait (berry & granola)', cuisine:'Global', tags:['veg','quick','simple'], allergens:['dairy','gluten* (granola)'], img:'img/recipes/parfait.jpg', servings:2,
+    macros:{kcal:320,p:18,c:40,f:8},
+    adds:['greek yoghurt','berries','granola'],
+    ingredients:[{qty:300,unit:'g',item:'greek yoghurt'},{qty:150,unit:'g',item:'berries'},{qty:60,unit:'g',item:'granola'}],
+    steps:['Layer yoghurt, berries, granola in glasses.']},
+
+  {k:'banana-ice', name:'One-Ingredient Banana Ice Cream', cuisine:'Global', tags:['vegan','gluten-free','simple','quick'], allergens:[], img:'img/recipes/banana-ice.jpg', servings:2,
+    macros:{kcal:180,p:3,c:42,f:0},
+    adds:['ripe bananas'],
+    ingredients:[{qty:3,unit:'',item:'ripe bananas (frozen in chunks)'}],
+    steps:['Blend frozen banana until creamy; serve immediately.']}
+]);
 ];
 
 const budgetSwaps = {

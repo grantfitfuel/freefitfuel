@@ -251,7 +251,22 @@
       </table>
     </div>
   </section>
+<!-- Auto 7-Day Planner (smart) -->
+<section class="section" id="auto-planner">
+  <h2>Auto 7-Day Meal Planner (smart)</h2>
+  <p class="meta">Auto-plans to your daily kcal target. Click <em>Swap</em> to cycle alternatives for any slot.</p>
 
+  <div class="ap-controls">
+    <label>Daily kcal target
+      <input id="ap-kcal" type="number" min="1200" max="4500" step="50" value="2200">
+    </label>
+    <button id="ap-generate" class="btn">Generate plan</button>
+    <button id="ap-clear" class="btn" style="background:rgba(255,255,255,.1);color:var(--ink);border:1px solid var(--stroke)">Clear</button>
+  </div>
+
+  <div id="ap-grid" class="ap-plan-grid"></div>
+  <p class="note">Tip: global <strong>Budget mode</strong> (top of page) affects the shopping list & printable recipe cards. We can add per-recipe budget toggles later if you want.</p>
+</section>
   <!-- Food Log (per day) -->
   <section class="section" id="foodlog">
     <h2>Daily Food Log</h2>
@@ -789,7 +804,151 @@ function printRecipe(k){
   `);
   win.document.close(); win.focus(); win.print();
 }
+<script>
+/* ===== Auto 7-Day Meal Planner (AP) ===== */
+/* Light categoriser so swaps stay sensible */
+function apGuessCategory(r){
+  const nm = (r.name||'').toLowerCase();
+  const tags = r.tags||[];
+  const has = s => nm.includes(s);
 
+  // breakfast heuristics
+  if (has('oat') || has('yoghurt') || has('parfait') || has('smoothie') || has('egg') && !has('shakshuka')) return 'breakfast';
+  // lunch heuristics
+  if (has('wrap') || has('sandwich') || has('salad') || has('bowl') && !has('rice & chicken')) return 'lunch';
+  // snacks / sweets
+  if (has('banana ice') || has('parfait') || has('chia')) return 'snack';
+  // otherwise treat as dinner
+  return 'dinner';
+}
+
+function apPoolBy(cat){
+  return RECIPES.filter(r => apGuessCategory(r)===cat);
+}
+function apKcal(r){ return r?.macros?.kcal || 400; }
+
+/* pick the recipe in pool closest to target kcal */
+function apPickClosest(pool, targetKcal){
+  let best=null, diff=1e9, idx=-1;
+  pool.forEach((r,i)=>{
+    const d = Math.abs(apKcal(r) - targetKcal);
+    if(d < diff){ diff=d; best=r; idx=i; }
+  });
+  return {best, index:idx};
+}
+
+/* Day builder with simple kcal share */
+function apBuildDay(kcalTarget, currentDay){
+  const shares = {breakfast:.25, lunch:.30, dinner:.35, snack:.10};
+  const out = {breakfast:null,lunch:null,dinner:null,snack:null,total:0};
+
+  ['breakfast','lunch','dinner','snack'].forEach(cat=>{
+    const pool = apPoolBy(cat);
+    if(!pool.length) return;
+    const want = kcalTarget * shares[cat];
+
+    // if there's an existing pick for this slot (during swaps), try to keep it
+    const existing = currentDay?.[cat];
+    if(existing){
+      out[cat] = existing;
+    }else{
+      out[cat] = apPickClosest(pool, want).best;
+    }
+  });
+
+  out.total = ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (out[k]?apKcal(out[k]):0),0);
+  return out;
+}
+
+/* ===== State & Storage ===== */
+const AP_KEY = 'fff-aplan-v1';
+let AP_PLAN = loadAP() || WEEKDAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+function saveAP(){ localStorage.setItem(AP_KEY, JSON.stringify(AP_PLAN)); }
+function loadAP(){ try{ return JSON.parse(localStorage.getItem(AP_KEY)||'null'); }catch(e){ return null; } }
+
+/* ===== Rendering ===== */
+const apGrid = document.getElementById('ap-grid');
+
+function apRender(){
+  apGrid.innerHTML = '';
+  WEEKDAYS.forEach((d,dayIdx)=>{
+    const day = AP_PLAN[dayIdx] || {};
+    const col = document.createElement('div');
+    col.className = 'ap-day-col';
+    col.innerHTML = `
+      <h3>${d}</h3>
+      ${apSlotHTML(day.breakfast,'breakfast',dayIdx)}
+      ${apSlotHTML(day.lunch,'lunch',dayIdx)}
+      ${apSlotHTML(day.dinner,'dinner',dayIdx)}
+      ${apSlotHTML(day.snack,'snack',dayIdx)}
+      <div class="ap-total">≈ ${Math.round(apDayTotal(day))} kcal</div>
+    `;
+    apGrid.appendChild(col);
+  });
+  apHookSwaps();
+}
+
+function apDayTotal(day){
+  return ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (day[k]?apKcal(day[k]):0),0);
+}
+
+function apSlotHTML(rec,cat,dayIndex){
+  if(!rec){
+    const nice = cat[0].toUpperCase()+cat.slice(1);
+    return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+      <div class="row"><span class="name">${nice}</span><button class="ap-swap" data-swap>Swap</button></div>
+      <div class="cal">—</div>
+    </div>`;
+  }
+  return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+    <div class="row">
+      <span class="name">${rec.name}</span>
+      <button class="ap-swap" data-swap>Swap</button>
+    </div>
+    <div class="cal">${apKcal(rec)} kcal</div>
+  </div>`;
+}
+
+/* Swap: cycle through alternatives in the same category */
+function apHookSwaps(){
+  apGrid.querySelectorAll('[data-swap]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const slot = btn.closest('.ap-slot');
+      const day = parseInt(slot.dataset.day,10);
+      const cat = slot.dataset.cat;
+
+      const pool = apPoolBy(cat);
+      if(!pool.length) return;
+
+      const current = AP_PLAN[day][cat];
+      let i = current ? pool.findIndex(r=>r.k===current.k) : -1;
+
+      // next distinct option (wrap around)
+      for(let j=1;j<=pool.length;j++){
+        const cand = pool[(i+j)%pool.length];
+        if(!current || cand.k !== current.k){ AP_PLAN[day][cat] = cand; break; }
+      }
+      AP_PLAN[day].total = apDayTotal(AP_PLAN[day]);
+      saveAP(); apRender();
+    };
+  });
+}
+
+/* Generate & Clear */
+document.getElementById('ap-generate').addEventListener('click', ()=>{
+  const kcal = +document.getElementById('ap-kcal').value || 2200;
+  AP_PLAN = WEEKDAYS.map((_,i)=> apBuildDay(kcal, AP_PLAN[i]) );
+  saveAP(); apRender();
+});
+document.getElementById('ap-clear').addEventListener('click', ()=>{
+  if(!confirm('Clear auto-plan for the whole week?')) return;
+  AP_PLAN = WEEKDAYS.map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+  saveAP(); apRender();
+});
+
+/* Initial paint */
+apRender();
+</script>
 /* ====== BOOT ====== */
 document.getElementById('recipeFilters').addEventListener('click', e=>{
   if(!e.target.classList.contains('tag')) return;

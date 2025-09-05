@@ -413,6 +413,11 @@ document.getElementById('h-calc').addEventListener('click', ()=>{
    Each recipe: k, name, cuisine, tags[], allergens[], img, servings, macros{kcal,p,c,f}, adds[], ingredients[{qty,unit,item}], steps[] */
 const RECIPES = [
   // Simple & UK-friendly
+  <!-- inside each recipe card footer/actions -->
+<div class="rec-actions">
+  <button class="btn-budget" data-k="{{k}}">£ Budget swap</button>
+  <button class="btn-add-plan" data-k="{{k}}">Add to Planner</button>
+</div>
   {k:'oats-pro', name:'Protein Oats & Berries', cuisine:'UK', tags:['budget','high-protein','veg','quick','simple'], allergens:['gluten (oats*)','dairy*'], img:'img/recipes/oats.jpg', servings:1,
     macros:{kcal:420,p:28,c:55,f:10},
     adds:['oats','milk or alt','protein powder','frozen berries','chia'],

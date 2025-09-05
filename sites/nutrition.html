@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nutrition – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page-only additions (keeps your global style.css in charge) */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+
+    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    .hero-mini figure{margin:0;position:relative}
+    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05);object-position:center 35%}
+    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
+    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    .hero-mini h1{margin:0 0 .35rem}
+    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0 1.1rem}
+    .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
+    .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
+    .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+    .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .65rem;font-size:.92rem}
+    .pill input{accent-color:var(--accent)}
+
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
+    .note{font-size:.92rem;color:var(--inkdim)}
+
+    .grid{display:grid;gap:14px}
+    @media(min-width:900px){.grid.cols-2{grid-template-columns:1.1fr 1fr}}
+    @media(min-width:980px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+
+    /* Calculator */
+    .calc{display:grid;gap:.6rem}
+    .calc .row{display:flex;flex-wrap:wrap;gap:.6rem}
+    .calc label{display:flex;flex-direction:column;gap:.25rem;font-size:.92rem}
+    .calc input, .calc select{
+      background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);
+      border-radius:8px;padding:.5rem .55rem;min-width:120px
+    }
+    .calc .btn{padding:.55rem .8rem;border-radius:8px;background:var(--accent);color:#111;border:0;font-weight:800;cursor:pointer}
+    .calc .out{margin-top:.35rem;color:var(--inkdim)}
+    .results{display:grid;gap:.45rem;margin-top:.5rem}
+    .kpi{background:#111418;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem}
+    .kpi strong{display:block;font-size:1.05rem}
+
+    /* Recipe library */
+    .filters{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem}
+    .filters .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .55rem;font-size:.85rem;cursor:pointer}
+    .filters .tag.active{background:var(--accent);color:#111;font-weight:800;border-color:transparent}
+
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+    .card figure{margin:0;position:relative}
+    .card img{width:100%;height:180px;object-fit:cover;display:block}
+    .card .body{padding:.75rem .9rem}
+    .badge{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-right:.35rem}
+    .macros{display:flex;gap:.6rem;margin-top:.35rem;font-size:.9rem;color:#c9c9d4}
+
+    /* Meal planner */
+    .planner{display:grid;gap:.8rem}
+    .planner table{width:100%;border-collapse:collapse}
+    .planner th,.planner td{border:1px solid var(--stroke);padding:.5rem .6rem;vertical-align:top}
+    .planner th{background:rgba(255,255,255,.06)}
+    .slot{min-height:52px;background:#0b0f14;border-radius:6px;padding:.35rem}
+    .slot .item{display:flex;justify-content:space-between;gap:.5rem;background:#141820;border:1px solid var(--stroke);border-radius:6px;padding:.3rem .5rem;margin:.25rem 0}
+    .slot .item button{border:0;background:transparent;color:#bbb;cursor:pointer}
+    .planner .controls{display:flex;gap:.5rem;flex-wrap:wrap}
+
+    /* Small tweaks for mobile dominance */
+    @media (max-width: 540px){
+      .goal-explain{font-size:.92rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER (same as home) -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="endurance.html">Endurance</a>
+      <a href="nutrition.html" aria-current="page">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Nutrition hero">
+  <figure>
+    <img src="img/nutrition-hero.jpg" alt="Budget-friendly, colourful whole foods on a table">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Fuel for real life</span></h1>
+    <p>Goal-based macros, budget swaps, and a planner that builds your shopping list — simple, tasty, and practical.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead">Pick a <strong>goal</strong>, calculate your <strong>targets</strong>, then drag meals into the planner. Toggle <strong>Budget</strong> to favour low-cost options.</p>
+
+  <!-- Global controls -->
+  <div class="toolbar" aria-label="Nutrition controls">
+    <div class="seg" role="tablist" aria-label="Goal">
+      <button role="tab" aria-pressed="true"  data-goal="maintain">Maintain</button>
+      <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
+      <button role="tab" aria-pressed="false" data-goal="build">Build</button>
+      <button role="tab" aria-pressed="false" data-goal="transform">Transform</button>
+    </div>
+    <span class="pill"><input type="checkbox" id="budget"> <label for="budget">Budget mode</label></span>
+  </div>
+
+  <section class="section goal-explain">
+    <h2>What the goals mean</h2>
+    <div class="grid cols-2">
+      <article class="kpi">
+        <strong>Maintain</strong>
+        Keep weight steady. Calories ≈ TDEE. Protein high enough to preserve muscle; flexible carbs/fats.
+      </article>
+      <article class="kpi">
+        <strong>Cut</strong>
+        Gentle fat loss. Calories ≈ TDEE − 10–20%. Higher protein & fibre to keep you fuller; carbs timed around training.
+      </article>
+      <article class="kpi">
+        <strong>Build (Bulk)</strong>
+        Muscle gain. Calories ≈ TDEE + 5–15%. Prioritise protein + carbs, steady surplus, keep lifts progressing.
+      </article>
+      <article class="kpi">
+        <strong>Transform</strong>
+        Recomp mindset. Small deficit or slight surplus depending on day, protein high, heavy on veggies; sleep & steps matter.
+      </article>
+    </div>
+  </section>
+
+  <!-- Calculator -->
+  <section class="section">
+    <h2>Macro & Calorie Calculator</h2>
+    <div class="grid cols-2">
+      <div class="calc card" style="padding:12px">
+        <div class="row">
+          <label>Sex
+            <select id="sex">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </label>
+          <label>Age <input id="age" type="number" min="13" max="99" value="35"></label>
+          <label>Height (cm) <input id="cm" type="number" min="120" max="220" value="175"></label>
+          <label>Weight (kg) <input id="kg" type="number" min="35" max="200" value="75"></label>
+          <label>Activity
+            <select id="act">
+              <option value="1.2">Sedentary</option>
+              <option value="1.375">Light (1–3x/wk)</option>
+              <option value="1.55" selected>Moderate (3–5x)</option>
+              <option value="1.725">Active (6–7x)</option>
+              <option value="1.9">Very active</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>Protein (g/kg) <input id="pkk" type="number" step="0.1" value="1.8"></label>
+          <label>Carb bias
+            <select id="carbBias">
+              <option value="balanced" selected>Balanced</option>
+              <option value="lowerCarb">Lower carb</option>
+              <option value="higherCarb">Higher carb</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <button class="btn" id="calcBtn">Calculate</button>
+          <span id="calcNote" class="out">Based on Mifflin–St Jeor + activity. Adjust by feel.</span>
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="kpi"><strong id="outGoal">Maintain</strong><span id="outCals">— kcal / day</span></div>
+        <div class="kpi"><strong>Protein</strong><span id="outP">— g</span></div>
+        <div class="kpi"><strong>Carbs</strong><span id="outC">— g</span></div>
+        <div class="kpi"><strong>Fats</strong><span id="outF">— g</span></div>
+        <div class="note">Fibre: aim ~25–35 g/day. Hydration target below.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recipes -->
+  <section class="section" id="recipes">
+    <h2>Recipe Library</h2>
+    <div class="filters" id="recipeFilters" aria-label="Recipe filters">
+      <button class="tag" data-tag="budget">Budget</button>
+      <button class="tag" data-tag="high-protein">High-Protein</button>
+      <button class="tag" data-tag="gluten-free">Gluten-Free</button>
+      <button class="tag" data-tag="dairy-free">Dairy-Free</button>
+      <button class="tag" data-tag="veg">Vegetarian</button>
+      <button class="tag" data-tag="vegan">Vegan</button>
+      <button class="tag" data-tag="quick">Quick (≤20m)</button>
+      <button class="tag" data-tag="batch">Batch-cook</button>
+    </div>
+
+    <div class="grid cols-3" id="recipeGrid"></div>
+    <p class="note">Tip: in Budget mode, we’ll highlight low-cost swaps (e.g., tinned fish/beans, frozen veg, oats, rice, lentils).</p>
+  </section>
+
+  <!-- Planner -->
+  <section class="section" id="planner">
+    <h2>Weekly Meal Planner</h2>
+    <p class="note">Click “＋ Add” on any recipe to slot it into the planner. Your plan saves on this device.</p>
+    <div class="planner">
+      <div class="controls">
+        <button class="btn" id="clearPlan">Clear week</button>
+        <button class="btn" id="printList">Print shopping list</button>
+        <button class="btn" id="csvList">Download CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snacks</th></tr>
+        </thead>
+        <tbody id="planBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Hydration & fibre -->
+  <section class="section">
+    <h2>Hydration & Fibre</h2>
+    <div class="grid cols-2">
+      <article class="card" style="padding:.8rem">
+        <h3>Hydration helper</h3>
+        <div class="calc">
+          <div class="row">
+            <label>Body weight (kg) <input id="h-kg" type="number" min="35" max="200" value="75"></label>
+            <label>Extra per hour training (ml) <input id="h-train" type="number" min="0" step="50" value="400"></label>
+          </div>
+          <div class="row">
+            <button class="btn" id="h-calc">Calculate</button>
+            <span class="out" id="h-out">— ml / day</span>
+          </div>
+        </div>
+        <p class="note">Rule of thumb: ~30–35 ml/kg + ~300–600 ml per training hour. Adjust to thirst, heat, and urine colour.</p>
+      </article>
+      <article class="card" style="padding:.8rem">
+        <h3>Fibre targets</h3>
+        <p>Aim 25–35 g/day from whole foods. Add gradually with fluids.</p>
+        <ul>
+          <li>Oats/porridge, wholegrains</li>
+          <li>Beans/lentils/chickpeas</li>
+          <li>Fruit (berries), veg, nuts/seeds</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>The content on FreeFitFuel is for general nutrition education only and isn’t a substitute for personalised medical advice. If you have a medical condition (e.g., diabetes, kidney disease, IBS), allergies, or take medications, speak to a qualified professional before making major changes.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Minimal JS -->
+<script>
+/* Header burger (same as other pages) */
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.hamburger');
+  const nav = document.querySelector('.main-nav');
+  if(btn && nav){
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+});
+
+/* ===== State ===== */
+let goal = 'maintain';
+let budgetMode = false;
+
+document.querySelectorAll('[data-goal]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    goal = b.dataset.goal;
+    document.getElementById('outGoal').textContent =
+      goal.charAt(0).toUpperCase()+goal.slice(1);
+    // Recompute macros if user already calculated
+    if(window.lastCalc){ doCalc(); }
+  });
+});
+
+document.getElementById('budget').addEventListener('change', (e)=>{
+  budgetMode = e.target.checked;
+  renderRecipes();
+});
+
+/* ===== Calculator ===== */
+function mifflin(kg, cm, age, sex){
+  const s = (sex==='male') ? 5 : -161;
+  return (10*kg + 6.25*cm - 5*age + s);
+}
+
+function adjustForGoal(cals){
+  switch(goal){
+    case 'cut': return Math.round(cals * 0.85);           // ~15% deficit
+    case 'build': return Math.round(cals * 1.10);         // ~10% surplus
+    case 'transform': return Math.round(cals * 0.95);     // slight deficit
+    default: return Math.round(cals);                     // maintain
+  }
+}
+
+function splitCarbFat(remainCals, bias){
+  // default 50/50; bias nudges
+  let fatK = 0.5, carbK = 0.5;
+  if(bias==='lowerCarb'){ fatK = 0.6; carbK = 0.4; }
+  if(bias==='higherCarb'){ fatK = 0.35; carbK = 0.65; }
+  const fat = Math.round((remainCals * fatK) / 9);
+  const carb = Math.round((remainCals * carbK) / 4);
+  return {fat, carb};
+}
+
+let lastCalc = null;
+function doCalc(){
+  const sex = document.getElementById('sex').value;
+  const age = parseInt(document.getElementById('age').value||'0',10);
+  const cm  = parseInt(document.getElementById('cm').value||'0',10);
+  const kg  = parseFloat(document.getElementById('kg').value||'0');
+  const act = parseFloat(document.getElementById('act').value||'1.55');
+  const pkk = parseFloat(document.getElementById('pkk').value||'1.8');
+  const bias= document.getElementById('carbBias').value;
+
+  const bmr  = mifflin(kg, cm, age, sex);
+  const tdee = bmr * act;
+  const target = adjustForGoal(tdee);
+
+  const protein = Math.round(kg * pkk);
+  const pCals = protein * 4;
+  const remain = Math.max(0, target - pCals);
+  const {fat, carb} = splitCarbFat(remain, bias);
+
+  lastCalc = {target, protein, carb, fat};
+  document.getElementById('outCals').textContent = target + ' kcal / day';
+  document.getElementById('outP').textContent = protein + ' g';
+  document.getElementById('outC').textContent = carb + ' g';
+  document.getElementById('outF').textContent = fat + ' g';
+}
+document.getElementById('calcBtn').addEventListener('click', ()=>{ doCalc(); window.lastCalc=true; });
+
+/* Hydration */
+document.getElementById('h-calc').addEventListener('click', ()=>{
+  const kg = parseFloat(document.getElementById('h-kg').value||'0');
+  const extra = parseFloat(document.getElementById('h-train').value||'0');
+  const base = kg * 32; // 30–35 ml/kg; pick 32 ml/kg midpoint
+  document.getElementById('h-out').textContent = Math.round(base + extra) + ' ml / day';
+});
+
+/* ===== Recipes (sample starter set) ===== */
+const RECIPES = [
+ {k:'oats-pro', name:'Protein Oats & Berries', tags:['budget','high-protein','veg','quick'], img:'img/recipes/oats.jpg',
+  macros:{kcal:420,p:28,c:55,f:10}, adds:['oats','skim milk','protein powder','frozen berries','chia']},
+ {k:'beans-toast', name:'Beans on Toast + Egg', tags:['budget','veg','quick'], img:'img/recipes/beans.jpg',
+  macros:{kcal:480,p:28,c:60,f:14}, adds:['baked beans','wholemeal bread','egg','spinach']},
+ {k:'lentil-pot', name:'One-Pot Lentil Stew', tags:['budget','vegan','gluten-free','batch'], img:'img/recipes/lentils.jpg',
+  macros:{kcal:520,p:26,c:80,f:10}, adds:['red lentils','tinned tomatoes','carrots','onion','stock']},
+ {k:'yoghurt-bowl', name:'Greek Yoghurt Bowl', tags:['high-protein','quick'], img:'img/recipes/yoghurt.jpg',
+  macros:{kcal:350,p:30,c:35,f:8}, adds:['greek yoghurt','banana','honey','mixed seeds']},
+ {k:'tuna-rice', name:'Tuna Rice Bowl', tags:['budget','high-protein','gluten-free','quick'], img:'img/recipes/tuna.jpg',
+  macros:{kcal:520,p:38,c:65,f:10}, adds:['tinned tuna','rice','sweetcorn','peas','light mayo']},
+ {k:'chickpea-wrap', name:'Chickpea Crunch Wrap', tags:['budget','vegan','quick'], img:'img/recipes/wrap.jpg',
+  macros:{kcal:480,p:18,c:65,f:14}, adds:['wraps','chickpeas','lettuce','tomato','yoghurt or vegan alt']},
+ {k:'chilli-batch', name:'Turkey (or Bean) Chilli', tags:['high-protein','batch','gluten-free'], img:'img/recipes/chilli.jpg',
+  macros:{kcal:540,p:40,c:55,f:14}, adds:['turkey mince or beans','kidney beans','tomatoes','spices','onion']},
+ {k:'pasta-peas', name:'Pea & Pesto Pasta', tags:['veg','quick'], img:'img/recipes/pasta.jpg',
+  macros:{kcal:520,p:22,c:78,f:12}, adds:['pasta','peas','pesto','parmesan']},
+ {k:'fish-pot', name:'Smoked Fish & Potato Bake', tags:['gluten-free'], img:'img/recipes/fish.jpg',
+  macros:{kcal:560,p:36,c:55,f:18}, adds:['smoked fish','potatoes','leeks','milk','cheese']}
+];
+
+const budgetSwaps = {
+  'greek yoghurt':'plain yoghurt',
+  'mixed seeds':'sunflower seeds',
+  'frozen berries':'seasonal fruit',
+  'tuna':'mackerel (tinned)',
+  'rice':'oats or potatoes',
+  'parmesan':'cheddar',
+  'pesto':'olive oil + herbs'
+};
+
+function recipeCard(r){
+  const tags = r.tags.map(t=>`<span class="badge">${t}</span>`).join('');
+  const m = r.macros;
+  return `
+  <article class="card" data-tags="${r.tags.join(',')}">
+    <figure><img src="${r.img}" alt="${r.name}" onerror="this.style.display='none'"></figure>
+    <div class="body">
+      <h3>${r.name}</h3>
+      <div>${tags}</div>
+      <div class="macros">
+        <span>⚡ ${m.kcal} kcal</span>
+        <span>🥩 ${m.p}g</span>
+        <span>🍚 ${m.c}g</span>
+        <span>🫒 ${m.f}g</span>
+      </div>
+      <div class="macros" style="justify-content:flex-end">
+        <button class="btn" data-add="${r.k}" style="padding:.4rem .6rem;border-radius:8px">＋ Add</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderRecipes(){
+  const grid = document.getElementById('recipeGrid');
+  const active = [...document.querySelectorAll('.filters .tag.active')].map(x=>x.dataset.tag);
+  const list = RECIPES.filter(r => active.length===0 || active.every(t=>r.tags.includes(t)));
+  grid.innerHTML = list.map(recipeCard).join('');
+  // Wire up Add buttons
+  grid.querySelectorAll('[data-add]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.getAttribute('data-add');
+      openAddDialog(k);
+    });
+  });
+}
+document.getElementById('recipeFilters').addEventListener('click', e=>{
+  if(!e.target.classList.contains('tag')) return;
+  e.target.classList.toggle('active');
+  renderRecipes();
+});
+
+/* ===== Planner ===== */
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MEALS = ['Breakfast','Lunch','Dinner','Snacks'];
+const planKey = 'fff-plan-week';
+
+function renderPlanner(){
+  const body = document.getElementById('planBody');
+  const plan = loadPlan();
+  body.innerHTML = DAYS.map((d,di)=>{
+    const tds = MEALS.map((m,mi)=>{
+      const items = (plan[d] && plan[d][m]) ? plan[d][m] : [];
+      const html = items.map((it,idx)=>`
+        <div class="item">
+          <span>${it.name}</span>
+          <button title="Remove" data-del="${d}|${m}|${idx}">✕</button>
+        </div>`).join('');
+      return `<td><div class="slot" data-slot="${d}|${m}">${html}</div></td>`;
+    }).join('');
+    return `<tr><th>${d}</th>${tds}</tr>`;
+  }).join('');
+
+  body.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const [d,m,i] = btn.getAttribute('data-del').split('|');
+      const plan = loadPlan();
+      plan[d][m].splice(parseInt(i,10),1);
+      savePlan(plan); renderPlanner();
+    });
+  });
+}
+
+function loadPlan(){
+  try{
+    const raw = localStorage.getItem(planKey);
+    if(raw){ return JSON.parse(raw); }
+  }catch(e){}
+  const empty = {};
+  DAYS.forEach(d=>{ empty[d] = {}; MEALS.forEach(m=> empty[d][m]=[] ); });
+  return empty;
+}
+function savePlan(p){ localStorage.setItem(planKey, JSON.stringify(p)); }
+
+/* Add dialog (simple prompt) */
+function openAddDialog(recipeKey){
+  const r = RECIPES.find(x=>x.k===recipeKey);
+  if(!r) return;
+  const day = prompt('Add to which day? (Mon/Tue/Wed/Thu/Fri/Sat/Sun)','Mon');
+  if(!DAYS.includes(day)) return;
+  const meal = prompt('Meal slot? (Breakfast/Lunch/Dinner/Snacks)','Dinner');
+  if(!MEALS.includes(meal)) return;
+
+  const plan = loadPlan();
+  if(!plan[day]) plan[day]={};
+  if(!plan[day][meal]) plan[day][meal]=[];
+
+  // Budget swaps (note only affects shopping list display, not macros)
+  let adds = [...r.adds];
+  if(budgetMode){
+    adds = adds.map(x=>{
+      const key = Object.keys(budgetSwaps).find(k=>x.toLowerCase().includes(k));
+      return key ? (budgetSwaps[key] + ' (swap)') : x;
+    });
+  }
+
+  plan[day][meal].push({ref:r.k, name:r.name, adds:adds});
+  savePlan(plan); renderPlanner();
+}
+
+document.getElementById('clearPlan').addEventListener('click', ()=>{
+  if(confirm('Clear the whole week?')){ localStorage.removeItem(planKey); renderPlanner(); }
+});
+
+/* Shopping list */
+function aggregateList(){
+  const plan = loadPlan();
+  const map = new Map();
+  DAYS.forEach(d=>MEALS.forEach(m=>{
+    (plan[d][m]||[]).forEach(it=>{
+      (it.adds||[]).forEach(a=>{
+        const key = a.toLowerCase();
+        map.set(key, (map.get(key)||0) + 1); // naive count
+      });
+    });
+  }));
+  return [...map.keys()];
+}
+
+document.getElementById('printList').addEventListener('click', ()=>{
+  const items = aggregateList();
+  const win = window.open('', 'PRINT', 'height=600,width=600');
+  if(!win) return;
+  win.document.write('<html><head><title>Shopping List</title></head><body>');
+  win.document.write('<h3>Shopping List</h3><ul>');
+  items.forEach(i=>win.document.write('<li>'+i+'</li>'));
+  win.document.write('</ul></body></html>');
+  win.document.close(); win.focus(); win.print(); win.close();
+});
+
+document.getElementById('csvList').addEventListener('click', ()=>{
+  const items = aggregateList();
+  const csv = 'item\n' + items.map(x=>'"'+x.replace(/"/g,'""')+'"').join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'shopping-list.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* Boot */
+renderRecipes();
+renderPlanner();
+</script>
+</body>
+</html>

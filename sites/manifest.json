@@ -1,22 +1,13 @@
 {
   "name": "FreeFitFuel",
   "short_name": "FreeFitFuel",
-  "description": "Workouts, endurance plans, and wellbeing tools — fast, offline, and installable.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0e0e12",
   "theme_color": "#FF6A00",
-  "orientation": "portrait-primary",
   "icons": [
-    { "src": "img/freefitfuel-logo-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "img/freefitfuel-logo-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "img/freefitfuel-logo-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "img/freefitfuel-logo-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ],
-  "shortcuts": [
-    { "name": "Workouts", "short_name": "Workouts", "url": "/workouts.html", "icons": [{ "src": "img/shortcut-workouts.png", "sizes": "96x96", "type": "image/png" }] },
-    { "name": "Endurance", "short_name": "Endurance", "url": "/endurance.html", "icons": [{ "src": "img/shortcut-endurance.png", "sizes": "96x96", "type": "image/png" }] },
-    { "name": "Wellbeing", "short_name": "Wellbeing", "url": "/wellbeing.html", "icons": [{ "src": "img/shortcut-wellbeing.png", "sizes": "96x96", "type": "image/png" }] }
+    { "src": "/img/freefitfuel-logo-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/img/freefitfuel-logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }

@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nutrition – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="stylesheet" href="style.css?v=27">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
-    /* Page-only additions (keeps your global style.css in charge) */
+    /* Page-only additions */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
@@ -33,14 +33,14 @@
     .note{font-size:.92rem;color:var(--inkdim)}
 
     .grid{display:grid;gap:14px}
-    @media(min-width:900px){.grid.cols-2{grid-template-columns:1.1fr 1fr}}
-    @media(min-width:980px){.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:900px){.cols-2{grid-template-columns:1.1fr 1fr}}
+    @media(min-width:980px){.cols-3{grid-template-columns:repeat(3,1fr)}}
 
     /* Calculator */
     .calc{display:grid;gap:.6rem}
     .calc .row{display:flex;flex-wrap:wrap;gap:.6rem}
     .calc label{display:flex;flex-direction:column;gap:.25rem;font-size:.92rem}
-    .calc input, .calc select{
+    .calc input,.calc select{
       background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);
       border-radius:8px;padding:.5rem .55rem;min-width:120px
     }
@@ -49,8 +49,10 @@
     .results{display:grid;gap:.45rem;margin-top:.5rem}
     .kpi{background:#111418;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem}
     .kpi strong{display:block;font-size:1.05rem}
+    .bar{height:10px;border-radius:999px;background:#0b0f14;border:1px solid var(--stroke);overflow:hidden}
+    .bar span{display:block;height:100%;background:var(--accent);width:0%}
 
-    /* Recipe library */
+    /* Filters & recipes */
     .filters{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem}
     .filters .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .55rem;font-size:.85rem;cursor:pointer}
     .filters .tag.active{background:var(--accent);color:#111;font-weight:800;border-color:transparent}
@@ -61,8 +63,11 @@
     .card .body{padding:.75rem .9rem}
     .badge{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-right:.35rem}
     .macros{display:flex;gap:.6rem;margin-top:.35rem;font-size:.9rem;color:#c9c9d4}
+    .allergens{font-size:.86rem;color:#cfcfe0;margin-top:.25rem}
+    .actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+    .actions .btn{padding:.4rem .6rem;border-radius:8px}
 
-    /* Meal planner */
+    /* Planner */
     .planner{display:grid;gap:.8rem}
     .planner table{width:100%;border-collapse:collapse}
     .planner th,.planner td{border:1px solid var(--stroke);padding:.5rem .6rem;vertical-align:top}
@@ -72,10 +77,19 @@
     .slot .item button{border:0;background:transparent;color:#bbb;cursor:pointer}
     .planner .controls{display:flex;gap:.5rem;flex-wrap:wrap}
 
-    /* Small tweaks for mobile dominance */
-    @media (max-width: 540px){
-      .goal-explain{font-size:.92rem}
+    /* Food log */
+    .log{display:grid;gap:.6rem}
+    .log .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+    .log input,.log select{
+      background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);
+      border-radius:8px;padding:.45rem .55rem
     }
+    .progress{display:grid;gap:.35rem}
+    .progress .line{display:grid;grid-template-columns:100px 1fr min-content;gap:.6rem;align-items:center}
+    .progress .line .bar{height:12px}
+
+    /* Mobile balance: make goal explanation less dominant */
+    @media (max-width:540px){ .goal-explain{font-size:.92rem} }
   </style>
 </head>
 <body>
@@ -108,12 +122,12 @@
   </figure>
   <div class="content wrap">
     <h1><span class="accent">Fuel for real life</span></h1>
-    <p>Goal-based macros, budget swaps, and a planner that builds your shopping list — simple, tasty, and practical.</p>
+    <p>Goal-based macros, budget swaps, a planner that builds your shopping list, and a day log that tracks towards your targets.</p>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="lead">Pick a <strong>goal</strong>, calculate your <strong>targets</strong>, then drag meals into the planner. Toggle <strong>Budget</strong> to favour low-cost options.</p>
+  <p class="lead">Pick a <strong>goal</strong>, calculate your <strong>targets</strong> (BMR → TDEE), then add meals to the <strong>planner</strong> and <strong>daily log</strong>. Toggle <strong>Budget</strong> to favour low-cost options. All data saves on this device.</p>
 
   <!-- Global controls -->
   <div class="toolbar" aria-label="Nutrition controls">
@@ -126,25 +140,14 @@
     <span class="pill"><input type="checkbox" id="budget"> <label for="budget">Budget mode</label></span>
   </div>
 
+  <!-- Goal meanings -->
   <section class="section goal-explain">
     <h2>What the goals mean</h2>
     <div class="grid cols-2">
-      <article class="kpi">
-        <strong>Maintain</strong>
-        Keep weight steady. Calories ≈ TDEE. Protein high enough to preserve muscle; flexible carbs/fats.
-      </article>
-      <article class="kpi">
-        <strong>Cut</strong>
-        Gentle fat loss. Calories ≈ TDEE − 10–20%. Higher protein & fibre to keep you fuller; carbs timed around training.
-      </article>
-      <article class="kpi">
-        <strong>Build (Bulk)</strong>
-        Muscle gain. Calories ≈ TDEE + 5–15%. Prioritise protein + carbs, steady surplus, keep lifts progressing.
-      </article>
-      <article class="kpi">
-        <strong>Transform</strong>
-        Recomp mindset. Small deficit or slight surplus depending on day, protein high, heavy on veggies; sleep & steps matter.
-      </article>
+      <article class="kpi"><strong>Maintain</strong> Keep weight steady. Calories ≈ TDEE. Protein high enough to preserve muscle; flexible carbs/fats.</article>
+      <article class="kpi"><strong>Cut</strong> Gentle fat loss. Calories ≈ TDEE − 10–20%. Higher protein & fibre to keep you fuller; carbs timed around training.</article>
+      <article class="kpi"><strong>Build (Bulk)</strong> Muscle gain. Calories ≈ TDEE + 5–15%. Prioritise protein + carbs; steady surplus with progressive training.</article>
+      <article class="kpi"><strong>Transform</strong> Recomp: small deficit/surplus depending on the day; keep protein high; focus on veg, sleep & steps.</article>
     </div>
   </section>
 
@@ -155,14 +158,11 @@
       <div class="calc card" style="padding:12px">
         <div class="row">
           <label>Sex
-            <select id="sex">
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-            </select>
+            <select id="sex"><option value="female">Female</option><option value="male">Male</option></select>
           </label>
           <label>Age <input id="age" type="number" min="13" max="99" value="35"></label>
           <label>Height (cm) <input id="cm" type="number" min="120" max="220" value="175"></label>
-          <label>Weight (kg) <input id="kg" type="number" min="35" max="200" value="75"></label>
+          <label>Weight (kg) <input id="kg" type="number" min="35" max="250" value="75"></label>
           <label>Activity
             <select id="act">
               <option value="1.2">Sedentary</option>
@@ -182,19 +182,20 @@
               <option value="higherCarb">Higher carb</option>
             </select>
           </label>
+          <label><input type="checkbox" id="knowbf"> I know body fat %</label>
+          <label id="bfWrap" class="hidden">Body fat % <input id="bf" type="number" min="3" max="60" step="0.5" value="20"></label>
         </div>
         <div class="row">
           <button class="btn" id="calcBtn">Calculate</button>
-          <span id="calcNote" class="out">Based on Mifflin–St Jeor + activity. Adjust by feel.</span>
+          <span id="calcNote" class="out">Uses Mifflin–St Jeor (or Katch–McArdle if body fat is provided), then adjusts by activity and goal.</span>
         </div>
       </div>
-
       <div class="results">
         <div class="kpi"><strong id="outGoal">Maintain</strong><span id="outCals">— kcal / day</span></div>
-        <div class="kpi"><strong>Protein</strong><span id="outP">— g</span></div>
-        <div class="kpi"><strong>Carbs</strong><span id="outC">— g</span></div>
-        <div class="kpi"><strong>Fats</strong><span id="outF">— g</span></div>
-        <div class="note">Fibre: aim ~25–35 g/day. Hydration target below.</div>
+        <div class="kpi"><strong>Protein</strong><span id="outP">— g</span><div class="bar"><span id="barP"></span></div></div>
+        <div class="kpi"><strong>Carbs</strong><span id="outC">— g</span><div class="bar"><span id="barC"></span></div></div>
+        <div class="kpi"><strong>Fats</strong><span id="outF">— g</span><div class="bar"><span id="barF"></span></div></div>
+        <div class="note">Fibre: aim ~25–35 g/day. Hydration helper below.</div>
       </div>
     </div>
   </section>
@@ -211,16 +212,18 @@
       <button class="tag" data-tag="vegan">Vegan</button>
       <button class="tag" data-tag="quick">Quick (≤20m)</button>
       <button class="tag" data-tag="batch">Batch-cook</button>
+      <button class="tag" data-tag="world">World cuisines</button>
+      <button class="tag" data-tag="simple">Simple</button>
     </div>
 
     <div class="grid cols-3" id="recipeGrid"></div>
-    <p class="note">Tip: in Budget mode, we’ll highlight low-cost swaps (e.g., tinned fish/beans, frozen veg, oats, rice, lentils).</p>
+    <p class="note">Allergens are listed on every card (check labels for specific products & cross-contamination). Nutrition values are estimates.</p>
   </section>
 
-  <!-- Planner -->
+  <!-- Weekly Planner -->
   <section class="section" id="planner">
     <h2>Weekly Meal Planner</h2>
-    <p class="note">Click “＋ Add” on any recipe to slot it into the planner. Your plan saves on this device.</p>
+    <p class="note">Click “＋ Planner” on any recipe to slot it into the week. Your plan saves on this device.</p>
     <div class="planner">
       <div class="controls">
         <button class="btn" id="clearPlan">Clear week</button>
@@ -228,11 +231,30 @@
         <button class="btn" id="csvList">Download CSV</button>
       </div>
       <table>
-        <thead>
-          <tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snacks</th></tr>
-        </thead>
+        <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snacks</th></tr></thead>
         <tbody id="planBody"></tbody>
       </table>
+    </div>
+  </section>
+
+  <!-- Food Log (per day) -->
+  <section class="section" id="foodlog">
+    <h2>Daily Food Log</h2>
+    <div class="log">
+      <div class="row">
+        <label>Date <input type="date" id="logDate"></label>
+        <button class="btn" id="addCustom">＋ Custom item</button>
+        <button class="btn" id="clearLog">Clear day</button>
+        <button class="btn" id="exportLog">Export CSV</button>
+      </div>
+      <div id="logItems"></div>
+      <div class="progress">
+        <div class="line"><strong>Calories</strong><div class="bar"><span id="pbCal"></span></div><span id="txCal">0 / 0</span></div>
+        <div class="line"><strong>Protein</strong> <div class="bar"><span id="pbProt"></span></div><span id="txProt">0 / 0</span></div>
+        <div class="line"><strong>Carbs</strong>   <div class="bar"><span id="pbCarb"></span></div><span id="txCarb">0 / 0</span></div>
+        <div class="line"><strong>Fats</strong>    <div class="bar"><span id="pbFat"></span></div><span id="txFat">0 / 0</span></div>
+      </div>
+      <p class="note">Tip: log meals first, then tweak snacks to hit your targets.</p>
     </div>
   </section>
 
@@ -244,7 +266,7 @@
         <h3>Hydration helper</h3>
         <div class="calc">
           <div class="row">
-            <label>Body weight (kg) <input id="h-kg" type="number" min="35" max="200" value="75"></label>
+            <label>Body weight (kg) <input id="h-kg" type="number" min="35" max="250" value="75"></label>
             <label>Extra per hour training (ml) <input id="h-train" type="number" min="0" step="50" value="400"></label>
           </div>
           <div class="row">
@@ -252,16 +274,12 @@
             <span class="out" id="h-out">— ml / day</span>
           </div>
         </div>
-        <p class="note">Rule of thumb: ~30–35 ml/kg + ~300–600 ml per training hour. Adjust to thirst, heat, and urine colour.</p>
+        <p class="note">Rule of thumb: ~30–35 ml/kg + ~300–600 ml per training hour. Adjust to heat & thirst.</p>
       </article>
       <article class="card" style="padding:.8rem">
         <h3>Fibre targets</h3>
-        <p>Aim 25–35 g/day from whole foods. Add gradually with fluids.</p>
-        <ul>
-          <li>Oats/porridge, wholegrains</li>
-          <li>Beans/lentils/chickpeas</li>
-          <li>Fruit (berries), veg, nuts/seeds</li>
-        </ul>
+        <p>Aim 25–35 g/day from foods. Increase gradually with fluids to avoid gut discomfort.</p>
+        <ul><li>Oats/porridge, wholegrains</li><li>Beans/lentils/chickpeas</li><li>Fruit (berries), veg, nuts/seeds</li></ul>
       </article>
     </div>
   </section>
@@ -281,9 +299,9 @@
   </div>
 </footer>
 
-<!-- Minimal JS -->
+<!-- Minimal JS (no external deps) -->
 <script>
-/* Header burger (same as other pages) */
+/* Header burger */
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.hamburger');
   const nav = document.querySelector('.main-nav');
@@ -296,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===== State ===== */
+/* ====== STATE ====== */
 let goal = 'maintain';
 let budgetMode = false;
 
@@ -305,35 +323,41 @@ document.querySelectorAll('[data-goal]').forEach(b=>{
     document.querySelectorAll('[data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     goal = b.dataset.goal;
-    document.getElementById('outGoal').textContent =
-      goal.charAt(0).toUpperCase()+goal.slice(1);
-    // Recompute macros if user already calculated
-    if(window.lastCalc){ doCalc(); }
+    document.getElementById('outGoal').textContent = goal[0].toUpperCase()+goal.slice(1);
+    if(window.lastCalc){ doCalc(); updateLogBars(); }
   });
 });
+document.getElementById('budget').addEventListener('change', e=>{ budgetMode = e.target.checked; renderRecipes(); });
 
-document.getElementById('budget').addEventListener('change', (e)=>{
-  budgetMode = e.target.checked;
-  renderRecipes();
+/* ====== CALCULATOR ====== */
+const bfWrap = document.getElementById('bfWrap');
+document.getElementById('knowbf').addEventListener('change', e=>{
+  bfWrap.classList.toggle('hidden', !e.target.checked);
 });
 
-/* ===== Calculator ===== */
 function mifflin(kg, cm, age, sex){
-  const s = (sex==='male') ? 5 : -161;
-  return (10*kg + 6.25*cm - 5*age + s);
+  return 10*kg + 6.25*cm - 5*age + (sex==='male'?5:-161);
 }
-
+function katch(kg, bfPerc){
+  const lbm = kg * (1 - bfPerc/100);
+  return 370 + 21.6 * lbm;
+}
+function clampTargets(cals, bmr){
+  // keep target reasonable: not below 1.2×BMR for most cases (safety floor),
+  // and not above BMR+1000 unless bulking hard.
+  const floor = Math.round(bmr * 1.2);
+  const ceil  = Math.round(bmr + 1000);
+  return Math.max(floor, Math.min(ceil, Math.round(cals)));
+}
 function adjustForGoal(cals){
   switch(goal){
-    case 'cut': return Math.round(cals * 0.85);           // ~15% deficit
-    case 'build': return Math.round(cals * 1.10);         // ~10% surplus
-    case 'transform': return Math.round(cals * 0.95);     // slight deficit
-    default: return Math.round(cals);                     // maintain
+    case 'cut': return cals*0.85;         // ~15% deficit
+    case 'build': return cals*1.10;       // ~10% surplus
+    case 'transform': return cals*0.95;   // slight deficit
+    default: return cals;
   }
 }
-
 function splitCarbFat(remainCals, bias){
-  // default 50/50; bias nudges
   let fatK = 0.5, carbK = 0.5;
   if(bias==='lowerCarb'){ fatK = 0.6; carbK = 0.4; }
   if(bias==='higherCarb'){ fatK = 0.35; carbK = 0.65; }
@@ -341,62 +365,145 @@ function splitCarbFat(remainCals, bias){
   const carb = Math.round((remainCals * carbK) / 4);
   return {fat, carb};
 }
+let targets = {cal:0,p:0,c:0,f:0};
+let lastCalc=false;
 
-let lastCalc = null;
 function doCalc(){
   const sex = document.getElementById('sex').value;
-  const age = parseInt(document.getElementById('age').value||'0',10);
-  const cm  = parseInt(document.getElementById('cm').value||'0',10);
-  const kg  = parseFloat(document.getElementById('kg').value||'0');
-  const act = parseFloat(document.getElementById('act').value||'1.55');
-  const pkk = parseFloat(document.getElementById('pkk').value||'1.8');
+  const age = +document.getElementById('age').value||0;
+  const cm  = +document.getElementById('cm').value||0;
+  const kg  = +document.getElementById('kg').value||0;
+  const act = +document.getElementById('act').value||1.55;
+  const pkk = +document.getElementById('pkk').value||1.8;
   const bias= document.getElementById('carbBias').value;
+  const know= document.getElementById('knowbf').checked;
+  const bf  = +document.getElementById('bf').value||20;
 
-  const bmr  = mifflin(kg, cm, age, sex);
+  const bmr = know ? katch(kg,bf) : mifflin(kg,cm,age,sex);
   const tdee = bmr * act;
-  const target = adjustForGoal(tdee);
+  const pre  = adjustForGoal(tdee);
+  const cal  = clampTargets(pre, bmr);
 
-  const protein = Math.round(kg * pkk);
-  const pCals = protein * 4;
-  const remain = Math.max(0, target - pCals);
-  const {fat, carb} = splitCarbFat(remain, bias);
+  const p = Math.round(kg * pkk);
+  const pCals = p*4;
+  const remain = Math.max(0, cal - pCals);
+  const {fat:f, carb:c} = splitCarbFat(remain, bias);
 
-  lastCalc = {target, protein, carb, fat};
-  document.getElementById('outCals').textContent = target + ' kcal / day';
-  document.getElementById('outP').textContent = protein + ' g';
-  document.getElementById('outC').textContent = carb + ' g';
-  document.getElementById('outF').textContent = fat + ' g';
+  targets = {cal:Math.round(cal), p, c, f};
+  lastCalc=true; localStorage.setItem('fff-targets', JSON.stringify({goal,targets}));
+
+  document.getElementById('outCals').textContent = targets.cal+' kcal / day';
+  document.getElementById('outP').textContent = targets.p+' g';
+  document.getElementById('outC').textContent = targets.c+' g';
+  document.getElementById('outF').textContent = targets.f+' g';
+  setBar('barP',100); setBar('barC',100); setBar('barF',100); // static bars for targets panel
+  updateLogBars();
 }
-document.getElementById('calcBtn').addEventListener('click', ()=>{ doCalc(); window.lastCalc=true; });
+document.getElementById('calcBtn').addEventListener('click', doCalc);
 
 /* Hydration */
 document.getElementById('h-calc').addEventListener('click', ()=>{
-  const kg = parseFloat(document.getElementById('h-kg').value||'0');
-  const extra = parseFloat(document.getElementById('h-train').value||'0');
-  const base = kg * 32; // 30–35 ml/kg; pick 32 ml/kg midpoint
-  document.getElementById('h-out').textContent = Math.round(base + extra) + ' ml / day';
+  const kg = +document.getElementById('h-kg').value||0;
+  const extra = +document.getElementById('h-train').value||0;
+  const base = kg * 32; // 30–35 ml/kg midpoint
+  document.getElementById('h-out').textContent = Math.round(base + extra)+' ml / day';
 });
 
-/* ===== Recipes (sample starter set) ===== */
+/* ====== RECIPES DATA ======
+   Each recipe: k, name, cuisine, tags[], allergens[], img, servings, macros{kcal,p,c,f}, adds[], ingredients[{qty,unit,item}], steps[] */
 const RECIPES = [
- {k:'oats-pro', name:'Protein Oats & Berries', tags:['budget','high-protein','veg','quick'], img:'img/recipes/oats.jpg',
-  macros:{kcal:420,p:28,c:55,f:10}, adds:['oats','skim milk','protein powder','frozen berries','chia']},
- {k:'beans-toast', name:'Beans on Toast + Egg', tags:['budget','veg','quick'], img:'img/recipes/beans.jpg',
-  macros:{kcal:480,p:28,c:60,f:14}, adds:['baked beans','wholemeal bread','egg','spinach']},
- {k:'lentil-pot', name:'One-Pot Lentil Stew', tags:['budget','vegan','gluten-free','batch'], img:'img/recipes/lentils.jpg',
-  macros:{kcal:520,p:26,c:80,f:10}, adds:['red lentils','tinned tomatoes','carrots','onion','stock']},
- {k:'yoghurt-bowl', name:'Greek Yoghurt Bowl', tags:['high-protein','quick'], img:'img/recipes/yoghurt.jpg',
-  macros:{kcal:350,p:30,c:35,f:8}, adds:['greek yoghurt','banana','honey','mixed seeds']},
- {k:'tuna-rice', name:'Tuna Rice Bowl', tags:['budget','high-protein','gluten-free','quick'], img:'img/recipes/tuna.jpg',
-  macros:{kcal:520,p:38,c:65,f:10}, adds:['tinned tuna','rice','sweetcorn','peas','light mayo']},
- {k:'chickpea-wrap', name:'Chickpea Crunch Wrap', tags:['budget','vegan','quick'], img:'img/recipes/wrap.jpg',
-  macros:{kcal:480,p:18,c:65,f:14}, adds:['wraps','chickpeas','lettuce','tomato','yoghurt or vegan alt']},
- {k:'chilli-batch', name:'Turkey (or Bean) Chilli', tags:['high-protein','batch','gluten-free'], img:'img/recipes/chilli.jpg',
-  macros:{kcal:540,p:40,c:55,f:14}, adds:['turkey mince or beans','kidney beans','tomatoes','spices','onion']},
- {k:'pasta-peas', name:'Pea & Pesto Pasta', tags:['veg','quick'], img:'img/recipes/pasta.jpg',
-  macros:{kcal:520,p:22,c:78,f:12}, adds:['pasta','peas','pesto','parmesan']},
- {k:'fish-pot', name:'Smoked Fish & Potato Bake', tags:['gluten-free'], img:'img/recipes/fish.jpg',
-  macros:{kcal:560,p:36,c:55,f:18}, adds:['smoked fish','potatoes','leeks','milk','cheese']}
+  // Simple & UK-friendly
+  {k:'oats-pro', name:'Protein Oats & Berries', cuisine:'UK', tags:['budget','high-protein','veg','quick','simple'], allergens:['gluten (oats*)','dairy*'], img:'img/recipes/oats.jpg', servings:1,
+    macros:{kcal:420,p:28,c:55,f:10},
+    adds:['oats','milk or alt','protein powder','frozen berries','chia'],
+    ingredients:[{qty:60,unit:'g',item:'oats'},{qty:200,unit:'ml',item:'semi-skimmed milk (or alt)'},{qty:25,unit:'g',item:'whey/plant protein'},{qty:80,unit:'g',item:'frozen berries'},{qty:10,unit:'g',item:'chia seeds'}],
+    steps:['Heat oats with milk to desired thickness.','Stir in protein off heat.','Top with berries and chia.']},
+  {k:'beans-toast', name:'Beans on Toast + Egg', cuisine:'UK', tags:['budget','veg','quick','simple'], allergens:['gluten (bread)','egg'], img:'img/recipes/beans.jpg', servings:1,
+    macros:{kcal:480,p:28,c:60,f:14}, adds:['baked beans','wholemeal bread','egg','spinach'],
+    ingredients:[{qty:1,unit:'tin',item:'baked beans'},{qty:2,unit:'slices',item:'wholemeal bread'},{qty:1,unit:'',item:'egg'},{qty:30,unit:'g',item:'spinach'}],
+    steps:['Warm beans.','Toast bread.','Pan-fry or poach egg.','Layer toast, beans, spinach, egg.']},
+  {k:'yoghurt-bowl', name:'Greek Yoghurt Bowl', cuisine:'Mediterranean', tags:['high-protein','quick','simple'], allergens:['dairy'], img:'img/recipes/yoghurt.jpg', servings:1,
+    macros:{kcal:350,p:30,c:35,f:8}, adds:['greek yoghurt','banana','honey','mixed seeds'],
+    ingredients:[{qty:200,unit:'g',item:'greek yoghurt'},{qty:1,unit:'',item:'banana'},{qty:1,unit:'tsp',item:'honey'},{qty:15,unit:'g',item:'mixed seeds'}],
+    steps:['Bowl yoghurt.','Slice banana.','Top with honey and seeds.']},
+  {k:'tuna-rice', name:'Tuna Rice Bowl', cuisine:'Global', tags:['budget','high-protein','gluten-free','quick','simple'], allergens:['fish','egg*'], img:'img/recipes/tuna.jpg', servings:1,
+    macros:{kcal:520,p:38,c:65,f:10}, adds:['tinned tuna','rice','sweetcorn','peas','light mayo'],
+    ingredients:[{qty:130,unit:'g',item:'cooked rice'},{qty:1,unit:'tin',item:'tuna (drained)'},{qty:60,unit:'g',item:'sweetcorn'},{qty:60,unit:'g',item:'peas'},{qty:15,unit:'g',item:'light mayo'}],
+    steps:['Mix tuna with veg and mayo.','Serve over hot rice.']},
+
+  // Batch / budget plant-based
+  {k:'lentil-pot', name:'One-Pot Lentil Stew', cuisine:'Global', tags:['budget','vegan','gluten-free','batch','simple'], allergens:[], img:'img/recipes/lentils.jpg', servings:4,
+    macros:{kcal:520,p:26,c:80,f:10}, adds:['red lentils','tinned tomatoes','carrots','onion','stock'],
+    ingredients:[{qty:300,unit:'g',item:'red lentils'},{qty:2,unit:'tins',item:'chopped tomatoes'},{qty:2,unit:'',item:'carrots (diced)'},{qty:1,unit:'',item:'onion (diced)'},{qty:800,unit:'ml',item:'veg stock'}],
+    steps:['Soften onion/carrots.','Add lentils, tomatoes, stock.','Simmer 20–25 min until soft.']},
+
+  // World flavours
+  {k:'chana', name:'Chana Masala', cuisine:'Indian', tags:['vegan','budget','world','gluten-free','batch'], allergens:[], img:'img/recipes/chana.jpg', servings:4,
+    macros:{kcal:430,p:18,c:65,f:10}, adds:['chickpeas','onion','garlic','ginger','tomatoes','spices'],
+    ingredients:[{qty:2,unit:'tins',item:'chickpeas (drained)'},{qty:1,unit:'',item:'onion (diced)'},{qty:2,unit:'cloves',item:'garlic (minced)'},{qty:1,unit:'tbsp',item:'ginger (grated)'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'tbsp',item:'garam masala'}],
+    steps:['Sauté onion/garlic/ginger.','Add spices, tomatoes, chickpeas.','Simmer 15–20 min.']},
+  {k:'teriyaki', name:'Teriyaki Chicken Rice Bowl', cuisine:'Japanese', tags:['high-protein','world','quick'], allergens:['soy','gluten*','sesame*'], img:'img/recipes/teriyaki.jpg', servings:2,
+    macros:{kcal:560,p:38,c:70,f:12}, adds:['chicken thigh','soy sauce','mirin/sugar','rice','spring onion'],
+    ingredients:[{qty:300,unit:'g',item:'chicken thigh (chunks)'},{qty:3,unit:'tbsp',item:'soy sauce'},{qty:2,unit:'tbsp',item:'mirin or 1 tbsp sugar'},{qty:260,unit:'g',item:'cooked rice'},{qty:2,unit:'',item:'spring onions'}],
+    steps:['Brown chicken.','Add soy + mirin; reduce to glaze.','Serve on rice with spring onion.']},
+  {k:'shakshuka', name:'Shakshuka', cuisine:'Middle Eastern', tags:['veg','world','gluten-free','simple'], allergens:['egg'], img:'img/recipes/shakshuka.jpg', servings:3,
+    macros:{kcal:360,p:20,c:28,f:17}, adds:['eggs','peppers','onion','garlic','tomatoes','spices'],
+    ingredients:[{qty:1,unit:'',item:'onion (sliced)'},{qty:2,unit:'',item:'peppers (sliced)'},{qty:2,unit:'cloves',item:'garlic'},{qty:1,unit:'tin',item:'tomatoes'},{qty:4,unit:'',item:'eggs'},{qty:1,unit:'tsp',item:'paprika/cumin'}],
+    steps:['Soften veg with spices.','Add tomatoes; simmer.','Make wells; crack eggs; cover until set.']},
+  {k:'thai-green', name:'Thai Green Curry (Chicken or Tofu)', cuisine:'Thai', tags:['world','gluten-free'], allergens:['soy*','fish*'], img:'img/recipes/thaigreen.jpg', servings:4,
+    macros:{kcal:520,p:32,c:55,f:18}, adds:['green curry paste','coconut milk','chicken or tofu','veg','rice'],
+    ingredients:[{qty:2,unit:'tbsp',item:'green curry paste'},{qty:1,unit:'tin',item:'coconut milk'},{qty:400,unit:'g',item:'chicken breast or firm tofu'},{qty:400,unit:'g',item:'mixed veg'},{qty:600,unit:'g',item:'cooked rice'}],
+    steps:['Fry paste; add protein & veg.','Pour coconut milk; simmer 10 min.','Serve with rice.']},
+  {k:'pasta-peas', name:'Pea & Pesto Pasta', cuisine:'Italian', tags:['veg','quick','world','simple'], allergens:['gluten (pasta)','nuts*','dairy*'], img:'img/recipes/pasta.jpg', servings:2,
+    macros:{kcal:520,p:22,c:78,f:12}, adds:['pasta','peas','pesto','parmesan'],
+    ingredients:[{qty:180,unit:'g',item:'pasta'},{qty:150,unit:'g',item:'peas'},{qty:2,unit:'tbsp',item:'pesto'},{qty:20,unit:'g',item:'parmesan'}],
+    steps:['Boil pasta; add peas last 2–3 min.','Drain; stir through pesto & cheese.']},
+  {k:'mex-bowl', name:'Mexican Bean Burrito Bowl', cuisine:'Mexican', tags:['vegan','world','budget','gluten-free','batch'], allergens:[], img:'img/recipes/mexbowl.jpg', servings:4,
+    macros:{kcal:540,p:22,c:85,f:12}, adds:['rice','black beans','sweetcorn','tomatoes','spices'],
+    ingredients:[{qty:600,unit:'g',item:'cooked rice'},{qty:2,unit:'tins',item:'black beans'},{qty:1,unit:'tin',item:'sweetcorn'},{qty:2,unit:'',item:'tomatoes (diced)'},{qty:2,unit:'tsp',item:'chilli/cumin'}],
+    steps:['Warm beans with spices.','Serve over rice with toppings.']},
+  {k:'jerk', name:'Jerk Chicken & Rice', cuisine:'Caribbean', tags:['world','high-protein'], allergens:[], img:'img/recipes/jerk.jpg', servings:3,
+    macros:{kcal:600,p:42,c:65,f:16}, adds:['chicken','jerk seasoning','rice','peas (kidney beans)','spring onion'],
+    ingredients:[{qty:500,unit:'g',item:'chicken thigh'},{qty:2,unit:'tbsp',item:'jerk seasoning'},{qty:450,unit:'g',item:'cooked rice'},{qty:1,unit:'tin',item:'kidney beans'},{qty:3,unit:'',item:'spring onions'}],
+    steps:['Marinate chicken; roast or grill.','Fold beans & onion through rice; serve.']},
+  {k:'bibimbap', name:'Bibimbap (beef or tofu)', cuisine:'Korean', tags:['world','high-protein'], allergens:['soy','sesame','gluten*'], img:'img/recipes/bibimbap.jpg', servings:2,
+    macros:{kcal:620,p:35,c:82,f:16}, adds:['rice','beef mince or tofu','carrot','spinach','egg','soy','sesame'],
+    ingredients:[{qty:260,unit:'g',item:'cooked rice'},{qty:250,unit:'g',item:'beef mince or tofu'},{qty:1,unit:'',item:'carrot (matchsticks)'},{qty:60,unit:'g',item:'spinach'},{qty:2,unit:'',item:'eggs'},{qty:2,unit:'tbsp',item:'soy'}],
+    steps:['Cook rice.','Stir-fry toppings separately.','Assemble bowl; top with egg.']},
+  {k:'menemen', name:'Menemen (Turkish eggs & peppers)', cuisine:'Turkish', tags:['veg','world','quick','simple'], allergens:['egg'], img:'img/recipes/menemen.jpg', servings:2,
+    macros:{kcal:380,p:22,c:18,f:24}, adds:['eggs','tomatoes','peppers','onion','olive oil'],
+    ingredients:[{qty:1,unit:'',item:'onion (sliced)'},{qty:2,unit:'',item:'peppers (sliced)'},{qty:2,unit:'',item:'tomatoes (diced)'},{qty:4,unit:'',item:'eggs'},{qty:1,unit:'tbsp',item:'olive oil'}],
+    steps:['Soften onion/peppers in oil.','Add tomatoes; reduce.','Stir in beaten eggs till just set.']},
+
+  // Protein-forward mains
+  {k:'chilli-batch', name:'Turkey (or Bean) Chilli', cuisine:'US', tags:['high-protein','batch','gluten-free','world'], allergens:[], img:'img/recipes/chilli.jpg', servings:4,
+    macros:{kcal:540,p:40,c:55,f:14}, adds:['turkey mince or beans','kidney beans','tomatoes','spices','onion'],
+    ingredients:[{qty:500,unit:'g',item:'turkey mince (or beans for vegan)'},{qty:1,unit:'tin',item:'kidney beans'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'',item:'onion (diced)'},{qty:2,unit:'tsp',item:'chilli powder'}],
+    steps:['Brown mince with onion.','Add tomatoes/beans/spices; simmer 20 min.']},
+  {k:'fish-pot', name:'Smoked Fish & Potato Bake', cuisine:'UK', tags:['gluten-free','simple'], allergens:['fish','dairy'], img:'img/recipes/fish.jpg', servings:3,
+    macros:{kcal:560,p:36,c:55,f:18}, adds:['smoked fish','potatoes','leeks','milk','cheese'],
+    ingredients:[{qty:400,unit:'g',item:'smoked fish (flaked)'},{qty:600,unit:'g',item:'potatoes (sliced)'},{qty:1,unit:'',item:'leek (sliced)'},{qty:250,unit:'ml',item:'milk'},{qty:40,unit:'g',item:'cheese'}],
+    steps:['Parboil potatoes.','Layer with fish/leeks; add milk/cheese.','Bake till tender & golden.']},
+  {k:'pho-quick', name:'Quick Pho (cheat stock)', cuisine:'Vietnamese', tags:['world','gluten-free','simple'], allergens:['soy*'], img:'img/recipes/pho.jpg', servings:2,
+    macros:{kcal:500,p:28,c:80,f:10}, adds:['rice noodles','stock','five-spice','beef or tofu','herbs'],
+    ingredients:[{qty:160,unit:'g',item:'rice noodles'},{qty:800,unit:'ml',item:'good stock'},{qty:1,unit:'tsp',item:'five-spice'},{qty:200,unit:'g',item:'beef slices or tofu'},{qty:1,unit:'handful',item:'herbs/bean sprouts'}],
+    steps:['Simmer stock with spice.','Poach protein; add noodles.','Top with herbs.']},
+  {k:'tagine', name:'Moroccan Chickpea Tagine', cuisine:'Moroccan', tags:['vegan','world','batch','gluten-free'], allergens:[], img:'img/recipes/tagine.jpg', servings:4,
+    macros:{kcal:480,p:20,c:75,f:10}, adds:['chickpeas','apricots','carrot','onion','spices','couscous*'],
+    ingredients:[{qty:2,unit:'tins',item:'chickpeas'},{qty:80,unit:'g',item:'dried apricots (chopped)'},{qty:2,unit:'',item:'carrots (chunks)'},{qty:1,unit:'',item:'onion'},{qty:2,unit:'tsp',item:'ras el hanout'}],
+    steps:['Sauté onion/spices.','Add veg/fruit/legumes + water; simmer 20–25 min.']},
+  {k:'tortilla', name:'Spanish Tortilla', cuisine:'Spanish', tags:['veg','world','simple','gluten-free'], allergens:['egg'], img:'img/recipes/tortilla.jpg', servings:4,
+    macros:{kcal:420,p:20,c:35,f:20}, adds:['eggs','potatoes','onion','olive oil'],
+    ingredients:[{qty:8,unit:'',item:'eggs'},{qty:500,unit:'g',item:'potatoes (thin sliced)'},{qty:1,unit:'',item:'onion (sliced)'},{qty:2,unit:'tbsp',item:'olive oil'}],
+    steps:['Pan-cook potatoes/onion in oil.','Add beaten eggs; cook gently; flip or grill to set.']},
+  {k:'greek-salad', name:'Greek Salad + Beans', cuisine:'Greek', tags:['veg','gluten-free','quick','world','simple'], allergens:['dairy'], img:'img/recipes/greek.jpg', servings:2,
+    macros:{kcal:420,p:18,c:30,f:24}, adds:['tomatoes','cucumber','olives','feta','mixed beans'],
+    ingredients:[{qty:3,unit:'',item:'tomatoes'},{qty:1,unit:'',item:'cucumber'},{qty:60,unit:'g',item:'olives'},{qty:80,unit:'g',item:'feta'},{qty:1,unit:'tin',item:'mixed beans (drained)'}],
+    steps:['Chop veg; toss with olives/beans.','Crumble feta on top.']},
+  {k:'wrap-chicken', name:'Chicken, Hummus & Crunch Wrap', cuisine:'Global', tags:['high-protein','quick','simple'], allergens:['gluten (wrap)','sesame'], img:'img/recipes/wrap.jpg', servings:1,
+    macros:{kcal:520,p:35,c:50,f:18}, adds:['wrap','chicken','hummus','lettuce','tomato'],
+    ingredients:[{qty:1,unit:'',item:'wrap'},{qty:120,unit:'g',item:'cooked chicken'},{qty:40,unit:'g',item:'hummus'},{qty:2,unit:'leaves',item:'lettuce'},{qty:2,unit:'slices',item:'tomato'}],
+    steps:['Spread hummus, add chicken & veg, wrap tightly.']}
 ];
 
 const budgetSwaps = {
@@ -406,26 +513,33 @@ const budgetSwaps = {
   'tuna':'mackerel (tinned)',
   'rice':'oats or potatoes',
   'parmesan':'cheddar',
-  'pesto':'olive oil + herbs'
+  'pesto':'olive oil + herbs',
+  'chicken thigh':'chicken drumsticks or beans',
+  'beef mince':'turkey mince or lentils'
 };
 
+/* ====== RECIPES UI ====== */
 function recipeCard(r){
   const tags = r.tags.map(t=>`<span class="badge">${t}</span>`).join('');
   const m = r.macros;
+  const allerg = r.allergens.length ? `Allergens: ${r.allergens.join(', ')} (check labels)` : 'Allergens: none listed (check labels)';
   return `
   <article class="card" data-tags="${r.tags.join(',')}">
     <figure><img src="${r.img}" alt="${r.name}" onerror="this.style.display='none'"></figure>
     <div class="body">
       <h3>${r.name}</h3>
-      <div>${tags}</div>
+      <div>${tags} <span class="badge">${r.cuisine}</span></div>
       <div class="macros">
         <span>⚡ ${m.kcal} kcal</span>
         <span>🥩 ${m.p}g</span>
         <span>🍚 ${m.c}g</span>
         <span>🫒 ${m.f}g</span>
       </div>
-      <div class="macros" style="justify-content:flex-end">
-        <button class="btn" data-add="${r.k}" style="padding:.4rem .6rem;border-radius:8px">＋ Add</button>
+      <div class="allergens">${allerg}</div>
+      <div class="actions">
+        <button class="btn" data-planner="${r.k}">＋ Planner</button>
+        <button class="btn" data-log="${r.k}">＋ Log 1 serving</button>
+        <button class="btn" data-print="${r.k}">🖨 Print card</button>
       </div>
     </div>
   </article>`;
@@ -436,13 +550,10 @@ function renderRecipes(){
   const active = [...document.querySelectorAll('.filters .tag.active')].map(x=>x.dataset.tag);
   const list = RECIPES.filter(r => active.length===0 || active.every(t=>r.tags.includes(t)));
   grid.innerHTML = list.map(recipeCard).join('');
-  // Wire up Add buttons
-  grid.querySelectorAll('[data-add]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const k = btn.getAttribute('data-add');
-      openAddDialog(k);
-    });
-  });
+
+  grid.querySelectorAll('[data-planner]').forEach(b=>b.addEventListener('click', ()=> addToPlanner(b.getAttribute('data-planner')) ));
+  grid.querySelectorAll('[data-log]').forEach(b=>b.addEventListener('click', ()=> logRecipeServing(b.getAttribute('data-log'), 1) ));
+  grid.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=> printRecipe(b.getAttribute('data-print')) ));
 }
 document.getElementById('recipeFilters').addEventListener('click', e=>{
   if(!e.target.classList.contains('tag')) return;
@@ -450,117 +561,239 @@ document.getElementById('recipeFilters').addEventListener('click', e=>{
   renderRecipes();
 });
 
-/* ===== Planner ===== */
+/* ====== PLANNER ====== */
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const MEALS = ['Breakfast','Lunch','Dinner','Snacks'];
 const planKey = 'fff-plan-week';
 
+function loadPlan(){
+  try{ const raw = localStorage.getItem(planKey); if(raw) return JSON.parse(raw); }catch(e){}
+  const blank = {}; DAYS.forEach(d=>{ blank[d]={}; MEALS.forEach(m=>blank[d][m]=[]); }); return blank;
+}
+function savePlan(p){ localStorage.setItem(planKey, JSON.stringify(p)); }
 function renderPlanner(){
   const body = document.getElementById('planBody');
   const plan = loadPlan();
-  body.innerHTML = DAYS.map((d,di)=>{
-    const tds = MEALS.map((m,mi)=>{
-      const items = (plan[d] && plan[d][m]) ? plan[d][m] : [];
+  body.innerHTML = DAYS.map(d=>{
+    const tds = MEALS.map(m=>{
+      const items = plan[d][m]||[];
       const html = items.map((it,idx)=>`
-        <div class="item">
-          <span>${it.name}</span>
+        <div class="item"><span>${it.name}</span>
           <button title="Remove" data-del="${d}|${m}|${idx}">✕</button>
         </div>`).join('');
-      return `<td><div class="slot" data-slot="${d}|${m}">${html}</div></td>`;
+      return `<td><div class="slot">${html}</div></td>`;
     }).join('');
     return `<tr><th>${d}</th>${tds}</tr>`;
   }).join('');
-
   body.querySelectorAll('[data-del]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const [d,m,i] = btn.getAttribute('data-del').split('|');
       const plan = loadPlan();
-      plan[d][m].splice(parseInt(i,10),1);
+      plan[d][m].splice(+i,1);
       savePlan(plan); renderPlanner();
     });
   });
 }
-
-function loadPlan(){
-  try{
-    const raw = localStorage.getItem(planKey);
-    if(raw){ return JSON.parse(raw); }
-  }catch(e){}
-  const empty = {};
-  DAYS.forEach(d=>{ empty[d] = {}; MEALS.forEach(m=> empty[d][m]=[] ); });
-  return empty;
-}
-function savePlan(p){ localStorage.setItem(planKey, JSON.stringify(p)); }
-
-/* Add dialog (simple prompt) */
-function openAddDialog(recipeKey){
-  const r = RECIPES.find(x=>x.k===recipeKey);
-  if(!r) return;
+function addToPlanner(k){
+  const r = RECIPES.find(x=>x.k===k); if(!r) return;
   const day = prompt('Add to which day? (Mon/Tue/Wed/Thu/Fri/Sat/Sun)','Mon');
   if(!DAYS.includes(day)) return;
   const meal = prompt('Meal slot? (Breakfast/Lunch/Dinner/Snacks)','Dinner');
   if(!MEALS.includes(meal)) return;
 
-  const plan = loadPlan();
-  if(!plan[day]) plan[day]={};
-  if(!plan[day][meal]) plan[day][meal]=[];
+  const plan = loadPlan(); plan[day][meal].push({ref:r.k, name:r.name});
+  savePlan(plan); renderPlanner();
+}
+document.getElementById('clearPlan').addEventListener('click', ()=>{ if(confirm('Clear the whole week?')){ localStorage.removeItem(planKey); renderPlanner(); }});
+function aggregateList(){
+  const plan = loadPlan(); const items = [];
+  DAYS.forEach(d=>MEALS.forEach(m=>{
+    (plan[d][m]||[]).forEach(it=>{
+      const r = RECIPES.find(x=>x.k===it.ref); if(!r) return;
+      let adds = [...(r.adds||[])];
+      if(budgetMode){
+        adds = adds.map(x=>{
+          const key = Object.keys(budgetSwaps).find(k=>x.toLowerCase().includes(k));
+          return key ? (budgetSwaps[key] + ' (swap)') : x;
+        });
+      }
+      items.push(...adds);
+    });
+  }));
+  // naive dedupe
+  return [...new Set(items.map(s=>s.toLowerCase()))];
+}
+document.getElementById('printList').addEventListener('click', ()=>{
+  const items = aggregateList();
+  const w = window.open('','PRINT','width=600,height=700');
+  if(!w) return;
+  w.document.write('<h3>Shopping List</h3><ul>'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul>');
+  w.document.close(); w.focus(); w.print();
+});
+document.getElementById('csvList').addEventListener('click', ()=>{
+  const items = aggregateList();
+  const csv = 'item\n' + items.map(x=>'"'+x.replace(/"/g,'""')+'"').join('\n');
+  const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='shopping-list.csv'; a.click(); URL.revokeObjectURL(url);
+});
 
-  // Budget swaps (note only affects shopping list display, not macros)
-  let adds = [...r.adds];
+/* ====== FOOD LOG ====== */
+const logKey = 'fff-foodlog';
+const dateInput = document.getElementById('logDate');
+dateInput.valueAsNumber = Date.now() - (new Date()).getTimezoneOffset()*60000; // today
+function getLogStore(){
+  try{ const raw=localStorage.getItem(logKey); if(raw) return JSON.parse(raw); }catch(e){}
+  return {};
+}
+function saveLogStore(s){ localStorage.setItem(logKey, JSON.stringify(s)); }
+
+function logFor(dateStr){ const s=getLogStore(); return s[dateStr] || {items:[]}; }
+function saveLog(dateStr, data){ const s=getLogStore(); s[dateStr]=data; saveLogStore(s); }
+
+function logRecipeServing(k, servings){
+  const r = RECIPES.find(x=>x.k===k); if(!r) return;
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  const m = r.macros, s = servings||1;
+  data.items.push({type:'recipe', name:r.name, servings:s, kcal:m.kcal*s, p:m.p*s, c:m.c*s, f:m.f*s});
+  saveLog(ds, data); renderLog(); updateLogBars();
+}
+function addCustomItem(){
+  const name = prompt('Food name (e.g., Apple 150g or “Custom shake”)','Custom');
+  if(!name) return;
+  const kcal = +prompt('Calories (kcal per entry):','150')||0;
+  const p = +prompt('Protein (g):','2')||0;
+  const c = +prompt('Carbs (g):','32')||0;
+  const f = +prompt('Fats (g):','1')||0;
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  data.items.push({type:'custom', name, servings:1, kcal, p, c, f});
+  saveLog(ds, data); renderLog(); updateLogBars();
+}
+document.getElementById('addCustom').addEventListener('click', addCustomItem);
+document.getElementById('clearLog').addEventListener('click', ()=>{
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  if(confirm('Clear all logged items for '+ds+'?')){ saveLog(ds,{items:[]}); renderLog(); updateLogBars(); }
+});
+document.getElementById('exportLog').addEventListener('click', ()=>{
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  const csv = 'name,servings,kcal,protein,carbs,fats\n' + data.items.map(it=>
+    [it.name,it.servings,it.kcal,it.p,it.c,it.f].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')
+  ).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='foodlog-'+ds+'.csv'; a.click(); URL.revokeObjectURL(url);
+});
+dateInput.addEventListener('change', ()=>{ renderLog(); updateLogBars(); });
+
+function renderLog(){
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  const box = document.getElementById('logItems');
+  if(!data.items.length){ box.innerHTML='<p class="note">No items logged yet. Use “＋ Log 1 serving” on a recipe or add a custom item.</p>'; return; }
+  box.innerHTML = data.items.map((it,i)=>`
+    <div class="slot item">
+      <div><strong>${it.name}</strong> — ${it.kcal} kcal · ${it.p}P / ${it.c}C / ${it.f}F</div>
+      <button title="Remove" data-del="${i}">✕</button>
+    </div>
+  `).join('');
+  box.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = +btn.getAttribute('data-del'); const data = logFor(ds);
+      data.items.splice(idx,1); saveLog(ds,data); renderLog(); updateLogBars();
+    });
+  });
+}
+function sumDay(){
+  const ds = dateInput.value || new Date().toISOString().slice(0,10);
+  const data = logFor(ds);
+  return data.items.reduce((a,x)=>({kcal:a.kcal+x.kcal,p:a.p+x.p,c:a.c+x.c,f:a.f+x.f}),{kcal:0,p:0,c:0,f:0});
+}
+function pct(a,b){ return b? Math.max(0, Math.min(100, Math.round(100*a/b))) : 0; }
+function setBar(id, v){ const el=document.getElementById(id); if(el) el.style.width = v+'%'; }
+function updateLogBars(){
+  const t = targets; const s = sumDay();
+  document.getElementById('txCal').textContent = `${s.kcal} / ${t.cal||0}`;
+  document.getElementById('txProt').textContent= `${s.p} / ${t.p||0}g`;
+  document.getElementById('txCarb').textContent= `${s.c} / ${t.c||0}g`;
+  document.getElementById('txFat').textContent = `${s.f} / ${t.f||0}g`;
+  setBar('pbCal', pct(s.kcal, t.cal||0));
+  setBar('pbProt',pct(s.p, t.p||0));
+  setBar('pbCarb',pct(s.c, t.c||0));
+  setBar('pbFat', pct(s.f, t.f||0));
+}
+
+/* ====== PRINT RECIPE ====== */
+function printRecipe(k){
+  const r = RECIPES.find(x=>x.k===k); if(!r) return;
+  const s = +prompt('Servings for print (default '+r.servings+'):', r.servings) || r.servings;
+  const scale = s / r.servings;
+  const fmtQty = v => {
+    if(typeof v!=='number') return v;
+    const n = Math.round(v*10)/10;
+    return (n % 1 === 0)? n.toString(): n.toFixed(1);
+  };
+  let adds = r.adds || [];
   if(budgetMode){
     adds = adds.map(x=>{
       const key = Object.keys(budgetSwaps).find(k=>x.toLowerCase().includes(k));
       return key ? (budgetSwaps[key] + ' (swap)') : x;
     });
   }
-
-  plan[day][meal].push({ref:r.k, name:r.name, adds:adds});
-  savePlan(plan); renderPlanner();
-}
-
-document.getElementById('clearPlan').addEventListener('click', ()=>{
-  if(confirm('Clear the whole week?')){ localStorage.removeItem(planKey); renderPlanner(); }
-});
-
-/* Shopping list */
-function aggregateList(){
-  const plan = loadPlan();
-  const map = new Map();
-  DAYS.forEach(d=>MEALS.forEach(m=>{
-    (plan[d][m]||[]).forEach(it=>{
-      (it.adds||[]).forEach(a=>{
-        const key = a.toLowerCase();
-        map.set(key, (map.get(key)||0) + 1); // naive count
-      });
-    });
-  }));
-  return [...map.keys()];
-}
-
-document.getElementById('printList').addEventListener('click', ()=>{
-  const items = aggregateList();
-  const win = window.open('', 'PRINT', 'height=600,width=600');
+  const win = window.open('','PRINT','width=720,height=900');
   if(!win) return;
-  win.document.write('<html><head><title>Shopping List</title></head><body>');
-  win.document.write('<h3>Shopping List</h3><ul>');
-  items.forEach(i=>win.document.write('<li>'+i+'</li>'));
-  win.document.write('</ul></body></html>');
-  win.document.close(); win.focus(); win.print(); win.close();
+  win.document.write(`
+    <h2>${r.name}</h2>
+    <p><strong>Cuisine:</strong> ${r.cuisine} · <strong>Servings:</strong> ${s}</p>
+    <p><strong>Macros/serving (base):</strong> ${r.macros.kcal} kcal — ${r.macros.p}P / ${r.macros.c}C / ${r.macros.f}F</p>
+    <p><strong>Allergens:</strong> ${r.allergens.length?r.allergens.join(', '):'none listed'} (check labels & cross-contamination)</p>
+    <h3>Ingredients</h3>
+    <ul>
+      ${r.ingredients.map(it=>`<li>${fmtQty(it.qty*scale)} ${it.unit} ${it.item}</li>`).join('')}
+    </ul>
+    <h3>Method</h3>
+    <ol>${(r.steps||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
+    <h3>Shopping items</h3>
+    <ul>${adds.map(a=>`<li>${a}</li>`).join('')}</ul>
+    <hr>
+    <p style="font-size:0.9rem;color:#555">
+      Nutrition values are estimates. Always adjust for your ingredients and tastes. Allergens vary by brand; check labels.
+    </p>
+  `);
+  win.document.close(); win.focus(); win.print();
+}
+
+/* ====== FILTERS + RENDER ====== */
+document.getElementById('recipeFilters').addEventListener('keydown', e=>{
+  if(e.key==='Enter' && e.target.classList.contains('tag')){ e.target.click(); }
 });
 
-document.getElementById('csvList').addEventListener('click', ()=>{
-  const items = aggregateList();
-  const csv = 'item\n' + items.map(x=>'"'+x.replace(/"/g,'""')+'"').join('\n');
-  const blob = new Blob([csv], {type:'text/csv'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'shopping-list.csv'; a.click();
-  URL.revokeObjectURL(url);
-});
+/* ====== LOAD targets if present ====== */
+(function boot(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('fff-targets')||'null');
+    if(saved && saved.targets){
+      goal = saved.goal || goal;
+      targets = saved.targets;
+      document.querySelectorAll('[data-goal]').forEach(x=>{
+        x.setAttribute('aria-pressed', x.dataset.goal===goal ? 'true':'false');
+      });
+      document.getElementById('outGoal').textContent = goal[0].toUpperCase()+goal.slice(1);
+      document.getElementById('outCals').textContent = targets.cal+' kcal / day';
+      document.getElementById('outP').textContent = targets.p+' g';
+      document.getElementById('outC').textContent = targets.c+' g';
+      document.getElementById('outF').textContent = targets.f+' g';
+      lastCalc=true;
+    }
+  }catch(e){}
+  renderRecipes(); renderPlanner(); renderLog(); updateLogBars();
+})();
 
-/* Boot */
-renderRecipes();
-renderPlanner();
+/* FILTER CLICK HANDLER defined earlier; add also base toggle for filters */
+document.getElementById('recipeFilters').addEventListener('click', e=>{
+  if(!e.target.classList.contains('tag')) return;
+  e.target.classList.toggle('active'); renderRecipes();
+});
 </script>
 </body>
 </html>

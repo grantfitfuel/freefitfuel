@@ -79,6 +79,32 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
 .accent{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{max-width:70ch;color:#c8c8d2;font-size:1.05rem}
 
+/* Endurance hero: one reliable crop for all pages that use .hero-mini */
+.hero-mini figure > img{
+  width:100%;
+  height:60vh;          /* desktop/tablet default */
+  min-height:420px;
+  object-fit:cover;
+  object-position:center 12%;  /* shift up so faces are in-frame */
+  filter:brightness(.88) saturate(1.05);
+}
+
+@media (max-width:767px){
+  .hero-mini figure > img{
+    height:50vh;        /* mobile */
+    min-height:320px;
+    object-position:center 10%;
+  }
+}
+
+@media (min-width:1200px){
+  .hero-mini figure > img{
+    height:65vh;        /* large desktops */
+    min-height:500px;
+    object-position:center 12%;
+  }
+}
+
 /* Endurance hero responsive sizing */
 .hero-mini img {
   width: 100%;

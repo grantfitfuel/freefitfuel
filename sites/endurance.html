@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Endurance – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
@@ -15,10 +15,12 @@
     /* HERO */
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     .hero-mini figure{margin:0;position:relative}
+    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
     .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
     .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
     .hero-mini h1{margin:0 0 .35rem}
-    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+    .hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
+    .hero-mini .cta-row{display:flex;gap:.6rem;flex-wrap:wrap}
 
     /* Tabs / filters */
     .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0 1.1rem}
@@ -47,8 +49,6 @@
     .plan th{background:rgba(255,255,255,.06)}
     .badges{display:flex;flex-wrap:wrap;gap:.35rem;margin:.35rem 0}
     .badge{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem}
-
-    /* Pace/Calc widgets */
     .calc{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0}
     .calc input,.calc select{background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:.45rem .55rem}
     .calc .btn{padding:.55rem .8rem;border-radius:8px;background:var(--accent);color:#111;border:0;font-weight:800;cursor:pointer}
@@ -65,15 +65,16 @@
       <span></span><span></span><span></span>
     </button>
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
-  <a href="index.html">Home</a>
-  <a href="ideas.html">Ideas</a>
-  <a href="guides.html">Guides</a>
-  <a href="workouts.html">Workouts</a>
-  <a href="endurance.html">Endurance</a>
-  <a href="nutrition.html">Nutrition</a>
-  <a href="wellbeing.html">Wellbeing</a>
-  <a href="contact.html">Contact</a>
-</nav>
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="endurance.html" aria-current="page">Endurance</a>
+      <a href="nutrition.html">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+      <a href="tracker.html">Tracker</a>
+    </nav>
   </div>
 </header>
 
@@ -86,6 +87,10 @@
   <div class="content wrap">
     <h1><span class="accent">Endurance Training</span></h1>
     <p>From walking to marathon, cycling to swimming — build stamina, recover well, and go the distance.</p>
+    <div class="cta-row">
+      <a class="btn" href="tracker.html">Start Live Tracker</a>
+      <a class="btn" href="#tools">Pace & Time Tools</a>
+    </div>
   </div>
 </header>
 
@@ -227,6 +232,7 @@
         </label>
         <label>Time (hh:mm:ss) <input id="time" placeholder="00:30:00"></label>
         <button class="btn" id="calc">Calculate</button>
+        <a class="btn" href="tracker.html" style="margin-left:auto">Start Live Tracker</a>
       </div>
       <p class="out" id="paceOut">Pace: —</p>
     </article>
@@ -283,11 +289,10 @@ document.querySelectorAll('[data-dist]').forEach(b=>{
   });
 });
 
-/* ===== Plans ===== */
-
-/* Walking: 8-week template, auto scales by level */
+/* ===== Plans (same as before) ===== */
+/* Walking */
 const WALK = {
-  beginner:  [
+  beginner:[
     ['Week','Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
     ['1','Rest','6k easy','Rest','6k easy','Rest','8k easy','8k easy'],
     ['2','Rest','6.5k easy','Rest','6.5k easy','Rest','9k easy','9k easy'],
@@ -322,7 +327,7 @@ const WALK = {
   ]
 };
 
-/* Running templates (per distance and level) — compact but useful */
+/* Running */
 const RUN = {
   '5k': {
     title:'5K Plan', meta:'3 runs/week · easy + intervals + long easy',
@@ -470,7 +475,7 @@ const RUN = {
   }
 };
 
-/* Swimming: 2–3 sessions/week */
+/* Swimming */
 const SWIM = {
   beginner:[
     ['Week','Session A','Session B','Session C'],
@@ -507,7 +512,7 @@ const SWIM = {
   ]
 };
 
-/* Cycling: 3 rides/week */
+/* Cycling */
 const CYCLE = {
   beginner:[
     ['Week','Endurance','Cadence/Intervals','Long'],
@@ -544,25 +549,22 @@ const CYCLE = {
   ]
 };
 
-/* ===== Render helpers ===== */
+/* Helpers */
 function renderTable(el, rows){
   if(!el || !rows || !rows.length) return;
   el.innerHTML = rows.map((r,i)=>`<tr>${r.map((c,j)=> i===0||j===0 ? `<th>${c}</th>` : `<td>${c}</td>`).join('')}</tr>`).join('');
 }
 
-/* ===== Renderers ===== */
+/* Renderers */
 function renderWalk(){ renderTable(document.getElementById('walk-table'), WALK[level]); }
-
 function renderRun(){
   const cfg = RUN[runDist];
   document.getElementById('run-title').textContent = cfg.title;
   document.getElementById('run-meta').textContent = cfg.meta;
   renderTable(document.getElementById('run-table'), cfg[level]);
 }
-
 function renderSwim(){ renderTable(document.getElementById('swim-table'), SWIM[level]); }
 function renderCycle(){ renderTable(document.getElementById('cycle-table'), CYCLE[level]); }
-
 function renderAll(){ renderWalk(); renderRun(); renderSwim(); renderCycle(); }
 
 /* Pace calc */

@@ -239,5 +239,466 @@
       <p class="note">Tip: log meals first, then tweak snacks to hit your targets.</p>
     </div>
   </section>
-  
-  
+    <!-- Hydration & fibre -->
+  <section class="section">
+    <h2>Hydration & Fibre</h2>
+    <div class="grid cols-2">
+      <article class="card" style="padding:.8rem">
+        <h3>Hydration helper</h3>
+        <div class="calc">
+          <div class="row">
+            <label>Body weight (kg) <input id="h-kg" type="number" min="35" max="250" value="75"></label>
+            <label>Extra per hour training (ml) <input id="h-train" type="number" min="0" step="50" value="400"></label>
+          </div>
+          <div class="row">
+            <button class="btn" id="h-calc">Calculate</button>
+            <span class="out" id="h-out">— ml / day</span>
+          </div>
+        </div>
+        <p class="note">Rule of thumb: ~30–35 ml/kg + ~300–600 ml per training hour. Adjust to heat & thirst.</p>
+      </article>
+      <article class="card" style="padding:.8rem">
+        <h3>Fibre targets</h3>
+        <p>Aim 25–35 g/day from foods. Increase gradually with fluids to avoid gut discomfort.</p>
+        <ul><li>Oats/porridge, wholegrains</li><li>Beans/lentils/chickpeas</li><li>Fruit (berries), veg, nuts/seeds</li></ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>The content on FreeFitFuel is for general nutrition education only and isn’t a substitute for personalised medical advice. If you have a medical condition (e.g., diabetes, kidney disease, IBS), allergies, or take medications, speak to a qualified professional before making major changes.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- === Scripts (single tag; keep all parts below in order) === -->
+<script>
+/* Header burger */
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.hamburger');
+  const nav = document.querySelector('.main-nav');
+  if(btn && nav){
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+});
+
+/* ====== STATE ====== */
+let goal = 'maintain';
+let budgetMode = false;
+
+/* Goal buttons */
+document.querySelectorAll('[data-goal]').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    goal = b.dataset.goal;
+    document.getElementById('outGoal').textContent = goal[0].toUpperCase()+goal.slice(1);
+    if(window.lastCalc){ doCalc(); updateLogBars(); }
+  });
+});
+
+/* Budget toggle */
+document.getElementById('budget').addEventListener('change', e=>{ budgetMode = e.target.checked; });
+
+/* ====== CALCULATOR ====== */
+const bfWrap = document.getElementById('bfWrap');
+document.getElementById('knowbf').addEventListener('change', e=>{
+  bfWrap.classList.toggle('hidden', !e.target.checked);
+});
+
+function mifflin(kg, cm, age, sex){
+  return 10*kg + 6.25*cm - 5*age + (sex==='male'?5:-161);
+}
+function katch(kg, bfPerc){
+  const lbm = kg * (1 - bfPerc/100);
+  return 370 + 21.6 * lbm;
+}
+function clampTargets(cals, bmr){
+  const floor = Math.round(bmr * 1.2);
+  const ceil  = Math.round(bmr + 1000);
+  return Math.max(floor, Math.min(ceil, Math.round(cals)));
+}
+function adjustForGoal(cals){
+  switch(goal){
+    case 'cut': return cals*0.85;
+    case 'build': return cals*1.10;
+    case 'transform': return cals*0.95;
+    default: return cals;
+  }
+}
+function splitCarbFat(remainCals, bias){
+  let fatK = 0.5, carbK = 0.5;
+  if(bias==='lowerCarb'){ fatK = 0.6; carbK = 0.4; }
+  if(bias==='higherCarb'){ fatK = 0.35; carbK = 0.65; }
+  const fat = Math.round((remainCals * fatK) / 9);
+  const carb = Math.round((remainCals * carbK) / 4);
+  return {fat, carb};
+}
+let targets = {cal:0,p:0,c:0,f:0};
+let lastCalc=false;
+
+function doCalc(){
+  const sex = document.getElementById('sex').value;
+  const age = +document.getElementById('age').value||0;
+  const cm  = +document.getElementById('cm').value||0;
+  const kg  = +document.getElementById('kg').value||0;
+  const act = +document.getElementById('act').value||1.55;
+  const pkk = +document.getElementById('pkk').value||1.8;
+  const bias= document.getElementById('carbBias').value;
+  const know= document.getElementById('knowbf').checked;
+  const bf  = +document.getElementById('bf').value||20;
+
+  const bmr = know ? katch(kg,bf) : mifflin(kg,cm,age,sex);
+  const tdee = bmr * act;
+  const pre  = adjustForGoal(tdee);
+  const cal  = clampTargets(pre, bmr);
+
+  const p = Math.round(kg * pkk);
+  const pCals = p*4;
+  const remain = Math.max(0, cal - pCals);
+  const {fat:f, carb:c} = splitCarbFat(remain, bias);
+
+  targets = {cal:Math.round(cal), p, c, f};
+  lastCalc=true; localStorage.setItem('fff-targets', JSON.stringify({goal,targets}));
+
+  document.getElementById('outCals').textContent = targets.cal+' kcal / day';
+  document.getElementById('outP').textContent = targets.p+' g';
+  document.getElementById('outC').textContent = targets.c+' g';
+  document.getElementById('outF').textContent = targets.f+' g';
+  setBar('barP',100); setBar('barC',100); setBar('barF',100);
+  updateLogBars();
+}
+document.getElementById('calcBtn').addEventListener('click', doCalc);
+
+/* Hydration helper */
+document.getElementById('h-calc').addEventListener('click', ()=>{
+  const kg = +document.getElementById('h-kg').value||0;
+  const extra = +document.getElementById('h-train').value||0;
+  const base = kg * 32; // midpoint of 30–35 ml/kg
+  document.getElementById('h-out').textContent = Math.round(base + extra)+' ml / day';
+});
+
+/* ====== Budget swaps (used for shopping list / print) ====== */
+const budgetSwaps = {
+  'greek yoghurt':'plain yoghurt',
+  'mixed seeds':'sunflower seeds',
+  'frozen berries':'seasonal fruit',
+  'tuna':'mackerel (tinned)',
+  'chicken thigh':'chicken drumsticks or beans',
+  'beef mince':'turkey mince or lentils',
+  'parmesan':'cheddar',
+  'pesto':'olive oil + herbs',
+  'rice':'oats or potatoes'
+};
+
+/* ====== Recipes store ====== */
+let RECIPES = [];
+  /* --- Recipes Pack 1 (Breakfasts / Quick & Simple) --- */
+RECIPES = RECIPES.concat([
+  {k:'oats-pro', name:'Protein Oats & Berries', cuisine:'UK', tags:['budget','high-protein','veg','quick','simple'], allergens:['gluten (oats*)','dairy*'], img:'img/recipes/oats.jpg', servings:1,
+    macros:{kcal:420,p:28,c:55,f:10},
+    adds:['oats','milk or alt','protein powder','frozen berries','chia'],
+    ingredients:[{qty:60,unit:'g',item:'oats'},{qty:200,unit:'ml',item:'semi-skimmed milk (or alt)'},{qty:25,unit:'g',item:'whey/plant protein'},{qty:80,unit:'g',item:'frozen berries'},{qty:10,unit:'g',item:'chia seeds'}],
+    steps:['Heat oats with milk.','Stir in protein off heat.','Top with berries and chia.']},
+
+  {k:'overnight-oats', name:'Overnight Oats (PB & Banana)', cuisine:'UK', tags:['budget','veg','quick','simple'], allergens:['gluten (oats*)','peanuts*','dairy*'], img:'img/recipes/overnight-oats.jpg', servings:1,
+    macros:{kcal:420,p:20,c:55,f:14},
+    adds:['oats','milk or alt','peanut butter','banana'],
+    ingredients:[{qty:60,unit:'g',item:'oats'},{qty:180,unit:'ml',item:'milk (or alt)'},{qty:1,unit:'tbsp',item:'peanut butter'},{qty:1,unit:'',item:'banana (sliced)'}],
+    steps:['Combine oats & milk in jar.','Top with PB & banana.','Chill overnight.']},
+
+  {k:'egg-muffins', name:'Veggie Egg Muffins', cuisine:'UK', tags:['high-protein','gluten-free','quick','simple'], allergens:['egg','dairy*'], img:'img/recipes/egg-muffins.jpg', servings:3,
+    macros:{kcal:260,p:22,c:6,f:16},
+    adds:['eggs','mixed veg','cheese*'],
+    ingredients:[{qty:6,unit:'',item:'eggs'},{qty:1,unit:'cup',item:'mixed veg (chopped)'},{qty:30,unit:'g',item:'grated cheese*'}],
+    steps:['Beat eggs; fold veg & cheese.','Bake in muffin tin 15–18 min @180°C.']},
+
+  {k:'yoghurt-bowl', name:'Greek Yoghurt Bowl', cuisine:'Mediterranean', tags:['high-protein','quick','simple'], allergens:['dairy'], img:'img/recipes/yoghurt.jpg', servings:1,
+    macros:{kcal:350,p:30,c:35,f:8},
+    adds:['greek yoghurt','banana','honey','mixed seeds'],
+    ingredients:[{qty:200,unit:'g',item:'greek yoghurt'},{qty:1,unit:'',item:'banana'},{qty:1,unit:'tsp',item:'honey'},{qty:15,unit:'g',item:'mixed seeds'}],
+    steps:['Bowl yoghurt. Slice banana. Top with honey and seeds.']},
+
+  {k:'smoothie-green', name:'Green Protein Smoothie', cuisine:'Global', tags:['quick','high-protein','gluten-free','simple'], allergens:['dairy*'], img:'img/recipes/green-smoothie.jpg', servings:1,
+    macros:{kcal:330,p:30,c:40,f:6},
+    adds:['protein powder','spinach','frozen mango','yoghurt or alt','water'],
+    ingredients:[{qty:25,unit:'g',item:'protein powder'},{qty:1,unit:'handful',item:'spinach'},{qty:150,unit:'g',item:'frozen mango'},{qty:100,unit:'g',item:'greek yoghurt (or alt)'},{qty:150,unit:'ml',item:'water'}],
+    steps:['Blend until smooth.']}
+]);
+  /* --- Recipes Pack 2 (Lunches / Bowls / Salads) --- */
+RECIPES = RECIPES.concat([
+  {k:'tuna-sweetcorn-sand', name:'Tuna & Sweetcorn Sandwich (light mayo)', cuisine:'UK', tags:['budget','simple','quick','high-protein'], allergens:['fish','gluten (bread)','egg*'], img:'img/recipes/tuna-sweetcorn.jpg', servings:1,
+    macros:{kcal:430,p:28,c:48,f:12},
+    adds:['wholemeal bread','tuna','sweetcorn','light mayo'],
+    ingredients:[{qty:2,unit:'slices',item:'wholemeal bread'},{qty:1,unit:'tin',item:'tuna (drained)'},{qty:50,unit:'g',item:'sweetcorn'},{qty:15,unit:'g',item:'light mayo'}],
+    steps:['Mix tuna, corn, mayo.','Assemble sandwich.']},
+
+  {k:'wrap-chicken', name:'Chicken, Hummus & Crunch Wrap', cuisine:'Global', tags:['high-protein','quick','simple'], allergens:['gluten (wrap)','sesame'], img:'img/recipes/wrap.jpg', servings:1,
+    macros:{kcal:520,p:35,c:50,f:18},
+    adds:['wrap','chicken','hummus','lettuce','tomato'],
+    ingredients:[{qty:1,unit:'',item:'wrap'},{qty:120,unit:'g',item:'cooked chicken'},{qty:40,unit:'g',item:'hummus'},{qty:2,unit:'leaves',item:'lettuce'},{qty:2,unit:'slices',item:'tomato'}],
+    steps:['Spread hummus; add chicken & veg; roll.']},
+
+  {k:'greek-salad', name:'Greek Salad + Beans', cuisine:'Greek', tags:['veg','gluten-free','quick','world','simple'], allergens:['dairy'], img:'img/recipes/greek.jpg', servings:2,
+    macros:{kcal:420,p:18,c:30,f:24},
+    adds:['tomatoes','cucumber','olives','feta','mixed beans'],
+    ingredients:[{qty:3,unit:'',item:'tomatoes'},{qty:1,unit:'',item:'cucumber'},{qty:60,unit:'g',item:'olives'},{qty:80,unit:'g',item:'feta'},{qty:1,unit:'tin',item:'mixed beans (drained)'}],
+    steps:['Chop veg; toss with beans & olives; add feta.']},
+
+  {k:'bulgur-feta', name:'Bulgur, Feta & Chickpea Bowl', cuisine:'Mediterranean', tags:['veg','world','simple'], allergens:['gluten (bulgur)','dairy'], img:'img/recipes/bulgur-feta.jpg', servings:3,
+    macros:{kcal:520,p:20,c:74,f:14},
+    adds:['bulgur','chickpeas','feta','tomatoes','cucumber','herbs'],
+    ingredients:[{qty:240,unit:'g',item:'bulgur (cooked weight ~600 g)'},{qty:1,unit:'tin',item:'chickpeas'},{qty:120,unit:'g',item:'feta'},{qty:2,unit:'',item:'tomatoes'},{qty:0.5,unit:'',item:'cucumber'}],
+    steps:['Cook bulgur; toss with chopped veg, feta, herbs.']},
+
+  {k:'mex-bowl', name:'Mexican Bean Burrito Bowl', cuisine:'Mexican', tags:['vegan','world','budget','gluten-free','batch'], allergens:[], img:'img/recipes/mexbowl.jpg', servings:4,
+    macros:{kcal:540,p:22,c:85,f:12},
+    adds:['rice','black beans','sweetcorn','tomatoes','spices'],
+    ingredients:[{qty:600,unit:'g',item:'cooked rice'},{qty:2,unit:'tins',item:'black beans'},{qty:1,unit:'tin',item:'sweetcorn'},{qty:2,unit:'',item:'tomatoes (diced)'},{qty:2,unit:'tsp',item:'chilli/cumin'}],
+    steps:['Warm beans with spices.','Serve over rice with toppings.']}
+]);
+  /* --- Recipes Pack 3 (Dinners / Batch / World) --- */
+RECIPES = RECIPES.concat([
+  {k:'lentil-pot', name:'One-Pot Lentil Stew', cuisine:'Global', tags:['budget','vegan','gluten-free','batch','simple'], allergens:[], img:'img/recipes/lentils.jpg', servings:4,
+    macros:{kcal:520,p:26,c:80,f:10},
+    adds:['red lentils','tinned tomatoes','carrots','onion','stock'],
+    ingredients:[{qty:300,unit:'g',item:'red lentils'},{qty:2,unit:'tins',item:'chopped tomatoes'},{qty:2,unit:'',item:'carrots (diced)'},{qty:1,unit:'',item:'onion (diced)'},{qty:800,unit:'ml',item:'veg stock'}],
+    steps:['Soften onion/carrots.','Add lentils, tomatoes, stock.','Simmer 20–25 min.']},
+
+  {k:'chana', name:'Chana Masala', cuisine:'Indian', tags:['vegan','budget','world','gluten-free','batch'], allergens:[], img:'img/recipes/chana.jpg', servings:4,
+    macros:{kcal:430,p:18,c:65,f:10},
+    adds:['chickpeas','onion','garlic','ginger','tomatoes','spices'],
+    ingredients:[{qty:2,unit:'tins',item:'chickpeas (drained)'},{qty:1,unit:'',item:'onion (diced)'},{qty:2,unit:'cloves',item:'garlic (minced)'},{qty:1,unit:'tbsp',item:'ginger (grated)'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'tbsp',item:'garam masala'}],
+    steps:['Sauté aromatics.','Add spices, tomatoes, chickpeas.','Simmer 15–20 min.']},
+
+  {k:'teriyaki', name:'Teriyaki Chicken Rice Bowl', cuisine:'Japanese', tags:['high-protein','world','quick'], allergens:['soy','gluten*','sesame*'], img:'img/recipes/teriyaki.jpg', servings:2,
+    macros:{kcal:560,p:38,c:70,f:12},
+    adds:['chicken thigh','soy sauce','mirin/sugar','rice','spring onion'],
+    ingredients:[{qty:300,unit:'g',item:'chicken thigh (chunks)'},{qty:3,unit:'tbsp',item:'soy sauce'},{qty:2,unit:'tbsp',item:'mirin or 1 tbsp sugar'},{qty:260,unit:'g',item:'cooked rice'},{qty:2,unit:'',item:'spring onions'}],
+    steps:['Brown chicken.','Add soy + mirin; reduce to glaze.','Serve on rice.']},
+
+  {k:'thai-green', name:'Thai Green Curry (Chicken or Tofu)', cuisine:'Thai', tags:['world','gluten-free'], allergens:['soy*','fish*'], img:'img/recipes/thaigreen.jpg', servings:4,
+    macros:{kcal:520,p:32,c:55,f:18},
+    adds:['green curry paste','coconut milk','chicken or tofu','veg','rice'],
+    ingredients:[{qty:2,unit:'tbsp',item:'green curry paste'},{qty:1,unit:'tin',item:'coconut milk'},{qty:400,unit:'g',item:'chicken breast or firm tofu'},{qty:400,unit:'g',item:'mixed veg'},{qty:600,unit:'g',item:'cooked rice'}],
+    steps:['Fry paste; add protein & veg.','Add coconut milk; simmer 10m.']},
+
+  {k:'beef-stirfry', name:'Beef & Broccoli Stir-fry', cuisine:'Chinese', tags:['high-protein','world','quick'], allergens:['soy','gluten*','sesame*'], img:'img/recipes/beef-broccoli.jpg', servings:2,
+    macros:{kcal:580,p:40,c:60,f:16},
+    adds:['beef strips','broccoli','soy/ginger/garlic','rice'],
+    ingredients:[{qty:300,unit:'g',item:'beef strips'},{qty:300,unit:'g',item:'broccoli florets'},{qty:2,unit:'tbsp',item:'soy sauce'},{qty:1,unit:'tsp',item:'ginger/garlic'}],
+    steps:['Sear beef; remove. Stir-fry broccoli; return beef with sauce. Serve rice.']},
+
+  {k:'pasta-peas', name:'Pea & Pesto Pasta', cuisine:'Italian', tags:['veg','quick','world','simple'], allergens:['gluten (pasta)','nuts*','dairy*'], img:'img/recipes/pasta.jpg', servings:2,
+    macros:{kcal:520,p:22,c:78,f:12},
+    adds:['pasta','peas','pesto','parmesan'],
+    ingredients:[{qty:180,unit:'g',item:'pasta'},{qty:150,unit:'g',item:'peas'},{qty:2,unit:'tbsp',item:'pesto'},{qty:20,unit:'g',item:'parmesan'}],
+    steps:['Boil pasta; add peas last 2–3m.','Drain; stir pesto & cheese.']},
+
+  {k:'kimchi-fried-rice', name:'Kimchi Fried Rice (egg or tofu)', cuisine:'Korean', tags:['world','quick','simple'], allergens:['egg*','soy*','sesame*','gluten*'], img:'img/recipes/kimchi-rice.jpg', servings:2,
+    macros:{kcal:520,p:18,c:78,f:14},
+    adds:['rice','kimchi','egg or tofu','spring onion'],
+    ingredients:[{qty:300,unit:'g',item:'cooked rice (day-old ideal)'},{qty:150,unit:'g',item:'kimchi (chopped)'},{qty:2,unit:'',item:'eggs or 200 g tofu'},{qty:2,unit:'',item:'spring onions'}],
+    steps:['Stir-fry kimchi; add rice; scramble egg or add tofu; combine.']},
+
+  {k:'chilli-batch', name:'Turkey (or Bean) Chilli', cuisine:'US', tags:['high-protein','batch','gluten-free','world'], allergens:[], img:'img/recipes/chilli.jpg', servings:4,
+    macros:{kcal:540,p:40,c:55,f:14},
+    adds:['turkey mince or beans','kidney beans','tomatoes','spices','onion'],
+    ingredients:[{qty:500,unit:'g',item:'turkey mince (or beans for vegan)'},{qty:1,unit:'tin',item:'kidney beans'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'',item:'onion (diced)'},{qty:2,unit:'tsp',item:'chilli powder'}],
+    steps:['Brown mince with onion.','Add tomatoes/beans/spices; simmer 20m.']},
+
+  {k:'fish-pot', name:'Smoked Fish & Potato Bake', cuisine:'UK', tags:['gluten-free','simple'], allergens:['fish','dairy'], img:'img/recipes/fish.jpg', servings:3,
+    macros:{kcal:560,p:36,c:55,f:18},
+    adds:['smoked fish','potatoes','leeks','milk','cheese'],
+    ingredients:[{qty:400,unit:'g',item:'smoked fish (flaked)'},{qty:600,unit:'g',item:'potatoes (sliced)'},{qty:1,unit:'',item:'leek (sliced)'},{qty:250,unit:'ml',item:'milk'},{qty:40,unit:'g',item:'cheese'}],
+    steps:['Parboil potatoes.','Layer with fish/leeks; add milk/cheese. Bake.']}
+]);
+  /* ====== RECIPES UI ====== */
+function recipeCard(r){
+  const tags = r.tags.map(t=>`<span class="badge">${t}</span>`).join('');
+  const m = r.macros;
+  const allerg = r.allergens.length ? `Allergens: ${r.allergens.join(', ')} (check labels)` : 'Allergens: none listed (check labels)';
+  return `
+  <article class="card" data-tags="${r.tags.join(',')}">
+    <figure><img src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.style.display='none'"></figure>
+    <div class="body">
+      <h3>${r.name}</h3>
+      <div>${tags} <span class="badge">${r.cuisine}</span></div>
+      <div class="macros">
+        <span>⚡ ${m.kcal} kcal</span>
+        <span>🥩 ${m.p}g</span>
+        <span>🍚 ${m.c}g</span>
+        <span>🫒 ${m.f}g</span>
+      </div>
+      <div class="allergens">${allerg}</div>
+      <div class="actions">
+        <button class="btn" data-planner="${r.k}">＋ Planner</button>
+        <button class="btn" data-log="${r.k}">＋ Log 1 serving</button>
+        <button class="btn" data-print="${r.k}">🖨 Print card</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+/* Pantry matching (Ready Steady Cook) — quick prompt UX */
+function pantryMatch(){
+  const raw = prompt('Type the ingredients you have (comma-separated):\nExample: rice, chickpeas, tomatoes, onion, eggs');
+  if(!raw) return;
+  const have = raw.toLowerCase().split(',').map(s=>s.trim()).filter(Boolean);
+  const score = (r)=>{
+    const list = (r.adds||[]).concat((r.ingredients||[]).map(i=>i.item));
+    let hit = 0;
+    list.forEach(item=>{
+      const it = String(item).toLowerCase();
+      if(have.some(h => it.includes(h))) hit++;
+    });
+    return hit;
+  };
+  const ranked = RECIPES.map(r=>({r, s:score(r)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,12).map(x=>x.r);
+  const grid = document.getElementById('recipeGrid');
+  if(ranked.length){
+    grid.innerHTML = ranked.map(recipeCard).join('');
+  }else{
+    alert('No strong matches. Try broader ingredients (e.g., "beans", "rice", "eggs").');
+  }
+  grid.querySelectorAll('[data-planner]').forEach(b=>b.addEventListener('click', ()=> addToPlanner(b.getAttribute('data-planner')) ));
+  grid.querySelectorAll('[data-log]').forEach(b=>b.addEventListener('click', ()=> logRecipeServing(b.getAttribute('data-log'), 1) ));
+  grid.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=> printRecipe(b.getAttribute('data-print')) ));
+}
+
+/* Add a small floating pantry button */
+(function addPantryButton(){
+  const btn = document.createElement('button');
+  btn.textContent = '🧺 Pantry match';
+  btn.className = 'btn';
+  btn.style.cssText = 'position:sticky;top:8px;margin-bottom:8px';
+  const filters = document.getElementById('recipeFilters');
+  if(filters){ filters.after(btn); btn.addEventListener('click', pantryMatch); }
+})();
+
+function renderRecipes(){
+  const grid = document.getElementById('recipeGrid');
+  const active = [...document.querySelectorAll('.filters .tag.active')].map(x=>x.dataset.tag);
+  const list = RECIPES.filter(r => active.length===0 || active.every(t=>r.tags.includes(t)));
+  grid.innerHTML = list.map(recipeCard).join('');
+
+  grid.querySelectorAll('[data-planner]').forEach(b=>b.addEventListener('click', ()=> addToPlanner(b.getAttribute('data-planner')) ));
+  grid.querySelectorAll('[data-log]').forEach(b=>b.addEventListener('click', ()=> logRecipeServing(b.getAttribute('data-log'), 1) ));
+  grid.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=> printRecipe(b.getAttribute('data-print')) ));
+}
+
+document.getElementById('recipeFilters').addEventListener('click', e=>{
+  if(!e.target.classList.contains('tag')) return;
+  e.target.classList.toggle('active');
+  renderRecipes();
+});
+document.getElementById('recipeFilters').addEventListener('keydown', e=>{
+  if(e.key==='Enter' && e.target.classList.contains('tag')){ e.target.click(); }
+});
+  /* ====== WEEKLY PLANNER (manual) ====== */
+const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MEALS = ['Breakfast','Lunch','Dinner','Snacks'];
+const planKey = 'fff-plan-week';
+
+function loadPlan(){
+  try{ const raw = localStorage.getItem(planKey); if(raw) return JSON.parse(raw); }catch(e){}
+  const blank = {}; WEEKDAYS.forEach(d=>{ blank[d]={}; MEALS.forEach(m=>blank[d][m]=[]); }); return blank;
+}
+function savePlan(p){ localStorage.setItem(planKey, JSON.stringify(p)); }
+
+function renderPlanner(){
+  const body = document.getElementById('planBody');
+  const plan = loadPlan();
+  body.innerHTML = WEEKDAYS.map(d=>{
+    const tds = MEALS.map(m=>{
+      const items = plan[d][m]||[];
+      const html = items.map((it,idx)=>`
+        <div class="item"><span>${it.name}</span>
+          <button title="Remove" data-del="${d}|${m}|${idx}">✕</button>
+        </div>`).join('');
+      return `<td><div class="slot">${html}</div></td>`;
+    }).join('');
+    return `<tr><th>${d}</th>${tds}</tr>`;
+  }).join('');
+  body.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const [d,m,i] = btn.getAttribute('data-del').split('|');
+      const plan = loadPlan();
+      plan[d][m].splice(+i,1);
+      savePlan(plan); renderPlanner();
+    });
+  });
+}
+
+function addToPlanner(k){
+  const r = RECIPES.find(x=>x.k===k); if(!r) return;
+  const day = prompt('Add to which day? (Mon/Tue/Wed/Thu/Fri/Sat/Sun)','Mon');
+  if(!WEEKDAYS.includes(day)) return;
+  const meal = prompt('Meal slot? (Breakfast/Lunch/Dinner/Snacks)','Dinner');
+  if(!MEALS.includes(meal)) return;
+  const plan = loadPlan(); plan[day][meal].push({ref:r.k, name:r.name});
+  savePlan(plan); renderPlanner();
+}
+
+document.getElementById('clearPlan').addEventListener('click', ()=>{
+  if(confirm('Clear the whole week?')){ localStorage.removeItem(planKey); renderPlanner(); }
+});
+
+/* Shopping list aggregation with Budget swaps applied */
+function aggregateList(){
+  const plan = loadPlan(); const items = [];
+  WEEKDAYS.forEach(d=>MEALS.forEach(m=>{
+    (plan[d][m]||[]).forEach(it=>{
+      const r = RECIPES.find(x=>x.k===it.ref); if(!r) return;
+      let adds = [...(r.adds||[])];
+      if(budgetMode){
+        adds = adds.map(x=>{
+          const key = Object.keys(budgetSwaps).find(k=>x.toLowerCase().includes(k));
+          return key ? (budgetSwaps[key] + ' (swap)') : x;
+        });
+      }
+      items.push(...adds);
+    });
+  }));
+  return [...new Set(items.map(s=>s.toLowerCase()))];
+}
+
+document.getElementById('printList').addEventListener('click', ()=>{
+  const items = aggregateList();
+  const w = window.open('','PRINT','width=600,height=700');
+  if(!w) return;
+  w.document.write('<h3>Shopping List</h3><ul>'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul>');
+  w.document.close(); w.focus(); w.print();
+});
+document.getElementById('csvList').addEventListener('click', ()=>{
+  const items = aggregateList();
+  const csv = 'item\n' + items.map(x=>'"'+x.replace(/"/g,'""')+'"').join('\n');
+  const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='shopping-list.csv'; a.click(); URL.revokeObjectURL(url);
+});
+  /* ===== Auto 7-Day Meal Planner (smart) ===== */
+function apGuessCategory(r){
+  const nm = (r.name||'').toLowerCase();
+  const has = s => nm.includes(s);
+  if (has('oat') || has('yoghurt') || has('parfait') || (has('egg') && !has('shakshuka'))) return 'breakfast';
+  if (has('wrap') || has('sandwich') || (has('salad') || has('bowl')) && !has('rice & chicken')) return 'lunch';
+  if (has('banana ice') || has('parfait') || has('chia')) return 'snack';
+  return 'dinner';
+}
+function apPoolBy(cat){ return RECIPES.filter(r => apGuessCategory(r)===cat); }
+function apKcal(r){ return r?.macros?.kcal || 400; }
+function apPickClosest(pool, targetKcal){
+  let best=null

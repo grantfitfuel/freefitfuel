@@ -1,6 +1,6 @@
 // sw.js (FreeFitFuel)
 // Bump this when you change files you want cached:
-const VERSION = 'fff-v1.0.0';
+const VERSION = 'fff-v1.0.1';
 
 // What to make available offline immediately (keep tiny!)
 const PRECACHE_URLS = [

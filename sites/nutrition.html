@@ -87,7 +87,22 @@
     .progress{display:grid;gap:.35rem}
     .progress .line{display:grid;grid-template-columns:100px 1fr min-content;gap:.6rem;align-items:center}
     .progress .line .bar{height:12px}
-
+/* ===== Auto Planner (AP) ===== */
+.ap-controls{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0 1rem}
+.ap-controls input{
+  background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;
+  color:var(--ink);padding:.45rem .55rem;width:120px
+}
+.ap-plan-grid{display:grid;gap:10px}
+@media(min-width:900px){.ap-plan-grid{grid-template-columns:repeat(7,1fr)}}
+.ap-day-col{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:.5rem}
+.ap-day-col h3{margin:.1rem 0 .25rem;font-size:1rem}
+.ap-slot{border:1px dashed var(--stroke);border-radius:8px;padding:.45rem}
+.ap-slot .row{display:flex;justify-content:space-between;gap:.4rem;align-items:center}
+.ap-slot .name{font-weight:600}
+.ap-slot .cal{opacity:.85;font-size:.9rem}
+.ap-swap{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.2rem .5rem;border-radius:8px;cursor:pointer;font-size:.86rem}
+.ap-total{margin-top:auto;font-weight:700;opacity:.9}
     /* Mobile balance: make goal explanation less dominant */
     @media (max-width:540px){ .goal-explain{font-size:.92rem} }
   </style>

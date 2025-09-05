@@ -220,6 +220,94 @@
 
     <div class="grid cols-3" id="recipeGrid"></div>
     <p class="note">Allergens are listed on every card (check labels for specific products & cross-contamination). Nutrition values are estimates.</p>
+  /* ========== Budget swap engine ========== */
+/* Define low-cost substitutions and labels */
+const BUDGET_SWAP = {
+  // proteins
+  'chicken breast':'chicken thighs',
+  'beef strips':'lean beef mince',
+  'turkey mince':'chicken mince',
+  'salmon fillet':'mackerel fillet',
+  'paneer':'firm tofu',
+  'prawns':'white fish fillet',
+  'quorn mince':'mixed beans',
+  'tuna (drained)':'sardines (drained)',
+  // carbs/bases
+  'basmati rice':'long-grain rice',
+  'jasmine rice':'long-grain rice',
+  'brown rice':'white rice',
+  'udon noodles (cooked)':'spaghetti (cooked)',
+  'noodles (cooked)':'spaghetti (cooked)',
+  'bulgur':'couscous',
+  // extras
+  'mozzarella':'grated hard cheese',
+  'greek yoghurt':'plain yoghurt',
+  'light mayo':'low-fat yoghurt',
+  'edamame (optional)':'frozen peas',
+  'mixed stir-fry veg':'frozen mixed veg'
+};
+
+/* Make a budget clone (non-destructive) */
+function makeBudgetVersion(rec){
+  const clone = JSON.parse(JSON.stringify(rec));
+  clone.budget = true;
+  clone.name = rec.name + ' — Budget';
+  // swap ingredient item names where we have a map
+  clone.ingredients = (rec.ingredients||[]).map(it=>{
+    const key = (it.item||'').toLowerCase().trim();
+    for(const src in BUDGET_SWAP){
+      if(key === src.toLowerCase()){
+        return {...it, item: BUDGET_SWAP[src]};
+      }
+    }
+    return it;
+  });
+  // heuristic: slight macro shift (more carbs, less fat)
+  if(clone.macros){
+    clone.macros = {
+      kcal: Math.round(rec.macros.kcal*0.98),
+      p: Math.round(rec.macros.p*0.95),
+      c: Math.round(rec.macros.c*1.05),
+      f: Math.round(rec.macros.f*0.95)
+    };
+  }
+  // tag it
+  const t = new Set([...(rec.tags||[]), 'budget']);
+  clone.tags = Array.from(t);
+  return clone;
+}
+
+/* Track per-card toggle state in memory + localStorage */
+const budgetState = JSON.parse(localStorage.getItem('pp-budget-state')||'{}');
+function setBudgetState(k,on){ budgetState[k]=!!on; localStorage.setItem('pp-budget-state', JSON.stringify(budgetState)); }
+
+/* Hook buttons after cards render */
+function hookBudgetButtons(){
+  document.querySelectorAll('.btn-budget').forEach(btn=>{
+    const k = btn.dataset.k;
+    const on = !!budgetState[k];
+    btn.classList.toggle('active', on);
+    btn.textContent = on ? '£ Using Budget' : '£ Budget swap';
+    btn.onclick = ()=>{
+      const nowOn = !btn.classList.contains('active');
+      btn.classList.toggle('active', nowOn);
+      btn.textContent = nowOn ? '£ Using Budget' : '£ Budget swap';
+      setBudgetState(k, nowOn);
+      // If your card re-renders on the fly, call a rerender here.
+      // Otherwise, printing/shopping list should read budgetState when building output.
+    };
+  });
+}
+
+/* Utility: get recipe respecting budget toggle */
+function getRecipeByKeyRespectingBudget(k){
+  const rec = (RECIPES||[]).find(r=>r.k===k);
+  if(!rec) return null;
+  return budgetState[k] ? makeBudgetVersion(rec) : rec;
+}
+
+/* If you have a "Print recipe" or "Add to shopping list" path,
+   swap its data source to getRecipeByKeyRespectingBudget(k). */
   </section>
 
   <!-- Weekly Planner -->

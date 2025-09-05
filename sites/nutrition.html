@@ -306,7 +306,7 @@ document.querySelectorAll('[data-goal]').forEach(b=>{
     b.setAttribute('aria-pressed','true');
     goal = b.dataset.goal;
     document.getElementById('outGoal').textContent = goal[0].toUpperCase()+goal.slice(1);
-    if(window.lastCalc){ doCalc(); updateLogBars(); }
+    if(lastCalc){ doCalc(); updateLogBars(); }
   });
 });
 
@@ -690,25 +690,24 @@ document.getElementById('csvList').addEventListener('click', ()=>{
   const a = document.createElement('a'); a.href=url; a.download='shopping-list.csv'; a.click(); URL.revokeObjectURL(url);
 });
   /* ===== Auto 7-Day Meal Planner (smart) ===== */
+/* ===== Auto 7-Day Meal Planner (smart) ===== */
 function apGuessCategory(r){
   const nm = (r.name||'').toLowerCase();
   const has = s => nm.includes(s);
   if (has('oat') || has('yoghurt') || has('parfait') || (has('egg') && !has('shakshuka'))) return 'breakfast';
-  if (has('wrap') || has('sandwich') || (has('salad') || has('bowl')) && !has('rice & chicken')) return 'lunch';
+  if (has('wrap') || has('sandwich') || ((has('salad') || has('bowl')) && !has('rice & chicken'))) return 'lunch';
   if (has('banana ice') || has('parfait') || has('chia')) return 'snack';
   return 'dinner';
 }
 function apPoolBy(cat){ return RECIPES.filter(r => apGuessCategory(r)===cat); }
 function apKcal(r){ return r?.macros?.kcal || 400; }
 function apPickClosest(pool, targetKcal){
-  let best=null
-  function apPickClosest(pool, targetKcal){
-  let best=null, diff=1e9, idx=-1;
-  pool.forEach((r,i)=>{
+  let best = null, diff = 1e9, idx = -1;
+  pool.forEach((r, i) => {
     const d = Math.abs(apKcal(r) - targetKcal);
-    if(d < diff){ diff=d; best=r; idx=i; }
+    if (d < diff) { diff = d; best = r; idx = i; }
   });
-  return {best, index:idx};
+  return { best, index: idx };
 }
 
 /* Build one day using simple kcal shares */
@@ -720,6 +719,8 @@ function apBuildDay(kcalTarget, currentDay){
     const pool = apPoolBy(cat);
     if(!pool.length) return;
     const want = kcalTarget * shares[cat];
+
+    // keep existing pick if regenerating, else choose a close match
     const existing = currentDay?.[cat];
     out[cat] = existing ? existing : apPickClosest(pool, want).best;
   });
@@ -792,6 +793,7 @@ function apHookSwaps(){
       const current = AP_PLAN[day][cat];
       let i = current ? pool.findIndex(r=>r.k===current.k) : -1;
 
+      // next distinct option (wrap)
       for(let j=1;j<=pool.length;j++){
         const cand = pool[(i+j)%pool.length];
         if(!current || cand.k !== current.k){ AP_PLAN[day][cat] = cand; break; }
@@ -815,8 +817,7 @@ document.getElementById('ap-clear').addEventListener('click', ()=>{
 });
 
 /* Initial paint (auto planner) */
-apRender();
-  /* ===== Progress bars helpers ===== */
+apRender();  /* ===== Progress bars helpers ===== */
 function pct(a,b){ return b? Math.max(0, Math.min(100, Math.round(100*a/b))) : 0; }
 function setBar(id, v){ const el=document.getElementById(id); if(el) el.style.width = v+'%'; }
 

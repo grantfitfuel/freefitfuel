@@ -1357,7 +1357,86 @@ if(csvListBtn){ csvListBtn.addEventListener('click', ()=>{
 });}
 
 /* ============ 9) Auto 7-Day Planner (smart) ============ */
-// ---------- Better weekly builder: rotates and avoids repeats ----------
+// --- helpers used by the auto-planner ---
+function apKcal(r){ return (r && r.macros && r.macros.kcal) ? r.macros.kcal : 400; }
+function apGuessCategory(r){
+  const nm = (r.name||'').toLowerCase();
+  const has = s => nm.includes(s);
+  // breakfast-ish
+  if (has('oat') || has('overnight') || has('porridge') || has('yoghurt') || has('parfait') ||
+      has('omelette') || (has('egg') && !has('shakshuka'))) return 'breakfast';
+  // snacks
+  if (has('snack') || has('parfait') || has('pot') || (apKcal(r) <= 300 && (has('yoghurt')||has('nuts')||has('seed')))) return 'snack';
+  // lunch-ish
+  if (has('wrap') || has('sandwich') || has('salad') || (has('bowl') && !has('rice and chicken'))) return 'lunch';
+  // default to dinner
+  return 'dinner';
+}
+function apPoolBy(cat){ return RECIPES.filter(r => apGuessCategory(r) === cat); }
+
+// Persisted plan
+const AP_KEY = 'fff-aplan-v2';
+function loadAP(){ try{ return JSON.parse(localStorage.getItem(AP_KEY)||'null'); }catch(e){ return null; } }
+function saveAP(){ localStorage.setItem(AP_KEY, JSON.stringify(AP_PLAN)); }
+
+// UI bits
+const apGrid = document.getElementById('ap-grid');
+function apDayTotal(day){ return ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (day[k]?apKcal(day[k]):0),0); }
+function apSlotHTML(rec,cat,dayIndex){
+  if(!rec){
+    const nice = cat[0].toUpperCase()+cat.slice(1);
+    return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+      <div class="row"><span class="name">${nice}</span><button class="ap-swap" data-swap>Swap</button></div>
+      <div class="cal">—</div>
+    </div>`;
+  }
+  return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+    <div class="row"><span class="name">${rec.name}</span><button class="ap-swap" data-swap>Swap</button></div>
+    <div class="cal">${apKcal(rec)} kcal</div>
+  </div>`;
+}
+function apHookSwaps(){
+  apGrid.querySelectorAll('[data-swap]').forEach(btn=>{
+    btn.onclick = ()=>{
+      const slot = btn.closest('.ap-slot');
+      const day = parseInt(slot.dataset.day,10);
+      const cat = slot.dataset.cat;
+      const pool = apPoolBy(cat);
+      if(!pool.length) return;
+      const current = AP_PLAN[day][cat];
+      let i = current ? pool.findIndex(r=>r.k===current.k) : -1;
+      // rotate to next different recipe
+      for(let j=1;j<=pool.length;j++){
+        const cand = pool[(i+j)%pool.length];
+        if(!current || cand.k !== current.k){ AP_PLAN[day][cat] = cand; break; }
+      }
+      AP_PLAN[day].total = apDayTotal(AP_PLAN[day]);
+      saveAP(); apRender();
+    };
+  });
+}
+function apRender(){
+  if(!apGrid) return;
+  apGrid.innerHTML = '';
+  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  DAYS.forEach((d,dayIdx)=>{
+    const day = AP_PLAN[dayIdx] || {};
+    const col = document.createElement('div');
+    col.className = 'ap-day-col';
+    col.innerHTML = `
+      <h3>${d}</h3>
+      ${apSlotHTML(day.breakfast,'breakfast',dayIdx)}
+      ${apSlotHTML(day.lunch,'lunch',dayIdx)}
+      ${apSlotHTML(day.dinner,'dinner',dayIdx)}
+      ${apSlotHTML(day.snack,'snack',dayIdx)}
+      <div class="ap-total">≈ ${Math.round(apDayTotal(day))} kcal</div>
+    `;
+    apGrid.appendChild(col);
+  });
+  apHookSwaps();
+}
+
+// diversity helpers
 function shuffle(arr){
   const a = arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
@@ -1367,20 +1446,20 @@ function takeWithoutReplacement(pool, count){
   const out = [];
   let idx = 0;
   for(let i=0;i<count;i++){
-    if(!bag.length){ // if pool too small, reshuffle (allows repeats when unavoidable)
-      bag.push(...shuffle(pool));
+    if(!bag.length){
+      bag.push(...shuffle(pool)); // if too small, repeats will start but spaced out
     }
     out.push(bag[idx % bag.length]); idx++;
   }
   return out;
 }
 
-// Build a full week at once to control diversity
+// Build a full week at once (avoids repeats day-to-day)
 function apBuildWeek(kcalTarget){
   const shares = {breakfast:.25, lunch:.30, dinner:.35, snack:.10};
   const cats   = ['breakfast','lunch','dinner','snack'];
 
-  // pools per category, sorted by closeness to target share
+  // pools sorted by closeness to target share
   const poolBy = {};
   cats.forEach(cat=>{
     const pool = apPoolBy(cat);
@@ -1388,23 +1467,21 @@ function apBuildWeek(kcalTarget){
     poolBy[cat] = pool.slice().sort((a,b)=>Math.abs(apKcal(a)-want)-Math.abs(apKcal(b)-want));
   });
 
-  // choose 7 per category without replacement when possible
+  // pick 7 per cat (unique if possible)
   const picks = {};
   cats.forEach(cat=>{
     const base = poolBy[cat];
-    // if we have >=7 options, take 7 unique; else allow controlled repeats
-    picks[cat] = base.length >= 7 ? takeWithoutReplacement(base, 7) : takeWithoutReplacement(base, 7);
+    picks[cat] = takeWithoutReplacement(base, 7);
   });
 
-  // assemble days and also avoid immediate previous-day duplicates per slot
+  // assemble week; avoid immediate repeats within same cat
   const week = [];
   for(let d=0; d<7; d++){
     const day = {breakfast:null,lunch:null,dinner:null,snack:null,total:0};
     cats.forEach(cat=>{
       let choice = picks[cat][d];
-      // avoid same as yesterday in same category when pool permits
-      if(d>0 && week[d-1][cat] && choice.k === week[d-1][cat].k && poolBy[cat].length > 1){
-        // swap with next different
+      if(d>0 && week[d-1][cat] && choice && week[d-1][cat] && choice.k === week[d-1][cat].k && poolBy[cat].length > 1){
+        // find a different one
         for(let s=1; s<poolBy[cat].length; s++){
           const alt = poolBy[cat][(d+s) % poolBy[cat].length];
           if(alt.k !== week[d-1][cat].k){ choice = alt; break; }
@@ -1418,11 +1495,18 @@ function apBuildWeek(kcalTarget){
   return week;
 }
 
-// Wire the new builder
+// state + buttons
+let AP_PLAN = loadAP() || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
 const apGen = document.getElementById('ap-generate');
 if(apGen){ apGen.addEventListener('click', ()=>{
   const kcal = +document.getElementById('ap-kcal').value || 2200;
   AP_PLAN = apBuildWeek(kcal);
+  saveAP(); apRender();
+});}
+const apClear = document.getElementById('ap-clear');
+if(apClear){ apClear.addEventListener('click', ()=>{
+  if(!confirm('Clear auto-plan for the whole week?')) return;
+  AP_PLAN = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
   saveAP(); apRender();
 });}
 apRender();

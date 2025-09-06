@@ -30,6 +30,15 @@
     .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass,rgba(255,255,255,.06));border:1px solid var(--stroke,#2a2a36);border-radius:999px;padding:.35rem .65rem;font-size:.92rem}
     .pill input{accent-color:var(--accent,#62f)}
 
+/* Hero fallback when image fails */
+.hero-mini.no-hero figure{
+  min-height:46vh;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65)),
+    radial-gradient(80% 60% at 50% 40%, #2a2a36 0%, #14141a 100%);
+}
+.hero-mini.no-hero figure img{ display:none }
+    
     /* Sections + Cards */
     .section{background:var(--glass,rgba(255,255,255,.06));border:1px solid var(--stroke,#2a2a36);border-radius:14px;margin:12px 0;padding:14px}
     .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}

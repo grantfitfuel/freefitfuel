@@ -1161,6 +1161,8 @@ function renderRecipes(){
   grid.querySelectorAll('[data-log]').forEach(b=>b.addEventListener('click', ()=> logRecipeServing(b.getAttribute('data-log'), 1) ));
   grid.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click', ()=> openRecipeCard(b.getAttribute('data-view')) ));
   grid.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=> printRecipe(b.getAttribute('data-print')) ));
+  const rc = document.getElementById('recipeCount');
+if(rc){ rc.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`; }
 }
 
 /* Filters */

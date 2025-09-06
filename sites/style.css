@@ -164,3 +164,22 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
 .site-footer img{height:64px;display:block}
 .site-footer p{margin:4px 0;color:#111}
 .site-footer .credit{font-weight:700}
+/* Nutrition fixes — opaque modal + macro chips */
+dialog#recipeModal{
+  background:#111 !important;  /* opaque so it’s readable */
+  color:var(--ink);
+  border:1px solid var(--stroke);
+  border-radius:12px;
+}
+dialog#recipeModal .modal-inner{ padding:16px }
+dialog::backdrop{ background:rgba(0,0,0,.6) } /* nice dim behind modal */
+
+.macros{ display:flex; flex-wrap:wrap; gap:10px; margin:.4rem 0 .2rem }
+.macro-chip{
+  background:#0f0f15;
+  border:1px solid #2b2b36;
+  border-radius:999px;
+  padding:.18rem .55rem;
+  font-size:.9rem;
+  white-space:nowrap;
+}

@@ -1393,7 +1393,16 @@ function recipeCard(r){
     </div>
   </article>`;
 }
-
+// Hero fallback: if image errors, apply .no-hero for gradient background
+(function(){
+  const hero = document.querySelector('.hero-mini');
+  const heroImg = hero && hero.querySelector('img');
+  if(heroImg){
+    // if it already failed earlier
+    if(heroImg.complete && heroImg.naturalWidth === 0){ hero.classList.add('no-hero'); }
+    heroImg.addEventListener('error', ()=> hero.classList.add('no-hero'));
+  }
+})();
 function renderRecipes(){
   const grid = document.getElementById('recipeGrid');
   const active = [...document.querySelectorAll('.filters .tag.active')].map(x=>x.dataset.tag);

@@ -202,17 +202,18 @@
   <section class="section" id="recipes">
     <h2>Recipe Library</h2>
     <div class="filters" id="recipeFilters" aria-label="Recipe filters">
-      <button class="tag" data-tag="budget">Budget</button>
-      <button class="tag" data-tag="high-protein">High-Protein</button>
-      <button class="tag" data-tag="gluten-free">Gluten-Free</button>
-      <button class="tag" data-tag="dairy-free">Dairy-Free</button>
-      <button class="tag" data-tag="veg">Vegetarian</button>
-      <button class="tag" data-tag="vegan">Vegan</button>
-      <button class="tag" data-tag="quick">Quick (≤20 min)</button>
-      <button class="tag" data-tag="batch">Batch-cook</button>
-      <button class="tag" data-tag="world">World cuisines</button>
-      <button class="tag" data-tag="simple">Simple</button>
-    </div>
+  <button class="tag active" data-tag="all">All</button>
+  <button class="tag" data-tag="budget">Budget</button>
+  <button class="tag" data-tag="high-protein">High-Protein</button>
+  <button class="tag" data-tag="gluten-free">Gluten-Free</button>
+  <button class="tag" data-tag="dairy-free">Dairy-Free</button>
+  <button class="tag" data-tag="veg">Vegetarian</button>
+  <button class="tag" data-tag="vegan">Vegan</button>
+  <button class="tag" data-tag="quick">Quick (≤20m)</button>
+  <button class="tag" data-tag="batch">Batch-cook</button>
+  <button class="tag" data-tag="world">World cuisines</button>
+  <button class="tag" data-tag="simple">Simple</button>
+</div>
     <div class="grid cols-3" id="recipeGrid"></div>
     <p class="note">Allergens are listed on every card (check labels for specific products & cross-contamination). Nutrition values are estimates.</p>
   </section>
@@ -1167,9 +1168,30 @@ const filtersWrap = document.getElementById('recipeFilters');
 if(filtersWrap){
   filtersWrap.addEventListener('click', e=>{
     if(!e.target.classList.contains('tag')) return;
+
+    // Handle All button
+    if(e.target.dataset.tag === 'all'){
+      // Clear all filters
+      document.querySelectorAll('#recipeFilters .tag').forEach(x=>x.classList.remove('active'));
+      renderRecipes();
+      return;
+    }
+
+    // Toggle this tag
     e.target.classList.toggle('active');
+
+    // If any tag is active, deactivate All
+    const anyActive = [...document.querySelectorAll('#recipeFilters .tag')]
+      .some(x => x.dataset.tag !== 'all' && x.classList.contains('active'));
+    const allBtn = document.querySelector('#recipeFilters .tag[data-tag="all"]');
+    if(allBtn){
+      if(anyActive) allBtn.classList.remove('active');
+      else allBtn.classList.add('active');
+    }
+
     renderRecipes();
   });
+
   filtersWrap.addEventListener('keydown', e=>{
     if(e.key==='Enter' && e.target.classList.contains('tag')) e.target.click();
   });

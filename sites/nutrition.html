@@ -1164,7 +1164,23 @@ function renderRecipes(){
   grid.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click', ()=> openRecipeCard(b.getAttribute('data-view')) ));
   grid.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click', ()=> printRecipe(b.getAttribute('data-print')) ));
   const rc = document.getElementById('recipeCount');
-if(rc){ rc.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`; }
+if(rc){ rc.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`; 
+         // (keep your existing button wiring above this)
+  // ---- Count line (always shows) ----
+  let rc = document.getElementById('recipeCount');
+  if(!rc){
+    const h2 = document.querySelector('#recipes h2');
+    if(h2){
+      rc = document.createElement('p');
+      rc.id = 'recipeCount';
+      rc.className = 'note';
+      h2.insertAdjacentElement('afterend', rc);
+    }
+  }
+  if(rc){
+    rc.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`;
+  }
+}
 }
 
 /* Filters */

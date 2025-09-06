@@ -1154,7 +1154,7 @@ function recipeCard(r){
 function renderRecipes(){
   const grid = document.getElementById('recipeGrid');
   const active = [...document.querySelectorAll('.filters .tag.active')].map(x=>x.dataset.tag);
-  const list = RECIPES.filter(r => active.length===0 || active.every(t=>r.tags.includes(t)));
+  const list = RECIPES.filter(r => active.includes('all') || active.length===0 || active.every(t=>r.tags.includes(t)));
   grid.innerHTML = list.map(recipeCard).join('');
 
   grid.querySelectorAll('[data-planner]').forEach(b=>b.addEventListener('click', ()=> addToPlanner(b.getAttribute('data-planner')) ));

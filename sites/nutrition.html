@@ -201,6 +201,8 @@
     <!-- Recipes -->
   <section class="section" id="recipes">
     <h2>Recipe Library</h2>
+    const rc = document.getElementById('recipeCount');
+if(rc){ rc.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`; }
     <div class="filters" id="recipeFilters" aria-label="Recipe filters">
   <button class="tag active" data-tag="all">All</button>
   <button class="tag" data-tag="budget">Budget</button>

@@ -5,13 +5,7 @@
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
    - Week summary shown on main page (mirrors planner panel)
 */
-// ---- PROOF BADGE (shows even on iPad Safari)
-(() => {
-  const tag = document.createElement('div');
-  tag.textContent = 'Nutrition.js v11 loaded';
-  tag.style.cssText = 'position:fixed;bottom:8px;right:8px;z-index:9999;background:#ffd54d;color:#111;padding:6px 10px;border-radius:8px;font:600 12px/1.2 system-ui';
-  document.addEventListener('DOMContentLoaded', () => document.body.appendChild(tag));
-})();
+
 (function () {
   // ---------- Shortcuts ----------
   const qs  = (s, e = document) => e.querySelector(s);
@@ -527,6 +521,7 @@
         pantryInput.value=''; renderPantryTokens();
       }
     });
+    qs('#pantryFindBtn',pantryPanel) && (qs('#panryFindBtn',pantryPanel).onclick=()=>{ /* typo guard */ });
     qs('#pantryFindBtn',pantryPanel) && (qs('#pantryFindBtn',pantryPanel).onclick=()=>{
       FILTERS.Pantry.active=true; FILTERS.Pantry.keys=[...pantry.set];
       FILTERS.Pantry.strict=qs('#pantryStrict',pantryPanel).checked;
@@ -608,7 +603,6 @@
     wire();
 
     // ==== RECIPES LOADER (multi-file + fallbacks) ====
-    // Edit this list to split files as you grow:
     const recipeFiles = [
       'assets/data/recipes-01.json',
       'assets/data/recipes-02.json',
@@ -691,12 +685,11 @@
       updateChipStates();
     }
 
-    // Feedback
-    if (countEl) {
-      const from = ok.map(o => o.url);
-      countEl.innerHTML = RECIPES.length
-        ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
-        : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
+    // Keep UI precise; log quietly
+    if (!RECIPES.length) {
+      console.warn('[FFF] No recipes loaded. Tried:', files);
+    } else {
+      console.log('[FFF] Recipes loaded:', RECIPES.length);
     }
 
     render();

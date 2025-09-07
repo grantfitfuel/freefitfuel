@@ -1,123 +1,124 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nutrition | FreeFitFuel</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nutrition – FreeFitFuel</title>
 
-  <!-- Correct global stylesheet -->
-  <link rel="stylesheet" href="/sites/style.css?v=3" />
+  <!-- match Endurance exactly -->
+  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 </head>
 <body>
 
-  <!-- HEADER copied from Endurance -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="brand">
-        <img src="/sites/assets/img/fff-logo.svg" alt="FreeFitFuel logo" width="160" height="40">
-      </a>
-      <nav class="nav">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="ideas.html">Ideas</a></li>
-          <li><a href="guides.html">Guides</a></li>
-          <li><a href="workout.html">Workouts</a></li>
-          <li><a href="endurance.html">Endurance</a></li>
-          <li><a href="nutrition.html" aria-current="page">Nutrition</a></li>
-          <li><a href="wellbeing.html">Wellbeing</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="tracker.html">Tracker</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<!-- HEADER (identical to Endurance) -->
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="endurance.html">Endurance</a>
+      <a href="nutrition.html" aria-current="page">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+      <a href="tracker.html">Tracker</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- MAIN CONTENT -->
-  <main class="container">
-    <!-- HERO -->
-    <section class="hero">
-      <h1>Nutrition</h1>
-      <p class="sub">Balanced macros, budget-friendly recipes, and hydration — no fuss. UK English • Allergens labelled • Vegetarian/vegan options available.</p>
-    </section>
+<main class="wrap">
+  <!-- HERO -->
+  <section class="section">
+    <h1><span class="accent">Nutrition</span></h1>
+    <p class="lead">Balanced macros, budget-friendly recipes, and hydration — no fuss. UK English • Allergens labelled • Vegetarian/vegan options available.</p>
+  </section>
 
-    <!-- QUICK ACTION BAR -->
-    <section class="quickbar" aria-label="Recipe tools">
-      <div class="quickbar-inner container">
-        <div class="row two">
-          <div>
-            <label for="recipeSearch" class="visually-hidden">Search recipes</label>
-            <input id="recipeSearch" type="search" placeholder="Search recipes, ingredients, tags…" />
-          </div>
-          <div style="display:flex; gap:.5rem; justify-content:flex-end;">
-            <button id="pantryOpenBtn" class="btn">Pantry</button>
-            <button id="openPlannerBtn" class="btn">Open Meal Planner</button>
-          </div>
-        </div>
-
-        <!-- FILTER CHIPS -->
-        <div id="filterChips" class="filters" role="toolbar" aria-label="Recipe filters">
-          <button class="chip" data-filter="ALL" aria-pressed="true">ALL</button>
-        </div>
+  <!-- QUICK TOOLS -->
+  <section class="section" aria-label="Recipe tools">
+    <div class="grid" style="grid-template-columns:2fr 1fr">
+      <div>
+        <label for="recipeSearch" class="visually-hidden">Search recipes</label>
+        <input id="recipeSearch" class="input" type="search" placeholder="Search recipes, ingredients, tags…">
       </div>
-    </section>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end;align-items:center;">
+        <button id="pantryOpenBtn" class="btn">Pantry</button>
+        <button id="openPlannerBtn" class="btn">Open Meal Planner</button>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div id="filterChips" class="mini-nav" role="toolbar" aria-label="Recipe filters" style="margin-top:.8rem">
+      <button class="badge" data-filter="ALL" aria-pressed="true">ALL</button>
+      <!-- JS will append the rest -->
+    </div>
 
     <!-- COUNT -->
-    <div class="count-line" aria-live="polite">
-      <span id="recipeCount">Showing 0 of 0 recipes</span>
-      <button id="clearFiltersBtn" class="btn link" hidden>Clear filters</button>
+    <p id="recipeCount" class="meta" aria-live="polite">Showing 0 of 0 recipes</p>
+    <button id="clearFiltersBtn" class="btn" style="display:none">Clear filters</button>
+  </section>
+
+  <!-- GRID -->
+  <section class="section">
+    <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="true" style="grid-template-columns:repeat(2,1fr)"></div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="section">
+    <div class="grid">
+      <article class="card">
+        <h3>Macros 101</h3>
+        <p>Protein rebuilds muscle, carbs fuel effort, and fats support hormones and vitamins. Aim for protein each meal, slow carbs, and a thumb of healthy fats.</p>
+      </article>
+      <article class="card">
+        <h3>Hydration</h3>
+        <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration. Pale straw urine = generally well hydrated.</p>
+      </article>
     </div>
+  </section>
 
-    <!-- GRID -->
-    <section id="recipeGrid" class="grid" aria-live="polite" aria-busy="true"></section>
+  <!-- DISCLAIMER -->
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries.</p>
+  </section>
+</main>
 
-    <!-- EDUCATION BAND -->
-    <section class="education">
-      <div class="row two">
-        <div>
-          <h3>Macros 101</h3>
-          <p>Protein rebuilds muscle, carbs fuel effort, and fats support hormones and vitamins. Aim for protein each meal, slow carbs, and a thumb of healthy fats.</p>
-        </div>
-        <div>
-          <h3>Hydration</h3>
-          <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration. Pale straw urine = generally well hydrated.</p>
-        </div>
-      </div>
-    </section>
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
 
-    <!-- DISCLAIMER -->
-    <section class="disclaimer">
-      <p class="muted">
-        Content is general information and not a substitute for professional advice. If you have existing health conditions, please consult a clinician before starting any plan.
-      </p>
-    </section>
-  </main>
+<!-- PANELS & MODAL (empty shells; JS injects content) -->
+<aside id="pantryPanel" class="panel" aria-hidden="true"></aside>
+<aside id="plannerPanel" class="panel" aria-hidden="true"></aside>
+<dialog id="recipeModal" class="recipe-modal" aria-hidden="true"></dialog>
+<div id="printArea" hidden></div>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <p class="muted">© FreeFitFuel — Grant Cameron Anthony</p>
-    </div>
-  </footer>
+<!-- Same burger script as Endurance -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.hamburger');
+  const nav = document.querySelector('.main-nav');
+  if(btn && nav){
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+});
+</script>
 
-  <!-- PANTRY PANEL -->
-  <aside id="pantryPanel" class="panel" aria-hidden="true">
-    <!-- content handled by JS -->
-  </aside>
-
-  <!-- PLANNER PANEL -->
-  <aside id="plannerPanel" class="panel" aria-hidden="true">
-    <!-- content handled by JS -->
-  </aside>
-
-  <!-- RECIPE MODAL -->
-  <dialog id="recipeModal" class="recipe-modal" aria-hidden="true">
-    <!-- content handled by JS -->
-  </dialog>
-
-  <!-- HIDDEN PRINT AREA -->
-  <div id="printArea" hidden></div>
-
-  <!-- NUTRITION SCRIPT -->
-  <script defer src="/sites/assets/js/nutrition.js?v=2"></script>
+<!-- Nutrition JS (relative path like Endurance uses) -->
+<script defer src="assets/js/nutrition.js?v=2"></script>
 </body>
 </html>

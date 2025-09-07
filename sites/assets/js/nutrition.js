@@ -1,16 +1,16 @@
 /* Nutrition JS — full replacement (with on-page Week Plan summary)
    - Robust loader: multi-file, fallback '../' paths, Promise.allSettled, defensive JSON parse
-   - Tiles: no images
-   - Modal/Print: no images
+   - Tiles: no images (cards are text-only)
+   - Modal/Print: no images (modal image hidden if exists)
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
    - Week summary shown on main page (mirrors planner panel)
 */
 
 (function () {
   // ---------- Shortcuts ----------
-  const qs=(s,e=document)=>e.querySelector(s);
-  const qsa=(s,e=document)=>Array.from(e.querySelectorAll(s));
-  const norm=s=>(s||'').toString().trim().toLowerCase();
+  const qs  = (s, e = document) => e.querySelector(s);
+  const qsa = (s, e = document) => Array.from(e.querySelectorAll(s));
+  const norm = s => (s || '').toString().trim().toLowerCase();
 
   // ---------- DOM ----------
   const grid        = qs('#recipeGrid');
@@ -29,10 +29,10 @@
   const openPlannerBtn = qs('#openPlannerBtn');
 
   // Main-page week summary refs
-  const weekSummarySec  = qs('#weekSummarySection');
-  const weekSummaryGrid = qs('#weekSummaryGrid');
-  const weekAutoBtn     = qs('#weekAutoBtn');
-  const weekClearBtn    = qs('#weekClearBtn');
+  const weekSummarySection = qs('#weekSummarySection');
+  const weekSummaryGrid    = qs('#weekSummaryGrid');
+  const weekAutoBtn        = qs('#weekAutoBtn');
+  const weekClearBtn       = qs('#weekClearBtn');
 
   // ---------- State ----------
   let RECIPES = [];
@@ -95,7 +95,9 @@
       const g=b.dataset.group, v=b.dataset.value;
       b.setAttribute('aria-pressed', FILTERS[g].has(v)?'true':'false');
     });
-    if (clearBtn) clearBtn.style.display = (FILTERS.ALL && !FILTERS.search && !FILTERS.Pantry.active) ? 'none' : 'inline-flex';
+    if (clearBtn) {
+      clearBtn.style.display = (FILTERS.ALL && !FILTERS.search && !FILTERS.Pantry.active) ? 'none' : 'inline-flex';
+    }
   }
 
   // ---------- Pantry UI ----------
@@ -186,10 +188,14 @@
     Object.values(PLAN).flat().forEach(it=>{
       tk+=(+it.macros.kcal||0); tp+=(+it.macros.protein_g||0); tc+=(+it.macros.carbs_g||0); tf+=(+it.macros.fat_g||0);
     });
-    qs('#sumKcal',plannerPanel) && (qs('#sumKcal',plannerPanel).textContent=Math.round(tk));
-    qs('#sumP',plannerPanel)    && (qs('#sumP',plannerPanel).textContent=`${Math.round(tp)} g`);
-    qs('#sumC',plannerPanel)    && (qs('#sumC',plannerPanel).textContent=`${Math.round(tc)} g`);
-    qs('#sumF',plannerPanel)    && (qs('#sumF',plannerPanel).textContent=`${Math.round(tf)} g`);
+    const kEl = qs('#sumKcal',plannerPanel);
+    const pEl = qs('#sumP',plannerPanel);
+    const cEl = qs('#sumC',plannerPanel);
+    const fEl = qs('#sumF',plannerPanel);
+    if(kEl) kEl.textContent=Math.round(tk);
+    if(pEl) pEl.textContent=`${Math.round(tp)} g`;
+    if(cEl) cEl.textContent=`${Math.round(tc)} g`;
+    if(fEl) fEl.textContent=`${Math.round(tf)} g`;
   }
 
   function buildWeekGrid(){
@@ -426,12 +432,12 @@
     if(!modal) return;
     const get=s=>qs(s,modal);
     const img = get('#modalImage'); if(img) img.style.display='none'; // hide image if template has one
-    get('#recipeTitle')      && (get('#recipeTitle').textContent=r.title);
-    get('#recipeServes')     && (get('#recipeServes').textContent=r.serves||1);
-    get('#recipeTime')       && (get('#recipeTime').textContent=`${r.time_mins||0} min`);
-    get('#recipeSpice')      && (get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons(r.spiceLevel)} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '');
-    get('#recipeIngredients')&& (get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join(''));
-    get('#recipeMethod')     && (get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join(''));
+    get('#recipeTitle')       && (get('#recipeTitle').textContent=r.title);
+    get('#recipeServes')      && (get('#recipeServes').textContent=r.serves||1);
+    get('#recipeTime')        && (get('#recipeTime').textContent=`${r.time_mins||0} min`);
+    get('#recipeSpice')       && (get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons(r.spiceLevel)} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '');
+    get('#recipeIngredients') && (get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join(''));
+    get('#recipeMethod')      && (get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join(''));
     if(get('#recipeMacros')){
       const n=r.nutritionPerServing||{};
       get('#recipeMacros').innerHTML=`<li>${n.kcal??'—'} kcal</li><li>Protein ${n.protein_g??'—'} g</li><li>Carbs ${n.carbs_g??'—'} g</li><li>Fat ${n.fat_g??'—'} g</li>${n.fibre_g!=null?`<li>Fibre ${n.fibre_g} g</li>`:''}${n.sugar_g!=null?`<li>Sugar ${n.sugar_g} g</li>`:''}${n.salt_g!=null?`<li>Salt ${n.salt_g} g</li>`:''}`;
@@ -447,6 +453,7 @@
   }
 
   function printRecipe(r){
+    if(!printArea) return;
     const n=r.nutritionPerServing||{};
     printArea.innerHTML=`
       <article>
@@ -541,6 +548,7 @@
       navigator.clipboard.writeText(txt); alert('Plan copied to clipboard.');
     });
     qs('#plannerPrintBtn',plannerPanel) && (qs('#plannerPrintBtn',plannerPanel).onclick=()=>{
+      if(!printArea) return;
       printArea.innerHTML = `<article><h1>Meal Plan — Today</h1>${
         Object.entries(PLAN).map(([k,arr])=>`<h2>${k[0].toUpperCase()+k.slice(1)}</h2><ul>${arr.map(i=>`<li>${i.title}</li>`).join('')||'<li>—</li>'}</ul>`).join('')
       }</article>`;
@@ -562,7 +570,8 @@
       const b=e.target.closest('.chip'); if(!b) return;
       if(b.dataset.filter==='ALL'){
         FILTERS.ALL=true; ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-        FILTERS.search=''; searchInput && (searchInput.value=''); FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+        FILTERS.search=''; if(searchInput) searchInput.value='';
+        FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
         updateChipStates(); render(); return;
       }
       const g=b.dataset.group, v=b.dataset.value; FILTERS.ALL=false;
@@ -571,7 +580,8 @@
     });
     clearBtn && (clearBtn.onclick=()=>{
       FILTERS.ALL=true; ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-      FILTERS.search=''; searchInput && (searchInput.value=''); FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+      FILTERS.search=''; if(searchInput) searchInput.value='';
+      FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
       updateChipStates(); render();
     });
     searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
@@ -592,22 +602,22 @@
     wire();
 
     // ==== RECIPES LOADER (multi-file + fallbacks) ====
-    // Edit this list to split files if you like:
+    // Edit this list to split files as you grow:
     const recipeFiles = [
-      'assets/data/recipes.json',
-      // 'assets/data/recipes-01.json',
-      // 'assets/data/recipes-02.json'
+      'assets/data/recipes-01.json',
+      'assets/data/recipes-02.json',
+      'assets/data/recipes.json' // optional legacy/main file
     ];
 
     // Load now
     loadAllRecipes(recipeFiles);
   }
 
-  // Robust loader
+  // ---------- Robust loader ----------
   async function fetchWithFallback(path) {
     // try exact path; on 404, try '../' + path (common subfolder mistake)
     const tryFetch = async (p) => {
-      const res = await fetch(p + '?v=' + Date.now());
+      const res = await fetch(p + (p.includes('?') ? '' : ('?v=' + Date.now())));
       return { res, url: p };
     };
 
@@ -624,7 +634,6 @@
     try {
       return JSON.parse(text);
     } catch (e) {
-      // Spot the classic "two top-level arrays" dev mistake quickly
       const looksLikeTwoArrays = /^\s*\[[\s\S]*\]\s*\[[\s\S]*\]\s*$/.test(text);
       const hint = looksLikeTwoArrays
         ? 'Looks like TWO top-level arrays back-to-back. Merge into one array or split into separate files.'
@@ -644,8 +653,8 @@
       })
     );
 
-    // Gather successes, warn on failures
-    const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+    // successes & failures
+    const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
     const bad = results.filter(r => r.status === 'rejected');
 
     if (bad.length) {
@@ -657,17 +666,17 @@
     const seen = new Set();
     RECIPES = mergedRaw.filter(r => {
       const key = r.slug || r.title;
-      if (!key || seen.has(key)) return !key ? false : false;
+      if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
     }).map(r => {
-      r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
+      r.kcalBand  = r.kcalBand  || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
       r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
       return r;
     });
 
     // On first successful load, reset filters so nothing hides the list
-    if (!FIRST_SUCCESSFUL_LOAD) {
+    if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
       FIRST_SUCCESSFUL_LOAD = true;
       FILTERS.ALL = true;
       ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
@@ -676,11 +685,17 @@
       updateChipStates();
     }
 
+    // Feedback
+    if (countEl) {
+      const from = ok.map(o => o.url);
+      countEl.innerHTML = RECIPES.length
+        ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
+        : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
+    }
+
     render();
 
-    // Helpful message if totally empty
     if (!RECIPES.length) {
-      countEl && (countEl.textContent = 'Loaded 0 recipes. Check JSON structure/paths.');
       const help = document.createElement('div');
       help.className = 'meta';
       help.style.marginTop = '.5rem';
@@ -688,7 +703,7 @@
         <p><strong>No recipes loaded.</strong> Quick checks:</p>
         <ul>
           <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
-          <li>Paths are relative to <code>nutrition.html</code>. This loader also tries <code>../</code> as a fallback.</li>
+          <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
           <li>No trailing commas or missing commas between objects.</li>
         </ul>`;
       grid && grid.prepend(help);

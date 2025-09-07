@@ -301,19 +301,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initial calc
   update();
-  <article class="card">
-  <h3>Hydration</h3>
-  <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
+    /* ===== Hydration calc ===== */
+  const hydrBtn = document.getElementById('hydrCalc');
+  const hydrOut = document.getElementById('hydrOut');
+  const hydrW   = document.getElementById('hydrWeight');
 
-  <div class="calc" style="margin-top:.6rem">
-    <label>Your weight (kg)
-      <input id="hydrWeight" type="number" value="75" class="input" style="max-width:100px">
-    </label>
-    <button id="hydrCalc" class="btn">Calculate</button>
-  </div>
+  function calcHydr(){
+    const kg = parseFloat(hydrW.value||0);
+    if(!kg){ 
+      hydrOut.textContent = 'Daily target: — ml'; 
+      return; 
+    }
+    const low  = Math.round(kg*30);
+    const high = Math.round(kg*35);
+    hydrOut.textContent = `Daily target: ${low} – ${high} ml (plus extra if training)`;
+  }
 
-  <p class="meta" id="hydrOut">Daily target: — ml</p>
-</article>
+  if(hydrBtn){ hydrBtn.addEventListener('click', calcHydr); }
+  if(hydrW){ hydrW.addEventListener('input', calcHydr); }
+
+  // run once on load with default value
+  calcHydr();
 });
 </script>
 

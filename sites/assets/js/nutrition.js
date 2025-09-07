@@ -3,7 +3,7 @@
    - No <script> wrappers; drop-in file
    - Preserves planner, modal, filters, week summary
 */
-
+document.getElementById('recipeCount') && (document.getElementById('recipeCount').textContent = 'Loading…');
 (function () {
   // ---------- Shortcuts ----------
   const qs  = (s, e = document) => e.querySelector(s);

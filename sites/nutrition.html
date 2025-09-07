@@ -1,1 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nutrition – FreeFitFuel</title>
 
+  <!-- Your global stylesheet and favicon -->
+  <link rel="stylesheet" href="style.css?v=30">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <!-- Page-specific CSS (adds on top of style.css) -->
+  <style>
+    .hidden{display:none}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+
+    /* HERO (keeps your blue header; orange page title uses .accent from style.css) */
+    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    .hero-mini figure{margin:0;position:relative}
+    .hero-mini img{width:100%;height:50vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05);object-position:center 12%}
+    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
+    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    .hero-mini h1{margin:0 0 .35rem}
+    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+
+    /* Sections + Cards */
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
+    .note{font-size:.92rem;color:var(--inkdim)}
+    .grid{display:grid;gap:12px}
+    .cols-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .cols-3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+    .card figure{height:160px;background:#111;margin:0}
+    .card img{width:100%;height:100%;object-fit:cover;display:block}
+    .card .body{padding:12px}
+    .badge{display:inline-block;font-size:.78rem;padding:.18rem .5rem;border:1px solid var(--stroke);border-radius:999px;margin-right:6px;margin-bottom:6px}
+    .macros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:.5rem 0 .2rem}
+    .macros span{display:block;background:rgba(255,255,255,.06);border:1px solid var(--stroke);padding:.35rem .5rem;border-radius:8px;text-align:center}
+
+    /* Filters */
+    .filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+    .filters .tag{border:1px solid var(--stroke);background:var(--glass);padding:.35rem .7rem;border-radius:999px;cursor:pointer}
+    .filters .tag.active{background:var(--accent);color:#111;font-weight:700}
+
+    /* Planner */
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:.6rem;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+    thead th{background:rgba(255,255,255,.06);text-align:left;font-weight:700}
+    th,td{padding:.6rem;border-bottom:1px solid var(--stroke);vertical-align:top}
+    tr:last-child td{border-bottom:0}
+    .slot{display:flex;flex-direction:column;gap:.35rem}
+    .slot .item{display:flex;justify-content:space-between;align-items:center;gap:.6rem;background:rgba(255,255,255,.04);border:1px solid var(--stroke);padding:.35rem .5rem;border-radius:8px}
+    .slot .item button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.2rem .45rem;border-radius:8px;cursor:pointer}
+
+    /* Auto planner */
+    .ap-plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .ap-day-col{background:var(--glass);border:1px solid var(--stroke);border-radius:10px;padding:10px}
+    .ap-slot .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .ap-swap{border:1px solid var(--stroke);background:var(--glass);padding:.28rem .6rem;border-radius:999px;cursor:pointer}
+    .ap-total{margin-top:.4rem;color:var(--inkdim);font-size:.95rem}
+
+    /* Food log progress */
+    .progress{display:grid;gap:.5rem;margin-top:.6rem}
+    .progress .line{display:grid;grid-template-columns:120px 1fr auto;gap:.6rem;align-items:center}
+    .bar{background:rgba(255,255,255,.09);border:1px solid var(--stroke);height:8px;border-radius:999px;overflow:hidden}
+    .bar>span{display:block;height:100%;width:0;transition:width .35s ease}
+
+    /* Recipe modal (FIX 1: no transparency) */
+    dialog#recipeModal::backdrop{background:rgba(0,0,0,.55)}
+    dialog#recipeModal{border:0;padding:0;background:transparent}
+    .rm-box{background:var(--bg);border:1px solid var(--stroke);border-radius:14px;max-width:min(760px, 92vw);margin:0 auto}
+    .rm-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--stroke)}
+    .rm-body{display:grid;gap:10px;padding:12px 14px}
+    .rm-actions{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--stroke)}
+    .rm-actions .btn{padding:.55rem .8rem}
+  </style>
+</head>
+
+  <body>
+  <!-- HEADER (blue background from style.css) -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="primary-nav" class="main-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="ideas.html">Ideas</a>
+        <a href="guides.html">Guides</a>
+        <a href="workouts.html">Workouts</a>
+        <a href="endurance.html">Endurance</a>
+        <a href="nutrition.html" aria-current="page">Nutrition</a>
+        <a href="wellbeing.html">Wellbeing</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO (image + orange title) -->
+  <header class="hero-mini" role="banner" aria-label="Nutrition hero">
+    <figure>
+      <img src="img/nutrition-hero.jpg" alt="Budget-friendly, colourful whole foods on a table">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1><span class="accent">Fuel for real life</span></h1>
+      <p>Goal-based macros, budget mode, a weekly planner that builds your shopping list, and a day log that tracks your targets.</p>
+    </div>
+  </header>
+
+      <main class="wrap">
+    <p class="lead">Pick a <strong>goal</strong>, calculate your <strong>targets</strong> (BMR → TDEE), then add meals to the <strong>planner</strong> and <strong>daily log</strong>. Toggle <strong>Budget</strong> to favour low-cost options. All data saves on this device.</p>
+
+    <div class="toolbar" aria-label="Nutrition controls">
+      <div class="seg" role="tablist" aria-label="Goal">
+        <button role="tab" aria-pressed="true" data-goal="maintain">Maintain</button>
+        <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
+        <button role="tab" aria-pressed="false" data-goal="build">Build</button>
+        <button role="tab" aria-pressed="false" data-goal="transform">Transform</button>
+      </div>
+      <span class="pill"><input type="checkbox" id="budget"> <label for="budget">Budget mode</label></span>
+    </div>
+
+    <section class="section">
+      <h2>Macro & Calorie Calculator</h2>
+      <div class="grid cols-2">
+        <div class="calc card" style="padding:12px">
+          <div class="row">
+            <label>Sex
+              <select id="sex"><option value="female">Female</option><option value="male">Male</option></select>
+            </label>
+            <label>Age <input id="age" type="number" min="13" max="99" value="35"></label>
+            <label>Height (cm) <input id="cm" type="number" min="120" max="220" value="175"></label>
+            <label>Weight (kg) <input id="kg" type="number" min="35" max="250" value="75"></label>
+            <label>Activity
+              <select id="act">
+                <option value="1.2">Sedentary</option>
+                <option value="1.375">Light (1–3x/wk)</option>
+                <option value="1.55" selected>Moderate (3–5x)</option>
+                <option value="1.725">Active (6–7x)</option>
+                <option value="1.9">Very active</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>Protein (g/kg) <input id="pkk" type="number" step="0.1" value="1.8"></label>
+            <label>Carb bias
+              <select id="carbBias">
+                <option value="balanced" selected>Balanced</option>
+                <option value="lowerCarb">Lower carb</option>
+                <option value="higherCarb">Higher carb</option>
+              </select>
+            </label>
+            <label><input type="checkbox" id="knowbf"> I know body fat %</label>
+            <label id="bfWrap" class="hidden">Body fat % <input id="bf" type="number" min="3" max="60" step="0.5" value="20"></label>
+          </div>
+          <div class="row">
+            <button class="btn" id="calcBtn">Calculate</button>
+            <span id="calcNote" class="out">Uses Mifflin–St Jeor (or Katch–McArdle if body fat is provided), then adjusts by activity and goal.</span>
+          </div>
+        </div>
+        <div class="results">
+          <div class="kpi" style="display:flex;justify-content:space-between;align-items:center">
+            <strong id="outGoal">Maintain</strong>
+            <span id="outCals">— kcal / day</span>
+          </div>
+          <div class="macros">
+            <span><strong>Calories</strong><br><span id="barP" style="display:none"></span><span id="barC" style="display:none"></span><span id="barF" style="display:none"></span></span>
+            <span><strong>Protein</strong><br><span id="outP">— g</span></span>
+            <span><strong>Carbs</strong><br><span id="outC">— g</span></span>
+            <span><strong>Fats</strong><br><span id="outF">— g</span></span>
+          </div>
+          <div class="note">Fibre: aim ~25–35 g/day. Hydration helper below.</div>
+        </div>
+      </div>
+    </section>
+
+            <section class="section" id="recipes">
+      <h2>Recipe Library</h2>
+
+      <div class="filters" id="recipeFilters" aria-label="Recipe filters">
+        <button class="tag active" data-tag="*all">All</button>
+        <button class="tag" data-tag="budget">Budget</button>
+        <button class="tag" data-tag="high-protein">High-Protein</button>
+        <button class="tag" data-tag="gluten-free">Gluten-Free</button>
+        <button class="tag" data-tag="dairy-free">Dairy-Free</button>
+        <button class="tag" data-tag="veg">Vegetarian</button>
+        <button class="tag" data-tag="vegan">Vegan</button>
+        <button class="tag" data-tag="quick">Quick (≤20m)</button>
+        <button class="tag" data-tag="batch">Batch-cook</button>
+        <button class="tag" data-tag="world">World cuisines</button>
+        <button class="tag" data-tag="simple">Simple</button>
+      </div>
+
+      <div id="recipeGrid" class="grid cols-3"></div>
+      <p class="note">Allergens are listed on every card (check labels for specific products & cross-contamination). Nutrition values are estimates.</p>
+    </section>
+
+    <!-- In-page dialog for recipe cards -->
+    <dialog id="recipeModal">
+      <div class="rm-box">
+        <div class="rm-head">
+          <strong id="rm-title">Recipe</strong>
+          <button class="btn" id="rm-close">Close</button>
+        </div>
+        <div class="rm-body">
+          <div id="rm-meta" class="note"></div>
+          <h3>Ingredients</h3>
+          <ul id="rm-ing"></ul>
+          <h3>Method</h3>
+          <ol id="rm-steps"></ol>
+          <p class="note" id="rm-share"></p>
+        </div>
+        <div class="rm-actions">
+          <button class="btn" id="rm-print">Print</button>
+          <button class="btn" id="rm-copy">Copy link</button>
+        </div>
+      </div>
+    </dialog>
+
+            <section class="section" id="planner">
+      <h2>Weekly Meal Planner</h2>
+      <p class="note">Click “Add to Planner” on any recipe to slot it into the week. Your plan saves on this device.</p>
+      <div class="planner">
+        <div class="controls">
+          <button class="btn" id="clearPlan">Clear week</button>
+          <button class="btn" id="printList">Print shopping list</button>
+          <button class="btn" id="csvList">Download CSV</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snacks</th></tr>
+          </thead>
+          <tbody id="planBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+            <section class="section" id="auto-planner">
+      <h2>Auto 7-Day Meal Planner (smart)</h2>
+      <p class="meta">Auto-plans to your daily kcal target. Click <em>Swap</em> to cycle alternatives in any slot.</p>
+      <div class="ap-controls">
+        <label>Daily kcal target <input id="ap-kcal" type="number" min="1200" max="4500" step="50" value="2200"></label>
+        <button id="ap-generate" class="btn">Generate plan</button>
+        <button id="ap-clear" class="btn" style="background:rgba(255,255,255,.1);color:var(--ink);border:1px solid var(--stroke)">Clear</button>
+      </div>
+      <div id="ap-grid" class="ap-plan-grid"></div>
+    </section>
+
+    <section class="section" id="foodlog">
+      <h2>Daily Food Log</h2>
+      <div class="log">
+        <div class="row">
+          <label>Date <input type="date" id="logDate"></label>
+          <button class="btn" id="addCustom">＋ Custom item</button>
+          <button class="btn" id="clearLog">Clear day</button>
+          <button class="btn" id="exportLog">Export CSV</button>
+        </div>
+        <div id="logItems"></div>
+        <div class="progress">
+          <div class="line"><strong>Calories</strong><div class="bar"><span id="pbCal"></span></div><span id="txCal">0 / 0</span></div>
+          <div class="line"><strong>Protein</strong><div class="bar"><span id="pbProt"></span></div><span id="txProt">0 / 0</span></div>
+          <div class="line"><strong>Carbs</strong><div class="bar"><span id="pbCarb"></span></div><span id="txCarb">0 / 0</span></div>
+          <div class="line"><strong>Fats</strong><div class="bar"><span id="pbFat"></span></div><span id="txFat">0 / 0</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Hydration & Fibre</h2>
+      <div class="grid cols-2">
+        <article class="card" style="padding:.8rem">
+          <h3>Hydration helper</h3>
+          <div class="calc">
+            <div class="row">
+              <label>Body weight (kg) <input id="h-kg" type="number" min="35" max="250" value="75"></label>
+              <label>Extra per hour training (ml) <input id="h-train" type="number" min="0" step="50" value="400"></label>
+            </div>
+            <div class="row">
+              <button class="btn" id="h-calc">Calculate</button>
+              <span class="out" id="h-out">— ml / day</span>
+            </div>
+          </div>
+          <p class="note">Rule of thumb: ~30–35 ml/kg + ~300–600 ml per training hour. Adjust to heat & thirst.</p>
+        </article>
+        <article class="card" style="padding:.8rem">
+          <h3>Fibre targets</h3>
+          <p>Aim 25–35 g/day from foods. Increase gradually with fluids.</p>
+          <ul><li>Oats/porridge, wholegrains</li><li>Beans/lentils/chickpeas</li><li>Fruit (berries), veg, nuts/seeds</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Important Note</h2>
+      <p>The content on FreeFitFuel is for general nutrition education only and isn’t a substitute for personalised medical advice.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
+
+    

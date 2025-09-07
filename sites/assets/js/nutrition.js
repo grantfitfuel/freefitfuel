@@ -146,31 +146,32 @@
     return true;
   }
 
-  function card(r){
-    const el=document.createElement('article'); el.className='card';
-    el.innerHTML = `
-  ${r.image ? `<img src="${r.image}" alt="${r.imageAlt || r.title}"
-       style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px">` : ``}
-  <h3>${r.title}</h3>
-  <p class="meta">⏱️ ${r.time_mins || 0} min • 🍽️ ${r.mealType || ''} ${r.nutritionPerServing?.kcal ? `• 🔥 ${r.nutritionPerServing.kcal} kcal` : ''}</p>
-  ...
-`;
-      <div class="mini-nav">
-        ${r.costTag?`<span class="chip" aria-pressed="false">${r.costTag}</span>`:''}
-        ${(r.dietary||[]).map(t=>`<span class="chip" aria-pressed="false">${t}</span>`).join('')}
-        ${(r.nutritionFocus||[]).map(t=>`<span class="chip" aria-pressed="false">${t}</span>`).join('')}
-        ${r.spiceLevel?`<span class="chip" aria-pressed="false">${spiceIcons(r.spiceLevel)} Spicy</span>`:''}
-      </div>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-        <button class="btn" data-action="view">View Recipe Card</button>
-        <button class="btn" data-action="print">Print Recipe Card</button>
-        <button class="btn" data-action="add">Add to Planner</button>
-      </div>`;
-    el.querySelector('[data-action="view"]').onclick=()=>openModal(r);
-    el.querySelector('[data-action="print"]').onclick=()=>printRecipe(r);
-    el.querySelector('[data-action="add"]').onclick=()=>addToPlannerPrompt(r);
-    return el;
-  }
+function card(r){
+  const el = document.createElement('article');
+  el.className = 'card';
+  el.innerHTML = `
+    <h3 style="margin:.2rem 0 .35rem">${r.title}</h3>
+    <p class="meta">⏱️ ${r.time_mins || 0} min • 🍽️ ${r.mealType || ''} 
+      ${r.nutritionPerServing?.kcal ? `• 🔥 ${r.nutritionPerServing.kcal} kcal` : ''}
+      ${r.spiceLevel ? `• ${'🌶️'.repeat(Math.max(1, Math.min(3, +r.spiceLevel||0)))}` : ''}
+    </p>
+    <div class="mini-nav" style="margin:.35rem 0 .55rem">
+      ${r.costTag ? `<span class="chip" aria-pressed="false">${r.costTag}</span>` : ''}
+      ${(r.dietary || []).map(t => `<span class="chip" aria-pressed="false">${t}</span>`).join('')}
+      ${(r.nutritionFocus || []).map(t => `<span class="chip" aria-pressed="false">${t}</span>`).join('')}
+    </div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="btn" data-action="view">View Recipe Card</button>
+      <button class="btn" data-action="print">Print Recipe Card</button>
+      <button class="btn" data-action="add">Add to Planner</button>
+    </div>
+  `;
+
+  el.querySelector('[data-action="view"]').onclick = () => openModal(r);
+  el.querySelector('[data-action="print"]').onclick = () => printRecipe(r);
+  el.querySelector('[data-action="add"]').onclick = () => addToPlannerPrompt(r);
+  return el;
+}
 
   function render(){
     const list=RECIPES.filter(matchesFilters);

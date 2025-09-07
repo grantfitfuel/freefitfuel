@@ -5,7 +5,13 @@
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
    - Week summary shown on main page (mirrors planner panel)
 */
-
+// ---- PROOF BADGE (shows even on iPad Safari)
+(() => {
+  const tag = document.createElement('div');
+  tag.textContent = 'Nutrition.js v11 loaded';
+  tag.style.cssText = 'position:fixed;bottom:8px;right:8px;z-index:9999;background:#ffd54d;color:#111;padding:6px 10px;border-radius:8px;font:600 12px/1.2 system-ui';
+  document.addEventListener('DOMContentLoaded', () => document.body.appendChild(tag));
+})();
 (function () {
   // ---------- Shortcuts ----------
   const qs  = (s, e = document) => e.querySelector(s);

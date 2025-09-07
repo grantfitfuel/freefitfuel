@@ -1,7 +1,8 @@
-/* Nutrition JS — single-source loader (recipes-01.json), with on-page Week Plan summary
-   - Loader: one file + fallback '../', cache-busted fetch, defensive JSON parse, de-dupe by slug/title
-   - Tiles: no images
-   - Modal/Print: no images
+/* Nutrition JS — full replacement (with on-page Week Plan summary)
+   - Robust loader: auto-detect multi-file recipes-01..NN (+ legacy recipes.json), fallback '../' paths
+   - Promise.allSettled + defensive JSON parse
+   - Tiles: text-only (no images)
+   - Modal/Print: no images (modal image hidden if template has one)
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
    - Week summary shown on main page (mirrors planner panel)
 */
@@ -29,9 +30,9 @@
   const openPlannerBtn = qs('#openPlannerBtn');
 
   // Main-page week summary refs
-  const weekSummaryGrid    = qs('#weekSummaryGrid');
-  const weekAutoBtn        = qs('#weekAutoBtn');
-  const weekClearBtn       = qs('#weekClearBtn');
+  const weekSummaryGrid = qs('#weekSummaryGrid');
+  const weekAutoBtn     = qs('#weekAutoBtn');
+  const weekClearBtn    = qs('#weekClearBtn');
 
   // ---------- State ----------
   let RECIPES = [];
@@ -586,6 +587,14 @@
     searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
   }
 
+  // ---------- Build auto list of recipe files ----------
+  function buildRecipeFileList(max = 30) {
+    const pad2 = n => String(n).padStart(2, '0');
+    const numbered = Array.from({length: max}, (_, i) => `assets/data/recipes-${pad2(i+1)}.json`);
+    // keep legacy file last if you still use it
+    return [...numbered, 'assets/data/recipes.json'];
+  }
+
   // ---------- Boot ----------
   function init(){
     if(!grid) return;
@@ -595,22 +604,20 @@
     // restore plans
     loadToday(); renderPlan();
     loadWeek();  buildWeekGrid(); renderWeekSummary();
-    wireWeekSummaryControls();
 
     // bind all UI once (loader will only call render)
     wire();
 
-    // ==== RECIPES LOADER (single file + fallback) ====
-    const recipeFiles = ['assets/data/recipes-01.json'];
-
+    // ==== RECIPES LOADER (auto-probe recipes-01..NN + legacy) ====
+    const recipeFiles = buildRecipeFileList(30);
     loadAllRecipes(recipeFiles);
   }
 
-  // ---------- Robust loader (single-source + ../ fallback) ----------
+  // ---------- Robust loader ----------
   async function fetchWithFallback(path) {
+    // try exact path; on 404, try '../' + path (common subfolder mistake)
     const tryFetch = async (p) => {
-      const bust = (p.includes('?') ? '' : ('?v=' + Date.now()));
-      const res = await fetch(p + bust);
+      const res = await fetch(p + (p.includes('?') ? '' : ('?v=' + Date.now())));
       return { res, url: p };
     };
 
@@ -626,7 +633,7 @@
   function safeParseJSON(text, fileLabel){
     try {
       return JSON.parse(text);
-    } catch (_e) {
+    } catch (e) {
       const looksLikeTwoArrays = /^\s*\[[\s\S]*\]\s*\[[\s\S]*\]\s*$/.test(text);
       const hint = looksLikeTwoArrays
         ? 'Looks like TWO top-level arrays back-to-back. Merge into one array or split into separate files.'
@@ -646,10 +653,13 @@
       })
     );
 
+    // successes & failures
     const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
     const bad = results.filter(r => r.status === 'rejected');
 
-    if (bad.length) console.error('[FFF] Failed recipe source:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
+    if (bad.length) {
+      console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
+    }
 
     // Merge arrays or {recipes:[…]} and de-dup by slug/title
     const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
@@ -660,7 +670,7 @@
       seen.add(key);
       return true;
     }).map(r => {
-      r.kcalBand   = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
+      r.kcalBand   = r.kcalBand   || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
       r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
       return r;
     });
@@ -675,23 +685,23 @@
       updateChipStates();
     }
 
-    // Update count promptly (important for iPad Safari)
-    if (countEl) countEl.textContent = `Showing ${RECIPES.length} of ${RECIPES.length} recipes`;
-
     render();
 
-    if (!RECIPES.length && grid) {
+    if (!RECIPES.length && countEl) {
+      countEl.textContent = 'Showing 0 of 0 recipes';
       const help = document.createElement('div');
       help.className = 'meta';
       help.style.marginTop = '.5rem';
       help.innerHTML = `
         <p><strong>No recipes loaded.</strong> Quick checks:</p>
         <ul>
-          <li>File should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
-          <li>Path used: <code>assets/data/recipes-01.json</code> (tries <code>../assets/data/recipes-01.json</code> as fallback).</li>
+          <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
+          <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
           <li>No trailing commas or missing commas between objects.</li>
         </ul>`;
-      grid.prepend(help);
+      grid && grid.prepend(help);
+    } else if (countEl) {
+      countEl.textContent = `Showing ${RECIPES.filter(matchesFilters).length} of ${RECIPES.length} recipes`;
     }
   }
 

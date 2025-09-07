@@ -923,6 +923,104 @@
     updateLogBars();
     apRender();
   })();
+      <!-- === Fix Pack: seed recipes + All filter (place just above </script> of Block 2) === -->
+  <script>
+  // 1) Seed a few recipes ONLY if none exist on this page
+  (function seedRecipesIfEmpty(){
+    if (!Array.isArray(window.RECIPES)) window.RECIPES = [];
+    if (window.RECIPES.length) return; // already populated elsewhere
+
+    window.RECIPES = [
+      // Breakfast
+      {k:'oo-blueberry', name:'Overnight Oats – Blueberry', cuisine:'UK',
+        tags:['veg','quick','simple','high-fibre','breakfast'], allergens:['gluten (oats*)','dairy*'],
+        img:'', servings:1, macros:{kcal:420,p:22,c:55,f:12},
+        adds:['oats','milk or alt','yoghurt','blueberries','chia'],
+        ingredients:[{qty:60,unit:'g',item:'oats'},{qty:150,unit:'ml',item:'milk or alt'},{qty:80,unit:'g',item:'yoghurt'},{qty:80,unit:'g',item:'blueberries'},{qty:8,unit:'g',item:'chia seeds'}],
+        steps:['Mix everything in a jar.','Chill overnight.']},
+
+      {k:'yog-berry', name:'Greek Yoghurt, Berries & Nuts', cuisine:'Mediterranean',
+        tags:['high-protein','quick','simple','breakfast'], allergens:['dairy','tree nuts'],
+        img:'', servings:1, macros:{kcal:360,p:30,c:32,f:12},
+        adds:['greek yoghurt','berries','nuts','honey'],
+        ingredients:[{qty:200,unit:'g',item:'greek yoghurt'},{qty:100,unit:'g',item:'mixed berries'},{qty:15,unit:'g',item:'mixed nuts'},{qty:1,unit:'tsp',item:'honey (optional)'}],
+        steps:['Bowl yoghurt; top with berries and nuts.']},
+
+      // Lunch
+      {k:'wrap-chicken-hummus', name:'Chicken & Hummus Wrap', cuisine:'Global',
+        tags:['high-protein','quick','simple','lunch'], allergens:['gluten (wrap)','sesame'],
+        img:'', servings:1, macros:{kcal:520,p:35,c:50,f:18},
+        adds:['wrap','chicken','hummus','lettuce','tomato'],
+        ingredients:[{qty:1,unit:'',item:'wrap'},{qty:120,unit:'g',item:'cooked chicken'},{qty:40,unit:'g',item:'hummus'},{qty:2,unit:'leaves',item:'lettuce'},{qty:2,unit:'slices',item:'tomato'}],
+        steps:['Spread hummus; add chicken & veg; roll.']},
+
+      {k:'greek-salad-beans', name:'Greek Salad + Beans', cuisine:'Greek',
+        tags:['veg','gluten-free','quick','simple','world','lunch'], allergens:['dairy'],
+        img:'', servings:2, macros:{kcal:420,p:18,c:30,f:24},
+        adds:['tomatoes','cucumber','olives','feta','mixed beans'],
+        ingredients:[{qty:3,unit:'',item:'tomatoes'},{qty:1,unit:'',item:'cucumber'},{qty:60,unit:'g',item:'olives'},{qty:80,unit:'g',item:'feta'},{qty:1,unit:'tin',item:'mixed beans (drained)'}],
+        steps:['Chop veg; toss with beans & olives; add feta.']},
+
+      // Dinner
+      {k:'thai-green-tofu', name:'Thai Green Curry (Tofu/Chicken)', cuisine:'Thai',
+        tags:['world','gluten-free','dinner'], allergens:['soy*','fish*'],
+        img:'', servings:4, macros:{kcal:520,p:32,c:55,f:18},
+        adds:['green curry paste','coconut milk','tofu/chicken','mixed veg','rice'],
+        ingredients:[{qty:2,unit:'tbsp',item:'green curry paste'},{qty:1,unit:'tin',item:'coconut milk'},{qty:400,unit:'g',item:'firm tofu or chicken'},{qty:400,unit:'g',item:'mixed veg'},{qty:600,unit:'g',item:'cooked rice'}],
+        steps:['Fry paste; add protein & veg; add coconut milk; simmer 10m.']},
+
+      {k:'chilli-turkey', name:'Turkey (or Bean) Chilli', cuisine:'US',
+        tags:['high-protein','batch','gluten-free','world','dinner'], allergens:[],
+        img:'', servings:4, macros:{kcal:540,p:40,c:55,f:14},
+        adds:['turkey mince or beans','kidney beans','tomatoes','spices','onion'],
+        ingredients:[{qty:500,unit:'g',item:'turkey mince (or 2 tins beans)'},{qty:1,unit:'tin',item:'kidney beans'},{qty:1,unit:'tin',item:'tomatoes'},{qty:1,unit:'',item:'onion (diced)'},{qty:2,unit:'tsp',item:'chilli powder'}],
+        steps:['Brown mince with onion; add tomatoes/beans/spices; simmer 20m.']},
+
+      // Snack
+      {k:'protein-smoothie', name:'Green Protein Smoothie', cuisine:'Global',
+        tags:['quick','high-protein','gluten-free','simple','snack'], allergens:['dairy*'],
+        img:'', servings:1, macros:{kcal:330,p:30,c:40,f:6},
+        adds:['protein powder','spinach','frozen mango','yoghurt or alt','water'],
+        ingredients:[{qty:25,unit:'g',item:'protein powder'},{qty:1,unit:'handful',item:'spinach'},{qty:150,unit:'g',item:'frozen mango'},{qty:100,unit:'g',item:'yoghurt (or alt)'},{qty:150,unit:'ml',item:'water'}],
+        steps:['Blend until smooth.']},
+
+      {k:'nuts-berries', name:'Nuts & Berries Pot', cuisine:'UK',
+        tags:['simple','quick','snack','high-fibre'], allergens:['tree nuts'],
+        img:'', servings:1, macros:{kcal:250,p:6,c:20,f:18},
+        adds:['mixed nuts','berries'],
+        ingredients:[{qty:25,unit:'g',item:'mixed nuts'},{qty:100,unit:'g',item:'berries'}],
+        steps:['Combine in a bowl or tub.']}
+    ];
+  })();
+
+  // 2) Add an “All” filter that clears every tag and shows everything
+  (function ensureAllFilter(){
+    const f = document.getElementById('recipeFilters');
+    if(!f) return;
+    if (!f.querySelector('[data-all]')){
+      const all = document.createElement('button');
+      all.className = 'tag';
+      all.textContent = 'All';
+      all.setAttribute('data-all','true');
+      f.prepend(all);
+      all.addEventListener('click', ()=>{
+        // clear ALL tag states (including itself) so active.length === 0
+        f.querySelectorAll('.tag').forEach(t=> t.classList.remove('active'));
+        renderRecipes();
+      });
+      // when any other tag is clicked, keep “All” visually off
+      f.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('tag') && !e.target.hasAttribute('data-all')){
+          all.classList.remove('active');
+        }
+      });
+    }
+  })();
+
+  // 3) Show recipes now (so the page isn’t empty)
+  (function showNow(){
+    try { renderRecipes && renderRecipes(); } catch(e){}
+  })();
   </script>
 </body>
 </html>

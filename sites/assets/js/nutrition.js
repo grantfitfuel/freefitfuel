@@ -183,27 +183,32 @@ function card(r){
 
   // Modal & Print
   function openModal(r){
-    const get=id=>qs(id,modal);
-    modal.querySelectorAll('*'); // keep
-    get('#modalImage').src=r.image; get('#modalImage').alt=r.imageAlt||r.title;
-    get('#recipeTitle').textContent=r.title;
-    get('#recipeServes').textContent=r.serves||1;
-    get('#recipeTime').textContent=`${r.time_mins||0} min`;
-    get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons(r.spiceLevel)} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '';
-    get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('');
-    get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join('');
-    if(r.nutritionPerServing){
-      const n=r.nutritionPerServing;
-      get('#recipeMacros').innerHTML=`<li>${n.kcal} kcal</li><li>Protein ${n.protein_g} g</li><li>Carbs ${n.carbs_g} g</li><li>Fat ${n.fat_g} g</li>${n.fibre_g!=null?`<li>Fibre ${n.fibre_g} g</li>`:''}${n.sugar_g!=null?`<li>Sugar ${n.sugar_g} g</li>`:''}${n.salt_g!=null?`<li>Salt ${n.salt_g} g</li>`:''}`;
-    } else get('#recipeMacros').innerHTML='<li>—</li>';
-    get('#recipeAllergens').textContent=(r.allergensPresent&&r.allergensPresent.length)?`Allergens: ${r.allergensPresent.join(', ')}`:'Allergens: none listed';
-    get('#recipeSwaps').innerHTML=(r.swaps||[]).map(s=>`<li>${s}</li>`).join('');
-    get('#recipeHydration').textContent=r.hydrationTip||'';
-    get('#modalAddToPlanner').onclick=()=>addToPlannerPrompt(r);
-    get('#modalPrint').onclick=()=>printRecipe(r);
-    get('#modalClose').onclick=()=>modal.close();
-    modal.showModal();
-  }
+  const get=id=>qs(id,modal);
+  modal.querySelectorAll('*'); // keep
+
+  // ⛔ removed image assignment entirely
+  // if you want to keep the <img> node hidden:
+  const img = get('#modalImage');
+  if (img) img.style.display = 'none';
+
+  get('#recipeTitle').textContent=r.title;
+  get('#recipeServes').textContent=r.serves||1;
+  get('#recipeTime').textContent=`${r.time_mins||0} min`;
+  get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons[r.spiceLevel]} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '';
+  get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('');
+  get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join('');
+  if(r.nutritionPerServing){
+    const n=r.nutritionPerServing;
+    get('#recipeMacros').innerHTML=`<li>${n.kcal} kcal</li><li>Protein ${n.protein_g} g</li><li>Carbs ${n.carbs_g} g</li><li>Fat ${n.fat_g} g</li>`;
+  } else get('#recipeMacros').innerHTML='<li>—</li>';
+  get('#recipeAllergens').textContent=(r.allergensPresent&&r.allergensPresent.length)?`Allergens: ${r.allergensPresent.join(', ')}`:'Allergens: none';
+  get('#recipeSwaps').innerHTML=(r.swaps||[]).map(s=>`<li>${s}</li>`).join('');
+  get('#recipeHydration').textContent=r.hydrationTip||'';
+  get('#modalAddToPlanner').onclick=()=>addToPlannerPrompt(r);
+  get('#modalPrint').onclick=()=>printRecipe(r);
+  get('#modalClose').onclick=()=>modal.close();
+  modal.showModal();
+}
   function printRecipe(r){
     const n=r.nutritionPerServing||{};
     printArea.hidden=false;
@@ -211,7 +216,6 @@ function card(r){
       <article>
         <h1>${r.title}</h1>
         <p>${r.mealType||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)} ${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'}`:''}</p>
-        <img src="${r.image}" alt="${r.imageAlt||r.title}" style="width:100%;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--stroke);border-radius:8px;margin:.5rem 0">
         <h2>Ingredients</h2><ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
         <h2>Method</h2><ol>${(r.method||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
         <h2>Macros (per serving)</h2>

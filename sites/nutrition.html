@@ -8,12 +8,12 @@
   <link rel="stylesheet" href="style.css?v=26">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
-  <!-- Minimal Nutrition-only tweaks -->
+  <!-- Nutrition page tweaks -->
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
 
-    /* Recipe grid: compact, 3+ across on desktop */
+    /* Recipe grid */
     #recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
     #recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}
     #recipeGrid .card h3{font-size:1.05rem;margin:0}
@@ -21,8 +21,6 @@
     #recipeGrid .card .mini-nav{display:flex;flex-wrap:wrap;gap:.3rem}
     #recipeGrid .card .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;font-size:.78rem}
     #recipeGrid .card .btn{font-size:.85rem;padding:.4rem .6rem}
-
-    /* Remove images from recipe tiles only */
     #recipeGrid .card img, #recipeGrid img.card-img{display:none !important}
 
     /* Filter chips */
@@ -38,19 +36,23 @@
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}
     .overlay.show{opacity:1;pointer-events:auto}
 
-    /* ===== Dialog (recipe card) ===== */
-    dialog.recipe-modal {
-      background:#0b0f14; color:var(--ink);
-      width:min(900px,96vw); max-height:90vh; overflow:auto;
-      border:0; border-radius:12px; padding:0; z-index:1100;
-    }
+    /* Dialog modal base */
+    dialog.recipe-modal{width:min(900px,96vw);max-height:90vh;border:0;border-radius:12px;padding:0;background:#0b0f14;color:var(--ink);z-index:3000}
     dialog.recipe-modal::backdrop{background:rgba(0,0,0,.5)}
-    dialog[open]{display:block}
-    .recipe-modal .modal-head{position:sticky;top:0;display:flex;justify-content:space-between;gap:.6rem;align-items:center;padding:12px 14px;border-bottom:1px solid var(--stroke);background:#0b0f14}
-    .recipe-modal .modal-body{padding:14px}
+    /* iOS fallback when HTMLDialogElement is flaky */
+    dialog.recipe-modal.fallback-open{
+      position:fixed; top:5vh; left:50%; transform:translateX(-50%);
+      width:min(900px,96vw); max-height:90vh; overflow:auto;
+      display:block; border:0; border-radius:12px; padding:0; background:#0b0f14; z-index:3000;
+    }
+    .recipe-modal .modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--stroke)}
+    .recipe-modal .modal-body{padding:14px 16px}
+    .recipe-modal h2{margin:.2rem 0}
     .recipe-modal .meta{color:var(--inkdim)}
-    .recipe-modal .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:700px){ .recipe-modal .grid-2{grid-template-columns:1fr} }
+    .recipe-modal .cols{display:grid;gap:12px;grid-template-columns:1fr 2fr}
+    @media (max-width:700px){ .recipe-modal .cols{grid-template-columns:1fr} }
+    .recipe-modal ul{margin:.4rem 0 .6rem .9rem}
+    .recipe-modal .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
   </style>
 </head>
 <body>
@@ -58,7 +60,9 @@
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
-    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="ideas.html">Ideas</a>
@@ -142,7 +146,7 @@
     </div>
   </section>
 
-  <!-- WEEK SUMMARY ON PAGE -->
+  <!-- WEEK SUMMARY -->
   <section class="section" id="weekSummarySection" aria-label="This Week's Meal Plan">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap">
       <h2 style="margin:0">This Week’s Plan</h2>
@@ -155,7 +159,7 @@
     <div id="weekSummaryGrid" class="grid" style="grid-template-columns:repeat(4,1fr)"></div>
   </section>
 
-  <!-- TOOLS: search + filters -->
+  <!-- TOOLS -->
   <section class="section" aria-label="Recipe tools">
     <div class="grid" style="grid-template-columns:2fr 1fr">
       <div>
@@ -220,7 +224,10 @@
 <!-- Panels & modal shells -->
 <aside id="pantryPanel" class="panel" aria-hidden="true"></aside>
 <aside id="plannerPanel" class="panel" aria-hidden="true"></aside>
+
+<!-- Keep dialog present; JS fills its contents if empty -->
 <dialog id="recipeModal" class="recipe-modal" aria-hidden="true"></dialog>
+
 <div id="printArea" hidden></div>
 <div id="overlay" class="overlay"></div>
 
@@ -237,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Macros calculator =====
+  // ===== Macros calculator (Mifflin–St Jeor) =====
   const goalChips=[...document.querySelectorAll('.goal-chip')];
   let GOAL='Maintain';
   goalChips.forEach(b=>b.addEventListener('click', ()=>{
@@ -245,38 +252,77 @@ document.addEventListener('DOMContentLoaded', () => {
     b.setAttribute('aria-pressed','true'); GOAL=b.dataset.goal; update();
   }));
 
-  const sex=bmrSex, age=bmrAge, ht=bmrHeight, wt=bmrWeight, act=bmrActivity;
-  const outK=outKcal, outP=outProtein, outC=outCarbs, outF=outFat, goalLine=document.getElementById('goalLine');
+  const sex=document.getElementById('bmrSex'),
+        age=document.getElementById('bmrAge'),
+        ht =document.getElementById('bmrHeight'),
+        wt =document.getElementById('bmrWeight'),
+        act=document.getElementById('bmrActivity');
 
-  function calcBMR(s,kg,cm,yrs){ return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5 : 10*kg + 6.25*cm - 5*yrs - 161; }
+  const outK=document.getElementById('outKcal'),
+        outP=document.getElementById('outProtein'),
+        outC=document.getElementById('outCarbs'),
+        outF=document.getElementById('outFat'),
+        goalLine=document.getElementById('goalLine');
+
+  function calcBMR(s,kg,cm,yrs){
+    return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5
+                      : 10*kg + 6.25*cm - 5*yrs - 161;
+  }
   function targetsFromTDEE(tdee, goal){
     let kcal=tdee;
-    if(goal==='Cut') kcal*=0.82;
-    if(goal==='Build/Bulk') kcal*=1.15;
-    if(goal==='Transform') kcal*=0.97;
-    const kg=parseFloat(wt.value||0);
-    let p_perkg=1.6; if(goal==='Cut') p_perkg=2.0; if(goal==='Build/Bulk') p_perkg=1.8; if(goal==='Transform') p_perkg=2.2;
-    const protein_g=Math.round(p_perkg*kg);
-    let carb_pct=0.50,fat_pct=0.30;
-    if(goal==='Cut'){carb_pct=0.40;fat_pct=0.30}
-    if(goal==='Build/Bulk'){carb_pct=0.55;fat_pct=0.25}
-    if(goal==='Transform'){carb_pct=0.45;fat_pct=0.30}
-    return {kcal:Math.round(kcal), protein_g, carbs_g:Math.round((kcal*carb_pct)/4), fat_g:Math.round((kcal*fat_pct)/9)};
+    if(goal==='Cut') kcal = tdee*0.82;
+    if(goal==='Build/Bulk') kcal = tdee*1.15;
+    if(goal==='Transform') kcal = tdee*0.97;
+
+    const kg = parseFloat(wt.value||0);
+    let p_perkg = 1.6;
+    if(goal==='Cut') p_perkg = 2.0;
+    if(goal==='Build/Bulk') p_perkg = 1.8;
+    if(goal==='Transform') p_perkg = 2.2;
+
+    const protein_g = Math.round(p_perkg * kg);
+    let carb_pct = 0.50, fat_pct = 0.30;
+    if(goal==='Cut'){carb_pct=0.40; fat_pct=0.30;}
+    if(goal==='Build/Bulk'){carb_pct=0.55; fat_pct=0.25;}
+    if(goal==='Transform'){carb_pct=0.45; fat_pct=0.30;}
+
+    const carbs_g = Math.round((kcal * carb_pct) / 4);
+    const fat_g   = Math.round((kcal * fat_pct) / 9);
+
+    return { kcal: Math.round(kcal), protein_g, carbs_g, fat_g };
   }
   function update(){
     const bmr = calcBMR(sex.value, parseFloat(wt.value||0), parseFloat(ht.value||0), parseFloat(age.value||0));
-    const tdee= bmr * parseFloat(act.value||1);
-    const t=targetsFromTDEE(tdee, GOAL);
-    outK.textContent=t.kcal; outP.textContent=t.protein_g+' g'; outC.textContent=t.carbs_g+' g'; outF.textContent=t.fat_g+' g';
-    goalLine.innerHTML=`Goal: <strong>${GOAL}</strong> — based on Mifflin–St Jeor + activity`;
+    const tdee = bmr * parseFloat(act.value||1);
+    const t = targetsFromTDEE(tdee, GOAL);
+
+    outK.textContent = t.kcal.toString();
+    outP.textContent = t.protein_g + ' g';
+    outC.textContent = t.carbs_g + ' g';
+    outF.textContent = t.fat_g + ' g';
+    goalLine.innerHTML = `Goal: <strong>${GOAL}</strong> — based on Mifflin–St Jeor + activity`;
   }
-  calcNow.addEventListener('click', update);
-  calcCopy.addEventListener('click', ()=>{navigator.clipboard.writeText(`Goal: ${GOAL}\nCalories: ${outK.textContent} kcal\nProtein: ${outP.textContent}\nCarbs: ${outC.textContent}\nFat: ${outF.textContent}`); alert('Copied targets to clipboard.');});
+  document.getElementById('calcNow').addEventListener('click', update);
+  document.getElementById('calcCopy').addEventListener('click', ()=>{
+    const txt = `Goal: ${GOAL}\nCalories: ${outK.textContent} kcal\nProtein: ${outP.textContent}\nCarbs: ${outC.textContent}\nFat: ${outF.textContent}`;
+    navigator.clipboard.writeText(txt);
+    alert('Copied targets to clipboard.');
+  });
   update();
 
   // Hydration
-  function hydr(){ const kg=parseFloat(hydrWeight.value||0); if(!kg){hydrOut.textContent='Daily target: — ml';return} const lo=Math.round(kg*30), hi=Math.round(kg*35); hydrOut.textContent=`Daily target: ${lo} – ${hi} ml (≈ ${(lo/1000).toFixed(1)} – ${(hi/1000).toFixed(1)} L, plus extra if training)`;}
-  hydrCalc.addEventListener('click', hydr); hydrWeight.addEventListener('input', hydr); hydr();
+  const hydrBtn = document.getElementById('hydrCalc');
+  const hydrOut = document.getElementById('hydrOut');
+  const hydrW   = document.getElementById('hydrWeight');
+  function calcHydr(){
+    const kg = parseFloat(hydrW.value||0);
+    if(!kg){ hydrOut.textContent = 'Daily target: — ml'; return; }
+    const low  = Math.round(kg*30), high = Math.round(kg*35);
+    hydrOut.textContent = `Daily target: ${low} – ${high} ml (≈ ${(low/1000).toFixed(1)} – ${(high/1000).toFixed(1)} L, plus extra if training)`;
+  }
+  if(hydrBtn) hydrBtn.addEventListener('click', calcHydr);
+  if(hydrW)   hydrW.addEventListener('input', calcHydr);
+  calcHydr();
 });
 </script>
 

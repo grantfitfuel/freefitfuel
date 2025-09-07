@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initial calc
   update();
-    /* ===== Hydration calc ===== */
+  /* ===== Hydration calc ===== */
   const hydrBtn = document.getElementById('hydrCalc');
   const hydrOut = document.getElementById('hydrOut');
   const hydrW   = document.getElementById('hydrWeight');
@@ -314,7 +314,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const low  = Math.round(kg*30);
     const high = Math.round(kg*35);
-    hydrOut.textContent = `Daily target: ${low} – ${high} ml (plus extra if training)`;
+    const lowL = (low/1000).toFixed(1);
+    const highL = (high/1000).toFixed(1);
+    hydrOut.textContent = `Daily target: ${low} – ${high} ml (≈ ${lowL} – ${highL} L, plus extra if training)`;
   }
 
   if(hydrBtn){ hydrBtn.addEventListener('click', calcHydr); }

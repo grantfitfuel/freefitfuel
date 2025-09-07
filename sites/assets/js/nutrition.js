@@ -1,9 +1,9 @@
-/* Nutrition JS — full replacement
+/* Nutrition JS — full replacement (with on-page Week Plan summary)
    - Data path: assets/data/recipes.json
    - Tiles: no images
-   - Modal: no image
-   - Print: no image (relies on print CSS)
+   - Modal/Print: no images
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
+   - Week summary shown on main page (mirrors planner panel)
 */
 
 (function () {
@@ -27,6 +27,12 @@
 
   const pantryOpenBtn  = qs('#pantryOpenBtn');
   const openPlannerBtn = qs('#openPlannerBtn');
+
+  // NEW: main-page week summary references
+  const weekSummarySec  = qs('#weekSummarySection');
+  const weekSummaryGrid = qs('#weekSummaryGrid');
+  const weekAutoBtn     = qs('#weekAutoBtn');
+  const weekClearBtn    = qs('#weekClearBtn');
 
   // ---------- State ----------
   let RECIPES = [];
@@ -207,16 +213,60 @@
       return `<div><h4>${d}</h4>${cells}</div>`;
     }).join('');
 
-    // Wire week actions
+    // Wire week actions (panel)
     qsa('[data-swap]', plannerPanel).forEach(b=>b.onclick=()=>{
       const [di,sl]=b.dataset.swap.split(':'); swapSlot(+di, sl);
     });
     qsa('[data-wremove]', plannerPanel).forEach(b=>b.onclick=()=>{
-      const [di,sl]=b.dataset.wremove.split(':'); PLAN_WEEK[+di][sl]=null; saveWeek(); buildWeekGrid();
+      const [di,sl]=b.dataset.wremove.split(':'); PLAN_WEEK[+di][sl]=null; saveWeek(); buildWeekGrid(); renderWeekSummary();
     });
     qsa('[data-pick]', plannerPanel).forEach(b=>b.onclick=()=>{
       const [di,sl]=b.dataset.pick.split(':'); swapSlot(+di, sl);
     });
+  }
+
+  // ---------- Week summary on MAIN PAGE ----------
+  function renderWeekSummary(){
+    if(!weekSummaryGrid) return;
+    weekSummaryGrid.innerHTML = DAYS.map((d,di)=>{
+      const day=PLAN_WEEK[di];
+      const cells = SLOTS.map(sl=>{
+        const it=day[sl];
+        return `
+          <div style="border:1px solid var(--stroke);border-radius:10px;padding:.5rem;margin:.2rem">
+            <div class="meta" style="margin-bottom:.25rem"><strong>${sl[0].toUpperCase()+sl.slice(1)}</strong></div>
+            ${
+              it ? `
+                <div class="badge" style="display:flex;justify-content:space-between;align-items:center;gap:.5rem">
+                  <span>${it.title}</span>
+                  <span>
+                    <button class="linkbtn" data-swap-main="${di}:${sl}">Swap</button>
+                    <button class="linkbtn" data-wremove-main="${di}:${sl}">Remove</button>
+                  </span>
+                </div>`
+                : `<button class="btn" data-pick-main="${di}:${sl}">Pick</button>`
+            }
+          </div>
+        `;
+      }).join('');
+      return `<div><h4>${d}</h4>${cells}</div>`;
+    }).join('');
+
+    // Wire week actions (main page)
+    qsa('[data-swap-main]').forEach(b=>b.onclick=()=>{
+      const [di,sl]=b.dataset.swapMain.split(':'); swapSlot(+di, sl);
+    });
+    qsa('[data-wremove-main]').forEach(b=>b.onclick=()=>{
+      const [di,sl]=b.dataset.wremoveMain.split(':'); PLAN_WEEK[+di][sl]=null; saveWeek(); buildWeekGrid(); renderWeekSummary();
+    });
+    qsa('[data-pick-main]').forEach(b=>b.onclick=()=>{
+      const [di,sl]=b.dataset.pickMain.split(':'); swapSlot(+di, sl);
+    });
+  }
+
+  function wireWeekSummaryControls(){
+    if(weekAutoBtn) weekAutoBtn.onclick = autoPlanWeek;
+    if(weekClearBtn) weekClearBtn.onclick = clearWeek;
   }
 
   function saveToday(){ localStorage.setItem('fff_mealplan_today_v1', JSON.stringify(PLAN)); }
@@ -260,16 +310,16 @@
         }
       }
     }
-    saveWeek(); buildWeekGrid();
+    saveWeek(); buildWeekGrid(); renderWeekSummary();
   }
   function swapSlot(dayIndex, slot){
     const used = currentUsedSlugs();
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
     const next = pickUnique(slot, used);
-    if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); }
+    if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); renderWeekSummary(); }
     else alert('No alternative recipes available for this slot under current filters.');
   }
-  function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); }
+  function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); renderWeekSummary(); }
 
   // ---------- Matching ----------
   function matchesFilters(r){
@@ -368,9 +418,7 @@
 
   function openModal(r){
     const get=id=>qs(id,modal);
-    // Hide hero image entirely (as requested)
-    const img = get('#modalImage'); if(img) img.style.display='none';
-
+    const img = get('#modalImage'); if(img) img.style.display='none'; // hide image
     get('#recipeTitle').textContent=r.title;
     get('#recipeServes').textContent=r.serves||1;
     get('#recipeTime').textContent=`${r.time_mins||0} min`;
@@ -401,10 +449,8 @@
         <h2>Macros (per serving)</h2>
         <p>${n.kcal??'—'} kcal • P ${n.protein_g??'—'} g • C ${n.carbs_g??'—'} g • F ${n.fat_g??'—'} g${n.fibre_g!=null?` • Fibre ${n.fibre_g} g`:''}${n.sugar_g!=null?` • Sugar ${n.sugar_g} g`:''}${n.salt_g!=null?` • Salt ${n.salt_g} g`:''}</p>
       </article>`;
-    // ensure visible for print snapshot
     printArea.removeAttribute('hidden'); printArea.style.display='block';
-    const doPrint=()=>window.print();
-    requestAnimationFrame(()=>requestAnimationFrame(doPrint));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
     const cleanup=()=>{ printArea.innerHTML=''; printArea.setAttribute('hidden',''); printArea.style.display=''; window.removeEventListener('afterprint',cleanup); };
     if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
   }
@@ -482,9 +528,12 @@
       if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
     };
 
-    // Week planner
+    // Week planner (panel)
     qs('#autoWeekBtn',plannerPanel).onclick=autoPlanWeek;
     qs('#clearWeekBtn',plannerPanel).onclick=clearWeek;
+
+    // Week summary (main page)
+    wireWeekSummaryControls();
 
     // Filters
     filterBar.addEventListener('click',e=>{
@@ -514,7 +563,8 @@
 
     // restore plans
     loadToday(); renderPlan();
-    loadWeek();  buildWeekGrid();
+    loadWeek();  buildWeekGrid(); renderWeekSummary();
+    wireWeekSummaryControls();
 
     // fetch data
     fetch('assets/data/recipes.json', {cache:'no-store'})

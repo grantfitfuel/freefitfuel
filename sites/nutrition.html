@@ -5,84 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nutrition | FreeFitFuel</title>
 
-  <!-- Reuse your existing global CSS bundle(s) -->
-<link rel="stylesheet" href="style.css?v=3" />
-
-  <!-- Basic page-specific tweaks (kept tiny to avoid nuking shared CSS) -->
-  <style>
-    .hero { padding: 2rem 0; }
-    .hero h1 { margin: 0 0 .25rem 0; }
-    .sub { opacity: .9; }
-    .quickbar { position: sticky; top: 0; background: #fff; z-index: 5; border-bottom: 1px solid #eee; }
-    .quickbar-inner { display: grid; gap: .75rem; padding: .75rem 0; }
-    .filters { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .25rem; }
-    .chip { border: 1px solid #ddd; padding: .4rem .65rem; border-radius: 999px; background: #fff; cursor: pointer; white-space: nowrap; }
-    .chip[aria-pressed="true"] { border-color: #FF6A00; box-shadow: 0 0 0 2px rgba(255,106,0,.15); }
-    .count-line { margin: .75rem 0; font-weight: 600; }
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-    @media (max-width: 980px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-    @media (max-width: 640px){ .grid{ grid-template-columns: 1fr; } }
-    .card { border: 1px solid #eee; border-radius: .75rem; overflow: hidden; display: flex; flex-direction: column; background: #fff; }
-    .card-img { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
-    .card-body { padding: .75rem; display: grid; gap: .5rem; }
-    .badges { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .badge { font-size: .8rem; border: 1px solid #eee; border-radius: .5rem; padding: .15rem .45rem; }
-    .spice { display: inline-flex; align-items: center; gap: .25rem; }
-    .actions { display: grid; gap: .5rem; margin-top: .25rem; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border: 1px solid #ddd; border-radius: .5rem; padding: .55rem .75rem; cursor: pointer; text-align: center; }
-    .btn.primary { border-color: #FF6A00; background: #FF6A00; color: #fff; }
-    .btn.link { border: 0; padding: 0; color: #FF6A00; background: transparent; }
-    .muted { color: #666; }
-    .kpi { display: flex; gap: .75rem; font-size: .9rem; color: #333; }
-    .kpi span { display: inline-flex; align-items: center; gap: .3rem; }
-
-    /* Panels */
-    .panel { position: fixed; top: 0; right: 0; height: 100%; width: min(420px, 100%); background: #fff; border-left: 1px solid #eee; transform: translateX(100%); transition: transform .25s ease; z-index: 20; display: flex; flex-direction: column; }
-    .panel.open { transform: translateX(0); }
-    .panel-header { padding: 1rem; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; }
-    .panel-body { padding: 1rem; overflow: auto; display: grid; gap: .75rem; }
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 15; }
-    .overlay.show { opacity: 1; pointer-events: auto; }
-
-    /* Modal for recipe details */
-    dialog.recipe-modal { width: min(840px, 96vw); border: 0; border-radius: .75rem; padding: 0; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
-    .modal-inner { display: grid; grid-template-columns: 1fr; }
-    .modal-media { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-    .modal-content { padding: 1rem; display: grid; gap: .75rem; }
-    .row { display: grid; gap: .5rem; }
-    .row.two { grid-template-columns: repeat(2, 1fr); }
-    @media (max-width: 720px){ .row.two { grid-template-columns: 1fr; } }
-
-    /* Print single-recipe layout (JS injects content into #printArea and triggers print) */
-    @media print {
-      body * { visibility: hidden !important; }
-      #printArea, #printArea * { visibility: visible !important; }
-      #printArea { position: absolute; inset: 0; padding: 1.25cm; }
-    }
-  </style>
+  <!-- Correct global stylesheet -->
+  <link rel="stylesheet" href="/sites/style.css?v=3" />
 </head>
 <body>
-  <!-- ✅ Reuse your working site header/nav -->
-  <header class="site-header">
+
+  <!-- HEADER copied from Endurance -->
+  <header class="header">
     <div class="container">
-      <nav class="site-nav">
-        <a href="index.html" class="logo">FreeFitFuel</a>
+      <a href="index.html" class="brand">
+        <img src="/sites/assets/img/fff-logo.svg" alt="FreeFitFuel logo" width="160" height="40">
+      </a>
+      <nav class="nav">
         <ul>
           <li><a href="index.html">Home</a></li>
+          <li><a href="ideas.html">Ideas</a></li>
+          <li><a href="guides.html">Guides</a></li>
           <li><a href="workout.html">Workouts</a></li>
           <li><a href="endurance.html">Endurance</a></li>
           <li><a href="nutrition.html" aria-current="page">Nutrition</a></li>
           <li><a href="wellbeing.html">Wellbeing</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="tracker.html">Tracker</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
+  <!-- MAIN CONTENT -->
   <main class="container">
     <!-- HERO -->
     <section class="hero">
       <h1>Nutrition</h1>
-      <p class="sub">Balanced macros, budget-friendly recipes, and hydration—no fuss. UK English • Allergens labelled • Vegetarian/vegan options available.</p>
+      <p class="sub">Balanced macros, budget-friendly recipes, and hydration — no fuss. UK English • Allergens labelled • Vegetarian/vegan options available.</p>
     </section>
 
     <!-- QUICK ACTION BAR -->
@@ -91,17 +46,16 @@
         <div class="row two">
           <div>
             <label for="recipeSearch" class="visually-hidden">Search recipes</label>
-            <input id="recipeSearch" type="search" placeholder="Search recipes, ingredients, tags…" style="width:100%; padding:.6rem .75rem; border:1px solid #ddd; border-radius:.5rem;" />
+            <input id="recipeSearch" type="search" placeholder="Search recipes, ingredients, tags…" />
           </div>
           <div style="display:flex; gap:.5rem; justify-content:flex-end;">
-            <button id="pantryOpenBtn" class="btn" aria-haspopup="dialog">Pantry</button>
+            <button id="pantryOpenBtn" class="btn">Pantry</button>
             <button id="openPlannerBtn" class="btn">Open Meal Planner</button>
           </div>
         </div>
 
         <!-- FILTER CHIPS -->
         <div id="filterChips" class="filters" role="toolbar" aria-label="Recipe filters">
-          <!-- JS will render chips. We provide one hard-coded ALL as safe default -->
           <button class="chip" data-filter="ALL" aria-pressed="true">ALL</button>
         </div>
       </div>
@@ -114,12 +68,10 @@
     </div>
 
     <!-- GRID -->
-    <section id="recipeGrid" class="grid" aria-live="polite" aria-busy="true">
-      <!-- JS populates recipe cards here -->
-    </section>
+    <section id="recipeGrid" class="grid" aria-live="polite" aria-busy="true"></section>
 
-    <!-- EDUCATION BAND (short) -->
-    <section class="education" style="margin:2rem 0; border-top:1px solid #eee; padding-top:1rem;">
+    <!-- EDUCATION BAND -->
+    <section class="education">
       <div class="row two">
         <div>
           <h3>Macros 101</h3>
@@ -133,8 +85,8 @@
     </section>
 
     <!-- DISCLAIMER -->
-    <section class="disclaimer" style="margin:2rem 0;">
-      <p class="muted" style="font-size:.9rem;">
+    <section class="disclaimer">
+      <p class="muted">
         Content is general information and not a substitute for professional advice. If you have existing health conditions, please consult a clinician before starting any plan.
       </p>
     </section>
@@ -143,167 +95,29 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
-      <p class="muted">© FreeFitFuel — <span>Grant Cameron Anthony</span></p>
+      <p class="muted">© FreeFitFuel — Grant Cameron Anthony</p>
     </div>
   </footer>
 
-  <!-- OVERLAY for panels -->
-  <div id="overlay" class="overlay" hidden></div>
-
   <!-- PANTRY PANEL -->
-  <aside id="pantryPanel" class="panel" aria-hidden="true" aria-labelledby="pantryTitle">
-    <div class="panel-header">
-      <h2 id="pantryTitle">Pantry</h2>
-      <button id="pantryCloseBtn" class="btn">Close</button>
-    </div>
-    <div class="panel-body">
-      <label for="pantryInput">Type what you’ve got</label>
-      <input id="pantryInput" type="text" placeholder="e.g., rice, pasta, tinned tomatoes, beans, eggs, frozen veg…" style="width:100%; padding:.6rem .75rem; border:1px solid #ddd; border-radius:.5rem;" />
-      <div class="muted" style="font-size:.9rem;">Tip: press Enter or comma to add items as tokens.</div>
-
-      <div id="pantryTokens" class="filters" aria-label="Your pantry items"></div>
-
-      <div class="row two">
-        <label><input type="checkbox" id="pantryStrict" /> Only use my pantry</label>
-        <label>Allow up to
-          <select id="pantryExtras" style="margin-left:.5rem;">
-            <option value="0">0 extras</option>
-            <option value="1">1 extra</option>
-            <option value="2" selected>2 extras</option>
-            <option value="3">3 extras</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="row two">
-        <label><input type="checkbox" id="pantryBudget" /> Budget only</label>
-        <label><input type="checkbox" id="pantryRespectDiet" checked /> Respect dietary filters</label>
-      </div>
-
-      <div style="display:flex; gap:.5rem;">
-        <button id="pantryFindBtn" class="btn primary">Find recipes</button>
-        <button id="pantryPlanWeekBtn" class="btn">Auto-plan cheap week</button>
-        <button id="pantryResetBtn" class="btn">Reset Pantry</button>
-      </div>
-    </div>
+  <aside id="pantryPanel" class="panel" aria-hidden="true">
+    <!-- content handled by JS -->
   </aside>
 
   <!-- PLANNER PANEL -->
-  <aside id="plannerPanel" class="panel" aria-hidden="true" aria-labelledby="plannerTitle">
-    <div class="panel-header">
-      <h2 id="plannerTitle">Meal Planner</h2>
-      <button id="plannerCloseBtn" class="btn">Close</button>
-    </div>
-    <div class="panel-body">
-      <!-- Goal selector -->
-      <label for="goalSelect">Goal</label>
-      <select id="goalSelect">
-        <option value="">— Select —</option>
-        <option>Maintain</option>
-        <option>Cut</option>
-        <option>Build/Bulk</option>
-        <option>Transform</option>
-      </select>
-
-      <!-- Targets -->
-      <div id="targets" class="kpi">
-        <span><strong>Calories:</strong> <span id="targetKcal">—</span></span>
-        <span><strong>Protein:</strong> <span id="targetProtein">—</span></span>
-        <span><strong>Carbs:</strong> <span id="targetCarbs">—</span></span>
-        <span><strong>Fat:</strong> <span id="targetFat">—</span></span>
-      </div>
-
-      <!-- Day slots -->
-      <div id="daySlots" class="row">
-        <h3>Today</h3>
-        <div class="row two">
-          <div>
-            <h4>Breakfast</h4>
-            <div id="slot-breakfast"></div>
-          </div>
-          <div>
-            <h4>Lunch</h4>
-            <div id="slot-lunch"></div>
-          </div>
-          <div>
-            <h4>Dinner</h4>
-            <div id="slot-dinner"></div>
-          </div>
-          <div>
-            <h4>Snack</h4>
-            <div id="slot-snack"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Totals -->
-      <div id="totals" class="kpi" aria-live="polite">
-        <span><strong>Total kcal:</strong> <span id="sumKcal">0</span></span>
-        <span><strong>P:</strong> <span id="sumP">0 g</span></span>
-        <span><strong>C:</strong> <span id="sumC">0 g</span></span>
-        <span><strong>F:</strong> <span id="sumF">0 g</span></span>
-      </div>
-
-      <!-- Planner actions -->
-      <div style="display:flex; gap:.5rem; margin-top:.5rem;">
-        <button id="plannerClearBtn" class="btn">Clear day</button>
-        <button id="plannerCopyBtn" class="btn">Copy</button>
-        <button id="plannerPrintBtn" class="btn">Print</button>
-      </div>
-    </div>
+  <aside id="plannerPanel" class="panel" aria-hidden="true">
+    <!-- content handled by JS -->
   </aside>
 
   <!-- RECIPE MODAL -->
-  <dialog id="recipeModal" class="recipe-modal" aria-labelledby="recipeTitle">
-    <div class="modal-inner">
-      <img id="modalImage" class="modal-media" alt="" />
-      <div class="modal-content">
-        <div class="row">
-          <h2 id="recipeTitle">Recipe</h2>
-          <div class="kpi">
-            <span><strong>Serves:</strong> <span id="recipeServes">—</span></span>
-            <span><strong>Time:</strong> <span id="recipeTime">—</span></span>
-            <span id="recipeSpice" class="spice" aria-label="Spice level" title="Spice level"></span>
-          </div>
-        </div>
-
-        <div class="row two">
-          <div>
-            <h3>Ingredients</h3>
-            <ul id="recipeIngredients"></ul>
-          </div>
-          <div>
-            <h3>Method</h3>
-            <ol id="recipeMethod"></ol>
-          </div>
-        </div>
-
-        <div class="row two">
-          <div>
-            <h3>Macros per serving</h3>
-            <ul id="recipeMacros" class="muted"></ul>
-          </div>
-          <div>
-            <h3>Allergens & swaps</h3>
-            <p id="recipeAllergens" class="muted"></p>
-            <ul id="recipeSwaps" class="muted"></ul>
-            <p id="recipeHydration" class="muted"></p>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button id="modalAddToPlanner" class="btn primary">Add to Planner</button>
-          <button id="modalPrint" class="btn">Print Recipe Card</button>
-          <button id="modalClose" class="btn">Close</button>
-        </div>
-      </div>
-    </div>
+  <dialog id="recipeModal" class="recipe-modal" aria-hidden="true">
+    <!-- content handled by JS -->
   </dialog>
 
-  <!-- Hidden print target for single recipe -->
+  <!-- HIDDEN PRINT AREA -->
   <div id="printArea" hidden></div>
 
-  <!-- ONE script only. JS will fetch assets/data/recipes.json -->
-  <script defer src="assets/js/nutrition.js"></script>
+  <!-- NUTRITION SCRIPT -->
+  <script defer src="/sites/assets/js/nutrition.js?v=2"></script>
 </body>
 </html>

@@ -206,3 +206,29 @@ dialog::backdrop{ background:rgba(0,0,0,.6) } /* nice dim behind modal */
   font-size:.9rem;
   white-space:nowrap;
 }
+/* Print-friendly recipe card */
+@media print {
+  html, body { background:#fff !important; }
+  body > *:not(#printArea) { display:none !important; }
+
+  #printArea { 
+    display:block !important; 
+    color:#000 !important; 
+    background:#fff !important; 
+    visibility:visible !important; 
+  }
+  #printArea * { 
+    color:#000 !important; 
+    background:transparent !important; 
+    box-shadow:none !important; 
+    text-shadow:none !important; 
+    border-color:#000 !important;
+  }
+
+  #printArea img { display:none !important; } /* you asked to remove images */
+  #printArea article { margin:0 !important; padding:0 !important; border:0 !important; }
+  #printArea h1, #printArea h2, #printArea h3 { margin:.2rem 0; }
+  #printArea p, #printArea li { line-height:1.35; }
+
+  @page { margin:12mm; }
+}

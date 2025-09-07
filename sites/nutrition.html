@@ -8,10 +8,31 @@
   <!-- match Endurance exactly -->
   <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <!-- Minimal extras so Pantry/Planner slide properly (doesn't fight your CSS) -->
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:880px){.grid{grid-template-columns:repeat(2,1fr)}}
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);padding:.45rem .8rem;border-radius:999px;font-size:.92rem}
+    .mini-nav .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+
+    /* Panels & modal (lightweight, harmonises with your theme) */
+    .panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#0b0f14;color:var(--ink);
+      border-left:1px solid var(--stroke);transform:translateX(100%);transition:transform .25s ease;z-index:1000;overflow:auto}
+    .panel.open{transform:translateX(0)}
+    .panel .panel-header{position:sticky;top:0;background:#0b0f14;border-bottom:1px solid var(--stroke);padding:12px}
+    dialog.recipe-modal{width:min(900px,96vw);border:0;border-radius:12px;padding:0;z-index:1100}
+    dialog.recipe-modal::backdrop{background:rgba(0,0,0,.5)}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}
+    .overlay.show{opacity:1;pointer-events:auto}
+  </style>
 </head>
 <body>
 
-<!-- HEADER (identical to Endurance) -->
+<!-- HEADER (identical structure to Endurance) -->
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
@@ -36,10 +57,10 @@
   <!-- HERO -->
   <section class="section">
     <h1><span class="accent">Nutrition</span></h1>
-    <p class="lead">Balanced macros, budget-friendly recipes, and hydration — no fuss. UK English • Allergens labelled • Vegetarian/vegan options available.</p>
+    <p class="lead">Balanced macros, budget-friendly recipes, Pantry mode, and a simple planner. UK English • Allergens labelled • Veg/Vegan options.</p>
   </section>
 
-  <!-- QUICK TOOLS -->
+  <!-- TOOLS -->
   <section class="section" aria-label="Recipe tools">
     <div class="grid" style="grid-template-columns:2fr 1fr">
       <div>
@@ -54,11 +75,10 @@
 
     <!-- FILTERS -->
     <div id="filterChips" class="mini-nav" role="toolbar" aria-label="Recipe filters" style="margin-top:.8rem">
-      <button class="badge" data-filter="ALL" aria-pressed="true">ALL</button>
-      <!-- JS will append the rest -->
+      <button class="chip" data-filter="ALL" aria-pressed="true">ALL</button>
+      <!-- JS appends the rest -->
     </div>
 
-    <!-- COUNT -->
     <p id="recipeCount" class="meta" aria-live="polite">Showing 0 of 0 recipes</p>
     <button id="clearFiltersBtn" class="btn" style="display:none">Clear filters</button>
   </section>
@@ -68,12 +88,12 @@
     <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="true" style="grid-template-columns:repeat(2,1fr)"></div>
   </section>
 
-  <!-- EDUCATION -->
+  <!-- INFO -->
   <section class="section">
     <div class="grid">
       <article class="card">
         <h3>Macros 101</h3>
-        <p>Protein rebuilds muscle, carbs fuel effort, and fats support hormones and vitamins. Aim for protein each meal, slow carbs, and a thumb of healthy fats.</p>
+        <p>Protein rebuilds muscle; carbs fuel effort; fats support hormones and vitamins. Aim for protein each meal, slow carbs, and a thumb of healthy fats.</p>
       </article>
       <article class="card">
         <h3>Hydration</h3>
@@ -85,7 +105,7 @@
   <!-- DISCLAIMER -->
   <section class="section">
     <h2>Important Note</h2>
-    <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries.</p>
+    <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice.</p>
   </section>
 </main>
 
@@ -97,13 +117,14 @@
   </div>
 </footer>
 
-<!-- PANELS & MODAL (empty shells; JS injects content) -->
+<!-- Panels & modal shells (JS fills them) -->
 <aside id="pantryPanel" class="panel" aria-hidden="true"></aside>
 <aside id="plannerPanel" class="panel" aria-hidden="true"></aside>
 <dialog id="recipeModal" class="recipe-modal" aria-hidden="true"></dialog>
 <div id="printArea" hidden></div>
+<div id="overlay" class="overlay"></div>
 
-<!-- Same burger script as Endurance -->
+<!-- same burger script as Endurance -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.hamburger');
@@ -118,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- Nutrition JS (relative path like Endurance uses) -->
-<script defer src="assets/js/nutrition.js?v=2"></script>
+<!-- Nutrition JS (same relative convention as Endurance) -->
+<script defer src="assets/js/nutrition.js?v=3"></script>
 </body>
 </html>

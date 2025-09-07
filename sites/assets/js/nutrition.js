@@ -148,10 +148,13 @@
 
   function card(r){
     const el=document.createElement('article'); el.className='card';
-    el.innerHTML=`
-      <img src="${r.image}" alt="${r.imageAlt||r.title}" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px">
-      <h3>${r.title}</h3>
-      <p class="meta">⏱️ ${r.time_mins||0} min • 🍽️ ${r.mealType||''} ${r.nutritionPerServing?.kcal?`• 🔥 ${r.nutritionPerServing.kcal} kcal`:''}</p>
+    el.innerHTML = `
+  ${r.image ? `<img src="${r.image}" alt="${r.imageAlt || r.title}"
+       style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px">` : ``}
+  <h3>${r.title}</h3>
+  <p class="meta">⏱️ ${r.time_mins || 0} min • 🍽️ ${r.mealType || ''} ${r.nutritionPerServing?.kcal ? `• 🔥 ${r.nutritionPerServing.kcal} kcal` : ''}</p>
+  ...
+`;
       <div class="mini-nav">
         ${r.costTag?`<span class="chip" aria-pressed="false">${r.costTag}</span>`:''}
         ${(r.dietary||[]).map(t=>`<span class="chip" aria-pressed="false">${t}</span>`).join('')}

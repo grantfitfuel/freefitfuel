@@ -565,20 +565,45 @@
     loadToday(); renderPlan();
     loadWeek();  buildWeekGrid(); renderWeekSummary();
     wireWeekSummaryControls();
+// ==== RECIPES LOADER (multi-file ready) ====
+const recipeFiles = [
+  'assets/data/recipes.json',
+  // 'assets/data/recipes-01.json',
+  // 'assets/data/recipes-02.json'
+];
 
-    // fetch data
-    fetch('assets/data/recipes.json', {cache:'no-store'})
-      .then(r=>r.json())
-      .then(data=>{
-        RECIPES=(Array.isArray(data)?data:(data.recipes||[])).map(r=>{
-          r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal??0);
-          r.pantryKeys = r.pantryKeys || (r.ingredients||[]).map(i=>norm(i.pantryKey||i.item));
-          return r;
-        });
-        render(); wire();
-      })
-      .catch(()=>{ countEl.textContent='No recipes file found. Add assets/data/recipes.json'; grid.setAttribute('aria-busy','false'); wire(); });
+async function loadAllRecipes() {
+  try {
+    const lists = await Promise.all(
+      recipeFiles.map(p =>
+        fetch(p + '?v=' + Date.now()).then(r => {
+          if (!r.ok) throw new Error(p + ' ' + r.status);
+          return r.json();
+        })
+      )
+    );
+
+    // merge arrays or {recipes:[…]}
+    RECIPES = lists.flatMap(x => Array.isArray(x) ? x : (x.recipes || []))
+      .map(r => {
+        r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
+        r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
+        return r;
+      });
+
+    render();
+    wire();
+  } catch (err) {
+    console.error('Failed to load recipes:', err);
+    countEl.textContent = 'No recipes file found. Check assets/data paths.';
+    grid.setAttribute('aria-busy','false');
+    wire();
   }
+}
+
+// kick off
+loadAllRecipes();
+ }
 
   document.addEventListener('DOMContentLoaded', init);
 })();

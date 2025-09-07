@@ -134,6 +134,29 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
   background:var(--accent); color:#111;
   box-shadow:0 2px 0 rgba(0,0,0,.15);
 }
+/* --- Print-friendly recipe card --- */
+@media print {
+  /* White paper, black ink */
+  html, body { background: #fff !important; color: #000 !important; }
+  * { background: transparent !important; color: #000 !important; 
+      box-shadow: none !important; text-shadow: none !important; 
+      border-color: #000 !important; }
+
+  /* Only print the generated recipe content */
+  #printArea { display: block !important; background: #fff !important; }
+  body > *:not(#printArea) { display: none !important; }
+
+  /* Tidy the printable article */
+  #printArea article { margin: 0 !important; padding: 0 !important; border: 0 !important; }
+  #printArea h1, #printArea h2, #printArea h3 { color: #000 !important; }
+  #printArea p, #printArea li { line-height: 1.35; }
+
+  /* If any images sneak in, suppress them (you asked to remove) */
+  #printArea img { display: none !important; }
+
+  /* Paper margins */
+  @page { margin: 12mm; }
+}
 .btn:hover{filter:brightness(1.05)}
 
 .grid{display:grid;gap:14px;margin:22px 0}

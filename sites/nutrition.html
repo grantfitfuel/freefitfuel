@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nutrition – FreeFitFuel</title>
 
-  <!-- match Endurance exactly -->
   <link rel="stylesheet" href="style.css?v=26">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
@@ -36,21 +35,30 @@
       border-left:1px solid var(--stroke);transform:translateX(100%);transition:transform .25s ease;z-index:1000;overflow:auto}
     .panel.open{transform:translateX(0)}
     .panel .panel-header{position:sticky;top:0;background:#0b0f14;border-bottom:1px solid var(--stroke);padding:12px}
-    dialog.recipe-modal{width:min(900px,96vw);border:0;border-radius:12px;padding:0;z-index:1100}
-    dialog.recipe-modal::backdrop{background:rgba(0,0,0,.5)}
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}
     .overlay.show{opacity:1;pointer-events:auto}
+
+    /* ===== Dialog (recipe card) ===== */
+    dialog.recipe-modal {
+      background:#0b0f14; color:var(--ink);
+      width:min(900px,96vw); max-height:90vh; overflow:auto;
+      border:0; border-radius:12px; padding:0; z-index:1100;
+    }
+    dialog.recipe-modal::backdrop{background:rgba(0,0,0,.5)}
+    dialog[open]{display:block}
+    .recipe-modal .modal-head{position:sticky;top:0;display:flex;justify-content:space-between;gap:.6rem;align-items:center;padding:12px 14px;border-bottom:1px solid var(--stroke);background:#0b0f14}
+    .recipe-modal .modal-body{padding:14px}
+    .recipe-modal .meta{color:var(--inkdim)}
+    .recipe-modal .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:700px){ .recipe-modal .grid-2{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
 
-<!-- HEADER (identical to Endurance) -->
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
-    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"><span></span><span></span><span></span></button>
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="ideas.html">Ideas</a>
@@ -65,7 +73,6 @@
   </div>
 </header>
 
-<!-- HERO -->
 <header class="hero-mini" role="banner" aria-label="Nutrition hero">
   <figure>
     <img src="img/nutrition-hero.png" alt="Fresh colourful food ingredients on a table">
@@ -86,7 +93,6 @@
   <section class="section" id="macro-calc">
     <h2>Calories & Macros Calculator</h2>
 
-    <!-- Goals -->
     <div class="toolbar" aria-label="Goal selector">
       <div class="seg" role="tablist" aria-label="Goal">
         <button role="tab" class="goal-chip" aria-pressed="true"  data-goal="Maintain">Maintain</button>
@@ -96,7 +102,6 @@
       </div>
     </div>
 
-    <!-- Inputs -->
     <div class="grid" style="grid-template-columns:repeat(3,1fr)">
       <label>Sex
         <select id="bmrSex" class="input"><option value="male">Male</option><option value="female">Female</option></select>
@@ -125,7 +130,6 @@
       </div>
     </div>
 
-    <!-- Outputs -->
     <div class="section" style="margin-top:.8rem">
       <h3>Your targets</h3>
       <p class="meta" id="goalLine">Goal: <strong>Maintain</strong> — based on Mifflin–St Jeor + activity</p>
@@ -164,7 +168,6 @@
       </div>
     </div>
 
-    <!-- FILTER CHIPS -->
     <div id="filterChips" role="toolbar" aria-label="Recipe filters">
       <button class="chip" data-filter="ALL" aria-pressed="true">ALL</button>
       <!-- JS appends the rest -->
@@ -189,20 +192,17 @@
       <article class="card">
         <h3>Hydration</h3>
         <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
-
         <div class="calc" style="margin-top:.6rem">
           <label>Your weight (kg)
             <input id="hydrWeight" type="number" value="75" class="input" style="max-width:100px">
           </label>
           <button id="hydrCalc" class="btn">Calculate</button>
         </div>
-
         <p class="meta" id="hydrOut">Daily target: — ml</p>
       </article>
     </div>
   </section>
 
-  <!-- DISCLAIMER -->
   <section class="section">
     <h2>Important Note</h2>
     <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice.</p>
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ====== Macros calculator (Mifflin–St Jeor) ====== */
+  // ===== Macros calculator =====
   const goalChips=[...document.querySelectorAll('.goal-chip')];
   let GOAL='Maintain';
   goalChips.forEach(b=>b.addEventListener('click', ()=>{
@@ -245,89 +245,42 @@ document.addEventListener('DOMContentLoaded', () => {
     b.setAttribute('aria-pressed','true'); GOAL=b.dataset.goal; update();
   }));
 
-  const sex=document.getElementById('bmrSex'),
-        age=document.getElementById('bmrAge'),
-        ht =document.getElementById('bmrHeight'),
-        wt =document.getElementById('bmrWeight'),
-        act=document.getElementById('bmrActivity');
+  const sex=bmrSex, age=bmrAge, ht=bmrHeight, wt=bmrWeight, act=bmrActivity;
+  const outK=outKcal, outP=outProtein, outC=outCarbs, outF=outFat, goalLine=document.getElementById('goalLine');
 
-  const outK=document.getElementById('outKcal'),
-        outP=document.getElementById('outProtein'),
-        outC=document.getElementById('outCarbs'),
-        outF=document.getElementById('outFat'),
-        goalLine=document.getElementById('goalLine');
-
-  function calcBMR(s,kg,cm,yrs){
-    return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5
-                      : 10*kg + 6.25*cm - 5*yrs - 161;
-  }
-
+  function calcBMR(s,kg,cm,yrs){ return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5 : 10*kg + 6.25*cm - 5*yrs - 161; }
   function targetsFromTDEE(tdee, goal){
     let kcal=tdee;
-    if(goal==='Cut') kcal = tdee*0.82;            // ~18% deficit
-    if(goal==='Build/Bulk') kcal = tdee*1.15;     // ~15% surplus
-    if(goal==='Transform') kcal = tdee*0.97;      // slight deficit, higher protein plan
-
-    const kg = parseFloat(wt.value||0);
-    let p_perkg = 1.6;
-    if(goal==='Cut') p_perkg = 2.0;
-    if(goal==='Build/Bulk') p_perkg = 1.8;
-    if(goal==='Transform') p_perkg = 2.2;
-
-    const protein_g = Math.round(p_perkg * kg);
-    let carb_pct = 0.50, fat_pct = 0.30;
-    if(goal==='Cut')         { carb_pct = 0.40; fat_pct = 0.30; }
-    if(goal==='Build/Bulk')  { carb_pct = 0.55; fat_pct = 0.25; }
-    if(goal==='Transform')   { carb_pct = 0.45; fat_pct = 0.30; }
-
-    const carbs_g = Math.round((kcal * carb_pct) / 4);
-    const fat_g   = Math.round((kcal * fat_pct) / 9);
-
-    return { kcal: Math.round(kcal), protein_g, carbs_g, fat_g };
+    if(goal==='Cut') kcal*=0.82;
+    if(goal==='Build/Bulk') kcal*=1.15;
+    if(goal==='Transform') kcal*=0.97;
+    const kg=parseFloat(wt.value||0);
+    let p_perkg=1.6; if(goal==='Cut') p_perkg=2.0; if(goal==='Build/Bulk') p_perkg=1.8; if(goal==='Transform') p_perkg=2.2;
+    const protein_g=Math.round(p_perkg*kg);
+    let carb_pct=0.50,fat_pct=0.30;
+    if(goal==='Cut'){carb_pct=0.40;fat_pct=0.30}
+    if(goal==='Build/Bulk'){carb_pct=0.55;fat_pct=0.25}
+    if(goal==='Transform'){carb_pct=0.45;fat_pct=0.30}
+    return {kcal:Math.round(kcal), protein_g, carbs_g:Math.round((kcal*carb_pct)/4), fat_g:Math.round((kcal*fat_pct)/9)};
   }
-
   function update(){
     const bmr = calcBMR(sex.value, parseFloat(wt.value||0), parseFloat(ht.value||0), parseFloat(age.value||0));
-    const tdee = bmr * parseFloat(act.value||1);
-    const t = targetsFromTDEE(tdee, GOAL);
-
-    outK.textContent = t.kcal.toString();
-    outP.textContent = t.protein_g + ' g';
-    outC.textContent = t.carbs_g + ' g';
-    outF.textContent = t.fat_g + ' g';
-    goalLine.innerHTML = `Goal: <strong>${GOAL}</strong> — based on Mifflin–St Jeor + activity`;
+    const tdee= bmr * parseFloat(act.value||1);
+    const t=targetsFromTDEE(tdee, GOAL);
+    outK.textContent=t.kcal; outP.textContent=t.protein_g+' g'; outC.textContent=t.carbs_g+' g'; outF.textContent=t.fat_g+' g';
+    goalLine.innerHTML=`Goal: <strong>${GOAL}</strong> — based on Mifflin–St Jeor + activity`;
   }
+  calcNow.addEventListener('click', update);
+  calcCopy.addEventListener('click', ()=>{navigator.clipboard.writeText(`Goal: ${GOAL}\nCalories: ${outK.textContent} kcal\nProtein: ${outP.textContent}\nCarbs: ${outC.textContent}\nFat: ${outF.textContent}`); alert('Copied targets to clipboard.');});
+  update();
 
-  document.getElementById('calcNow').addEventListener('click', update);
-  document.getElementById('calcCopy').addEventListener('click', ()=>{
-    const txt = `Goal: ${GOAL}\nCalories: ${outK.textContent} kcal\nProtein: ${outP.textContent}\nCarbs: ${outC.textContent}\nFat: ${outF.textContent}`;
-    navigator.clipboard.writeText(txt);
-    alert('Copied targets to clipboard.');
-  });
-
-  update(); // initial calc
-
-  /* ===== Hydration calc (ml + L) ===== */
-  const hydrBtn = document.getElementById('hydrCalc');
-  const hydrOut = document.getElementById('hydrOut');
-  const hydrW   = document.getElementById('hydrWeight');
-
-  function calcHydr(){
-    const kg = parseFloat(hydrW.value||0);
-    if(!kg){ hydrOut.textContent = 'Daily target: — ml'; return; }
-    const low  = Math.round(kg*30);
-    const high = Math.round(kg*35);
-    const lowL = (low/1000).toFixed(1);
-    const highL = (high/1000).toFixed(1);
-    hydrOut.textContent = `Daily target: ${low} – ${high} ml (≈ ${lowL} – ${highL} L, plus extra if training)`;
-  }
-  if(hydrBtn) hydrBtn.addEventListener('click', calcHydr);
-  if(hydrW)   hydrW.addEventListener('input', calcHydr);
-  calcHydr(); // initial
+  // Hydration
+  function hydr(){ const kg=parseFloat(hydrWeight.value||0); if(!kg){hydrOut.textContent='Daily target: — ml';return} const lo=Math.round(kg*30), hi=Math.round(kg*35); hydrOut.textContent=`Daily target: ${lo} – ${hi} ml (≈ ${(lo/1000).toFixed(1)} – ${(hi/1000).toFixed(1)} L, plus extra if training)`;}
+  hydrCalc.addEventListener('click', hydr); hydrWeight.addEventListener('input', hydr); hydr();
 });
 </script>
 
-<!-- Nutrition JS (multi-file loader: starts with assets/data/recipes-01.json; add -02, -03 later). -->
-<script defer src="assets/js/nutrition.js?v=11"></script>
+<!-- Nutrition JS -->
+<script defer src="assets/js/nutrition.js?v=12"></script>
 </body>
 </html>

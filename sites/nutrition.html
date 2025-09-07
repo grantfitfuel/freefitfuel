@@ -13,19 +13,7 @@
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-<section class="section" id="weekSummarySection" aria-label="This Week's Meal Plan">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap">
-    <h2 style="margin:0">This Week’s Plan</h2>
-    <div>
-      <button id="weekAutoBtn" class="btn">Auto-plan Week (no duplicates)</button>
-      <button id="weekClearBtn" class="btn">Clear Week</button>
-    </div>
-  </div>
 
-  <p class="meta" style="margin:.4rem 0">Swap any slot to rotate in a different unique recipe. This summary mirrors the planner panel.</p>
-
-  <div id="weekSummaryGrid" class="grid" style="grid-template-columns:repeat(4,1fr)"></div>
-</section>
     /* Recipe grid: compact, 3+ across on desktop */
     #recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
     #recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}
@@ -35,15 +23,15 @@
     #recipeGrid .card .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;font-size:.78rem}
     #recipeGrid .card .btn{font-size:.85rem;padding:.4rem .6rem}
 
-    /* Remove images from recipe tiles only (modal/print unaffected) */
+    /* Remove images from recipe tiles only */
     #recipeGrid .card img, #recipeGrid img.card-img{display:none !important}
 
-    /* Filter chips look like your mini-nav pills */
+    /* Filter chips */
     #filterChips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
     #filterChips .chip{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);padding:.45rem .8rem;border-radius:999px;font-size:.92rem;cursor:pointer}
     #filterChips .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
 
-    /* Slide-in panels & recipe modal */
+    /* Panels & modal */
     .panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#0b0f14;color:var(--ink);
       border-left:1px solid var(--stroke);transform:translateX(100%);transition:transform .25s ease;z-index:1000;overflow:auto}
     .panel.open{transform:translateX(0)}
@@ -150,6 +138,19 @@
     </div>
   </section>
 
+  <!-- WEEK SUMMARY ON PAGE -->
+  <section class="section" id="weekSummarySection" aria-label="This Week's Meal Plan">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap">
+      <h2 style="margin:0">This Week’s Plan</h2>
+      <div>
+        <button id="weekAutoBtn" class="btn">Auto-plan Week (no duplicates)</button>
+        <button id="weekClearBtn" class="btn">Clear Week</button>
+      </div>
+    </div>
+    <p class="meta" style="margin:.4rem 0">Swap any slot to rotate in a different unique recipe. This summary mirrors the planner panel.</p>
+    <div id="weekSummaryGrid" class="grid" style="grid-template-columns:repeat(4,1fr)"></div>
+  </section>
+
   <!-- TOOLS: search + filters -->
   <section class="section" aria-label="Recipe tools">
     <div class="grid" style="grid-template-columns:2fr 1fr">
@@ -186,18 +187,18 @@
         <p>Protein rebuilds muscle; carbs fuel effort; fats support hormones and vitamins.</p>
       </article>
       <article class="card">
-  <h3>Hydration</h3>
-  <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
+        <h3>Hydration</h3>
+        <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
 
-  <div class="calc" style="margin-top:.6rem">
-    <label>Your weight (kg)
-      <input id="hydrWeight" type="number" value="75" class="input" style="max-width:100px">
-    </label>
-    <button id="hydrCalc" class="btn">Calculate</button>
-  </div>
+        <div class="calc" style="margin-top:.6rem">
+          <label>Your weight (kg)
+            <input id="hydrWeight" type="number" value="75" class="input" style="max-width:100px">
+          </label>
+          <button id="hydrCalc" class="btn">Calculate</button>
+        </div>
 
-  <p class="meta" id="hydrOut">Daily target: — ml</p>
-</article>
+        <p class="meta" id="hydrOut">Daily target: — ml</p>
+      </article>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
 <div id="printArea" hidden></div>
 <div id="overlay" class="overlay"></div>
 
-<!-- Same burger script as Endurance -->
+<!-- Inline scripts (burger + calculators) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.hamburger');
@@ -236,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ====== Calculator logic (Mifflin–St Jeor) ====== */
+  /* ====== Macros calculator (Mifflin–St Jeor) ====== */
   const goalChips=[...document.querySelectorAll('.goal-chip')];
   let GOAL='Maintain';
   goalChips.forEach(b=>b.addEventListener('click', ()=>{
@@ -257,30 +258,23 @@ document.addEventListener('DOMContentLoaded', () => {
         goalLine=document.getElementById('goalLine');
 
   function calcBMR(s,kg,cm,yrs){
-    return s==='male'
-      ? 10*kg + 6.25*cm - 5*yrs + 5
-      : 10*kg + 6.25*cm - 5*yrs - 161;
+    return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5
+                      : 10*kg + 6.25*cm - 5*yrs - 161;
   }
 
   function targetsFromTDEE(tdee, goal){
-    // calorie target by goal
     let kcal=tdee;
     if(goal==='Cut') kcal = tdee*0.82;            // ~18% deficit
     if(goal==='Build/Bulk') kcal = tdee*1.15;     // ~15% surplus
     if(goal==='Transform') kcal = tdee*0.97;      // slight deficit, higher protein plan
 
-    // protein per kg by goal
     const kg = parseFloat(wt.value||0);
-    let p_perkg = 1.6; // base
+    let p_perkg = 1.6;
     if(goal==='Cut') p_perkg = 2.0;
     if(goal==='Build/Bulk') p_perkg = 1.8;
     if(goal==='Transform') p_perkg = 2.2;
 
     const protein_g = Math.round(p_perkg * kg);
-
-    // split remaining kcal between carbs/fat (flexible % ranges simplified)
-    const kcal_after_protein = kcal - protein_g*4;
-    // default: 50% carbs / 30% fat of total kcal (adjust light by goal)
     let carb_pct = 0.50, fat_pct = 0.30;
     if(goal==='Cut')         { carb_pct = 0.40; fat_pct = 0.30; }
     if(goal==='Build/Bulk')  { carb_pct = 0.55; fat_pct = 0.25; }
@@ -311,36 +305,29 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('Copied targets to clipboard.');
   });
 
-  // initial calc
-  update();
-  /* ===== Hydration calc ===== */
+  update(); // initial calc
+
+  /* ===== Hydration calc (ml + L) ===== */
   const hydrBtn = document.getElementById('hydrCalc');
   const hydrOut = document.getElementById('hydrOut');
   const hydrW   = document.getElementById('hydrWeight');
 
   function calcHydr(){
     const kg = parseFloat(hydrW.value||0);
-    if(!kg){ 
-      hydrOut.textContent = 'Daily target: — ml'; 
-      return; 
-    }
+    if(!kg){ hydrOut.textContent = 'Daily target: — ml'; return; }
     const low  = Math.round(kg*30);
     const high = Math.round(kg*35);
     const lowL = (low/1000).toFixed(1);
     const highL = (high/1000).toFixed(1);
     hydrOut.textContent = `Daily target: ${low} – ${high} ml (≈ ${lowL} – ${highL} L, plus extra if training)`;
   }
-
-  if(hydrBtn){ hydrBtn.addEventListener('click', calcHydr); }
-  if(hydrW){ hydrW.addEventListener('input', calcHydr); }
-
-  // run once on load with default value
-  calcHydr();
+  if(hydrBtn) hydrBtn.addEventListener('click', calcHydr);
+  if(hydrW)   hydrW.addEventListener('input', calcHydr);
+  calcHydr(); // initial
 });
 </script>
 
-<!-- Nutrition JS (same relative convention as Endurance). 
-     It expects data at assets/data/recipes.json and will build filters/chips/panels. -->
-<script defer src="assets/js/nutrition.js?v=8"></script>
+<!-- Nutrition JS (expects assets/data/recipes.json). Includes on-page Week Plan rendering. -->
+<script defer src="assets/js/nutrition.js?v=10"></script>
 </body>
 </html>

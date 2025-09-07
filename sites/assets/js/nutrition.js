@@ -1,5 +1,5 @@
 /* Nutrition JS — full replacement (with on-page Week Plan summary)
-   - Data path: assets/data/recipes.json
+   - Data path(s): assets/data/recipes.json (or split files via recipeFiles[])
    - Tiles: no images
    - Modal/Print: no images
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
@@ -28,7 +28,7 @@
   const pantryOpenBtn  = qs('#pantryOpenBtn');
   const openPlannerBtn = qs('#openPlannerBtn');
 
-  // NEW: main-page week summary references
+  // Main-page week summary refs
   const weekSummarySec  = qs('#weekSummarySection');
   const weekSummaryGrid = qs('#weekSummaryGrid');
   const weekAutoBtn     = qs('#weekAutoBtn');
@@ -417,24 +417,26 @@
   }
 
   function openModal(r){
-    const get=id=>qs(id,modal);
-    const img = get('#modalImage'); if(img) img.style.display='none'; // hide image
-    get('#recipeTitle').textContent=r.title;
-    get('#recipeServes').textContent=r.serves||1;
-    get('#recipeTime').textContent=`${r.time_mins||0} min`;
-    get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons(r.spiceLevel)} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '';
-    get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('');
-    get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join('');
-    if(r.nutritionPerServing){
-      const n=r.nutritionPerServing;
-      get('#recipeMacros').innerHTML=`<li>${n.kcal} kcal</li><li>Protein ${n.protein_g} g</li><li>Carbs ${n.carbs_g} g</li><li>Fat ${n.fat_g} g</li>${n.fibre_g!=null?`<li>Fibre ${n.fibre_g} g</li>`:''}${n.sugar_g!=null?`<li>Sugar ${n.sugar_g} g</li>`:''}${n.salt_g!=null?`<li>Salt ${n.salt_g} g</li>`:''}`;
-    } else get('#recipeMacros').innerHTML='<li>—</li>';
-    get('#recipeAllergens').textContent=(r.allergensPresent&&r.allergensPresent.length)?`Allergens: ${r.allergensPresent.join(', ')}`:'Allergens: none listed';
-    get('#recipeSwaps').innerHTML=(r.swaps||[]).map(s=>`<li>${s}</li>`).join('');
-    get('#recipeHydration').textContent=r.hydrationTip||'';
-    get('#modalAddToPlanner').onclick=()=>addToPlannerPrompt(r);
-    get('#modalPrint').onclick=()=>printRecipe(r);
-    get('#modalClose').onclick=()=>modal.close();
+    if(!modal) return;
+    const get=s=>qs(s,modal);
+    const img = get('#modalImage'); if(img) img.style.display='none'; // hide image if template has one
+    get('#recipeTitle')      && (get('#recipeTitle').textContent=r.title);
+    get('#recipeServes')     && (get('#recipeServes').textContent=r.serves||1);
+    get('#recipeTime')       && (get('#recipeTime').textContent=`${r.time_mins||0} min`);
+    get('#recipeSpice')      && (get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons(r.spiceLevel)} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '');
+    get('#recipeIngredients')&& (get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join(''));
+    get('#recipeMethod')     && (get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join(''));
+    if(get('#recipeMacros')){
+      const n=r.nutritionPerServing||{};
+      get('#recipeMacros').innerHTML=`<li>${n.kcal??'—'} kcal</li><li>Protein ${n.protein_g??'—'} g</li><li>Carbs ${n.carbs_g??'—'} g</li><li>Fat ${n.fat_g??'—'} g</li>${n.fibre_g!=null?`<li>Fibre ${n.fibre_g} g</li>`:''}${n.sugar_g!=null?`<li>Sugar ${n.sugar_g} g</li>`:''}${n.salt_g!=null?`<li>Salt ${n.salt_g} g</li>`:''}`;
+    }
+    get('#recipeAllergens') && (get('#recipeAllergens').textContent=(r.allergensPresent&&r.allergensPresent.length)?`Allergens: ${r.allergensPresent.join(', ')}`:'Allergens: none listed');
+    get('#recipeSwaps')     && (get('#recipeSwaps').innerHTML=(r.swaps||[]).map(s=>`<li>${s}</li>`).join(''));
+    get('#recipeHydration') && (get('#recipeHydration').textContent=r.hydrationTip||'');
+
+    get('#modalAddToPlanner') && (get('#modalAddToPlanner').onclick=()=>addToPlannerPrompt(r));
+    get('#modalPrint')        && (get('#modalPrint').onclick=()=>printRecipe(r));
+    get('#modalClose')        && (get('#modalClose').onclick=()=>modal.close());
     modal.showModal();
   }
 
@@ -475,50 +477,50 @@
     grid.setAttribute('aria-busy','false');
   }
 
-  // ---------- Wiring ----------
+  // ---------- Wiring (bind once) ----------
   function wire(){
     // Top buttons
-    pantryOpenBtn.onclick=()=>openPanel(pantryPanel);
-    openPlannerBtn .onclick=()=>{ openPanel(plannerPanel); renderPlan(); buildWeekGrid(); };
+    pantryOpenBtn && (pantryOpenBtn.onclick=()=>openPanel(pantryPanel));
+    openPlannerBtn && (openPlannerBtn.onclick=()=>{ openPanel(plannerPanel); renderPlan(); buildWeekGrid(); });
 
-    overlay.addEventListener('click', ()=>{ document.querySelectorAll('.panel.open').forEach(p=>closePanel(p)); });
+    overlay && overlay.addEventListener('click', ()=>{ document.querySelectorAll('.panel.open').forEach(p=>closePanel(p)); });
 
     // Pantry logic
-    qs('#pantryCloseBtn',pantryPanel).onclick=()=>closePanel(pantryPanel);
+    qs('#pantryCloseBtn',pantryPanel) && (qs('#pantryCloseBtn',pantryPanel).onclick=()=>closePanel(pantryPanel));
     const pantryInput=qs('#pantryInput',pantryPanel);
-    pantryInput.addEventListener('keydown',e=>{
+    pantryInput && pantryInput.addEventListener('keydown',e=>{
       if(e.key==='Enter'||e.key===','){ e.preventDefault();
         pantryInput.value.split(',').map(s=>s.trim()).filter(Boolean).forEach(k=>pantry.set.add(k));
         pantryInput.value=''; renderPantryTokens();
       }
     });
-    qs('#pantryFindBtn',pantryPanel).onclick=()=>{
+    qs('#pantryFindBtn',pantryPanel) && (qs('#pantryFindBtn',pantryPanel).onclick=()=>{
       FILTERS.Pantry.active=true; FILTERS.Pantry.keys=[...pantry.set];
       FILTERS.Pantry.strict=qs('#pantryStrict',pantryPanel).checked;
       FILTERS.Pantry.extras=+qs('#pantryExtras',pantryPanel).value;
       FILTERS.Pantry.budget=qs('#pantryBudget',pantryPanel).checked;
       FILTERS.Pantry.respectDiet=qs('#pantryRespectDiet',pantryPanel).checked;
       closePanel(pantryPanel); render();
-    };
-    qs('#pantryPlanWeekBtn',pantryPanel).onclick=()=>{
+    });
+    qs('#pantryPlanWeekBtn',pantryPanel) && (qs('#pantryPlanWeekBtn',pantryPanel).onclick=()=>{
       FILTERS.Pantry.active=true; FILTERS.Pantry.keys=[...pantry.set];
       FILTERS.Pantry.strict=false; FILTERS.Pantry.extras=2; FILTERS.Pantry.budget=true;
       autoPlanWeek(); closePanel(pantryPanel); openPanel(plannerPanel);
-    };
-    qs('#pantryResetBtn',pantryPanel).onclick=()=>{
+    });
+    qs('#pantryResetBtn',pantryPanel) && (qs('#pantryResetBtn',pantryPanel).onclick=()=>{
       pantry.set.clear(); renderPantryTokens();
       FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
       render();
-    };
+    });
 
     // Planner today
-    qs('#plannerCloseBtn',plannerPanel).onclick=()=>closePanel(plannerPanel);
-    qs('#plannerClearBtn',plannerPanel).onclick=()=>{ Object.keys(PLAN).forEach(k=>PLAN[k]=[]); renderPlan(); saveToday(); };
-    qs('#plannerCopyBtn',plannerPanel).onclick=()=>{
+    qs('#plannerCloseBtn',plannerPanel) && (qs('#plannerCloseBtn',plannerPanel).onclick=()=>closePanel(plannerPanel));
+    qs('#plannerClearBtn',plannerPanel) && (qs('#plannerClearBtn',plannerPanel).onclick=()=>{ Object.keys(PLAN).forEach(k=>PLAN[k]=[]); renderPlan(); saveToday(); });
+    qs('#plannerCopyBtn',plannerPanel) && (qs('#plannerCopyBtn',plannerPanel).onclick=()=>{
       const txt=Object.entries(PLAN).map(([k,arr])=>`${k[0].toUpperCase()+k.slice(1)}:\n`+arr.map(i=>`- ${i.title}`).join('\n')).join('\n\n');
       navigator.clipboard.writeText(txt); alert('Plan copied to clipboard.');
-    };
-    qs('#plannerPrintBtn',plannerPanel).onclick=()=>{
+    });
+    qs('#plannerPrintBtn',plannerPanel) && (qs('#plannerPrintBtn',plannerPanel).onclick=()=>{
       printArea.innerHTML = `<article><h1>Meal Plan — Today</h1>${
         Object.entries(PLAN).map(([k,arr])=>`<h2>${k[0].toUpperCase()+k.slice(1)}</h2><ul>${arr.map(i=>`<li>${i.title}</li>`).join('')||'<li>—</li>'}</ul>`).join('')
       }</article>`;
@@ -526,33 +528,33 @@
       requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
       const cleanup=()=>{ printArea.innerHTML=''; printArea.setAttribute('hidden',''); printArea.style.display=''; window.removeEventListener('afterprint',cleanup); };
       if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
-    };
+    });
 
     // Week planner (panel)
-    qs('#autoWeekBtn',plannerPanel).onclick=autoPlanWeek;
-    qs('#clearWeekBtn',plannerPanel).onclick=clearWeek;
+    qs('#autoWeekBtn',plannerPanel) && (qs('#autoWeekBtn',plannerPanel).onclick=autoPlanWeek);
+    qs('#clearWeekBtn',plannerPanel) && (qs('#clearWeekBtn',plannerPanel).onclick=clearWeek);
 
     // Week summary (main page)
     wireWeekSummaryControls();
 
     // Filters
-    filterBar.addEventListener('click',e=>{
+    filterBar && filterBar.addEventListener('click',e=>{
       const b=e.target.closest('.chip'); if(!b) return;
       if(b.dataset.filter==='ALL'){
         FILTERS.ALL=true; ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-        FILTERS.search=''; searchInput.value=''; FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+        FILTERS.search=''; searchInput && (searchInput.value=''); FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
         updateChipStates(); render(); return;
       }
       const g=b.dataset.group, v=b.dataset.value; FILTERS.ALL=false;
       (FILTERS[g].has(v)? FILTERS[g].delete(v) : FILTERS[g].add(v));
       updateChipStates(); render();
     });
-    clearBtn.onclick=()=>{
+    clearBtn && (clearBtn.onclick=()=>{
       FILTERS.ALL=true; ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-      FILTERS.search=''; searchInput.value=''; FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+      FILTERS.search=''; searchInput && (searchInput.value=''); FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
       updateChipStates(); render();
-    };
-    searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); };
+    });
+    searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
   }
 
   // ---------- Boot ----------
@@ -565,45 +567,44 @@
     loadToday(); renderPlan();
     loadWeek();  buildWeekGrid(); renderWeekSummary();
     wireWeekSummaryControls();
-// ==== RECIPES LOADER (multi-file ready) ====
-const recipeFiles = [
-  'assets/data/recipes.json',
-  // 'assets/data/recipes-01.json',
-  // 'assets/data/recipes-02.json'
-];
 
-async function loadAllRecipes() {
-  try {
-    const lists = await Promise.all(
-      recipeFiles.map(p =>
-        fetch(p + '?v=' + Date.now()).then(r => {
-          if (!r.ok) throw new Error(p + ' ' + r.status);
-          return r.json();
-        })
-      )
-    );
-
-    // merge arrays or {recipes:[…]}
-    RECIPES = lists.flatMap(x => Array.isArray(x) ? x : (x.recipes || []))
-      .map(r => {
-        r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
-        r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
-        return r;
-      });
-
-    render();
+    // bind all UI once (loader will only call render)
     wire();
-  } catch (err) {
-    console.error('Failed to load recipes:', err);
-    countEl.textContent = 'No recipes file found. Check assets/data paths.';
-    grid.setAttribute('aria-busy','false');
-    wire();
+
+    // ==== RECIPES LOADER (multi-file ready) ====
+    const recipeFiles = [
+      'assets/data/recipes.json',
+      // 'assets/data/recipes-01.json',
+      // 'assets/data/recipes-02.json'
+    ];
+
+    (async function loadAllRecipes() {
+      try {
+        const lists = await Promise.all(
+          recipeFiles.map(p =>
+            fetch(p + '?v=' + Date.now()).then(r => {
+              if (!r.ok) throw new Error(p + ' ' + r.status);
+              return r.json();
+            })
+          )
+        );
+
+        // merge arrays or {recipes:[…]}
+        RECIPES = lists.flatMap(x => Array.isArray(x) ? x : (x.recipes || []))
+          .map(r => {
+            r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
+            r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
+            return r;
+          });
+
+        render(); // wiring already done
+      } catch (err) {
+        console.error('Failed to load recipes:', err);
+        countEl && (countEl.textContent = 'No recipes file found. Check assets/data paths.');
+        grid && grid.setAttribute('aria-busy','false');
+      }
+    })();
   }
-}
-
-// kick off
-loadAllRecipes();
- }
 
   document.addEventListener('DOMContentLoaded', init);
 })();

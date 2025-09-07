@@ -9,17 +9,29 @@
   <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
-  <!-- Minimal extras so Pantry/Planner slide properly (doesn't fight your CSS) -->
+  <!-- Minimal Nutrition-only tweaks -->
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-    .grid{display:grid;gap:12px}
-    @media (min-width:880px){.grid{grid-template-columns:repeat(2,1fr)}}
-    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-    .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);padding:.45rem .8rem;border-radius:999px;font-size:.92rem}
-    .mini-nav .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
 
-    /* Panels & modal (lightweight, harmonises with your theme) */
+    /* Recipe grid: compact, 3+ across on desktop */
+    #recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    #recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}
+    #recipeGrid .card h3{font-size:1.05rem;margin:0}
+    #recipeGrid .card .meta{font-size:.9rem;color:var(--inkdim)}
+    #recipeGrid .card .mini-nav{display:flex;flex-wrap:wrap;gap:.3rem}
+    #recipeGrid .card .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;font-size:.78rem}
+    #recipeGrid .card .btn{font-size:.85rem;padding:.4rem .6rem}
+
+    /* Remove images from recipe tiles only (modal/print unaffected) */
+    #recipeGrid .card img, #recipeGrid img.card-img{display:none !important}
+
+    /* Filter chips look like your mini-nav pills */
+    #filterChips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    #filterChips .chip{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);padding:.45rem .8rem;border-radius:999px;font-size:.92rem;cursor:pointer}
+    #filterChips .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+
+    /* Slide-in panels & recipe modal */
     .panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#0b0f14;color:var(--ink);
       border-left:1px solid var(--stroke);transform:translateX(100%);transition:transform .25s ease;z-index:1000;overflow:auto}
     .panel.open{transform:translateX(0)}
@@ -32,7 +44,7 @@
 </head>
 <body>
 
-<!-- HEADER (identical structure to Endurance) -->
+<!-- HEADER (identical to Endurance) -->
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
@@ -53,14 +65,80 @@
   </div>
 </header>
 
-<main class="wrap">
-  <!-- HERO -->
-  <section class="section">
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Nutrition hero">
+  <figure>
+    <img src="img/nutrition-hero.png" alt="Fresh colourful food ingredients on a table">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
     <h1><span class="accent">Nutrition</span></h1>
-    <p class="lead">Balanced macros, budget-friendly recipes, Pantry mode, and a simple planner. UK English • Allergens labelled • Veg/Vegan options.</p>
+    <p>Balanced macros, budget-friendly recipes, Pantry mode, and a simple planner.</p>
+    <div class="cta-row">
+      <a class="btn" href="#macro-calc">Start Calculator</a>
+      <a class="btn" href="pdf/macro-cheatsheet.pdf">Macro Cheat Sheet (PDF)</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- CALCULATOR -->
+  <section class="section" id="macro-calc">
+    <h2>Calories & Macros Calculator</h2>
+
+    <!-- Goals -->
+    <div class="toolbar" aria-label="Goal selector">
+      <div class="seg" role="tablist" aria-label="Goal">
+        <button role="tab" class="goal-chip" aria-pressed="true"  data-goal="Maintain">Maintain</button>
+        <button role="tab" class="goal-chip" aria-pressed="false" data-goal="Cut">Cut</button>
+        <button role="tab" class="goal-chip" aria-pressed="false" data-goal="Build/Bulk">Build/Bulk</button>
+        <button role="tab" class="goal-chip" aria-pressed="false" data-goal="Transform">Transform</button>
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <label>Sex
+        <select id="bmrSex" class="input"><option value="male">Male</option><option value="female">Female</option></select>
+      </label>
+      <label>Age (years)
+        <input id="bmrAge" class="input" type="number" min="13" max="90" value="30">
+      </label>
+      <label>Height (cm)
+        <input id="bmrHeight" class="input" type="number" min="120" max="220" value="175">
+      </label>
+      <label>Weight (kg)
+        <input id="bmrWeight" class="input" type="number" min="35" max="250" value="75">
+      </label>
+      <label>Activity
+        <select id="bmrActivity" class="input">
+          <option value="1.2">Sedentary (x1.2)</option>
+          <option value="1.375">Light (x1.375)</option>
+          <option value="1.55" selected>Moderate (x1.55)</option>
+          <option value="1.725">Very active (x1.725)</option>
+          <option value="1.9">Athlete (x1.9)</option>
+        </select>
+      </label>
+      <div style="display:flex;align-items:flex-end;gap:.6rem">
+        <button id="calcNow" class="btn">Calculate</button>
+        <button id="calcCopy" class="btn">Copy</button>
+      </div>
+    </div>
+
+    <!-- Outputs -->
+    <div class="section" style="margin-top:.8rem">
+      <h3>Your targets</h3>
+      <p class="meta" id="goalLine">Goal: <strong>Maintain</strong> — based on Mifflin–St Jeor + activity</p>
+      <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+        <div><strong>Calories</strong><br><span id="outKcal">—</span> kcal/day</div>
+        <div><strong>Protein</strong><br><span id="outProtein">—</span> g/day</div>
+        <div><strong>Carbs</strong><br><span id="outCarbs">—</span> g/day</div>
+        <div><strong>Fat</strong><br><span id="outFat">—</span> g/day</div>
+      </div>
+    </div>
   </section>
 
-  <!-- TOOLS -->
+  <!-- TOOLS: search + filters -->
   <section class="section" aria-label="Recipe tools">
     <div class="grid" style="grid-template-columns:2fr 1fr">
       <div>
@@ -73,8 +151,8 @@
       </div>
     </div>
 
-    <!-- FILTERS -->
-    <div id="filterChips" class="mini-nav" role="toolbar" aria-label="Recipe filters" style="margin-top:.8rem">
+    <!-- FILTER CHIPS -->
+    <div id="filterChips" role="toolbar" aria-label="Recipe filters">
       <button class="chip" data-filter="ALL" aria-pressed="true">ALL</button>
       <!-- JS appends the rest -->
     </div>
@@ -85,7 +163,7 @@
 
   <!-- GRID -->
   <section class="section">
-    <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="true" style="grid-template-columns:repeat(2,1fr)"></div>
+    <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="true"></div>
   </section>
 
   <!-- INFO -->
@@ -93,11 +171,11 @@
     <div class="grid">
       <article class="card">
         <h3>Macros 101</h3>
-        <p>Protein rebuilds muscle; carbs fuel effort; fats support hormones and vitamins. Aim for protein each meal, slow carbs, and a thumb of healthy fats.</p>
+        <p>Protein rebuilds muscle; carbs fuel effort; fats support hormones and vitamins.</p>
       </article>
       <article class="card">
         <h3>Hydration</h3>
-        <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration. Pale straw urine = generally well hydrated.</p>
+        <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
       </article>
     </div>
   </section>
@@ -117,14 +195,14 @@
   </div>
 </footer>
 
-<!-- Panels & modal shells (JS fills them) -->
+<!-- Panels & modal shells -->
 <aside id="pantryPanel" class="panel" aria-hidden="true"></aside>
 <aside id="plannerPanel" class="panel" aria-hidden="true"></aside>
 <dialog id="recipeModal" class="recipe-modal" aria-hidden="true"></dialog>
 <div id="printArea" hidden></div>
 <div id="overlay" class="overlay"></div>
 
-<!-- same burger script as Endurance -->
+<!-- Same burger script as Endurance -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.hamburger');
@@ -136,10 +214,89 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
   }
+
+  /* ====== Calculator logic (Mifflin–St Jeor) ====== */
+  const goalChips=[...document.querySelectorAll('.goal-chip')];
+  let GOAL='Maintain';
+  goalChips.forEach(b=>b.addEventListener('click', ()=>{
+    goalChips.forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true'); GOAL=b.dataset.goal; update();
+  }));
+
+  const sex=document.getElementById('bmrSex'),
+        age=document.getElementById('bmrAge'),
+        ht =document.getElementById('bmrHeight'),
+        wt =document.getElementById('bmrWeight'),
+        act=document.getElementById('bmrActivity');
+
+  const outK=document.getElementById('outKcal'),
+        outP=document.getElementById('outProtein'),
+        outC=document.getElementById('outCarbs'),
+        outF=document.getElementById('outFat'),
+        goalLine=document.getElementById('goalLine');
+
+  function calcBMR(s,kg,cm,yrs){
+    return s==='male'
+      ? 10*kg + 6.25*cm - 5*yrs + 5
+      : 10*kg + 6.25*cm - 5*yrs - 161;
+  }
+
+  function targetsFromTDEE(tdee, goal){
+    // calorie target by goal
+    let kcal=tdee;
+    if(goal==='Cut') kcal = tdee*0.82;            // ~18% deficit
+    if(goal==='Build/Bulk') kcal = tdee*1.15;     // ~15% surplus
+    if(goal==='Transform') kcal = tdee*0.97;      // slight deficit, higher protein plan
+
+    // protein per kg by goal
+    const kg = parseFloat(wt.value||0);
+    let p_perkg = 1.6; // base
+    if(goal==='Cut') p_perkg = 2.0;
+    if(goal==='Build/Bulk') p_perkg = 1.8;
+    if(goal==='Transform') p_perkg = 2.2;
+
+    const protein_g = Math.round(p_perkg * kg);
+
+    // split remaining kcal between carbs/fat (flexible % ranges simplified)
+    const kcal_after_protein = kcal - protein_g*4;
+    // default: 50% carbs / 30% fat of total kcal (adjust light by goal)
+    let carb_pct = 0.50, fat_pct = 0.30;
+    if(goal==='Cut')         { carb_pct = 0.40; fat_pct = 0.30; }
+    if(goal==='Build/Bulk')  { carb_pct = 0.55; fat_pct = 0.25; }
+    if(goal==='Transform')   { carb_pct = 0.45; fat_pct = 0.30; }
+
+    const carbs_g = Math.round((kcal * carb_pct) / 4);
+    const fat_g   = Math.round((kcal * fat_pct) / 9);
+
+    return { kcal: Math.round(kcal), protein_g, carbs_g, fat_g };
+  }
+
+  function update(){
+    const bmr = calcBMR(sex.value, parseFloat(wt.value||0), parseFloat(ht.value||0), parseFloat(age.value||0));
+    const tdee = bmr * parseFloat(act.value||1);
+    const t = targetsFromTDEE(tdee, GOAL);
+
+    outK.textContent = t.kcal.toString();
+    outP.textContent = t.protein_g + ' g';
+    outC.textContent = t.carbs_g + ' g';
+    outF.textContent = t.fat_g + ' g';
+    goalLine.innerHTML = `Goal: <strong>${GOAL}</strong> — based on Mifflin–St Jeor + activity`;
+  }
+
+  document.getElementById('calcNow').addEventListener('click', update);
+  document.getElementById('calcCopy').addEventListener('click', ()=>{
+    const txt = `Goal: ${GOAL}\nCalories: ${outK.textContent} kcal\nProtein: ${outP.textContent}\nCarbs: ${outC.textContent}\nFat: ${outF.textContent}`;
+    navigator.clipboard.writeText(txt);
+    alert('Copied targets to clipboard.');
+  });
+
+  // initial calc
+  update();
 });
 </script>
 
-<!-- Nutrition JS (same relative convention as Endurance) -->
-<script defer src="assets/js/nutrition.js?v=3"></script>
+<!-- Nutrition JS (same relative convention as Endurance). 
+     It expects data at assets/data/recipes.json and will build filters/chips/panels. -->
+<script defer src="assets/js/nutrition.js?v=8"></script>
 </body>
 </html>

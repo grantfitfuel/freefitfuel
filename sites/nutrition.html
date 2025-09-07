@@ -13,7 +13,19 @@
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+<section class="section" id="weekSummarySection" aria-label="This Week's Meal Plan">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap">
+    <h2 style="margin:0">This Week’s Plan</h2>
+    <div>
+      <button id="weekAutoBtn" class="btn">Auto-plan Week (no duplicates)</button>
+      <button id="weekClearBtn" class="btn">Clear Week</button>
+    </div>
+  </div>
 
+  <p class="meta" style="margin:.4rem 0">Swap any slot to rotate in a different unique recipe. This summary mirrors the planner panel.</p>
+
+  <div id="weekSummaryGrid" class="grid" style="grid-template-columns:repeat(4,1fr)"></div>
+</section>
     /* Recipe grid: compact, 3+ across on desktop */
     #recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
     #recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}

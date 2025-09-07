@@ -1,9 +1,12 @@
-/* FreeFitFuel — Nutrition JS v13
-   - Robust multi-file loader with multi-path fallbacks
-   - No <script> wrappers; drop-in file
-   - Preserves planner, modal, filters, week summary
+/* Nutrition JS — full replacement (with on-page Week Plan summary)
+   - Auto-discovers recipe files: recipes-01..-30 + recipes.json (fallback)
+   - Robust loader with '../' fallback, Promise.allSettled, defensive JSON parse
+   - Tiles: no images (cards are text-only)
+   - Modal/Print: no images (modal image hidden if template has one)
+   - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
+   - Week summary shown on main page (mirrors planner panel)
 */
-document.getElementById('recipeCount') && (document.getElementById('recipeCount').textContent = 'Loading…');
+
 (function () {
   // ---------- Shortcuts ----------
   const qs  = (s, e = document) => e.querySelector(s);
@@ -52,7 +55,7 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
   // Today planner (simple)
   const PLAN = { breakfast:[], lunch:[], dinner:[], snack:[] };
 
-  // Week planner (7 days x 4 slots)
+  // Week planner (7 days x 4 slots; each is null or {slug,title,macros})
   const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const SLOTS = ['breakfast','lunch','dinner','snack'];
   const PLAN_WEEK = DAYS.map(()=>({ breakfast:null, lunch:null, dinner:null, snack:null }));
@@ -222,6 +225,7 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
       }).join('');
       return `<div><h4>${d}</h4>${cells}</div>`;
     }).join('');
+    // Delegated handlers (wired below)
   }
 
   // ---------- Week summary on MAIN PAGE ----------
@@ -250,6 +254,7 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
       }).join('');
       return `<div><h4>${d}</h4>${cells}</div>`;
     }).join('');
+    // Delegated handlers (wired below)
   }
 
   function wireWeekSummaryControls(){
@@ -305,7 +310,7 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
     const next = pickUnique(slot, used);
     if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); renderWeekSummary(); }
-    else alert('No alternative recipes available for this slot under current filters.');
+    else alert('No alternative recipes available for this slot under current filters. Try clearing filters or adding more recipes.');
   }
   function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); renderWeekSummary(); }
 
@@ -379,36 +384,6 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
   }
 
   // ---------- Cards / Modal / Print ----------
-  function ensureModalTemplate(){
-    if(!modal || modal.dataset.wired) return;
-    modal.innerHTML = `
-      <div style="background:#0b0f14;color:var(--ink);padding:16px;max-height:80vh;overflow:auto">
-        <header style="display:flex;justify-content:space-between;align-items:center;gap:.6rem">
-          <h2 id="recipeTitle" style="margin:0"></h2>
-          <button id="modalClose" class="btn" type="button">Close</button>
-        </header>
-        <p class="meta"><span id="recipeTime"></span> • Serves <span id="recipeServes"></span> • <span id="recipeSpice"></span></p>
-        <h3>Ingredients</h3><ul id="recipeIngredients"></ul>
-        <h3>Method</h3><ol id="recipeMethod"></ol>
-        <h3>Macros (per serving)</h3><ul id="recipeMacros"></ul>
-        <p id="recipeAllergens" class="meta"></p>
-        <h3>Swaps</h3><ul id="recipeSwaps"></ul>
-        <p id="recipeHydration" class="meta"></p>
-        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem">
-          <button id="modalAddToPlanner" class="btn" type="button">Add to Planner</button>
-          <button id="modalPrint" class="btn" type="button">Print</button>
-        </div>
-      </div>`;
-    modal.dataset.wired='1';
-    // Ensure dialog has a visible backdrop even if site CSS misses it
-    const style = document.createElement('style');
-    style.textContent = `
-      dialog.recipe-modal::backdrop{background:rgba(0,0,0,.55)}
-      dialog.recipe-modal[open]{display:block}
-    `;
-    document.head.appendChild(style);
-  }
-
   function card(r){
     const el=document.createElement('article');
     el.className='card';
@@ -434,7 +409,28 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
 
   function openModal(r){
     if(!modal) return;
-    ensureModalTemplate();
+    // Ensure the dialog has inner template; if not, create a simple one
+    if(!modal.dataset.wired){
+      modal.innerHTML = `
+        <div style="padding:16px;max-height:80vh;overflow:auto">
+          <header style="display:flex;justify-content:space-between;align-items:center;gap:.6rem">
+            <h2 id="recipeTitle" style="margin:0"></h2>
+            <button id="modalClose" class="btn" type="button">Close</button>
+          </header>
+          <p class="meta"><span id="recipeTime"></span> • Serves <span id="recipeServes"></span> • <span id="recipeSpice"></span></p>
+          <h3>Ingredients</h3><ul id="recipeIngredients"></ul>
+          <h3>Method</h3><ol id="recipeMethod"></ol>
+          <h3>Macros (per serving)</h3><ul id="recipeMacros"></ul>
+          <p id="recipeAllergens" class="meta"></p>
+          <h3>Swaps</h3><ul id="recipeSwaps"></ul>
+          <p id="recipeHydration" class="meta"></p>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem">
+            <button id="modalAddToPlanner" class="btn" type="button">Add to Planner</button>
+            <button id="modalPrint" class="btn" type="button">Print</button>
+          </div>
+        </div>`;
+      modal.dataset.wired='1';
+    }
     const get=s=>qs(s,modal);
     get('#recipeTitle')       && (get('#recipeTitle').textContent=r.title);
     get('#recipeServes')      && (get('#recipeServes').textContent=r.serves||1);
@@ -454,8 +450,7 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
     get('#modalPrint')        && (get('#modalPrint').onclick=()=>printRecipe(r));
     get('#modalClose')        && (get('#modalClose').onclick=()=>modal.close());
 
-    if(typeof modal.showModal === 'function'){ modal.showModal(); }
-    else { modal.setAttribute('open',''); } // iOS/Safari fallback if necessary
+    modal.showModal();
   }
 
   function printRecipe(r){
@@ -564,40 +559,52 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
       if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
     });
 
-    // Week planner (panel) — delegated
+    // Delegated handlers for week planner (panel)
     if (plannerPanel) {
       plannerPanel.addEventListener('click', (e) => {
         const swapBtn   = e.target.closest('[data-swap]');
         const removeBtn = e.target.closest('[data-wremove]');
         const pickBtn   = e.target.closest('[data-pick]');
         if (swapBtn) {
-          const [di, sl] = swapBtn.dataset.swap.split(':'); swapSlot(+di, sl); return;
+          const [di, sl] = swapBtn.dataset.swap.split(':');
+          swapSlot(+di, sl);
+          return;
         }
         if (removeBtn) {
           const [di, sl] = removeBtn.dataset.wremove.split(':');
-          PLAN_WEEK[+di][sl] = null; saveWeek(); buildWeekGrid(); renderWeekSummary(); return;
+          PLAN_WEEK[+di][sl] = null;
+          saveWeek(); buildWeekGrid(); renderWeekSummary();
+          return;
         }
         if (pickBtn) {
-          const [di, sl] = pickBtn.dataset.pick.split(':'); swapSlot(+di, sl); return;
+          const [di, sl] = pickBtn.dataset.pick.split(':');
+          swapSlot(+di, sl);
+          return;
         }
       });
     }
 
-    // Week summary (main) — delegated
+    // Delegated handlers for week summary (main page)
     if (weekSummarySection) {
       weekSummarySection.addEventListener('click', (e) => {
         const swapBtn   = e.target.closest('[data-swap-main]');
         const removeBtn = e.target.closest('[data-wremove-main]');
         const pickBtn   = e.target.closest('[data-pick-main]');
         if (swapBtn) {
-          const [di, sl] = swapBtn.dataset.swapMain.split(':'); swapSlot(+di, sl); return;
+          const [di, sl] = swapBtn.dataset.swapMain.split(':');
+          swapSlot(+di, sl);
+          return;
         }
         if (removeBtn) {
           const [di, sl] = removeBtn.dataset.wremoveMain.split(':');
-          PLAN_WEEK[+di][sl] = null; saveWeek(); buildWeekGrid(); renderWeekSummary(); return;
+          PLAN_WEEK[+di][sl] = null;
+          saveWeek(); buildWeekGrid(); renderWeekSummary();
+          return;
         }
         if (pickBtn) {
-          const [di, sl] = pickBtn.dataset.pickMain.split(':'); swapSlot(+di, sl); return;
+          const [di, sl] = pickBtn.dataset.pickMain.split(':');
+          swapSlot(+di, sl);
+          return;
         }
       });
     }
@@ -627,54 +634,42 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
     searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
   }
 
-  // ---------- Boot ----------
-  function init(){
-    if(!grid) return;
-    renderChips(); updateChipStates();
-    buildPantry(); buildPlanner(); renderPantryTokens();
+  // ---------- File discovery & loader ----------
+  async function discoverRecipeFiles(max = 30){
+    // Prefer numbered files, then legacy recipes.json
+    const numbered = Array.from({length:max}, (_,i)=>`assets/data/recipes-${String(i+1).padStart(2,'0')}.json`);
+    const legacy   = 'assets/data/recipes.json';
+    const candidates = [...numbered, legacy];
 
-    // restore plans
-    loadToday(); renderPlan();
-    loadWeek();  buildWeekGrid(); renderWeekSummary();
-    wireWeekSummaryControls();
-
-    // bind all UI once
-    wire();
-
-    // ==== RECIPES LOADER (multi-file + fallbacks) ====
-    const recipeFiles = [
-      'assets/data/recipes-01.json',
-      'assets/data/recipes-02.json',
-      'assets/data/recipes.json' // optional legacy/main file
-    ];
-    loadAllRecipes(recipeFiles);
+    // Probe them quietly; only keep ones that return 200 OK on either path or ../fallback
+    const checks = await Promise.allSettled(
+      candidates.map(p => fetchWithFallback(p, {probe:true}))
+    );
+    const existing = [];
+    checks.forEach((res, idx) => {
+      if(res.status==='fulfilled' && res.value && res.value.res && res.value.res.ok){
+        existing.push(res.value.url);
+      }
+    });
+    // Always include legacy if nothing else found (doesn't guarantee it exists, but loadAllRecipes handles failures)
+    return existing.length ? existing : [legacy];
   }
 
   // ---------- Robust loader ----------
-  async function fetchWithFallbackMulti(path) {
-    // Try multiple path variants for robustness across hosting setups
-    const variants = [];
-    // as given
-    variants.push(path);
-    // ensure leading ./ variant
-    if(!path.startsWith('./')) variants.push('./' + path);
-    // parent
-    if(!path.startsWith('../')) variants.push('../' + path);
-    // root
-    if(!path.startsWith('/')) variants.push('/' + path);
+  async function fetchWithFallback(path, opts = {}) {
+    const { probe=false } = opts;
+    const tryFetch = async (p) => {
+      const res = await fetch(p + (p.includes('?') ? '' : ('?v=' + Date.now())));
+      return { res, url: p };
+    };
 
-    const tried = [];
-    for (const p of variants) {
-      const url = p + (p.includes('?') ? '' : ('?v=' + Date.now()));
-      try {
-        const res = await fetch(url);
-        tried.push(`${p} → ${res.status}`);
-        if (res.ok) return { res, url: p, tried };
-      } catch (err) {
-        tried.push(`${p} → network error`);
-      }
+    let attempt = await tryFetch(path);
+    if (!attempt.res.ok && attempt.res.status === 404 && !path.startsWith('../')) {
+      const fallback = '../' + path;
+      !probe && console.warn('[FFF] 404 for', path, '→ trying', fallback);
+      attempt = await tryFetch(fallback);
     }
-    return { res: { ok:false, status:0 }, url: path, tried };
+    return attempt;
   }
 
   function safeParseJSON(text, fileLabel){
@@ -691,8 +686,8 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
   async function loadAllRecipes(files) {
     const results = await Promise.allSettled(
       files.map(async (p) => {
-        const { res, url, tried } = await fetchWithFallbackMulti(p);
-        if (!res.ok) throw new Error(`Failed to load ${url}. Tried:\n${tried.join('\n')}`);
+        const { res, url } = await fetchWithFallback(p);
+        if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
         const text = await res.text();
         const json = safeParseJSON(text, url);
         return { url, json };
@@ -713,11 +708,12 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
       seen.add(key);
       return true;
     }).map(r => {
-      r.kcalBand  = r.kcalBand  || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
+      r.kcalBand   = r.kcalBand  || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
       r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
       return r;
     });
 
+    // On first successful load, reset filters so nothing hides the list
     if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
       FIRST_SUCCESSFUL_LOAD = true;
       FILTERS.ALL = true;
@@ -727,15 +723,12 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
       updateChipStates();
     }
 
-    // Feedback (and visible error if none loaded)
+    // Feedback
     if (countEl) {
-      if (RECIPES.length) {
-        const from = ok.map(o => o.url);
-        countEl.innerHTML = `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`;
-      } else {
-        const triedMsg = bad.map(b => (b.reason && String(b.reason.message)) || 'Unknown').join('<br>');
-        countEl.innerHTML = `Loaded 0 recipes.<br><span style="color:#f66">Errors:</span><br>${triedMsg}`;
-      }
+      const from = ok.map(o => o.url);
+      countEl.innerHTML = RECIPES.length
+        ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
+        : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
     }
 
     render();
@@ -748,11 +741,29 @@ document.getElementById('recipeCount') && (document.getElementById('recipeCount'
         <p><strong>No recipes loaded.</strong> Quick checks:</p>
         <ul>
           <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
-          <li>Paths tried include <code>assets/…</code>, <code>./assets/…</code>, <code>../assets/…</code>, and <code>/assets/…</code>.</li>
-          <li>If viewing from a local file on iPad (file://), use a simple web server; Safari blocks fetch from local files.</li>
+          <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
+          <li>No trailing commas or missing commas between objects.</li>
         </ul>`;
       grid.prepend(help);
     }
+  }
+
+  // ---------- Boot ----------
+  function init(){
+    if(!grid) return;
+    renderChips(); updateChipStates();
+    buildPantry(); buildPlanner(); renderPantryTokens();
+
+    // restore plans
+    loadToday(); renderPlan();
+    loadWeek();  buildWeekGrid(); renderWeekSummary();
+    wireWeekSummaryControls();
+
+    // bind all UI once
+    wire();
+
+    // Auto-discover and load recipe files
+    discoverRecipeFiles(30).then(loadAllRecipes);
   }
 
   document.addEventListener('DOMContentLoaded', init);

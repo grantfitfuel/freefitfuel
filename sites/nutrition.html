@@ -755,4 +755,175 @@
   });}
   if(dateInput){ dateInput.addEventListener('change', ()=>{ renderLog(); updateLogBars(); }); }
   </script>
-  
+    <!-- AUTO PLANNER + BOOT -->
+  <script>
+  /* ===== Auto Planner (no duplicate lunches across the week) ===== */
+  function apGuessCategory(r){
+    const nm = (r.name||'').toLowerCase();
+    const has = s => nm.includes(s);
+    if (has('oat') || has('yoghurt') || has('parfait') || (has('egg') && !has('shakshuka'))) return 'breakfast';
+    if (has('wrap') || has('sandwich') || ((has('salad') || has('bowl')) && !has('rice & chicken'))) return 'lunch';
+    if (has('banana ice') || has('parfait') || has('chia') || has('bar')) return 'snack';
+    return 'dinner';
+  }
+  function apPoolBy(cat){ return (window.RECIPES||[]).filter(r => apGuessCategory(r)===cat); }
+  function apKcal(r){ return r?.macros?.kcal || 400; }
+  function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  function takeWithoutReplacement(pool, count){ const bag=shuffle(pool), out=[]; let idx=0; for(let i=0;i<count;i++){ if(!bag.length){ bag.push(...shuffle(pool)); } out.push(bag[idx % bag.length]); idx++; } return out; }
+
+  function apBuildWeek(kcalTarget){
+    const shares = {breakfast:.25, lunch:.30, dinner:.35, snack:.10};
+    const cats   = ['breakfast','lunch','dinner','snack'];
+
+    const poolBy = {};
+    cats.forEach(cat=>{
+      const pool = apPoolBy(cat);
+      const want = kcalTarget * shares[cat];
+      poolBy[cat] = pool.slice().sort((a,b)=>Math.abs(apKcal(a)-want)-Math.abs(apKcal(b)-want));
+    });
+
+    // unique picks per category where possible
+    const picks = {};
+    cats.forEach(cat=>{
+      const base = poolBy[cat];
+      if (base.length >= 7) {
+        const seen = new Set(), out=[];
+        for (let i=0,j=0; out.length<7 && j<base.length*3; j++){
+          const r = base[(i+j)%base.length];
+          if(!seen.has(r.k)){ seen.add(r.k); out.push(r); }
+        }
+        picks[cat] = out;
+      } else {
+        picks[cat] = takeWithoutReplacement(base, 7);
+      }
+    });
+
+    const week = [];
+    for(let d=0; d<7; d++){
+      const day = {breakfast:null,lunch:null,dinner:null,snack:null,total:0};
+      cats.forEach(cat=>{
+        let choice = picks[cat][d % picks[cat].length];
+        // avoid same as previous day in same slot when alternatives exist
+        if(d>0 && week[d-1][cat] && choice.k === week[d-1][cat].k && poolBy[cat].length > 1){
+          for(let s=1; s<poolBy[cat].length; s++){
+            const alt = poolBy[cat][(d+s) % poolBy[cat].length];
+            if(alt.k !== week[d-1][cat].k){ choice = alt; break; }
+          }
+        }
+        day[cat] = choice;
+      });
+      day.total = ['breakfast','lunch','dinner','snack'].reduce((a,k)=>a+(day[k]?apKcal(day[k]):0),0);
+      week.push(day);
+    }
+    return week;
+  }
+
+  /* State & storage for Auto Planner */
+  const AP_KEY = 'fff-aplan-v1';
+  let AP_PLAN = loadAP() || Array.from({length:7},()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+  function saveAP(){ localStorage.setItem(AP_KEY, JSON.stringify(AP_PLAN)); }
+  function loadAP(){ try{ return JSON.parse(localStorage.getItem(AP_KEY)||'null'); }catch(e){ return null; } }
+
+  /* Render Auto Planner */
+  const apGrid = document.getElementById('ap-grid');
+  function apDayTotal(day){ return ['breakfast','lunch','dinner','snack'].reduce((a,k)=> a + (day[k]?apKcal(day[k]):0),0); }
+  function apSlotHTML(rec,cat,dayIndex){
+    if(!rec){
+      const nice = cat[0].toUpperCase()+cat.slice(1);
+      return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+        <div class="row"><span class="name">${nice}</span><button class="ap-swap" data-swap>Swap</button></div>
+        <div class="cal">—</div>
+      </div>`;
+    }
+    return `<div class="ap-slot" data-day="${dayIndex}" data-cat="${cat}">
+      <div class="row"><span class="name">${rec.name}</span><button class="ap-swap" data-swap>Swap</button></div>
+      <div class="cal">${apKcal(rec)} kcal</div>
+    </div>`;
+  }
+  function apHookSwaps(){
+    apGrid.querySelectorAll('[data-swap]').forEach(btn=>{
+      btn.onclick = ()=>{
+        const slot = btn.closest('.ap-slot');
+        const day = parseInt(slot.dataset.day,10);
+        const cat = slot.dataset.cat;
+        const pool = apPoolBy(cat); if(!pool.length) return;
+        const current = AP_PLAN[day][cat];
+        let i = current ? pool.findIndex(r=>r.k===current.k) : -1;
+        for(let j=1;j<=pool.length;j++){
+          const cand = pool[(i+j)%pool.length];
+          if(!current || cand.k !== current.k){ AP_PLAN[day][cat] = cand; break; }
+        }
+        AP_PLAN[day].total = apDayTotal(AP_PLAN[day]);
+        saveAP(); apRender();
+      };
+    });
+  }
+  function apRender(){
+    apGrid.innerHTML = '';
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    days.forEach((d,dayIdx)=>{
+      const day = AP_PLAN[dayIdx] || {};
+      const col = document.createElement('div');
+      col.className = 'ap-day-col';
+      col.innerHTML = `
+        <h3>${d}</h3>
+        ${apSlotHTML(day.breakfast,'breakfast',dayIdx)}
+        ${apSlotHTML(day.lunch,'lunch',dayIdx)}
+        ${apSlotHTML(day.dinner,'dinner',dayIdx)}
+        ${apSlotHTML(day.snack,'snack',dayIdx)}
+        <div class="ap-total">≈ ${Math.round(apDayTotal(day))} kcal</div>
+      `;
+      apGrid.appendChild(col);
+    });
+    apHookSwaps();
+  }
+
+  const apGen = document.getElementById('ap-generate');
+  if(apGen){ apGen.addEventListener('click', ()=>{
+    const kcal = +document.getElementById('ap-kcal').value || 2200;
+    AP_PLAN = Array.from({length:7}, (_,i)=> apBuildWeek(kcal)[i] );
+    saveAP(); apRender();
+  });}
+  const apClear = document.getElementById('ap-clear');
+  if(apClear){ apClear.addEventListener('click', ()=>{
+    if(!confirm('Clear auto-plan for the whole week?')) return;
+    AP_PLAN = Array.from({length:7},()=>({breakfast:null,lunch:null,dinner:null,snack:null,total:0}));
+    saveAP(); apRender();
+  });}
+
+  /* ===== Boot ===== */
+  (function boot(){
+    try{
+      const saved = JSON.parse(localStorage.getItem('fff-targets')||'null');
+      if(saved && saved.targets){
+        goal = saved.goal || goal;
+        targets = saved.targets;
+        document.querySelectorAll('[data-goal]').forEach(x=>{
+          x.setAttribute('aria-pressed', x.dataset.goal===goal ? 'true':'false');
+        });
+        const og=document.getElementById('outGoal'),
+              oc=document.getElementById('outCals'),
+              op=document.getElementById('outP'),
+              ocb=document.getElementById('outC'),
+              of=document.getElementById('outF');
+        if(og) og.textContent = goal[0].toUpperCase()+goal.slice(1);
+        if(oc) oc.textContent = targets.cal+' kcal / day';
+        if(op) op.textContent = targets.p+' g';
+        if(ocb) oc.textContent = targets.c+' g';
+        if(of) of.textContent = targets.f+' g';
+        lastCalc=true;
+      }
+    }catch(e){}
+    // open ?recipe=... if present
+    const rid = new URL(location.href).searchParams.get('recipe');
+    if(rid){ openRecipeCard(rid); }
+    renderRecipes();
+    renderPlanner();
+    renderLog();
+    updateLogBars();
+    apRender();
+  })();
+  </script>
+</body>
+</html>
+

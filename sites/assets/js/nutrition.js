@@ -1,5 +1,5 @@
 /* Nutrition JS — full replacement (with on-page Week Plan summary)
-   - Data path(s): assets/data/recipes.json (or split files via recipeFiles[])
+   - Robust loader: multi-file, fallback '../' paths, Promise.allSettled, defensive JSON parse
    - Tiles: no images
    - Modal/Print: no images
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
@@ -36,6 +36,7 @@
 
   // ---------- State ----------
   let RECIPES = [];
+  let FIRST_SUCCESSFUL_LOAD = false;
 
   const FILTERS = {
     ALL: true,
@@ -88,17 +89,18 @@
   }
 
   function updateChipStates(){
-    const all = filterBar.querySelector('[data-filter="ALL"]');
+    const all = filterBar && filterBar.querySelector('[data-filter="ALL"]');
     if(all) all.setAttribute('aria-pressed', FILTERS.ALL?'true':'false');
-    qsa('.chip[data-group]', filterBar).forEach(b=>{
+    filterBar && qsa('.chip[data-group]', filterBar).forEach(b=>{
       const g=b.dataset.group, v=b.dataset.value;
       b.setAttribute('aria-pressed', FILTERS[g].has(v)?'true':'false');
     });
-    clearBtn.style.display = (FILTERS.ALL && !FILTERS.search && !FILTERS.Pantry.active) ? 'none' : 'inline-flex';
+    if (clearBtn) clearBtn.style.display = (FILTERS.ALL && !FILTERS.search && !FILTERS.Pantry.active) ? 'none' : 'inline-flex';
   }
 
   // ---------- Pantry UI ----------
   function buildPantry(){
+    if(!pantryPanel) return;
     pantryPanel.innerHTML = `
       <div class="panel-header"><h2>Pantry</h2><button id="pantryCloseBtn" class="btn">Close</button></div>
       <div class="wrap" style="padding:12px 16px">
@@ -135,6 +137,7 @@
 
   // ---------- Planner (Today + Week) ----------
   function buildPlanner(){
+    if(!plannerPanel) return;
     plannerPanel.innerHTML = `
       <div class="panel-header"><h2>Meal Planner</h2><button id="plannerCloseBtn" class="btn">Close</button></div>
       <div class="wrap" style="padding:12px 16px">
@@ -163,9 +166,11 @@
   }
 
   function renderPlan(){
+    if(!plannerPanel) return;
     const s={breakfast:qs('#slot-breakfast',plannerPanel),lunch:qs('#slot-lunch',plannerPanel),
              dinner:qs('#slot-dinner',plannerPanel),snack:qs('#slot-snack',plannerPanel)};
     Object.keys(s).forEach(k=>{
+      if(!s[k]) return;
       s[k].innerHTML = PLAN[k].map((it,i)=>`
         <div class="badge" style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin:.25rem 0;">
           <span>${it.title}</span>
@@ -181,14 +186,15 @@
     Object.values(PLAN).flat().forEach(it=>{
       tk+=(+it.macros.kcal||0); tp+=(+it.macros.protein_g||0); tc+=(+it.macros.carbs_g||0); tf+=(+it.macros.fat_g||0);
     });
-    qs('#sumKcal',plannerPanel).textContent=Math.round(tk);
-    qs('#sumP',plannerPanel).textContent=`${Math.round(tp)} g`;
-    qs('#sumC',plannerPanel).textContent=`${Math.round(tc)} g`;
-    qs('#sumF',plannerPanel).textContent=`${Math.round(tf)} g`;
+    qs('#sumKcal',plannerPanel) && (qs('#sumKcal',plannerPanel).textContent=Math.round(tk));
+    qs('#sumP',plannerPanel)    && (qs('#sumP',plannerPanel).textContent=`${Math.round(tp)} g`);
+    qs('#sumC',plannerPanel)    && (qs('#sumC',plannerPanel).textContent=`${Math.round(tc)} g`);
+    qs('#sumF',plannerPanel)    && (qs('#sumF',plannerPanel).textContent=`${Math.round(tf)} g`);
   }
 
   function buildWeekGrid(){
-    const wrap=qs('#weekGrid',plannerPanel);
+    if(!plannerPanel) return;
+    const wrap=qs('#weekGrid',plannerPanel); if(!wrap) return;
     wrap.innerHTML = DAYS.map((d,di)=>{
       const day=PLAN_WEEK[di];
       const cells = SLOTS.map(sl=>{
@@ -466,15 +472,29 @@
   }
 
   // ---------- Panels / Overlay ----------
-  function openPanel(p){ p.classList.add('open'); p.setAttribute('aria-hidden','false'); overlay.classList.add('show'); }
-  function closePanel(p){ p.classList.remove('open'); p.setAttribute('aria-hidden','true'); if(!document.querySelector('.panel.open')) overlay.classList.remove('show'); }
+  function openPanel(p){ p && p.classList.add('open'); p && p.setAttribute('aria-hidden','false'); overlay && overlay.classList.add('show'); }
+  function closePanel(p){ p && p.classList.remove('open'); p && p.setAttribute('aria-hidden','true'); if(!document.querySelector('.panel.open') && overlay) overlay.classList.remove('show'); }
 
   // ---------- Render grid ----------
   function render(){
+    if(!grid) return;
     const list = RECIPES.filter(matchesFilters);
     grid.innerHTML=''; list.forEach(r=>grid.appendChild(card(r)));
-    countEl.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`;
+    if(countEl) countEl.textContent = `Showing ${list.length} of ${RECIPES.length} recipes`;
     grid.setAttribute('aria-busy','false');
+
+    if (!list.length && RECIPES.length) {
+      const note = document.createElement('p');
+      note.className = 'meta';
+      note.textContent = 'No recipes match your filters. Click ALL or Clear filters.';
+      grid.appendChild(note);
+    }
+    if (!RECIPES.length) {
+      const note = document.createElement('p');
+      note.className = 'meta';
+      note.textContent = 'No recipes loaded yet.';
+      grid.appendChild(note);
+    }
   }
 
   // ---------- Wiring (bind once) ----------
@@ -571,39 +591,108 @@
     // bind all UI once (loader will only call render)
     wire();
 
-    // ==== RECIPES LOADER (multi-file ready) ====
+    // ==== RECIPES LOADER (multi-file + fallbacks) ====
+    // Edit this list to split files if you like:
     const recipeFiles = [
       'assets/data/recipes.json',
       // 'assets/data/recipes-01.json',
       // 'assets/data/recipes-02.json'
     ];
 
-    (async function loadAllRecipes() {
-      try {
-        const lists = await Promise.all(
-          recipeFiles.map(p =>
-            fetch(p + '?v=' + Date.now()).then(r => {
-              if (!r.ok) throw new Error(p + ' ' + r.status);
-              return r.json();
-            })
-          )
-        );
+    // Load now
+    loadAllRecipes(recipeFiles);
+  }
 
-        // merge arrays or {recipes:[…]}
-        RECIPES = lists.flatMap(x => Array.isArray(x) ? x : (x.recipes || []))
-          .map(r => {
-            r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
-            r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
-            return r;
-          });
+  // Robust loader
+  async function fetchWithFallback(path) {
+    // try exact path; on 404, try '../' + path (common subfolder mistake)
+    const tryFetch = async (p) => {
+      const res = await fetch(p + '?v=' + Date.now());
+      return { res, url: p };
+    };
 
-        render(); // wiring already done
-      } catch (err) {
-        console.error('Failed to load recipes:', err);
-        countEl && (countEl.textContent = 'No recipes file found. Check assets/data paths.');
-        grid && grid.setAttribute('aria-busy','false');
-      }
-    })();
+    let attempt = await tryFetch(path);
+    if (!attempt.res.ok && attempt.res.status === 404 && !path.startsWith('../')) {
+      const fallback = '../' + path;
+      console.warn('[FFF] 404 for', path, '→ trying', fallback);
+      attempt = await tryFetch(fallback);
+    }
+    return attempt;
+  }
+
+  function safeParseJSON(text, fileLabel){
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      // Spot the classic "two top-level arrays" dev mistake quickly
+      const looksLikeTwoArrays = /^\s*\[[\s\S]*\]\s*\[[\s\S]*\]\s*$/.test(text);
+      const hint = looksLikeTwoArrays
+        ? 'Looks like TWO top-level arrays back-to-back. Merge into one array or split into separate files.'
+        : 'Invalid JSON (missing comma / trailing comma?).';
+      throw new Error(`${fileLabel}: ${hint}`);
+    }
+  }
+
+  async function loadAllRecipes(files) {
+    const results = await Promise.allSettled(
+      files.map(async (p) => {
+        const { res, url } = await fetchWithFallback(p);
+        if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
+        const text = await res.text();
+        const json = safeParseJSON(text, url);
+        return { url, json };
+      })
+    );
+
+    // Gather successes, warn on failures
+    const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+    const bad = results.filter(r => r.status === 'rejected');
+
+    if (bad.length) {
+      console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
+    }
+
+    // Merge arrays or {recipes:[…]} and de-dup by slug/title
+    const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
+    const seen = new Set();
+    RECIPES = mergedRaw.filter(r => {
+      const key = r.slug || r.title;
+      if (!key || seen.has(key)) return !key ? false : false;
+      seen.add(key);
+      return true;
+    }).map(r => {
+      r.kcalBand = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal ?? 0);
+      r.pantryKeys = r.pantryKeys || (r.ingredients || []).map(i => norm(i.pantryKey || i.item));
+      return r;
+    });
+
+    // On first successful load, reset filters so nothing hides the list
+    if (!FIRST_SUCCESSFUL_LOAD) {
+      FIRST_SUCCESSFUL_LOAD = true;
+      FILTERS.ALL = true;
+      ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
+      FILTERS.search = '';
+      FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+      updateChipStates();
+    }
+
+    render();
+
+    // Helpful message if totally empty
+    if (!RECIPES.length) {
+      countEl && (countEl.textContent = 'Loaded 0 recipes. Check JSON structure/paths.');
+      const help = document.createElement('div');
+      help.className = 'meta';
+      help.style.marginTop = '.5rem';
+      help.innerHTML = `
+        <p><strong>No recipes loaded.</strong> Quick checks:</p>
+        <ul>
+          <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
+          <li>Paths are relative to <code>nutrition.html</code>. This loader also tries <code>../</code> as a fallback.</li>
+          <li>No trailing commas or missing commas between objects.</li>
+        </ul>`;
+      grid && grid.prepend(help);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', init);

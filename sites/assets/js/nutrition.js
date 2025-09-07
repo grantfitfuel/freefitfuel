@@ -210,19 +210,45 @@ function card(r){
   modal.showModal();
 }
   function printRecipe(r){
-    const n=r.nutritionPerServing||{};
-    printArea.hidden=false;
-    printArea.innerHTML=`
-      <article>
-        <h1>${r.title}</h1>
-        <p>${r.mealType||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)} ${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'}`:''}</p>
-        <h2>Ingredients</h2><ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
-        <h2>Method</h2><ol>${(r.method||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
-        <h2>Macros (per serving)</h2>
-        <p>${n.kcal||'—'} kcal • P ${n.protein_g||'—'} g • C ${n.carbs_g||'—'} g • F ${n.fat_g||'—'} g${n.fibre_g!=null?` • Fibre ${n.fibre_g} g`:''}${n.sugar_g!=null?` • Sugar ${n.sugar_g} g`:''}${n.salt_g!=null?` • Salt ${n.salt_g} g`:''}</p>
-      </article>`;
-    window.print(); setTimeout(()=>{ printArea.hidden=true; printArea.innerHTML=''; }, 400);
+  const n = r.nutritionPerServing || {};
+  const area = document.getElementById('printArea');
+
+  // Build the printable markup
+  area.innerHTML = `
+    <article>
+      <h1>${r.title}</h1>
+      <p>${r.mealType || ''} • ${r.time_mins || 0} min • Serves ${r.serves || 1}
+         ${r.spiceLevel ? ` • ${'🌶️'.repeat(Math.max(1, Math.min(3, +r.spiceLevel || 0)))} ` : ''}</p>
+      <h2>Ingredients</h2>
+      <ul>${(r.ingredients || []).map(i => `<li>${i.qty ? `${i.qty} ` : ''}${i.item}</li>`).join('')}</ul>
+      <h2>Method</h2>
+      <ol>${(r.method || []).map(s => `<li>${s}</li>`).join('')}</ol>
+      <h2>Macros (per serving)</h2>
+      <p>${n.kcal ?? '—'} kcal • P ${n.protein_g ?? '—'} g • C ${n.carbs_g ?? '—'} g • F ${n.fat_g ?? '—'} g
+         ${n.fibre_g != null ? ` • Fibre ${n.fibre_g} g` : ''}</p>
+    </article>`;
+
+  // Make sure it's visible for the print snapshot
+  area.removeAttribute('hidden');
+  area.style.display = 'block';
+
+  // Print after the DOM has painted
+  const doPrint = () => window.print();
+  requestAnimationFrame(() => requestAnimationFrame(doPrint));
+
+  // Cleanup after printing
+  const cleanup = () => {
+    area.innerHTML = '';
+    area.setAttribute('hidden', '');
+    area.style.display = '';
+    window.removeEventListener('afterprint', cleanup);
+  };
+  if ('onafterprint' in window) {
+    window.addEventListener('afterprint', cleanup);
+  } else {
+    setTimeout(cleanup, 500);
   }
+}
 
   // Planner
   function renderPlan(){

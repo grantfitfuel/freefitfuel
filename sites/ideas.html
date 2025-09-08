@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .hero-mini figure{position:relative;max-height:360px;overflow:hidden}
+    .hero-mini img{width:100%;height:360px;object-fit:cover}
+    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55))}
+    .hero-mini .content{position:relative;color:#fff}
+
+    /* Grid of idea cards */
+    #ideasGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+    .card{padding:12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.5rem}
+    .card h3{margin:.15rem 0;font-size:1.06rem}
+    .card .meta{color:var(--inkdim);font-size:.92rem}
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.35rem}
+    .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.3rem .7rem;font-size:.82rem}
+    .btn{cursor:pointer}
+
+    /* Filter chips */
+    #ideaFilterChips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    #ideaFilterChips .chip{padding:.45rem .8rem;font-size:.92rem}
+    #ideaFilterChips .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+
+    /* Modal */
+    dialog.idea-modal{width:min(780px,96vw);border:0;border-radius:12px;padding:0;z-index:1100}
+    dialog.idea-modal::backdrop{background:rgba(0,0,0,.5)}
+    .modal-body{padding:16px;max-height:80vh;overflow:auto}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;gap:.6rem;border-bottom:1px solid var(--stroke);padding-bottom:8px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}
+    .overlay.show{opacity:1;pointer-events:auto}
+
+    /* Quick badges */
+    .badge{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.25rem .5rem;font-size:.8rem}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html" aria-current="page">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="endurance.html">Endurance</a>
+      <a href="nutrition.html">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html">Contact</a>
+      <a href="tracker.html">Tracker</a>
+    </nav>
+  </div>
+</header>
+
+<header class="hero-mini" role="banner" aria-label="Ideas hero">
+  <figure>
+    <img src="img/ideas-hero.jpg" alt="People moving, cooking, and smiling outdoors">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Small Challenges. Big Changes.</span></h1>
+    <p>Pick an idea in fitness, food, or focus. Keep it simple, keep it fun.</p>
+    <div class="cta-row">
+      <a class="btn" href="#ideas">Browse Ideas</a>
+      <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Download Fitness Bingo</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="ideas">
+  <!-- FILTERS -->
+  <section class="section" aria-label="Idea filters">
+    <div class="grid" style="grid-template-columns:2fr 1fr">
+      <div>
+        <label for="ideaSearch" class="visually-hidden">Search ideas</label>
+        <input id="ideaSearch" class="input" type="search" placeholder="Search ideas, tags…">
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end;align-items:center;">
+        <span class="badge" id="ideaCount">Showing 0</span>
+      </div>
+    </div>
+
+    <div id="ideaFilterChips" role="toolbar" aria-label="Idea filters">
+      <!-- JS populates: ALL + tag chips -->
+    </div>
+
+    <button id="ideaClearBtn" class="btn" style="display:none">Clear filters</button>
+  </section>
+
+  <!-- GRID -->
+  <section class="section">
+    <div id="ideasGrid" aria-live="polite" aria-busy="true"></div>
+  </section>
+
+  <!-- INFO -->
+  <section class="section">
+    <div class="grid">
+      <article class="card">
+        <h3>How to Use This Page</h3>
+        <p>Pick 1–2 ideas per week. Keep them tiny, track progress, and celebrate wins.</p>
+      </article>
+      <article class="card">
+        <h3>Downloads</h3>
+        <p><a class="btn" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker (PDF)</a>
+           <a class="btn" href="pdf/ideas/hydration-log.pdf">Hydration Log (PDF)</a>
+           <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo (PDF)</a></p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Modal shell -->
+<dialog id="ideaModal" class="idea-modal" aria-hidden="true"></dialog>
+<div id="overlay" class="overlay"></div>
+
+<script>
+/* ===== Header burger ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.hamburger');
+  const nav = document.querySelector('.main-nav');
+  if(btn && nav){
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+});
+
+/* ===== Ideas app ===== */
+(function(){
+  const qs  = (s, e = document) => e.querySelector(s);
+  const qsa = (s, e = document) => Array.from(e.querySelectorAll(s));
+  const norm= s => (s||'').toString().trim().toLowerCase();
+
+  const grid   = qs('#ideasGrid');
+  const chips  = qs('#ideaFilterChips');
+  const search = qs('#ideaSearch');
+  const count  = qs('#ideaCount');
+  const clear  = qs('#ideaClearBtn');
+  const modal  = qs('#ideaModal');
+  const overlay= qs('#overlay');
+
+  const TAG_GROUPS = [
+    { id:'ALL', label:'ALL' },
+    { id:'Type', label:'Type', chips:['Fitness','Nutrition','Mind','Fun'] },
+    { id:'Focus', label:'Focus', chips:['Strength','Cardio','Mobility','Habits','Budget','Hydration','Sleep','Mindfulness'] },
+    { id:'Time', label:'Time', chips:['≤5 min','≤10 min','≤20 min'] },
+    { id:'Gear', label:'Gear', chips:['No equipment','Dumbbells','Resistance band'] }
+  ];
+
+  const FILTERS = {
+    ALL:true,
+    search:'',
+    Type:new Set(),
+    Focus:new Set(),
+    Time:new Set(),
+    Gear:new Set()
+  };
+
+  const IDEAS = [
+    // ----- FITNESS -----
+    {
+      title:'30-Day Push-Up Challenge',
+      type:'Fitness',
+      summary:'Start small, add 1–2 reps daily. Test max on Day 30.',
+      details:[
+        'Warm-up 2–3 min (arm circles, shoulder taps).',
+        'Day 1: 5–10 total push-ups split into sets.',
+        'Add 1–2 reps per day. Rest 60–90s between sets.',
+        'Elevate hands on bench/table if needed.'
+      ],
+      tips:['Film Day 1 and Day 30 for form check.','Pair with plank holds for core.'],
+      focus:['Strength','Habits'],
+      time:'≤10 min',
+      gear:['No equipment'],
+      links:[{label:'Push-Up Tracker (PDF)',href:'pdf/ideas/pushup-tracker.pdf'}]
+    },
+    {
+      title:'Plank Ladder',
+      type:'Fitness',
+      summary:'Add 5 seconds per day. Hit a solid 2–3 minutes.',
+      details:['Day 1: 20s plank.','Add 5s daily.','Keep ribs down, glutes on, breath smooth.'],
+      tips:['Break long holds into 2–3 sets.','Finish with child’s pose.'],
+      focus:['Strength','Habits'],
+      time:'≤5 min',
+      gear:['No equipment']
+    },
+    {
+      title:'5K Step-Ups',
+      type:'Fitness',
+      summary:'Stairs/bench intervals for legs & lungs.',
+      details:['Set a timer 10–15 min.','Step up–down continuously, switch lead leg.'],
+      tips:['Drive through heel.','Add light dumbbells if easy.'],
+      focus:['Cardio','Strength'],
+      time:'≤20 min',
+      gear:['No equipment','Dumbbells']
+    },
+
+    // ----- NUTRITION -----
+    {
+      title:'Hydration 7-Day',
+      type:'Nutrition',
+      summary:'Hit your daily ml target for a week.',
+      details:['Target ≈ 30–35 ml per kg bodyweight.','Add 500–1000 ml on training days.'],
+      tips:['Keep a marked bottle on desk.','Drink with each meal.'],
+      focus:['Hydration','Habits'],
+      time:'≤5 min',
+      gear:[],
+      links:[{label:'Hydration Log (PDF)',href:'pdf/ideas/hydration-log.pdf'}]
+    },
+    {
+      title:'Meat-Free Monday',
+      type:'Nutrition',
+      summary:'Try one plant-based dinner each week.',
+      details:['Pick a high-protein veggie recipe.','Batch cook for lunches.'],
+      tips:['Use beans, tofu, lentils.','Season well: garlic, herbs, citrus.'],
+      focus:['Budget','Habits'],
+      time:'≤20 min',
+      gear:[]
+    },
+    {
+      title:'Rainbow on the Plate',
+      type:'Nutrition',
+      summary:'Eat 5 different colours in a day.',
+      details:['Plan snacks: berries, carrots, peppers, greens.','Tick them off at dinner.'],
+      tips:['Blend leftovers into a soup next day.'],
+      focus:['Habits'],
+      time:'≤10 min',
+      gear:[]
+    },
+
+    // ----- MIND / RECOVERY -----
+    {
+      title:'Sleep Reset (14 Days)',
+      type:'Mind',
+      summary:'Same bedtime/wake time for two weeks.',
+      details:['Set a wind-down alarm 60 min before bed.','No screens 30 min before.'],
+      tips:['Cool, dark room.','Light stretch before bed.'],
+      focus:['Sleep','Habits'],
+      time:'≤10 min',
+      gear:[]
+    },
+    {
+      title:'One-Minute Breath',
+      type:'Mind',
+      summary:'1–5 minutes of box breathing daily.',
+      details:['Inhale 4s, hold 4s, exhale 4s, hold 4s. Repeat.'],
+      tips:['Use at desk or between meetings.'],
+      focus:['Mindfulness','Habits'],
+      time:'≤5 min',
+      gear:[]
+    },
+
+    // ----- FUN / COMMUNITY -----
+    {
+      title:'Fitness Bingo',
+      type:'Fun',
+      summary:'Complete fun squares during the week.',
+      details:['Walk to the shop','Try a new vegetable','Do 20 bodyweight squats','Stretch for 5 minutes'],
+      tips:['Compete with a friend for a prize.'],
+      focus:['Habits','Mobility','Cardio'],
+      time:'≤10 min',
+      gear:[],
+      links:[{label:'Fitness Bingo (PDF)',href:'pdf/ideas/fitness-bingo.pdf'}]
+    },
+    {
+      title:'Weekend Adventure',
+      type:'Fun',
+      summary:'Park run, hike, cycle, or swim — pick one.',
+      details:['Block 60–90 minutes.','Pack water and a snack.'],
+      tips:['Invite a friend.','Log how it felt.'],
+      focus:['Cardio','Mindfulness'],
+      time:'≤20 min',
+      gear:[]
+    }
+  ];
+
+  function renderChips(){
+    chips.innerHTML = '';
+    const all = document.createElement('button');
+    all.className = 'chip'; all.dataset.filter='ALL';
+    all.setAttribute('aria-pressed','true'); all.textContent='ALL';
+    chips.appendChild(all);
+
+    TAG_GROUPS.filter(g=>g.id!=='ALL').forEach(g=>{
+      g.chips.forEach(v=>{
+        const b=document.createElement('button');
+        b.className='chip'; b.dataset.group=g.id; b.dataset.value=v; b.setAttribute('aria-pressed','false');
+        b.textContent=v; chips.appendChild(b);
+      });
+    });
+  }
+
+  function matches(i){
+    if(FILTERS.search){
+      const hay = `${i.title} ${i.summary} ${i.type} ${(i.focus||[]).join(' ')} ${(i.gear||[]).join(' ')}`.toLowerCase();
+      if(!hay.includes(FILTERS.search)) return false;
+    }
+    if(FILTERS.Type.size && !FILTERS.Type.has(i.type)) return false;
+
+    if(FILTERS.Focus.size){
+      const have=new Set(i.focus||[]);
+      for(const f of FILTERS.Focus) if(!have.has(f)) return false;
+    }
+
+    if(FILTERS.Time.size && !FILTERS.Time.has(i.time)) return false;
+
+    if(FILTERS.Gear.size){
+      const have=new Set(i.gear||[]);
+      for(const g of FILTERS.Gear) if(!have.has(g)) return false;
+    }
+    return true;
+  }
+
+  function ideaCard(i){
+    const el=document.createElement('article');
+    el.className='card';
+    el.innerHTML=`
+      <h3>${i.title}</h3>
+      <p class="meta">${i.type} • ${i.time||'—'}</p>
+      <p>${i.summary}</p>
+      <div class="mini-nav">
+        ${(i.focus||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
+        ${(i.gear||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
+      </div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <button class="btn" data-view>View Idea</button>
+        ${(i.links||[]).map(l=>`<a class="btn" href="${l.href}">${l.label}</a>`).join('')}
+      </div>
+    `;
+    el.querySelector('[data-view]').onclick=()=>openModal(i);
+    return el;
+  }
+
+  function render(){
+    const list = IDEAS.filter(matches);
+    grid.innerHTML=''; list.forEach(i=>grid.appendChild(ideaCard(i)));
+    count && (count.textContent = `Showing ${list.length}`);
+    grid.setAttribute('aria-busy','false');
+
+    if(!list.length){
+      const note=document.createElement('p');
+      note.className='meta';
+      note.textContent='No ideas match your filters. Click ALL or Clear filters.';
+      grid.appendChild(note);
+    }
+  }
+
+  function openModal(i){
+    if(!modal.dataset.wired){
+      modal.innerHTML = `
+        <div class="modal-body">
+          <div class="modal-header">
+            <h2 id="mTitle" style="margin:0"></h2>
+            <button class="btn" id="mClose" type="button">Close</button>
+          </div>
+          <p class="meta" id="mMeta"></p>
+          <h3>How it works</h3>
+          <ol id="mSteps"></ol>
+          <h3>Tips</h3>
+          <ul id="mTips"></ul>
+          <div id="mLinks" style="margin-top:.6rem;display:flex;gap:.6rem;flex-wrap:wrap"></div>
+        </div>`;
+      qs('#mClose',modal).onclick=()=>modal.close();
+      modal.dataset.wired='1';
+    }
+    qs('#mTitle',modal).textContent = i.title;
+    qs('#mMeta',modal).textContent  = `${i.type} • ${i.time||'—'}`;
+    qs('#mSteps',modal).innerHTML   = (i.details||[]).map(s=>`<li>${s}</li>`).join('');
+    qs('#mTips',modal).innerHTML    = (i.tips||[]).map(s=>`<li>${s}</li>`).join('');
+    qs('#mLinks',modal).innerHTML   = (i.links||[]).map(l=>`<a class="btn" href="${l.href}">${l.label}</a>`).join('');
+    modal.showModal();
+  }
+
+  function updateChipStates(){
+    const allBtn = chips && chips.querySelector('[data-filter="ALL"]');
+    if(allBtn) allBtn.setAttribute('aria-pressed', FILTERS.ALL?'true':'false');
+    chips && qsa('.chip[data-group]', chips).forEach(b=>{
+      const g=b.dataset.group, v=b.dataset.value;
+      b.setAttribute('aria-pressed', FILTERS[g].has(v)?'true':'false');
+    });
+    clear.style.display = (FILTERS.ALL && !FILTERS.search) ? 'none' : 'inline-flex';
+  }
+
+  // Wire filters
+  function wire(){
+    chips.addEventListener('click', e=>{
+      const b=e.target.closest('.chip'); if(!b) return;
+      if(b.dataset.filter==='ALL'){
+        FILTERS.ALL=true; ['Type','Focus','Time','Gear'].forEach(k=>FILTERS[k].clear());
+        FILTERS.search=''; if(search) search.value='';
+        updateChipStates(); render(); return;
+      }
+      const g=b.dataset.group, v=b.dataset.value; FILTERS.ALL=false;
+      (FILTERS[g].has(v)? FILTERS[g].delete(v) : FILTERS[g].add(v));
+      updateChipStates(); render();
+    });
+    clear.onclick=()=>{
+      FILTERS.ALL=true; ['Type','Focus','Time','Gear'].forEach(k=>FILTERS[k].clear());
+      FILTERS.search=''; if(search) search.value='';
+      updateChipStates(); render();
+    };
+    search && (search.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(search.value); updateChipStates(); render(); });
+  }
+
+  function init(){
+    renderChips();
+    updateChipStates();
+    wire();
+    render();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>

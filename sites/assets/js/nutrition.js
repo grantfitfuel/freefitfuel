@@ -653,15 +653,16 @@
   }
 
   // Build a future-proof list: recipes-01..-99.json + legacy recipes.json
-  function buildRecipeFileList(){
-    const list = [];
-    for(let i=1;i<=99;i++){
-      const idx = i.toString().padStart(2,'0');
-      list.push(`assets/data/recipes-${idx}.json`);
-    }
-    list.push('assets/data/recipes.json');
-    return list;
+function buildRecipeFileList(){
+  const list = [];
+  // scan up to 99 so you won’t need to touch this again
+  for (let i = 1; i <= 99; i++) {
+    const idx = i.toString().padStart(2,'0');
+    list.push(`assets/data/recipes-${idx}.json`);
   }
+  list.push('assets/data/recipes.json'); // legacy
+  return list;
+}
 
   // ---------- Normalisers / guards ----------
   function normalizeMealType(s){

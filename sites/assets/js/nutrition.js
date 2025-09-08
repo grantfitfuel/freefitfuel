@@ -1,6 +1,6 @@
 /* Nutrition JS — full replacement
    - Robust loader: multi-file, '../' fallback, Promise.allSettled, defensive JSON parse
-   - Future-proof file list (recipes-01..-20 + legacy recipes.json)
+   - Future-proof file list (recipes-01..-99 + legacy recipes.json)
    - Tiles: text-only (no tile images)
    - Modal/Print: injected template; no images
    - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
@@ -338,21 +338,21 @@
       if(!band || !FILTERS.KcalBand.has(band)) return false;
     }
 
-    if(FILTERS.Protocols.size){
+    if (FILTERS.Protocols.size){
       const have = new Set(r.protocols||[]);
       for(const need of FILTERS.Protocols) if(!have.has(need)) return false;
     }
 
     if (FILTERS.Time.size) {
-  const ok = [...FILTERS.Time].every(tag => {
-    if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
-    if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
-    if (tag === 'Slow-cook') return r.slowCook === true;
-    if (tag === 'No-cook')  return r.noCook === true;
-    return true;
-  });
-  if (!ok) return false;
-}
+      const ok = [...FILTERS.Time].every(tag => {
+        if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
+        if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
+        if (tag === 'Slow-cook') return r.slowCook === true;
+        if (tag === 'No-cook')  return r.noCook === true;
+        return true;
+      });
+      if (!ok) return false;
+    }
 
     if(FILTERS.CostPrep.size){
       const needsBudget = FILTERS.CostPrep.has('Low cost / Budget');
@@ -633,31 +633,27 @@
     searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
   }
 
-// ---------- Export Index ----------
-function exportIndex(){
-  const index = RECIPES.map(r => ({
-    title: r.title,
-    mealType: r.mealType,
-    dietary: r.dietary || [],
-    nutritionFocus: r.nutritionFocus || [],
-    protocols: r.protocols || [],
-    time: r.time_mins ? `${r.time_mins} min` : '',
-    cost: r.costTag || '',
-    allergens: r.allergensPresent || []
-  }));
-  
-  const blob = new Blob([JSON.stringify(index, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'recipe-index.json';
-  a.click();
-  URL.revokeObjectURL(url);
-}
+  // ---------- Export Index (optional helper) ----------
+  function exportIndex(){
+    const index = RECIPES.map(r => ({
+      title: r.title,
+      mealType: r.mealType,
+      dietary: r.dietary || [],
+      nutritionFocus: r.nutritionFocus || [],
+      protocols: r.protocols || [],
+      time: r.time_mins ? `${r.time_mins} min` : '',
+      cost: r.costTag || '',
+      allergens: r.allergensPresent || []
+    }));
+    const blob = new Blob([JSON.stringify(index, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'recipe-index.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
-// wire it
-qs('#exportIndexBtn')?.addEventListener('click', exportIndex);
-   
   // ---------- Boot ----------
   function init(){
     if(!grid) return;
@@ -672,22 +668,25 @@ qs('#exportIndexBtn')?.addEventListener('click', exportIndex);
     // bind all UI once
     wire();
 
+    // optional export button if present
+    const exportBtn = qs('#exportIndexBtn');
+    exportBtn && exportBtn.addEventListener('click', exportIndex);
+
     // ==== RECIPES LOADER (multi-file + fallbacks) ====
     const recipeFiles = buildRecipeFileList(); // future-proof list
     loadAllRecipes(recipeFiles);
   }
 
   // Build a future-proof list: recipes-01..-99.json + legacy recipes.json
-function buildRecipeFileList(){
-  const list = [];
-  // scan up to 99 so you won’t need to touch this again
-  for (let i = 1; i <= 99; i++) {
-    const idx = i.toString().padStart(2,'0');
-    list.push(`assets/data/recipes-${idx}.json`);
+  function buildRecipeFileList(){
+    const list = [];
+    for (let i = 1; i <= 99; i++) {
+      const idx = i.toString().padStart(2,'0');
+      list.push(`assets/data/recipes-${idx}.json`);
+    }
+    list.push('assets/data/recipes.json'); // legacy
+    return list;
   }
-  list.push('assets/data/recipes.json'); // legacy
-  return list;
-}
 
   // ---------- Normalisers / guards ----------
   function normalizeMealType(s){
@@ -754,144 +753,130 @@ function buildRecipeFileList(){
   }
 
   async function loadAllRecipes(files) {
-  const results = await Promise.allSettled(
-    files.map(async (p) => {
-      const { res, url } = await fetchWithFallback(p);
-      if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
-      const text = await res.text();
-      const json = safeParseJSON(text, url);
-      return { url, json };
-    })
-  );
+    const results = await Promise.allSettled(
+      files.map(async (p) => {
+        const { res, url } = await fetchWithFallback(p);
+        if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
+        const text = await res.text();
+        const json = safeParseJSON(text, url);
+        return { url, json };
+      })
+    );
 
-  const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
-  const bad = results.filter(r => r.status === 'rejected');
+    const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+    const bad = results.filter(r => r.status === 'rejected');
 
-  if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
+    if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
 
-  // Merge arrays or {recipes:[…]} and de-dup + sanitize
-  const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
-  const seen = new Set();
-  RECIPES = mergedRaw
-    .map(sanitizeRecipe)
-    .filter(Boolean)
-    .filter(r => {
-      const key = (r.slug || r.title || '').toString().trim().toLowerCase();
-      if(!key || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
+    // Merge arrays or {recipes:[…]} and de-dup + sanitize
+    const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
+    const seen = new Set();
+    RECIPES = mergedRaw
+      .map(sanitizeRecipe)
+      .filter(Boolean)
+      .filter(r => {
+        const key = (r.slug || r.title || '').toString().trim().toLowerCase();
+        if(!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
 
-/* --- ENRICH TAGS SO FILTERS RETURN RESULTS (STRICT) --- */
-for (const r of RECIPES) {
-  r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
-  r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
-  r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
-  r.time_label     = r.time_label || '';
+    /* --- ENRICH TAGS SO FILTERS RETURN RESULTS (STRICT) --- */
+    for (const r of RECIPES) {
+      r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
+      r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
+      r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
+      r.time_label     = r.time_label || '';
 
-  const keys      = new Set((r.pantryKeys || []).map(k => (k||'').toLowerCase()));
-  const allergens = new Set((r.allergensPresent || []).map(a => (a||'').toLowerCase()));
-  const text      = (
-    (r.title || '') + ' ' +
-    (r.method || []).join(' ') + ' ' +
-    r.time_label
-  ).toLowerCase();
+      const keys      = new Set((r.pantryKeys || []).map(k => (k||'').toLowerCase()));
+      const allergens = new Set((r.allergensPresent || []).map(a => (a||'').toLowerCase()));
+      const text      = (
+        (r.title || '') + ' ' +
+        (r.method || []).join(' ') + ' ' +
+        r.time_label
+      ).toLowerCase();
 
-  const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
-  const hasAny = (set, arr) => arr.some(w => set.has(w));
+      const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
+      const hasAny = (set, arr) => arr.some(w => set.has(w));
 
-  // --- Dietary autofill (safe-only; explicit allergen/keys will block) ---
-  // Dairy-free
-  if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) &&
-      !hasAny(allergens, ['milk'])) add(r.dietary, 'Dairy-free');
+      // Dietary autofill (safe-only)
+      if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) && !hasAny(allergens, ['milk']))
+        add(r.dietary, 'Dairy-free');
 
-  // Egg-free
-  if (!hasAny(keys, ['egg','eggs']) &&
-      !hasAny(allergens, ['egg','eggs'])) add(r.dietary, 'Egg-free');
+      if (!hasAny(keys, ['egg','eggs']) && !hasAny(allergens, ['egg','eggs']))
+        add(r.dietary, 'Egg-free');
 
-  // Nut-free
-  const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','pistachio','pistachios','nut','nuts'];
-  if (!hasAny(keys, nutWords) &&
-      !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio'])) {
-    add(r.dietary, 'Nut-free');
+      const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','pistachio','pistachios','nut','nuts'];
+      if (!hasAny(keys, nutWords) && !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio']))
+        add(r.dietary, 'Nut-free');
+
+      if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) && !hasAny(allergens, ['soy','soya']))
+        add(r.dietary, 'Soy-free');
+
+      // Time flags (strict)
+      let hoursMentioned = 0;
+      const m = text.match(/(\d+(?:\.\d+)?)\s*(h|hr|hrs|hour|hours)\b/);
+      if (m) hoursMentioned = parseFloat(m[1] || '0');
+
+      const heatVerbsRe = /(bake|roast|boil|simmer|sear|fry|pan[-\s]?fry|deep[-\s]?fry|saute|sauté|grill|broil|steam|poach|braise|stew|pressure[-\s]?cook|air[-\s]?fry)/;
+      const slowWordsRe = /(slow[-\s]?cook|slow cooker|crock[-\s]?pot|low and slow|braise|stew|pulled|cook on low)/;
+
+      const riskyProteins = ['chicken','beef','pork','lamb','turkey','duck','fish','salmon','tuna','cod','prawns','shrimp','seafood','mince','ground beef','sausage','egg','eggs'];
+      const hasRiskyProtein = hasAny(keys, riskyProteins) || riskyProteins.some(w => text.includes(w));
+
+      const heatStaples = ['rice','pasta','spaghetti','noodles','potato','potatoes','gnocchi','quinoa','lentils','beans (dried)','polenta','couscous (dry)'];
+      const hasHeatStaple = hasAny(keys, heatStaples) || heatStaples.some(w => text.includes(w));
+
+      const usesHeat = heatVerbsRe.test(text);
+
+      r.slowCook = r.slowCook === true ||
+                   slowWordsRe.test(text) ||
+                   (r.time_mins && r.time_mins >= 180) ||
+                   hoursMentioned >= 3;
+
+      r.noCook = !usesHeat && !hasRiskyProtein && !hasHeatStaple;
+
+      if (r.noCook && !/no[-\s]?cook/i.test(r.time_label)) {
+        r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
+      }
+    }
+    /* --- END ENRICH --- */
+
+    if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
+      FIRST_SUCCESSFUL_LOAD = true;
+      FILTERS.ALL = true;
+      ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
+      FILTERS.search = '';
+      FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+      updateChipStates();
+    }
+
+    // Feedback
+    if (countEl) {
+      const from = ok.map(o => o.url);
+      countEl.innerHTML = RECIPES.length
+        ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
+        : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
+    }
+
+    render();
+
+    if (!RECIPES.length && grid) {
+      const help = document.createElement('div');
+      help.className = 'meta';
+      help.style.marginTop = '.5rem';
+      help.innerHTML = `
+        <p><strong>No recipes loaded.</strong> Quick checks:</p>
+        <ul>
+          <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
+          <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
+          <li>No trailing commas or missing commas between objects.</li>
+        </ul>`;
+      grid.prepend(help);
+    }
   }
 
-  // Soy-free
-  if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) &&
-      !hasAny(allergens, ['soy','soya'])) add(r.dietary, 'Soy-free');
-
-  // --- Time flags (strict) ---
-  // Detect long durations like "3 hr", "4h", "6 hours"
-  let hoursMentioned = 0;
-  const m = text.match(/(\d+(?:\.\d+)?)\s*(h|hr|hrs|hour|hours)\b/);
-  if (m) hoursMentioned = parseFloat(m[1] || '0');
-
-  const heatVerbsRe = /(bake|roast|boil|simmer|sear|fry|pan[-\s]?fry|deep[-\s]?fry|saute|sauté|grill|broil|steam|poach|braise|stew|pressure[-\s]?cook|air[-\s]?fry)/;
-  const slowWordsRe = /(slow[-\s]?cook|slow cooker|crock[-\s]?pot|low and slow|braise|stew|pulled|cook on low)/;
-
-  // Consider risky raw animal items (block No-cook)
-  const riskyProteins = ['chicken','beef','pork','lamb','turkey','duck','fish','salmon','tuna','cod','prawns','shrimp','seafood','mince','ground beef','sausage','egg','eggs'];
-  const hasRiskyProtein = hasAny(keys, riskyProteins) || riskyProteins.some(w => text.includes(w));
-
-  // Consider starches that typically require heat (block No-cook if present)
-  const heatStaples = ['rice','pasta','spaghetti','noodles','potato','potatoes','gnocchi','quinoa','lentils','beans (dried)','polenta','couscous (dry)'];
-  const hasHeatStaple = hasAny(keys, heatStaples) || heatStaples.some(w => text.includes(w));
-
-  const usesHeat = heatVerbsRe.test(text);
-
-  // Slow-cook: explicit wording OR >= 180 min OR hoursMentioned >= 3
-  r.slowCook = r.slowCook === true ||
-               slowWordsRe.test(text) ||
-               (r.time_mins && r.time_mins >= 180) ||
-               hoursMentioned >= 3;
-
-  // No-cook: no heat verbs AND no risky raw proteins AND no heat-staples
-  r.noCook = !usesHeat && !hasRiskyProtein && !hasHeatStaple;
-
-  // Keep a human hint (non-functional) in time_label for legacy UIs
-  if (r.noCook && !/no[-\s]?cook/i.test(r.time_label)) {
-    r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
-  }
-}
-/* --- END ENRICH --- */
-
-  if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
-    FIRST_SUCCESSFUL_LOAD = true;
-    FILTERS.ALL = true;
-    ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-    FILTERS.search = '';
-    FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
-    updateChipStates();
-  }
-
-  // Feedback
-  if (countEl) {
-    const from = ok.map(o => o.url);
-    countEl.innerHTML = RECIPES.length
-      ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
-      : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
-  }
-
-  render();
-
-  if (!RECIPES.length && grid) {
-    const help = document.createElement('div');
-    help.className = 'meta';
-    help.style.marginTop = '.5rem';
-    help.innerHTML = `
-      <p><strong>No recipes loaded.</strong> Quick checks:</p>
-      <ul>
-        <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
-        <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
-        <li>No trailing commas or missing commas between objects.</li>
-      </ul>`;
-    grid.prepend(help);
-  }
-}  // ---------- Init ----------
+  // ---------- Init ----------
   document.addEventListener('DOMContentLoaded', init);
 
-  // ---------- (bottom) helpers used above ----------
-  // (kept here to avoid hoist confusion in some older bundlers)
-  // safeTitle / sanitizeRecipe already declared above.
-
-})();
+})(); 

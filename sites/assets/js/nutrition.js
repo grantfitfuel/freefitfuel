@@ -343,17 +343,16 @@
       for(const need of FILTERS.Protocols) if(!have.has(need)) return false;
     }
 
-    if(FILTERS.Time.size){
-      const t=r.time_mins||0, label=(r.time_label||'').toLowerCase();
-      const ok=[...FILTERS.Time].every(tag=>{
-        if(tag==='≤15 min') return t<=15;
-        if(tag==='≤30 min') return t<=30;
-        if(tag==='Slow-cook') return r.slowCook===true || label.includes('slow');
-        if(tag==='No-cook')  return t===0 || label.includes('no-cook');
-        return true;
-      });
-      if(!ok) return false;
-    }
+    if (FILTERS.Time.size) {
+  const ok = [...FILTERS.Time].every(tag => {
+    if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
+    if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
+    if (tag === 'Slow-cook') return r.slowCook === true;
+    if (tag === 'No-cook')  return r.noCook === true;
+    return true;
+  });
+  if (!ok) return false;
+}
 
     if(FILTERS.CostPrep.size){
       const needsBudget = FILTERS.CostPrep.has('Low cost / Budget');

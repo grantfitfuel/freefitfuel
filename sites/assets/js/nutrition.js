@@ -756,58 +756,78 @@
       return true;
     });
 
-  /* --- ENRICH TAGS SO FILTERS RETURN RESULTS --- */
-  for (const r of RECIPES) {
-    r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
-    r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
-    r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
-    r.time_label     = r.time_label || '';
+/* --- ENRICH TAGS SO FILTERS RETURN RESULTS (STRICT) --- */
+for (const r of RECIPES) {
+  r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
+  r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
+  r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
+  r.time_label     = r.time_label || '';
 
-    const keys      = new Set((r.pantryKeys || []).map(k => (k||'').toLowerCase()));
-    const allergens = new Set((r.allergensPresent || []).map(a => (a||'').toLowerCase()));
-    const methodTxt = ((r.method || []).join(' ') + ' ' + r.time_label).toLowerCase();
+  const keys      = new Set((r.pantryKeys || []).map(k => (k||'').toLowerCase()));
+  const allergens = new Set((r.allergensPresent || []).map(a => (a||'').toLowerCase()));
+  const text      = (
+    (r.title || '') + ' ' +
+    (r.method || []).join(' ') + ' ' +
+    r.time_label
+  ).toLowerCase();
 
-    const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
-    const hasAny = (set, arr) => arr.some(w => set.has(w));
+  const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
+  const hasAny = (set, arr) => arr.some(w => set.has(w));
 
-    // Dairy-free
-    if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) &&
-        !hasAny(allergens, ['milk'])) {
-      add(r.dietary, 'Dairy-free');
-    }
-    // Egg-free
-    if (!hasAny(keys, ['egg','eggs']) &&
-        !hasAny(allergens, ['egg','eggs'])) {
-      add(r.dietary, 'Egg-free');
-    }
-    // Nut-free
-    const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','nut','nuts','pistachio','pistachios'];
-    if (!hasAny(keys, nutWords) &&
-        !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio'])) {
-      add(r.dietary, 'Nut-free');
-    }
-    // Soy-free
-    if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) &&
-        !hasAny(allergens, ['soy','soya'])) {
-      add(r.dietary, 'Soy-free');
-    }
+  // --- Dietary autofill (safe-only; explicit allergen/keys will block) ---
+  // Dairy-free
+  if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) &&
+      !hasAny(allergens, ['milk'])) add(r.dietary, 'Dairy-free');
 
-    // Slow-cook
-    if (!r.slowCook) {
-      const looksSlow = /slow[-\s]?cook|slow cooker|overnight|8\s?hr|6\s?hr|4\s?hr/.test(methodTxt) ||
-                        (r.time_mins && r.time_mins >= 120);
-      if (looksSlow) r.slowCook = true;
-    }
+  // Egg-free
+  if (!hasAny(keys, ['egg','eggs']) &&
+      !hasAny(allergens, ['egg','eggs'])) add(r.dietary, 'Egg-free');
 
-    // No-cook
-    const usesHeat = /(bake|roast|boil|simmer|fry|saute|sauté|grill|broil|steam|poach)/.test(methodTxt);
-    if (!usesHeat && ((r.time_mins || 0) <= 10 || /no[-\s]?cook/.test(methodTxt))) {
-      if (!/no[-\s]?cook/i.test(r.time_label)) {
-        r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
-      }
-    }
+  // Nut-free
+  const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','pistachio','pistachios','nut','nuts'];
+  if (!hasAny(keys, nutWords) &&
+      !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio'])) {
+    add(r.dietary, 'Nut-free');
   }
-  /* --- END ENRICH --- */
+
+  // Soy-free
+  if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) &&
+      !hasAny(allergens, ['soy','soya'])) add(r.dietary, 'Soy-free');
+
+  // --- Time flags (strict) ---
+  // Detect long durations like "3 hr", "4h", "6 hours"
+  let hoursMentioned = 0;
+  const m = text.match(/(\d+(?:\.\d+)?)\s*(h|hr|hrs|hour|hours)\b/);
+  if (m) hoursMentioned = parseFloat(m[1] || '0');
+
+  const heatVerbsRe = /(bake|roast|boil|simmer|sear|fry|pan[-\s]?fry|deep[-\s]?fry|saute|sauté|grill|broil|steam|poach|braise|stew|pressure[-\s]?cook|air[-\s]?fry)/;
+  const slowWordsRe = /(slow[-\s]?cook|slow cooker|crock[-\s]?pot|low and slow|braise|stew|pulled|cook on low)/;
+
+  // Consider risky raw animal items (block No-cook)
+  const riskyProteins = ['chicken','beef','pork','lamb','turkey','duck','fish','salmon','tuna','cod','prawns','shrimp','seafood','mince','ground beef','sausage','egg','eggs'];
+  const hasRiskyProtein = hasAny(keys, riskyProteins) || riskyProteins.some(w => text.includes(w));
+
+  // Consider starches that typically require heat (block No-cook if present)
+  const heatStaples = ['rice','pasta','spaghetti','noodles','potato','potatoes','gnocchi','quinoa','lentils','beans (dried)','polenta','couscous (dry)'];
+  const hasHeatStaple = hasAny(keys, heatStaples) || heatStaples.some(w => text.includes(w));
+
+  const usesHeat = heatVerbsRe.test(text);
+
+  // Slow-cook: explicit wording OR >= 180 min OR hoursMentioned >= 3
+  r.slowCook = r.slowCook === true ||
+               slowWordsRe.test(text) ||
+               (r.time_mins && r.time_mins >= 180) ||
+               hoursMentioned >= 3;
+
+  // No-cook: no heat verbs AND no risky raw proteins AND no heat-staples
+  r.noCook = !usesHeat && !hasRiskyProtein && !hasHeatStaple;
+
+  // Keep a human hint (non-functional) in time_label for legacy UIs
+  if (r.noCook && !/no[-\s]?cook/i.test(r.time_label)) {
+    r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
+  }
+}
+/* --- END ENRICH --- */
 
   if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
     FIRST_SUCCESSFUL_LOAD = true;

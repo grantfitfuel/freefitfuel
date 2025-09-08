@@ -655,7 +655,7 @@
   // Build a future-proof list: recipes-01..-20.json + legacy recipes.json
   function buildRecipeFileList(){
     const list = [];
-    for(let i=1;i<=20;i++){
+    for(let i=1;i<=200;i++){
       const idx = i.toString().padStart(2,'0');
       list.push(`assets/data/recipes-${idx}.json`);
     }

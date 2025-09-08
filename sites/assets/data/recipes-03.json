@@ -1,997 +1,967 @@
 [
   {
-    "slug": "recipe-101",
-    "title": "French Dish 101",
-    "mealType": "Lunch",
-    "time_mins": 51,
-    "serves": 4,
-    "spiceLevel": 3,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for French Dish 101.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 501,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 101 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-102",
-    "title": "Thai Dish 102",
+    "slug": "recipe-3-1",
+    "title": "Scottish Breakfast Porridge",
     "mealType": "Breakfast",
-    "time_mins": 52,
     "serves": 2,
-    "spiceLevel": 1,
+    "time_mins": 15,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 102.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 502,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 350,
+      "protein_g": 10,
+      "carbs_g": 40,
+      "fat_g": 15,
+      "fibre_g": 5,
+      "sugar_g": 8,
+      "salt_g": 0.8
     },
-    "dietary": [],
+    "dietary": [
+      "Vegetarian"
+    ],
     "nutritionFocus": [
       "High protein"
     ],
-    "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
+    "costTag": "Budget",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 102 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-103",
-    "title": "Turkish Dish 103",
-    "mealType": "Snack",
-    "time_mins": 53,
-    "serves": 3,
-    "spiceLevel": 2,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Turkish Dish 103.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 503,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 103 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-104",
-    "title": "Ethiopian Dish 104",
-    "mealType": "Dinner",
-    "time_mins": 54,
-    "serves": 4,
-    "spiceLevel": 3,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Ethiopian Dish 104.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 504,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 104 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-105",
-    "title": "Indian Dish 105",
+    "slug": "recipe-3-2",
+    "title": "English Lunch Soup",
     "mealType": "Lunch",
+    "serves": 3,
+    "time_mins": 16,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 351,
+      "protein_g": 11,
+      "carbs_g": 41,
+      "fat_g": 16,
+      "fibre_g": 6,
+      "sugar_g": 9,
+      "salt_g": 1.0
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-3",
+    "title": "Greek Dinner Casserole",
+    "mealType": "Dinner",
+    "serves": 4,
+    "time_mins": 17,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 352,
+      "protein_g": 12,
+      "carbs_g": 42,
+      "fat_g": 17,
+      "fibre_g": 7,
+      "sugar_g": 10,
+      "salt_g": 1.2000000000000002
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-4",
+    "title": "Turkish Snack Dip with Veg",
+    "mealType": "Snack",
+    "serves": 2,
+    "time_mins": 18,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 353,
+      "protein_g": 13,
+      "carbs_g": 43,
+      "fat_g": 18,
+      "fibre_g": 8,
+      "sugar_g": 11,
+      "salt_g": 0.8
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-5",
+    "title": "Indian Breakfast Smoothie Bowl",
+    "mealType": "Breakfast",
+    "serves": 3,
+    "time_mins": 19,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 354,
+      "protein_g": 14,
+      "carbs_g": 44,
+      "fat_g": 19,
+      "fibre_g": 9,
+      "sugar_g": 12,
+      "salt_g": 1.0
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "High protein"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-6",
+    "title": "Pakistani Lunch Sandwich",
+    "mealType": "Lunch",
+    "serves": 4,
     "time_mins": 20,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 105.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 505,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 355,
+      "protein_g": 15,
+      "carbs_g": 45,
+      "fat_g": 20,
+      "fibre_g": 5,
+      "sugar_g": 13,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
-    "costTag": "Budget",
-    "allergensPresent": [],
+    "costTag": "Standard",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 105 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-106",
-    "title": "French Dish 106",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-7",
+    "title": "Chinese Dinner Roast",
+    "mealType": "Dinner",
+    "serves": 2,
     "time_mins": 21,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 106.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 506,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 356,
+      "protein_g": 16,
+      "carbs_g": 46,
+      "fat_g": 21,
+      "fibre_g": 6,
+      "sugar_g": 14,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
-    "costTag": "Standard",
-    "allergensPresent": [],
+    "costTag": "Budget",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 106 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-107",
-    "title": "Thai Dish 107",
+    "slug": "recipe-3-8",
+    "title": "Japanese Snack Energy Balls",
     "mealType": "Snack",
+    "serves": 3,
     "time_mins": 22,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 107.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 507,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 357,
+      "protein_g": 17,
+      "carbs_g": 47,
+      "fat_g": 22,
+      "fibre_g": 7,
+      "sugar_g": 8,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 107 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-108",
-    "title": "Turkish Dish 108",
-    "mealType": "Dinner",
+    "slug": "recipe-3-9",
+    "title": "Korean Breakfast Omelette",
+    "mealType": "Breakfast",
+    "serves": 4,
     "time_mins": 23,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Turkish Dish 108.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 508,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 358,
+      "protein_g": 18,
+      "carbs_g": 48,
+      "fat_g": 23,
+      "fibre_g": 8,
+      "sugar_g": 9,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
     "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 108 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-109",
-    "title": "Ethiopian Dish 109",
+    "slug": "recipe-3-10",
+    "title": "Thai Lunch Wrap",
     "mealType": "Lunch",
+    "serves": 2,
     "time_mins": 24,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Ethiopian Dish 109.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 509,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 359,
+      "protein_g": 19,
+      "carbs_g": 49,
+      "fat_g": 24,
+      "fibre_g": 9,
+      "sugar_g": 10,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 109 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-110",
-    "title": "Indian Dish 110",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-11",
+    "title": "Vietnamese Dinner Pasta",
+    "mealType": "Dinner",
+    "serves": 3,
     "time_mins": 25,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 110.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 510,
+      "kcal": 360,
       "protein_g": 20,
       "carbs_g": 50,
-      "fat_g": 15
+      "fat_g": 15,
+      "fibre_g": 5,
+      "sugar_g": 11,
+      "salt_g": 1.0
     },
     "dietary": [
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 110 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-111",
-    "title": "French Dish 111",
+    "slug": "recipe-3-12",
+    "title": "Mexican Snack Hummus Plate",
     "mealType": "Snack",
+    "serves": 4,
     "time_mins": 26,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 111.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 511,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 361,
+      "protein_g": 21,
+      "carbs_g": 51,
+      "fat_g": 16,
+      "fibre_g": 6,
+      "sugar_g": 12,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 111 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-112",
-    "title": "Thai Dish 112",
-    "mealType": "Dinner",
+    "slug": "recipe-3-13",
+    "title": "Peruvian Breakfast Granola",
+    "mealType": "Breakfast",
+    "serves": 2,
     "time_mins": 27,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 112.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 512,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 362,
+      "protein_g": 22,
+      "carbs_g": 52,
+      "fat_g": 17,
+      "fibre_g": 7,
+      "sugar_g": 13,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
     "costTag": "Budget",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 112 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-113",
-    "title": "Turkish Dish 113",
+    "slug": "recipe-3-14",
+    "title": "Brazilian Lunch Burger",
     "mealType": "Lunch",
-    "time_mins": 28,
-    "serves": 4,
-    "spiceLevel": 3,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Turkish Dish 113.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 513,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 113 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-114",
-    "title": "Ethiopian Dish 114",
-    "mealType": "Breakfast",
-    "time_mins": 29,
-    "serves": 2,
-    "spiceLevel": 1,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Ethiopian Dish 114.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 514,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 114 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-115",
-    "title": "Indian Dish 115",
-    "mealType": "Snack",
-    "time_mins": 30,
     "serves": 3,
-    "spiceLevel": 2,
+    "time_mins": 28,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 115.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 515,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 363,
+      "protein_g": 23,
+      "carbs_g": 53,
+      "fat_g": 18,
+      "fibre_g": 8,
+      "sugar_g": 14,
+      "salt_g": 1.0
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-15",
+    "title": "Caribbean Dinner Stew",
+    "mealType": "Dinner",
+    "serves": 4,
+    "time_mins": 29,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 364,
+      "protein_g": 24,
+      "carbs_g": 54,
+      "fat_g": 19,
+      "fibre_g": 9,
+      "sugar_g": 8,
+      "salt_g": 1.2000000000000002
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-16",
+    "title": "Moroccan Snack Muffins",
+    "mealType": "Snack",
+    "serves": 2,
+    "time_mins": 30,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 365,
+      "protein_g": 10,
+      "carbs_g": 55,
+      "fat_g": 20,
+      "fibre_g": 5,
+      "sugar_g": 9,
+      "salt_g": 0.8
     },
     "dietary": [
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 115 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-116",
-    "title": "French Dish 116",
-    "mealType": "Dinner",
+    "slug": "recipe-3-17",
+    "title": "Lebanese Breakfast Pancakes",
+    "mealType": "Breakfast",
+    "serves": 3,
     "time_mins": 31,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 116.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 516,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 366,
+      "protein_g": 11,
+      "carbs_g": 56,
+      "fat_g": 21,
+      "fibre_g": 6,
+      "sugar_g": 10,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 116 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-117",
-    "title": "Thai Dish 117",
+    "slug": "recipe-3-18",
+    "title": "Persian Lunch Bowl",
     "mealType": "Lunch",
+    "serves": 4,
     "time_mins": 32,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 117.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 517,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 367,
+      "protein_g": 12,
+      "carbs_g": 57,
+      "fat_g": 22,
+      "fibre_g": 7,
+      "sugar_g": 11,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 117 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-118",
-    "title": "Turkish Dish 118",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-19",
+    "title": "Ethiopian Dinner Stir Fry",
+    "mealType": "Dinner",
+    "serves": 2,
     "time_mins": 33,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 1,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Turkish Dish 118.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 518,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 368,
+      "protein_g": 13,
+      "carbs_g": 58,
+      "fat_g": 23,
+      "fibre_g": 8,
+      "sugar_g": 12,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
-    "costTag": "Standard",
-    "allergensPresent": [],
+    "costTag": "Budget",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 118 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-119",
-    "title": "Ethiopian Dish 119",
+    "slug": "recipe-3-20",
+    "title": "South African Snack Fruit Salad",
     "mealType": "Snack",
+    "serves": 3,
     "time_mins": 34,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Ethiopian Dish 119.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 519,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 369,
+      "protein_g": 14,
+      "carbs_g": 59,
+      "fat_g": 24,
+      "fibre_g": 9,
+      "sugar_g": 13,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
-    "costTag": "Budget",
-    "allergensPresent": [],
+    "costTag": "Standard",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 119 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-120",
-    "title": "Indian Dish 120",
-    "mealType": "Dinner",
+    "slug": "recipe-3-21",
+    "title": "Russian Breakfast Frittata",
+    "mealType": "Breakfast",
+    "serves": 4,
     "time_mins": 35,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 120.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 520,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 370,
+      "protein_g": 15,
+      "carbs_g": 40,
+      "fat_g": 15,
+      "fibre_g": 5,
+      "sugar_g": 14,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [
       "Vegetarian"
@@ -1000,1541 +970,1353 @@
       "High protein"
     ],
     "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 120 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-121",
-    "title": "French Dish 121",
+    "slug": "recipe-3-22",
+    "title": "Polish Lunch Salad",
     "mealType": "Lunch",
+    "serves": 2,
     "time_mins": 36,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 121.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 521,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 371,
+      "protein_g": 16,
+      "carbs_g": 41,
+      "fat_g": 16,
+      "fibre_g": 6,
+      "sugar_g": 8,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 121 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-122",
-    "title": "Thai Dish 122",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-23",
+    "title": "Italian Dinner Curry",
+    "mealType": "Dinner",
+    "serves": 3,
     "time_mins": 37,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 2,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 122.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 522,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 372,
+      "protein_g": 17,
+      "carbs_g": 42,
+      "fat_g": 17,
+      "fibre_g": 7,
+      "sugar_g": 9,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 122 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-123",
-    "title": "Turkish Dish 123",
+    "slug": "recipe-3-24",
+    "title": "French Snack Bars",
     "mealType": "Snack",
+    "serves": 4,
     "time_mins": 38,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Turkish Dish 123.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 523,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 373,
+      "protein_g": 18,
+      "carbs_g": 43,
+      "fat_g": 18,
+      "fibre_g": 8,
+      "sugar_g": 10,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 123 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-124",
-    "title": "Ethiopian Dish 124",
-    "mealType": "Dinner",
+    "slug": "recipe-3-25",
+    "title": "Spanish Breakfast Toast",
+    "mealType": "Breakfast",
+    "serves": 2,
     "time_mins": 39,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Ethiopian Dish 124.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 524,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 374,
+      "protein_g": 19,
+      "carbs_g": 44,
+      "fat_g": 19,
+      "fibre_g": 9,
+      "sugar_g": 11,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
-    "costTag": "Standard",
-    "allergensPresent": [],
+    "costTag": "Budget",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 124 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-125",
-    "title": "Indian Dish 125",
+    "slug": "recipe-3-26",
+    "title": "Scottish Lunch Quiche",
     "mealType": "Lunch",
+    "serves": 3,
     "time_mins": 40,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 125.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 525,
+      "kcal": 375,
       "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "carbs_g": 45,
+      "fat_g": 20,
+      "fibre_g": 5,
+      "sugar_g": 12,
+      "salt_g": 1.0
     },
     "dietary": [
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 125 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-126",
-    "title": "French Dish 126",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-27",
+    "title": "English Dinner Grill",
+    "mealType": "Dinner",
+    "serves": 4,
     "time_mins": 41,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 126.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 526,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 376,
+      "protein_g": 21,
+      "carbs_g": 46,
+      "fat_g": 21,
+      "fibre_g": 6,
+      "sugar_g": 13,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
-    "costTag": "Budget",
-    "allergensPresent": [
-      "Gluten"
-    ],
+    "costTag": "Standard",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 126 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-127",
-    "title": "Thai Dish 127",
+    "slug": "recipe-3-28",
+    "title": "Greek Snack Trail Mix",
     "mealType": "Snack",
+    "serves": 2,
     "time_mins": 42,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 127.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 527,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 377,
+      "protein_g": 22,
+      "carbs_g": 47,
+      "fat_g": 22,
+      "fibre_g": 7,
+      "sugar_g": 14,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 127 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-128",
-    "title": "Turkish Dish 128",
-    "mealType": "Dinner",
+    "slug": "recipe-3-29",
+    "title": "Turkish Breakfast Porridge",
+    "mealType": "Breakfast",
+    "serves": 3,
     "time_mins": 43,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Turkish Dish 128.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 528,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 378,
+      "protein_g": 23,
+      "carbs_g": 48,
+      "fat_g": 23,
+      "fibre_g": 8,
+      "sugar_g": 8,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 128 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-129",
-    "title": "Ethiopian Dish 129",
+    "slug": "recipe-3-30",
+    "title": "Indian Lunch Soup",
     "mealType": "Lunch",
+    "serves": 4,
     "time_mins": 44,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Ethiopian Dish 129.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 529,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 379,
+      "protein_g": 24,
+      "carbs_g": 49,
+      "fat_g": 24,
+      "fibre_g": 9,
+      "sugar_g": 9,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 129 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-130",
-    "title": "Indian Dish 130",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-31",
+    "title": "Pakistani Dinner Casserole",
+    "mealType": "Dinner",
+    "serves": 2,
     "time_mins": 45,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 130.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 530,
-      "protein_g": 20,
+      "kcal": 380,
+      "protein_g": 10,
       "carbs_g": 50,
-      "fat_g": 15
+      "fat_g": 15,
+      "fibre_g": 5,
+      "sugar_g": 10,
+      "salt_g": 0.8
     },
     "dietary": [
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
-    "costTag": "Standard",
-    "allergensPresent": [],
+    "costTag": "Budget",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 130 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-131",
-    "title": "French Dish 131",
+    "slug": "recipe-3-32",
+    "title": "Chinese Snack Dip with Veg",
     "mealType": "Snack",
+    "serves": 3,
     "time_mins": 46,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 131.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 531,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 381,
+      "protein_g": 11,
+      "carbs_g": 51,
+      "fat_g": 16,
+      "fibre_g": 6,
+      "sugar_g": 11,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 131 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-132",
-    "title": "Thai Dish 132",
-    "mealType": "Dinner",
+    "slug": "recipe-3-33",
+    "title": "Japanese Breakfast Smoothie Bowl",
+    "mealType": "Breakfast",
+    "serves": 4,
     "time_mins": 47,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 132.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 532,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 382,
+      "protein_g": 12,
+      "carbs_g": 52,
+      "fat_g": 17,
+      "fibre_g": 7,
+      "sugar_g": 12,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
     "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 132 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-133",
-    "title": "Turkish Dish 133",
+    "slug": "recipe-3-34",
+    "title": "Korean Lunch Sandwich",
     "mealType": "Lunch",
+    "serves": 2,
     "time_mins": 48,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Turkish Dish 133.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 533,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 383,
+      "protein_g": 13,
+      "carbs_g": 53,
+      "fat_g": 18,
+      "fibre_g": 8,
+      "sugar_g": 13,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
-    "costTag": "Budget",
-    "allergensPresent": [],
+    "costTag": "Standard",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 133 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-134",
-    "title": "Ethiopian Dish 134",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-35",
+    "title": "Thai Dinner Roast",
+    "mealType": "Dinner",
+    "serves": 3,
     "time_mins": 49,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Ethiopian Dish 134.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 534,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 384,
+      "protein_g": 14,
+      "carbs_g": 54,
+      "fat_g": 19,
+      "fibre_g": 9,
+      "sugar_g": 14,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 134 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-135",
-    "title": "Indian Dish 135",
+    "slug": "recipe-3-36",
+    "title": "Vietnamese Snack Energy Balls",
     "mealType": "Snack",
+    "serves": 4,
     "time_mins": 50,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 135.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 535,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 385,
+      "protein_g": 15,
+      "carbs_g": 55,
+      "fat_g": 20,
+      "fibre_g": 5,
+      "sugar_g": 8,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 135 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-136",
-    "title": "French Dish 136",
-    "mealType": "Dinner",
+    "slug": "recipe-3-37",
+    "title": "Mexican Breakfast Omelette",
+    "mealType": "Breakfast",
+    "serves": 2,
     "time_mins": 51,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for French Dish 136.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 536,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 386,
+      "protein_g": 16,
+      "carbs_g": 56,
+      "fat_g": 21,
+      "fibre_g": 6,
+      "sugar_g": 9,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
-    "costTag": "Standard",
-    "allergensPresent": [],
+    "costTag": "Budget",
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 136 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-137",
-    "title": "Thai Dish 137",
+    "slug": "recipe-3-38",
+    "title": "Peruvian Lunch Wrap",
     "mealType": "Lunch",
+    "serves": 3,
     "time_mins": 52,
-    "serves": 4,
-    "spiceLevel": 3,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 137.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 537,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 387,
+      "protein_g": 17,
+      "carbs_g": 57,
+      "fat_g": 22,
+      "fibre_g": 7,
+      "sugar_g": 10,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 137 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-138",
-    "title": "Turkish Dish 138",
-    "mealType": "Breakfast",
+    "slug": "recipe-3-39",
+    "title": "Brazilian Dinner Pasta",
+    "mealType": "Dinner",
+    "serves": 4,
     "time_mins": 53,
-    "serves": 2,
-    "spiceLevel": 1,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Turkish Dish 138.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 538,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 388,
+      "protein_g": 18,
+      "carbs_g": 58,
+      "fat_g": 23,
+      "fibre_g": 8,
+      "sugar_g": 11,
+      "salt_g": 1.2000000000000002
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 138 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-139",
-    "title": "Ethiopian Dish 139",
+    "slug": "recipe-3-40",
+    "title": "Caribbean Snack Hummus Plate",
     "mealType": "Snack",
+    "serves": 2,
     "time_mins": 54,
-    "serves": 3,
-    "spiceLevel": 2,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Ethiopian Dish 139.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 539,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 389,
+      "protein_g": 19,
+      "carbs_g": 59,
+      "fat_g": 24,
+      "fibre_g": 9,
+      "sugar_g": 12,
+      "salt_g": 0.8
     },
     "dietary": [],
     "nutritionFocus": [
-      "Low carb"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 139 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-140",
-    "title": "Indian Dish 140",
-    "mealType": "Dinner",
-    "time_mins": 20,
-    "serves": 4,
-    "spiceLevel": 3,
+    "slug": "recipe-3-41",
+    "title": "Moroccan Breakfast Granola",
+    "mealType": "Breakfast",
+    "serves": 3,
+    "time_mins": 55,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Indian Dish 140.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 540,
+      "kcal": 390,
       "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "carbs_g": 40,
+      "fat_g": 15,
+      "fibre_g": 5,
+      "sugar_g": 13,
+      "salt_g": 1.0
     },
     "dietary": [
       "Vegetarian"
     ],
+    "nutritionFocus": [
+      "High protein"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-42",
+    "title": "Lebanese Lunch Burger",
+    "mealType": "Lunch",
+    "serves": 4,
+    "time_mins": 56,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 391,
+      "protein_g": 21,
+      "carbs_g": 41,
+      "fat_g": 16,
+      "fibre_g": 6,
+      "sugar_g": 14,
+      "salt_g": 1.2000000000000002
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-43",
+    "title": "Persian Dinner Stew",
+    "mealType": "Dinner",
+    "serves": 2,
+    "time_mins": 57,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 392,
+      "protein_g": 22,
+      "carbs_g": 42,
+      "fat_g": 17,
+      "fibre_g": 7,
+      "sugar_g": 8,
+      "salt_g": 0.8
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Budget",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-44",
+    "title": "Ethiopian Snack Muffins",
+    "mealType": "Snack",
+    "serves": 3,
+    "time_mins": 58,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 393,
+      "protein_g": 23,
+      "carbs_g": 43,
+      "fat_g": 18,
+      "fibre_g": 8,
+      "sugar_g": 9,
+      "salt_g": 1.0
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-45",
+    "title": "South African Breakfast Pancakes",
+    "mealType": "Breakfast",
+    "serves": 4,
+    "time_mins": 59,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 394,
+      "protein_g": 24,
+      "carbs_g": 44,
+      "fat_g": 19,
+      "fibre_g": 9,
+      "sugar_g": 10,
+      "salt_g": 1.2000000000000002
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "High protein"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-46",
+    "title": "Russian Lunch Bowl",
+    "mealType": "Lunch",
+    "serves": 2,
+    "time_mins": 15,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 395,
+      "protein_g": 10,
+      "carbs_g": 45,
+      "fat_g": 20,
+      "fibre_g": 5,
+      "sugar_g": 11,
+      "salt_g": 0.8
+    },
+    "dietary": [
+      "Vegetarian"
+    ],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-47",
+    "title": "Polish Dinner Stir Fry",
+    "mealType": "Dinner",
+    "serves": 3,
+    "time_mins": 16,
+    "spiceLevel": 2,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 396,
+      "protein_g": 11,
+      "carbs_g": 46,
+      "fat_g": 21,
+      "fibre_g": 6,
+      "sugar_g": 12,
+      "salt_g": 1.0
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-48",
+    "title": "Italian Snack Fruit Salad",
+    "mealType": "Snack",
+    "serves": 4,
+    "time_mins": 17,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 397,
+      "protein_g": 12,
+      "carbs_g": 47,
+      "fat_g": 22,
+      "fibre_g": 7,
+      "sugar_g": 13,
+      "salt_g": 1.2000000000000002
+    },
+    "dietary": [],
+    "nutritionFocus": [
+      "Balanced"
+    ],
+    "costTag": "Standard",
+    "swaps": [
+      "Swap Ingredient A for tofu for a vegan option."
+    ],
+    "hydrationTip": "Drink a glass of water with this meal."
+  },
+  {
+    "slug": "recipe-3-49",
+    "title": "French Breakfast Frittata",
+    "mealType": "Breakfast",
+    "serves": 2,
+    "time_mins": 18,
+    "spiceLevel": 0,
+    "ingredients": [
+      {
+        "item": "Ingredient A",
+        "qty": "100g"
+      },
+      {
+        "item": "Ingredient B",
+        "qty": "1 cup"
+      },
+      {
+        "item": "Ingredient C",
+        "qty": "to taste"
+      }
+    ],
+    "method": [
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
+    ],
+    "nutritionPerServing": {
+      "kcal": 398,
+      "protein_g": 13,
+      "carbs_g": 48,
+      "fat_g": 23,
+      "fibre_g": 8,
+      "sugar_g": 14,
+      "salt_g": 0.8
+    },
+    "dietary": [],
     "nutritionFocus": [
       "High protein"
     ],
     "costTag": "Budget",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 140 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   },
   {
-    "slug": "recipe-141",
-    "title": "French Dish 141",
+    "slug": "recipe-3-50",
+    "title": "Spanish Lunch Salad",
     "mealType": "Lunch",
-    "time_mins": 21,
-    "serves": 2,
-    "spiceLevel": 1,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for French Dish 141.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 541,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 141 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-142",
-    "title": "Thai Dish 142",
-    "mealType": "Breakfast",
-    "time_mins": 22,
     "serves": 3,
-    "spiceLevel": 2,
+    "time_mins": 19,
+    "spiceLevel": 0,
     "ingredients": [
       {
-        "qty": "200g",
-        "item": "ingredient A"
+        "item": "Ingredient A",
+        "qty": "100g"
       },
       {
-        "qty": "1 tsp",
-        "item": "spice mix"
+        "item": "Ingredient B",
+        "qty": "1 cup"
       },
       {
-        "qty": "to taste",
-        "item": "salt & pepper"
+        "item": "Ingredient C",
+        "qty": "to taste"
       }
     ],
     "method": [
-      "Step 1: Prepare base for Thai Dish 142.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
+      "Prepare all ingredients.",
+      "Cook the main component at 180\u00b0C for 25 minutes.",
+      "Combine and season to taste.",
+      "Serve hot with optional garnish."
     ],
     "nutritionPerServing": {
-      "kcal": 542,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
+      "kcal": 399,
+      "protein_g": 14,
+      "carbs_g": 49,
+      "fat_g": 24,
+      "fibre_g": 9,
+      "sugar_g": 8,
+      "salt_g": 1.0
     },
     "dietary": [],
     "nutritionFocus": [
-      "High protein"
+      "Balanced"
     ],
     "costTag": "Standard",
-    "allergensPresent": [],
     "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
+      "Swap Ingredient A for tofu for a vegan option."
     ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 142 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-143",
-    "title": "Turkish Dish 143",
-    "mealType": "Snack",
-    "time_mins": 23,
-    "serves": 4,
-    "spiceLevel": 3,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Turkish Dish 143.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 543,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 143 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-144",
-    "title": "Ethiopian Dish 144",
-    "mealType": "Dinner",
-    "time_mins": 24,
-    "serves": 2,
-    "spiceLevel": 1,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Ethiopian Dish 144.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 544,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 144 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-145",
-    "title": "Indian Dish 145",
-    "mealType": "Lunch",
-    "time_mins": 25,
-    "serves": 3,
-    "spiceLevel": 2,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Indian Dish 145.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 545,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [
-      "Vegetarian"
-    ],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 145 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-146",
-    "title": "French Dish 146",
-    "mealType": "Breakfast",
-    "time_mins": 26,
-    "serves": 4,
-    "spiceLevel": 3,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for French Dish 146.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 546,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve French Dish 146 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-147",
-    "title": "Thai Dish 147",
-    "mealType": "Snack",
-    "time_mins": 27,
-    "serves": 2,
-    "spiceLevel": 1,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Thai Dish 147.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 547,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Budget",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Thai Dish 147 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-148",
-    "title": "Turkish Dish 148",
-    "mealType": "Dinner",
-    "time_mins": 28,
-    "serves": 3,
-    "spiceLevel": 2,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Turkish Dish 148.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 548,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Turkish Dish 148 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-149",
-    "title": "Ethiopian Dish 149",
-    "mealType": "Lunch",
-    "time_mins": 29,
-    "serves": 4,
-    "spiceLevel": 3,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Ethiopian Dish 149.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 549,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [],
-    "nutritionFocus": [
-      "Low carb"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Ethiopian Dish 149 on a warm plate with garnish of fresh herbs."
-  },
-  {
-    "slug": "recipe-150",
-    "title": "Indian Dish 150",
-    "mealType": "Breakfast",
-    "time_mins": 30,
-    "serves": 2,
-    "spiceLevel": 1,
-    "ingredients": [
-      {
-        "qty": "200g",
-        "item": "ingredient A"
-      },
-      {
-        "qty": "1 tsp",
-        "item": "spice mix"
-      },
-      {
-        "qty": "to taste",
-        "item": "salt & pepper"
-      }
-    ],
-    "method": [
-      "Step 1: Prepare base for Indian Dish 150.",
-      "Step 2: Cook at 180\u00b0C for 25 minutes or until done.",
-      "Step 3: Adjust seasoning and serve hot."
-    ],
-    "nutritionPerServing": {
-      "kcal": 550,
-      "protein_g": 20,
-      "carbs_g": 50,
-      "fat_g": 15
-    },
-    "dietary": [
-      "Vegetarian"
-    ],
-    "nutritionFocus": [
-      "High protein"
-    ],
-    "costTag": "Standard",
-    "allergensPresent": [
-      "Gluten"
-    ],
-    "swaps": [
-      "Use quinoa instead of rice",
-      "Add chickpeas for protein"
-    ],
-    "hydrationTip": "Pair this meal with a glass of water.",
-    "optionalSpiceTweaks": [
-      "Add chilli flakes for extra heat.",
-      "Use smoked paprika for depth.",
-      "Swap black pepper with Sichuan pepper for zing."
-    ],
-    "plating": "Serve Indian Dish 150 on a warm plate with garnish of fresh herbs."
+    "hydrationTip": "Drink a glass of water with this meal."
   }
 ]

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .form-grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+    .form-grid .full{grid-column:1/-1}
+    .help{font-size:.9rem;color:var(--inkdim)}
+    .success,.error{display:none;margin-top:10px;padding:10px;border-radius:8px}
+    .success{background:rgba(0,200,120,.12);border:1px solid rgba(0,200,120,.35)}
+    .error{background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35)}
+    .visually-hidden{position:absolute!important;clip:rect(1px,1px,1px,1px);clip-path:inset(50%);height:1px;width:1px;overflow:hidden;white-space:nowrap;border:0;padding:0;margin:-1px}
+  </style>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact FreeFitFuel",
+    "url": "https://example.com/contact.html",
+    "publisher": { "@type": "Organization", "name": "FreeFitFuel" }
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="primary-nav" class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="guides.html">Guides</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="endurance.html">Endurance</a>
+      <a href="nutrition.html">Nutrition</a>
+      <a href="wellbeing.html">Wellbeing</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+      <a href="tracker.html">Tracker</a>
+    </nav>
+  </div>
+</header>
+
+<header class="hero-mini" role="banner" aria-label="Contact hero">
+  <figure>
+    <img src="img/contact-hero.png" alt="Friendly support and fitness gear on a desk">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Say Hello</span></h1>
+    <p>Questions, feedback, partnerships — we’d love to hear from you.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="section">
+    <h2>Contact FreeFitFuel</h2>
+    <p class="help">We typically reply within 1–2 working days. For urgent wellbeing help, please use local emergency services.</p>
+
+    <!-- MAILTO fallback works now.
+         To use NETLIFY FORMS: add data-netlify="true" and name="contact" (keep the hidden honeypot).
+         To use FORMSPREE: replace action with your endpoint, e.g. action="https://formspree.io/f/xxxxxx" method="POST"
+    -->
+    <form id="contactForm" class="form-grid" action="mailto:hello@freefitfuel.example" method="POST" enctype="text/plain" novalidate>
+      <!-- honeypot -->
+      <label class="visually-hidden">Leave this field empty
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </label>
+
+      <label>Full name
+        <input class="input" type="text" id="name" name="name" autocomplete="name" required>
+      </label>
+
+      <label>Email
+        <input class="input" type="email" id="email" name="email" autocomplete="email" inputmode="email" required>
+      </label>
+
+      <label>Subject
+        <input class="input" type="text" id="subject" name="subject" required>
+      </label>
+
+      <label>Reason
+        <select class="input" id="reason" name="reason" required>
+          <option value="">Please choose…</option>
+          <option>General question</option>
+          <option>Bug report</option>
+          <option>Partnership</option>
+          <option>Press / Media</option>
+          <option>Other</option>
+        </select>
+      </label>
+
+      <label class="full">Message
+        <textarea class="input" id="message" name="message" rows="7" required></textarea>
+      </label>
+
+      <label class="full"><input type="checkbox" id="consent" required> I consent to you replying to my message.</label>
+
+      <div class="full" style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <button type="submit" class="btn">Send message</button>
+        <button type="reset" class="btn" id="resetBtn">Reset</button>
+        <span class="help">We’ll never share your details.</span>
+      </div>
+
+      <p id="formSuccess" class="success full" role="status" aria-live="polite">Thanks — your message has been prepared in your email client.</p>
+      <p id="formError" class="error full" role="alert">Please fix the highlighted fields and try again.</p>
+
+      <!-- Netlify Forms hidden name (uncomment if using Netlify)
+      <input type="hidden" name="form-name" value="contact">
+      -->
+    </form>
+  </section>
+
+  <section class="section">
+    <h3>Other ways to reach us</h3>
+    <ul>
+      <li>Email: <a href="mailto:hello@freefitfuel.example">hello@freefitfuel.example</a></li>
+      <li>Instagram: <a href="#" rel="me">@freefitfuel</a></li>
+      <li>Press kit: <a href="pdf/press-kit.pdf">Download PDF</a></li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h3>Important</h3>
+    <p class="help">FreeFitFuel can’t offer medical advice. If you’re in immediate danger or feel at risk, contact emergency services.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script>
+/* burger */
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.hamburger');
+  const nav = document.querySelector('.main-nav');
+  if(btn && nav){
+    btn.addEventListener('click', () => {
+      const open = btn.classList.toggle('active');
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+});
+
+/* form: client-side validation + mailto fallback composer */
+(function(){
+  const form = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  const errorEl = document.getElementById('formError');
+
+  function show(el, on){ if(!el) return; el.style.display = on ? 'block' : 'none'; }
+
+  function validate(){
+    show(errorEl,false);
+    let ok = true;
+    form.querySelectorAll('.input, textarea, select').forEach(i=>{
+      i.classList.remove('invalid');
+      if(i.hasAttribute('required') && !i.value.trim()){ ok=false; i.classList.add('invalid'); }
+      if(i.type==='email' && i.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.value)){ ok=false; i.classList.add('invalid'); }
+    });
+    // honeypot
+    const hp = form.querySelector('input[name="website"]');
+    if(hp && hp.value.trim()) ok=false;
+    if(!ok) show(errorEl,true);
+    return ok;
+  }
+
+  form.addEventListener('submit', (e)=>{
+    if(!validate()){ e.preventDefault(); return; }
+
+    // if using external handler (Netlify/Formspree), let it submit normally
+    const action = (form.getAttribute('action')||'').toLowerCase();
+    if(action.startsWith('https://')) return;
+
+    // MAILTO fallback: compose email
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const subject = form.subject.value.trim() || 'FreeFitFuel contact';
+    const reason = form.reason.value.trim();
+    const message = form.message.value.trim();
+
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Reason: ${reason}`,
+      '',
+      message
+    ].join('%0D%0A');
+
+    const mailto = `mailto:hello@freefitfuel.example?subject=${encodeURIComponent(subject)}&body=${body}`;
+    window.location.href = mailto;
+    show(success,true);
+    form.reset();
+  });
+
+  document.getElementById('resetBtn')?.addEventListener('click', ()=>{
+    show(errorEl,false); show(success,false);
+    form.querySelectorAll('.invalid').forEach(i=>i.classList.remove('invalid'));
+  });
+})();
+</script>
+</body>
+</html>

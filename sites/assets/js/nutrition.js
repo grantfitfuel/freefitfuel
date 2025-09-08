@@ -633,6 +633,31 @@
     searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
   }
 
+// ---------- Export Index ----------
+function exportIndex(){
+  const index = RECIPES.map(r => ({
+    title: r.title,
+    mealType: r.mealType,
+    dietary: r.dietary || [],
+    nutritionFocus: r.nutritionFocus || [],
+    protocols: r.protocols || [],
+    time: r.time_mins ? `${r.time_mins} min` : '',
+    cost: r.costTag || '',
+    allergens: r.allergensPresent || []
+  }));
+  
+  const blob = new Blob([JSON.stringify(index, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'recipe-index.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// wire it
+qs('#exportIndexBtn')?.addEventListener('click', exportIndex);
+   
   // ---------- Boot ----------
   function init(){
     if(!grid) return;

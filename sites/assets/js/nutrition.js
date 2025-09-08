@@ -729,122 +729,120 @@
   }
 
   async function loadAllRecipes(files) {
-    const results = await Promise.allSettled(
-      files.map(async (p) => {
-        const { res, url } = await fetchWithFallback(p);
-        if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
-        const text = await res.text();
-        const json = safeParseJSON(text, url);
-        return { url, json };
-      })
-    );
+  const results = await Promise.allSettled(
+    files.map(async (p) => {
+      const { res, url } = await fetchWithFallback(p);
+      if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
+      const text = await res.text();
+      const json = safeParseJSON(text, url);
+      return { url, json };
+    })
+  );
 
-    const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
-    const bad = results.filter(r => r.status === 'rejected');
+  const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+  const bad = results.filter(r => r.status === 'rejected');
 
-    if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
+  if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
 
-    // Merge arrays or {recipes:[…]} and de-dup + sanitize
-    const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
-    const seen = new Set();
-    RECIPES = mergedRaw
-      .map(sanitizeRecipe)
-      .filter(Boolean)
-      .filter(r => {
-        const key = (r.slug || r.title || '').toString().trim().toLowerCase();
-        if(!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-// === Enrich missing chips (Dietary & Time) so filters work ===
-for (const r of RECIPES) {
-  r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
-  r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
-  r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
-  r.time_label     = r.time_label || '';
+  // Merge arrays or {recipes:[…]} and de-dup + sanitize
+  const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
+  const seen = new Set();
+  RECIPES = mergedRaw
+    .map(sanitizeRecipe)
+    .filter(Boolean)
+    .filter(r => {
+      const key = (r.slug || r.title || '').toString().trim().toLowerCase();
+      if(!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 
-  const keys      = new Set((r.pantryKeys || []).map(k => k.toLowerCase()));
-  const allergens = new Set((r.allergensPresent || []).map(a => a.toLowerCase()));
-  const methodTxt = ((r.method || []).join(' ') + ' ' + r.time_label).toLowerCase();
+  /* --- ENRICH TAGS SO FILTERS RETURN RESULTS --- */
+  for (const r of RECIPES) {
+    r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
+    r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
+    r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
+    r.time_label     = r.time_label || '';
 
-  const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
-  const hasAny = (set, arr) => arr.some(w => set.has(w));
+    const keys      = new Set((r.pantryKeys || []).map(k => (k||'').toLowerCase()));
+    const allergens = new Set((r.allergensPresent || []).map(a => (a||'').toLowerCase()));
+    const methodTxt = ((r.method || []).join(' ') + ' ' + r.time_label).toLowerCase();
 
-  // Dairy-free (only if no dairy detected)
-  if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) &&
-      !hasAny(allergens, ['milk'])) {
-    add(r.dietary, 'Dairy-free');
-  }
+    const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
+    const hasAny = (set, arr) => arr.some(w => set.has(w));
 
-  // Egg-free
-  if (!hasAny(keys, ['egg','eggs']) &&
-      !hasAny(allergens, ['egg','eggs'])) {
-    add(r.dietary, 'Egg-free');
-  }
-
-  // Nut-free
-  const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','nut','nuts','pistachio','pistachios'];
-  if (!hasAny(keys, nutWords) &&
-      !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio'])) {
-    add(r.dietary, 'Nut-free');
-  }
-
-  // Soy-free
-  if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) &&
-      !hasAny(allergens, ['soy','soya'])) {
-    add(r.dietary, 'Soy-free');
-  }
-
-  // Slow-cook (long time or explicit wording)
-  if (!r.slowCook) {
-    const looksSlow = /slow[-\s]?cook|slow cooker|overnight|8\s?hr|6\s?hr|4\s?hr/.test(methodTxt) ||
-                      (r.time_mins && r.time_mins >= 120);
-    if (looksSlow) r.slowCook = true;
-  }
-
-  // No-cook (no heat verbs + short time or explicit "no-cook")
-  const usesHeat = /(bake|roast|boil|simmer|fry|saute|sauté|grill|broil|steam|poach)/.test(methodTxt);
-  if (!usesHeat && ((r.time_mins || 0) <= 10 || /no[-\s]?cook/.test(methodTxt))) {
-    if (!/no[-\s]?cook/i.test(r.time_label)) {
-      r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
+    // Dairy-free
+    if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) &&
+        !hasAny(allergens, ['milk'])) {
+      add(r.dietary, 'Dairy-free');
     }
-  }
-}
-    if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
-      FIRST_SUCCESSFUL_LOAD = true;
-      FILTERS.ALL = true;
-      ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-      FILTERS.search = '';
-      FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
-      updateChipStates();
+    // Egg-free
+    if (!hasAny(keys, ['egg','eggs']) &&
+        !hasAny(allergens, ['egg','eggs'])) {
+      add(r.dietary, 'Egg-free');
+    }
+    // Nut-free
+    const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','nut','nuts','pistachio','pistachios'];
+    if (!hasAny(keys, nutWords) &&
+        !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio'])) {
+      add(r.dietary, 'Nut-free');
+    }
+    // Soy-free
+    if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) &&
+        !hasAny(allergens, ['soy','soya'])) {
+      add(r.dietary, 'Soy-free');
     }
 
-    // Feedback
-    if (countEl) {
-      const from = ok.map(o => o.url);
-      countEl.innerHTML = RECIPES.length
-        ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
-        : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
+    // Slow-cook
+    if (!r.slowCook) {
+      const looksSlow = /slow[-\s]?cook|slow cooker|overnight|8\s?hr|6\s?hr|4\s?hr/.test(methodTxt) ||
+                        (r.time_mins && r.time_mins >= 120);
+      if (looksSlow) r.slowCook = true;
     }
 
-    render();
-
-    if (!RECIPES.length && grid) {
-      const help = document.createElement('div');
-      help.className = 'meta';
-      help.style.marginTop = '.5rem';
-      help.innerHTML = `
-        <p><strong>No recipes loaded.</strong> Quick checks:</p>
-        <ul>
-          <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
-          <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
-          <li>No trailing commas or missing commas between objects.</li>
-        </ul>`;
-      grid.prepend(help);
+    // No-cook
+    const usesHeat = /(bake|roast|boil|simmer|fry|saute|sauté|grill|broil|steam|poach)/.test(methodTxt);
+    if (!usesHeat && ((r.time_mins || 0) <= 10 || /no[-\s]?cook/.test(methodTxt))) {
+      if (!/no[-\s]?cook/i.test(r.time_label)) {
+        r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
+      }
     }
   }
+  /* --- END ENRICH --- */
 
-  // ---------- Init ----------
+  if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
+    FIRST_SUCCESSFUL_LOAD = true;
+    FILTERS.ALL = true;
+    ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
+    FILTERS.search = '';
+    FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
+    updateChipStates();
+  }
+
+  // Feedback
+  if (countEl) {
+    const from = ok.map(o => o.url);
+    countEl.innerHTML = RECIPES.length
+      ? `Loaded <strong>${RECIPES.length}</strong> recipes from:<br>${from.map(u=>'• '+u).join('<br>')}`
+      : `Loaded 0 recipes. Check JSON structure/paths.<br>Tried:<br>${files.map(f => '• ' + f).join('<br>')}`;
+  }
+
+  render();
+
+  if (!RECIPES.length && grid) {
+    const help = document.createElement('div');
+    help.className = 'meta';
+    help.style.marginTop = '.5rem';
+    help.innerHTML = `
+      <p><strong>No recipes loaded.</strong> Quick checks:</p>
+      <ul>
+        <li>Each file should be <code>[{…},{…}]</code> or <code>{"recipes":[…]}</code>.</li>
+        <li>Paths are relative to <code>nutrition.html</code>. The loader also tries <code>../</code> as a fallback.</li>
+        <li>No trailing commas or missing commas between objects.</li>
+      </ul>`;
+    grid.prepend(help);
+  }
+}  // ---------- Init ----------
   document.addEventListener('DOMContentLoaded', init);
 
   // ---------- (bottom) helpers used above ----------

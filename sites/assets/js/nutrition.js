@@ -756,7 +756,60 @@
         seen.add(key);
         return true;
       });
+// === Enrich missing chips (Dietary & Time) so filters work ===
+for (const r of RECIPES) {
+  r.dietary        = Array.isArray(r.dietary) ? r.dietary : [];
+  r.costPrep       = Array.isArray(r.costPrep) ? r.costPrep : [];
+  r.nutritionFocus = Array.isArray(r.nutritionFocus) ? r.nutritionFocus : [];
+  r.time_label     = r.time_label || '';
 
+  const keys      = new Set((r.pantryKeys || []).map(k => k.toLowerCase()));
+  const allergens = new Set((r.allergensPresent || []).map(a => a.toLowerCase()));
+  const methodTxt = ((r.method || []).join(' ') + ' ' + r.time_label).toLowerCase();
+
+  const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
+  const hasAny = (set, arr) => arr.some(w => set.has(w));
+
+  // Dairy-free (only if no dairy detected)
+  if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) &&
+      !hasAny(allergens, ['milk'])) {
+    add(r.dietary, 'Dairy-free');
+  }
+
+  // Egg-free
+  if (!hasAny(keys, ['egg','eggs']) &&
+      !hasAny(allergens, ['egg','eggs'])) {
+    add(r.dietary, 'Egg-free');
+  }
+
+  // Nut-free
+  const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','nut','nuts','pistachio','pistachios'];
+  if (!hasAny(keys, nutWords) &&
+      !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio'])) {
+    add(r.dietary, 'Nut-free');
+  }
+
+  // Soy-free
+  if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) &&
+      !hasAny(allergens, ['soy','soya'])) {
+    add(r.dietary, 'Soy-free');
+  }
+
+  // Slow-cook (long time or explicit wording)
+  if (!r.slowCook) {
+    const looksSlow = /slow[-\s]?cook|slow cooker|overnight|8\s?hr|6\s?hr|4\s?hr/.test(methodTxt) ||
+                      (r.time_mins && r.time_mins >= 120);
+    if (looksSlow) r.slowCook = true;
+  }
+
+  // No-cook (no heat verbs + short time or explicit "no-cook")
+  const usesHeat = /(bake|roast|boil|simmer|fry|saute|sauté|grill|broil|steam|poach)/.test(methodTxt);
+  if (!usesHeat && ((r.time_mins || 0) <= 10 || /no[-\s]?cook/.test(methodTxt))) {
+    if (!/no[-\s]?cook/i.test(r.time_label)) {
+      r.time_label = (r.time_label ? r.time_label + ' ' : '') + 'No-cook';
+    }
+  }
+}
     if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
       FIRST_SUCCESSFUL_LOAD = true;
       FILTERS.ALL = true;

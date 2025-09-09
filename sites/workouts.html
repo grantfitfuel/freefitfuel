@@ -92,6 +92,11 @@
     .mini-grid{display:grid;gap:.6rem;margin-top:.5rem}
     @media (min-width:700px){.mini-grid{grid-template-columns:repeat(3,1fr)}}
     .demo-caption{font-size:.86rem;color:var(--inkdim);margin:.25rem 0 0 .15rem}
+
+    /* Calisthenics info inserts */
+    .info{color:var(--inkdim);margin:.35rem 0 .2rem}
+    .callout{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.5rem 0}
+    .callout strong{color:var(--ink)}
   </style>
 </head>
 <body>
@@ -176,6 +181,7 @@
   <!-- Calisthenics -->
   <div class="section">
     <h2>Calisthenics Progressions</h2>
+    <p class="info">Simple bodyweight progressions that build tendon strength, control and balance. Move up when all reps are clean with full range.</p>
     <div class="plan" id="cal"></div>
     <p class="meta">Start comfortably; progress when all reps are clean with full range.</p>
   </div>
@@ -279,6 +285,7 @@ const RX = {
   }
 };
 
+/* Calisthenics sets with expanded info for Core & Legs */
 const CAL = [
   {title:'Push', items:[
     {k:'pushup',  rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
@@ -287,13 +294,69 @@ const CAL = [
   {title:'Pull', items:[
     {k:'doorrow', rxB:'Table/door row 3×8–12',  rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
   ]},
-  {title:'Core', items:[
-    {k:'hollow',  rxB:'Hollow tuck 3×20–30s',   rxI:'Hollow body 4×20–40s',     rxA:'Hollow + rocks 4×30–45s'},
-    {k:'lsit',    rxB:'Tuck L-sit 6×10–15s',    rxI:'One-leg L-sit 6×10–15s',   rxA:'Full L-sit 6×10–20s'}
-  ]},
-  {title:'Legs', items:[
-    {k:'pistol',  rxB:'Box pistol 3×6–10/leg',  rxI:'Assisted pistol 4×6–10',   rxA:'Pistol 5×5–8'}
-  ]},
+  {title:'Core', about:{
+      why:[
+        'Core = trunk (abs, obliques, deep stabilisers, spinal erectors). A strong core protects the spine, transfers force between upper and lower body, and keeps technique stable under load and fatigue.'
+      ],
+      cues:[
+        'Ribs down, belly lightly braced as if preparing for a cough.',
+        'Breathe behind the brace: slow nasal inhale, gentle long exhale.',
+        'Keep pelvis neutral; avoid excessive arch or tuck.'
+      ],
+      faults:[
+        'Holding breath and “max bracing” on every rep (save that for heavy lifts).',
+        'Flaring ribs / over-arching lower back.',
+        'Neck strain from yanking head forward during sit-up variations.'
+      ],
+      progress:[
+        'Hollow: tuck → full hollow hold → hollow rocks; add time or reduce rest.',
+        'L-sit: tuck on boxes → one-leg extended → full L-sit; accumulate quality seconds.',
+        'Side plank: staggered feet → stacked feet → star plank / long-lever side plank.'
+      ],
+      safety:[
+        'If you feel localised back pain, shorten the lever (bring limbs closer) and re-brace.',
+        'Build time under tension in small jumps (5–10s) to protect tendons.'
+      ],
+      prep:[
+        '2–3 rounds: cat–cow x8, dead bug x6/side, glute bridge x8 with 2s pause.'
+      ]
+    },
+    items:[
+      {k:'hollow',  rxB:'Hollow tuck 3×20–30s',   rxI:'Hollow body 4×20–40s',     rxA:'Hollow + rocks 4×30–45s'},
+      {k:'lsit',    rxB:'Tuck L-sit 6×10–15s',    rxI:'One-leg L-sit 6×10–15s',   rxA:'Full L-sit 6×10–20s'}
+    ]
+  },
+  {title:'Legs', about:{
+      why:[
+        'Single-leg strength improves balance, joint integrity, and real-world movement.',
+        'Progressions teach knee tracking over toes, hip control, and ankle mobility.'
+      ],
+      cues:[
+        'Foot tripod: big toe, little toe, heel pressed evenly.',
+        'Knee tracks over second/third toe; chest tall, hips back as needed.',
+        'Control the lower (2–3s eccentric), light touch on the box, then drive up.'
+      ],
+      faults:[
+        'Knee caving in (valgus). Fix with lighter height and “push the floor apart”.',
+        'Collapsing into the bottom / bouncing off the box.',
+        'Heel lift due to limited ankle mobility — reduce depth, add calf–ankle prep.'
+      ],
+      progress:[
+        'Box pistol → assisted pistol to target → full pistol to depth → add tempo/pauses.',
+        'Split squat → Bulgarian split squat → cossack squat (mobility focus).'
+      ],
+      safety:[
+        'No knee pain: if painful, reduce range, raise box height, and slow tempo.',
+        'Use a stable support for balance when learning — wobble is not the goal.'
+      ],
+      prep:[
+        '2 rounds: ankle rocks x10/side, hip airplane (supported) x5/side, calf raises x12.'
+      ]
+    },
+    items:[
+      {k:'pistol',  rxB:'Box pistol 3×6–10/leg',  rxI:'Assisted pistol 4×6–10',   rxA:'Pistol 5×5–8'}
+    ]
+  },
   {title:'Skills', items:[
     {k:'hswall',  rxB:'Wall handstand hold 5×20–30s', rxI:'Wall shoulder taps 4×10/side', rxA:'Freestanding attempts 8–10×15s'}
   ]}
@@ -462,10 +525,31 @@ function renderPlan(){
   hookTimers();
 }
 
+function infoBlock(about){
+  if(!about) return '';
+  const li = a => a.map(x=>`<li>${x}</li>`).join('');
+  return `
+    <div class="callout">
+      <p><strong>Why it matters</strong></p>
+      <ul>${li(about.why||[])}</ul>
+      <p><strong>Set-up & cues</strong></p>
+      <ul>${li(about.cues||[])}</ul>
+      <p><strong>Common faults (fixes)</strong></p>
+      <ul>${li(about.faults||[])}</ul>
+      <p><strong>Progression path</strong></p>
+      <ul>${li(about.progress||[])}</ul>
+      <p><strong>Warm-up / prep</strong></p>
+      <ul>${li(about.prep||[])}</ul>
+      <p class="meta">Safety: ${ (about.safety||[]).join(' ') }</p>
+    </div>
+  `;
+}
+
 function renderCal(){
   const f = getFilters(); calEl.innerHTML='';
   CAL.forEach(col=>{
-    const b = document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
+    const b = document.createElement('div'); b.className='block';
+    b.innerHTML = `<h3>${col.title}</h3>${col.about ? infoBlock(col.about) : ''}`;
     col.items.forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
       if(!f[e.eq]) return;

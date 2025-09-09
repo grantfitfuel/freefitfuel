@@ -22,30 +22,9 @@
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
-      </a>
-
-      <!-- Hamburger (mobile) -->
-      <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <!-- Primary nav -->
-      <nav id="primary-nav" class="main-nav" aria-label="Primary">
-  <a href="index.html">Home</a>
-  <a href="ideas.html">Ideas</a>
-  <a href="guides.html">Guides</a>
-  <a href="workouts.html">Workouts</a>
-  <a href="endurance.html">Endurance</a>
-  <a href="nutrition.html">Nutrition</a>
-  <a href="wellbeing.html">Wellbeing</a>
-  <a href="contact.html">Contact</a>
-</nav>
-  </header>
+  <!-- Shared header mount -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
 
   <!-- HERO -->
   <header class="hero" role="banner" aria-label="FreeFitFuel hero">

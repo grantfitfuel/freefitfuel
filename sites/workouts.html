@@ -83,10 +83,10 @@
     .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
     .timer .left{min-width:60px;text-align:right;opacity:.85}
 
-    /* Details (shared collapsible panels) */
+    /* Shared collapsible panels */
     .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem;margin:.5rem 0}
     .details summary{cursor:pointer;font-weight:600}
-    .details p,.details ul{margin:.35rem 0}
+    .details p,.details ul,.details ol{margin:.35rem 0}
 
     /* Compact demo grid inside standards */
     .mini-grid{display:grid;gap:.6rem;margin-top:.5rem}
@@ -283,7 +283,7 @@ const RX = {
   }
 };
 
-/* Calisthenics sets with expanded info for Core & Legs (now collapsible) */
+/* ===== Calisthenics with explicit sessions for Core & Legs ===== */
 const CAL = [
   {title:'Push', items:[
     {k:'pushup',  rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
@@ -292,69 +292,105 @@ const CAL = [
   {title:'Pull', items:[
     {k:'doorrow', rxB:'Table/door row 3×8–12',  rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
   ]},
+
+  /* ---------- CORE with “About” + Suggested Sessions ---------- */
   {title:'Core', about:{
       why:[
-        'Core = trunk (abs, obliques, deep stabilisers, spinal erectors). A strong core protects the spine, transfers force between upper and lower body, and keeps technique stable under load and fatigue.'
+        'Strong trunk protects the spine and transfers force between upper and lower body.'
       ],
       cues:[
-        'Ribs down, belly lightly braced as if preparing for a cough.',
-        'Breathe behind the brace: slow nasal inhale, gentle long exhale.',
-        'Keep pelvis neutral; avoid excessive arch or tuck.'
+        'Ribs down, light brace; breathe behind the brace.',
+        'Neutral pelvis; avoid over-arching or tucking.'
       ],
       faults:[
-        'Holding breath and “max bracing” on every rep (save that for heavy lifts).',
-        'Flaring ribs / over-arching lower back.',
-        'Neck strain from yanking head forward during sit-up variations.'
+        'Holding breath hard on every rep; flared ribs; neck pulling on sit-ups.'
       ],
       progress:[
-        'Hollow: tuck → full hollow hold → hollow rocks; add time or reduce rest.',
-        'L-sit: tuck on boxes → one-leg extended → full L-sit; accumulate quality seconds.',
-        'Side plank: staggered feet → stacked feet → star plank / long-lever side plank.'
+        'Hollow: tuck → full hold → rocks. L-sit: tuck → one-leg → full.'
       ],
       safety:[
-        'If you feel localised back pain, shorten the lever (bring limbs closer) and re-brace.',
-        'Build time under tension in small jumps (5–10s) to protect tendons.'
+        'If you feel back pain, shorten the lever and re-brace; add time in 5–10s steps.'
       ],
       prep:[
-        '2–3 rounds: cat–cow x8, dead bug x6/side, glute bridge x8 with 2s pause.'
+        '2–3 rounds: cat–cow ×8, dead bug ×6/side, glute bridge (2s pause) ×8.'
       ]
     },
     items:[
       {k:'hollow',  rxB:'Hollow tuck 3×20–30s',   rxI:'Hollow body 4×20–40s',     rxA:'Hollow + rocks 4×30–45s'},
       {k:'lsit',    rxB:'Tuck L-sit 6×10–15s',    rxI:'One-leg L-sit 6×10–15s',   rxA:'Full L-sit 6×10–20s'}
-    ]
+    ],
+    sessions:{
+      beginner:[
+        'Prep circuit (2 rounds): cat–cow ×8 · dead bug ×6/side · glute bridge (2s hold) ×8',
+        'Hollow tuck — 3×20–30s · rest 30–45s',
+        'Side plank — 2×25–40s/side · rest 20–30s between sides',
+        'Tuck L-sit (on boxes or parallettes) — accumulate 60–90s total in small sets',
+        'Finisher: dead bug — 2×6/side slow'
+      ],
+      intermediate:[
+        'Prep circuit (2 rounds): cat–cow ×8 · dead bug ×6/side · glute bridge (2s hold) ×10',
+        'Hollow body — 4×20–40s · rest 30–45s',
+        'One-leg L-sit — 6×10–15s alternating legs · rest 20–30s',
+        'Side plank — 3×30–45s/side · rest 30s',
+        'Optional: slow cross-body mountain climber — 2×20 total'
+      ],
+      advanced:[
+        'Prep (2 rounds): segmental cat–cow ×6 · dead bug iso holds ×5/side',
+        'Hollow rocks — 4×30–45s · rest 45–60s',
+        'Full L-sit — 6×10–20s · rest 30–45s',
+        'Long-lever side plank or star plank — 3×20–30s/side',
+        'Optional: strict toes-to-bar negatives — 3×3 slow'
+      ]
+    }
   },
+
+  /* ---------- LEGS with “About” + Suggested Sessions ---------- */
   {title:'Legs', about:{
       why:[
-        'Single-leg strength improves balance, joint integrity, and real-world movement.',
-        'Progressions teach knee tracking over toes, hip control, and ankle mobility.'
+        'Single-leg strength improves balance, joint control and everyday movement.'
       ],
       cues:[
         'Foot tripod: big toe, little toe, heel pressed evenly.',
-        'Knee tracks over second/third toe; chest tall, hips back as needed.',
-        'Control the lower (2–3s eccentric), light touch on the box, then drive up.'
+        'Knee tracks over 2nd–3rd toe; chest tall; control the lower for 2–3s.'
       ],
       faults:[
-        'Knee caving in (valgus). Fix with lighter height and “push the floor apart”.',
-        'Collapsing into the bottom / bouncing off the box.',
-        'Heel lift due to limited ankle mobility — reduce depth, add calf–ankle prep.'
+        'Knee valgus (caving), bouncing off the box, heels lifting.'
       ],
       progress:[
-        'Box pistol → assisted pistol to target → full pistol to depth → add tempo/pauses.',
-        'Split squat → Bulgarian split squat → cossack squat (mobility focus).'
+        'Box pistol → assisted pistol → full pistol; add tempo/pauses before load.'
       ],
       safety:[
-        'No knee pain: if painful, reduce range, raise box height, and slow tempo.',
-        'Use a stable support for balance when learning — wobble is not the goal.'
+        'No knee pain: raise the box, shorten the range, slow the tempo if needed.'
       ],
       prep:[
-        '2 rounds: ankle rocks x10/side, hip airplane (supported) x5/side, calf raises x12.'
+        '2 rounds: ankle rocks ×10/side, supported hip airplane ×5/side, calf raises ×12.'
       ]
     },
     items:[
       {k:'pistol',  rxB:'Box pistol 3×6–10/leg',  rxI:'Assisted pistol 4×6–10',   rxA:'Pistol 5×5–8'}
-    ]
+    ],
+    sessions:{
+      beginner:[
+        'Prep (2 rounds): ankle rocks ×10/side · hip airplane (supported) ×5/side · calf raises ×12',
+        'Box pistol to target — 3×6–10/leg @ 3–1–1–0 tempo · rest 45–60s',
+        'Step-up (knee-height) — 2×10/leg controlled · rest 30–45s',
+        'Calf raises — 2×12 slow with 1–2s top pause'
+      ],
+      intermediate:[
+        'Prep (2 rounds): ankle rocks ×12/side · hip airplane ×6/side · calf raises ×15',
+        'Assisted pistol — 4×6–10/leg @ 3–1–1–0 · rest 60–90s',
+        'Split squat — 3×8–12/leg (last 2 reps close to failure) · rest 60s',
+        'Cossack squat (mobility) — 2×6/side smooth'
+      ],
+      advanced:[
+        'Prep (2 rounds): deep calf pulses ×15 · hip airplane ×6/side',
+        'Full pistol — 5×5–8/leg @ 3–1–1–0 · rest 90s',
+        'Bulgarian split squat — 3×8–10/leg · rest 60–90s',
+        'Optional power: low box jump — 3×8 crisp reps · full control'
+      ]
+    }
   },
+
   {title:'Skills', items:[
     {k:'hswall',  rxB:'Wall handstand hold 5×20–30s', rxI:'Wall shoulder taps 4×10/side', rxA:'Freestanding attempts 8–10×15s'}
   ]}
@@ -423,6 +459,7 @@ const xfitEl = document.getElementById('xfit');
 let level = 'beginner';
 let goal  = 'maintain';
 
+/* Difficulty + Goal toggles */
 document.querySelectorAll('.seg [data-level]').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
@@ -441,6 +478,7 @@ document.querySelectorAll('.seg [data-goal]').forEach(b=>{
   });
 });
 
+/* Equipment filters */
 function getFilters(){
   return {
     db: document.getElementById('f-db').checked,
@@ -490,7 +528,7 @@ function demoTileHTML(yt, title){
 }
 function exByKey(k){ return EX.find(x=>x.k===k); }
 
-/* Goal scaling: light touch */
+/* Goal scaling: light touch (applies to Weekly Split & XFit rx text) */
 function applyGoal(rxStr){
   if(goal==='cut')       return rxStr.replace(/(\d+)×/g,(m,n)=>(Math.max(2,+n+0))+'×') + ' · 45–60s rest';
   if(goal==='build')     return rxStr.replace(/(\d+)×/g,(m,n)=>(Math.max(2,+n+1))+'×') + ' · 60–90s rest';
@@ -498,7 +536,7 @@ function applyGoal(rxStr){
   return rxStr;
 }
 
-/* ===== Collapsible info block (matches Cross-Training style) ===== */
+/* Collapsible info block (matches Cross-Training style) */
 function infoBlock(about, title='About'){
   if(!about) return '';
   const li = a => (a||[]).map(x=>`<li>${x}</li>`).join('');
@@ -506,29 +544,32 @@ function infoBlock(about, title='About'){
   return `
     <details class="details">
       <summary>${title}: why, cues & safety</summary>
-      <p><strong>Why it matters</strong></p>
-      <ul>${li(about.why)}</ul>
-
-      <p><strong>Set-up & cues</strong></p>
-      <ul>${li(about.cues)}</ul>
-
-      <p><strong>Common faults (fixes)</strong></p>
-      <ul>${li(about.faults)}</ul>
-
-      <p><strong>Progression path</strong></p>
-      <ul>${li(about.progress)}</ul>
-
-      <p><strong>Warm-up / prep</strong></p>
-      <ul>${li(about.prep)}</ul>
-
+      <p><strong>Why it matters</strong></p><ul>${li(about.why)}</ul>
+      <p><strong>Set-up & cues</strong></p><ul>${li(about.cues)}</ul>
+      <p><strong>Common faults (fixes)</strong></p><ul>${li(about.faults)}</ul>
+      <p><strong>Progression path</strong></p><ul>${li(about.progress)}</ul>
+      <p><strong>Warm-up / prep</strong></p><ul>${li(about.prep)}</ul>
       <p class="meta">Safety: ${safety}</p>
+    </details>
+  `;
+}
+
+/* Render one level’s ordered session */
+function sessionBlock(label, steps){
+  if(!steps || !steps.length) return '';
+  const lis = steps.map(s=>`<li>${s}</li>`).join('');
+  return `
+    <details class="details">
+      <summary>${label} — suggested session</summary>
+      <ol>${lis}</ol>
     </details>
   `;
 }
 
 /* ===== Renderers ===== */
 function renderPlan(){
-  const f = getFilters(); planEl.innerHTML='';
+  const f = getFilters(); 
+  planEl.innerHTML='';
   ['push','pull','legs','full'].forEach(group=>{
     const blk = document.createElement('div'); blk.className='block';
     const title = group==='full'?'Full-Body Day Combination':
@@ -538,9 +579,8 @@ function renderPlan(){
     const list = document.createElement('div');
     RX[group][level].forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
-      const filt = getFilters();
-      if(!filt[e.eq]) return;
-      if(e.eq==='rings' && !filt.rings) return;
+      if(!f[e.eq]) return;
+      if(e.eq==='rings' && !f.rings) return;
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(it.rx)}</span>`;
       list.appendChild(row);
@@ -552,19 +592,38 @@ function renderPlan(){
   hookTimers();
 }
 
+/* Calisthenics render (with sessions for Core & Legs) */
 function renderCal(){
-  const f = getFilters(); calEl.innerHTML='';
+  const f = getFilters(); 
+  calEl.innerHTML='';
   CAL.forEach(col=>{
-    const b = document.createElement('div'); b.className='block';
+    const b = document.createElement('div'); 
+    b.className='block';
+
+    // Header + About
     b.innerHTML = `<h3>${col.title}</h3>${col.about ? infoBlock(col.about, col.title) : ''}`;
+
+    // Level sessions (Core/Legs only)
+    if(col.sessions){
+      b.insertAdjacentHTML('beforeend', 
+        sessionBlock('Beginner', col.sessions.beginner) +
+        sessionBlock('Intermediate', col.sessions.intermediate) +
+        sessionBlock('Advanced', col.sessions.advanced)
+      );
+    }
+
+    // Progression rows
     col.items.forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
       if(!f[e.eq]) return;
       const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(rx)}</span>`;
+      const row = document.createElement('div'); 
+      row.className='mov';
+      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${rx}</span>`;
       b.appendChild(row);
     });
+
+    // Timer per block
     b.insertAdjacentHTML('beforeend', timerHTML('cal-'+col.title));
     calEl.appendChild(b);
   });
@@ -606,7 +665,7 @@ function renderLibrary(){
   bindTiles(libEl);
 }
 
-/* ===== Cross-Training render (with how-to + standards + demo tiles) ===== */
+/* Cross-Training render (with how-to + standards + demo tiles) */
 function renderXFit(){
   if(!xfitEl) return;
   xfitEl.innerHTML = '';
@@ -623,7 +682,7 @@ function renderXFit(){
         Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch the rest to AMRAP.</p>`,
       'for-time-50-40-30-20-10-du-situps': `
         <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible.
-        Break jump-rope sets early to stay crisp; keep sit-ups smooth. Suggested time cap: 12–15 min.</p>`
+        Break rope sets early to stay crisp; keep sit-ups smooth. Suggested time cap: 12–15 min.</p>`
     }[w.code] || '';
 
     const standards = `

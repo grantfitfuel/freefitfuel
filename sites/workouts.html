@@ -13,7 +13,7 @@
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
-    /* HERO */
+    /* HERO (unchanged layout) */
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     .hero-mini figure{margin:0;position:relative}
     .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
@@ -63,7 +63,7 @@
       background:rgba(255,255,255,.08); color:var(--ink);
     }
 
-    .tile{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+    .tile{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden;border-radius:8px}
     .tile button.play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
     .tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.88)}
     .tile iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none}
@@ -88,8 +88,10 @@
     .details summary{cursor:pointer;font-weight:600}
     .details p,.details ul{margin:.35rem 0}
 
-    /* Cross-Training disclaimer text */
-    .xfit-disclaimer{color:var(--inkdim);font-size:.92rem;margin-top:.4rem}
+    /* Compact demo grid inside standards */
+    .mini-grid{display:grid;gap:.6rem;margin-top:.5rem}
+    @media (min-width:700px){.mini-grid{grid-template-columns:repeat(3,1fr)}}
+    .demo-caption{font-size:.86rem;color:var(--inkdim);margin:.25rem 0 0 .15rem}
   </style>
 </head>
 <body>
@@ -180,8 +182,8 @@
 
   <!-- Cross-Training Benchmarks -->
   <div class="section" id="xfit-section">
-    <h2>Cross-Training Benchmarks 🏋️‍♀️ <span class="meta" style="font-weight:normal">(a.k.a. “Cindy”, “Chelsea”, “Annie”)</span></h2>
-    <p class="xfit-disclaimer"><strong>Note:</strong> CrossFit® is a registered trademark of CrossFit, LLC. These benchmark formats are widely known in functional training, and this site is not affiliated with, endorsed by, or sponsored by CrossFit, LLC.</p>
+    <h2>Cross-Training Benchmarks 🏋️‍♀️ <span class="meta" style="font-weight:normal">(colloquially known as “Cindy”, “Chelsea”, “Annie”)</span></h2>
+    <p class="meta">These are community-famous benchmark formats. <strong>CrossFit® is a registered trademark of CrossFit, LLC.</strong> FreeFitFuel is not affiliated with, endorsed, or sponsored by CrossFit, LLC.</p>
     <div class="plan" id="xfit"></div>
     <p class="meta">Choose a level, set the timer on each card, and log total rounds, splits, or time to complete.</p>
   </div>
@@ -192,11 +194,10 @@
     <div class="grid" id="lib"></div>
   </div>
 
-  <!-- Disclaimer -->
+  <!-- Disclaimer (standard) -->
   <section class="section">
     <h2>Important Note</h2>
     <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
-    <p class="meta">CrossFit® is a registered trademark of CrossFit, LLC. FreeFitFuel is not affiliated with, endorsed by, or sponsored by CrossFit, LLC.</p>
   </section>
 </main>
 
@@ -223,10 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===== Data ===== */
-/* Anatomy PNGs live in /img/anatomy/ using granular names like:
-   muscles-front-chest-pecs.png, muscles-back-triceps-long.png, etc. */
-
+/* ===== Form Library DATA (unchanged core set) ===== */
 const EX = [
   /* ---------- PUSH ---------- */
   {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',    yt:'IODxDxX7oi4', muscles:['muscles-front-chest-pecs','muscles-back-triceps-long','muscles-front-deltoids-front']},
@@ -254,17 +252,10 @@ const EX = [
   /* ---------- FULL BODY ---------- */
   {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db',    yt:'wV2bF1X8Y4M', muscles:['muscles-front-abs-upper','muscles-front-deltoids-front','muscles-back-lats-upper']},
   {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db',    yt:'zQ6ZlJkFQ3E', muscles:['muscles-front-deltoids-front','muscles-back-glutes-maximus','muscles-front-quads-rectus']},
-  {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw',    yt:'tZyq3x1y9mQ', muscles:['muscles-front-deltoids-front','muscles-back-triceps-long','muscles-back-traps-upper']},
-
-  /* ---------- CALISTHENICS ---------- */
-  {k:'dipbench',n:'Bench Dip (calisthenics)',cat:'cal',  eq:'bw',    yt:'6kALZikXxLc', muscles:['muscles-back-triceps-long','muscles-front-chest-pecs','muscles-front-deltoids-front']},
-  {k:'ringpush',n:'Ring Push-up',           cat:'cal',   eq:'rings', yt:'0H5nY7v7l5E', muscles:['muscles-front-chest-pecs','muscles-front-deltoids-front','muscles-back-triceps-long'], badges:['Rings']},
-  {k:'hollow',  n:'Hollow Body Hold',       cat:'cal',   eq:'bw',    yt:'o-qlBV4J6To', muscles:['muscles-front-abs-upper','muscles-front-abs-lower']},
-  {k:'lsit',    n:'L-sit (tuck progression)',cat:'cal',  eq:'rings', yt:'F3tGqV4wJ2E', muscles:['muscles-front-abs-lower','muscles-front-hip-flexors','muscles-back-triceps-long'], badges:['Rings']},
-  {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',    yt:'YlH3z9JvNlg', muscles:['muscles-front-quads-rectus','muscles-back-glutes-maximus','muscles-back-calves-soleus']}
+  {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw',    yt:'tZyq3x1y9mQ', muscles:['muscles-front-deltoids-front','muscles-back-triceps-long','muscles-back-traps-upper']}
 ];
 
-/* Weekly prescriptions (scaled by level; goal adds a small modifier) */
+/* Weekly prescriptions */
 const RX = {
   push:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
@@ -308,43 +299,57 @@ const CAL = [
   ]}
 ];
 
-/* ===== Cross-Training Benchmarks (Cindy/Chelsea/Annie styles) ===== */
+/* ===== Cross-Training Benchmarks (Cindy / Chelsea / Annie styles) ===== */
 const XWODS = [
   {
     code:'amrap-20-5-10-15',
     title:'AMRAP 20: Pull • Push • Squat',
-    aka:'(a.k.a. “Cindy”)',
+    aka:'(aka “Cindy” format)',
     rx:{
       beginner:'20:00 AMRAP — 3 Rows • 6 Incline Push-ups • 10 Air Squats',
       intermediate:'20:00 AMRAP — 5 Pull-ups (or rows) • 10 Push-ups • 15 Air Squats',
       advanced:'20:00 AMRAP — 5 Strict Pull-ups • 10 Push-ups • 15 Air Squats'
     },
     notes:'Score = total completed rounds + extra reps. Pace so first 5 min ≈ last 5.',
-    presets:{seconds:1200}
+    presets:{seconds:1200},
+    demos:[
+      {title:'Pull-up / Row (scales)', yt:'r8NzhNe9Res'},
+      {title:'Push-up (standards)', yt:'IODxDxX7oi4'},
+      {title:'Air Squat (standards)', yt:'UXJrBgI2RxA'}
+    ]
   },
   {
     code:'emom-30-5-10-15',
     title:'EMOM 30: Triplet Every Minute',
-    aka:'(a.k.a. “Chelsea”)',
+    aka:'(aka “Chelsea” format)',
     rx:{
       beginner:'30:00 EMOM — 3 Rows • 6 Incline Push-ups • 10 Air Squats (scale as needed)',
       intermediate:'30:00 EMOM — 5 Pull-ups (or rows) • 10 Push-ups • 15 Air Squats',
       advanced:'30:00 EMOM — 5 Pull-ups • 10 Push-ups • 15 Air Squats (hold for max unbroken minutes)'
     },
-    notes:'If you miss a minute, turn the remainder into AMRAP for the rest of the clock.',
-    presets:{seconds:1800}
+    notes:'If you miss a minute, reduce reps by ~20% or turn remaining time into AMRAP.',
+    presets:{seconds:1800},
+    demos:[
+      {title:'Pull-up / Row (scales)', yt:'r8NzhNe9Res'},
+      {title:'Push-up (standards)', yt:'IODxDxX7oi4'},
+      {title:'Air Squat (standards)', yt:'UXJrBgI2RxA'}
+    ]
   },
   {
     code:'for-time-50-40-30-20-10-du-situps',
     title:'For Time: Rope + Sit-up Ladder',
-    aka:'(a.k.a. “Annie”)',
+    aka:'(aka “Annie” format)',
     rx:{
-      beginner:'50-40-30-20-10 — Single-unders & Sit-ups (1:1) or 40-30-20-10-10 to manage volume',
+      beginner:'50-40-30-20-10 — Single-unders & Sit-ups (or 40-30-20-10-10 to manage volume)',
       intermediate:'50-40-30-20-10 — Single-unders (2:1) or DU attempts & Sit-ups',
       advanced:'50-40-30-20-10 — Double-unders & Sit-ups'
     },
-    notes:'Break jump-rope sets early to stay snappy; keep sit-ups smooth. Time cap: 12–15 min.',
-    presets:{seconds:900}
+    notes:'Break jump-rope sets early; keep sit-ups smooth. Time cap: 12–15 min.',
+    presets:{seconds:900},
+    demos:[
+      {title:'Double-Under / Single-Under', yt:'jv9qk_baQjE'},
+      {title:'Sit-up (standards)', yt:'1fbU_MkV7NE'}
+    ]
   }
 ];
 
@@ -357,27 +362,24 @@ const xfitEl = document.getElementById('xfit');
 let level = 'beginner';
 let goal  = 'maintain';
 
-/* Toggles — difficulty */
 document.querySelectorAll('.seg [data-level]').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     level = b.dataset.level;
-    renderPlan(); renderCal(); renderXFit(); renderLibrary();
+    renderPlan(); renderCal(); renderXFit();
   });
 });
 
-/* Toggles — goals */
 document.querySelectorAll('.seg [data-goal]').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     goal = b.dataset.goal;
-    renderPlan(); renderCal(); renderXFit(); renderLibrary();
+    renderPlan(); renderCal(); renderXFit();
   });
 });
 
-/* Equipment filters */
 function getFilters(){
   return {
     db: document.getElementById('f-db').checked,
@@ -389,7 +391,7 @@ function getFilters(){
 }
 ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); renderXFit(); });
+  if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); });
 });
 
 /* ===== Helpers ===== */
@@ -397,23 +399,42 @@ function anatomy(ms){
   const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}.png" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
   return `<div class="anatomy">${imgs}</div>`;
 }
-function timerHTML(id, preset=60){ return `
+function timerHTML(id, preset=60){
+  return `
   <div class="timer" data-timer="${id}">
     <label for="t-${id}" class="visually-hidden">Timer (seconds)</label>
     <input id="t-${id}" type="number" min="5" step="5" value="${preset}">
     <button data-act="start">Start</button>
     <button data-act="stop">Stop</button>
     <span class="left" aria-live="polite">${preset}s</span>
-  </div>`; }
-
+  </div>`;
+}
+function demoTileHTML(yt, title){
+  const thumb = `https://img.youtube.com/vi/${yt}/hqdefault.jpg`;
+  const safe = title.replace(/"/g,'&quot;');
+  return `
+    <div class="tile" data-yt="${yt}">
+      <img class="thumb" src="${thumb}" alt="${safe} thumbnail" loading="lazy">
+      <button class="play" aria-label="Play ${safe}">
+        <svg width="60" height="60" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+          <circle cx="36" cy="36" r="34" stroke="white" stroke-opacity=".85" stroke-width="3"/>
+          <polygon points="30,24 52,36 30,48" fill="white" />
+        </svg>
+      </button>
+      <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              title="${safe} form video"></iframe>
+    </div>
+    <div class="demo-caption">${safe}</div>
+  `;
+}
 function exByKey(k){ return EX.find(x=>x.k===k); }
 
-/* Goal scaling: small visual nudge */
+/* Goal scaling: light touch */
 function applyGoal(rxStr){
-  if(goal==='cut')       return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+0))+'×') + ' · 45–60s rest';
-  if(goal==='build')     return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+1))+'×') + ' · 60–90s rest';
+  if(goal==='cut')       return rxStr.replace(/(\d+)×/g,(m,n)=>(Math.max(2,+n+0))+'×') + ' · 45–60s rest';
+  if(goal==='build')     return rxStr.replace(/(\d+)×/g,(m,n)=>(Math.max(2,+n+1))+'×') + ' · 60–90s rest';
   if(goal==='transform') return rxStr + ' + finisher';
-  return rxStr; // maintain
+  return rxStr;
 }
 
 /* ===== Renderers ===== */
@@ -428,7 +449,8 @@ function renderPlan(){
     const list = document.createElement('div');
     RX[group][level].forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
-      // Optional: gate by equipment using f[e.eq]
+      if(!f[e.eq]) return;
+      if(e.eq==='rings' && !f.rings) return;
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(it.rx)}</span>`;
       list.appendChild(row);
@@ -441,11 +463,12 @@ function renderPlan(){
 }
 
 function renderCal(){
-  calEl.innerHTML='';
+  const f = getFilters(); calEl.innerHTML='';
   CAL.forEach(col=>{
     const b = document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
     col.items.forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
+      if(!f[e.eq]) return;
       const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(rx)}</span>`;
@@ -458,8 +481,11 @@ function renderCal(){
 }
 
 function renderLibrary(){
-  libEl.innerHTML='';
+  const f = getFilters(); libEl.innerHTML='';
   EX.forEach(e=>{
+    if(!f[e.eq]) return;
+    if(e.eq==='rings' && !f.rings) return;
+
     const card = document.createElement('article'); card.className='card';
     const thumb = `https://img.youtube.com/vi/${e.yt}/hqdefault.jpg`;
     card.innerHTML = `
@@ -485,20 +511,11 @@ function renderLibrary(){
     libEl.appendChild(card);
   });
 
-  // lazy-load on click to reduce “unavailable” embeds
-  libEl.querySelectorAll('.tile').forEach(tile=>{
-    const id = tile.dataset.yt;
-    const btn = tile.querySelector('.play');
-    const iframe = tile.querySelector('iframe');
-    btn.addEventListener('click', ()=>{
-      iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
-      iframe.style.display='block';
-      btn.style.display='none';
-    });
-  });
+  // lazy-load on click
+  bindTiles(libEl);
 }
 
-/* ===== Cross-Training render (with how-to + standards) ===== */
+/* ===== Cross-Training render (with how-to + standards + demo tiles) ===== */
 function renderXFit(){
   if(!xfitEl) return;
   xfitEl.innerHTML = '';
@@ -509,35 +526,27 @@ function renderXFit(){
     const howTo = {
       'amrap-20-5-10-15': `
         <p><strong>How it works:</strong> AMRAP 20 = “as many rounds & reps as possible in 20 minutes”.
-        Cycle pull/row, push-ups, and squats continuously.
-        Keep sets submaximal so your first 5 minutes ≈ your last 5.</p>`,
+        Cycle through pull/row, push-ups, and squats continuously. Keep sets submaximal so your first 5 minutes ≈ your last 5.</p>`,
       'emom-30-5-10-15': `
         <p><strong>How it works:</strong> EMOM 30 = do the listed reps <em>every minute</em> for 30 minutes.
-        Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch to AMRAP.</p>`,
+        Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch the rest to AMRAP.</p>`,
       'for-time-50-40-30-20-10-du-situps': `
         <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible.
-        Break rope sets early to keep rhythm; smooth sit-ups beat sprint-and-die pacing.</p>`
+        Break rope sets early to stay crisp; keep sit-ups smooth. Suggested time cap: 12–15 min.</p>`
     }[w.code] || '';
 
     const standards = `
-      <details class="details"><summary>Movement standards & scaling</summary>
+      <details class="details"><summary>Movement standards, scaling & demos</summary>
         <ul>
-          <li><strong>Pull-up / Row (scale):</strong> Full hang to chin-over-bar.
-              Scale to band-assisted, door/table rows, or rings at a challenging angle.
-              <em>Common faults:</em> short range, loose core, early kipping.</li>
-          <li><strong>Push-up:</strong> Hands under shoulders, body in one line, chest to target, full lockout.
-              Scale to incline, then knees.
-              <em>Faults:</em> hips sag, elbows flare, half reps.</li>
-          <li><strong>Air squat:</strong> Hips below knee crease, heels down, full stand.
-              Scale to box/target or pain-free depth.
-              <em>Faults:</em> knees cave, heels lift, tipping forward.</li>
-          <li><strong>Double-under / Single-under:</strong> Tall posture, small fast jumps, wrists turn rope.
-              Scale to single-unders (1:1 or 2:1), penguin taps, or 30–50 jumping jacks.
-              <em>Faults:</em> big arm circles, piking, rope too long.</li>
-          <li><strong>Sit-up:</strong> Shoulders pass hips; choose a consistent ROM/target.
-              Scale to anchored feet, butterfly sit-ups, or crunches.
-              <em>Faults:</em> yanking neck, bouncing hard.</li>
+          <li><strong>Pull-up / Row (scale):</strong> Full hang to chin-over-bar. Scale to band-assisted or table/door rows at a challenging angle. <em>Faults:</em> short range, loose core, early kip.</li>
+          <li><strong>Push-up:</strong> Hands under shoulders, body in one line, chest to target, full lockout. Scale to incline, then knees. <em>Faults:</em> hips sag, elbows flare, half reps.</li>
+          <li><strong>Air squat:</strong> Hips below knee crease, heels down, full stand. Scale to box/target or pain-free depth. <em>Faults:</em> knees cave, heels lift.</li>
+          <li><strong>Double-/Single-unders:</strong> Tall posture, small fast jumps, wrists turn rope. Scale to single-unders (1:1 or 2:1), penguin taps, or 30–50 jumping jacks.</li>
+          <li><strong>Sit-up:</strong> Shoulders pass hips; choose a consistent ROM/target. Scale to anchored feet, butterfly sit-ups, or crunches.</li>
         </ul>
+        <div class="mini-grid">
+          ${w.demos.map(d=>demoTileHTML(d.yt, d.title)).join('')}
+        </div>
       </details>
     `;
 
@@ -559,7 +568,24 @@ function renderXFit(){
     blk.insertAdjacentHTML('beforeend', timerHTML('xfit-'+w.code, w.presets.seconds));
     xfitEl.appendChild(blk);
   });
+
+  // bind the newly created demo tiles inside the section
+  bindTiles(xfitEl);
   hookTimers();
+}
+
+/* ===== Tile binding (play on click, no-cookie embeds) ===== */
+function bindTiles(scopeEl){
+  scopeEl.querySelectorAll('.tile').forEach(tile=>{
+    const id = tile.dataset.yt;
+    const btn = tile.querySelector('.play');
+    const iframe = tile.querySelector('iframe');
+    btn.addEventListener('click', ()=>{
+      iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
+      iframe.style.display='block';
+      btn.style.display='none';
+    });
+  });
 }
 
 /* ===== Audible timers (3-beep finish) ===== */

@@ -170,6 +170,12 @@
     <p class="meta">Start comfortably; progress when all reps are clean with full range.</p>
   </div>
 
+  <!-- CrossFit -->
+  <div class="section" id="wods">
+    <h2>CrossFit <span aria-hidden="true">🏋️‍♀️</span></h2>
+    <div class="grid" id="wodsGrid"></div>
+  </div>
+
   <!-- Library -->
   <div class="section" id="library">
     <h2>Form Library (watch & copy)</h2>
@@ -248,7 +254,7 @@ const EX = [
   {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',    yt:'YlH3z9JvNlg', muscles:['muscles-front-quads-rectus','muscles-back-glutes-maximus','muscles-back-calves-soleus']}
 ];
 
-/* Prescriptions by day + difficulty remain the same — with goal scaling */
+/* Prescriptions by day + difficulty — goal scaling */
 const RX = {
   push:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
@@ -292,6 +298,64 @@ const CAL = [
   ]}
 ];
 
+/* ===== CrossFit WODs (level-aware) ===== */
+const WODS = [
+  {
+    k: 'cindy',
+    title: 'Cindy',
+    type: 'AMRAP',
+    durationSec: 20*60,
+    prescriptions: {
+      beginner:     { scheme: ['3 Pull-ups (band/ring row)','6 Push-ups (incline/knee)','9 Air Squats'], note: 'Keep moving, nasal breathing if possible.' },
+      intermediate: { scheme: ['5 Pull-ups','10 Push-ups','15 Air Squats'], note: 'Break push-ups early to avoid failure.' },
+      advanced:     { scheme: ['5 Pull-ups','10 Push-ups','15 Air Squats'], note: 'Unbroken early rounds; manage transitions.' }
+    },
+    scaling: {
+      beginner:     ['Pull-ups → banded or ring rows','Push-ups → incline or knees','Aim for 10–12+ rounds'],
+      intermediate: ['Break 5/5 on push-ups as needed','Use a band that keeps reps clean','12–18 rounds target'],
+      advanced:     ['Butterfly/kipping if skilled','Fast transitions; chalk/sweat plan','20+ rounds elite']
+    },
+    youtubeQuery: 'Cindy CrossFit workout demo',
+    file: 'assets/pdf/wods/cindy-crossfit-wod.pdf'
+  },
+  {
+    k: 'chelsea',
+    title: 'Chelsea',
+    type: 'EMOM',
+    durationSec: 30*60,
+    prescriptions: {
+      beginner:     { scheme: ['Every minute: 3 Pull-ups','6 Push-ups','9 Air Squats'], note: 'Finish work ≤40s; rest ≥20s.' },
+      intermediate: { scheme: ['Every minute: 5 Pull-ups','10 Push-ups','15 Air Squats'], note: 'Cap sets to keep ≤45s work.' },
+      advanced:     { scheme: ['Every minute: 5 Pull-ups','10 Push-ups','15 Air Squats'], note: 'Hold all 30 minutes if possible.' }
+    },
+    scaling: {
+      beginner:     ['Use banded pull-ups or ring rows','Incline push-ups ok','If you miss a minute, rest next minute'],
+      intermediate: ['Drop to 4/8/12 if you miss','Keep range strict','Track total minutes completed'],
+      advanced:     ['Strict or kip as appropriate','Pace breathing; chalk plan','Score = minutes completed unbroken']
+    },
+    youtubeQuery: 'Chelsea CrossFit EMOM demo',
+    file: 'assets/pdf/wods/chelsea-crossfit-wod.pdf'
+  },
+  {
+    k: 'annie',
+    title: 'Annie',
+    type: 'For time',
+    durationSec: 0,
+    prescriptions: {
+      beginner:     { scheme: ['50-40-30-20-10: Single-unders x2 + Sit-ups'], note: 'Relax shoulders on rope; steady sit-ups.' },
+      intermediate: { scheme: ['50-40-30-20-10: Double-unders + Sit-ups'], note: 'Break DU into sets to avoid trips.' },
+      advanced:     { scheme: ['50-40-30-20-10: Double-unders + Sit-ups'], note: 'Big first set; consistent rhythm.' }
+    },
+    scaling: {
+      beginner:     ['Single-unders: 2:1 (100-80-60-40-20)','Anchored or ab-mat sit-ups'],
+      intermediate: ['Limit DU misses per set (e.g., 3 then move)','Use ab-mat if available'],
+      advanced:     ['Try unbroken sets where possible','Hands off head between reps']
+    },
+    youtubeQuery: 'Annie CrossFit workout demo',
+    file: 'assets/pdf/wods/annie-crossfit-wod.pdf'
+  }
+];
+
 /* ===== State ===== */
 const planEl = document.getElementById('plan');
 const calEl  = document.getElementById('cal');
@@ -305,7 +369,7 @@ document.querySelectorAll('.seg [data-level]').forEach(b=>{
     document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     level = b.dataset.level;
-    renderPlan(); renderCal();
+    renderPlan(); renderCal(); renderWods();
   });
 });
 
@@ -314,7 +378,7 @@ document.querySelectorAll('.seg [data-goal]').forEach(b=>{
     document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     goal = b.dataset.goal;
-    renderPlan(); renderCal();
+    renderPlan(); renderCal(); renderWods();
   });
 });
 
@@ -333,7 +397,6 @@ function getFilters(){
 });
 
 /* ===== Helpers ===== */
-function muscleList(ms){ return ms.map(x=>x.replace(/-/g,' ').replace(/muscles /g,'')).join(', '); }
 function anatomy(ms){
   const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}.png" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
   return `<div class="anatomy">${imgs}</div>`;
@@ -346,16 +409,14 @@ function timerHTML(id){ return `
     <button data-act="stop">Stop</button>
     <span class="left" aria-live="polite">60s</span>
   </div>`; }
-
 function exByKey(k){ return EX.find(x=>x.k===k); }
 
 /* Goal scaling: tweak volumes a bit */
 function applyGoal(rxStr){
-  // Very light-touch visual nudge (keeps your RX readable)
-  if(goal==='cut')    return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+0))+'×') + ' · 45–60s rest';
-  if(goal==='build')  return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+1))+'×') + ' · 60–90s rest';
+  if(goal==='cut')       return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+0))+'×') + ' · 45–60s rest';
+  if(goal==='build')     return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+1))+'×') + ' · 60–90s rest';
   if(goal==='transform') return rxStr + ' + finisher';
-  return rxStr; // maintain
+  return rxStr;
 }
 
 /* ===== Renderers ===== */
@@ -433,7 +494,7 @@ function renderLibrary(){
     libEl.appendChild(card);
   });
 
-  // lazy-load on click to reduce “unavailable” embeds
+  // lazy-load on click
   libEl.querySelectorAll('.tile').forEach(tile=>{
     const id = tile.dataset.yt;
     const btn = tile.querySelector('.play');
@@ -488,8 +549,104 @@ function hookTimers(){
   });
 }
 
+/* ===== CrossFit renderer (level-aware cards + EMOM beeps) ===== */
+function renderWods(){
+  const grid = document.getElementById('wodsGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+
+  WODS.forEach(w => {
+    const p = w.prescriptions[level] || w.prescriptions.beginner;
+    const s = w.scaling[level] || [];
+    const timeBadge = (w.type==='AMRAP' || w.type==='EMOM') ? ` · ${Math.round(w.durationSec/60)} min` : '';
+
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <h4>${w.title} <span class="badge">${w.type}${timeBadge}</span> <span class="badge">${level[0].toUpperCase()+level.slice(1)}</span></h4>
+
+      ${p.scheme.map((line,i)=>`
+        <div class="mov" style="margin:${i?'.35rem':'.6rem'} .9rem 0">
+          <span class="name">${line}</span>
+          <span class="rx">&nbsp;</span>
+        </div>
+      `).join('')}
+
+      <div style="padding:.35rem .9rem 0" class="meta">${p.note||''}</div>
+
+      <div style="padding:.4rem .9rem 0">
+        <details>
+          <summary class="meta">Scaling & coaching notes</summary>
+          <ul class="meta" style="margin:.4rem 0 0 1rem">
+            ${s.map(x=>`<li>${x}</li>`).join('')}
+          </ul>
+        </details>
+      </div>
+
+      <div class="timer" data-wod="${w.k}" style="margin:.6rem .9rem 1rem">
+        <input type="number" min="5" step="5" value="${w.durationSec || 600}" aria-label="Timer seconds">
+        <button data-act="start">Start</button>
+        <button data-act="stop">Stop</button>
+        <span class="left" aria-live="polite">${w.durationSec? Math.round(w.durationSec): 600}s</span>
+        ${w.type==='EMOM' ? '<span class="meta" style="margin-left:.6rem">EMOM beep each minute</span>' : ''}
+      </div>
+
+      <div style="padding:0 .9rem 1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+        <a class="btn" href="https://www.youtube.com/results?search_query=${encodeURIComponent(w.youtubeQuery)}" target="_blank" rel="noopener">Open on YouTube</a>
+        ${w.file ? `<a class="btn" href="${w.file}" target="_blank" rel="noopener">Download PDF</a>` : ''}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Minimal audio timer for WODs with EMOM beeps
+  let audio=null;
+  function ensureAudioNode(){ if(!audio){ audio=new (window.AudioContext||window.webkitAudioContext)(); } if(audio.state==='suspended') audio.resume(); }
+  function beep(freq=880, dur=.12){
+    if(!audio) return;
+    const now = audio.currentTime;
+    const o = audio.createOscillator(), g = audio.createGain();
+    o.type='sine'; o.frequency.value=freq; g.gain.value=0.0001;
+    o.connect(g); g.connect(audio.destination);
+    o.start(now); g.gain.exponentialRampToValueAtTime(0.25, now+.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now+dur); o.stop(now+dur+.02);
+  }
+
+  document.querySelectorAll('[data-wod]').forEach(box=>{
+    const id   = box.dataset.wod;
+    const wod  = WODS.find(x=>x.k===id);
+    const input= box.querySelector('input');
+    const left = box.querySelector('.left');
+    let t=null, end=0, nextEmom=0;
+
+    const fmt = s => s+'s';
+    function tick(){
+      const remain = Math.max(0, Math.ceil((end - Date.now())/1000));
+      left.textContent = fmt(remain);
+      if(wod?.type==='EMOM' && remain>0){
+        const nowSec = Math.ceil(Date.now()/1000);
+        if(nowSec >= nextEmom){ ensureAudioNode(); beep(880,.1); nextEmom = nowSec + 60; }
+      }
+      if(remain<=0){ clearInterval(t); t=null; ensureAudioNode(); beep(880,.15); setTimeout(()=>beep(660,.2), 250); }
+    }
+
+    box.querySelector('[data-act="start"]').onclick = ()=>{
+      ensureAudioNode();
+      const sec = Math.max(5, parseInt(input.value || (wod?.durationSec||600), 10));
+      input.value = sec; left.textContent = fmt(sec);
+      end = Date.now() + sec*1000;
+      clearInterval(t); t=setInterval(tick, 200);
+      if(wod?.type==='EMOM'){ nextEmom = Math.ceil(Date.now()/1000) + 60; }
+    };
+    box.querySelector('[data-act="stop"]').onclick = ()=>{
+      clearInterval(t); t=null;
+      left.textContent = fmt(parseInt(input.value || (wod?.durationSec||600), 10));
+    };
+  });
+}
+
 /* ===== Boot ===== */
-renderPlan(); renderCal(); renderLibrary();
+renderPlan(); renderCal(); renderWods(); renderLibrary();
 </script>
 </body>
 </html>

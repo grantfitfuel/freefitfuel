@@ -5,40 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yoga & Meditation – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="/style.css?v=27">
+  <link rel="stylesheet" href="/style.css?v=29">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
-    :root{ --calm1: rgba(255,255,255,.05); --calm2: rgba(255,255,255,.08) }
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
-    /* Calm hero */
+    /* Hero */
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     .hero-mini figure{margin:0;position:relative}
-    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.8) saturate(1.08)}
+    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.08)}
     .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6))}
     .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
     .hero-mini h1{margin:0 0 .35rem}
     .hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
 
-    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-    .mini-nav a{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);text-decoration:none;padding:.45rem .8rem;border-radius:999px;font-size:.92rem}
-    .mini-nav a:hover{color:var(--accent)}
-
+    /* Sections/cards */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
     .grid{display:grid;gap:12px}
     @media (min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-
     .card,.sess{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .card h3,.sess h3{margin:.15rem 0 .35rem}
     .meta{color:var(--inkdim);font-size:.92rem}
-    .tag{display:inline-block;background:var(--calm1);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-left:.3rem}
+    .tag{display:inline-block;background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-left:.3rem}
+
+    /* Mini-nav */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    .mini-nav a{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);text-decoration:none;padding:.45rem .8rem;border-radius:999px;font-size:.92rem}
+    .mini-nav a:hover{color:var(--accent)}
+
+    /* Steps & details */
     .steps{margin:.25rem 0 .5rem;padding-left:1.1rem}
     .steps li{margin:.25rem 0}
-
-    /* Collapsibles */
     .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.55rem 0}
     .details summary{cursor:pointer;font-weight:600}
     .details p,.details ul,.details ol{margin:.35rem 0}
@@ -73,16 +73,22 @@
     .mix-row{display:flex;gap:.6rem;align-items:center}
     .mix-row input[type="range"]{width:180px}
 
-    /* Calm header variant */
-    .site-header.calm{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border-bottom:1px solid var(--stroke)}
-    .site-header.calm .main-nav a[aria-current="page"]{background:var(--calm2)}
+    /* Guided audio players */
+    .guides{display:grid;gap:.9rem}
+    .guide{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+    .playbtn{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .7rem;border-radius:8px;cursor:pointer}
+    .time{opacity:.85;min-width:92px;text-align:right}
+    .progress{width:240px}
+    .vol{width:120px}
+    .sr{position:absolute;left:-9999px}
   </style>
 </head>
-<body class="calm-nav">
+<body>
 
 <!-- Shared header -->
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
+
 <!-- HERO -->
 <header class="hero-mini" role="banner" aria-label="Yoga & Meditation hero">
   <figure>
@@ -96,14 +102,14 @@
 </header>
 
 <main class="wrap">
-  <p class="lead">Pick a <strong>quick reset</strong> (5–10 min), an <strong>evening unwind</strong> (20–30 min), or a <strong>deep restore</strong> (45–60 min). Use the metronome, calm sounds or optional voice guidance.</p>
+  <p class="lead">Pick a <strong>quick reset</strong> (5–10 min), an <strong>evening unwind</strong> (20–30 min), or a <strong>deep restore</strong> (45–60 min). Use the metronome, calm sounds and your own guided audio.</p>
 
   <nav class="mini-nav" aria-label="Sections">
     <a href="#quick">Quick Resets</a>
     <a href="#evening">Evening Unwind</a>
     <a href="#restore">Deep Restore</a>
     <a href="#breath">Breathing & Demos</a>
-    <a href="#audio">Calm Sounds & Voice</a>
+    <a href="#audio">Calm Sounds & Guided Audio</a>
     <a href="#notes">Why this lowers stress</a>
   </nav>
 
@@ -155,7 +161,6 @@
           </ul>
         </div>
       </article>
-
       <article class="sess">
         <h3>Breath-Led Unwind <span class="tag">~20–22 min</span></h3>
         <ol class="steps">
@@ -184,9 +189,8 @@
           <li>Yoga Nidra (guided rest) <em>10–12 min</em>.</li>
         </ol>
       </article>
-
       <article class="sess">
-        <h3>Guided Body-Scan Script <span class="tag">voice option below</span></h3>
+        <h3>Guided Body-Scan Script <span class="tag">use your audio below</span></h3>
         <div class="details" open>
           <summary>Open script</summary>
           <p>“Let your body be heavy. Jaw unclenched, tongue resting. Breathe in through the nose … long easy exhale. Soften the brow and eyes.</p>
@@ -233,35 +237,52 @@
 
   <!-- AUDIO -->
   <section id="audio" class="section">
-    <h2>Calm Sounds & Optional Voice</h2>
+    <h2>Calm Sounds & Guided Audio</h2>
     <div class="grid">
       <article class="card">
         <h3>Calm Sounds Mixer</h3>
         <div class="mixer">
-          <div class="mix-row"><label><input type="checkbox" id="mx-rain"> Rain</label> <input type="range" id="vol-rain" min="0" max="1" step="0.01" value="0.5"></div>
-          <div class="mix-row"><label><input type="checkbox" id="mx-ocean"> Ocean</label> <input type="range" id="vol-ocean" min="0" max="1" step="0.01" value="0.4"></div>
-          <div class="mix-row"><label><input type="checkbox" id="mx-brown"> Brown Noise</label> <input type="range" id="vol-brown" min="0" max="1" step="0.01" value="0.3"></div>
+          <div class="mix-row"><label><input type="checkbox" id="mx-rain"> Rain</label> <input class="vol" type="range" id="vol-rain" min="0" max="1" step="0.01" value="0.5"></div>
+          <div class="mix-row"><label><input type="checkbox" id="mx-ocean"> Ocean</label> <input class="vol" type="range" id="vol-ocean" min="0" max="1" step="0.01" value="0.4"></div>
+          <div class="mix-row"><label><input type="checkbox" id="mx-brown"> Brown Noise</label> <input class="vol" type="range" id="vol-brown" min="0" max="1" step="0.01" value="0.3"></div>
           <div class="mix-row"><button id="mx-start">Start Audio</button><button id="mx-stop">Stop Audio</button></div>
-          <p class="meta">No downloads; sounds are generated locally. Keep volume low for the most calming effect.</p>
+          <p class="meta">Sounds are generated locally—no downloads. Keep volume low for the most calming effect.</p>
         </div>
       </article>
 
       <article class="card">
-        <h3>Voice Guidance (optional)</h3>
-        <div class="breath-controls">
-          <label>Script
-            <select id="vg-script">
-              <option value="scan">Body-Scan (~5 min)</option>
-              <option value="coh">Coherent Breathing (~3 min)</option>
-            </select>
-          </label>
-          <label>Voice <select id="vg-voice"></select></label>
-          <label>Rate <input id="vg-rate" type="range" min="0.7" max="1.2" step="0.05" value="0.9"></label>
-          <label>Pitch <input id="vg-pitch" type="range" min="0.8" max="1.2" step="0.05" value="1.0"></label>
-          <button id="vg-start">Start Voice</button>
-          <button id="vg-stop">Stop</button>
+        <h3>Guided Audio (your recordings)</h3>
+        <div class="guides">
+          <div class="guide" data-key="scan">
+            <strong>Body-Scan (~5 min)</strong>
+            <button class="playbtn" aria-label="Play body-scan">Play</button>
+            <input class="progress" type="range" min="0" max="100" step="1" value="0" aria-label="Seek body-scan">
+            <span class="time">0:00 / 0:00</span>
+            <label class="sr" for="vol-scan">Volume</label>
+            <input id="vol-scan" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Body-scan volume">
+            <audio preload="metadata">
+              <source src="/audio/body-scan.mp3" type="audio/mpeg">
+              <source src="/audio/body-scan.wav" type="audio/wav">
+              Your browser doesn’t support audio playback.
+            </audio>
+          </div>
+
+          <div class="guide" data-key="coh">
+            <strong>Coherent Breathing (~3 min)</strong>
+            <button class="playbtn" aria-label="Play coherent breathing">Play</button>
+            <input class="progress" type="range" min="0" max="100" step="1" value="0" aria-label="Seek coherent breathing">
+            <span class="time">0:00 / 0:00</span>
+            <label class="sr" for="vol-coh">Volume</label>
+            <input id="vol-coh" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Coherent breathing volume">
+            <audio preload="metadata">
+              <source src="/audio/coherent-breathing.mp3" type="audio/mpeg">
+              <source src="/audio/coherent-breathing.wav" type="audio/wav">
+              Your browser doesn’t support audio playback.
+            </audio>
+          </div>
+
+          <p class="meta">Drop MP3/WAV files in <code>/audio/</code> using these filenames, or update the <code>src</code> paths.</p>
         </div>
-        <p class="meta">Uses your browser’s speech voice. Headphones recommended.</p>
       </article>
     </div>
   </section>
@@ -311,13 +332,13 @@
   </div>
 </footer>
 
-<!-- Scripts: timers, videos, metronome, calm sounds, voice -->
+<!-- Scripts: timers, videos, metronome, calm sounds, guided audio -->
 <script>
-/* ===== Utilities ===== */
+/* ===== Basic audio unlock ===== */
 let audioCtx, unlocked=false;
 function ensureAudio(){ if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } if(audioCtx.state==='suspended'){ audioCtx.resume(); } unlocked=true; }
 
-/* ===== Timers (simple countdown with chime) ===== */
+/* ===== Timers (countdown + chime) ===== */
 function beepAt(t,freq,dur){
   const o=audioCtx.createOscillator(), g=audioCtx.createGain();
   o.type='sine'; o.frequency.value=freq; g.gain.value=0.0001; o.connect(g); g.connect(audioCtx.destination);
@@ -334,9 +355,8 @@ function hookTimers(){
   });
 }
 
-/* ===== Video tiles (nocookie or search) ===== */
+/* ===== Video tiles ===== */
 const DEMOS = [
-  // Provide a yt id if you have a preferred clip; otherwise it will open a search.
   {title:'Child’s Pose (Balasana)', yt:'', query:'Child’s Pose yoga form'},
   {title:'Legs-Up-the-Wall (Viparita Karani)', yt:'', query:'Legs up the wall yoga'},
   {title:'Supported Bridge', yt:'', query:'Supported bridge pose yoga'},
@@ -346,9 +366,8 @@ function renderVideos(){
   const wrap=document.getElementById('vids'); if(!wrap) return; wrap.innerHTML='';
   DEMOS.forEach(d=>{
     const card=document.createElement('div'); card.className='tile';
-    const img=document.createElement('img'); img.className='thumb';
-    img.alt=d.title+' thumbnail';
-    img.src='/img/placeholder-yoga.jpg'; // provide a calm placeholder; swap for custom thumbs if you like
+    const img=document.createElement('img'); img.className='thumb'; img.alt=d.title+' thumbnail';
+    img.src='/img/placeholder-yoga.jpg';
     const overlay=document.createElement('div'); overlay.className='overlay';
     const label=document.createElement('div'); label.className='label'; label.textContent=d.title;
     const btn=document.createElement('button'); btn.className='play'; btn.setAttribute('aria-label','Play '+d.title);
@@ -383,7 +402,6 @@ function startBreathMetronome(){
   if(pattern==='coh'){ schedule.push(['inhale',5],['exhale',5]); }
   if(pattern==='down'){ schedule.push(['inhale',4],['exhale',6]); }
   if(pattern==='box'){ schedule.push(['inhale',4],['hold',4],['exhale',4],['hold',4]); }
-
   const endTime=Date.now()+mins*60000;
   function phaseTone(type){
     const now=audioCtx.currentTime;
@@ -396,7 +414,7 @@ function startBreathMetronome(){
     if(!orb) return;
     if(type==='inhale'){ orb.style.transform='scale(1.35)'; orb.style.opacity='1'; }
     else if(type==='exhale'){ orb.style.transform='scale(0.85)'; orb.style.opacity='.8'; }
-    else { /* hold */ orb.style.transform='scale(1.0)'; orb.style.opacity='.9'; }
+    else { orb.style.transform='scale(1.0)'; orb.style.opacity='.9'; }
   }
   let i=0;
   function loop(){
@@ -412,7 +430,7 @@ function startBreathMetronome(){
 function stopBreathMetronome(){ if(bmTimer){ clearTimeout(bmTimer); bmTimer=null; } if(bmStopper){ clearTimeout(bmStopper); bmStopper=null; } }
 
 /* ===== Calm Sounds (Rain / Ocean / Brown) ===== */
-const mixer = { rain:null, ocean:null, brown:null, master:null, nodes:{} };
+const mixer = { rain:null, ocean:null, brown:null, master:null };
 function buildNoiseNodes(){
   if(!unlocked) ensureAudio();
   const ctx=audioCtx;
@@ -428,7 +446,7 @@ function buildNoiseNodes(){
     const src=ctx.createBufferSource(); src.buffer=whiteBuffer(); src.loop=true; return src;
   }
 
-  // Rain: white -> bandpass + gentle HPF + reverb-ish via delay
+  // Rain: white -> bandpass -> HPF + light echo
   if(!mixer.rain){
     const src=makePlayer();
     const bpf=ctx.createBiquadFilter(); bpf.type='bandpass'; bpf.frequency.value=1800; bpf.Q.value=0.6;
@@ -441,19 +459,19 @@ function buildNoiseNodes(){
     mixer.rain={src,gain};
   }
 
-  // Ocean: white -> lowpass with slow LFO
+  // Ocean: white -> lowpass, LFO sweeps cutoff
   if(!mixer.ocean){
     const src=makePlayer();
     const lpf=ctx.createBiquadFilter(); lpf.type='lowpass'; lpf.frequency.value=400;
     const lfo=ctx.createOscillator(); lfo.frequency.value=0.07;
-    const lfoGain=ctx.createGain(); lfoGain.gain.value=220; // sweep amount
+    const lfoGain=ctx.createGain(); lfoGain.gain.value=220;
     const gain=ctx.createGain(); gain.gain.value=0;
     src.connect(lpf); lpf.connect(gain); gain.connect(mixer.master);
     lfo.connect(lfoGain); lfoGain.connect(lpf.frequency);
     mixer.ocean={src,gain,lfo};
   }
 
-  // Brown noise: integrate white
+  // Brown noise: integrated white via ScriptProcessor
   if(!mixer.brown){
     const node = ctx.createScriptProcessor(4096,1,1);
     let lastOut=0;
@@ -465,7 +483,8 @@ function buildNoiseNodes(){
         out[i]=lastOut*1.6;
       }
     };
-    const gain=ctx.createGain(); gain.gain.value=0; node.connect(gain); gain.connect(mixer.master);
+    const gain=ctx.createGain(); gain.gain.value=0;
+    node.connect(gain); gain.connect(mixer.master);
     mixer.brown={node,gain};
   }
 }
@@ -473,33 +492,30 @@ function startMixer(){
   if(!unlocked) ensureAudio();
   buildNoiseNodes();
 
-  // Start sources if not yet started
+  // Start oscillators/sources if not already started
   ['rain','ocean'].forEach(k=>{
-    const s=mixer[k];
-    try{ s.src.start(); }catch{} // ignore if already started
-    if(k==='ocean'){ try{ s.lfo.start(); }catch{} }
+    try{ mixer[k].src.start(); }catch{}
+    if(k==='ocean'){ try{ mixer.ocean.lfo.start(); }catch{} }
   });
 
-  // Apply initial volumes from sliders
+  // Volumes
   mixer.rain.gain.gain.value = parseFloat(document.getElementById('vol-rain').value)||0.5;
   mixer.ocean.gain.gain.value = parseFloat(document.getElementById('vol-ocean').value)||0.4;
   mixer.brown.gain.gain.value = parseFloat(document.getElementById('vol-brown').value)||0.3;
 
-  // Connect toggles
-  document.getElementById('mx-rain').checked && mixer.rain.gain.connect(mixer.master) || mixer.rain.gain.disconnect();
-  document.getElementById('mx-ocean').checked && mixer.ocean.gain.connect(mixer.master) || mixer.ocean.gain.disconnect();
-  document.getElementById('mx-brown').checked && mixer.brown.gain.connect(mixer.master) || mixer.brown.gain.disconnect();
+  // Connections by toggles
+  document.getElementById('mx-rain').checked ? mixer.rain.gain.connect(mixer.master) : mixer.rain.gain.disconnect();
+  document.getElementById('mx-ocean').checked ? mixer.ocean.gain.connect(mixer.master) : mixer.ocean.gain.disconnect();
+  document.getElementById('mx-brown').checked ? mixer.brown.gain.connect(mixer.master) : mixer.brown.gain.disconnect();
 }
 function stopMixer(){
   if(!audioCtx) return;
   try{ mixer.master.disconnect(); }catch{}
-  // leave context alive; user can restart
 }
 
-/* Slider & toggle wiring */
+/* UI wiring for mixer */
 function hookMixerUI(){
-  const ids=[['mx-rain','vol-rain','rain'],['mx-ocean','vol-ocean','ocean'],['mx-brown','vol-brown','brown']];
-  ids.forEach(([chk,vol,key])=>{
+  [['mx-rain','vol-rain','rain'],['mx-ocean','vol-ocean','ocean'],['mx-brown','vol-brown','brown']].forEach(([chk,vol,key])=>{
     document.getElementById(chk).addEventListener('change',()=>{
       if(!unlocked) ensureAudio(); buildNoiseNodes();
       if(document.getElementById(chk).checked){ mixer[key].gain.connect(mixer.master); }
@@ -510,75 +526,76 @@ function hookMixerUI(){
       mixer[key].gain.gain.value=parseFloat(document.getElementById(vol).value)||0.3;
     });
   });
-  document.getElementById('mx-start').addEventListener('click',startMixer);
-  document.getElementById('mx-stop').addEventListener('click',stopMixer);
+  document.getElementById('mx-start').addEventListener('click', startMixer);
+  document.getElementById('mx-stop').addEventListener('click', stopMixer);
 }
 
-/* ===== Voice Guidance (Speech Synthesis) ===== */
-let voices=[];
-function loadVoices(){
-  voices = window.speechSynthesis?.getVoices()||[];
-  const sel=document.getElementById('vg-voice'); if(!sel) return;
-  sel.innerHTML='';
-  voices.forEach((v,i)=>{ const o=document.createElement('option'); o.value=String(i); o.textContent=v.name+' ('+v.lang+')'; sel.appendChild(o); });
-}
-if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged = loadVoices; }
-function speakScript(kind){
-  if(!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  const rate=parseFloat(document.getElementById('vg-rate').value)||0.9;
-  const pitch=parseFloat(document.getElementById('vg-pitch').value)||1.0;
-  const voiceIndex=parseInt(document.getElementById('vg-voice').value||'0',10);
-  const voice=voices[voiceIndex]||null;
+/* ===== Guided Audio players (Play/Pause + progress + volume) ===== */
+function fmtTime(t){ if(!isFinite(t)) return '0:00'; const m=Math.floor(t/60), s=Math.floor(t%60).toString().padStart(2,'0'); return `${m}:${s}`; }
+function hookGuideAudio(){
+  const guides = document.querySelectorAll('.guide');
+  const allAudios = [];
+  guides.forEach(g=>{
+    const audio = g.querySelector('audio');
+    const btn   = g.querySelector('.playbtn');
+    const bar   = g.querySelector('.progress');
+    const vol   = g.querySelector('.vol');
+    const time  = g.querySelector('.time');
 
-  const lines = (kind==='coh')
-    ? [
-        'Find a comfortable seat or lie down. Close your eyes if safe.',
-        'We will breathe in for five, and out for five. Let it be easy.',
-        'In, two, three, four, five. Out, two, three, four, five.',
-        'In, two, three, four, five. Out, two, three, four, five.',
-        'Keep going gently. Shoulders soft. Jaw relaxed.',
-        'If your mind wanders, return to the next inhale.',
-        'Last few cycles. Soften the exhale. Let it be quiet.',
-        'Release the count and rest naturally.'
-      ]
-    : [
-        'Lie down and allow the body to be heavy.',
-        'Soften the forehead and the space around the eyes.',
-        'Bring attention to the right hand, from thumb to little finger, then wrist and forearm.',
-        'The right elbow, upper arm, and shoulder. Let them settle.',
-        'Left hand, fingers, wrist, forearm, elbow, upper arm, shoulder.',
-        'Across the collarbones. Chest softens on the exhale.',
-        'Belly soft. Hips heavy. Right leg down to the toes.',
-        'Left leg down to the toes.',
-        'Sense the whole body at once. Breathe quietly and rest.'
-      ];
-  let i=0;
-  function sayNext(){
-    if(i>=lines.length) return;
-    const u=new SpeechSynthesisUtterance(lines[i]); u.rate=rate; u.pitch=patchPitch(pitch); if(voice) u.voice=voice;
-    u.onend=()=>{ setTimeout(()=>{ i++; sayNext(); }, 1200); };
-    window.speechSynthesis.speak(u);
-  }
-  function patchPitch(p){ return Math.max(0.5, Math.min(2, p)); }
-  sayNext();
+    if(!audio || !btn || !bar || !vol || !time) return;
+    allAudios.push(audio);
+
+    // Init
+    audio.volume = parseFloat(vol.value)||1;
+
+    // Update duration when known
+    audio.addEventListener('loadedmetadata', ()=>{
+      bar.max = Math.floor(audio.duration||100);
+      time.textContent = `0:00 / ${fmtTime(audio.duration)}`;
+    });
+
+    // Update progress + time during playback
+    audio.addEventListener('timeupdate', ()=>{
+      bar.value = Math.floor(audio.currentTime||0);
+      time.textContent = `${fmtTime(audio.currentTime)} / ${fmtTime(audio.duration)}`;
+    });
+
+    // Ended state
+    audio.addEventListener('ended', ()=>{ btn.textContent='Play'; });
+
+    // Seek
+    bar.addEventListener('input', ()=>{ audio.currentTime = parseFloat(bar.value)||0; });
+
+    // Volume
+    vol.addEventListener('input', ()=>{ audio.volume = parseFloat(vol.value)||0; });
+
+    // Play/Pause toggle (and pause others)
+    btn.addEventListener('click', ()=>{
+      // pause others
+      allAudios.forEach(a=>{ if(a!==audio){ try{ a.pause(); }catch{} } });
+      // ensure AudioContext only for tones/mixer; HTML audio doesn't need it, but keeps UX consistent
+      if(!unlocked) ensureAudio();
+      if(audio.paused){
+        audio.play().then(()=>{ btn.textContent='Pause'; }).catch(()=>{/* autoplay blocked until user gesture */});
+      }else{
+        audio.pause(); btn.textContent='Play';
+      }
+    });
+  });
 }
-function stopVoice(){ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); } }
 
 /* ===== Boot ===== */
 document.addEventListener('DOMContentLoaded', ()=>{
   hookTimers();
   renderVideos();
+
   hookMixerUI();
-  loadVoices();
+
+  hookGuideAudio();
 
   // Breath metronome buttons
   document.getElementById('bm-start').addEventListener('click', startBreathMetronome);
   document.getElementById('bm-stop').addEventListener('click', stopBreathMetronome);
-
-  // Voice buttons
-  document.getElementById('vg-start').addEventListener('click', ()=> speakScript(document.getElementById('vg-script').value));
-  document.getElementById('vg-stop').addEventListener('click', stopVoice);
 });
 </script>
 </body>

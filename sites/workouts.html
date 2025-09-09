@@ -13,7 +13,7 @@
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
-    /* HERO */
+    /* HERO (unchanged layout, new copy allowed) */
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     .hero-mini figure{margin:0;position:relative}
     .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
@@ -83,8 +83,10 @@
     .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
     .timer .left{min-width:60px;text-align:right;opacity:.85}
 
-    /* Micro note below Cross-training header */
-    .micro-note{color:var(--inkdim);font-size:.9rem;margin:.3rem 0 -.2rem}
+    /* Details (standards) */
+    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem;margin:.5rem 0}
+    .details summary{cursor:pointer;font-weight:600}
+    .details p,.details ul{margin:.35rem 0}
   </style>
 </head>
 <body>
@@ -173,11 +175,11 @@
     <p class="meta">Start comfortably; progress when all reps are clean with full range.</p>
   </div>
 
-  <!-- Cross-training WODs (Cindy, Chelsea, Annie) -->
-  <div class="section" id="xfit">
-    <h2>Cross-training WODs 🏋️‍♀️</h2>
-    <p class="micro-note">Workout nicknames shown below are used nominatively for identification (e.g., “Cindy”). CrossFit® is a registered trademark of CrossFit, LLC. FreeFitFuel is not affiliated with or endorsed by CrossFit, LLC.</p>
-    <div class="plan" id="xfit-grid"></div>
+  <!-- Cross-Training Benchmarks -->
+  <div class="section" id="xfit-section">
+    <h2>Cross-Training Benchmarks 🏋️‍♀️ <span class="meta" style="font-weight:normal">(a.k.a. “Cindy”, “Chelsea”, “Annie”)</span></h2>
+    <div class="plan" id="xfit"></div>
+    <p class="meta">Choose a level, set the timer on each card, and log total rounds, splits, or time to complete.</p>
   </div>
 
   <!-- Library -->
@@ -198,9 +200,6 @@
     <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
     <p>© 2025 FreeFitFuel · All rights reserved.</p>
     <p class="credit">Created by Grant Cameron Anthony</p>
-    <p class="meta" style="margin-top:.4rem;color:#9aa3ad">
-      CrossFit® is a registered trademark of CrossFit, LLC. Workout nicknames are used for identification only; FreeFitFuel is not affiliated with or endorsed by CrossFit, LLC.
-    </p>
   </div>
 </footer>
 
@@ -239,7 +238,7 @@ const EX = [
   {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band',  yt:'f4ZkQem6FGo', muscles:['muscles-back-lats-lower','muscles-back-lats-upper','muscles-front-biceps-long']},
   {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'rack',  yt:'h2f_v6v3OQI', muscles:['muscles-back-lats-lower','muscles-front-biceps-long','muscles-back-traps-mid']},
   {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack',  yt:'z9x2rYc4qYI', muscles:['muscles-back-lats-upper','muscles-front-biceps-long','muscles-back-traps-mid'], badges:['Bar']},
-  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',    yt:'wzj8GqGxF4', muscles:['muscles-back-lats-mid','muscles-back-rhomboids','muscles-back-deltoids-rear']},
+  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',    yt:'wzj8gBqGxF4', muscles:['muscles-back-lats-mid','muscles-back-rhomboids','muscles-back-deltoids-rear']},
   {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db',    yt:'R5rj8m9r-1g', muscles:['muscles-back-lats-mid','muscles-front-obliques-external','muscles-front-abs-upper']},
   {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db',    yt:'l0gDqsSUtWo', muscles:['muscles-front-biceps-long','muscles-front-forearms-flexors','muscles-back-forearms-extensors']},
 
@@ -305,43 +304,43 @@ const CAL = [
   ]}
 ];
 
-/* ===== Cross-training WODs data (generic names + nominative note) ===== */
+/* ===== Cross-Training Benchmarks (Cindy / Chelsea / Annie styles) ===== */
 const XWODS = [
   {
     code:'amrap-20-5-10-15',
-    title:'AMRAP 20: 5 Pull-ups · 10 Push-ups · 15 Air Squats',
-    aka:"commonly known as 'Cindy' in CrossFit®",
-    presets:{seconds:1200}, // 20 min
+    title:'AMRAP 20: Pull • Push • Squat',
+    aka:'(a.k.a. “Cindy”)',
     rx:{
-      beginner:'AMRAP 20: 5 band/door rows · 10 incline push-ups · 15 air squats',
-      intermediate:'AMRAP 20: 5 pull-ups (band assist ok) · 10 push-ups · 15 air squats',
-      advanced:'AMRAP 20: 5 strict pull-ups · 10 push-ups · 15 air squats'
+      beginner:'20:00 AMRAP — 3 Rows • 6 Incline Push-ups • 10 Air Squats',
+      intermediate:'20:00 AMRAP — 5 Pull-ups (or rows) • 10 Push-ups • 15 Air Squats',
+      advanced:'20:00 AMRAP — 5 Strict Pull-ups • 10 Push-ups • 15 Air Squats'
     },
-    notes:'Keep rounds smooth. Aim for even pacing. Scale pull-ups to rows if needed.'
+    notes:'Score = total completed rounds + extra reps. Pace so first 5 min ≈ last 5.',
+    presets:{seconds:1200}
   },
   {
     code:'emom-30-5-10-15',
-    title:'EMOM 30: 5 Pull-ups · 10 Push-ups · 15 Air Squats',
-    aka:"commonly known as 'Chelsea' in CrossFit®",
-    presets:{seconds:1800}, // 30 min
+    title:'EMOM 30: Triplet Every Minute',
+    aka:'(a.k.a. “Chelsea”)',
     rx:{
-      beginner:'EMOM 30: 3 rows · 6 incline push-ups · 9 air squats',
-      intermediate:'EMOM 30: 5 pull-ups (band) · 10 push-ups · 15 air squats',
-      advanced:'EMOM 30: 5 strict pull-ups · 10 push-ups · 15 air squats — hold each minute'
+      beginner:'30:00 EMOM — 3 Rows • 6 Incline Push-ups • 10 Air Squats (scale as needed)',
+      intermediate:'30:00 EMOM — 5 Pull-ups (or rows) • 10 Push-ups • 15 Air Squats',
+      advanced:'30:00 EMOM — 5 Pull-ups • 10 Push-ups • 15 Air Squats (hold for max unbroken minutes)'
     },
-    notes:'Start conservative. If you miss a minute, switch to AMRAP remaining time.'
+    notes:'If you miss a minute, turn the remainder into AMRAP for the rest of the clock.',
+    presets:{seconds:1800}
   },
   {
     code:'for-time-50-40-30-20-10-du-situps',
-    title:'For Time: 50-40-30-20-10 Double-unders & Sit-ups',
-    aka:"commonly known as 'Annie' in CrossFit®",
-    presets:{seconds:900}, // suggest a 15 min cap (editable)
+    title:'For Time: Rope + Sit-up Ladder',
+    aka:'(a.k.a. “Annie”)',
     rx:{
-      beginner:'For Time: 50-40-30-20-10 single-unders & sit-ups',
-      intermediate:'For Time: 50-40-30-20-10 DU (or 2:1 singles) & sit-ups',
-      advanced:'For Time: 50-40-30-20-10 double-unders & sit-ups — push pace, tidy sets'
+      beginner:'50-40-30-20-10 — Single-unders & Sit-ups (1:1) or 40-30-20-10-10 to manage volume',
+      intermediate:'50-40-30-20-10 — Single-unders (2:1) or DU attempts & Sit-ups',
+      advanced:'50-40-30-20-10 — Double-unders & Sit-ups'
     },
-    notes:'Break early to keep rope fast. Keep sit-ups unbroken where possible.'
+    notes:'Break jump-rope sets early to stay snappy; keep sit-ups smooth. Time cap: 12–15 min.',
+    presets:{seconds:900}
   }
 ];
 
@@ -349,7 +348,7 @@ const XWODS = [
 const planEl = document.getElementById('plan');
 const calEl  = document.getElementById('cal');
 const libEl  = document.getElementById('lib');
-const xfitEl = document.getElementById('xfit-grid');
+const xfitEl = document.getElementById('xfit');
 
 let level = 'beginner';
 let goal  = 'maintain';
@@ -399,10 +398,12 @@ function timerHTML(id, preset=60){ return `
     <button data-act="stop">Stop</button>
     <span class="left" aria-live="polite">${preset}s</span>
   </div>`; }
+
 function exByKey(k){ return EX.find(x=>x.k===k); }
 
 /* Goal scaling: tweak volumes a bit */
 function applyGoal(rxStr){
+  // Very light-touch visual nudge (keeps your RX readable)
   if(goal==='cut')    return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+0))+'×') + ' · 45–60s rest';
   if(goal==='build')  return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+1))+'×') + ' · 60–90s rest';
   if(goal==='transform') return rxStr + ' + finisher';
@@ -421,8 +422,7 @@ function renderPlan(){
     const list = document.createElement('div');
     RX[group][level].forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      if(e.eq==='rings' && !f.rings) return;
+      if(group!=='full'){ /* equipment gate per move */ }
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(it.rx)}</span>`;
       list.appendChild(row);
@@ -435,13 +435,11 @@ function renderPlan(){
 }
 
 function renderCal(){
-  const f = getFilters(); calEl.innerHTML='';
+  calEl.innerHTML='';
   CAL.forEach(col=>{
     const b = document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
     col.items.forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      if(e.eq==='rings' && !f.rings) return;
       const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(rx)}</span>`;
@@ -453,30 +451,9 @@ function renderCal(){
   hookTimers();
 }
 
-function renderXFit(){
-  if(!xfitEl) return;
-  xfitEl.innerHTML = '';
-  XWODS.forEach(w=>{
-    const blk = document.createElement('div'); blk.className='block';
-    const rx = w.rx[level] || '';
-    blk.innerHTML = `
-      <h3>${w.title}</h3>
-      <p class="meta" style="margin:.2rem 0 .5rem">${w.aka}</p>
-      <div class="mov"><span class="name">Prescription</span><span class="rx">${applyGoal(rx)}</span></div>
-      <p class="meta">${w.notes}</p>
-    `;
-    blk.insertAdjacentHTML('beforeend', timerHTML('xfit-'+w.code, w.presets.seconds));
-    xfitEl.appendChild(blk);
-  });
-  hookTimers();
-}
-
 function renderLibrary(){
-  const f = getFilters(); libEl.innerHTML='';
+  libEl.innerHTML='';
   EX.forEach(e=>{
-    if(!f[e.eq]) return;
-    if(e.eq==='rings' && !f.rings) return;
-
     const card = document.createElement('article'); card.className='card';
     const thumb = `https://img.youtube.com/vi/${e.yt}/hqdefault.jpg`;
     card.innerHTML = `
@@ -513,6 +490,70 @@ function renderLibrary(){
       btn.style.display='none';
     });
   });
+}
+
+/* ===== Cross-Training render (with how-to + standards) ===== */
+function renderXFit(){
+  if(!xfitEl) return;
+  xfitEl.innerHTML = '';
+  XWODS.forEach(w=>{
+    const blk = document.createElement('div'); blk.className='block';
+    const rx = w.rx[level] || '';
+
+    const howTo = {
+      'amrap-20-5-10-15': `
+        <p><strong>How it works:</strong> AMRAP 20 = “as many rounds & reps as possible in 20 minutes”. 
+        Flow through pull/row, push-ups, and squats continuously. 
+        Keep sets submaximal so your first 5 minutes ≈ your last 5.</p>`,
+      'emom-30-5-10-15': `
+        <p><strong>How it works:</strong> EMOM 30 = do the listed reps <em>every minute</em> for 30 minutes. 
+        Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch to AMRAP.</p>`,
+      'for-time-50-40-30-20-10-du-situps': `
+        <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible. 
+        Break rope sets early to stay crisp; smooth, consistent sit-ups beat sprint-and-die pacing.</p>`
+    }[w.code] || '';
+
+    const standards = `
+      <details class="details"><summary>Movement standards & scaling</summary>
+        <ul>
+          <li><strong>Pull-up / Row (scale):</strong> Full hang to chin-over-bar. 
+              Scale to band-assisted, door/table rows, or rings at a challenging angle. 
+              <em>Common faults:</em> short range, loose core, early kipping.</li>
+          <li><strong>Push-up:</strong> Hands under shoulders, body in one line, chest to target, full lockout.
+              Scale to incline, then knees. 
+              <em>Faults:</em> hips sag, elbows flare, half reps.</li>
+          <li><strong>Air squat:</strong> Hips below knee crease, heels down, full stand. 
+              Scale to box/target or pain-free depth. 
+              <em>Faults:</em> knees cave, heels lift, tipping forward.</li>
+          <li><strong>Double-under / Single-under:</strong> Tall posture, small fast jumps, wrists turn rope.
+              Scale to single-unders (1:1 or 2:1), penguin taps, or 30–50 jumping jacks. 
+              <em>Faults:</em> big arm circles, piking, rope too long.</li>
+          <li><strong>Sit-up:</strong> Shoulders pass hips; choose a consistent ROM/target. 
+              Scale to anchored feet, butterfly sit-ups, or crunches. 
+              <em>Faults:</em> yanking neck, bouncing hard.</li>
+        </ul>
+      </details>
+    `;
+
+    blk.innerHTML = `
+      <h3>${w.title}</h3>
+      <p class="meta" style="margin:.2rem 0 .5rem">${w.aka}</p>
+
+      <div class="mov">
+        <span class="name">Prescription</span>
+        <span class="rx">${applyGoal(rx)}</span>
+      </div>
+
+      ${howTo}
+      <p class="meta">${w.notes}</p>
+
+      ${standards}
+    `;
+
+    blk.insertAdjacentHTML('beforeend', timerHTML('xfit-'+w.code, w.presets.seconds));
+    xfitEl.appendChild(blk);
+  });
+  hookTimers();
 }
 
 /* ===== Audible timers (3-beep finish) ===== */
@@ -554,7 +595,8 @@ function hookTimers(){
       clearInterval(t); t=setInterval(tick, 200);
     };
     box.querySelector('[data-act="stop"]').onclick = ()=>{
-      clearInterval(t); t=null; left.textContent = fmt(parseInt(input.value||'60',10));
+      clearInterval(t); t=null;
+      left.textContent = fmt(Math.max(5, parseInt(input.value||'60',10)));
     };
   });
 }

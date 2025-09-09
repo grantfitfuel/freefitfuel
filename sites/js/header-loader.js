@@ -1,4 +1,4 @@
-<script>
+
 (async function loadHeader(){
   const mount = document.getElementById('site-header');
   if(!mount) return;
@@ -36,4 +36,3 @@
     mount.querySelector('.site-header')?.classList.add('calm');
   }
 })();
-</script>

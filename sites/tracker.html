@@ -38,24 +38,9 @@
 <body>
 
 <!-- HEADER (same as home) -->
-<header class="site-header">
-  <div class="container">
-    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
-    <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav id="primary-nav" class="main-nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="ideas.html">Ideas</a>
-      <a href="guides.html">Guides</a>
-      <a href="workouts.html">Workouts</a>
-      <a href="endurance.html">Endurance</a>
-      <a href="nutrition.html">Nutrition</a>
-      <a href="wellbeing.html">Wellbeing</a>
-      <a href="contact.html">Contact</a>
-      <a href="tracker.html" aria-current="page">Tracker</a>
-    </nav>
-  </div>
-</header>
-
+<!-- Shared header mount -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
 <main class="wrap">
   <h1><span class="accent">Endurance Tracker</span></h1>
   <p class="lead">GPS distance, live pace, auto-splits, voice cues — now with saved routes and <strong>PBs</strong> on your device.</p>

@@ -13,7 +13,7 @@
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
-    /* HERO (unchanged layout, new copy allowed) */
+    /* HERO */
     .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     .hero-mini figure{margin:0;position:relative}
     .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
@@ -87,11 +87,14 @@
     .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem;margin:.5rem 0}
     .details summary{cursor:pointer;font-weight:600}
     .details p,.details ul{margin:.35rem 0}
+
+    /* Cross-Training disclaimer text */
+    .xfit-disclaimer{color:var(--inkdim);font-size:.92rem;margin-top:.4rem}
   </style>
 </head>
 <body>
 
-<!-- HEADER (same as home) -->
+<!-- HEADER -->
 <header class="site-header">
   <div class="container">
     <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
@@ -151,7 +154,7 @@
     <strong>Transform:</strong> mixed strength/conditioning — challenging but scalable.
   </p>
 
-  <!-- Equipment (same line; stacks on mobile) -->
+  <!-- Equipment -->
   <div class="toolbar equip" aria-label="Equipment filters">
     <span class="label">Equipment:</span>
     <span class="pill"><input type="checkbox" id="f-db" checked> <label for="f-db">Dumbbells</label></span>
@@ -178,6 +181,7 @@
   <!-- Cross-Training Benchmarks -->
   <div class="section" id="xfit-section">
     <h2>Cross-Training Benchmarks 🏋️‍♀️ <span class="meta" style="font-weight:normal">(a.k.a. “Cindy”, “Chelsea”, “Annie”)</span></h2>
+    <p class="xfit-disclaimer"><strong>Note:</strong> CrossFit® is a registered trademark of CrossFit, LLC. These benchmark formats are widely known in functional training, and this site is not affiliated with, endorsed by, or sponsored by CrossFit, LLC.</p>
     <div class="plan" id="xfit"></div>
     <p class="meta">Choose a level, set the timer on each card, and log total rounds, splits, or time to complete.</p>
   </div>
@@ -188,10 +192,11 @@
     <div class="grid" id="lib"></div>
   </div>
 
-  <!-- Disclaimer (standard) -->
+  <!-- Disclaimer -->
   <section class="section">
     <h2>Important Note</h2>
     <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+    <p class="meta">CrossFit® is a registered trademark of CrossFit, LLC. FreeFitFuel is not affiliated with, endorsed by, or sponsored by CrossFit, LLC.</p>
   </section>
 </main>
 
@@ -219,9 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ===== Data ===== */
-/* Anatomy PNGs live in /img/anatomy/ using your granular names
-   e.g. muscles-front-chest-pecs.png, muscles-back-triceps-long.png, etc.
-*/
+/* Anatomy PNGs live in /img/anatomy/ using granular names like:
+   muscles-front-chest-pecs.png, muscles-back-triceps-long.png, etc. */
 
 const EX = [
   /* ---------- PUSH ---------- */
@@ -260,7 +264,7 @@ const EX = [
   {k:'pistol',  n:'Pistol Squat (progression)',cat:'cal',eq:'bw',    yt:'YlH3z9JvNlg', muscles:['muscles-front-quads-rectus','muscles-back-glutes-maximus','muscles-back-calves-soleus']}
 ];
 
-/* Prescriptions by day + difficulty remain the same — with goal scaling */
+/* Weekly prescriptions (scaled by level; goal adds a small modifier) */
 const RX = {
   push:{
     beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
@@ -304,7 +308,7 @@ const CAL = [
   ]}
 ];
 
-/* ===== Cross-Training Benchmarks (Cindy / Chelsea / Annie styles) ===== */
+/* ===== Cross-Training Benchmarks (Cindy/Chelsea/Annie styles) ===== */
 const XWODS = [
   {
     code:'amrap-20-5-10-15',
@@ -353,24 +357,27 @@ const xfitEl = document.getElementById('xfit');
 let level = 'beginner';
 let goal  = 'maintain';
 
+/* Toggles — difficulty */
 document.querySelectorAll('.seg [data-level]').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     level = b.dataset.level;
-    renderPlan(); renderCal(); renderXFit();
+    renderPlan(); renderCal(); renderXFit(); renderLibrary();
   });
 });
 
+/* Toggles — goals */
 document.querySelectorAll('.seg [data-goal]').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     goal = b.dataset.goal;
-    renderPlan(); renderCal(); renderXFit();
+    renderPlan(); renderCal(); renderXFit(); renderLibrary();
   });
 });
 
+/* Equipment filters */
 function getFilters(){
   return {
     db: document.getElementById('f-db').checked,
@@ -382,7 +389,7 @@ function getFilters(){
 }
 ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); });
+  if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); renderXFit(); });
 });
 
 /* ===== Helpers ===== */
@@ -401,11 +408,10 @@ function timerHTML(id, preset=60){ return `
 
 function exByKey(k){ return EX.find(x=>x.k===k); }
 
-/* Goal scaling: tweak volumes a bit */
+/* Goal scaling: small visual nudge */
 function applyGoal(rxStr){
-  // Very light-touch visual nudge (keeps your RX readable)
-  if(goal==='cut')    return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+0))+'×') + ' · 45–60s rest';
-  if(goal==='build')  return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+1))+'×') + ' · 60–90s rest';
+  if(goal==='cut')       return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+0))+'×') + ' · 45–60s rest';
+  if(goal==='build')     return rxStr.replace(/(\d+)×/g, (m,n)=> (Math.max(2, +n+1))+'×') + ' · 60–90s rest';
   if(goal==='transform') return rxStr + ' + finisher';
   return rxStr; // maintain
 }
@@ -422,7 +428,7 @@ function renderPlan(){
     const list = document.createElement('div');
     RX[group][level].forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
-      if(group!=='full'){ /* equipment gate per move */ }
+      // Optional: gate by equipment using f[e.eq]
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(it.rx)}</span>`;
       list.appendChild(row);
@@ -502,34 +508,34 @@ function renderXFit(){
 
     const howTo = {
       'amrap-20-5-10-15': `
-        <p><strong>How it works:</strong> AMRAP 20 = “as many rounds & reps as possible in 20 minutes”. 
-        Flow through pull/row, push-ups, and squats continuously. 
+        <p><strong>How it works:</strong> AMRAP 20 = “as many rounds & reps as possible in 20 minutes”.
+        Cycle pull/row, push-ups, and squats continuously.
         Keep sets submaximal so your first 5 minutes ≈ your last 5.</p>`,
       'emom-30-5-10-15': `
-        <p><strong>How it works:</strong> EMOM 30 = do the listed reps <em>every minute</em> for 30 minutes. 
+        <p><strong>How it works:</strong> EMOM 30 = do the listed reps <em>every minute</em> for 30 minutes.
         Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch to AMRAP.</p>`,
       'for-time-50-40-30-20-10-du-situps': `
-        <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible. 
-        Break rope sets early to stay crisp; smooth, consistent sit-ups beat sprint-and-die pacing.</p>`
+        <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible.
+        Break rope sets early to keep rhythm; smooth sit-ups beat sprint-and-die pacing.</p>`
     }[w.code] || '';
 
     const standards = `
       <details class="details"><summary>Movement standards & scaling</summary>
         <ul>
-          <li><strong>Pull-up / Row (scale):</strong> Full hang to chin-over-bar. 
-              Scale to band-assisted, door/table rows, or rings at a challenging angle. 
+          <li><strong>Pull-up / Row (scale):</strong> Full hang to chin-over-bar.
+              Scale to band-assisted, door/table rows, or rings at a challenging angle.
               <em>Common faults:</em> short range, loose core, early kipping.</li>
           <li><strong>Push-up:</strong> Hands under shoulders, body in one line, chest to target, full lockout.
-              Scale to incline, then knees. 
+              Scale to incline, then knees.
               <em>Faults:</em> hips sag, elbows flare, half reps.</li>
-          <li><strong>Air squat:</strong> Hips below knee crease, heels down, full stand. 
-              Scale to box/target or pain-free depth. 
+          <li><strong>Air squat:</strong> Hips below knee crease, heels down, full stand.
+              Scale to box/target or pain-free depth.
               <em>Faults:</em> knees cave, heels lift, tipping forward.</li>
           <li><strong>Double-under / Single-under:</strong> Tall posture, small fast jumps, wrists turn rope.
-              Scale to single-unders (1:1 or 2:1), penguin taps, or 30–50 jumping jacks. 
+              Scale to single-unders (1:1 or 2:1), penguin taps, or 30–50 jumping jacks.
               <em>Faults:</em> big arm circles, piking, rope too long.</li>
-          <li><strong>Sit-up:</strong> Shoulders pass hips; choose a consistent ROM/target. 
-              Scale to anchored feet, butterfly sit-ups, or crunches. 
+          <li><strong>Sit-up:</strong> Shoulders pass hips; choose a consistent ROM/target.
+              Scale to anchored feet, butterfly sit-ups, or crunches.
               <em>Faults:</em> yanking neck, bouncing hard.</li>
         </ul>
       </details>

@@ -56,24 +56,28 @@
   </style>
 </head>
 <body>
-
-<!-- HEADER (same as home) -->
+<!-- /partials/header.html -->
 <header class="site-header">
-  <div class="container">
-    <a href="index.html" class="logo"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56"></a>
+  <div class="container header-row">
+    <a href="/index.html" class="logo" aria-label="FreeFitFuel Home">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="56">
+    </a>
+
     <button class="hamburger" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+
     <nav id="primary-nav" class="main-nav" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="ideas.html">Ideas</a>
-      <a href="guides.html">Guides</a>
-      <a href="workouts.html">Workouts</a>
-      <a href="endurance.html" aria-current="page">Endurance</a>
-      <a href="nutrition.html">Nutrition</a>
-      <a href="wellbeing.html">Wellbeing</a>
-      <a href="contact.html">Contact</a>
-      <a href="tracker.html">Tracker</a>
+      <a href="/index.html" data-nav="home">Home</a>
+      <a href="/ideas.html" data-nav="ideas">Ideas</a>
+      <a href="/guides.html" data-nav="guides">Guides</a>
+      <a href="/workouts.html" data-nav="workouts">Workouts</a>
+      <a href="/endurance.html" data-nav="endurance">Endurance</a>
+      <a href="/nutrition.html" data-nav="nutrition">Nutrition</a>
+      <a href="/wellbeing.html" data-nav="wellbeing">Wellbeing</a>
+      <a href="/yoga-meditation.html" data-nav="yoga-meditation">Yoga & Meditation</a>
+      <a href="/contact.html" data-nav="contact">Contact</a>
+      <a href="/tracker.html" data-nav="tracker">Tracker</a>
     </nav>
   </div>
 </header>

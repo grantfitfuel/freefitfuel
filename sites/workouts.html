@@ -83,7 +83,7 @@
     .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
     .timer .left{min-width:60px;text-align:right;opacity:.85}
 
-    /* Details (standards) */
+    /* Details (shared collapsible panels) */
     .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem;margin:.5rem 0}
     .details summary{cursor:pointer;font-weight:600}
     .details p,.details ul{margin:.35rem 0}
@@ -93,10 +93,8 @@
     @media (min-width:700px){.mini-grid{grid-template-columns:repeat(3,1fr)}}
     .demo-caption{font-size:.86rem;color:var(--inkdim);margin:.25rem 0 0 .15rem}
 
-    /* Calisthenics info inserts */
+    /* Minor helper */
     .info{color:var(--inkdim);margin:.35rem 0 .2rem}
-    .callout{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.5rem 0}
-    .callout strong{color:var(--ink)}
   </style>
 </head>
 <body>
@@ -285,7 +283,7 @@ const RX = {
   }
 };
 
-/* Calisthenics sets with expanded info for Core & Legs */
+/* Calisthenics sets with expanded info for Core & Legs (now collapsible) */
 const CAL = [
   {title:'Push', items:[
     {k:'pushup',  rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
@@ -500,6 +498,34 @@ function applyGoal(rxStr){
   return rxStr;
 }
 
+/* ===== Collapsible info block (matches Cross-Training style) ===== */
+function infoBlock(about, title='About'){
+  if(!about) return '';
+  const li = a => (a||[]).map(x=>`<li>${x}</li>`).join('');
+  const safety = (about.safety||[]).join(' ');
+  return `
+    <details class="details">
+      <summary>${title}: why, cues & safety</summary>
+      <p><strong>Why it matters</strong></p>
+      <ul>${li(about.why)}</ul>
+
+      <p><strong>Set-up & cues</strong></p>
+      <ul>${li(about.cues)}</ul>
+
+      <p><strong>Common faults (fixes)</strong></p>
+      <ul>${li(about.faults)}</ul>
+
+      <p><strong>Progression path</strong></p>
+      <ul>${li(about.progress)}</ul>
+
+      <p><strong>Warm-up / prep</strong></p>
+      <ul>${li(about.prep)}</ul>
+
+      <p class="meta">Safety: ${safety}</p>
+    </details>
+  `;
+}
+
 /* ===== Renderers ===== */
 function renderPlan(){
   const f = getFilters(); planEl.innerHTML='';
@@ -512,8 +538,9 @@ function renderPlan(){
     const list = document.createElement('div');
     RX[group][level].forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      if(e.eq==='rings' && !f.rings) return;
+      const filt = getFilters();
+      if(!filt[e.eq]) return;
+      if(e.eq==='rings' && !filt.rings) return;
       const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(it.rx)}</span>`;
       list.appendChild(row);
@@ -525,31 +552,11 @@ function renderPlan(){
   hookTimers();
 }
 
-function infoBlock(about){
-  if(!about) return '';
-  const li = a => a.map(x=>`<li>${x}</li>`).join('');
-  return `
-    <div class="callout">
-      <p><strong>Why it matters</strong></p>
-      <ul>${li(about.why||[])}</ul>
-      <p><strong>Set-up & cues</strong></p>
-      <ul>${li(about.cues||[])}</ul>
-      <p><strong>Common faults (fixes)</strong></p>
-      <ul>${li(about.faults||[])}</ul>
-      <p><strong>Progression path</strong></p>
-      <ul>${li(about.progress||[])}</ul>
-      <p><strong>Warm-up / prep</strong></p>
-      <ul>${li(about.prep||[])}</ul>
-      <p class="meta">Safety: ${ (about.safety||[]).join(' ') }</p>
-    </div>
-  `;
-}
-
 function renderCal(){
   const f = getFilters(); calEl.innerHTML='';
   CAL.forEach(col=>{
     const b = document.createElement('div'); b.className='block';
-    b.innerHTML = `<h3>${col.title}</h3>${col.about ? infoBlock(col.about) : ''}`;
+    b.innerHTML = `<h3>${col.title}</h3>${col.about ? infoBlock(col.about, col.title) : ''}`;
     col.items.forEach(it=>{
       const e = exByKey(it.k); if(!e) return;
       if(!f[e.eq]) return;
@@ -616,7 +623,7 @@ function renderXFit(){
         Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch the rest to AMRAP.</p>`,
       'for-time-50-40-30-20-10-du-situps': `
         <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible.
-        Break rope sets early to stay crisp; keep sit-ups smooth. Suggested time cap: 12–15 min.</p>`
+        Break jump-rope sets early to stay crisp; keep sit-ups smooth. Suggested time cap: 12–15 min.</p>`
     }[w.code] || '';
 
     const standards = `

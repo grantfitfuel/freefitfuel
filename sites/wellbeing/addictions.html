@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Addictions & Compulsions – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="/style.css?v=43">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page-local layout */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .meta{color:var(--inkdim);font-size:.92rem}
+
+    /* FINAL HERO: no crop / no zoom */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;
+      height:auto !important;
+      max-height:460px !important;
+      object-fit:scale-down !important;
+      object-position:center center !important;
+      display:block; filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
+
+    /* Mini-nav (sticky + active) */
+    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
+    html{scroll-behavior:smooth}
+
+    .figure{margin:.6rem 0}
+    .figure img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+
+    .btn--pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:999px;padding:.42rem .75rem;font-size:.92rem;text-decoration:none}
+    .btn-row{display:flex;flex-wrap:wrap;gap:.5rem}
+  </style>
+</head>
+<body>
+
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Addictions hero">
+  <figure>
+    <img src="/img/addictions-hero.png" alt="Quiet table with tea and notebook — calm start toward change">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Addictions & Compulsions</span></h1>
+    <p>Change is possible — one small, repeatable step at a time.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead">
+    Addiction isn’t “weakness.” It’s brain learning, stress biology, environment, and access. Compulsions — gambling,
+    shopping, gaming, porn, scrolling — ride the same reward circuits. Below: what’s going on, why it’s tougher under
+    pressure, and what you can do today.
+  </p>
+
+  <!-- Mini-Nav -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#definitions">Definitions</a>
+    <a href="#poverty">Why poorer communities are hit harder</a>
+    <a href="#biology">How the brain learns it</a>
+    <a href="#cycle">The cycle & how to interrupt</a>
+    <a href="#day-to-day">Day-to-day tools</a>
+    <a href="#gambling">Gambling help</a>
+    <a href="#substances">Alcohol, nicotine & other drugs</a>
+    <a href="#digital">Digital & shopping</a>
+    <a href="#family">For families & friends</a>
+    <a href="#money">Money & debt help</a>
+    <a href="#support">Support (UK & Scotland)</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <!-- DEFINITIONS -->
+  <section id="definitions" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>1) What counts as addiction?</h2>
+        <p>A pattern that continues <em>despite harm</em> — with craving, loss of control, tolerance, and withdrawal.
+           Applies to substances (alcohol, nicotine, drugs) and behaviours (e.g., gambling).</p>
+      </article>
+      <article class="card">
+        <h2>Compulsion</h2>
+        <p>A strong urge to do something to relieve tension (e.g., gambling, gaming, porn, shopping, scrolling).
+           Brings short-term relief but long-term problems — often running on the same brain loops.</p>
+        <p class="meta">OCD is different clinically (obsessions→compulsions to reduce anxiety). If you suspect OCD, ask your GP for assessment.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- POVERTY CONTEXT -->
+  <section id="poverty" class="section">
+    <h2>2) Why it hits poorer communities harder</h2>
+    <ul>
+      <li><strong>Chronic stress & trauma:</strong> pushes the brain toward quick relief.</li>
+      <li><strong>Availability & targeting:</strong> more outlets, online targeting; fewer low-cost alternatives.</li>
+      <li><strong>Scarcity effect:</strong> tight money/time narrows focus to immediate relief.</li>
+      <li><strong>Stigma & access:</strong> shame + fewer services = harder to get help.</li>
+    </ul>
+    <p class="meta">This isn’t your fault. The deck is stacked — and change is still possible with practical support.</p>
+  </section>
+
+  <!-- BIOLOGY -->
+  <section id="biology" class="section">
+    <h2>3) How the brain learns it</h2>
+    <ul>
+      <li><strong>Dopamine cues:</strong> places/times/ads/phones become triggers — their dopamine spike drives craving.</li>
+      <li><strong>Habit loops:</strong> <em>Trigger → Behaviour → Relief</em> is wired by repetition.</li>
+      <li><strong>Tolerance/withdrawal:</strong> need more for same effect; feel rough stopping.</li>
+      <li><strong>Stress amplifier:</strong> cortisol/adrenaline heighten cue-reactivity.</li>
+      <li><strong>Sensitisation:</strong> “just one” can rapidly reignite the loop.</li>
+    </ul>
+  </section>
+
+  <!-- CYCLE -->
+  <section id="cycle" class="section">
+    <h2>4) The cycle (and where to break it)</h2>
+    <figure class="figure">
+      <img src="/img/addictions-cycle.png" alt="Trigger → Urge → Behaviour → Relief → Consequences → Shame → Trigger loop">
+      <figcaption class="cap">Aim to break it at the <em>trigger</em> (design) and the <em>urge</em> (skills).</figcaption>
+    </figure>
+    <div class="grid">
+      <article class="card">
+        <h3>Break at the trigger</h3>
+        <ul>
+          <li>Top 3 triggers: time, place, people, feelings.</li>
+          <li>Change path: new route home; move money on payday; charge phone outside bedroom.</li>
+          <li>Remove cues: unsubscribe; block sites/apps; remove delivery apps; hand gambling cards to a friend (if safe).</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Ride the urge (don’t fight it)</h3>
+        <p>Urges peak like a wave ~10–20 minutes.</p>
+        <ul>
+          <li>Timer 10 minutes; slow exhale (4–6 pattern).</li>
+          <li>Hands busy: shower, brisk walk, wash dishes, cold water on wrists.</li>
+          <li>Say: “This is a wave; it passes.”</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Soften the crash</h3>
+        <ul>
+          <li>Non-shame reset: note what happened; text a safe person; restart next step.</li>
+          <li>Keep cue & reward; swap behaviour (tea + call instead of a bet; walk instead of a drink).</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- DAY-TO-DAY -->
+  <section id="day-to-day" class="section">
+    <h2>5) Day-to-day tools</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Urge surfing</h3>
+        <p>Breath + timer + movement. Practice on mild cravings so it’s there on hard days.</p>
+      </article>
+      <article class="card">
+        <h3>Delay • Distract • Decide</h3>
+        <ul><li>Delay 10m → Distract hands/body → Decide again.</li></ul>
+      </article>
+      <article class="card">
+        <h3>If–Then plans</h3>
+        <p><strong>If</strong> it’s payday → <strong>Then</strong> move bills money by 9am.</p>
+        <p><strong>If</strong> I’m alone after 9pm → <strong>Then</strong> call a friend while making tea.</p>
+      </article>
+      <article class="card">
+        <h3>Stimulus control</h3>
+        <ul>
+          <li>Keep alcohol/gambling apps out of the house/phone.</li>
+          <li>Blocks (see gambling & digital sections).</li>
+          <li>Make healthy option easy: mug + teabag ready; shoes by the door.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Support map</h3>
+        <p>List 3 people/places for spikes (fridge + phone).</p>
+      </article>
+      <article class="card">
+        <h3>Sleep & food first</h3>
+        <p>Cravings jump when hungry/exhausted. Eat protein+carb; keep bedtime regular.</p>
+      </article>
+    </div>
+
+    <figure class="figure">
+      <img src="/img/addictions-cravings.png" alt="Hands around a mug beside a phone — grounding while an urge passes">
+      <figcaption class="cap">Cravings are waves. Ground, breathe, move — let the peak pass.</figcaption>
+    </figure>
+  </section>
+
+  <!-- GAMBLING -->
+  <section id="gambling" class="section">
+    <h2>6) Gambling: what works</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>Block access (online)</h3>
+        <ul>
+          <li><a href="https://www.gamstop.co.uk/" target="_blank" rel="noopener">GAMSTOP</a> — free UK self-exclusion (6m/1y/5y).</li>
+          <li><a href="https://www.gamcare.org.uk/talk/stop-gambling/talkbanstop/" target="_blank" rel="noopener">TalkBanStop</a> — GamCare + Gamban + GAMSTOP.</li>
+          <li>Ask your bank for a <strong>gambling merchant block</strong>.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Self-exclude (in person)</h3>
+        <ul>
+          <li>Betting shops: Multi-Operator Self-Exclusion.</li>
+          <li>Casinos: SENSE scheme.</li>
+          <li>Arcades/Bingo: venue self-exclusion.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Money safety</h3>
+        <ul>
+          <li>Move payday funds to bills account first thing.</li>
+          <li>Lower ATM limits; remove overdraft; cash envelopes for essentials.</li>
+          <li>Trusted read-only access for oversight (only if safe).</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>When urges hit</h3>
+        <ul>
+          <li>Leave trigger place; phone support; 10-minute walk.</li>
+          <li>Cold water wrists/face; 20 squats; long exhales.</li>
+          <li>Wallet note: “If I bet £X, what bill goes unpaid?”</li>
+        </ul>
+      </article>
+    </div>
+
+    <figure class="figure">
+      <img src="/img/addictions-support.png" alt="Two people with hot drinks — one listening and supporting the other">
+      <figcaption class="cap">Layer supports: self-exclusion, bank blocks, blockers, and people who’ve got your back.</figcaption>
+    </figure>
+
+    <article class="card" style="margin-top:12px">
+      <h3>Free, confidential help</h3>
+      <ul>
+        <li><a href="https://www.gamcare.org.uk/" target="_blank" rel="noopener">GamCare</a> — National Helpline & chat.</li>
+        <li><a href="https://www.gamblingtherapy.org/" target="_blank" rel="noopener">Gambling Therapy</a> — global online support.</li>
+        <li><a href="https://www.begambleaware.org/" target="_blank" rel="noopener">GambleAware</a> — info & signposting.</li>
+        <li><a href="https://www.fastforward.org.uk/" target="_blank" rel="noopener">Fast Forward (Scotland)</a> — gambling harm education/support.</li>
+        <li>Peer groups: GA (Gamblers Anonymous) & SMART Recovery.</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- SUBSTANCES -->
+  <section id="substances" class="section">
+    <h2>7) Alcohol, nicotine & other drugs</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Alcohol</h3>
+        <ul>
+          <li>Track units; alcohol-free days; low/no options.</li>
+          <li><strong>Daily drinker?</strong> Don’t stop abruptly without medical advice (risk of dangerous withdrawal).</li>
+          <li><a href="https://alcoholchange.org.uk/" target="_blank" rel="noopener">Alcohol Change UK</a> resources.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Nicotine & vaping</h3>
+        <ul>
+          <li>NHS stop smoking services (patches/gum/lozenges + coaching).</li>
+          <li>Delay first use 30+ minutes; keep use outdoors.</li>
+          <li>Pair cutting down with breathwork + hand “fidget”.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Other drugs (harm reduction)</h3>
+        <ul>
+          <li>Don’t use alone; carry naloxone if available (Scotland: many pharmacies/services supply kits).</li>
+          <li>Start low, go slow; avoid mixing depressants.</li>
+          <li>Local drug & alcohol services: substitution, detox, support.</li>
+        </ul>
+      </article>
+    </div>
+
+    <article class="card" style="margin-top:12px">
+      <h3>Find local help</h3>
+      <ul>
+        <li><a href="https://www.wearewithyou.org.uk/" target="_blank" rel="noopener">We Are With You</a> — England & Scotland services.</li>
+        <li><a href="https://www.sfad.org.uk/" target="_blank" rel="noopener">Scottish Families Affected by Alcohol & Drugs</a> — family support.</li>
+        <li><a href="https://www.nhsinform.scot/" target="_blank" rel="noopener">NHS Inform (Scotland)</a> — services & advice.</li>
+        <li><a href="https://www.nhs.uk/service-search/find-a-drug-addiction-support-service" target="_blank" rel="noopener">NHS England: find a service</a>.</li>
+        <li><a href="https://www.talktofrank.com/" target="_blank" rel="noopener">Talk to FRANK</a> — information & helpline.</li>
+        <li>Peer support: AA / NA / SMART Recovery.</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- DIGITAL & SHOPPING -->
+  <section id="digital" class="section">
+    <h2>8) Digital & shopping compulsions</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Make the phone boring</h3>
+        <ul>
+          <li>Grayscale; remove social apps from home screen.</li>
+          <li>Time limits & locks; log out; remove saved cards.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Shopping urges</h3>
+        <ul>
+          <li>24-hour rule before buying; delete stored payment details.</li>
+          <li>Block retail sites in vulnerable hours.</li>
+          <li>Keep a “needs list” and stick to it.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Porn & sexual content</h3>
+        <ul>
+          <li>DNS/router/app blocks; devices out of the bedroom.</li>
+          <li>Morning/afternoon-only rule for internet.</li>
+          <li>Swap the trigger window with a walk + call.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- FAMILY -->
+  <section id="family" class="section">
+    <h2>9) For families & friends</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>What helps</h3>
+        <ul>
+          <li>Listen without lectures; “What would help today?”</li>
+          <li>Offer specifics: lifts, admin help, food shop.</li>
+          <li>Encourage blocks/self-exclusion; celebrate tiny wins.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>What to avoid</h3>
+        <ul>
+          <li>Financial rescuing without boundaries (enabling).</li>
+          <li>Shaming / “why don’t you just…”.</li>
+          <li>All-or-nothing thinking — change wobbles.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Your support</h3>
+        <ul>
+          <li>Look after you: sleep, food, someone to talk to.</li>
+          <li>Family groups: Al-Anon, Families Anonymous, SFAD.</li>
+          <li>Emergency: if someone’s at immediate risk, call <strong>999</strong>.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- MONEY -->
+  <section id="money" class="section">
+    <h2>10) Money & debt help</h2>
+    <p>Debt fuels stress which fuels relapse. Free, non-judgemental help exists:</p>
+    <ul>
+      <li><a href="https://www.stepchange.org/" target="_blank" rel="noopener">StepChange</a> — free debt advice & plans.</li>
+      <li><a href="https://www.citizensadvice.org.uk/" target="_blank" rel="noopener">Citizens Advice</a> — benefits, debt & rights.</li>
+      <li><a href="https://www.moneyhelper.org.uk/" target="_blank" rel="noopener">MoneyHelper</a> — tools & impartial guidance.</li>
+      <li><a href="https://capuk.org/" target="_blank" rel="noopener">CAP</a> — free debt help (open to all).</li>
+    </ul>
+  </section>
+
+  <!-- SUPPORT -->
+  <section id="support" class="section">
+    <h2>11) Support & services (UK & Scotland)</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>Gambling</h3>
+        <ul>
+          <li><a href="https://www.gamcare.org.uk/" target="_blank" rel="noopener">GamCare</a> — Helpline, chat, treatment.</li>
+          <li><a href="https://www.gamstop.co.uk/" target="_blank" rel="noopener">GAMSTOP</a> — online self-exclusion.</li>
+          <li><a href="https://www.gamblingtherapy.org/" target="_blank" rel="noopener">Gambling Therapy</a> — global support.</li>
+          <li><a href="https://www.fastforward.org.uk/" target="_blank" rel="noopener">Fast Forward (Scotland)</a> — gambling harms.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Alcohol & drugs</h3>
+        <ul>
+          <li><a href="https://www.wearewithyou.org.uk/" target="_blank" rel="noopener">We Are With You</a> — England/Scotland services.</li>
+          <li><a href="https://www.sfad.org.uk/" target="_blank" rel="noopener">Scottish Families Affected by Alcohol & Drugs</a>.</li>
+          <li><a href="https://alcoholchange.org.uk/" target="_blank" rel="noopener">Alcohol Change UK</a> — info & help.</li>
+          <li><a href="https://www.talktofrank.com/" target="_blank" rel="noopener">Talk to FRANK</a> — information & helpline.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- HOPE -->
+  <section id="hope" class="section">
+    <h2>12) Hope & Recovery</h2>
+    <figure class="figure">
+      <img src="/img/addictions-hope.png" alt="Sunlight through clouds over a calm landscape">
+      <figcaption class="cap">Recovery is rarely instant — small, steady steps add up.</figcaption>
+    </figure>
+    <p>People describe recovery as hundreds of small decisions repeated: making today’s bed, making a call, turning down one urge,
+       showing up to a group, eating a meal. Progress isn’t perfect — but <em>each step counts</em>.</p>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section id="disclaimer" class="section">
+    <h2>Important Note</h2>
+    <p>
+      This page is for general understanding and support. It’s not a substitute for professional medical, legal, or crisis care.
+      If you feel unable to keep yourself or someone else safe, call <strong>999</strong> (UK) immediately.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script>
+/* mini-nav smooth scroll + scrollspy (same as other wellbeing pages) */
+(function(){
+  const nav = document.querySelector('.mini-nav'); if(!nav) return;
+  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  const targets = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) })).filter(x=>x.el);
+
+  const setActive = id => links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
+
+  const io = new IntersectionObserver((entries)=>{
+    const top = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+    if(top) setActive(top.target.id);
+  }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
+
+  targets.forEach(t => io.observe(t.el));
+})();
+</script>
+</body>
+</html>

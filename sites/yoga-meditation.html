@@ -5,37 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yoga & Meditation – FreeFitFuel</title>
 
-  <!-- Global CSS -->
+  <!-- Shared stylesheet -->
   <link rel="stylesheet" href="/style.css?v=32">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
-  <!-- Page-local tweaks (safe, minimal) -->
+  <!-- Page-local overrides -->
   <style>
-    /* Put hero copy BELOW the image on this page */
-    header.hero-mini .content{
-      position: static;   /* overrides global absolute */
-      inset: auto;
-      padding: 16px 20px 22px;
-      max-width: var(--maxw);
-      margin: 0 auto;
+    /* Yoga hero fix — show full image, allow black bars */
+    .yoga-hero figure{
+      margin:0; position:relative;
+      display:flex; align-items:center; justify-content:center;
+      background:#0a0f0c; /* intentional backdrop if bars show */
+      border-bottom:1px solid #1b1b22;
     }
-    /* Slightly shorter banner for calm vibe */
-    header.hero-mini figure > img{
-      height: clamp(220px, 38vh, 460px) !important;
-      object-fit: cover !important;
-      object-position: center 22%;
-      filter: brightness(.88) saturate(1.05);
+    .yoga-hero figure > img{
+      width:100%;
+      height:clamp(320px, 48vh, 560px);
+      object-fit:contain;
+      object-position:center center;
+      filter:brightness(.96) saturate(1.03);
     }
-
-    /* Page sections */
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-    .grid{display:grid;gap:12px}
-    @media (min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
-    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .card h3{margin:.15rem 0 .35rem}
-    .tag{display:inline-block;background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-left:.3rem}
-    .steps{margin:.25rem 0 .5rem;padding-left:1.1rem}
-    .steps li{margin:.25rem 0}
+    .yoga-hero .overlay{ display:none; }
+    .yoga-hero .content{
+      position:static;
+      max-width:var(--maxw);
+      padding:16px 20px 22px;
+      margin:0 auto;
+    }
   </style>
 </head>
 <body>
@@ -45,46 +41,46 @@
 <script src="/js/header-loader.js"></script>
 
 <!-- HERO -->
-<header class="hero-mini" role="banner" aria-label="Yoga & Meditation hero">
+<header class="hero-mini yoga-hero" role="banner" aria-label="Yoga & Meditation hero">
   <figure>
-    <img src="/img/yoga-meditation-hero.png" alt="Soft evening light with yoga mat and meditation cushion">
-    <div class="overlay" aria-hidden="true"></div>
+    <img src="/img/yoga-meditation-hero.png" alt="Person seated on orange yoga mat with block, soft evening light">
   </figure>
   <div class="content wrap">
     <h1><span class="accent">Yoga & Meditation</span></h1>
-    <p class="lead">Wind down your nervous system with slow nasal breathing, longer exhales, gentle holds and floor-based poses to support deep relaxation and lower stress load.</p>
+    <p>Wind down your nervous system with slow nasal breathing, longer exhales, gentle holds and floor-based poses to support deep relaxation and lower stress load.</p>
   </div>
 </header>
 
 <main class="wrap">
-  <!-- On-page mini nav -->
+  <p class="lead">Pick a <strong>quick reset</strong> (5–10 min), an <strong>evening unwind</strong> (20–30 min), or a <strong>deep restore</strong> (45–60 min). Use the metronome, calm sounds and your own guided audio.</p>
+
   <nav class="mini-nav" aria-label="Sections">
     <a href="#quick">Quick Resets</a>
     <a href="#evening">Evening Unwind</a>
     <a href="#restore">Deep Restore</a>
-    <a href="#breath">Breathing Basics</a>
-    <a href="#safety">Safety Notes</a>
+    <a href="#breath">Breathing & Demos</a>
+    <a href="#audio">Calm Sounds & Guided Audio</a>
+    <a href="#notes">Safety Notes</a>
   </nav>
 
   <!-- QUICK -->
   <section id="quick" class="section">
     <h2>Quick Resets (5–10 min)</h2>
-    <div class="grid cols2">
-      <article class="card">
+    <div class="grid">
+      <article class="sess">
         <h3>Desk Decompress <span class="tag">~6–8 min</span></h3>
         <ol class="steps">
-          <li>Box breathing — 4-4-4-4 for <em>12 cycles</em> (≈4–5 min).</li>
-          <li>Seated neck & shoulder melts — circles + ear-to-shoulder <em>2×20s/side</em>.</li>
-          <li>Standing forward fold — soft knees <em>60–90s</em>.</li>
+          <li><a href="https://www.youtube.com/results?search_query=box+breathing+how+to" target="_blank" rel="noopener">Box Breathing</a> — 4-4-4-4 for <em>12 cycles</em>.</li>
+          <li><a href="https://www.youtube.com/results?search_query=seated+neck+and+shoulder+stretches+yoga" target="_blank" rel="noopener">Seated Neck &amp; Shoulder Melt</a> — circles + ear-to-shoulder.</li>
+          <li><a href="https://www.youtube.com/results?search_query=standing+forward+fold+uttanasana+tutorial" target="_blank" rel="noopener">Standing Forward Fold</a> — soft knees, 60–90s.</li>
         </ol>
-        <p class="meta">Silent, nasal breathing. Let exhales be a touch longer.</p>
       </article>
-      <article class="card">
+      <article class="sess">
         <h3>Floor Unknot <span class="tag">~8–10 min</span></h3>
         <ol class="steps">
-          <li>Constructive rest (on back) <em>2–3 min</em>.</li>
-          <li>Reclined twist <em>60–90s/side</em> (support knees).</li>
-          <li>Crocodile breathing (prone) <em>3–4 min</em>.</li>
+          <li><a href="https://www.youtube.com/results?search_query=constructive+rest+pose" target="_blank" rel="noopener">Constructive Rest</a> — 2–3 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=mKC3IeldPOc" target="_blank" rel="noopener">Supine Twist</a> — 60–90s/side.</li>
+          <li><a href="https://www.youtube.com/results?search_query=crocodile+breathing+diaphragmatic" target="_blank" rel="noopener">Crocodile Breathing</a> — 3–4 min.</li>
         </ol>
       </article>
     </div>
@@ -93,28 +89,18 @@
   <!-- EVENING -->
   <section id="evening" class="section">
     <h2>Evening Unwind (20–30 min)</h2>
-    <div class="grid cols2">
-      <article class="card">
+    <div class="grid">
+      <article class="sess">
         <h3>Gentle Yin Flow <span class="tag">~25 min</span></h3>
         <ol class="steps">
-          <li>Child’s Pose <em>3 min</em> (bolster under chest).</li>
-          <li>Cat–Cow <em>1–2 min</em> slow.</li>
-          <li>Low Lunge <em>2 min/side</em> with blocks.</li>
-          <li>Wide-leg seated fold <em>3–4 min</em>.</li>
-          <li>Supported Bridge <em>3 min</em>.</li>
-          <li>Reclined Twist <em>2 min/side</em>.</li>
-          <li>Legs-Up-the-Wall <em>5–7 min</em>.</li>
-          <li>Savasana <em>2–3 min</em>.</li>
-        </ol>
-      </article>
-      <article class="card">
-        <h3>Breath-Led Unwind <span class="tag">~20–22 min</span></h3>
-        <ol class="steps">
-          <li>4-7-8 breathing — <em>10 cycles</em> (≈4–5 min).</li>
-          <li>Supported forward fold <em>3 min</em>.</li>
-          <li>Supine hamstring (strap) <em>2 min/side</em>.</li>
-          <li>Box breathing — <em>6–8 cycles</em> (≈3–4 min).</li>
-          <li>Savasana body-scan <em>5–6 min</em>.</li>
+          <li><a href="https://www.youtube.com/watch?v=eqVMAPM00DM">Child’s Pose</a> 3 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=cJl29PRGA74">Cat–Cow</a> 1–2 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=MjiC4mGTnTw">Low Lunge</a> 2 min/side.</li>
+          <li><a href="https://www.youtube.com/watch?v=trlrTtCg5aE">Wide-Leg Seated Fold</a> 3–4 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=U48H2m9AyZE">Supported Bridge</a> 3 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=mKC3IeldPOc">Reclined Twist</a> 2 min/side.</li>
+          <li><a href="https://www.youtube.com/watch?v=_OQEIiZLY-0">Legs-Up-the-Wall</a> 5–7 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=eSeRjoolN2A">Savasana</a> 2–3 min.</li>
         </ol>
       </article>
     </div>
@@ -123,76 +109,74 @@
   <!-- RESTORE -->
   <section id="restore" class="section">
     <h2>Deep Restore (45–60 min)</h2>
-    <div class="grid cols2">
-      <article class="card">
-        <h3>Restorative Set-Up <span class="tag">~50–60 min</span></h3>
+    <div class="grid">
+      <article class="sess">
+        <h3>Restorative Set <span class="tag">~50–60 min</span></h3>
         <ol class="steps">
-          <li>Coherent breathing (in 5, out 5) <em>5–7 min</em>.</li>
-          <li>Supported Child’s Pose <em>6–8 min</em>.</li>
-          <li>Reclined Bound Angle <em>8–10 min</em>.</li>
-          <li>Side-lying heart opener <em>6–8 min/side</em>.</li>
-          <li>Legs-up-on-chair <em>8–10 min</em>.</li>
-          <li>Yoga Nidra (guided) <em>10–12 min</em>.</li>
+          <li><a href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent Breathing</a> 5–7 min.</li>
+          <li><a href="https://www.youtube.com/watch?v=eqVMAPM00DM">Supported Child’s Pose</a> 6–8 min.</li>
+          <li><a href="https://www.youtube.com/results?search_query=supta+baddha+konasana+supported">Reclined Bound Angle</a> 8–10 min.</li>
+          <li><a href="https://www.youtube.com/results?search_query=side-lying+heart+opener+restorative+yoga">Side-lying Opener</a> 6–8 min/side.</li>
+          <li><a href="https://www.youtube.com/watch?v=_OQEIiZLY-0">Legs-Up-on-Chair</a> 8–10 min.</li>
+          <li><a href="https://www.youtube.com/results?search_query=short+yoga+nidra+guided">Yoga Nidra</a> 10–12 min.</li>
         </ol>
-      </article>
-      <article class="card">
-        <h3>Props & Cues</h3>
-        <ul class="steps">
-          <li>Comfort over stretch; add cushions until shapes feel easy.</li>
-          <li>Exhale longer: in 4–5, out 6–8; soften jaw and tongue.</li>
-          <li>Dim light; phone on Do Not Disturb.</li>
-        </ul>
       </article>
     </div>
   </section>
 
-  <!-- BREATH -->
+  <!-- BREATH & DEMOS -->
   <section id="breath" class="section">
-    <h2>Breathing Basics</h2>
-    <div class="grid cols2">
+    <h2>Breathing & Pose Demos</h2>
+    <div class="grid">
       <article class="card">
-        <h3>Patterns</h3>
-        <ul class="steps">
-          <li><strong>Coherent:</strong> in 5 / out 5 (steady focus).</li>
-          <li><strong>Down-shift:</strong> in 4 / out 6 (calming).</li>
-          <li><strong>Box:</strong> 4 / 4 / 4 / 4 (even, balancing).</li>
-        </ul>
+        <h3>Breath Metronome</h3>
+        <p class="meta">Orb grows on inhale, softens on exhale. Choose 5/5, 4/6 or box breathing.</p>
+        <div class="breath-ui">
+          <button id="bm-start">Start</button>
+          <button id="bm-stop">Stop</button>
+          <div class="breath-visual"><div class="orb" id="orb"></div></div>
+        </div>
       </article>
+    </div>
+  </section>
+
+  <!-- AUDIO -->
+  <section id="audio" class="section">
+    <h2>Calm Sounds & Guided Audio</h2>
+    <div class="grid">
       <article class="card">
-        <h3>Tips</h3>
-        <ul class="steps">
-          <li>Nasal, quiet, low into ribs and belly.</li>
-          <li>Start short; stop if dizzy; return to normal breath.</li>
-          <li>Evenings are perfect; earlier for box if it feels alerting.</li>
-        </ul>
+        <h3>Guided Audio</h3>
+        <p class="meta">Drop MP3/WAV into <code>/audio/</code> (body-scan.mp3, coherent-breathing.mp3).</p>
       </article>
     </div>
   </section>
 
   <!-- SAFETY -->
-  <section id="safety" class="section">
+  <section id="notes" class="section">
     <h2>Safety Notes</h2>
-    <ul class="steps">
-      <li>Light-headed? Shorten holds or breathe normally.</li>
-      <li>Pregnancy/low blood pressure: avoid long breath holds; prefer coherent breathing.</li>
-      <li>Sharp pain ≠ normal: adjust with props or skip the pose.</li>
+    <ul>
+      <li>Stop if dizzy or sharp pain.</li>
+      <li>Pregnancy/low BP: avoid long holds.</li>
+      <li>Comfort first: use props liberally.</li>
     </ul>
   </section>
 
-  <!-- Disclaimer (standard) -->
+  <!-- DISCLAIMER -->
   <section class="section">
     <h2>Important Note</h2>
-    <p>These practices support relaxation and general wellbeing; they are not a substitute for medical care. If you have health conditions, injuries, or mental health concerns, consult a qualified professional. Stop any practice that causes pain, dizziness, or distress.</p>
+    <p>These practices support relaxation and general wellbeing; they are not a substitute for medical care. If you have health conditions, consult a qualified professional. Stop any practice that causes pain or distress.</p>
   </section>
 </main>
 
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="container">
     <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
     <p class="credit">Created by Grant Cameron Anthony</p>
   </div>
 </footer>
 
+<script src="/app.js" defer></script>
 </body>
 </html>

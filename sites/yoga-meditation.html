@@ -5,84 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yoga & Meditation – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="/style.css?v=31">
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/style.css?v=32">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
+  <!-- Page-local tweaks (safe, minimal) -->
   <style>
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-    .lead{color:var(--inkdim)}
+    /* Put hero copy BELOW the image on this page */
+    header.hero-mini .content{
+      position: static;   /* overrides global absolute */
+      inset: auto;
+      padding: 16px 20px 22px;
+      max-width: var(--maxw);
+      margin: 0 auto;
+    }
+    /* Slightly shorter banner for calm vibe */
+    header.hero-mini figure > img{
+      height: clamp(220px, 38vh, 460px) !important;
+      object-fit: cover !important;
+      object-position: center 22%;
+      filter: brightness(.88) saturate(1.05);
+    }
 
-    /* Hero */
-    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-    .hero-mini figure{margin:0;position:relative}
-    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.08)}
-    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6))}
-    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    .hero-mini h1{margin:0 0 .35rem}
-    .hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
-
-    /* Sections/cards */
+    /* Page sections */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-    .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
     .grid{display:grid;gap:12px}
-    @media (min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-    .card,.sess{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .card h3,.sess h3{margin:.15rem 0 .35rem}
-    .meta{color:var(--inkdim);font-size:.92rem}
+    @media (min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .card h3{margin:.15rem 0 .35rem}
     .tag{display:inline-block;background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-left:.3rem}
-
-    /* Mini-nav */
-    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-    .mini-nav a{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);text-decoration:none;padding:.45rem .8rem;border-radius:999px;font-size:.92rem}
-    .mini-nav a:hover{color:var(--accent)}
-
-    /* Steps & details */
     .steps{margin:.25rem 0 .5rem;padding-left:1.1rem}
     .steps li{margin:.25rem 0}
-    .steps a{color:var(--ink);text-decoration:underline dotted}
-    .steps a:hover{color:var(--accent)}
-    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.55rem 0}
-    .details summary{cursor:pointer;font-weight:600}
-    .details p,.details ul,.details ol{margin:.35rem 0}
-
-    /* Timers */
-    .timer{display:flex;gap:.45rem;align-items:center;margin:.45rem 0 .2rem}
-    .timer input{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:6px;color:var(--ink);padding:.35rem .45rem}
-    .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
-    .timer .left{min-width:68px;text-align:right;opacity:.85}
-
-    /* Video tiles */
-    .videos{display:grid;gap:12px}
-    @media (min-width:860px){.videos{grid-template-columns:repeat(3,1fr)}}
-    .tile{position:relative;aspect-ratio:16/9;background:#000;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
-    .tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.9)}
-    .tile .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent 50%)}
-    .tile .label{position:absolute;left:.6rem;bottom:.5rem;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.5)}
-    .tile button.play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
-    .tile iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none}
-    .tile .openers{position:absolute;right:.45rem;bottom:.45rem;display:flex;gap:.35rem;z-index:2}
-    .tile .openers a{background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:.8rem;padding:.25rem .45rem;border-radius:6px;text-decoration:none}
-
-    /* Breath metronome */
-    .breath-ui{display:grid;gap:.6rem}
-    .breath-controls{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center}
-    .breath-controls input,.breath-controls select{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem}
-    .breath-visual{height:120px;border:1px dashed var(--stroke);border-radius:10px;display:grid;place-items:center;position:relative;overflow:hidden}
-    .orb{width:24px;height:24px;border-radius:50%;background:var(--accent);opacity:.9;transform:scale(1);transition:transform .6s ease, opacity .6s ease}
-
-    /* Calm sounds mixer */
-    .mixer{display:grid;gap:.6rem}
-    .mix-row{display:flex;gap:.6rem;align-items:center}
-    .mix-row input[type="range"]{width:180px}
-
-    /* Guided audio players */
-    .guides{display:grid;gap:.9rem}
-    .guide{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
-    .playbtn{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .7rem;border-radius:8px;cursor:pointer}
-    .time{opacity:.85;min-width:92px;text-align:right}
-    .progress{width:240px}
-    .vol{width:120px}
-    .sr{position:absolute;left:-9999px}
   </style>
 </head>
 <body>
@@ -92,160 +45,6 @@
 <script src="/js/header-loader.js"></script>
 
 <!-- HERO -->
-  :root{
-  --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
-  --accent:#FF6A00; --accent2:#FF9A3D;
-  --blue:#9bc4f0;               /* header & footer background */
-  --glass:rgba(255,255,255,.08); --stroke:rgba(255,255,255,.14);
-  --maxw:1140px; --radius:16px;
-  --hero-min:220px; --hero-ideal:38vh; --hero-max:460px;
-}
-
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.6}
-a{color:inherit;text-decoration:none}
-a:hover{color:var(--accent);text-decoration:underline}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
-
-/* HEADER */
-.site-header{
-  position:sticky; top:0; z-index:1000;
-  background:var(--blue);
-  border-bottom:1px solid #cfd9e6;
-}
-.site-header .container{
-  max-width:var(--maxw);margin:0 auto;padding:10px 20px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.site-header .logo img{height:56px;display:block}
-.main-nav{display:flex;gap:14px;margin-left:auto}
-.main-nav a{color:#111;font-weight:600;padding:0 10px}
-.main-nav a[aria-current="page"]{
-  background:var(--glass);border:1px solid var(--stroke);border-radius:999px;
-}
-.main-nav a:hover{color:var(--accent)}
-.hamburger{display:none;position:relative;width:44px;height:36px;
-  border:0;background:transparent;padding:0;cursor:pointer;}
-.hamburger span{position:absolute;left:8px;right:8px;height:3px;border-radius:2px;
-  background:#111;transition:transform .25s ease,opacity .2s ease,top .25s ease;}
-.hamburger span:nth-child(1){top:10px}
-.hamburger span:nth-child(2){top:16.5px}
-.hamburger span:nth-child(3){top:23px}
-.hamburger.active span:nth-child(1){top:16.5px;transform:rotate(45deg)}
-.hamburger.active span:nth-child(2){opacity:0}
-.hamburger.active span:nth-child(3){top:16.5px;transform:rotate(-45deg)}
-
-@media(max-width:820px){
-  :root{--headerH:72px}
-  .hamburger{display:block;z-index:1101}
-  .main-nav{
-    position:fixed;top:var(--headerH);left:0;right:0;
-    display:flex;flex-direction:column;gap:0;
-    background:var(--blue);border-bottom:1px solid #cfd9e6;
-    padding:10px 14px 12px;margin:0;z-index:1100;
-    visibility:hidden;opacity:0;pointer-events:none;
-    transform:translateY(-8px);
-    transition:visibility .0s .2s,opacity .2s ease,transform .2s ease;
-  }
-  .main-nav a{padding:12px 16px;color:#111}
-  .main-nav.open{visibility:visible;opacity:1;pointer-events:auto;
-    transform:translateY(0);transition:opacity .2s ease,transform .2s ease;}
-}
-
-/* HERO (shared) */
-.hero{position:relative;border-bottom:1px solid #1b1b22}
-.hero-media{position:relative;margin:0}
-.hero-media img{
-  width:100%;height:64vh;min-height:420px;
-  object-fit:cover;object-position:center 35%;
-  display:block;filter:brightness(.88) saturate(1.05);
-}
-.hero-media .overlay{position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
-.eyebrow{display:inline-block;background:rgba(255,255,255,.10);
-  border:1px solid var(--stroke);padding:.35rem .7rem;border-radius:999px;color:#ddd}
-h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
-  font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
-.accent{background:linear-gradient(90deg,var(--accent2),var(--accent));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{max-width:70ch;color:#c8c8d2;font-size:1.05rem}
-
-/* MINI HERO (default) */
-.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-.hero-mini figure{margin:0;position:relative;overflow:hidden}
-.hero-mini .overlay{position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6))}
-.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;
-  max-width:var(--maxw);margin:0 auto}
-.hero-mini h1{margin:0 0 .35rem}
-.hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
-
-/* PAGE HERO (inline blocks) */
-.page-hero{margin:0 0 14px}
-.page-hero img{width:100%;height:auto;max-height:clamp(220px,42vh,520px);
-  object-fit:cover;display:block;border-radius:12px;border:1px solid var(--stroke)}
-.page-hero--contain img{object-fit:contain !important}
-.page-hero--tall img{max-height:clamp(320px,60vh,680px) !important}
-
-/* GRID + CARDS */
-.grid{display:grid;gap:14px;margin:22px 0}
-@media(min-width:780px){.grid{grid-template-columns:repeat(3,1fr)}}
-.card{background:var(--glass);border:1px solid var(--stroke);
-  border-radius:var(--radius);padding:14px}
-.card h2{font-size:1.12rem;margin:.1rem 0 .4rem}
-.meta{font-size:.92rem;color:#b6b6c6}
-
-/* SPLIT layout */
-.split{display:grid;gap:14px;align-items:center;margin:26px 0}
-@media(min-width:900px){.split{grid-template-columns:1.15fr 1fr}}
-.split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);
-  overflow:hidden;background:var(--glass)}
-.split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
-
-/* MINI NAV (chips) */
-.mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-.mini-nav a{border:1px solid var(--stroke);background:var(--glass);
-  color:var(--ink);text-decoration:none;padding:.38rem .75rem;
-  border-radius:999px;font-size:.92rem}
-.mini-nav a:hover{color:var(--accent)}
-
-/* FOOTER */
-.site-footer{background:var(--blue);border-top:1px solid #cfd9e6;text-align:center}
-.site-footer .container{
-  max-width:var(--maxw);margin:0 auto;padding:20px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-}
-.site-footer img{height:64px;display:block}
-.site-footer p{margin:4px 0;color:#111}
-.site-footer .credit{font-weight:700}
-
-/* PRINT RECIPE FIX */
-@media print {
-  html,body{background:#fff !important;color:#000 !important}
-  *{background:transparent !important;color:#000 !important;
-    box-shadow:none !important;text-shadow:none !important;border-color:#000 !important}
-  #printArea{display:block !important;background:#fff !important}
-  body>*:not(#printArea){display:none !important}
-  #printArea img{display:none !important}
-  @page{margin:12mm}
-}
-
-/* ===== FINAL HERO FIX (no zoom/crop) ===== */
-.hero-mini figure > img{
-  width:100% !important;
-  height:auto !important;
-  max-height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  display:block;
-  filter:brightness(.95) saturate(1.05);
-}
-
-/* Optional crop opt-in for specific pages */
-.hero-mini[data-crop="cover"] figure > img{
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-  object-fit:cover !important;
-}
 <header class="hero-mini" role="banner" aria-label="Yoga & Meditation hero">
   <figure>
     <img src="/img/yoga-meditation-hero.png" alt="Soft evening light with yoga mat and meditation cushion">
@@ -253,41 +52,39 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
   </figure>
   <div class="content wrap">
     <h1><span class="accent">Yoga & Meditation</span></h1>
-    <p>Wind down your nervous system. Practices emphasise slow nasal breathing, longer exhales, gentle holds and floor-based poses to support deep relaxation and lower stress load.</p>
+    <p class="lead">Wind down your nervous system with slow nasal breathing, longer exhales, gentle holds and floor-based poses to support deep relaxation and lower stress load.</p>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="lead">Pick a <strong>quick reset</strong> (5–10 min), an <strong>evening unwind</strong> (20–30 min), or a <strong>deep restore</strong> (45–60 min). Use the metronome, calm sounds and your own guided audio.</p>
-
+  <!-- On-page mini nav -->
   <nav class="mini-nav" aria-label="Sections">
     <a href="#quick">Quick Resets</a>
     <a href="#evening">Evening Unwind</a>
     <a href="#restore">Deep Restore</a>
-    <a href="#breath">Breathing & Demos</a>
-    <a href="#audio">Calm Sounds & Guided Audio</a>
-    <a href="#notes">Why this lowers stress</a>
+    <a href="#breath">Breathing Basics</a>
+    <a href="#safety">Safety Notes</a>
   </nav>
 
   <!-- QUICK -->
   <section id="quick" class="section">
     <h2>Quick Resets (5–10 min)</h2>
-    <div class="grid">
-      <article class="sess">
+    <div class="grid cols2">
+      <article class="card">
         <h3>Desk Decompress <span class="tag">~6–8 min</span></h3>
         <ol class="steps">
-          <li><a href="https://www.youtube.com/results?search_query=box+breathing+how+to" target="_blank" rel="noopener">Box Breathing</a> — 4-4-4-4 for <em>12 cycles</em> (≈4–5 min).</li>
-          <li><a href="https://www.youtube.com/results?search_query=seated+neck+and+shoulder+stretches+yoga" target="_blank" rel="noopener">Seated Neck &amp; Shoulder Melt</a> — circles + ear-to-shoulder <em>2×20s/side</em>.</li>
-          <li><a href="https://www.youtube.com/results?search_query=standing+forward+fold+uttanasana+tutorial" target="_blank" rel="noopener">Standing Forward Fold (Uttanasana)</a> — soft knees <em>60–90s</em>.</li>
+          <li>Box breathing — 4-4-4-4 for <em>12 cycles</em> (≈4–5 min).</li>
+          <li>Seated neck & shoulder melts — circles + ear-to-shoulder <em>2×20s/side</em>.</li>
+          <li>Standing forward fold — soft knees <em>60–90s</em>.</li>
         </ol>
         <p class="meta">Silent, nasal breathing. Let exhales be a touch longer.</p>
       </article>
-      <article class="sess">
+      <article class="card">
         <h3>Floor Unknot <span class="tag">~8–10 min</span></h3>
         <ol class="steps">
-          <li><a href="https://www.youtube.com/results?search_query=constructive+rest+pose" target="_blank" rel="noopener">Constructive Rest</a> (on back) <em>2–3 min</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=mKC3IeldPOc" target="_blank" rel="noopener">Supine/Reclined Twist</a> <em>60–90s/side</em>, support knees.</li>
-          <li><a href="https://www.youtube.com/results?search_query=crocodile+breathing+diaphragmatic" target="_blank" rel="noopener">Crocodile Breathing</a> (prone) <em>3–4 min</em> of low belly breaths.</li>
+          <li>Constructive rest (on back) <em>2–3 min</em>.</li>
+          <li>Reclined twist <em>60–90s/side</em> (support knees).</li>
+          <li>Crocodile breathing (prone) <em>3–4 min</em>.</li>
         </ol>
       </article>
     </div>
@@ -296,35 +93,28 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
   <!-- EVENING -->
   <section id="evening" class="section">
     <h2>Evening Unwind (20–30 min)</h2>
-    <div class="grid">
-      <article class="sess">
+    <div class="grid cols2">
+      <article class="card">
         <h3>Gentle Yin Flow <span class="tag">~25 min</span></h3>
         <ol class="steps">
-          <li><a href="https://www.youtube.com/watch?v=eqVMAPM00DM" target="_blank" rel="noopener">Child’s Pose (Balasana)</a> <em>3 min</em> (bolster under chest).</li>
-          <li><a href="https://www.youtube.com/watch?v=cJl29PRGA74" target="_blank" rel="noopener">Cat–Cow</a> <em>1–2 min</em> slow.</li>
-          <li><a href="https://www.youtube.com/watch?v=MjiC4mGTnTw" target="_blank" rel="noopener">Low Lunge (Anjaneyasana)</a> <em>2 min/side</em> with blocks.</li>
-          <li><a href="https://www.youtube.com/watch?v=trlrTtCg5aE" target="_blank" rel="noopener">Dragonfly / Wide-Leg Seated Fold (Upavistha Konasana)</a> <em>3–4 min</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=U48H2m9AyZE" target="_blank" rel="noopener">Supported Bridge</a> <em>3 min</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=mKC3IeldPOc" target="_blank" rel="noopener">Reclined Twist</a> <em>2 min/side</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=_OQEIiZLY-0" target="_blank" rel="noopener">Legs-Up-the-Wall (Viparita Karani)</a> <em>5–7 min</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=eSeRjoolN2A" target="_blank" rel="noopener">Savasana</a> <em>2–3 min</em>.</li>
+          <li>Child’s Pose <em>3 min</em> (bolster under chest).</li>
+          <li>Cat–Cow <em>1–2 min</em> slow.</li>
+          <li>Low Lunge <em>2 min/side</em> with blocks.</li>
+          <li>Wide-leg seated fold <em>3–4 min</em>.</li>
+          <li>Supported Bridge <em>3 min</em>.</li>
+          <li>Reclined Twist <em>2 min/side</em>.</li>
+          <li>Legs-Up-the-Wall <em>5–7 min</em>.</li>
+          <li>Savasana <em>2–3 min</em>.</li>
         </ol>
-        <div class="details"><summary>Props & cues</summary>
-          <ul>
-            <li>Comfort over stretch; add cushions until the shape feels easy.</li>
-            <li>Exhale longer: in 4, out 6–8; soften jaw and tongue.</li>
-            <li>Dim light; phone on Do Not Disturb.</li>
-          </ul>
-        </div>
       </article>
-      <article class="sess">
+      <article class="card">
         <h3>Breath-Led Unwind <span class="tag">~20–22 min</span></h3>
         <ol class="steps">
-          <li><a href="https://www.youtube.com/results?search_query=4+7+8+breathing+how+to" target="_blank" rel="noopener">4-7-8 breathing</a> — <em>10 cycles</em> (≈4–5 min).</li>
-          <li><a href="https://www.youtube.com/results?search_query=supported+seated+forward+fold+yoga" target="_blank" rel="noopener">Supported Forward Fold</a> <em>3 min</em>.</li>
-          <li><a href="https://www.youtube.com/results?search_query=supta+padangusthasana+strap" target="_blank" rel="noopener">Supine Hamstring Strap (Supta Padangusthasana)</a> <em>2 min/side</em>.</li>
-          <li><a href="https://www.youtube.com/results?search_query=box+breathing+how+to" target="_blank" rel="noopener">Box breathing</a> — <em>6–8 cycles</em> (≈3–4 min).</li>
-          <li><a href="https://www.youtube.com/watch?v=Mc-38vuwE1Y" target="_blank" rel="noopener">Savasana body-scan</a> <em>5–6 min</em>.</li>
+          <li>4-7-8 breathing — <em>10 cycles</em> (≈4–5 min).</li>
+          <li>Supported forward fold <em>3 min</em>.</li>
+          <li>Supine hamstring (strap) <em>2 min/side</em>.</li>
+          <li>Box breathing — <em>6–8 cycles</em> (≈3–4 min).</li>
+          <li>Savasana body-scan <em>5–6 min</em>.</li>
         </ol>
       </article>
     </div>
@@ -333,180 +123,63 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
   <!-- RESTORE -->
   <section id="restore" class="section">
     <h2>Deep Restore (45–60 min)</h2>
-    <div class="grid">
-      <article class="sess">
+    <div class="grid cols2">
+      <article class="card">
         <h3>Restorative Set-Up <span class="tag">~50–60 min</span></h3>
         <ol class="steps">
-          <li><a href="https://www.youtube.com/results?search_query=coherent+breathing+5+5" target="_blank" rel="noopener">Coherent breathing</a> (in 5, out 5) <em>5–7 min</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=eqVMAPM00DM" target="_blank" rel="noopener">Supported Child’s Pose</a> <em>6–8 min</em>.</li>
-          <li><a href="https://www.youtube.com/results?search_query=supta+baddha+konasana+supported" target="_blank" rel="noopener">Reclined Bound Angle (Supta Baddha Konasana)</a> <em>8–10 min</em>.</li>
-          <li><a href="https://www.youtube.com/results?search_query=side-lying+heart+opener+restorative+yoga" target="_blank" rel="noopener">Side-lying Heart Opener (restorative)</a> <em>6–8 min/side</em>.</li>
-          <li><a href="https://www.youtube.com/watch?v=_OQEIiZLY-0" target="_blank" rel="noopener">Legs-Up-on-Chair</a> <em>8–10 min</em>.</li>
-          <li><a href="https://www.youtube.com/results?search_query=short+yoga+nidra+guided" target="_blank" rel="noopener">Yoga Nidra (guided rest)</a> <em>10–12 min</em>.</li>
+          <li>Coherent breathing (in 5, out 5) <em>5–7 min</em>.</li>
+          <li>Supported Child’s Pose <em>6–8 min</em>.</li>
+          <li>Reclined Bound Angle <em>8–10 min</em>.</li>
+          <li>Side-lying heart opener <em>6–8 min/side</em>.</li>
+          <li>Legs-up-on-chair <em>8–10 min</em>.</li>
+          <li>Yoga Nidra (guided) <em>10–12 min</em>.</li>
         </ol>
       </article>
-
-      <!-- NEW: Scripts article -->
-      <article class="sess">
-        <h3>Guided Scripts (read aloud or record)</h3>
-
-        <div class="details" open>
-          <summary>Coherent Breathing — Script (5–7 min)</summary>
-          <p class="meta">Goal: smooth nasal breathing at ~5 breaths/min. Use a calm, unhurried tone. Pause between lines.</p>
-          <div class="script">
-            <p><strong>[Set-up]</strong> Find a comfortable position—lying down or seated, back supported. Soften the jaw and tongue. Let the eyes be heavy or closed.</p>
-            <p><strong>[Arrival]</strong> Notice where your body touches the floor or chair. Shoulders soften. Belly soft.</p>
-            <p><strong>[Pattern]</strong> We’ll breathe in for <em>5</em>, out for <em>5</em>. All through the nose. If that feels too long, use 4–4; if it’s easy, try 6–6 another day.</p>
-            <p><strong>[Minute 1]</strong> In…2…3…4…5. Out…2…3…4…5. In…2…3…4…5. Out…2…3…4…5.</p>
-            <p><strong>[Minute 2]</strong> Smooth inhale…2…3…4…5. Soften on the exhale…2…3…4…5. Let the breath be quiet. Shoulders heavy.</p>
-            <p><strong>[Minute 3]</strong> In…2…3…4…5. Out…2…3…4…5. The belly widens slightly on the inhale, settles on the exhale.</p>
-            <p><strong>[Minute 4]</strong> In…2…3…4…5. Out…2…3…4…5. Imagine the exhale releasing the day’s effort.</p>
-            <p><strong>[Minute 5]</strong> In…2…3…4…5. Out…2…3…4…5. Keep it easy, like waves arriving and leaving.</p>
-            <p><strong>[Optional 1–2 min]</strong> Continue this gentle rhythm if it feels good.</p>
-            <p><strong>[Close]</strong> Let the count fade. Breathe naturally. Notice how the body feels now. When you’re ready, let light back in.</p>
-          </div>
-          <p class="meta">Prefer audio? Use the player in <a href="#audio">Calm Sounds &amp; Guided Audio</a> (file name: <code>/audio/coherent-breathing.mp3</code>).</p>
-        </div>
-
-        <div class="details" open>
-          <summary>Body-Scan — Script (10–12 min)</summary>
-          <p class="meta">Goal: invite ease and safety signals. Speak slowly, with soft pauses. Props so the body can truly rest.</p>
-          <div class="script">
-            <p><strong>[Set-up]</strong> Lie comfortably on your back or side. Support knees and head as needed. Hands rest where they feel at ease. Close the eyes if comfortable.</p>
-            <p><strong>[Arrival]</strong> Soft inhale through the nose… long easy exhale. Feel the weight of your body being held. Nothing to fix; nothing to achieve.</p>
-            <p><strong>[Head &amp; face]</strong> Soften the forehead; the space between the eyebrows widens. Unclench the jaw. Tongue rests lightly. Lips un-grip.</p>
-            <p><strong>[Neck &amp; shoulders]</strong> Notice the length of the back of the neck. Shoulders heavy—front, sides, back softening into support.</p>
-            <p><strong>[Right arm &amp; hand]</strong> Sense upper arm… elbow… forearm… wrist… palm… each finger: thumb, index, middle, ring, little. Warmth or tingling is fine; or no sensation is fine too.</p>
-            <p><strong>[Left arm &amp; hand]</strong> Upper arm… elbow… forearm… wrist… palm… fingers. Hands effortlessly supported.</p>
-            <p><strong>[Chest &amp; back]</strong> Breath moves the ribs: widen on inhale, settle on exhale. Back of the ribs spreading gently into the surface beneath you.</p>
-            <p><strong>[Abdomen &amp; diaphragm]</strong> Belly soft. Breath low and wide—no effort. If helpful, rest a hand on the belly and feel it rise and fall.</p>
-            <p><strong>[Pelvis &amp; hips]</strong> Notice the weight of the pelvis. If there’s gripping, invite 5% less effort. Hips heavy and supported.</p>
-            <p><strong>[Right leg &amp; foot]</strong> Thigh… knee… calf… ankle… heel… sole… top of the foot… each toe. The whole leg is heavy.</p>
-            <p><strong>[Left leg &amp; foot]</strong> Thigh… knee… calf… ankle… heel… sole… top of the foot… toes. Both legs at rest.</p>
-            <p><strong>[Whole body]</strong> Sense the body all at once—head to toes—held by the ground. Breathe in softly… and out a little longer. Let the breath become effortless.</p>
-            <p><strong>[Close]</strong> Linger if you wish. Otherwise, deepen the breath, invite small movements, roll to one side, and come up slowly.</p>
-          </div>
-          <p class="meta">Prefer audio? Use the player in <a href="#audio">Calm Sounds &amp; Guided Audio</a> (file name: <code>/audio/body-scan.mp3</code>).</p>
-        </div>
+      <article class="card">
+        <h3>Props & Cues</h3>
+        <ul class="steps">
+          <li>Comfort over stretch; add cushions until shapes feel easy.</li>
+          <li>Exhale longer: in 4–5, out 6–8; soften jaw and tongue.</li>
+          <li>Dim light; phone on Do Not Disturb.</li>
+        </ul>
       </article>
     </div>
   </section>
 
-  <!-- BREATH + DEMOS -->
+  <!-- BREATH -->
   <section id="breath" class="section">
-    <h2>Breathing & Pose Demos</h2>
-    <div class="grid">
+    <h2>Breathing Basics</h2>
+    <div class="grid cols2">
       <article class="card">
-        <h3>Breath Metronome</h3>
-        <div class="breath-ui">
-          <div class="breath-controls">
-            <label>Pattern
-              <select id="bm-pattern">
-                <option value="coh">Coherent 5 / 5</option>
-                <option value="down">Downshift 4 / 6</option>
-                <option value="box">Box 4 / 4 / 4 / 4</option>
-              </select>
-            </label>
-            <label>Minutes <input id="bm-mins" type="number" min="1" max="60" value="5"></label>
-            <button id="bm-start">Start</button>
-            <button id="bm-stop">Stop</button>
-          </div>
-          <div class="breath-visual"><div class="orb" id="orb"></div></div>
-          <p class="meta">Orb grows on inhale, softens on exhale (box: holds included). Keep it gentle and quiet.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <h3>Demo Poses (nocookie)</h3>
-        <div class="videos" id="vids"></div>
-        <p class="meta">Tip: if a video is blocked, use “Open on YouTube” or “Search”.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- AUDIO -->
-  <section id="audio" class="section">
-    <h2>Calm Sounds & Guided Audio</h2>
-    <div class="grid">
-      <article class="card">
-        <h3>Calm Sounds Mixer</h3>
-        <div class="mixer">
-          <div class="mix-row"><label><input type="checkbox" id="mx-rain"> Rain</label> <input class="vol" type="range" id="vol-rain" min="0" max="1" step="0.01" value="0.5"></div>
-          <div class="mix-row"><label><input type="checkbox" id="mx-ocean"> Ocean</label> <input class="vol" type="range" id="vol-ocean" min="0" max="1" step="0.01" value="0.4"></div>
-          <div class="mix-row"><label><input type="checkbox" id="mx-brown"> Brown Noise</label> <input class="vol" type="range" id="vol-brown" min="0" max="1" step="0.01" value="0.3"></div>
-          <div class="mix-row"><button id="mx-start">Start Audio</button><button id="mx-stop">Stop Audio</button></div>
-          <p class="meta">Sounds are generated locally—no downloads. Keep volume low for the most calming effect.</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <h3>Guided Audio (your recordings)</h3>
-        <div class="guides">
-          <div class="guide" data-key="scan">
-            <strong>Body-Scan (~5 min)</strong>
-            <button class="playbtn" aria-label="Play body-scan">Play</button>
-            <input class="progress" type="range" min="0" max="100" step="1" value="0" aria-label="Seek body-scan">
-            <span class="time">0:00 / 0:00</span>
-            <label class="sr" for="vol-scan">Volume</label>
-            <input id="vol-scan" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Body-scan volume">
-            <audio preload="metadata">
-              <source src="/audio/body-scan.mp3" type="audio/mpeg">
-              <source src="/audio/body-scan.wav" type="audio/wav">
-              Your browser doesn’t support audio playback.
-            </audio>
-          </div>
-
-          <div class="guide" data-key="coh">
-            <strong>Coherent Breathing (~3–5 min)</strong>
-            <button class="playbtn" aria-label="Play coherent breathing">Play</button>
-            <input class="progress" type="range" min="0" max="100" step="1" value="0" aria-label="Seek coherent breathing">
-            <span class="time">0:00 / 0:00</span>
-            <label class="sr" for="vol-coh">Volume</label>
-            <input id="vol-coh" class="vol" type="range" min="0" max="1" step="0.01" value="1" aria-label="Coherent breathing volume">
-            <audio preload="metadata">
-              <source src="/audio/coherent-breathing.mp3" type="audio/mpeg">
-              <source src="/audio/coherent-breathing.wav" type="audio/wav">
-              Your browser doesn’t support audio playback.
-            </audio>
-          </div>
-
-          <p class="meta">Drop MP3/WAV files in <code>/audio/</code> using these filenames, or update the <code>src</code> paths.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- WHY -->
-  <section id="notes" class="section">
-    <h2>Why this lowers stress</h2>
-    <div class="grid">
-      <article class="card">
-        <h3>Nervous system down-shift</h3>
-        <ul>
-          <li>Longer <em>exhales</em> and brief holds increase vagal tone, steering toward “rest &amp; digest”.</li>
-          <li>Supported shapes reduce effort → signal safety → lower sympathetic drive.</li>
-          <li>Dim light, warmth, and eye cover reduce alerting input.</li>
+        <h3>Patterns</h3>
+        <ul class="steps">
+          <li><strong>Coherent:</strong> in 5 / out 5 (steady focus).</li>
+          <li><strong>Down-shift:</strong> in 4 / out 6 (calming).</li>
+          <li><strong>Box:</strong> 4 / 4 / 4 / 4 (even, balancing).</li>
         </ul>
       </article>
       <article class="card">
-        <h3>Practical cortisol hygiene</h3>
-        <ul>
-          <li>Place calming sessions after stressful blocks or in the evening.</li>
-          <li>Avoid high-intensity work right before bed; choose restorative or breathwork instead.</li>
-          <li>Keep caffeine earlier; silence notifications during sessions.</li>
+        <h3>Tips</h3>
+        <ul class="steps">
+          <li>Nasal, quiet, low into ribs and belly.</li>
+          <li>Start short; stop if dizzy; return to normal breath.</li>
+          <li>Evenings are perfect; earlier for box if it feels alerting.</li>
         </ul>
       </article>
     </div>
-    <div class="details"><summary>Safety</summary>
-      <ul>
-        <li>Light-headed? Shorten holds or breathe normally.</li>
-        <li>Pregnancy/low blood pressure: avoid long breath holds; prefer coherent breathing.</li>
-        <li>Sharp pain ≠ normal: add props or skip the pose.</li>
-      </ul>
-    </div>
   </section>
 
-  <!-- DISCLAIMER -->
+  <!-- SAFETY -->
+  <section id="safety" class="section">
+    <h2>Safety Notes</h2>
+    <ul class="steps">
+      <li>Light-headed? Shorten holds or breathe normally.</li>
+      <li>Pregnancy/low blood pressure: avoid long breath holds; prefer coherent breathing.</li>
+      <li>Sharp pain ≠ normal: adjust with props or skip the pose.</li>
+    </ul>
+  </section>
+
+  <!-- Disclaimer (standard) -->
   <section class="section">
     <h2>Important Note</h2>
     <p>These practices support relaxation and general wellbeing; they are not a substitute for medical care. If you have health conditions, injuries, or mental health concerns, consult a qualified professional. Stop any practice that causes pain, dizziness, or distress.</p>
@@ -521,233 +194,5 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;
   </div>
 </footer>
 
-<!-- Scripts: timers, videos, metronome, calm sounds, guided audio -->
-<script>
-/* ===== Basic audio unlock ===== */
-let audioCtx, unlocked=false;
-function ensureAudio(){ if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } if(audioCtx.state==='suspended'){ audioCtx.resume(); } unlocked=true; }
-
-/* ===== Timers (countdown + chime) ===== */
-function beepAt(t,freq,dur){
-  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-  o.type='sine'; o.frequency.value=freq; g.gain.value=0.0001; o.connect(g); g.connect(audioCtx.destination);
-  o.start(t); g.gain.exponentialRampToValueAtTime(0.18, t+.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.stop(t+dur+.01);
-}
-function chime(){ if(!unlocked) return; const now=audioCtx.currentTime; beepAt(now+0.00,660,.14); beepAt(now+0.22,528,.14); beepAt(now+0.46,440,.22); }
-function hookTimers(){
-  document.querySelectorAll('[data-timer]').forEach(box=>{
-    const input=box.querySelector('input'); const left=box.querySelector('.left'); let t=null,end=0;
-    function fmt(s){return s+'s'} function tick(){ const remain=Math.max(0,Math.ceil((end-Date.now())/1000)); left.textContent=fmt(remain); if(remain<=0){ clearInterval(t); t=null; chime(); } }
-    box.querySelector('[data-act="start"]')?.addEventListener('click',()=>{ if(!unlocked) ensureAudio(); const sec=Math.max(5,parseInt(input.value||'60',10)); left.textContent=fmt(sec); end=Date.now()+sec*1000; clearInterval(t); t=setInterval(tick,200);});
-    box.querySelector('[data-act="stop"]')?.addEventListener('click',()=>{ clearInterval(t); t=null; left.textContent=fmt(Math.max(5,parseInt(input.value||'60',10)));});
-  });
-}
-
-/* ===== Video tiles ===== */
-const DEMOS = [
-  {title:'Child’s Pose (Balasana)', yt:'eqVMAPM00DM', query:'Child’s Pose yoga form'},
-  {title:'Legs-Up-the-Wall (Viparita Karani)', yt:'_OQEIiZLY-0', query:'Legs up the wall yoga'},
-  {title:'Supported Bridge', yt:'U48H2m9AyZE', query:'Supported bridge pose yoga'}
-];
-function renderVideos(){
-  const wrap=document.getElementById('vids'); if(!wrap) return; wrap.innerHTML='';
-  DEMOS.forEach(d=>{
-    const card=document.createElement('div'); card.className='tile';
-    const img=document.createElement('img'); img.className='thumb'; img.alt=d.title+' thumbnail';
-    img.src='/img/placeholder-yoga.jpg';
-    const overlay=document.createElement('div'); overlay.className='overlay';
-    const label=document.createElement('div'); label.className='label'; label.textContent=d.title;
-    const btn=document.createElement('button'); btn.className='play'; btn.setAttribute('aria-label','Play '+d.title);
-    const iframe=document.createElement('iframe');
-    iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-    iframe.title=d.title+' video';
-    const openers=document.createElement('div'); openers.className='openers';
-    const a1=document.createElement('a'); a1.textContent='Open on YouTube'; a1.target='_blank'; a1.rel='noopener';
-    a1.href='https://www.youtube.com/watch?v='+d.yt;
-    const a2=document.createElement('a'); a2.textContent='Search'; a2.target='_blank'; a2.rel='noopener'; a2.href='https://www.youtube.com/results?search_query='+encodeURIComponent(d.query||d.title);
-    btn.addEventListener('click',()=>{ iframe.src='https://www.youtube-nocookie.com/embed/'+d.yt+'?rel=0&modestbranding=1&autoplay=1'; iframe.style.display='block'; btn.style.display='none'; });
-    openers.appendChild(a1); openers.appendChild(a2);
-    card.appendChild(img); card.appendChild(overlay); card.appendChild(label); card.appendChild(btn); card.appendChild(iframe); card.appendChild(openers);
-    wrap.appendChild(card);
-  });
-}
-
-/* ===== Breath Metronome ===== */
-let bmTimer=null, bmStopper=null;
-function startBreathMetronome(){
-  if(!unlocked) ensureAudio();
-  stopBreathMetronome();
-  const pattern=document.getElementById('bm-pattern').value;
-  const mins=parseFloat(document.getElementById('bm-mins').value)||5;
-  const orb=document.getElementById('orb');
-  const schedule=[];
-  if(pattern==='coh'){ schedule.push(['inhale',5],['exhale',5]); }
-  if(pattern==='down'){ schedule.push(['inhale',4],['exhale',6]); }
-  if(pattern==='box'){ schedule.push(['inhale',4],['hold',4],['exhale',4],['hold',4]); }
-  const endTime=Date.now()+mins*60000;
-  function phaseTone(type){
-    const now=audioCtx.currentTime;
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type='sine'; o.frequency.value=(type==='inhale'?440:(type==='exhale'?330:220));
-    g.gain.value=0.0001; o.connect(g); g.connect(audioCtx.destination); o.start(now);
-    g.gain.exponentialRampToValueAtTime(0.12, now+.02); g.gain.exponentialRampToValueAtTime(0.0001, now+.25); o.stop(now+.27);
-  }
-  function phaseVisual(type){
-    if(!orb) return;
-    if(type==='inhale'){ orb.style.transform='scale(1.35)'; orb.style.opacity='1'; }
-    else if(type==='exhale'){ orb.style.transform='scale(0.85)'; orb.style.opacity='.8'; }
-    else { orb.style.transform='scale(1.0)'; orb.style.opacity='.9'; }
-  }
-  let i=0;
-  function loop(){
-    if(Date.now()>=endTime){ stopBreathMetronome(); return; }
-    const [type,seconds]=schedule[i%schedule.length];
-    phaseTone(type); phaseVisual(type);
-    bmTimer=setTimeout(loop, seconds*1000);
-    i++;
-  }
-  loop();
-  bmStopper=setTimeout(()=>stopBreathMetronome(), mins*60000+2000);
-}
-function stopBreathMetronome(){ if(bmTimer){ clearTimeout(bmTimer); bmTimer=null; } if(bmStopper){ clearTimeout(bmStopper); bmStopper=null; } }
-
-/* ===== Calm Sounds ===== */
-const mixer = { rain:null, ocean:null, brown:null, master:null };
-function buildNoiseNodes(){
-  if(!unlocked) ensureAudio();
-  const ctx=audioCtx;
-  mixer.master = mixer.master || ctx.createGain(); mixer.master.gain.value=0.5; mixer.master.connect(ctx.destination);
-
-  function whiteBuffer(){
-    const buf=ctx.createBuffer(1, ctx.sampleRate*2, ctx.sampleRate);
-    const data=buf.getChannelData(0);
-    for(let i=0;i<data.length;i++){ data[i]=Math.random()*2-1; }
-    return buf;
-  }
-  function makePlayer(){
-    const src=ctx.createBufferSource(); src.buffer=whiteBuffer(); src.loop=true; return src;
-  }
-
-  if(!mixer.rain){
-    const src=makePlayer();
-    const bpf=ctx.createBiquadFilter(); bpf.type='bandpass'; bpf.frequency.value=1800; bpf.Q.value=0.6;
-    const hpf=ctx.createBiquadFilter(); hpf.type='highpass'; hpf.frequency.value=200;
-    const gain=ctx.createGain(); gain.gain.value=0;
-    const delay=ctx.createDelay(); delay.delayTime.value=0.18;
-    const fb=ctx.createGain(); fb.gain.value=0.15;
-    src.connect(bpf); bpf.connect(hpf); hpf.connect(gain); gain.connect(mixer.master);
-    hpf.connect(delay); delay.connect(fb); fb.connect(delay); delay.connect(gain);
-    mixer.rain={src,gain};
-  }
-
-  if(!mixer.ocean){
-    const src=makePlayer();
-    const lpf=ctx.createBiquadFilter(); lpf.type='lowpass'; lpf.frequency.value=400;
-    const lfo=ctx.createOscillator(); lfo.frequency.value=0.07;
-    const lfoGain=ctx.createGain(); lfoGain.gain.value=220;
-    const gain=ctx.createGain(); gain.gain.value=0;
-    src.connect(lpf); lpf.connect(gain); gain.connect(mixer.master);
-    lfo.connect(lfoGain); lfoGain.connect(lpf.frequency);
-    mixer.ocean={src,gain,lfo};
-  }
-
-  if(!mixer.brown){
-    const node = ctx.createScriptProcessor(4096,1,1);
-    let lastOut=0;
-    node.onaudioprocess=e=>{
-      const out=e.outputBuffer.getChannelData(0);
-      for(let i=0;i<out.length;i++){
-        const white=Math.random()*2-1;
-        lastOut=(lastOut + (0.02*white)) / 1.02;
-        out[i]=lastOut*1.6;
-      }
-    };
-    const gain=ctx.createGain(); gain.gain.value=0;
-    node.connect(gain); gain.connect(mixer.master);
-    mixer.brown={node,gain};
-  }
-}
-function startMixer(){
-  if(!unlocked) ensureAudio();
-  buildNoiseNodes();
-  ['rain','ocean'].forEach(k=>{
-    try{ mixer[k].src.start(); }catch{}
-    if(k==='ocean'){ try{ mixer.ocean.lfo.start(); }catch{} }
-  });
-  mixer.rain.gain.gain.value = parseFloat(document.getElementById('vol-rain').value)||0.5;
-  mixer.ocean.gain.gain.value = parseFloat(document.getElementById('vol-ocean').value)||0.4;
-  mixer.brown.gain.gain.value = parseFloat(document.getElementById('vol-brown').value)||0.3;
-  document.getElementById('mx-rain').checked ? mixer.rain.gain.connect(mixer.master) : mixer.rain.gain.disconnect();
-  document.getElementById('mx-ocean').checked ? mixer.ocean.gain.connect(mixer.master) : mixer.ocean.gain.disconnect();
-  document.getElementById('mx-brown').checked ? mixer.brown.gain.connect(mixer.master) : mixer.brown.gain.disconnect();
-}
-function stopMixer(){ if(!audioCtx) return; try{ mixer.master.disconnect(); }catch{} }
-function hookMixerUI(){
-  [['mx-rain','vol-rain','rain'],['mx-ocean','vol-ocean','ocean'],['mx-brown','vol-brown','brown']].forEach(([chk,vol,key])=>{
-    document.getElementById(chk).addEventListener('change',()=>{
-      if(!unlocked) ensureAudio(); buildNoiseNodes();
-      if(document.getElementById(chk).checked){ mixer[key].gain.connect(mixer.master); }
-      else { try{ mixer[key].gain.disconnect(); }catch{} }
-    });
-    document.getElementById(vol).addEventListener('input',()=>{
-      if(!unlocked) ensureAudio(); buildNoiseNodes();
-      mixer[key].gain.gain.value=parseFloat(document.getElementById(vol).value)||0.3;
-    });
-  });
-  document.getElementById('mx-start').addEventListener('click', startMixer);
-  document.getElementById('mx-stop').addEventListener('click', stopMixer);
-}
-
-/* ===== Guided Audio players (Play/Pause + progress + volume) ===== */
-function fmtTime(t){ if(!isFinite(t)) return '0:00'; const m=Math.floor(t/60), s=Math.floor(t%60).toString().padStart(2,'0'); return `${m}:${s}`; }
-function hookGuideAudio(){
-  const guides = document.querySelectorAll('.guide');
-  const allAudios = [];
-  guides.forEach(g=>{
-    const audio = g.querySelector('audio');
-    const btn   = g.querySelector('.playbtn');
-    const bar   = g.querySelector('.progress');
-    const vol   = g.querySelector('.vol');
-    const time  = g.querySelector('.time');
-    if(!audio || !btn || !bar || !vol || !time) return;
-    allAudios.push(audio);
-    audio.volume = parseFloat(vol.value)||1;
-
-    audio.addEventListener('loadedmetadata', ()=>{
-      bar.max = Math.floor(audio.duration||100);
-      time.textContent = `0:00 / ${fmtTime(audio.duration)}`;
-    });
-    audio.addEventListener('timeupdate', ()=>{
-      bar.value = Math.floor(audio.currentTime||0);
-      time.textContent = `${fmtTime(audio.currentTime)} / ${fmtTime(audio.duration)}`;
-    });
-    audio.addEventListener('ended', ()=>{ btn.textContent='Play'; });
-
-    bar.addEventListener('input', ()=>{ audio.currentTime = parseFloat(bar.value)||0; });
-    vol.addEventListener('input', ()=>{ audio.volume = parseFloat(vol.value)||0; });
-
-    btn.addEventListener('click', ()=>{
-      allAudios.forEach(a=>{ if(a!==audio){ try{ a.pause(); }catch{} } });
-      if(!unlocked) ensureAudio();
-      if(audio.paused){
-        audio.play().then(()=>{ btn.textContent='Pause'; }).catch(()=>{});
-      }else{
-        audio.pause(); btn.textContent='Play';
-      }
-    });
-  });
-}
-
-/* ===== Boot ===== */
-document.addEventListener('DOMContentLoaded', ()=>{
-  hookTimers();
-  renderVideos();
-  hookMixerUI();
-  hookGuideAudio();
-  document.getElementById('bm-start').addEventListener('click', startBreathMetronome);
-  document.getElementById('bm-stop').addEventListener('click', stopBreathMetronome);
-});
-</script>
 </body>
 </html>

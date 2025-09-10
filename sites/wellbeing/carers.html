@@ -2,64 +2,260 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Carer Support — FreeFitFuel</title>
-  <link rel="stylesheet" href="../style.css?v=navfix">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carer Support – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="/style.css?v=42">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page-local layout */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+
+    /* FINAL HERO: no crop/zoom */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;
+      height:auto !important;              /* natural aspect ratio */
+      max-height:460px !important;         /* cap on large screens */
+      object-fit:scale-down !important;    /* show full image (no crop) */
+      object-position:center center !important;
+      display:block; filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
+
+    /* Mini-nav (sticky + active) */
+    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
+    html{scroll-behavior:smooth}
+
+    .btn--pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:999px;padding:.42rem .75rem;font-size:.92rem;text-decoration:none}
+    .btn-row{display:flex;flex-wrap:wrap;gap:.5rem}
+
+    .figure{margin:.6rem 0}
+    .figure img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+    .meta{color:var(--inkdim);font-size:.92rem}
+    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.55rem 0}
+    .details summary{cursor:pointer;font-weight:600}
+  </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="brand">
-    <img src="../img/freefitfuel-logo.png" alt="FreeFitFuel logo" class="logo" onerror="this.style.display='none'">
-    <span class="site-title">FreeFitFuel</span>
+
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Carer Support hero">
+  <figure>
+    <img src="/img/carers-hero.png" alt="A supportive hand on a shoulder at home — symbol of caring and support">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Carer Support</span></h1>
+    <p>Caring is meaningful and demanding. You deserve practical help, rest, and clear information.</p>
   </div>
-  <nav class="nav" aria-label="Primary">
-    <a href="/">Home</a>
-    <a href="/wellbeing/">Wellbeing</a>
-    <a href="/fitness/">Fitness</a>
-    <a href="/fuel/">Fuel</a>
-  </nav>
 </header>
 
 <main class="wrap">
-  <h1>Carer Support</h1>
-  <p class="meta">Caring is meaningful and demanding. These notes aim to reduce overwhelm, protect your energy, and keep connection at the centre.</p>
+  <p class="lead">
+    This page gathers simple tools and UK links for **unpaid carers** — whether you look after a partner, child,
+    parent, friend or neighbour. Use the mini-nav to jump to what you need.
+  </p>
 
-  <section class="grid">
-    <article class="card">
-      <h2>What you can control</h2>
-      <p>Small levers matter: routine meals, hydration, short movement, and 10–15 minute rest windows. Reduce decision load where you can.</p>
-    </article>
-    <article class="card">
-      <h2>Boundaries that protect care</h2>
-      <p>Clear “office hours”, shared calendars, and a simple handover list make support from others easier and reduce burnout.</p>
-    </article>
-    <article class="card">
-      <h2>Staying connected</h2>
-      <p>Schedule brief check-ins with a friend or sibling. Consider group chats for updates so you’re not repeating the same message.</p>
-    </article>
-    <article class="card">
-      <h2>Anticipatory grief</h2>
-      <p>It’s grief that starts before loss. Naming it helps. See our short guide under Mental Health for practical ways to cope.</p>
-      <a class="btn ghost" href="mental-health/anticipatory-grief.html">Read the guide</a>
-    </article>
-    <article class="card">
-      <h2>Respite & practical help</h2>
-      <p>List specific tasks others can take (shopping list, prescriptions, laundry). Share it when people ask “How can I help?”</p>
-    </article>
-    <article class="card">
-      <h2>Emergency contacts</h2>
-      <p>Keep key numbers in one place (GP, out-of-hours, pharmacy, neighbour). Put a printed copy by the door.</p>
-    </article>
+  <!-- Mini-nav -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#who-is-a-carer">Who is a carer?</a>
+    <a href="#wellbeing">Your wellbeing</a>
+    <a href="#money-rights">Money & rights (UK)</a>
+    <a href="#planning">Planning & emergencies</a>
+    <a href="#respite">Respite & breaks</a>
+    <a href="#tools">Quick tools</a>
+    <a href="#support">Support services</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <!-- Who is a carer -->
+  <section id="who-is-a-carer" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>1) Who counts as a carer?</h2>
+        <p>
+          You are a carer if you provide unpaid help to someone who couldn’t manage without it. That might be
+          support with medicines, personal care, mobility, meals, travel, appointments, or keeping the home running.
+        </p>
+        <p class="meta">Tip: tell your GP you’re a carer — practices can add this to your record and share local support.</p>
+      </article>
+      <aside class="card">
+        <div class="figure">
+          <img src="/img/carers-checklist.png" alt="Notebook with carer notes and a mug on a table">
+          <p class="cap">Noticing that you are a carer is the first step to getting support.</p>
+        </div>
+      </aside>
+    </div>
   </section>
 
-  <p><a class="btn ghost" href="/wellbeing/">← Back to Wellbeing</a></p>
+  <!-- Wellbeing -->
+  <section id="wellbeing" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>2) Your wellbeing</h2>
+        <ul>
+          <li><strong>Micro-rest:</strong> 3–5 short breath/move breaks across the day (set a light reminder).</li>
+          <li><strong>Sleep basics:</strong> aim for a regular wind-down, dim lights, and a quick next-day list so your brain can switch off.</li>
+          <li><strong>Cortisol calm:</strong> slow breathing (in 4, out 6–8), a brief outside walk, and warm hands/drink to soften the stress response.</li>
+          <li><strong>Share the load:</strong> make a simple task list and invite family/friends to take one small thing regularly.</li>
+        </ul>
+        <details class="details"><summary>Short breathing reset (1–2 minutes)</summary>
+          <p>Inhale softly through the nose for 4, exhale for 6–8. Shoulders stay heavy; jaw unclenched. Repeat ~10–12 cycles.</p>
+        </details>
+      </article>
+      <article class="card">
+        <h3>Quick support at home</h3>
+        <ul>
+          <li>Keep a <strong>meds list</strong> on the fridge and a photo on your phone.</li>
+          <li>Put key contacts in one place: GP, out-of-hours, pharmacy, social work, trusted neighbour.</li>
+          <li>Use a <strong>spare keys</strong> plan with a neighbour/friend you trust.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn--pill" href="/pdf/wellbeing/meds-list.pdf">Meds List (PDF)</a>
+          <a class="btn--pill" href="/tracker.html">Start Tracker</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Money & rights -->
+  <section id="money-rights" class="section">
+    <h2>3) Money & rights (UK quick guide)</h2>
+    <ul>
+      <li><strong>Carer’s Assessment</strong> (via your local council) — looks at your needs as a carer and what support could help.</li>
+      <li><strong>Carer’s Allowance</strong> (if eligible) and related top-ups; other possible benefits include Universal Credit, Pension Credit additions.</li>
+      <li><strong>Young carers</strong> have access to specific support via schools/colleges and local services.</li>
+      <li><strong>Employment</strong> — talk with your employer about flexible working or carer’s leave options.</li>
+    </ul>
+    <p class="meta">Rules differ across UK nations and can change — check the services below for up-to-date info.</p>
+  </section>
+
+  <!-- Planning & emergencies -->
+  <section id="planning" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>4) Planning & emergencies</h2>
+        <ul>
+          <li><strong>Emergency plan:</strong> who to call, what to do, meds/allergies, key routines.</li>
+          <li><strong>Back-up contacts:</strong> at least two people who can step in for an hour or a day.</li>
+          <li><strong>Grab-bag:</strong> copies of IDs, meds list, spare chargers, small cash, essentials.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn--pill" href="/pdf/wellbeing/carer-emergency-plan.pdf">Emergency Plan (PDF)</a>
+          <a class="btn--pill" href="/pdf/wellbeing/appointment-notes.pdf">Appointment Notes (PDF)</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="figure">
+          <img src="/img/carers-emergency.png" alt="Simple emergency plan sheet on a clipboard">
+          <p class="cap">A one-page plan helps others help you quickly.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Respite -->
+  <section id="respite" class="section">
+    <h2>5) Respite & breaks</h2>
+    <p>Short breaks matter. Options vary by area but may include:</p>
+    <ul>
+      <li>Local authority funded short breaks via carer services.</li>
+      <li>Voluntary sector respite schemes and sitting services.</li>
+      <li>Family/friends taking a regular slot each week (“every Wed 2–4pm”).</li>
+    </ul>
+    <p class="meta">Ask your local carer centre about what’s available where you live.</p>
+  </section>
+
+  <!-- Tools -->
+  <section id="tools" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>6) Quick tools</h2>
+        <ul>
+          <li><strong>Symptom tracker:</strong> note flare-ups, meds taken, meals, fluids, sleep, mood.</li>
+          <li><strong>Shared task list:</strong> write 6–8 jobs others can choose from (shopping, garden, lifts).</li>
+          <li><strong>Call script:</strong> have key lines ready for GP/social work/111 to reduce stress on the call.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn--pill" href="/pdf/wellbeing/shared-task-list.pdf">Shared Task List (PDF)</a>
+          <a class="btn--pill" href="/pdf/wellbeing/call-script.pdf">Call Script (PDF)</a>
+        </div>
+      </article>
+      <article class="card">
+        <h3>De-stress micro-routine (3 minutes)</h3>
+        <ol>
+          <li>Stand or sit tall. Inhale 4, exhale 6–8 for 8–10 breaths.</li>
+          <li>Roll shoulders, shake out hands, stretch calves.</li>
+          <li>Drink water; step outside for 60 seconds of daylight if possible.</li>
+        </ol>
+      </article>
+    </div>
+  </section>
+
+  <!-- Support services -->
+  <section id="support" class="section">
+    <h2>7) Support services (UK & Scotland)</h2>
+    <ul>
+      <li><a href="https://www.carersuk.org/" target="_blank" rel="noopener">Carers UK</a> — national advice, forums, rights and entitlements.</li>
+      <li><a href="https://carers.org/" target="_blank" rel="noopener">Carers Trust</a> — local carer services and young carer support.</li>
+      <li><a href="https://www.nhsinform.scot/care-support-and-rights/carers" target="_blank" rel="noopener">NHS Inform Scotland: Carers</a> — Scottish information and getting help.</li>
+      <li>Your <strong>local council</strong> — Carer’s Assessment and support in your area (search “<em>carer assessment</em>” + your council).</li>
+      <li><a href="https://www.citizensadvice.org.uk/" target="_blank" rel="noopener">Citizens Advice</a> — benefits and work advice.</li>
+      <li><a href="https://www.mygov.scot/young-carer-grant" target="_blank" rel="noopener">Young Carer Grant (Scotland)</a> — if eligible.</li>
+    </ul>
+  </section>
+
+  <!-- Disclaimer -->
+  <section id="disclaimer" class="section">
+    <h2>Important Note</h2>
+    <p>
+      This page provides general information and links. It’s not a substitute for professional medical, legal or financial advice.
+      For personalised guidance, contact your local carer service or an advice organisation above.
+    </p>
+  </section>
 </main>
 
-<footer>
-  <div class="wrap footer-inner">
-    <img src="../img/freefitfuel-icon.png" alt="FreeFitFuel icon" class="footer-icon" onerror="this.style.display='none'">
-    <p>© <span>FreeFitFuel</span> | Grant Cameron Anthony</p>
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
   </div>
 </footer>
+
+<script>
+/* mini-nav smooth scroll + scrollspy */
+(function(){
+  const nav = document.querySelector('.mini-nav'); if(!nav) return;
+  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  const targets = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) })).filter(x=>x.el);
+
+  const setActive = id => links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
+
+  const io = new IntersectionObserver((entries)=>{
+    const top = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+    if(top) setActive(top.target.id);
+  }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
+
+  targets.forEach(t => io.observe(t.el));
+})();
+</script>
 </body>
 </html>

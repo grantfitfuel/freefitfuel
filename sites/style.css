@@ -273,4 +273,40 @@ dialog::backdrop{ background:rgba(0,0,0,.6) }
   #printArea img { display:none !important; } /* per your request */
 
   @page { margin:12mm; }
+   /* =========================================
+   HERO OVERRIDES — put content BELOW images
+   and keep image height reasonable everywhere
+   ========================================= */
+
+/* A) Mini hero (Ideas / Workouts / Endurance / Nutrition / Chill / Contact) */
+header.hero-mini .content{
+  position:static;          /* was absolute */
+  inset:auto;
+  padding:16px 20px 22px;
+  max-width:var(--maxw);
+  margin:0 auto;
+}
+
+/* Keep the gradient on the image only */
+header.hero-mini .overlay{ position:absolute; inset:0; pointer-events:none; }
+
+/* B) Full hero (Home, if used on your template) */
+header.hero .content{
+  position:static;          /* move text under the image */
+  inset:auto;
+  padding:16px 20px 22px;
+  max-width:var(--maxw);
+  margin:0 auto;
+}
+header.hero .hero-media img{
+  width:100%;
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
+  object-fit:cover;
+  object-position:center 35%;
+  display:block;
+}
+
+/* Optional: ensure no inline styles re-enforce the old behaviour */
+header.hero-mini .content[style],
+header.hero .content[style]{ position:static !important; inset:auto !important; }
 }

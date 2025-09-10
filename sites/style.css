@@ -161,7 +161,18 @@ header.hero-mini figure > img[style],
     height:clamp(220px, 40vh, 460px);
   }
 }
+/* Home hero: smaller height + text below image */
+header.hero .hero-media img{
+  height: clamp(220px, 36vh, 480px);   /* was taller; this tames it */
+  object-fit: cover;
+  object-position: center 35%;
+}
 
+header.hero .hero-content{
+  position: static;                    /* ensure content is under the image */
+  inset: auto;
+  padding: 16px 20px 22px;
+}
 /* =========================================
    Components
    ========================================= */

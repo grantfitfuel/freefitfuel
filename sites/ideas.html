@@ -5,41 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ideas – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="stylesheet" href="style.css?v=27">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+
+    /* Hero */
     .hero-mini figure{position:relative;max-height:360px;overflow:hidden}
     .hero-mini img{width:100%;height:360px;object-fit:cover}
     .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55))}
     .hero-mini .content{position:relative;color:#fff}
 
-    /* Grid of idea cards */
-    #ideasGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-    .card{padding:12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.5rem}
-    .card h3{margin:.15rem 0;font-size:1.06rem}
-    .card .meta{color:var(--inkdim);font-size:.92rem}
-    .mini-nav{display:flex;flex-wrap:wrap;gap:.35rem}
-    .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.3rem .7rem;font-size:.82rem}
-    .btn{cursor:pointer}
+    /* Sections / card */
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .card{padding:14px;border:1px solid var(--stroke);border-radius:12px;background:#111418;display:flex;flex-direction:column;gap:.6rem}
+    .card h3{margin:.1rem 0 .2rem;font-size:1.1rem}
+    .meta{color:var(--inkdim);font-size:.92rem}
 
-    /* Filter chips */
-    #ideaFilterChips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-    #ideaFilterChips .chip{padding:.45rem .8rem;font-size:.92rem}
-    #ideaFilterChips .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+    /* Slim pill buttons (downloads & small actions) */
+    .btn--pill{
+      display:inline-flex;align-items:center;gap:.35rem;
+      border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
+      border-radius:999px;padding:.34rem .65rem;font-size:.9rem;text-decoration:none;cursor:pointer
+    }
+    .btn--pill:hover{color:var(--accent)}
+    .btn-row{display:flex;flex-wrap:wrap;gap:.45rem}
+
+    /* Big primary actions (kept subtle) */
+    .btn{
+      display:inline-flex;align-items:center;gap:.45rem;cursor:pointer;
+      border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
+      padding:.5rem .9rem;border-radius:10px;text-decoration:none
+    }
+    .btn:hover{color:var(--accent)}
+
+    /* Chips */
+    .chips{display:flex;flex-wrap:wrap;gap:.35rem}
+    .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.28rem .55rem;font-size:.82rem}
+
+    /* Layout */
+    .grid{display:grid;gap:12px}
+    @media (min-width:900px){.grid{grid-template-columns:2fr 1fr}}
 
     /* Modal */
-    dialog.idea-modal{width:min(780px,96vw);border:0;border-radius:12px;padding:0;z-index:1100}
+    dialog.idea-modal{width:min(780px,96vw);border:0;border-radius:12px;padding:0;z-index:1100;background:#0e1217;color:var(--ink)}
     dialog.idea-modal::backdrop{background:rgba(0,0,0,.5)}
     .modal-body{padding:16px;max-height:80vh;overflow:auto}
     .modal-header{display:flex;justify-content:space-between;align-items:center;gap:.6rem;border-bottom:1px solid var(--stroke);padding-bottom:8px}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}
-    .overlay.show{opacity:1;pointer-events:auto}
 
-    /* Quick badges */
-    .badge{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.25rem .5rem;font-size:.8rem}
+    /* Drawer for archive */
+    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem}
+    .details summary{cursor:pointer;font-weight:600}
+    .archive-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:.6rem}
+    .archive-card{border:1px solid var(--stroke);border-radius:10px;background:#111418;padding:.6rem}
+    .archive-card h4{margin:.1rem 0 .2rem;font-size:1rem}
   </style>
 </head>
 <body>
@@ -54,56 +74,67 @@
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content wrap">
-    <h1><span class="accent">Small Challenges. Big Changes.</span></h1>
-    <p>Pick an idea in fitness, food, or focus. Keep it simple, keep it fun.</p>
+    <h1><span class="accent">Weekly Challenge</span></h1>
+    <p>One tiny idea to focus on all week. Monday → Sunday. Keep it simple, keep it fun.</p>
     <div class="cta-row">
-      <a class="btn" href="#ideas">Browse Ideas</a>
-      <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Download Fitness Bingo</a>
+      <a class="btn" href="#challenge">This Week’s Challenge</a>
+      <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo (PDF)</a>
     </div>
   </div>
 </header>
 
-<main class="wrap" id="ideas">
-  <!-- FILTERS -->
-  <section class="section" aria-label="Idea filters">
-    <div class="grid" style="grid-template-columns:2fr 1fr">
-      <div>
-        <label for="ideaSearch" class="visually-hidden">Search ideas</label>
-        <input id="ideaSearch" class="input" type="search" placeholder="Search ideas, tags…">
-      </div>
-      <div style="display:flex;gap:.6rem;justify-content:flex-end;align-items:center;">
-        <span class="badge" id="ideaCount">Showing 0</span>
-      </div>
-    </div>
+<main class="wrap" id="challenge">
+  <!-- THIS WEEK -->
+  <section class="section">
+    <div class="grid">
+      <article class="card" id="challengeCard">
+        <h3 id="cTitle">Loading…</h3>
+        <p class="meta" id="cMeta">—</p>
+        <p id="cSummary">—</p>
+        <div class="chips" id="cChips"></div>
+        <div class="btn-row" id="cBtns">
+          <!-- View details + any downloads injected here -->
+        </div>
+      </article>
 
-    <div id="ideaFilterChips" role="toolbar" aria-label="Idea filters">
-      <!-- JS populates: ALL + tag chips -->
+      <aside class="card">
+        <h3>How the weekly idea works</h3>
+        <ul class="meta" style="margin:.3rem 0 0 1.1rem">
+          <li>Runs **Monday → Sunday** based on your local time.</li>
+          <li>Refreshes automatically each new week (deterministic rotation).</li>
+          <li>Open details to see steps and tips. Keep it tiny and achievable.</li>
+        </ul>
+      </aside>
     </div>
-
-    <button id="ideaClearBtn" class="btn" style="display:none">Clear filters</button>
   </section>
 
-  <!-- GRID -->
+  <!-- OPTIONAL ARCHIVE BROWSER -->
   <section class="section">
-    <div id="ideasGrid" aria-live="polite" aria-busy="true"></div>
+    <div class="details">
+      <summary>Browse all ideas (optional)</summary>
+      <div class="archive-grid" id="archiveGrid"></div>
+    </div>
   </section>
 
   <!-- INFO -->
   <section class="section">
     <div class="grid">
       <article class="card">
-        <h3>How to Use This Page</h3>
-        <p>Pick 1–2 ideas per week. Keep them tiny, track progress, and celebrate wins.</p>
+        <h3>Keep it tiny</h3>
+        <p>Just 1–2 ideas per week is plenty. Track progress and celebrate small wins.</p>
       </article>
       <article class="card">
         <h3>Downloads</h3>
-        <p><a class="btn" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker (PDF)</a>
-           <a class="btn" href="pdf/ideas/hydration-log.pdf">Hydration Log (PDF)</a>
-           <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo (PDF)</a></p>
+        <div class="btn-row">
+          <a class="btn--pill" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker</a>
+          <a class="btn--pill" href="pdf/ideas/hydration-log.pdf">Hydration Log</a>
+          <a class="btn--pill" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo</a>
+        </div>
       </article>
     </div>
   </section>
-    <!-- Disclaimer (standard) -->
+
+  <!-- Disclaimer -->
   <section class="section">
     <h2>Important Note</h2>
     <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
@@ -118,9 +149,8 @@
   </div>
 </footer>
 
-<!-- Modal shell -->
+<!-- Modal for details -->
 <dialog id="ideaModal" class="idea-modal" aria-hidden="true"></dialog>
-<div id="overlay" class="overlay"></div>
 
 <script>
 /* ===== Header burger ===== */
@@ -136,39 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===== Ideas app ===== */
+/* ===== Weekly Challenge App ===== */
 (function(){
-  const qs  = (s, e = document) => e.querySelector(s);
-  const qsa = (s, e = document) => Array.from(e.querySelectorAll(s));
-  const norm= s => (s||'').toString().trim().toLowerCase();
-
-  const grid   = qs('#ideasGrid');
-  const chips  = qs('#ideaFilterChips');
-  const search = qs('#ideaSearch');
-  const count  = qs('#ideaCount');
-  const clear  = qs('#ideaClearBtn');
-  const modal  = qs('#ideaModal');
-  const overlay= qs('#overlay');
-
-  const TAG_GROUPS = [
-    { id:'ALL', label:'ALL' },
-    { id:'Type', label:'Type', chips:['Fitness','Nutrition','Mind','Fun'] },
-    { id:'Focus', label:'Focus', chips:['Strength','Cardio','Mobility','Habits','Budget','Hydration','Sleep','Mindfulness'] },
-    { id:'Time', label:'Time', chips:['≤5 min','≤10 min','≤20 min'] },
-    { id:'Gear', label:'Gear', chips:['No equipment','Dumbbells','Resistance band'] }
-  ];
-
-  const FILTERS = {
-    ALL:true,
-    search:'',
-    Type:new Set(),
-    Focus:new Set(),
-    Time:new Set(),
-    Gear:new Set()
-  };
-
+  const qs=(s,e=document)=>e.querySelector(s);
+  const qsa=(s,e=document)=>Array.from(e.querySelectorAll(s));
   const IDEAS = [
-    // ----- FITNESS -----
+    /* FITNESS */
     {
       title:'30-Day Push-Up Challenge',
       type:'Fitness',
@@ -206,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gear:['No equipment','Dumbbells']
     },
 
-    // ----- NUTRITION -----
+    /* NUTRITION */
     {
       title:'Hydration 7-Day',
       type:'Nutrition',
@@ -239,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gear:[]
     },
 
-    // ----- MIND / RECOVERY -----
+    /* MIND */
     {
       title:'Sleep Reset (14 Days)',
       type:'Mind',
@@ -261,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gear:[]
     },
 
-    // ----- FUN / COMMUNITY -----
+    /* FUN */
     {
       title:'Fitness Bingo',
       type:'Fun',
@@ -285,142 +288,135 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  function renderChips(){
-    chips.innerHTML = '';
-    const all = document.createElement('button');
-    all.className = 'chip'; all.dataset.filter='ALL';
-    all.setAttribute('aria-pressed','true'); all.textContent='ALL';
-    chips.appendChild(all);
+  /* ISO week helpers (Mon-Sun) */
+  function startOfWeek(d){ // returns a new Date at Monday 00:00 local
+    const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const day = (date.getDay()+6)%7; // 0=Mon
+    date.setDate(date.getDate()-day);
+    date.setHours(0,0,0,0);
+    return date;
+  }
+  function endOfWeek(d){
+    const s = startOfWeek(d);
+    const e = new Date(s); e.setDate(e.getDate()+6); e.setHours(23,59,59,999); return e;
+  }
+  function isoWeekYear(d){
+    // ISO week-numbering year
+    const tmp = new Date(d.getTime());
+    tmp.setHours(0,0,0,0);
+    // Thursday determines year
+    tmp.setDate(tmp.getDate() + 3 - ((tmp.getDay()+6)%7));
+    return tmp.getFullYear();
+  }
+  function isoWeekNumber(d){
+    const temp = new Date(d.getTime());
+    temp.setHours(0,0,0,0);
+    // Thursday of this week
+    temp.setDate(temp.getDate() + 3 - ((temp.getDay()+6)%7));
+    const week1 = new Date(temp.getFullYear(),0,4);
+    const diff = (temp - week1 + ((week1.getDay()+6)%7 - 3)*86400000) / 86400000;
+    return 1 + Math.floor(diff/7);
+  }
 
-    TAG_GROUPS.filter(g=>g.id!=='ALL').forEach(g=>{
-      g.chips.forEach(v=>{
-        const b=document.createElement('button');
-        b.className='chip'; b.dataset.group=g.id; b.dataset.value=v; b.setAttribute('aria-pressed','false');
-        b.textContent=v; chips.appendChild(b);
-      });
+  /* Deterministic weekly index so it rotates automatically */
+  function weeklyIndex(len){
+    const now = new Date();
+    const y = isoWeekYear(now);
+    const w = isoWeekNumber(now); // 1..53
+    // Simple hash mix so distribution is nice but deterministic
+    let n = (y*57 + w*131) ^ 0x9e3779b1;
+    n = (n ^ (n>>>16)) * 0x45d9f3b;
+    n = (n ^ (n>>>16)) * 0x45d9f3b;
+    n = n ^ (n>>>16);
+    const idx = Math.abs(n) % len;
+    return { idx, y, w, now };
+  }
+
+  /* Render "this week" */
+  function renderThisWeek(){
+    const { idx, now } = weeklyIndex(IDEAS.length);
+    const idea = IDEAS[idx];
+
+    const cTitle = qs('#cTitle');
+    const cMeta  = qs('#cMeta');
+    const cSummary = qs('#cSummary');
+    const cChips = qs('#cChips');
+    const cBtns = qs('#cBtns');
+
+    const s = startOfWeek(now);
+    const e = endOfWeek(now);
+    const fmt = (d)=> d.toLocaleDateString(undefined,{month:'short', day:'numeric'});
+    const weekStr = `${fmt(s)} – ${fmt(e)}`;
+
+    cTitle.textContent = idea.title;
+    cMeta.textContent  = `${idea.type} • ${idea.time||'—'} • ${weekStr}`;
+    cSummary.textContent = idea.summary;
+    cChips.innerHTML = `
+      ${(idea.focus||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
+      ${(idea.gear||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
+    `;
+    cBtns.innerHTML = `
+      <button class="btn" id="viewDetails">View details</button>
+      ${(idea.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label.replace(/\s*\(PDF\)\s*/,'')}</a>`).join('')}
+    `;
+
+    qs('#viewDetails')?.addEventListener('click', ()=>openModal(idea));
+  }
+
+  /* Archive drawer */
+  function renderArchive(){
+    const wrap = qs('#archiveGrid');
+    if(!wrap) return;
+    wrap.innerHTML = '';
+    IDEAS.forEach(i=>{
+      const card = document.createElement('div');
+      card.className = 'archive-card';
+      card.innerHTML = `
+        <h4>${i.title}</h4>
+        <p class="meta">${i.type} • ${i.time||'—'}</p>
+        <p style="margin:.2rem 0 .4rem">${i.summary}</p>
+        <div class="btn-row">
+          <button class="btn--pill" data-view>View</button>
+          ${(i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label.replace(/\s*\(PDF\)\s*/,'')}</a>`).join('')}
+        </div>
+      `;
+      card.querySelector('[data-view]').addEventListener('click', ()=>openModal(i));
+      wrap.appendChild(card);
     });
   }
 
-  function matches(i){
-    if(FILTERS.search){
-      const hay = `${i.title} ${i.summary} ${i.type} ${(i.focus||[]).join(' ')} ${(i.gear||[]).join(' ')}`.toLowerCase();
-      if(!hay.includes(FILTERS.search)) return false;
-    }
-    if(FILTERS.Type.size && !FILTERS.Type.has(i.type)) return false;
-
-    if(FILTERS.Focus.size){
-      const have=new Set(i.focus||[]);
-      for(const f of FILTERS.Focus) if(!have.has(f)) return false;
-    }
-
-    if(FILTERS.Time.size && !FILTERS.Time.has(i.time)) return false;
-
-    if(FILTERS.Gear.size){
-      const have=new Set(i.gear||[]);
-      for(const g of FILTERS.Gear) if(!have.has(g)) return false;
-    }
-    return true;
-  }
-
-  function ideaCard(i){
-    const el=document.createElement('article');
-    el.className='card';
-    el.innerHTML=`
-      <h3>${i.title}</h3>
-      <p class="meta">${i.type} • ${i.time||'—'}</p>
-      <p>${i.summary}</p>
-      <div class="mini-nav">
-        ${(i.focus||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
-        ${(i.gear||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
-      </div>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-        <button class="btn" data-view>View Idea</button>
-        ${(i.links||[]).map(l=>`<a class="btn" href="${l.href}">${l.label}</a>`).join('')}
-      </div>
-    `;
-    el.querySelector('[data-view]').onclick=()=>openModal(i);
-    return el;
-  }
-
-  function render(){
-    const list = IDEAS.filter(matches);
-    grid.innerHTML=''; list.forEach(i=>grid.appendChild(ideaCard(i)));
-    count && (count.textContent = `Showing ${list.length}`);
-    grid.setAttribute('aria-busy','false');
-
-    if(!list.length){
-      const note=document.createElement('p');
-      note.className='meta';
-      note.textContent='No ideas match your filters. Click ALL or Clear filters.';
-      grid.appendChild(note);
-    }
-  }
-
+  /* Modal */
+  const modal = qs('#ideaModal');
   function openModal(i){
     if(!modal.dataset.wired){
       modal.innerHTML = `
         <div class="modal-body">
           <div class="modal-header">
             <h2 id="mTitle" style="margin:0"></h2>
-            <button class="btn" id="mClose" type="button">Close</button>
+            <button class="btn--pill" id="mClose" type="button">Close</button>
           </div>
           <p class="meta" id="mMeta"></p>
           <h3>How it works</h3>
-          <ol id="mSteps"></ol>
+          <ol id="mSteps" style="margin-left:1.2rem"></ol>
           <h3>Tips</h3>
-          <ul id="mTips"></ul>
-          <div id="mLinks" style="margin-top:.6rem;display:flex;gap:.6rem;flex-wrap:wrap"></div>
+          <ul id="mTips" style="margin-left:1.2rem"></ul>
+          <div id="mLinks" class="btn-row" style="margin-top:.6rem"></div>
         </div>`;
-      qs('#mClose',modal).onclick=()=>modal.close();
       modal.dataset.wired='1';
+      modal.querySelector('#mClose').onclick=()=>modal.close();
     }
-    qs('#mTitle',modal).textContent = i.title;
-    qs('#mMeta',modal).textContent  = `${i.type} • ${i.time||'—'}`;
-    qs('#mSteps',modal).innerHTML   = (i.details||[]).map(s=>`<li>${s}</li>`).join('');
-    qs('#mTips',modal).innerHTML    = (i.tips||[]).map(s=>`<li>${s}</li>`).join('');
-    qs('#mLinks',modal).innerHTML   = (i.links||[]).map(l=>`<a class="btn" href="${l.href}">${l.label}</a>`).join('');
+    modal.querySelector('#mTitle').textContent = i.title;
+    modal.querySelector('#mMeta').textContent  = `${i.type} • ${i.time||'—'}`;
+    modal.querySelector('#mSteps').innerHTML   = (i.details||[]).map(s=>`<li>${s}</li>`).join('');
+    modal.querySelector('#mTips').innerHTML    = (i.tips||[]).map(s=>`<li>${s}</li>`).join('');
+    modal.querySelector('#mLinks').innerHTML   = (i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label.replace(/\s*$begin:math:text$PDF$end:math:text$\s*/,'')}</a>`).join('');
     modal.showModal();
   }
 
-  function updateChipStates(){
-    const allBtn = chips && chips.querySelector('[data-filter="ALL"]');
-    if(allBtn) allBtn.setAttribute('aria-pressed', FILTERS.ALL?'true':'false');
-    chips && qsa('.chip[data-group]', chips).forEach(b=>{
-      const g=b.dataset.group, v=b.dataset.value;
-      b.setAttribute('aria-pressed', FILTERS[g].has(v)?'true':'false');
-    });
-    clear.style.display = (FILTERS.ALL && !FILTERS.search) ? 'none' : 'inline-flex';
-  }
-
-  // Wire filters
-  function wire(){
-    chips.addEventListener('click', e=>{
-      const b=e.target.closest('.chip'); if(!b) return;
-      if(b.dataset.filter==='ALL'){
-        FILTERS.ALL=true; ['Type','Focus','Time','Gear'].forEach(k=>FILTERS[k].clear());
-        FILTERS.search=''; if(search) search.value='';
-        updateChipStates(); render(); return;
-      }
-      const g=b.dataset.group, v=b.dataset.value; FILTERS.ALL=false;
-      (FILTERS[g].has(v)? FILTERS[g].delete(v) : FILTERS[g].add(v));
-      updateChipStates(); render();
-    });
-    clear.onclick=()=>{
-      FILTERS.ALL=true; ['Type','Focus','Time','Gear'].forEach(k=>FILTERS[k].clear());
-      FILTERS.search=''; if(search) search.value='';
-      updateChipStates(); render();
-    };
-    search && (search.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(search.value); updateChipStates(); render(); });
-  }
-
-  function init(){
-    renderChips();
-    updateChipStates();
-    wire();
-    render();
-  }
-
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', ()=>{
+    renderThisWeek();
+    renderArchive();
+  });
 })();
 </script>
 </body>

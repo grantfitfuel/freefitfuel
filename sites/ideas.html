@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ideas – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=28">
+  <link rel="stylesheet" href="style.css?v=29">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
     :root{ --cardw: 820px; }
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
 
-    /* Hero (unchanged layout) */
+    /* Hero */
     .hero-mini figure{position:relative;max-height:360px;overflow:hidden}
     .hero-mini img{width:100%;height:360px;object-fit:cover}
     .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55))}
     .hero-mini .content{position:relative;color:#fff}
-    .hero-mini .content p{max-width:70ch}
 
     /* Sections and cards */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px auto;padding:14px;max-width:var(--cardw)}
@@ -25,38 +24,23 @@
     .card h3{margin:.1rem 0 .2rem;font-size:1.12rem}
     .meta{color:var(--inkdim);font-size:.92rem}
 
-    /* Slim pill buttons */
-    .btn--pill{
-      display:inline-flex;align-items:center;gap:.35rem;
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:.35rem;cursor:pointer;
       border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
-      border-radius:999px;padding:.3rem .6rem;font-size:.9rem;text-decoration:none;cursor:pointer
-    }
-    .btn--pill:hover{color:var(--accent)}
+      padding:.45rem .9rem;border-radius:999px;font-size:.9rem;text-decoration:none}
+    .btn:hover{color:var(--accent)}
     .btn-row{display:flex;flex-wrap:wrap;gap:.4rem}
 
-    /* Primary small button */
-    .btn{
-      display:inline-flex;align-items:center;gap:.45rem;cursor:pointer;
-      border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
-      padding:.48rem .85rem;border-radius:10px;text-decoration:none
-    }
-    .btn:hover{color:var(--accent)}
-
-    /* Chips (subtle) */
+    /* Chips */
     .chips{display:flex;flex-wrap:wrap;gap:.35rem}
     .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.24rem .5rem;font-size:.8rem}
 
-    /* Drawer (collapsible archive) */
-    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.65rem .75rem}
-    .details summary{
-      cursor:pointer;list-style:none;font-weight:700;display:flex;align-items:center;gap:.5rem
-    }
-    .details summary::-webkit-details-marker{display:none}
-    .chev{display:inline-block;transition:transform .2s}
-    .details[open] .chev{transform:rotate(90deg)}
-    .archive-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:.6rem}
+    /* Archive */
+    #archiveWrap{max-height:0;overflow:hidden;transition:max-height .35s ease, opacity .25s ease;padding-top:0;opacity:0}
+    #archiveWrap.open{max-height:2000px;opacity:1;padding-top:.75rem}
+    .archive-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
     .archive-card{border:1px solid var(--stroke);border-radius:10px;background:#111418;padding:.6rem}
-    .archive-card h4{margin:.1rem 0 .2rem;font-size:1rem}
+    .archive-card h4{margin:.1rem 0;font-size:1rem}
   </style>
 </head>
 <body>
@@ -73,16 +57,15 @@
   <div class="content wrap">
     <h1><span class="accent">Weekly Challenge</span></h1>
     <p>One tiny idea to keep you moving forward. Monday → Sunday, refreshed automatically each week.</p>
-    <div class="cta-row" style="display:flex;gap:.5rem;flex-wrap:wrap">
-      <a class="btn" href="#challenge">Jump to this week</a>
-      <a class="btn--pill" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo</a>
-      <a class="btn--pill" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker</a>
-      <a class="btn--pill" href="pdf/ideas/hydration-log.pdf">Hydration Log</a>
+    <div class="btn-row">
+      <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo</a>
+      <a class="btn" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker</a>
+      <a class="btn" href="pdf/ideas/hydration-log.pdf">Hydration Log</a>
     </div>
   </div>
 </header>
 
-<main class="wrap" id="challenge">
+<main class="wrap">
   <!-- THIS WEEK -->
   <section class="section" aria-labelledby="weeklyTitle">
     <article class="card" id="challengeCard">
@@ -90,25 +73,17 @@
       <p class="meta" id="cMeta">—</p>
       <p id="cSummary">—</p>
 
-      <div class="chips" id="cChips" aria-label="Tags"></div>
-
-      <div class="btn-row" id="cBtns">
-        <!-- Details + downloads injected -->
-      </div>
-
-      <details class="details" id="quickTips" style="margin-top:.4rem">
-        <summary><span class="chev">▸</span> Quick tips</summary>
-        <ul class="meta" id="cTips" style="margin:.35rem 0 0 1.1rem"></ul>
-      </details>
+      <div class="chips" id="cChips"></div>
+      <div class="btn-row" id="cBtns"></div>
     </article>
   </section>
 
-  <!-- COLLAPSIBLE ARCHIVE (lazy-loaded) -->
+  <!-- TOGGLE ARCHIVE -->
   <section class="section" aria-label="Browse all ideas">
-    <details class="details" id="archive">
-      <summary><span class="chev">▸</span> Browse all ideas <span class="meta" id="archCount" style="font-weight:normal"></span></summary>
-      <div class="archive-grid" id="archiveGrid" style="margin-top:.6rem"></div>
-    </details>
+    <button id="toggleArchive" class="btn" aria-expanded="false">Browse all ideas</button>
+    <div id="archiveWrap">
+      <div class="archive-grid" id="archiveGrid"></div>
+    </div>
   </section>
 
   <!-- Disclaimer -->
@@ -126,8 +101,8 @@
   </div>
 </footer>
 
-<!-- Modal for details -->
-<dialog id="ideaModal" class="idea-modal" aria-hidden="true"></dialog>
+<!-- Modal -->
+<dialog id="ideaModal"></dialog>
 
 <script>
 /* ===== Header burger ===== */
@@ -143,216 +118,54 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===== Weekly Challenge App (tidy + lazy archive) ===== */
+/* ===== Weekly Challenge + Archive ===== */
 (function(){
   const qs=(s,e=document)=>e.querySelector(s);
 
   const IDEAS = [
-    /* FITNESS */
-    {
-      title:'30-Day Push-Up Challenge',
-      type:'Fitness',
-      summary:'Start small, add 1–2 reps daily. Test max on Day 30.',
-      details:[
-        'Warm-up 2–3 min (arm circles, shoulder taps).',
-        'Day 1: 5–10 total push-ups split into sets.',
-        'Add 1–2 reps per day. Rest 60–90s between sets.',
-        'Elevate hands on bench/table if needed.'
-      ],
-      tips:['Film Day 1 and Day 30 for form check.','Pair with plank holds for core.'],
-      focus:['Strength','Habits'],
-      time:'≤10 min',
-      gear:['No equipment'],
-      links:[{label:'Push-Up Tracker',href:'pdf/ideas/pushup-tracker.pdf'}]
-    },
-    {
-      title:'Plank Ladder',
-      type:'Fitness',
-      summary:'Add 5 seconds per day. Hit a solid 2–3 minutes.',
-      details:['Day 1: 20s plank.','Add 5s daily.','Keep ribs down, glutes on, breath smooth.'],
-      tips:['Break long holds into 2–3 sets.','Finish with child’s pose.'],
-      focus:['Strength','Habits'],
-      time:'≤5 min',
-      gear:['No equipment']
-    },
-    {
-      title:'5K Step-Ups',
-      type:'Fitness',
-      summary:'Stairs/bench intervals for legs & lungs.',
-      details:['Set a timer 10–15 min.','Step up–down continuously, switch lead leg.'],
-      tips:['Drive through heel.','Add light dumbbells if easy.'],
-      focus:['Cardio','Strength'],
-      time:'≤20 min',
-      gear:['No equipment','Dumbbells']
-    },
-
-    /* NUTRITION */
-    {
-      title:'Hydration 7-Day',
-      type:'Nutrition',
-      summary:'Hit your daily ml target for a week.',
-      details:['Target ≈ 30–35 ml per kg bodyweight.','Add 500–1000 ml on training days.'],
-      tips:['Keep a marked bottle on desk.','Drink with each meal.'],
-      focus:['Hydration','Habits'],
-      time:'≤5 min',
-      gear:[],
-      links:[{label:'Hydration Log',href:'pdf/ideas/hydration-log.pdf'}]
-    },
-    {
-      title:'Meat-Free Monday',
-      type:'Nutrition',
-      summary:'Try one plant-based dinner each week.',
-      details:['Pick a high-protein veggie recipe.','Batch cook for lunches.'],
-      tips:['Use beans, tofu, lentils.','Season well: garlic, herbs, citrus.'],
-      focus:['Budget','Habits'],
-      time:'≤20 min',
-      gear:[]
-    },
-    {
-      title:'Rainbow on the Plate',
-      type:'Nutrition',
-      summary:'Eat 5 different colours in a day.',
-      details:['Plan snacks: berries, carrots, peppers, greens.','Tick them off at dinner.'],
-      tips:['Blend leftovers into a soup next day.'],
-      focus:['Habits'],
-      time:'≤10 min',
-      gear:[]
-    },
-
-    /* MIND */
-    {
-      title:'Sleep Reset (14 Days)',
-      type:'Mind',
-      summary:'Same bedtime/wake time for two weeks.',
-      details:['Set a wind-down alarm 60 min before bed.','No screens 30 min before.'],
-      tips:['Cool, dark room.','Light stretch before bed.'],
-      focus:['Sleep','Habits'],
-      time:'≤10 min',
-      gear:[]
-    },
-    {
-      title:'One-Minute Breath',
-      type:'Mind',
-      summary:'1–5 minutes of box breathing daily.',
-      details:['Inhale 4s, hold 4s, exhale 4s, hold 4s. Repeat.'],
-      tips:['Use at desk or between meetings.'],
-      focus:['Mindfulness','Habits'],
-      time:'≤5 min',
-      gear:[]
-    },
-
-    /* FUN */
-    {
-      title:'Fitness Bingo',
-      type:'Fun',
-      summary:'Complete fun squares during the week.',
-      details:['Walk to the shop','Try a new vegetable','Do 20 bodyweight squats','Stretch for 5 minutes'],
-      tips:['Compete with a friend for a prize.'],
-      focus:['Habits','Mobility','Cardio'],
-      time:'≤10 min',
-      gear:[],
-      links:[{label:'Fitness Bingo',href:'pdf/ideas/fitness-bingo.pdf'}]
-    },
-    {
-      title:'Weekend Adventure',
-      type:'Fun',
-      summary:'Park run, hike, cycle, or swim — pick one.',
-      details:['Block 60–90 minutes.','Pack water and a snack.'],
-      tips:['Invite a friend.','Log how it felt.'],
-      focus:['Cardio','Mindfulness'],
-      time:'≤20 min',
-      gear:[]
-    }
+    {title:'30-Day Push-Up Challenge',type:'Fitness',summary:'Start small, add 1–2 reps daily.',time:'≤10 min',focus:['Strength'],gear:['No equipment']},
+    {title:'Plank Ladder',type:'Fitness',summary:'Add 5s per day until 2–3 min.',time:'≤5 min',focus:['Strength'],gear:['No equipment']},
+    {title:'Hydration 7-Day',type:'Nutrition',summary:'Hit daily ml target for a week.',time:'≤5 min',focus:['Hydration'],gear:[]},
+    {title:'Sleep Reset (14 Days)',type:'Mind',summary:'Same bedtime/wake time for 2 weeks.',time:'≤10 min',focus:['Sleep'],gear:[]},
+    {title:'Weekend Adventure',type:'Fun',summary:'Park run, hike, cycle or swim.',time:'≤20 min',focus:['Cardio'],gear:[]}
   ];
 
-  /* Week helpers (Mon–Sun) */
-  function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x;}
-  function endOfWeek(d){const s=startOfWeek(d),e=new Date(s);e.setDate(e.getDate()+6);e.setHours(23,59,59,999);return e;}
-  function isoWeekYear(d){const t=new Date(d.getTime());t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));return t.getFullYear();}
-  function isoWeekNumber(d){const t=new Date(d.getTime());t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));const w1=new Date(t.getFullYear(),0,4);const diff=(t-w1+(((w1.getDay()+6)%7)-3)*86400000)/86400000;return 1+Math.floor(diff/7);}
-
-  function weeklyIndex(len){
+  /* Week index */
+  function weekIndex(len){
     const now=new Date();
-    const y=isoWeekYear(now), w=isoWeekNumber(now);
-    let n=(y*57 + w*131) ^ 0x9e3779b1; n=(n^(n>>>16))*0x45d9f3b; n=(n^(n>>>16))*0x45d9f3b; n=n^(n>>>16);
-    return { idx: Math.abs(n)%len, now };
+    const week=Math.floor((now - new Date(now.getFullYear(),0,1))/604800000);
+    return week % len;
   }
 
-  /* Render "this week" */
   function renderThisWeek(){
-    const { idx, now } = weeklyIndex(IDEAS.length);
-    const i = IDEAS[idx];
-    const fmt = d=> d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
-    const s=startOfWeek(now), e=endOfWeek(now);
-    qs('#weeklyTitle').textContent = i.title;
-    qs('#cMeta').textContent = `${i.type} • ${i.time||'—'} • ${fmt(s)} – ${fmt(e)}`;
-    qs('#cSummary').textContent = i.summary;
-    qs('#cChips').innerHTML = `
-      ${(i.focus||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
-      ${(i.gear||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
-    `;
-    qs('#cBtns').innerHTML = `
-      <button class="btn" id="viewDetails">View details</button>
-      ${(i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label}</a>`).join('')}
-    `;
-    qs('#cTips').innerHTML = (i.tips||[]).map(t=>`<li>${t}</li>`).join('');
-    document.getElementById('viewDetails')?.addEventListener('click',()=>openModal(i));
+    const i=IDEAS[weekIndex(IDEAS.length)];
+    qs('#weeklyTitle').textContent=i.title;
+    qs('#cMeta').textContent=`${i.type} • ${i.time}`;
+    qs('#cSummary').textContent=i.summary;
+    qs('#cChips').innerHTML=(i.focus||[]).map(f=>`<span class="chip">${f}</span>`).join('');
   }
 
-  /* Lazy render archive when opened */
-  function renderArchiveOnce(){
-    const wrap = qs('#archiveGrid'); if(!wrap || wrap.dataset.ready) return;
+  function renderArchive(){
+    const wrap=qs('#archiveGrid');
+    if(wrap.dataset.ready) return;
     IDEAS.forEach(i=>{
-      const d=document.createElement('div');
-      d.className='archive-card';
-      d.innerHTML = `
-        <h4>${i.title}</h4>
-        <p class="meta">${i.type} • ${i.time||'—'}</p>
-        <p style="margin:.2rem 0 .45rem">${i.summary}</p>
-        <div class="btn-row">
-          <button class="btn--pill" data-view>View</button>
-          ${(i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label}</a>`).join('')}
-        </div>
-      `;
-      d.querySelector('[data-view]').addEventListener('click',()=>openModal(i));
-      wrap.appendChild(d);
+      const card=document.createElement('div');
+      card.className='archive-card';
+      card.innerHTML=`<h4>${i.title}</h4><p class="meta">${i.type} • ${i.time}</p><p>${i.summary}</p>`;
+      wrap.appendChild(card);
     });
     wrap.dataset.ready='1';
   }
 
-  /* Modal */
-  const modal = qs('#ideaModal');
-  function openModal(i){
-    if(!modal.dataset.wired){
-      modal.innerHTML = `
-        <div class="modal-body">
-          <div class="modal-header">
-            <h2 id="mTitle" style="margin:0"></h2>
-            <button class="btn--pill" id="mClose" type="button">Close</button>
-          </div>
-          <p class="meta" id="mMeta"></p>
-          <h3>How it works</h3>
-          <ol id="mSteps" style="margin-left:1.2rem"></ol>
-          <h3>Tips</h3>
-          <ul id="mTips" style="margin-left:1.2rem"></ul>
-          <div id="mLinks" class="btn-row" style="margin-top:.6rem"></div>
-        </div>`;
-      modal.dataset.wired='1';
-      modal.querySelector('#mClose').onclick=()=>modal.close();
-    }
-    modal.querySelector('#mTitle').textContent = i.title;
-    modal.querySelector('#mMeta').textContent  = `${i.type} • ${i.time||'—'}`;
-    modal.querySelector('#mSteps').innerHTML   = (i.details||[]).map(s=>`<li>${s}</li>`).join('');
-    modal.querySelector('#mTips').innerHTML    = (i.tips||[]).map(s=>`<li>${s}</li>`).join('');
-    modal.querySelector('#mLinks').innerHTML   = (i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label}</a>`).join('');
-    modal.showModal();
-  }
-
   document.addEventListener('DOMContentLoaded', ()=>{
     renderThisWeek();
-    const arch = qs('#archive');
-    const count = qs('#archCount'); if(count) count.textContent = `(${IDEAS.length})`;
-    arch?.addEventListener('toggle', ()=>{ if(arch.open) renderArchiveOnce(); });
+    const toggle=qs('#toggleArchive'), wrap=qs('#archiveWrap');
+    toggle.addEventListener('click',()=>{
+      const open=wrap.classList.toggle('open');
+      toggle.setAttribute('aria-expanded',open);
+      toggle.textContent=open?'Hide ideas':'Browse all ideas';
+      if(open) renderArchive();
+    });
   });
 })();
 </script>

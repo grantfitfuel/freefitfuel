@@ -12,10 +12,10 @@
   --maxw:1140px;
   --radius:16px;
 
-  /* Hero sizing (site-wide) */
+  /* Hero sizing */
   --hero-min: 260px;
-  --hero-ideal: 42vh;           /* ↓ slightly smaller to avoid “massive” home hero */
-  --hero-max: 520px;
+  --hero-ideal: 46vh;
+  --hero-max: 560px;
 }
 
 /* ---------- Base ---------- */
@@ -31,7 +31,7 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
 .meta{ font-size:.92rem; color:#b6b6c6 }
 
 /* =========================================
-   HEADER (Endurance-style across site)
+   HEADER
    ========================================= */
 .site-header{
   position:sticky; top:0; z-index:1000;
@@ -53,13 +53,6 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
   background:var(--glass); border:1px solid var(--stroke); color:#111;
 }
 .main-nav a:hover{ color:var(--accent) }
-
-/* Calm variant (optional): add class="calm" to .site-header */
-.site-header.calm{
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
-  border-bottom:1px solid var(--stroke);
-}
-.site-header.calm .main-nav a[aria-current="page"]{ background:rgba(255,255,255,.08) }
 
 /* Hamburger (mobile) */
 .hamburger{
@@ -98,81 +91,52 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
 }
 
 /* =========================================
-   HERO — Single source of truth (image FIRST, text BELOW)
+   HERO — shared
    ========================================= */
-
-/* Full hero (Home) */
-header.hero{ position:relative; border-bottom:1px solid #1b1b22 }
-header.hero .hero-media{ position:relative; margin:0 }
-header.hero .hero-media img{
-  width:100%;
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
-  object-fit:cover; object-position:center 35%;
-  display:block; filter:brightness(.88) saturate(1.05);
-}
-header.hero .hero-media .overlay{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)) }
-/* ⬇️ Critical fix: text sits UNDER the image */
-header.hero .content{
-  position:static; inset:auto; padding:16px 20px 22px;
-}
-
-/* Mini hero (Ideas / Workouts / Endurance / Nutrition / Chill / Contact) */
 header.hero-mini{ position:relative; border-bottom:1px solid #1b1b22 }
 header.hero-mini figure{ margin:0; position:relative; overflow:hidden }
 header.hero-mini figure > img{
-  width:100%;
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
-  object-fit:cover; object-position:center 12%;
-  display:block; filter:brightness(.88) saturate(1.05);
+  width:100% !important;
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+  min-height:0 !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center 12%;
+  display:block;
+  filter:brightness(.88) saturate(1.05);
 }
 header.hero-mini .overlay{
-  position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
 }
-/* ⬇️ Critical fix: text sits UNDER the image */
 header.hero-mini .content{
-  position:static; inset:auto;
-  padding:16px 20px 22px;
+  position:static; padding:16px 20px 22px;
   max-width:var(--maxw); margin:0 auto;
 }
 header.hero-mini h1{ margin:0 0 .35rem }
 header.hero-mini p{ max-width:70ch; margin:.2rem 0 .6rem; color:#d0d0da }
 
-/* Optional alternate hero (image-only blocks on wellbeing pages) */
+/* Full hero (home) */
+header.hero .hero-media img{
+  width:100%;
+  height:clamp(300px,46vh,520px); /* FIX: not overbearing */
+  object-fit:cover;
+  object-position:center 35%;
+  display:block;
+}
+
+/* Optional alternate hero */
 .page-hero{ margin:0 0 14px }
 .page-hero img{
   width:100%;
-  height:auto;
+  height:auto !important;
   max-height:clamp(220px, 42vh, 520px);
   object-fit:cover;
-  display:block; border-radius:12px; border:1px solid var(--stroke);
-}
-.page-hero--contain img{ object-fit:contain !important }
-.page-hero--tall img{ max-height:clamp(320px, 60vh, 680px) !important }
-
-/* Kill legacy inline sizes if any slipped through */
-header.hero figure > img[style],
-header.hero-mini figure > img[style],
-.page-hero img[style]{ height:auto !important; max-height:none !important }
-
-/* Small phones: slightly shorter hero */
-@media (max-width:420px){
-  header.hero .hero-media img,
-  header.hero-mini figure > img{
-    height:clamp(220px, 40vh, 460px);
-  }
-}
-/* Home hero: smaller height + text below image */
-header.hero .hero-media img{
-  height: clamp(220px, 36vh, 480px);   /* was taller; this tames it */
-  object-fit: cover;
-  object-position: center 35%;
+  display:block;
+  border-radius:12px;
+  border:1px solid var(--stroke);
 }
 
-header.hero .hero-content{
-  position: static;                    /* ensure content is under the image */
-  inset: auto;
-  padding: 16px 20px 22px;
-}
 /* =========================================
    Components
    ========================================= */
@@ -216,38 +180,6 @@ header.hero .hero-content{
 .split figure{ margin:0; border-radius:16px; border:1px solid var(--stroke); overflow:hidden; background:var(--glass) }
 .split img{ width:100%; height:320px; object-fit:cover; object-position:center 45% }
 
-/* Scrollers / tiles */
-.strip{ scroll-margin-top:70px }
-.scroller{ display:flex; gap:12px; overflow-x:auto; padding:.25rem; scroll-snap-type:x proximity }
-.scroller::after{ content:"← swipe →"; align-self:center; margin-left:12px; opacity:.5; font-size:.9rem }
-.tile{
-  flex:0 0 auto; width:280px; border-radius:14px; border:1px solid var(--stroke);
-  background:var(--glass); display:flex; flex-direction:column; overflow:visible; scroll-snap-align:center;
-}
-.thumb{ aspect-ratio:16/9; background:#0c0c10; border-bottom:1px solid var(--stroke); display:block; overflow:hidden; border-top-left-radius:14px; border-top-right-radius:14px }
-.thumb img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block }
-.cap{ padding:.7rem .9rem; color:#c8c8d2; font-size:.95rem }
-
-/* Details (collapsible standards/notes) */
-.details{
-  background:#0e1217; border:1px solid var(--stroke);
-  border-radius:10px; padding:.6rem .7rem; margin:.55rem 0;
-}
-.details summary{ cursor:pointer; font-weight:600 }
-.steps{ margin:.25rem 0 .5rem; padding-left:1.1rem }
-.steps li{ margin:.25rem 0 }
-
-/* Tables (plans) */
-table.plan{ width:100%; border-collapse:collapse; margin:.35rem 0 .1rem }
-.plan th,.plan td{ border:1px solid var(--stroke); padding:.5rem .6rem; text-align:left; vertical-align:top }
-.plan th{ background:rgba(255,255,255,.06) }
-
-/* Inputs (filters/calcs) */
-.input, select, textarea{
-  background:#0b0f14; color:var(--ink);
-  border:1px solid var(--stroke); border-radius:8px; padding:.45rem .55rem;
-}
-
 /* =========================================
    Footer
    ========================================= */
@@ -282,20 +214,38 @@ dialog::backdrop{ background:rgba(0,0,0,.6) }
    Print — recipe card & general
    ========================================= */
 @media print {
-  /* Paper base */
   html, body { background:#fff !important; color:#000 !important; }
   * { background:transparent !important; color:#000 !important;
       box-shadow:none !important; text-shadow:none !important;
       border-color:#000 !important; }
 
-  /* Only print the generated recipe content if present */
   #printArea { display:block !important; color:#000 !important; background:#fff !important; visibility:visible !important; }
   body > *:not(#printArea) { display:none !important; }
 
   #printArea article { margin:0 !important; padding:0 !important; border:0 !important; }
   #printArea h1, #printArea h2, #printArea h3 { color:#000 !important; margin:.2rem 0; }
   #printArea p, #printArea li { line-height:1.35; }
-  #printArea img { display:none !important; } /* per your request */
-
+  #printArea img { display:none !important; }
   @page { margin:12mm; }
+}
+
+/* =========================================
+   PAGE-SPECIFIC FIXES
+   ========================================= */
+
+/* Home hero fix already above */
+
+/* Yoga & Meditation hero */
+header.hero-mini.yoga-hero figure{
+  background:#000; /* black bars if needed */
+}
+header.hero-mini.yoga-hero figure > img{
+  height:clamp(320px,48vh,560px) !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block;
+  filter:brightness(.96) saturate(1.03);
+}
+header.hero-mini.yoga-hero .content{
+  position:static;
 }

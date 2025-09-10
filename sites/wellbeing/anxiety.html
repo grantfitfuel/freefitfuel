@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anxiety – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="/style.css?v=33">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:1000px){.grid.two{grid-template-columns:1.2fr .8fr}}
+    @media (min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .card h3{margin:.15rem 0 .35rem}
+
+    .meta{color:var(--inkdim);font-size:.92rem}
+
+    .btn{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.48rem .9rem;border-radius:10px;text-decoration:none;cursor:pointer}
+    .btn:hover{color:var(--accent)}
+    .btn--pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:999px;padding:.3rem .65rem;font-size:.9rem;text-decoration:none}
+    .btn--pill:hover{color:var(--accent)}
+    .btn-row{display:flex;gap:.45rem;flex-wrap:wrap}
+
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);text-decoration:none;padding:.38rem .75rem;border-radius:999px;font-size:.92rem}
+    .mini-nav a:hover{color:var(--accent)}
+
+    .figure{margin:.6rem 0}
+    .figure img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
+    .cap{color:var(--inkdim);font-size:.9rem;margin:.35rem 0 0}
+
+    /* Collapsibles */
+    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.55rem 0}
+    .details summary{cursor:pointer;font-weight:600}
+    .steps{margin:.25rem 0 .5rem;padding-left:1.1rem}
+    .steps li{margin:.25rem 0}
+
+    /* HERO (shared sizing) */
+    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    .hero-mini figure{margin:0;position:relative}
+    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
+    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6))}
+    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    .hero-mini h1{margin:0 0 .35rem}
+    .hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
+  </style>
+</head>
+<body>
+
+<!-- Shared header mount -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Anxiety hero">
+  <figure>
+    <img src="/img/anxiety-hero.png" alt="Quiet morning light through a window, mug on table — calm within everyday life">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Anxiety</span></h1>
+    <p>An alarm system trying to protect you. We can train it to ring less — and ring wiser.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead">This page explains what anxiety is, how it works, and practical tools to steady the system.</p>
+
+  <!-- Mini-nav -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#feels-like">What it feels like</a>
+    <a href="#biology">Biology</a>
+    <a href="#day-to-day">Day-to-day tools</a>
+    <a href="#exposure">Exposure ladders</a>
+    <a href="#thinking">Thinking tools</a>
+    <a href="#printables">Printables</a>
+    <a href="#support">Support</a>
+  </nav>
+
+  <!-- 1. What it feels like -->
+  <section id="feels-like" class="section">
+    <div class="grid two">
+      <article class="card">
+        <h2>1) What Anxiety Feels Like</h2>
+        <p>Anxiety can show up as racing thoughts, tight chest, stomach upset, sweating, shakiness, or feeling detached. It often arrives in ordinary places: mornings, emails, queues, bedtime.</p>
+        <div class="details"><summary>Quick grounding (30–60s)</summary>
+          <ol class="steps">
+            <li>5-4-3-2-1: name 5 things you see, 4 touch, 3 hear, 2 smell, 1 taste.</li>
+            <li>Breathe slow: in for 4, out for 6 (longer exhale).</li>
+            <li>Find warmth: hands around a mug, blanket, or warm water over hands.</li>
+          </ol>
+        </div>
+      </article>
+      <aside class="card">
+        <div class="figure">
+          <img src="/img/anxiety-steps.png" alt="Notebook with small steadying steps listed">
+          <p class="cap">Anxiety often shows in everyday routines, not just major crises.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2. Biology -->
+  <section id="biology" class="section">
+    <div class="grid two">
+      <article class="card">
+        <h2>2) Biology / How It Happens</h2>
+        <ul>
+          <li><strong>Sympathetic system:</strong> fight/flight response and adrenaline.</li>
+          <li><strong>Neurotransmitters:</strong> serotonin (mood), GABA (calm), norepinephrine (alert), dopamine (motivation).</li>
+          <li><strong>Cortisol:</strong> useful in short bursts; unhelpful when stuck “on”.</li>
+          <li><strong>Breathing & CO₂:</strong> fast, shallow breathing raises alarm; slow exhale dampens it.</li>
+        </ul>
+        <div class="details"><summary>Reduce daily cortisol “drip”</summary>
+          <ul class="steps">
+            <li>Morning light 5–10 min; late-day lights dim.</li>
+            <li>Batch tasks; take 3–5 min breath breaks each hour.</li>
+            <li>Stop caffeine 6–8h before bed; keep evenings quieter.</li>
+          </ul>
+        </div>
+      </article>
+      <aside class="card">
+        <div class="figure">
+          <img src="/img/ans-three-states.png" alt="Autonomic nervous system: alert, calm, shutdown diagram">
+          <p class="cap">Your nervous system moves between alert, calm, and shutdown states.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3. Day-to-day tools -->
+  <section id="day-to-day" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>3) Day-to-Day Coping Tools</h2>
+        <ul>
+          <li><strong>Grounding 5-4-3-2-1</strong> (see above).</li>
+          <li><strong>Breathing</strong>: in 4, out 6 — or coherent 5/5 for 5–7 minutes.</li>
+          <li><strong>Movement</strong>: walk, stretch, or shake arms to burn off adrenaline.</li>
+          <li><strong>Warmth</strong>: blanket, warm hands, warm shower.</li>
+        </ul>
+        <div class="btn-row" style="margin-top:.35rem">
+          <a class="btn--pill" href="/yoga-meditation.html#audio">Calm sounds</a>
+          <a class="btn--pill" href="/yoga-meditation.html#breathing">Breath guides</a>
+        </div>
+      </article>
+      <article class="card">
+        <div class="figure">
+          <img src="/img/anxiety-cards.png" alt="Notebook with calming tools written down">
+          <p class="cap">Small rituals — breath, grounding, warmth — calm the alarm.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. Exposure -->
+  <section id="exposure" class="section">
+    <div class="grid two">
+      <article class="card">
+        <h2>4) Exposure Ladders</h2>
+        <p>Avoidance strengthens fear. Exposure ladders mean facing the fear gradually, step by step.</p>
+        <ol class="steps">
+          <li>List situations from easiest → hardest.</li>
+          <li>Start with a low step until anxiety eases.</li>
+          <li>Climb slowly; repeat steps as needed.</li>
+        </ol>
+        <div class="details"><summary>Build a gentle ladder</summary>
+          <ul class="steps">
+            <li>Pick 1 theme (e.g., phone calls). Write 5–8 rungs, very small.</li>
+            <li>Measure with a 0–10 “anxiety now” rating before/after.</li>
+            <li>Repeat a rung until “after” drops by ~30–50% on two attempts.</li>
+          </ul>
+        </div>
+      </article>
+      <aside class="card">
+        <div class="figure">
+          <img src="/img/anxiety-steps.png" alt="Notebook showing an exposure ladder sketch">
+          <p class="cap">Retrain the alarm one gentle rung at a time.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 5. Thinking tools -->
+  <section id="thinking" class="section">
+    <div class="grid cols2">
+      <article class="card">
+        <h2>5) Thinking Tools</h2>
+        <h3>Supportive self-talk</h3>
+        <p>Swap harsh words for kinder, believable lines.</p>
+        <div class="figure">
+          <img src="/img/anxiety-self-talk-cards.png" alt="Cards with supportive self-talk examples">
+          <p class="cap">Kind, specific language supports calming circuits.</p>
+        </div>
+
+        <h3 style="margin-top:.6rem">Reframes</h3>
+        <p>Keep the facts but add choice and agency. No false positivity.</p>
+        <div class="figure">
+          <img src="/img/anxiety-reframing-cards.png" alt="Cards with everyday reframes">
+          <p class="cap">Accurate, balanced reframes help stop the spiral.</p>
+        </div>
+      </article>
+      <article class="card">
+        <div class="details"><summary>Try these lines</summary>
+          <ul class="steps">
+            <li>“This feeling is loud, not dangerous. It will pass.”</li>
+            <li>“I can do one small step while breathing slowly.”</li>
+            <li>“Future-me can handle that email after a short walk.”</li>
+          </ul>
+        </div>
+        <div class="details"><summary>Common thinking traps</summary>
+          <ul class="steps">
+            <li>Catastrophising (“It will be a disaster”).</li>
+            <li>Mind-reading (“They think I’m useless”).</li>
+            <li>All-or-nothing (“If not perfect, I failed”).</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6. Printables -->
+  <section id="printables" class="section">
+    <h2>6) Printables</h2>
+    <div class="btn-row">
+      <a class="btn--pill" href="/img/anxiety-self-talk-cards.pdf" download>Self-talk cards (A4)</a>
+      <a class="btn--pill" href="/img/anxiety-reframing-cards.pdf" download>Reframing cards (A4)</a>
+    </div>
+    <p class="meta" style="margin-top:.4rem">Tip: print on A4, cut into cards, and keep a few where you’ll actually use them (desk, wallet, fridge).</p>
+  </section>
+
+  <!-- Support -->
+  <section id="support" class="section">
+    <h2>Support</h2>
+    <p>If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. For non-emergencies, consider speaking with a qualified health professional.</p>
+    <p class="meta">If you’d like a shared “Help Links” snippet here later, we can mount it the same way as other pages.</p>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>The information here is for general understanding and support. It is not a substitute for professional medical or psychological advice.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+</body>
+</html>

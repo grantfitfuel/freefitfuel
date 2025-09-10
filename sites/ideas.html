@@ -5,58 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ideas – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=27">
+  <link rel="stylesheet" href="style.css?v=28">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
+    :root{ --cardw: 820px; }
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
 
-    /* Hero */
+    /* Hero (unchanged layout) */
     .hero-mini figure{position:relative;max-height:360px;overflow:hidden}
     .hero-mini img{width:100%;height:360px;object-fit:cover}
     .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55))}
     .hero-mini .content{position:relative;color:#fff}
+    .hero-mini .content p{max-width:70ch}
 
-    /* Sections / card */
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    /* Sections and cards */
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px auto;padding:14px;max-width:var(--cardw)}
     .card{padding:14px;border:1px solid var(--stroke);border-radius:12px;background:#111418;display:flex;flex-direction:column;gap:.6rem}
-    .card h3{margin:.1rem 0 .2rem;font-size:1.1rem}
+    .card h3{margin:.1rem 0 .2rem;font-size:1.12rem}
     .meta{color:var(--inkdim);font-size:.92rem}
 
-    /* Slim pill buttons (downloads & small actions) */
+    /* Slim pill buttons */
     .btn--pill{
       display:inline-flex;align-items:center;gap:.35rem;
       border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
-      border-radius:999px;padding:.34rem .65rem;font-size:.9rem;text-decoration:none;cursor:pointer
+      border-radius:999px;padding:.3rem .6rem;font-size:.9rem;text-decoration:none;cursor:pointer
     }
     .btn--pill:hover{color:var(--accent)}
-    .btn-row{display:flex;flex-wrap:wrap;gap:.45rem}
+    .btn-row{display:flex;flex-wrap:wrap;gap:.4rem}
 
-    /* Big primary actions (kept subtle) */
+    /* Primary small button */
     .btn{
       display:inline-flex;align-items:center;gap:.45rem;cursor:pointer;
       border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
-      padding:.5rem .9rem;border-radius:10px;text-decoration:none
+      padding:.48rem .85rem;border-radius:10px;text-decoration:none
     }
     .btn:hover{color:var(--accent)}
 
-    /* Chips */
+    /* Chips (subtle) */
     .chips{display:flex;flex-wrap:wrap;gap:.35rem}
-    .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.28rem .55rem;font-size:.82rem}
+    .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.24rem .5rem;font-size:.8rem}
 
-    /* Layout */
-    .grid{display:grid;gap:12px}
-    @media (min-width:900px){.grid{grid-template-columns:2fr 1fr}}
-
-    /* Modal */
-    dialog.idea-modal{width:min(780px,96vw);border:0;border-radius:12px;padding:0;z-index:1100;background:#0e1217;color:var(--ink)}
-    dialog.idea-modal::backdrop{background:rgba(0,0,0,.5)}
-    .modal-body{padding:16px;max-height:80vh;overflow:auto}
-    .modal-header{display:flex;justify-content:space-between;align-items:center;gap:.6rem;border-bottom:1px solid var(--stroke);padding-bottom:8px}
-
-    /* Drawer for archive */
-    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem}
-    .details summary{cursor:pointer;font-weight:600}
+    /* Drawer (collapsible archive) */
+    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.65rem .75rem}
+    .details summary{
+      cursor:pointer;list-style:none;font-weight:700;display:flex;align-items:center;gap:.5rem
+    }
+    .details summary::-webkit-details-marker{display:none}
+    .chev{display:inline-block;transition:transform .2s}
+    .details[open] .chev{transform:rotate(90deg)}
     .archive-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));margin-top:.6rem}
     .archive-card{border:1px solid var(--stroke);border-radius:10px;background:#111418;padding:.6rem}
     .archive-card h4{margin:.1rem 0 .2rem;font-size:1rem}
@@ -75,63 +72,43 @@
   </figure>
   <div class="content wrap">
     <h1><span class="accent">Weekly Challenge</span></h1>
-    <p>One tiny idea to focus on all week. Monday → Sunday. Keep it simple, keep it fun.</p>
-    <div class="cta-row">
-      <a class="btn" href="#challenge">This Week’s Challenge</a>
-      <a class="btn" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo (PDF)</a>
+    <p>One tiny idea to keep you moving forward. Monday → Sunday, refreshed automatically each week.</p>
+    <div class="cta-row" style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <a class="btn" href="#challenge">Jump to this week</a>
+      <a class="btn--pill" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo</a>
+      <a class="btn--pill" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker</a>
+      <a class="btn--pill" href="pdf/ideas/hydration-log.pdf">Hydration Log</a>
     </div>
   </div>
 </header>
 
 <main class="wrap" id="challenge">
   <!-- THIS WEEK -->
-  <section class="section">
-    <div class="grid">
-      <article class="card" id="challengeCard">
-        <h3 id="cTitle">Loading…</h3>
-        <p class="meta" id="cMeta">—</p>
-        <p id="cSummary">—</p>
-        <div class="chips" id="cChips"></div>
-        <div class="btn-row" id="cBtns">
-          <!-- View details + any downloads injected here -->
-        </div>
-      </article>
+  <section class="section" aria-labelledby="weeklyTitle">
+    <article class="card" id="challengeCard">
+      <h3 id="weeklyTitle">Loading…</h3>
+      <p class="meta" id="cMeta">—</p>
+      <p id="cSummary">—</p>
 
-      <aside class="card">
-        <h3>How the weekly idea works</h3>
-        <ul class="meta" style="margin:.3rem 0 0 1.1rem">
-          <li>Runs **Monday → Sunday** based on your local time.</li>
-          <li>Refreshes automatically each new week (deterministic rotation).</li>
-          <li>Open details to see steps and tips. Keep it tiny and achievable.</li>
-        </ul>
-      </aside>
-    </div>
+      <div class="chips" id="cChips" aria-label="Tags"></div>
+
+      <div class="btn-row" id="cBtns">
+        <!-- Details + downloads injected -->
+      </div>
+
+      <details class="details" id="quickTips" style="margin-top:.4rem">
+        <summary><span class="chev">▸</span> Quick tips</summary>
+        <ul class="meta" id="cTips" style="margin:.35rem 0 0 1.1rem"></ul>
+      </details>
+    </article>
   </section>
 
-  <!-- OPTIONAL ARCHIVE BROWSER -->
-  <section class="section">
-    <div class="details">
-      <summary>Browse all ideas (optional)</summary>
-      <div class="archive-grid" id="archiveGrid"></div>
-    </div>
-  </section>
-
-  <!-- INFO -->
-  <section class="section">
-    <div class="grid">
-      <article class="card">
-        <h3>Keep it tiny</h3>
-        <p>Just 1–2 ideas per week is plenty. Track progress and celebrate small wins.</p>
-      </article>
-      <article class="card">
-        <h3>Downloads</h3>
-        <div class="btn-row">
-          <a class="btn--pill" href="pdf/ideas/pushup-tracker.pdf">Push-Up Tracker</a>
-          <a class="btn--pill" href="pdf/ideas/hydration-log.pdf">Hydration Log</a>
-          <a class="btn--pill" href="pdf/ideas/fitness-bingo.pdf">Fitness Bingo</a>
-        </div>
-      </article>
-    </div>
+  <!-- COLLAPSIBLE ARCHIVE (lazy-loaded) -->
+  <section class="section" aria-label="Browse all ideas">
+    <details class="details" id="archive">
+      <summary><span class="chev">▸</span> Browse all ideas <span class="meta" id="archCount" style="font-weight:normal"></span></summary>
+      <div class="archive-grid" id="archiveGrid" style="margin-top:.6rem"></div>
+    </details>
   </section>
 
   <!-- Disclaimer -->
@@ -166,10 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ===== Weekly Challenge App ===== */
+/* ===== Weekly Challenge App (tidy + lazy archive) ===== */
 (function(){
   const qs=(s,e=document)=>e.querySelector(s);
-  const qsa=(s,e=document)=>Array.from(e.querySelectorAll(s));
+
   const IDEAS = [
     /* FITNESS */
     {
@@ -186,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       focus:['Strength','Habits'],
       time:'≤10 min',
       gear:['No equipment'],
-      links:[{label:'Push-Up Tracker (PDF)',href:'pdf/ideas/pushup-tracker.pdf'}]
+      links:[{label:'Push-Up Tracker',href:'pdf/ideas/pushup-tracker.pdf'}]
     },
     {
       title:'Plank Ladder',
@@ -219,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       focus:['Hydration','Habits'],
       time:'≤5 min',
       gear:[],
-      links:[{label:'Hydration Log (PDF)',href:'pdf/ideas/hydration-log.pdf'}]
+      links:[{label:'Hydration Log',href:'pdf/ideas/hydration-log.pdf'}]
     },
     {
       title:'Meat-Free Monday',
@@ -274,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
       focus:['Habits','Mobility','Cardio'],
       time:'≤10 min',
       gear:[],
-      links:[{label:'Fitness Bingo (PDF)',href:'pdf/ideas/fitness-bingo.pdf'}]
+      links:[{label:'Fitness Bingo',href:'pdf/ideas/fitness-bingo.pdf'}]
     },
     {
       title:'Weekend Adventure',
@@ -288,101 +265,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  /* ISO week helpers (Mon-Sun) */
-  function startOfWeek(d){ // returns a new Date at Monday 00:00 local
-    const date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const day = (date.getDay()+6)%7; // 0=Mon
-    date.setDate(date.getDate()-day);
-    date.setHours(0,0,0,0);
-    return date;
-  }
-  function endOfWeek(d){
-    const s = startOfWeek(d);
-    const e = new Date(s); e.setDate(e.getDate()+6); e.setHours(23,59,59,999); return e;
-  }
-  function isoWeekYear(d){
-    // ISO week-numbering year
-    const tmp = new Date(d.getTime());
-    tmp.setHours(0,0,0,0);
-    // Thursday determines year
-    tmp.setDate(tmp.getDate() + 3 - ((tmp.getDay()+6)%7));
-    return tmp.getFullYear();
-  }
-  function isoWeekNumber(d){
-    const temp = new Date(d.getTime());
-    temp.setHours(0,0,0,0);
-    // Thursday of this week
-    temp.setDate(temp.getDate() + 3 - ((temp.getDay()+6)%7));
-    const week1 = new Date(temp.getFullYear(),0,4);
-    const diff = (temp - week1 + ((week1.getDay()+6)%7 - 3)*86400000) / 86400000;
-    return 1 + Math.floor(diff/7);
-  }
+  /* Week helpers (Mon–Sun) */
+  function startOfWeek(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);x.setHours(0,0,0,0);return x;}
+  function endOfWeek(d){const s=startOfWeek(d),e=new Date(s);e.setDate(e.getDate()+6);e.setHours(23,59,59,999);return e;}
+  function isoWeekYear(d){const t=new Date(d.getTime());t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));return t.getFullYear();}
+  function isoWeekNumber(d){const t=new Date(d.getTime());t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));const w1=new Date(t.getFullYear(),0,4);const diff=(t-w1+(((w1.getDay()+6)%7)-3)*86400000)/86400000;return 1+Math.floor(diff/7);}
 
-  /* Deterministic weekly index so it rotates automatically */
   function weeklyIndex(len){
-    const now = new Date();
-    const y = isoWeekYear(now);
-    const w = isoWeekNumber(now); // 1..53
-    // Simple hash mix so distribution is nice but deterministic
-    let n = (y*57 + w*131) ^ 0x9e3779b1;
-    n = (n ^ (n>>>16)) * 0x45d9f3b;
-    n = (n ^ (n>>>16)) * 0x45d9f3b;
-    n = n ^ (n>>>16);
-    const idx = Math.abs(n) % len;
-    return { idx, y, w, now };
+    const now=new Date();
+    const y=isoWeekYear(now), w=isoWeekNumber(now);
+    let n=(y*57 + w*131) ^ 0x9e3779b1; n=(n^(n>>>16))*0x45d9f3b; n=(n^(n>>>16))*0x45d9f3b; n=n^(n>>>16);
+    return { idx: Math.abs(n)%len, now };
   }
 
   /* Render "this week" */
   function renderThisWeek(){
     const { idx, now } = weeklyIndex(IDEAS.length);
-    const idea = IDEAS[idx];
-
-    const cTitle = qs('#cTitle');
-    const cMeta  = qs('#cMeta');
-    const cSummary = qs('#cSummary');
-    const cChips = qs('#cChips');
-    const cBtns = qs('#cBtns');
-
-    const s = startOfWeek(now);
-    const e = endOfWeek(now);
-    const fmt = (d)=> d.toLocaleDateString(undefined,{month:'short', day:'numeric'});
-    const weekStr = `${fmt(s)} – ${fmt(e)}`;
-
-    cTitle.textContent = idea.title;
-    cMeta.textContent  = `${idea.type} • ${idea.time||'—'} • ${weekStr}`;
-    cSummary.textContent = idea.summary;
-    cChips.innerHTML = `
-      ${(idea.focus||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
-      ${(idea.gear||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
+    const i = IDEAS[idx];
+    const fmt = d=> d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    const s=startOfWeek(now), e=endOfWeek(now);
+    qs('#weeklyTitle').textContent = i.title;
+    qs('#cMeta').textContent = `${i.type} • ${i.time||'—'} • ${fmt(s)} – ${fmt(e)}`;
+    qs('#cSummary').textContent = i.summary;
+    qs('#cChips').innerHTML = `
+      ${(i.focus||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
+      ${(i.gear||[]).map(t=>`<span class="chip">${t}</span>`).join('')}
     `;
-    cBtns.innerHTML = `
+    qs('#cBtns').innerHTML = `
       <button class="btn" id="viewDetails">View details</button>
-      ${(idea.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label.replace(/\s*\(PDF\)\s*/,'')}</a>`).join('')}
+      ${(i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label}</a>`).join('')}
     `;
-
-    qs('#viewDetails')?.addEventListener('click', ()=>openModal(idea));
+    qs('#cTips').innerHTML = (i.tips||[]).map(t=>`<li>${t}</li>`).join('');
+    document.getElementById('viewDetails')?.addEventListener('click',()=>openModal(i));
   }
 
-  /* Archive drawer */
-  function renderArchive(){
-    const wrap = qs('#archiveGrid');
-    if(!wrap) return;
-    wrap.innerHTML = '';
+  /* Lazy render archive when opened */
+  function renderArchiveOnce(){
+    const wrap = qs('#archiveGrid'); if(!wrap || wrap.dataset.ready) return;
     IDEAS.forEach(i=>{
-      const card = document.createElement('div');
-      card.className = 'archive-card';
-      card.innerHTML = `
+      const d=document.createElement('div');
+      d.className='archive-card';
+      d.innerHTML = `
         <h4>${i.title}</h4>
         <p class="meta">${i.type} • ${i.time||'—'}</p>
-        <p style="margin:.2rem 0 .4rem">${i.summary}</p>
+        <p style="margin:.2rem 0 .45rem">${i.summary}</p>
         <div class="btn-row">
           <button class="btn--pill" data-view>View</button>
-          ${(i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label.replace(/\s*\(PDF\)\s*/,'')}</a>`).join('')}
+          ${(i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label}</a>`).join('')}
         </div>
       `;
-      card.querySelector('[data-view]').addEventListener('click', ()=>openModal(i));
-      wrap.appendChild(card);
+      d.querySelector('[data-view]').addEventListener('click',()=>openModal(i));
+      wrap.appendChild(d);
     });
+    wrap.dataset.ready='1';
   }
 
   /* Modal */
@@ -409,13 +344,15 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.querySelector('#mMeta').textContent  = `${i.type} • ${i.time||'—'}`;
     modal.querySelector('#mSteps').innerHTML   = (i.details||[]).map(s=>`<li>${s}</li>`).join('');
     modal.querySelector('#mTips').innerHTML    = (i.tips||[]).map(s=>`<li>${s}</li>`).join('');
-    modal.querySelector('#mLinks').innerHTML   = (i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label.replace(/\s*$begin:math:text$PDF$end:math:text$\s*/,'')}</a>`).join('');
+    modal.querySelector('#mLinks').innerHTML   = (i.links||[]).map(l=>`<a class="btn--pill" href="${l.href}">${l.label}</a>`).join('');
     modal.showModal();
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
     renderThisWeek();
-    renderArchive();
+    const arch = qs('#archive');
+    const count = qs('#archCount'); if(count) count.textContent = `(${IDEAS.length})`;
+    arch?.addEventListener('toggle', ()=>{ if(arch.open) renderArchiveOnce(); });
   });
 })();
 </script>

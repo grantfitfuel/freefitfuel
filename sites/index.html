@@ -20,87 +20,59 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="/img/freefitfuel-logo-180.png">
 
-  <!-- Page-local styles for the continuous carousel -->
   <style>
-    /* ===== Polished continuous carousel ===== */
-    #ideas { margin-top: 10px; }
-    .carousel-wrap{
+    /* ===== Carousel styles ===== */
+    #ideas .carousel {
+      --gap: 14px;
+      --h: 150px;          /* tile height */
+      --duration: 28s;     /* scroll speed */
+      display: flex;
+      gap: var(--gap);
+      overflow: hidden;
       position: relative;
-      background: var(--glass);
-      border: 1px solid var(--stroke);
+      height: calc(var(--h) + 60px); /* add space for captions */
+    }
+    #ideas .carousel-track {
+      display: flex;
+      gap: var(--gap);
+      animation: scroll-left var(--duration) linear infinite;
+    }
+    #ideas .idea {
+      flex: 0 0 auto;
+      width: 240px;   /* tile width */
       border-radius: 14px;
-      padding: 10px;
-      overflow: hidden;
-    }
-    .carousel{
-      --gap: 12px;
-      --h: 120px;                /* image height (smaller, polished) */
-      --duration: 28s;           /* scroll speed */
-      display: flex;
-      gap: var(--gap);
-      will-change: transform;
-      animation: ff-scroll var(--duration) linear infinite;
-    }
-    /* Pause on hover (desktop) */
-    .carousel-wrap:hover .carousel{ animation-play-state: paused; }
-
-    /* Duplicate content for seamless loop (we render two tracks) */
-    .carousel__group{
-      display: flex;
-      gap: var(--gap);
-      flex: 0 0 auto;
-    }
-
-    .idea{
-      flex: 0 0 auto;
-      width: 210px;              /* card width */
       border: 1px solid var(--stroke);
-      border-radius: 12px;
+      background: var(--glass);
       overflow: hidden;
-      background: #0d1015;
-      box-shadow: 0 1px 0 rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
-      transition: transform .2s ease, filter .2s ease;
+      display: flex;
+      flex-direction: column;
     }
-    .idea:focus-within, .idea:hover{ transform: translateY(-2px); filter: brightness(1.02); }
-    .idea .thumb{
-      display:block; width:100%; height: var(--h); object-fit: cover; object-position: center;
-      filter: saturate(1.05) contrast(1.02);
+    #ideas .idea .thumb {
+      height: var(--h);
+      overflow: hidden;
     }
-    .idea .cap{
-      padding: .6rem .7rem;
+    #ideas .idea .thumb img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      display: block;
+    }
+    #ideas .idea figcaption {
+      padding: .55rem .7rem;
       font-size: .92rem;
-      color: #cfd0d8;
+      color: var(--inkdim);
+      line-height: 1.35;
     }
-
-    /* Soft edge masks so items enter/exit nicely */
-    .carousel-wrap::before,
-    .carousel-wrap::after{
-      content:""; position:absolute; top:0; bottom:0; width:80px; pointer-events:none;
-      background: linear-gradient(to right, var(--bg), transparent);
-      z-index: 2;
+    @keyframes scroll-left {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-50% - var(--gap))); }
     }
-    .carousel-wrap::after{
-      right:0; left:auto;
-      transform: rotate(180deg);
+    /* Duplicate track for seamless loop */
+    #ideas .carousel-track {
+      width: max-content;
     }
-    .carousel-wrap::before{ left:0; }
-
-    @keyframes ff-scroll{
-      from{ transform: translateX(0); }
-      to{   transform: translateX(-50%); } /* because we print two identical groups side-by-side */
-    }
-
-    /* Reduced motion: stop auto-scrolling, keep it draggable/scrollable */
-    @media (prefers-reduced-motion: reduce){
-      .carousel{ animation: none; }
-    }
-
-    /* Narrow tweaks */
+    /* Mobile */
     @media (max-width: 560px){
-      .idea{ width: 180px; }
-      .carousel{ --h: 110px; }
-      .carousel-wrap::before,
-      .carousel-wrap::after{ width: 50px; }
+      #ideas .carousel { --h: 130px; }
+      #ideas .idea { width: 200px; }
     }
   </style>
 </head>
@@ -155,292 +127,30 @@
       </div>
     </section>
 
-    <!-- ===== Polished continuous carousel ===== -->
-    <section id="ideas" aria-label="Inspiration gallery">
+    <!-- Carousel section -->
+    <section id="ideas" class="strip" aria-label="Inspiration gallery">
       <h2>Ideas you can start this week</h2>
-
-      <div class="carousel-wrap">
-        <!-- We render two identical groups for a seamless loop -->
-        <div class="carousel" aria-hidden="false">
-          <div class="carousel__group">
-            <figure class="idea">
-              <img class="thumb" src="img/bands.jpg" alt="Resistance bands workout at home">
-              <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/rope.jpg" alt="Skipping rope cardio">
-              <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/floorpress.jpg" alt="Dumbbell floor press on the floor">
-              <figcaption class="cap">Floor press — chest &amp; triceps</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/yoga.jpg" alt="Yoga pose on a mat at home">
-              <figcaption class="cap">Yoga flow — mobility &amp; calm</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables">
-              <figcaption class="cap">Meal prep — clear portions</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/curl.jpg" alt="Seated dumbbell curl at home">
-              <figcaption class="cap">Seated curls — simple strength</figcaption>
-            </figure>
-          </div>
-
-          <!-- Duplicate for seamless scroll -->
-          <div class="carousel__group" aria-hidden="true">
-            <figure class="idea">
-              <img class="thumb" src="img/bands.jpg" alt="">
-              <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/rope.jpg" alt="">
-              <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/floorpress.jpg" alt="">
-              <figcaption class="cap">Floor press — chest &amp; triceps</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/yoga.jpg" alt="">
-              <figcaption class="cap">Yoga flow — mobility &amp; calm</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/mealprep.jpg" alt="">
-              <figcaption class="cap">Meal prep — clear portions</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/curl.jpg" alt="">
-              <figcaption class="cap">Seated curls — simple strength</figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <!DOCTYPE html>
-<html lang="en-GB">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FreeFitFuel — Home</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20">
-
-  <!-- Favicons & app icons -->
-  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
-  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
-  <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
-  <meta name="theme-color" content="#FF6A00">
-  <link rel="manifest" href="/manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="/img/freefitfuel-logo-180.png">
-
-  <!-- Page-local styles for the continuous carousel -->
-  <style>
-    /* ===== Polished continuous carousel ===== */
-    #ideas { margin-top: 10px; }
-    .carousel-wrap{
-      position: relative;
-      background: var(--glass);
-      border: 1px solid var(--stroke);
-      border-radius: 14px;
-      padding: 10px;
-      overflow: hidden;
-    }
-    .carousel{
-      --gap: 12px;
-      --h: 120px;                /* image height (smaller, polished) */
-      --duration: 28s;           /* scroll speed */
-      display: flex;
-      gap: var(--gap);
-      will-change: transform;
-      animation: ff-scroll var(--duration) linear infinite;
-    }
-    /* Pause on hover (desktop) */
-    .carousel-wrap:hover .carousel{ animation-play-state: paused; }
-
-    /* Duplicate content for seamless loop (we render two tracks) */
-    .carousel__group{
-      display: flex;
-      gap: var(--gap);
-      flex: 0 0 auto;
-    }
-
-    .idea{
-      flex: 0 0 auto;
-      width: 210px;              /* card width */
-      border: 1px solid var(--stroke);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #0d1015;
-      box-shadow: 0 1px 0 rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.02);
-      transition: transform .2s ease, filter .2s ease;
-    }
-    .idea:focus-within, .idea:hover{ transform: translateY(-2px); filter: brightness(1.02); }
-    .idea .thumb{
-      display:block; width:100%; height: var(--h); object-fit: cover; object-position: center;
-      filter: saturate(1.05) contrast(1.02);
-    }
-    .idea .cap{
-      padding: .6rem .7rem;
-      font-size: .92rem;
-      color: #cfd0d8;
-    }
-
-    /* Soft edge masks so items enter/exit nicely */
-    .carousel-wrap::before,
-    .carousel-wrap::after{
-      content:""; position:absolute; top:0; bottom:0; width:80px; pointer-events:none;
-      background: linear-gradient(to right, var(--bg), transparent);
-      z-index: 2;
-    }
-    .carousel-wrap::after{
-      right:0; left:auto;
-      transform: rotate(180deg);
-    }
-    .carousel-wrap::before{ left:0; }
-
-    @keyframes ff-scroll{
-      from{ transform: translateX(0); }
-      to{   transform: translateX(-50%); } /* because we print two identical groups side-by-side */
-    }
-
-    /* Reduced motion: stop auto-scrolling, keep it draggable/scrollable */
-    @media (prefers-reduced-motion: reduce){
-      .carousel{ animation: none; }
-    }
-
-    /* Narrow tweaks */
-    @media (max-width: 560px){
-      .idea{ width: 180px; }
-      .carousel{ --h: 110px; }
-      .carousel-wrap::before,
-      .carousel-wrap::after{ width: 50px; }
-    }
-  </style>
-</head>
-
-<body>
-  <!-- Shared header mount -->
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
-
-  <!-- HERO -->
-  <header class="hero" role="banner" aria-label="FreeFitFuel hero">
-    <figure class="hero-media">
-      <img src="img/hero.jpg" alt="Home training on a mat with dumbbells">
-      <div class="overlay" aria-hidden="true"></div>
-    </figure>
-    <div class="hero-content wrap">
-      <span class="eyebrow">Healthy body & mind</span>
-      <h1><span class="accent">Stronger, Healthier, You</span></h1>
-      <p class="lead">Home workouts and balanced meals to fuel your body and mind — friendly, free, and easy to follow.</p>
-      <div class="cta-row">
-        <a class="btn" href="workouts.html">Start Training</a>
-        <a class="btn" href="nutrition.html">See Meal Ideas</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="grid" aria-label="Key sections">
-      <article class="card">
-        <h2>Wellbeing</h2>
-        <p class="meta">Carer Support, Neuroscience, and Mental Health — practical tools for tough days.</p>
-        <a class="btn" href="wellbeing.html">Open Wellbeing</a>
-      </article>
-      <article class="card">
-        <h2>Workouts</h2>
-        <p class="meta">Smart dumbbell &amp; bodyweight routines with warm-ups and cool-downs.</p>
-        <a class="btn" href="workouts.html">Browse Fitness</a>
-      </article>
-      <article class="card">
-        <h2>Nutrition</h2>
-        <p class="meta">Budget-friendly recipes with allergens labelled, plus hydration helpers.</p>
-        <a class="btn" href="nutrition.html">See Fuel</a>
-      </article>
-    </section>
-
-    <section class="split" id="workouts" aria-label="Home workout highlight">
-      <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
-      <div>
-        <h2>Move better at home</h2>
-        <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
-        <a class="btn" href="workouts.html">See workout plans</a>
-      </div>
-    </section>
-
-    <!-- ===== Polished continuous carousel ===== -->
-    <section id="ideas" aria-label="Inspiration gallery">
-      <h2>Ideas you can start this week</h2>
-
-      <div class="carousel-wrap">
-        <!-- We render two identical groups for a seamless loop -->
-        <div class="carousel" aria-hidden="false">
-          <div class="carousel__group">
-            <figure class="idea">
-              <img class="thumb" src="img/bands.jpg" alt="Resistance bands workout at home">
-              <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/rope.jpg" alt="Skipping rope cardio">
-              <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/floorpress.jpg" alt="Dumbbell floor press on the floor">
-              <figcaption class="cap">Floor press — chest &amp; triceps</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/yoga.jpg" alt="Yoga pose on a mat at home">
-              <figcaption class="cap">Yoga flow — mobility &amp; calm</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables">
-              <figcaption class="cap">Meal prep — clear portions</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/curl.jpg" alt="Seated dumbbell curl at home">
-              <figcaption class="cap">Seated curls — simple strength</figcaption>
-            </figure>
-          </div>
-
-          <!-- Duplicate for seamless scroll -->
-          <div class="carousel__group" aria-hidden="true">
-            <figure class="idea">
-              <img class="thumb" src="img/bands.jpg" alt="">
-              <figcaption class="cap">Resistance bands — full-body, joint-friendly</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/rope.jpg" alt="">
-              <figcaption class="cap">Skipping — 5–10 minutes for fast cardio</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/floorpress.jpg" alt="">
-              <figcaption class="cap">Floor press — chest &amp; triceps</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/yoga.jpg" alt="">
-              <figcaption class="cap">Yoga flow — mobility &amp; calm</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/mealprep.jpg" alt="">
-              <figcaption class="cap">Meal prep — clear portions</figcaption>
-            </figure>
-            <figure class="idea">
-              <img class="thumb" src="img/curl.jpg" alt="">
-              <figcaption class="cap">Seated curls — simple strength</figcaption>
-            </figure>
-          </div>
+      <div class="carousel">
+        <div class="carousel-track">
+          <!-- first set -->
+          <figure class="idea"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption>Resistance bands — full-body, joint-friendly</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption>Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption>Floor press — chest &amp; triceps without a bench</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption>Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption>Meal prep — clear portions, real food</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption>Seated curls — simple strength you can feel</figcaption></figure>
+          <!-- duplicate set for smooth loop -->
+          <figure class="idea"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption>Resistance bands — full-body, joint-friendly</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption>Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption>Floor press — chest &amp; triceps without a bench</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption>Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption>Meal prep — clear portions, real food</figcaption></figure>
+          <figure class="idea"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption>Seated curls — simple strength you can feel</figcaption></figure>
         </div>
       </div>
     </section>
 
-    <!-- Disclaimer (standard) -->
+    <!-- Disclaimer -->
     <section class="section">
       <h2>Important Note</h2>
       <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
@@ -456,7 +166,7 @@
     </div>
   </footer>
 
-  <!-- Minimal JS for hamburger toggle (unchanged) -->
+  <!-- Minimal JS for hamburger toggle -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const btn = document.querySelector('.hamburger');
@@ -470,83 +180,6 @@
       });
     });
   </script>
-
-  <!-- Optional: let users drag/scroll on touch devices (animation continues) -->
-  <script>
-    (function(){
-      const wrap = document.querySelector('.carousel-wrap');
-      const track = document.querySelector('.carousel');
-      if(!wrap || !track) return;
-
-      let isDown=false, startX=0, startScroll=0;
-      wrap.addEventListener('pointerdown', e => {
-        isDown=true; startX=e.clientX; startScroll=wrap.scrollLeft; wrap.setPointerCapture(e.pointerId);
-      });
-      wrap.addEventListener('pointermove', e => {
-        if(!isDown) return;
-        const dx = e.clientX - startX;
-        wrap.scrollLeft = startScroll - dx;
-      });
-      ['pointerup','pointerleave','pointercancel'].forEach(t => wrap.addEventListener(t, ()=>{ isDown=false; }));
-    })();
-  </script>
-
-  <script src="/app.js" defer></script>
-</body>
-</html>
-    </section>
-
-    <!-- Disclaimer (standard) -->
-    <section class="section">
-      <h2>Important Note</h2>
-      <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-      <p>&copy; 2025 FreeFitFuel · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
-    </div>
-  </footer>
-
-  <!-- Minimal JS for hamburger toggle (unchanged) -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const btn = document.querySelector('.hamburger');
-      const nav = document.querySelector('.main-nav');
-      if (!btn || !nav) return;
-
-      btn.addEventListener('click', () => {
-        const open = btn.classList.toggle('active');
-        nav.classList.toggle('open', open);
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    });
-  </script>
-
-  <!-- Optional: let users drag/scroll on touch devices (animation continues) -->
-  <script>
-    (function(){
-      const wrap = document.querySelector('.carousel-wrap');
-      const track = document.querySelector('.carousel');
-      if(!wrap || !track) return;
-
-      let isDown=false, startX=0, startScroll=0;
-      wrap.addEventListener('pointerdown', e => {
-        isDown=true; startX=e.clientX; startScroll=wrap.scrollLeft; wrap.setPointerCapture(e.pointerId);
-      });
-      wrap.addEventListener('pointermove', e => {
-        if(!isDown) return;
-        const dx = e.clientX - startX;
-        wrap.scrollLeft = startScroll - dx;
-      });
-      ['pointerup','pointerleave','pointercancel'].forEach(t => wrap.addEventListener(t, ()=>{ isDown=false; }));
-    })();
-  </script>
-
   <script src="/app.js" defer></script>
 </body>
 </html>

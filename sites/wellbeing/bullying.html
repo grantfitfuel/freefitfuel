@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bullying & Online Safety – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="/style.css?v=43">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page-local layout only */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media(min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+
+    /* HERO – non-cropping image, consistent with other FFF wellbeing pages */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;
+      height:auto !important;
+      max-height:480px !important;     /* keep full image visible */
+      object-fit:scale-down !important; /* no crop */
+      object-position:center center !important;
+      display:block;
+      filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+
+    /* Mini-nav (sticky + scrollspy) */
+    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
+    html{scroll-behavior:smooth}
+  </style>
+</head>
+<body>
+
+<!-- Shared header (partials) -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Bullying hero">
+  <figure>
+    <img src="/img/bullying-hero.png" alt="Smartphone privacy and safety settings toggled on">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Bullying &amp; Online Safety</span></h1>
+    <p>You are not to blame. Here are practical steps to increase safety, keep evidence, and get help.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="lead">
+    Bullying can be in person or online (messages, group chats, social media, gaming). This page shows
+    realistic actions you can take today and where to find support across the UK and Scotland.
+  </p>
+
+  <!-- Mini-nav -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#signs">What it looks like</a>
+    <a href="#safety">Online safety settings</a>
+    <a href="#evidence">Keeping evidence</a>
+    <a href="#parents">For parents &amp; carers</a>
+    <a href="#report">Reporting &amp; help</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <!-- 1 -->
+  <section id="signs" class="section">
+    <h2>1) What bullying can look like</h2>
+    <ul>
+      <li>Repeated messages, exclusion from group chats, “jokes” that hurt, doxxing or threats.</li>
+      <li>Impersonation, sharing photos without consent, adding you to hostile servers or groups.</li>
+      <li>In-person intimidation, damage to belongings, spreading rumours.</li>
+    </ul>
+  </section>
+
+  <!-- 2 -->
+  <section id="safety" class="section">
+    <h2>2) Online safety settings (quick wins)</h2>
+    <figure>
+      <img src="/img/bullying-online-safety.png" alt="Phone privacy and safety toggles enabled" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+      <figcaption class="cap">Privacy, blocking and reporting tools reduce access and visibility.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Lock down profiles:</strong> private accounts; friends-only messaging; review followers.</li>
+      <li><strong>Block &amp; mute:</strong> block accounts, mute keywords; leave hostile group chats.</li>
+      <li><strong>Limit tagging &amp; mentions:</strong> approval required before others can tag you.</li>
+      <li><strong>Turn off geotags/location sharing</strong> and app location permissions.</li>
+      <li><strong>Save your settings:</strong> screenshot them so you can reapply after app updates.</li>
+    </ul>
+  </section>
+
+  <!-- 3 -->
+  <section id="evidence" class="section">
+    <h2>3) Keep evidence safely</h2>
+    <figure>
+      <img src="/img/bullying-evidence.png" alt="Notebook with a phone showing saved screenshots and timestamps" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+      <figcaption class="cap">Dates, times and screenshots help schools, platforms and police act.</figcaption>
+    </figure>
+    <ul>
+      <li>Screenshot messages, usernames, group names, and profile URLs.</li>
+      <li>Note <strong>date/time</strong> and the <strong>platform</strong> for each incident.</li>
+      <li>Back up to a trusted adult’s device or cloud folder.</li>
+      <li>Don’t reply when it escalates — report and block instead.</li>
+    </ul>
+  </section>
+
+  <!-- 4 -->
+  <section id="parents" class="section">
+    <h2>4) For parents &amp; carers</h2>
+    <figure>
+      <img src="/img/bullying-parents.png" alt="Parent and young person reviewing a phone together at the table" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+      <figcaption class="cap">Stay curious, not accusatory — you’re on the same team.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Listen first:</strong> “Thank you for telling me. We’ll handle this together.”</li>
+      <li><strong>Agree a plan:</strong> safety settings, who to tell at school/college, how you’ll check in.</li>
+      <li><strong>School route:</strong> share evidence with pastoral/head of year. Ask for their anti-bullying policy steps in writing.</li>
+      <li><strong>Wellbeing:</strong> keep routines, sleep and meals steady; consider GP/young people’s counselling.</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section id="report" class="section">
+    <h2>5) Reporting &amp; getting help (UK &amp; Scotland)</h2>
+    <ul>
+      <li><strong>Platforms:</strong> Use in-app report tools (harassment, hate, impersonation). Include screenshots.</li>
+      <li><strong>School/college:</strong> ask for safeguarding/anti-bullying policy action and a review date.</li>
+      <li><strong>Police (101 / 999 in emergency):</strong> report threats, stalking, hate crime, image-based abuse.</li>
+      <li><a href="https://www.ceop.police.uk/safety-centre/" target="_blank" rel="noopener">CEOP</a> — report sexual exploitation/online grooming.</li>
+      <li><a href="https://www.childline.org.uk" target="_blank" rel="noopener">Childline</a> — 0800 1111 (under 19s, free, confidential).</li>
+      <li><a href="https://www.youngminds.org.uk" target="_blank" rel="noopener">YoungMinds</a> — advice and text support for young people.</li>
+      <li><a href="https://respectme.org.uk" target="_blank" rel="noopener">respectme (Scotland)</a> — anti-bullying advice and school guidance.</li>
+      <li><a href="https://www.nspcc.org.uk" target="_blank" rel="noopener">NSPCC</a> — guidance for parents and carers.</li>
+    </ul>
+  </section>
+
+  <!-- Disclaimer -->
+  <section id="disclaimer" class="section">
+    <h2>Important Note</h2>
+    <p>
+      The information on this page is for <strong>general understanding and support</strong>. It is
+      <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel
+      unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.
+      If you’re outside the UK, contact your local emergency number.
+    </p>
+    <p>
+      For non-emergency concerns, consider speaking with a qualified health professional or one of the
+      support services listed above.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Mini-nav scrollspy (same pattern as other FFF wellbeing pages) -->
+<script>
+(function(){
+  const nav = document.querySelector('.mini-nav'); if(!nav) return;
+  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  const sections = links
+    .map(a => ({ a, el: document.querySelector(a.getAttribute('href')) }))
+    .filter(x => x.el);
+
+  const setActive = (id) => {
+    links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
+  };
+
+  const io = new IntersectionObserver((entries)=>{
+    // pick closest section to top that is intersecting
+    const top = entries
+      .filter(e=>e.isIntersecting)
+      .sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];
+    if(top) setActive(top.target.id);
+  }, { root: null, rootMargin: '-80px 0px -65% 0px', threshold: [0, 1] });
+
+  sections.forEach(s => io.observe(s.el));
+})();
+</script>
+</body>
+</html>

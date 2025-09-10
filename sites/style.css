@@ -12,10 +12,10 @@
   --maxw:1140px;
   --radius:16px;
 
-  /* Hero sizing */
+  /* Hero sizing (site-wide) */
   --hero-min: 260px;
-  --hero-ideal: 46vh;
-  --hero-max: 560px;
+  --hero-ideal: 42vh;           /* ↓ slightly smaller to avoid “massive” home hero */
+  --hero-max: 520px;
 }
 
 /* ---------- Base ---------- */
@@ -98,26 +98,40 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
 }
 
 /* =========================================
-   HERO — Single source of truth (uses clamp)
+   HERO — Single source of truth (image FIRST, text BELOW)
    ========================================= */
+
+/* Full hero (Home) */
+header.hero{ position:relative; border-bottom:1px solid #1b1b22 }
+header.hero .hero-media{ position:relative; margin:0 }
+header.hero .hero-media img{
+  width:100%;
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
+  object-fit:cover; object-position:center 35%;
+  display:block; filter:brightness(.88) saturate(1.05);
+}
+header.hero .hero-media .overlay{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)) }
+/* ⬇️ Critical fix: text sits UNDER the image */
+header.hero .content{
+  position:static; inset:auto; padding:16px 20px 22px;
+}
+
+/* Mini hero (Ideas / Workouts / Endurance / Nutrition / Chill / Contact) */
 header.hero-mini{ position:relative; border-bottom:1px solid #1b1b22 }
 header.hero-mini figure{ margin:0; position:relative; overflow:hidden }
 header.hero-mini figure > img{
-  width:100% !important;
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-  min-height:0 !important;     /* defeat any legacy mins */
-  max-height:none !important;   /* defeat any legacy caps */
-  object-fit:cover !important;
-  object-position:center 12%;
-  display:block;
-  filter:brightness(.88) saturate(1.05);
+  width:100%;
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
+  object-fit:cover; object-position:center 12%;
+  display:block; filter:brightness(.88) saturate(1.05);
 }
 header.hero-mini .overlay{
-  position:absolute; inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
+  position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
 }
+/* ⬇️ Critical fix: text sits UNDER the image */
 header.hero-mini .content{
-  position:absolute; inset:auto 0 0 0; padding:16px 20px 22px;
+  position:static; inset:auto;
+  padding:16px 20px 22px;
   max-width:var(--maxw); margin:0 auto;
 }
 header.hero-mini h1{ margin:0 0 .35rem }
@@ -127,24 +141,24 @@ header.hero-mini p{ max-width:70ch; margin:.2rem 0 .6rem; color:#d0d0da }
 .page-hero{ margin:0 0 14px }
 .page-hero img{
   width:100%;
-  height:auto !important;
+  height:auto;
   max-height:clamp(220px, 42vh, 520px);
   object-fit:cover;
-  display:block;
-  border-radius:12px;
-  border:1px solid var(--stroke);
+  display:block; border-radius:12px; border:1px solid var(--stroke);
 }
 .page-hero--contain img{ object-fit:contain !important }
 .page-hero--tall img{ max-height:clamp(320px, 60vh, 680px) !important }
 
-/* Kill legacy inline sizes on hero images if any slipped through */
+/* Kill legacy inline sizes if any slipped through */
+header.hero figure > img[style],
 header.hero-mini figure > img[style],
 .page-hero img[style]{ height:auto !important; max-height:none !important }
 
-/* Small phones: optional slightly shorter hero */
+/* Small phones: slightly shorter hero */
 @media (max-width:420px){
+  header.hero .hero-media img,
   header.hero-mini figure > img{
-    height:clamp(220px, 42vh, 480px) !important;
+    height:clamp(220px, 40vh, 460px);
   }
 }
 
@@ -273,40 +287,4 @@ dialog::backdrop{ background:rgba(0,0,0,.6) }
   #printArea img { display:none !important; } /* per your request */
 
   @page { margin:12mm; }
-   /* =========================================
-   HERO OVERRIDES — put content BELOW images
-   and keep image height reasonable everywhere
-   ========================================= */
-
-/* A) Mini hero (Ideas / Workouts / Endurance / Nutrition / Chill / Contact) */
-header.hero-mini .content{
-  position:static;          /* was absolute */
-  inset:auto;
-  padding:16px 20px 22px;
-  max-width:var(--maxw);
-  margin:0 auto;
-}
-
-/* Keep the gradient on the image only */
-header.hero-mini .overlay{ position:absolute; inset:0; pointer-events:none; }
-
-/* B) Full hero (Home, if used on your template) */
-header.hero .content{
-  position:static;          /* move text under the image */
-  inset:auto;
-  padding:16px 20px 22px;
-  max-width:var(--maxw);
-  margin:0 auto;
-}
-header.hero .hero-media img{
-  width:100%;
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
-  object-fit:cover;
-  object-position:center 35%;
-  display:block;
-}
-
-/* Optional: ensure no inline styles re-enforce the old behaviour */
-header.hero-mini .content[style],
-header.hero .content[style]{ position:static !important; inset:auto !important; }
 }

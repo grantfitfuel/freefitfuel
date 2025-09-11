@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — Phase I (Foundation)</title>
+  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+    .sub{opacity:.85}
+
+    /* Page hero */
+    .phase-hero{margin:0 0 14px}
+    .phase-hero img{width:100%;height:auto;max-height:clamp(220px,42vh,520px);
+      object-fit:cover;border-radius:12px;border:1px solid var(--stroke);display:block}
+
+    /* Layout */
+    .grid-2{display:grid;gap:14px}
+    @media(min-width:900px){.grid-2{grid-template-columns:1.1fr .9fr}}
+
+    .box{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
+    .box h3{margin:.1rem 0 .5rem}
+    .pill{border:1px solid var(--stroke);border-radius:999px;padding:.2rem .55rem}
+
+    /* Week cards */
+    .weeks{display:grid;gap:12px}
+    @media(min-width:860px){.weeks{grid-template-columns:repeat(3,1fr)}}
+    .week{background:#10151c;border:1px solid var(--stroke);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:.5rem}
+    .day{border:1px solid var(--stroke);border-radius:10px;padding:.55rem .6rem;background:rgba(255,255,255,.04)}
+    .day h4{margin:.1rem 0 .25rem}
+    .chk{display:flex;gap:.5rem;align-items:center}
+    .meta{color:var(--inkdim);font-size:.92rem}
+
+    /* Session tools */
+    .tools{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0 .1rem}
+    .tools input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem;min-width:90px}
+    .btn-ghost{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:10px;padding:.38rem .7rem;cursor:pointer}
+    .timer{font-weight:700}
+
+    /* Tables for progressions */
+    table.clean{width:100%;border-collapse:collapse}
+    .clean td,.clean th{border:1px solid var(--stroke);padding:.45rem .55rem}
+    .clean th{background:rgba(255,255,255,.06);text-align:left}
+    .tag{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.16rem .5rem;font-size:.78rem;margin-left:.35rem}
+  </style>
+</head>
+<body>
+
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<main class="wrap">
+  <header class="phase-hero">
+    <img src="/img/phase1-hero.jpg" alt="Foundation training: squats, carries, easy engine">
+  </header>
+
+  <h1>Phase I — <span class="accent">Foundation</span></h1>
+  <p class="lead">8–12 weeks. Build movement quality, base strength, <strong>Zone-2 engine</strong>, and core calisthenics. Finish feeling fresh, not fried.</p>
+
+  <div class="grid-2" style="margin-top:10px">
+    <section class="box">
+      <h3>Weekly Structure</h3>
+      <ul class="meta">
+        <li><strong>Mon — Strength A</strong> (Squat + Push + Pull) <span class="pill">RPE 6–7</span></li>
+        <li><strong>Tue — Z2 Engine</strong> 35–45 min (run / row / ruck) <span class="pill">nasal</span></li>
+        <li><strong>Wed — Skills</strong> Calisthenics practice + core + carries</li>
+        <li><strong>Thu — Strength B</strong> (Hinge + Press + Row)</li>
+        <li><strong>Fri — Z2 Intervals</strong> 6×3′ Z3 / 2′ easy (or bike)</li>
+        <li><strong>Sat — Optional</strong> Hike / Mobility 30–45 min</li>
+        <li><strong>Sun — Off</strong> Downshift + sleep focus</li>
+      </ul>
+      <p class="meta">Keep 2 reps “in the tank”. Progress by adding small reps or load weekly.</p>
+      <div class="tools"><a class="btn-ghost" href="/hero-training.html">Boss Fights</a></div>
+    </section>
+
+    <section class="box">
+      <h3>Main Lifts & Progressions</h3>
+      <table class="clean">
+        <thead><tr><th>Lift / Skill</th><th>Start</th><th>Progression</th></tr></thead>
+        <tbody>
+          <tr><td>Goblet Squat</td><td>3×8</td><td>add 2–4kg when 3×10 crisp</td></tr>
+          <tr><td>RDL (DB/KB)</td><td>3×8</td><td>+2 reps → +load</td></tr>
+          <tr><td>Push-up</td><td>3×AMRAP-2</td><td>move toward 3×15; elevate hands if needed</td></tr>
+          <tr><td>DB Row</td><td>3×10/side</td><td>toward 3×12–15 strict</td></tr>
+          <tr><td>Pull-up / Table Row</td><td>Grease the groove</td><td>20–30 total across day <span class="tag">band OK</span></td></tr>
+          <tr><td>Carry (Farmer)</td><td>6×40–60m</td><td>add distance or load</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- THIS WEEK (auto-rotates) -->
+  <section style="margin-top:14px">
+    <h2>This Week</h2>
+    <p class="meta">Use timers & check off to save progress (local to your device).</p>
+    <div id="weekWrap" class="weeks"></div>
+  </section>
+
+  <!-- Technique cues (simple, human) -->
+  <section class="box" style="margin-top:14px">
+    <h3>Quick Form Cues</h3>
+    <ul class="meta">
+      <li><strong>Goblet Squat:</strong> ribs down, knees forward & out, pause 1s at bottom, stand tall.</li>
+      <li><strong>RDL:</strong> hips back, shins near vertical, lats on, feel hamstrings load, keep neck long.</li>
+      <li><strong>Push-up:</strong> screw hands into floor, elbows ~30–45°, body one plank, exhale up.</li>
+      <li><strong>DB Row:</strong> bench-supported; pull elbow to hip; no torso twist; 1s hold top.</li>
+      <li><strong>Table Row:</strong> straight line from heels→shoulders; squeeze shoulder blades first.</li>
+      <li><strong>Zone-2:</strong> nose breathing, can talk in full sentences; finish with longer exhales.</li>
+    </ul>
+  </section>
+
+  <!-- Recovery -->
+  <section class="box">
+    <h3>Recovery Tasks</h3>
+    <ul class="meta">
+      <li>Sleep: target 7.5–9h; same wake time.</li>
+      <li>Protein: ~1.6–2.2 g/kg/day; hydrate 30–40 ml/kg.</li>
+      <li>10–15 min mobility after strength (hips, t-spine, calves).</li>
+      <li>One <em>downshift</em> session: Yoga & Meditation page (evening 20–30 min).</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Small helpers ===== */
+function isoWeek(d=new Date()){
+  const date=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  const day=(date.getUTCDay()+6)%7; date.setUTCDate(date.getUTCDate()-day+3);
+  const firstThu=new Date(Date.UTC(date.getUTCFullYear(),0,4));
+  return 1+Math.round(((date-firstThu)/86400000-3+((firstThu.getUTCDay()+6)%7))/7);
+}
+function fmt(s){const m=Math.floor(s/60), ss=String(s%60).padStart(2,'0'); return `${m}:${ss}`;}
+function parseTime(t){const m=/^(\\d{1,2}):([0-5]\\d)$/.exec(t||''); return m?parseInt(m[1],10)*60+parseInt(m[2],10):0;}
+function lsGet(k,def){try{const v=localStorage.getItem(k); return v?JSON.parse(v):def;}catch{return def}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+
+/* ===== Phase I week templates (rotate) ===== */
+const WEEKS = [
+  { name:'Week A', days:[
+    {t:'Mon — Strength A',  w:['Goblet Squat 3×8–10','Push-up 3×AMRAP-2','DB Row 3×10/side','Farmer Carry 6×50m'], timer:'rest'},
+    {t:'Tue — Z2 Engine',   w:['Run/Row 40 min nasal'], timer:'steady'},
+    {t:'Wed — Skills',      w:['Table Rows 4×8 strict','Hollow/Arch 6×20s','Hip opener 10 min'], timer:'interval'},
+    {t:'Thu — Strength B',  w:['RDL 3×8–10','DB Press 3×8–10','Bench-support Row 3×12'], timer:'rest'},
+    {t:'Fri — Z2 Intervals',w:['6×3′ Z3 / 2′ easy'], timer:'interval'},
+    {t:'Sat — Mobility',    w:['Walk/Hike 45–60m','Calf & hip mobility 12m'], timer:'none'}
+  ]},
+  { name:'Week B', days:[
+    {t:'Mon — Strength A',  w:['Goblet Squat 4×6–8','Push-up 4×AMRAP-2','DB Row 4×8'], timer:'rest'},
+    {t:'Tue — Z2 Engine',   w:['Row/Run 35–45 min'], timer:'steady'},
+    {t:'Wed — Skills',      w:['Grease Pull-ups 20 total','Carries 10×40m','Core 8 min'], timer:'interval'},
+    {t:'Thu — Strength B',  w:['RDL 4×6–8','DB Press 4×6–8','Single-leg RDL 3×10'], timer:'rest'},
+    {t:'Fri — Z2 Intervals',w:['8×2′ Z3 / 2′ easy'], timer:'interval'},
+    {t:'Sat — Mobility',    w:['Yoga downshift 20–30m'], timer:'none'}
+  ]},
+  { name:'Deload', days:[
+    {t:'Mon — Strength Light',w:['Squat 2×8 @60%','Push-up 2×submax','Row 2×10'], timer:'rest'},
+    {t:'Tue — Z2 Very Easy',  w:['30 min conversational'], timer:'steady'},
+    {t:'Thu — Strength Light',w:['Hinge 2×8 @60%','Press 2×8','Carry 4×40m'], timer:'rest'},
+    {t:'Sat — Mobility',      w:['Long walk 60–90m + stretch'], timer:'none'}
+  ]}
+];
+/* choose by ISO week */
+const IDX = isoWeek()%WEEKS.length;
+
+/* ===== Render week cards ===== */
+const WRAP = document.getElementById('weekWrap');
+const SAVE_KEY = 'p1_checks_w'+IDX;
+const state = lsGet(SAVE_KEY,{});
+
+WEEKS[IDX].days.forEach((d,i)=>{
+  const card=document.createElement('div'); card.className='week';
+  const dayId='d'+i;
+  const list=d.w.map((line,j)=>{
+    const id=dayId+'i'+j;
+    const checked=!!state[id];
+    return `<label class="chk"><input data-id="${id}" type="checkbox" ${checked?'checked':''}> <span>${line}</span></label>`;
+  }).join('');
+  card.innerHTML = `
+    <div class="day">
+      <h4>${d.t}</h4>
+      <div>${list}</div>
+      ${toolRow(d.timer)}
+    </div>`;
+  WRAP.appendChild(card);
+});
+
+/* Save on toggle */
+WRAP.addEventListener('change', e=>{
+  if(e.target.matches('input[type="checkbox"][data-id]')){
+    state[e.target.dataset.id]=e.target.checked; lsSet(SAVE_KEY,state);
+  }
+});
+
+/* ===== Session tools ===== */
+function toolRow(kind){
+  if(kind==='none') return `<div class="tools"><span class="meta">Easy day — just move & breathe.</span></div>`;
+  if(kind==='steady') return `
+    <div class="tools">
+      <button class="btn-ghost" data-tool="timer" data-min="40">Start 40′ Timer</button>
+      <span class="timer" data-clock>00:00</span>
+      <button class="btn-ghost" data-tool="stop">Stop</button>
+    </div>`;
+  if(kind==='interval') return `
+    <div class="tools">
+      <label>Work <input data-tool="work" type="text" value="03:00"></label>
+      <label>Rest <input data-tool="rest" type="text" value="02:00"></label>
+      <label>Sets <input data-tool="sets" type="number" value="6" min="1" max="30"></label>
+      <button class="btn-ghost" data-tool="start-int">Start</button>
+      <span class="timer" data-clock>00:00</span>
+      <button class="btn-ghost" data-tool="stop">Stop</button>
+    </div>`;
+  /* rest-based strength */
+  return `
+    <div class="tools">
+      <label>Rest <input data-tool="restonly" type="text" value="01:30"></label>
+      <button class="btn-ghost" data-tool="start-rest">Start Rest</button>
+      <span class="timer" data-clock>00:00</span>
+      <button class="btn-ghost" data-tool="stop">Stop</button>
+    </div>`;
+}
+
+/* One timer per card */
+let activeT=null;
+WRAP.addEventListener('click', e=>{
+  const btn = e.target.closest('[data-tool]');
+  if(!btn) return;
+  const box = btn.closest('.week');
+  const clock = box.querySelector('[data-clock]');
+  const type = btn.dataset.tool;
+
+  function setClock(s){ clock.textContent = fmt(s); }
+
+  if(type==='stop'){ if(activeT){clearInterval(activeT); activeT=null;} setClock(0); return; }
+
+  if(type==='timer'){
+    if(activeT) clearInterval(activeT);
+    const target = parseInt(btn.dataset.min,10)*60;
+    let s=0; activeT=setInterval(()=>{ s++; setClock(s); if(s>=target){clearInterval(activeT); activeT=null;} },1000);
+    return;
+  }
+
+  if(type==='start-int'){
+    if(activeT) clearInterval(activeT);
+    const work=parseTime(box.querySelector('[data-tool="work"]').value)||180;
+    const rest=parseTime(box.querySelector('[data-tool="rest"]').value)||120;
+    let sets=parseInt(box.querySelector('[data-tool="sets"]').value||'6',10);
+    let phase='work', s=0;
+    activeT=setInterval(()=>{ s++; setClock(s);
+      const inPhase = phase==='work'?work:rest;
+      if(s>=inPhase){ s=0; phase=(phase==='work'?'rest':'work'); if(phase==='work'){ sets--; if(sets<=0){ clearInterval(activeT); activeT=null; } } }
+    },1000);
+    return;
+  }
+
+  if(type==='start-rest'){
+    if(activeT) clearInterval(activeT);
+    const rest=parseTime(box.querySelector('[data-tool="restonly"]').value)||90;
+    let s=0; activeT=setInterval(()=>{ s++; setClock(rest-s); if(s>=rest){ clearInterval(activeT); activeT=null; } },1000);
+  }
+});
+</script>
+
+<script src="/app.js" defer></script>
+</body>
+</html>

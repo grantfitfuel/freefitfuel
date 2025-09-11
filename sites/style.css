@@ -91,8 +91,10 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
 }
 
 /* =========================================
-   HERO — shared
+   HERO — shared (fixed)
    ========================================= */
+
+/* Mini hero (used on ideas / workouts / endurance / nutrition / chill / contact) */
 header.hero-mini{ position:relative; border-bottom:1px solid #1b1b22 }
 header.hero-mini figure{ margin:0; position:relative; overflow:hidden }
 header.hero-mini figure > img{
@@ -105,32 +107,50 @@ header.hero-mini figure > img{
   display:block;
   filter:brightness(.88) saturate(1.05);
 }
+/* Overlay should be positioned but transparent (no gradient) */
+header.hero-mini .overlay{
+  position:absolute; inset:0; pointer-events:none;
+  background:none !important;
+}
 
+/* Put the text UNDER the image by default */
+header.hero-mini .content{
+  position:static; inset:auto; /* keep text below */
+  padding:16px 20px 22px;
+  max-width:var(--maxw); margin:0 auto;
+}
 
 header.hero-mini h1{ margin:0 0 .35rem }
 header.hero-mini p{ max-width:70ch; margin:.2rem 0 .6rem; color:#d0d0da }
 
 /* Full hero (home) */
+header.hero{ position:relative; border-bottom:1px solid #1b1b22 }
+header.hero .hero-media{ position:relative; margin:0 }
 header.hero .hero-media img{
   width:100%;
-  height:clamp(300px,46vh,520px); /* FIX: not overbearing */
-  object-fit:cover;
-  object-position:center 35%;
+  height:clamp(300px,46vh,520px); /* not overbearing */
+  object-fit:cover; object-position:center 35%;
   display:block;
 }
-.hero-media .overlay {
-  background: none !important;
+/* Keep overlay element but make it transparent + positioned */
+header.hero .overlay{
+  position:absolute; inset:0; pointer-events:none;
+  background:none !important;
 }
-/* Optional alternate hero */
+
+/* Optional: if you ever want a page WITH a gradient overlay,
+   add class="has-gradient" to the header element */
+header.has-gradient .overlay{
+  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6)) !important;
+}
+
+/* Optional alternate hero blocks elsewhere */
 .page-hero{ margin:0 0 14px }
 .page-hero img{
-  width:100%;
-  height:auto !important;
+  width:100%; height:auto !important;
   max-height:clamp(220px, 42vh, 520px);
-  object-fit:cover;
-  display:block;
-  border-radius:12px;
-  border:1px solid var(--stroke);
+  object-fit:cover; display:block;
+  border-radius:12px; border:1px solid var(--stroke);
 }
 
 /* =========================================

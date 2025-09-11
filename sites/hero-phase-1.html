@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hero Training — Phase I</title>
-  <link rel="stylesheet" href="style.css?v=21">
-  <style>
-    .toc{margin:.8rem 0;display:flex;flex-wrap:wrap;gap:.5rem}
-    .pill{padding:.42rem .8rem;border-radius:999px;font-weight:700;color:#111;text-decoration:none}
-    .pill--str{background:#FF9432}
-    .pill--eng{background:#63B0FF}
-    .pill--cal{background:#2ECC71}
-    .pill--mob{background:#B07CFF}
-    .pill--rec{background:#FFD24D}
-    .pill--boss{background:#FF6B6B}
-    .section{margin:1.2rem 0;padding:1rem;border:1px solid var(--stroke);border-radius:12px;background:var(--glass)}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hero Training — Phase I</title>
+<link rel="stylesheet" href="style.css?v=22" />
+<style>
+  .toc{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1rem}
+  .pill{padding:.45rem .85rem;border-radius:999px;font-weight:800;color:#111;text-decoration:none}
+  .pill--str{background:#ff9432}.pill--eng{background:#63b0ff}
+  .pill--cal{background:#2ecc71}.pill--mob{background:#b07cff}
+  .pill--rec{background:#ffd24d}.pill--boss{background:#ff6b6b}
+  .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin:.8rem 0}
+  .grid2{display:grid;gap:14px}
+  @media(min-width:900px){.grid2{grid-template-columns:repeat(2,1fr)}}
+  .check{display:flex;align-items:center;gap:.6rem;margin-top:.5rem}
+  .yt a{color:#9bc4ff}
+</style>
 </head>
 <body>
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
 
 <main class="wrap">
-  <a href="hero-training.html">&larr; Back to Hero Training</a>
+  <a class="btn--pill" href="hero-training.html">← Back to Hero Training</a>
   <h1>Phase I — Foundation (Weeks 1–4)</h1>
-  <p>Goal: learn movements, build Zone-2 engine, and hit 10-min daily mobility. Long run up to ~6–8k. Keep it fun and consistent.</p>
+  <p>Goal this phase: learn the movements, build <em>Zone 2</em> engine, and hit a 10-minute daily mobility habit. Long run eases up to ~6–8k. Keep it fun and consistent.</p>
 
   <nav class="toc">
     <a class="pill pill--str" href="#strength">Strength</a>
@@ -35,76 +36,127 @@
     <a class="pill pill--rec" href="#recovery">Recovery</a>
   </nav>
 
+  <div class="section">
+    <strong>Weekly rhythm:</strong> 3× strength days • 2–3× engine days • daily 10-min mobility.  
+    Tick items to bank XP (stored on your device).
+  </div>
+
+  <!-- Strength -->
   <section id="strength" class="section">
     <h2>Strength</h2>
-    <p>2 alternating days per week.</p>
-    <h3>Day A — Lower + Push</h3>
-    <ul>
-      <li>Goblet Squat 4×6-10 — <a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank">YouTube</a></li>
-      <li>DB Romanian Deadlift 4×8-12 — <a href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form" target="_blank">YouTube</a></li>
-      <li>DB Floor Press 4×8-12 — <a href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form" target="_blank">YouTube</a></li>
-      <li>Side Plank 3×30-45s/side — <a href="https://www.youtube.com/results?search_query=side+plank+exercise" target="_blank">YouTube</a></li>
-    </ul>
-    <h3>Day B — Hinge + Pull</h3>
-    <ul>
-      <li>KB/DB Deadlift 5×5-8 — <a href="https://www.youtube.com/results?search_query=dumbbell+deadlift+form" target="_blank">YouTube</a></li>
-      <li>One-Arm Row 4×8-12/side — <a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank">YouTube</a></li>
-      <li>Half-Kneeling Press 3×8-12/side — <a href="https://www.youtube.com/results?search_query=half+kneeling+press" target="_blank">YouTube</a></li>
-      <li>Carry (Suitcase) 3×40-60m — <a href="https://www.youtube.com/results?search_query=suitcase+carry+exercise" target="_blank">YouTube</a></li>
-    </ul>
+    <div class="grid2">
+      <article class="card">
+        <h3>Day A — Lower + Push</h3>
+        <ul class="yt">
+          <li>Goblet Squat 4×6–10 — <a target="_blank" href="https://www.youtube.com/results?search_query=goblet+squat+form">YouTube</a></li>
+          <li>DB Romanian Deadlift 4×8–12 — <a target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form">YouTube</a></li>
+          <li>DB Floor Press 4×8–12 — <a target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">YouTube</a></li>
+          <li>Side Plank 3×30–45s/side — <a target="_blank" href="https://www.youtube.com/results?search_query=side+plank+exercise">YouTube</a></li>
+        </ul>
+        <label class="check"><input type="checkbox" data-xp="15"> Completed Day A</label>
+      </article>
+
+      <article class="card">
+        <h3>Day B — Hinge + Pull</h3>
+        <ul class="yt">
+          <li>KB/DB Deadlift 5×5–8 — <a target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+deadlift+form">YouTube</a></li>
+          <li>One-Arm Row 4×8–12/side — <a target="_blank" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">YouTube</a></li>
+          <li>Half-Kneeling Press 3×8–12/side — <a target="_blank" href="https://www.youtube.com/results?search_query=half+kneeling+press">YouTube</a></li>
+          <li>Carry (Suitcase) 3×40–60m — <a target="_blank" href="https://www.youtube.com/results?search_query=suitcase+carry+exercise">YouTube</a></li>
+        </ul>
+        <label class="check"><input type="checkbox" data-xp="15"> Completed Day B</label>
+      </article>
+    </div>
+    <p class="meta">Progress each lift by a rep or small load weekly while keeping <em>perfect</em> form.</p>
   </section>
 
+  <!-- Engine -->
   <section id="engine" class="section">
     <h2>Engine</h2>
-    <p>2–3 sessions/week.</p>
-    <ul>
-      <li>Zone 2 easy effort 20–45 mins — <a href="https://www.youtube.com/results?search_query=zone+2+training" target="_blank">YouTube</a></li>
-      <li>Tempo sampler: 2×5 min “comfortably hard” — <a href="https://www.youtube.com/results?search_query=tempo+run+training" target="_blank">YouTube</a></li>
-    </ul>
+    <div class="grid2">
+      <article class="card">
+        <h3>Easy Engine (Z2)</h3>
+        <p>2–3 sessions/wk • 20–45 min easy. Nasal breathing; can talk in full sentences.</p>
+        <ul class="yt">
+          <li>Run / brisk walk / bike / row — <a target="_blank" href="https://www.youtube.com/results?search_query=zone+2+training">How to find Z2 (YouTube)</a></li>
+          <li>End-of-phase long effort ≈ 6–8k run equivalent</li>
+        </ul>
+        <label class="check"><input type="checkbox" data-xp="10"> Logged an easy engine session</label>
+      </article>
+      <article class="card">
+        <h3>Tempo Taster</h3>
+        <p>1×/wk • 20–30 min including 2×5-min “comfortably hard”.</p>
+        <ul class="yt">
+          <li>Warm-up 10 min easy → 2×5-min strong w/ 3-min easy</li>
+          <li>Cool-down 5–10 min</li>
+          <li><a target="_blank" href="https://www.youtube.com/results?search_query=tempo+run+training">Tempo run basics — YouTube</a></li>
+        </ul>
+        <label class="check"><input type="checkbox" data-xp="10"> Did a tempo taster</label>
+      </article>
+    </div>
   </section>
 
+  <!-- Mobility -->
   <section id="mobility" class="section">
-    <h2>Mobility</h2>
-    <p>Daily 10-min reset.</p>
-    <ul>
-      <li>90/90 Hip Flows — <a href="https://www.youtube.com/results?search_query=90+90+hip+flow" target="_blank">YouTube</a></li>
-      <li>Open Book Thoracic — <a href="https://www.youtube.com/results?search_query=open+book+thoracic+mobility" target="_blank">YouTube</a></li>
-      <li>Ankle Calf Rocks — <a href="https://www.youtube.com/results?search_query=ankle+mobility+calf+rocks" target="_blank">YouTube</a></li>
+    <h2>Daily 10 — Hips & T-spine</h2>
+    <ul class="yt">
+      <li>90/90 hip flows — <a target="_blank" href="https://www.youtube.com/results?search_query=90+90+hip+flow">YouTube</a></li>
+      <li>Open book thoracic — <a target="_blank" href="https://www.youtube.com/results?search_query=open+book+thoracic+mobility">YouTube</a></li>
+      <li>Ankles (calf rocks) — <a target="_blank" href="https://www.youtube.com/results?search_query=ankle+mobility+calf+rocks">YouTube</a></li>
     </ul>
+    <label class="check"><input type="checkbox" data-xp="5"> 10-minute mobility completed</label>
   </section>
 
+  <!-- Calisthenics -->
   <section id="cal" class="section">
-    <h2>Calisthenics Intro</h2>
-    <ul>
-      <li>Hollow Hold 3×15-30s — <a href="https://www.youtube.com/results?search_query=hollow+body+hold" target="_blank">YouTube</a></li>
-      <li>Ring/Bar Row 3×8-12 — <a href="https://www.youtube.com/results?search_query=ring+row+exercise" target="_blank">YouTube</a></li>
-      <li>Assisted Pull-up Practice — <a href="https://www.youtube.com/results?search_query=assisted+pull+up" target="_blank">YouTube</a></li>
-      <li>Handstand Wall Walks — <a href="https://www.youtube.com/results?search_query=handstand+wall+walks" target="_blank">YouTube</a></li>
+    <h2>Intro Skills (sprinkle after strength)</h2>
+    <ul class="yt">
+      <li>Hollow Hold 3×15–30s — <a target="_blank" href="https://www.youtube.com/results?search_query=hollow+body+hold">YouTube</a></li>
+      <li>Ring/Bar Row 3×8–12 — <a target="_blank" href="https://www.youtube.com/results?search_query=ring+row+exercise">YouTube</a></li>
+      <li>Assisted Pull-up Practice — <a target="_blank" href="https://www.youtube.com/results?search_query=assisted+pull+up">YouTube</a></li>
+      <li>Handstand Wall Walks — <a target="_blank" href="https://www.youtube.com/results?search_query=handstand+wall+walks">YouTube</a></li>
     </ul>
+    <label class="check"><input type="checkbox" data-xp="10"> Calisthenics practice done</label>
   </section>
 
+  <!-- Boss -->
   <section id="boss" class="section">
     <h2>Boss Fight Preview</h2>
-    <p>Optional check: 5k run/row (or substitute dumbbell row challenge). Aim to finish with energy left.</p>
+    <p>Optional check: 5k run/row, or <em>Row Alternative</em> (100 total dumbbell/table rows EMOM + 1 km brisk walk). Aim to finish feeling like you could do more.</p>
+    <button class="btn--pill" id="openTrial">Open Boss Fight</button>
   </section>
 
+  <!-- Recovery -->
   <section id="recovery" class="section">
     <h2>Recovery Hygiene</h2>
     <ul>
-      <li>Sleep 7–9h, consistent times</li>
+      <li>Sleep 7–9 h (consistent times)</li>
       <li>Protein 1.6–2.2 g/kg; carbs around engine days</li>
       <li>Hydration: bodyweight × 30–35 ml baseline</li>
-      <li>Breathing: 5–10 min coherent breathing — <a href="https://www.youtube.com/results?search_query=coherent+breathing" target="_blank">YouTube</a></li>
+      <li>Breathing 5–10 min coherent (in 5 / out 5) — <a target="_blank" href="https://www.youtube.com/results?search_query=coherent+breathing">YouTube</a></li>
     </ul>
+    <label class="check"><input type="checkbox" data-xp="10"> Recovery checklist hit</label>
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; 2025 FreeFitFuel</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
+<footer class="site-footer"><div class="container"><p>© 2025 FreeFitFuel</p></div></footer>
+
+<!-- Reuse training page modal via simple opener -->
+<script>
+  // award XP on checks
+  const XP_MAX=500;
+  function load(){return JSON.parse(localStorage.getItem('heroXP')||'{}')}
+  function save(s){localStorage.setItem('heroXP',JSON.stringify(s))}
+  function addXP(n){const s=load(); s.xp=Math.min(XP_MAX,(s.xp||0)+n); save(s)}
+  document.querySelectorAll('input[type="checkbox"][data-xp]').forEach(cb=>{
+    cb.addEventListener('change', e=>{ if(e.target.checked){ addXP(parseInt(e.target.dataset.xp,10)||0); } });
+  });
+  // open the global boss modal if present on this origin
+  document.getElementById('openTrial')?.addEventListener('click',()=>{
+    const dlg = parent?.document?.getElementById('trial') || document.getElementById('trial');
+    if(dlg && dlg.showModal) dlg.showModal(); else window.location.href='hero-training.html#boss';
+  });
+</script>
 <script src="/app.js" defer></script>
 </body>
 </html>

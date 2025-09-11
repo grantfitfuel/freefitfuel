@@ -109,9 +109,7 @@ header.hero-mini .overlay{
   position:absolute; inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
 }
-.hero-media .overlay {
-  background: none !important;
-}
+
 header.hero-mini .content{
   position:static; padding:16px 20px 22px;
   max-width:var(--maxw); margin:0 auto;
@@ -127,7 +125,9 @@ header.hero .hero-media img{
   object-position:center 35%;
   display:block;
 }
-
+.hero-media .overlay {
+  background: none !important;
+}
 /* Optional alternate hero */
 .page-hero{ margin:0 0 14px }
 .page-hero img{

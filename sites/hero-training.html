@@ -1,135 +1,187 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hero Training — FreeFitFuel</title>
-
-  <link rel="stylesheet" href="/style.css?v=32">
-  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-
+  <link rel="stylesheet" href="/style.css?v=40" />
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg" />
   <style>
-    /* page-local colour chips */
-    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-    .chip{
-      display:inline-flex;align-items:center;gap:.4rem;
-      padding:.44rem .8rem;border-radius:999px;font-weight:700;
-      border:1px solid var(--stroke);color:#111;text-decoration:none;
-      background:#fff; box-shadow:0 2px 0 rgba(0,0,0,.15);
-    }
-    .chip--str{background:linear-gradient(90deg,#FFD26F,#FF6A00)}
-    .chip--cal{background:linear-gradient(90deg,#90F7EC,#32CCBC)}
-    .chip--mob{background:linear-gradient(90deg,#C6FFDD,#FBD786)}
-    .chip--rec{background:linear-gradient(90deg,#A18CD1,#FBC2EB)}
-    .phase-grid{display:grid;gap:14px}
-    @media(min-width:900px){.phase-grid{grid-template-columns:repeat(4,1fr)}}
-    .phase-card{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:.4rem}
-    .phase-card h3{margin:.1rem 0 .25rem}
-    .phase-card .meta{margin:0}
-    .phase-card a.btn{align-self:flex-start}
-    .hero-note{color:var(--inkdim);margin:.3rem 0 0}
+    /* Remove hero gradients */
+    header.hero .overlay, header.hero-mini .overlay { display:none !important; }
+
+    /* Page flair */
+    .hero-content .accent{background:linear-gradient(90deg,#FF9A3D,#FF6A00,#FFC146);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .cta-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.4rem}
+
+    /* Colourful “mode” chips */
+    .mode-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 .2rem}
+    .mode{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.42rem .7rem;font-weight:800}
+    .mode[data-g="strength"]{outline:2px solid #FF6A00;outline-offset:1px}
+    .mode[data-g="engine"]{outline:2px solid #2EC4B6;outline-offset:1px}
+    .mode[data-g="mobility"]{outline:2px solid #9bc4f0;outline-offset:1px}
+    .mode[data-g="recovery"]{outline:2px solid #B483FF;outline-offset:1px}
+
+    /* Cards grid */
+    .grid.cards{grid-template-columns:repeat(2,1fr)}
+    @media(min-width:980px){.grid.cards{grid-template-columns:repeat(3,1fr)}}
+
+    /* Legend + chips */
+    .goal-legend{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0 .4rem}
+    .goal-pill{--c:#aaa;display:inline-flex;align-items:center;gap:.45rem;padding:.28rem .6rem;border-radius:999px;border:1px solid var(--stroke);background:var(--glass);font-weight:700;font-size:.85rem;cursor:pointer}
+    .goal-pill .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px rgba(0,0,0,.2) inset}
+    .goal-pill[data-g="strength"]{--c:#FF6A00}
+    .goal-pill[data-g="engine"]{--c:#2EC4B6}
+    .goal-pill[data-g="mobility"]{--c:#9bc4f0}
+    .goal-pill[data-g="recovery"]{--c:#B483FF}
+    .goal-pill.is-on{outline:2px solid var(--c);outline-offset:1px}
+    .goal-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.18rem .5rem;border-radius:999px;border:1px solid var(--stroke);font-size:.78rem;margin-left:.35rem;background:rgba(255,255,255,.06)}
+    .goal-chip[data-g="strength"]{border-color:rgba(255,106,0,.35)}
+    .goal-chip[data-g="engine"]{border-color:rgba(46,196,182,.35)}
+    .goal-chip[data-g="mobility"]{border-color:rgba(155,196,240,.35)}
+    .goal-chip[data-g="recovery"]{border-color:rgba(180,131,255,.35)}
+    .ex-list{margin:.3rem 0 .8rem;padding-left:1.1rem}
+    .ex-list li{margin:.32rem 0}
+    .ex-list a.yt{color:var(--ink);text-decoration:underline dotted}
+    .ex-list a.yt:hover{color:var(--accent)}
+    [data-filtering="on"] .ex-item{display:none}
+    [data-filtering="on"] .ex-item.is-match{display:list-item}
   </style>
 </head>
 <body>
+  <!-- Shared header -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js"></script>
 
-<!-- Shared header -->
-<div id="site-header"></div>
-<script src="/js/header-loader.js"></script>
-
-<!-- HERO (text below image) -->
-<header class="hero-mini hero-mini--below calm" aria-label="Hero Training hero">
-  <figure>
-    <img src="/img/hero-training.jpg" alt="Colourful training montage: strength, running, mobility">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="content wrap">
-    <h1><span class="accent">Hero Training</span></h1>
-    <p class="lead">12-month hybrid transformation toward a stronger, faster, more durable you — finishing with a <strong>marathon</strong> (or endurance equivalent). Pick your pace: 3 / 6 / 9 / 12-month tracks.</p>
-    <p class="hero-note">Everything is doable at beginner level. We build stamina, whole-body strength, calisthenics skill, mobility and recovery.</p>
-  </div>
-</header>
-
-<main class="wrap">
-  <!-- Quick anchors -->
-  <nav class="chips" aria-label="Training engines">
-    <a class="chip chip--str" href="#strength">Strength Engine</a>
-    <a class="chip chip--cal" href="#calisthenics">Calisthenics</a>
-    <a class="chip chip--mob" href="#mobility">Mobility</a>
-    <a class="chip chip--rec" href="#recovery">Recovery</a>
-  </nav>
-
-  <!-- Phases -->
-  <section class="section" aria-label="Phases">
-    <h2>Phases (click to open)</h2>
-    <div class="phase-grid">
-      <article class="phase-card">
-        <h3>Phase I — Foundation (Weeks 1–8)</h3>
-        <p class="meta">Z2 aerobic base, basic lifts, core stability, joint prep.</p>
-        <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
-      </article>
-      <article class="phase-card">
-        <h3>Phase II — Build (Weeks 9–16)</h3>
-        <p class="meta">Progressive volume, hills / tempo, calisthenics skills.</p>
-        <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
-      </article>
-      <article class="phase-card">
-        <h3>Phase III — Peak (Weeks 17–24)</h3>
-        <p class="meta">Long runs, threshold work, strength maintenance.</p>
-        <a class="btn" href="#">Coming soon</a>
-      </article>
-      <article class="phase-card">
-        <h3>Phase IV — Taper & Race</h3>
-        <p class="meta">Sharpen, absorb, celebrate — marathon or equivalent.</p>
-        <a class="btn" href="#">Coming soon</a>
-      </article>
+  <!-- HERO -->
+  <header class="hero" role="banner" aria-label="Hero Training hero">
+    <figure class="hero-media">
+      <img src="/img/hero-training.jpg" alt="Hybrid training: strength, calisthenics, endurance" />
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="hero-content wrap">
+      <span class="eyebrow">12-Month Hybrid Journey</span>
+      <h1><span class="accent">Hero Training</span></h1>
+      <p class="lead">Get seriously capable: lift heavier, move cleaner, and go longer — from 5k to marathon — with a fun, badge-driven path.</p>
+      <div class="cta-row">
+        <a class="btn" href="/hero-phase-1.html">Start Phase 1</a>
+        <a class="btn" href="/hero-phase-2.html">Phase 2</a>
+        <a class="btn" href="/workouts.html">All Workouts</a>
+      </div>
+      <div class="mode-row">
+        <span class="mode" data-g="strength">Strength</span>
+        <span class="mode" data-g="engine">Engine</span>
+        <span class="mode" data-g="mobility">Mobility</span>
+        <span class="mode" data-g="recovery">Recovery</span>
+      </div>
     </div>
-  </section>
+  </header>
 
-  <!-- Engines (simple anchors) -->
-  <section id="strength" class="section">
-    <h2>Strength Engine (fun & efficient)</h2>
-    <ul class="meta">
-      <li><a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat (form)</a> · <a href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form" target="_blank" rel="noopener">DB RDL</a> · <a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">1-Arm Row</a></li>
-      <li>2–3 sessions/week · 30–45 min · Linear progression (add 1–2.5kg or 1–2 reps).</li>
-    </ul>
-  </section>
+  <main class="wrap">
+    <section class="card">
+      <h2>How it works</h2>
+      <p class="meta">Four phases. Weekly “quests”. Monthly “boss fights”. Track PRs, collect badges, and keep a photo-journal just for you.</p>
+      <div class="goal-legend" id="goalLegend">
+        <span class="goal-pill" data-g="strength"><span class="dot"></span>Strength</span>
+        <span class="goal-pill" data-g="engine"><span class="dot"></span>Engine</span>
+        <span class="goal-pill" data-g="mobility"><span class="dot"></span>Mobility</span>
+        <span class="goal-pill" data-g="recovery"><span class="dot"></span>Recovery</span>
+      </div>
+      <ol class="ex-list" id="sampleList">
+        <li class="ex-item" data-g="strength">
+          DB Romanian Deadlift — 3×8 @ 3-1-2 tempo
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form">Form</a>
+          <span class="goal-chip" data-g="strength">Strength</span>
+        </li>
+        <li class="ex-item" data-g="engine">
+          Z2 Run — 25-35 min, nose-breathing (chatty pace)
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">What is Z2?</a>
+          <span class="goal-chip" data-g="engine">Engine</span>
+        </li>
+        <li class="ex-item" data-g="mobility">
+          Thoracic Openers — 2×60s/side
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=thoracic+spine+mobility+drills">Demo</a>
+          <span class="goal-chip" data-g="mobility">Mobility</span>
+        </li>
+        <li class="ex-item" data-g="recovery">
+          4-7-8 Breathing — 5 min
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+7+8+breathing+how+to">Guide</a>
+          <span class="goal-chip" data-g="recovery">Recovery</span>
+        </li>
+      </ol>
+      <div class="btn-row">
+        <a class="btn" href="/hero-phase-1.html">Phase 1: Foundation</a>
+        <a class="btn" href="/hero-phase-2.html">Phase 2: Build</a>
+      </div>
+    </section>
 
-  <section id="calisthenics" class="section">
-    <h2>Calisthenics (skill progression)</h2>
-    <ul class="meta">
-      <li><a href="https://www.youtube.com/results?search_query=push+up+progression+beginner+to+advanced" target="_blank" rel="noopener">Push-up ladder</a> · <a href="https://www.youtube.com/results?search_query=assisted+pull+up+progression" target="_blank" rel="noopener">Pull-up progressions</a> · <a href="https://www.youtube.com/results?search_query=pike+to+handstand+progression" target="_blank" rel="noopener">Pike→HS</a></li>
-      <li>Grease-the-groove mini-sets; keep reps in good-form zone.</li>
-    </ul>
-  </section>
+    <section class="grid cards" aria-label="Phases">
+      <article class="card">
+        <h3>Phase 1 — Foundation (Weeks 1–12)</h3>
+        <p class="meta">Form first. Z2 streak. Calisthenics basics. Boss fight: 5k time-trial or home “engine ladder”.</p>
+        <a class="btn" href="/hero-phase-1.html">Open Phase 1</a>
+      </article>
+      <article class="card">
+        <h3>Phase 2 — Build (Weeks 13–24)</h3>
+        <p class="meta">Progressive loading, mixed-modality intervals, long run progression. Boss fight: 10–15k TT or row alt.</p>
+        <a class="btn" href="/hero-phase-2.html">Open Phase 2</a>
+      </article>
+      <article class="card">
+        <h3>Phase 3–4 — Peak & Marathon</h3>
+        <p class="meta">Peak strength endurance + marathon prep. Boss fight: 21k → 42.2k.</p>
+        <a class="btn" href="/contact.html">Get notified</a>
+      </article>
+    </section>
 
-  <section id="mobility" class="section">
-    <h2>Mobility (move well, recover better)</h2>
-    <ul class="meta">
-      <li><a href="https://www.youtube.com/results?search_query=90+90+hip+switch+drill" target="_blank" rel="noopener">90/90 hips</a> · <a href="https://www.youtube.com/results?search_query=thoracic+spine+rotation+drill" target="_blank" rel="noopener">T-spine rotation</a> · <a href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+mobility+drills" target="_blank" rel="noopener">Ankles</a></li>
-      <li>10–15 min daily “mobility snack” beats long weekend sessions.</li>
-    </ul>
-  </section>
+    <section class="card">
+      <h2>Boss fights (w/ alternatives)</h2>
+      <ul class="ex-list">
+        <li class="ex-item" data-g="engine">
+          5k Row (or Run) — record time.
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concept2+5k+row+strategy">Row tips</a>
+          <span class="goal-chip" data-g="engine">Engine</span>
+        </li>
+        <li class="ex-item" data-g="engine">
+          No rower? DB Bent-Over Row 10-10-8-8-AMRAP (each arm) + 400m brisk walk between.
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form">Form</a>
+          <span class="goal-chip" data-g="engine">Engine</span>
+        </li>
+        <li class="ex-item" data-g="engine">
+          Table Rows (inverted) ladder: 2-4-6-8-AMRAP + 400m walk between.
+          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home+table+row">Demo</a>
+          <span class="goal-chip" data-g="engine">Engine</span>
+        </li>
+      </ul>
+    </section>
+  </main>
 
-  <section id="recovery" class="section">
-    <h2>Recovery (where gains lock in)</h2>
-    <ul class="meta">
-      <li>Sleep regularity, easy Z2 days, <a href="https://www.youtube.com/results?search_query=coherent+breathing+5+seconds+in+5+seconds+out" target="_blank" rel="noopener">coherent breathing 5/5</a>, and fueling.</li>
-    </ul>
-  </section>
-
-  <section class="section">
-    <h2>Badges & Boss Fights (coming next)</h2>
-    <p class="meta">Time trials, PR badges, and shareable cards are on the way. For now, track your streaks and weekly XP in your notebook or notes app.</p>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
-
+  <!-- Goal filter JS -->
+  <script>
+  (function goalFilters(){
+    const legend=document.getElementById('goalLegend');
+    if(!legend) return;
+    const pills=[...legend.querySelectorAll('.goal-pill')];
+    const lists=[...document.querySelectorAll('.ex-list')];
+    const active=new Set();
+    function apply(){
+      const on=active.size>0;
+      lists.forEach(list=>{
+        if(on) list.setAttribute('data-filtering','on'); else list.removeAttribute('data-filtering');
+        list.querySelectorAll('.ex-item').forEach(li=>{
+          const g=li.getAttribute('data-g');
+          const match=!on||active.has(g);
+          li.classList.toggle('is-match',match);
+        });
+      });
+    }
+    pills.forEach(p=>p.addEventListener('click',()=>{
+      const g=p.getAttribute('data-g');
+      if(p.classList.toggle('is-on')) active.add(g); else active.delete(g);
+      apply();
+    }));
+    legend.addEventListener('dblclick',()=>{active.clear();pills.forEach(p=>p.classList.remove('is-on'));apply();});
+  })();
+  </script>
+  <script src="/app.js" defer></script>
 </body>
 </html>

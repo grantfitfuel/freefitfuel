@@ -3,118 +3,121 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hero Training — Phase I (Base)</title>
-  <link rel="stylesheet" href="/style.css?v=31">
+  <title>Hero Training — Phase I (Foundation)</title>
+  <link rel="stylesheet" href="/style.css?v=60">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-  <style>
-    :root{--fun1:#FF6A00;--fun2:#FF9A3D;--fun3:#7F5BFF;--fun4:#22D1EE;--fun5:#14F195;--chip:#ffffff10;--chipbd:#ffffff2a;}
-    /* Hero image only */
-    header.hero-mini figure{margin:0;position:relative;overflow:hidden}
-    header.hero-mini figure img{width:100%;height:clamp(300px,46vh,520px);object-fit:cover;display:block;filter:brightness(.97)}
-    header.hero-mini .overlay{display:none !important}
-    header.hero-mini .content{display:none}
-
-    /* Pills */
-    .fun-pills{display:flex;flex-wrap:wrap;gap:.55rem;margin:12px 0 10px}
-    .fun-pills a{display:inline-flex;align-items:center;padding:.5rem .85rem;border-radius:999px;border:1px solid var(--chipbd);background:linear-gradient(90deg,var(--fun2),var(--fun1));color:#111;font-weight:800;text-decoration:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}
-    .fun-pills a:hover{filter:brightness(1.05)}
-    .fun-pills a[data-c="vio"]{background:linear-gradient(90deg,#A78BFA,#7C3AED)}
-    .fun-pills a[data-c="cy"]{background:linear-gradient(90deg,#67E8F9,#22D3EE)}
-    .fun-pills a[data-c="gr"]{background:linear-gradient(90deg,#34D399,#10B981)}
-
-    /* Day cards */
-    .day{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:14px;margin:12px 0}
-    .goal-tags{display:flex;flex-wrap:wrap;gap:.4rem}
-    .tag{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--chipbd);background:var(--chip);border-radius:999px;padding:.25rem .6rem;font-size:.84rem}
-    .tag i{width:.55rem;height:.55rem;border-radius:50%;display:inline-block}
-    .t-strength i{background:#FF6A00}.t-engine i{background:#22D1EE}.t-hybrid i{background:#A78BFA}.t-mobility i{background:#14F195}.t-recovery i{background:#9CA3AF}
-    .list{margin:.2rem 0 .2rem;padding-left:1.1rem}.list li{margin:.18rem 0}
-    .list a{color:var(--ink);text-decoration:underline dotted}.list a:hover{color:var(--accent)}
-    .notes{font-size:.92rem;color:#bfc3d2}
-  </style>
 </head>
-<body>
+<body class="hero-mode">
   <div id="site-header"></div>
   <script src="/js/header-loader.js"></script>
 
-  <header class="hero-mini" aria-label="Phase I hero">
-    <figure><img src="/img/hero-phase-1.jpg" alt="Phase I training montage"><div class="overlay"></div></figure>
+  <!-- HERO (title below image, no gradient) -->
+  <header class="hero-mini hero-rainbow" role="banner" aria-label="Phase I hero">
+    <figure>
+      <img src="/img/hero-phase-1.jpg" alt="Foundation phase">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1 class="comic-title">Phase I — Foundation (Weeks 1–8)</h1>
+      <p class="lead comic-sub">Your mission: build a streak. Learn movement standards. Keep the fun switch ON.</p>
+      <div class="phase-tabs">
+        <a class="tab is-active" href="/hero-phase-1.html">Phase I</a>
+        <a class="tab" href="/hero-phase-2.html">Phase II</a>
+        <a class="tab" href="/hero-training.html">Back to Hub</a>
+      </div>
+      <div class="xp" aria-label="Phase progress"><span style="width:25%"></span></div>
+    </div>
   </header>
 
   <main class="wrap">
-    <nav class="fun-pills" aria-label="Phase navigation">
-      <a href="#plan" data-c="vio">Plan</a>
-      <a href="#strength" data-c="gr">Strength</a>
-      <a href="#engine" data-c="cy">Engine</a>
-      <a href="#mobility" data-c="gr">Mobility</a>
-      <a href="/hero-training.html" data-c="vio">Back to Hub</a>
-    </nav>
+    <!-- Weekly structure -->
+    <section>
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weekly Rhythm</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>Strength A (2×/week)</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> — 3×8–12 (tempo 2–1–2)</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a> — 3×8–12</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form">DB Bent-over Row</a> — 3×8–12</li>
+          </ul>
+          <span class="goal-chip goal-strength">Strength</span>
+          <span class="goal-chip goal-engine">Engine (easy finisher)</span>
+        </article>
 
-    <section id="plan" class="day">
-      <h1 class="accent">Phase I — Base (Weeks 1–8)</h1>
-      <p class="notes">Goal: build **foundations** — posture, patterns, joints, easy engine. Keep it fun; finish sessions feeling better than you started.</p>
-      <div class="goal-tags">
-        <span class="tag t-strength"><i></i>Strength</span>
-        <span class="tag t-engine"><i></i>Engine</span>
-        <span class="tag t-mobility"><i></i>Mobility</span>
+        <article class="panel">
+          <h3>Strength B (1–2×/week)</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> — 3×8–10</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=standing+overhead+press+dumbbell+form">DB Overhead Press</a> — 3×8–12</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concentration+curl+form">Concentration Curl</a> — 2–3×10–12</li>
+          </ul>
+          <span class="goal-chip goal-strength">Strength</span>
+          <span class="goal-chip goal-skill">Skill (control)</span>
+        </article>
+
+        <article class="panel">
+          <h3>Engine (Zone 2)</h3>
+          <p class="meta">2–3 sessions · 20–40 min. Easy conversational pace.</p>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">Run/Walk Z2</a> or <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cycling+explained">Bike Z2</a></li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+rowing+technique">Row Z2</a> or <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=low+impact+cardio+zone+2">Low-Impact Cardio</a></li>
+          </ul>
+          <span class="goal-chip goal-engine">Engine</span>
+          <span class="goal-chip goal-mob">Mobility (cooldown)</span>
+        </article>
       </div>
     </section>
 
-    <section id="strength" class="day">
-      <h2>Day A — Strength + Calisthenics</h2>
-      <ul class="list">
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> — 3×8–10, 2s down, pause, up</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+row+form">DB Row</a> — 3×8–10 / side (bench or hip-hinge)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+proper+form">Push-up</a> — 3×AMRAP (leave 2 reps in tank)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concentration+curl+form">Concentration Curl</a> — 2–3×10–12 / side</li>
-      </ul>
-      <div class="goal-tags">
-        <span class="tag t-strength"><i></i>Strength</span>
-        <span class="tag t-hybrid"><i></i>Hybrid</span>
+    <!-- Mobility & Recovery -->
+    <section style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Mobility + Recovery</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>Daily Mini (5–8 min)</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=couch+stretch+how+to">Couch Stretch</a> — 60–90s/side</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=thoracic+spine+rotation+drill">T-Spine Rotations</a> — 6–10/side</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+4-4-4-4">Box Breathing 4-4-4-4</a> — 3–5 min</li>
+          </ul>
+          <span class="goal-chip goal-mob">Mobility</span>
+        </article>
+
+        <article class="panel">
+          <h3>Optional Skill</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=plank+form">Plank</a> — 3×20–40s</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hollow+hold+form">Hollow Hold</a> — 3×15–25s</li>
+          </ul>
+          <span class="goal-chip goal-skill">Core Skill</span>
+        </article>
+
+        <article class="panel">
+          <h3>Weekly Photo (private)</h3>
+          <p class="meta">Same light, same angle. For you, not for social. Track posture, confidence, and effort.</p>
+          <span class="goal-chip goal-skill">Reflection</span>
+        </article>
       </div>
     </section>
 
-    <section id="engine" class="day">
-      <h2>Day B — Easy Engine (Z2)</h2>
-      <ul class="list">
-        <li>Walk/Run Z2 — 25–35 min (talkable pace)</li>
-        <li>Alt: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=jump+rope+beginner+technique">Jump Rope</a> intervals 8×1 min / 1 min easy</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-engine"><i></i>Engine</span></div>
+    <!-- Phase I Trial -->
+    <section style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Phase I Trial</h2>
+      <article class="trial">
+        <h3>12-Minute AMRAP (Beginner)</h3>
+        <p class="meta">6 goblet squats · 6 incline push-ups · 6 rows. Repeat as many rounds as possible.</p>
+        <div class="row" style="margin:.4rem 0">
+          <label>Rounds <input id="p1amrap" type="number" min="0" step="1" placeholder="6"></label>
+          <button class="btn" id="p1save">Save PR</button>
+          <span id="p1out" class="hint"></span>
+        </div>
+        <p class="meta">Demos:
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-up</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form">DB Row</a>
+        </p>
+      </article>
     </section>
-
-    <section class="day">
-      <h2>Day C — Strength + Tempo Drip</h2>
-      <ul class="list">
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> — 3×8–10</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a> — 3×8–10</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=suitcase+carry+form">Suitcase Carry</a> — 3×30–40m / side</li>
-        <li>Engine: 10 min Z2 + 5 min steady tempo (RPE 6–7)</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-hybrid"><i></i>Hybrid</span></div>
-    </section>
-
-    <section id="mobility" class="day">
-      <h2>Daily Mobility (8–10 min)</h2>
-      <ul class="list">
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hips+90+90+mobility">Hips 90/90</a> + <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=thoracic+openers+mobility">T-spine Openers</a> (2–3 min)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+drills">Ankles DF</a> & <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=calf+eccentric+heel+drop">Calf eccentrics</a> (2–3 min)</li>
-        <li>Evening: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+how+to">Box Breathing</a> 4-4-4-4 (3–5 min)</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-mobility"><i></i>Mobility</span><span class="tag t-recovery"><i></i>Recovery</span></div>
-    </section>
-
-    <section class="day">
-      <h2>Trial (Optional) — 10-min AMRAP</h2>
-      <ul class="list">
-        <li>6 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=burpee+strict+form">Burpees</a> + 8 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+push+press+form">DB Push Press</a> + 10 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bodyweight+row+table+form">Table Rows</a> — Repeat</li>
-      </ul>
-      <p class="notes">Record rounds + reps. Beat it next time → **badge** (coming soon).</p>
-      <div class="goal-tags"><span class="tag t-hybrid"><i></i>Hybrid</span></div>
-    </section>
-
-    <p class="notes">Tip: 1–2 Rest Days / week. Deload in Week 4 or 5 if body asks.</p>
-    <p><a class="btn--pill" href="/hero-training.html">Back to Hero Training Hub</a> <a class="btn--pill" href="/hero-phase-2.html">Next: Phase II →</a></p>
   </main>
 
   <footer class="site-footer">
@@ -124,5 +127,18 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const am = document.getElementById('p1amrap');
+      const out = document.getElementById('p1out');
+      am.value = localStorage.getItem('p1_amrap') || '';
+      document.getElementById('p1save').addEventListener('click', ()=>{
+        if(!am.value){ out.textContent='Enter rounds first.'; return; }
+        localStorage.setItem('p1_amrap', am.value);
+        out.textContent='Saved! 🏅';
+      });
+    });
+  </script>
 </body>
 </html>

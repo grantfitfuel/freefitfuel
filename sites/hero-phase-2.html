@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — Phase II (Build)</title>
+  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <style>
+    /* ===== Scoped, phase-only styles ===== */
+    :root{
+      --pill1:#FF6A00; --pill2:#FF9A3D; --pill3:#6AE3FF; --pill4:#9BCB50; --pill5:#D48BFF;
+    }
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+
+    /* Hero */
+    header.hero-mini.phase2{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini.phase2 figure{margin:0;position:relative;overflow:hidden;background:#000}
+    header.hero-mini.phase2 figure>img{
+      width:100%; height:clamp(320px,48vh,560px); object-fit:cover; object-position:center 35%;
+      display:block; filter:brightness(.9) saturate(1.06)
+    }
+    header.hero-mini.phase2 .content{position:static; padding:14px 0 4px}
+    header.hero-mini.phase2 h1{margin:.1rem 0 .35rem}
+    header.hero-mini.phase2 .lead{color:var(--inkdim)}
+
+    /* Colour pills (real links) */
+    .pill-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1rem}
+    .pill{
+      --bg:var(--glass);
+      display:inline-flex; align-items:center; gap:.35rem;
+      padding:.44rem .85rem; border-radius:999px;
+      border:1px solid var(--stroke); background:var(--bg); color:var(--ink);
+      font-weight:700; letter-spacing:.2px; text-decoration:none; font-size:.92rem;
+      transition:transform .15s ease, filter .15s ease
+    }
+    .pill:hover{transform:translateY(-1px); filter:brightness(1.05)}
+    .pill.engine{--bg:linear-gradient(90deg,var(--pill3),#3DCBFF)}
+    .pill.str{--bg:linear-gradient(90deg,var(--pill1),var(--pill2))}
+    .pill.cali{--bg:linear-gradient(90deg,#FFD36A,#FF9A3D)}
+    .pill.mob{--bg:linear-gradient(90deg,#9BCB50,#6AD47B)}
+    .pill.reco{--bg:linear-gradient(90deg,#D48BFF,#9BD1FF)}
+
+    /* Tabs */
+    .tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin:.8rem 0 1rem}
+    .tab{
+      border:1px solid var(--stroke); background:var(--glass); color:var(--ink);
+      border-radius:999px; padding:.45rem .85rem; cursor:pointer; font-weight:700
+    }
+    .tab[aria-selected="true"]{outline:2px solid var(--accent); color:#111; background:var(--accent)}
+    .panel{display:none}
+    .panel[aria-hidden="false"]{display:block}
+
+    /* Cards/grids (phase-specific) */
+    .grid.two{display:grid;gap:12px}
+    @media(min-width:900px){.grid.two{grid-template-columns:1fr 1fr}}
+
+    .week-card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:12px}
+    .week-card h3{margin:.15rem 0 .35rem}
+    .weeklist{margin:.15rem 0 .35rem;padding-left:1.1rem}
+    .weeklist li{margin:.18rem 0}
+
+    .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .block h4{margin:.15rem 0 .4rem}
+    .block a{color:var(--ink);text-decoration:underline dotted}
+    .block a:hover{color:var(--accent)}
+
+    /* Boss fight */
+    .boss{background:linear-gradient(135deg, rgba(255,106,0,.16), rgba(0,0,0,.0)); border:1px solid var(--stroke); border-radius:14px; padding:14px}
+    .boss .meta{color:var(--inkdim)}
+    .alt{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem;margin:.5rem 0}
+
+    /* Mini badges row */
+    .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0}
+    .badge{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.28rem .6rem;font-size:.85rem}
+
+    /* Utility */
+    .mini{color:var(--inkdim);font-size:.92rem}
+  </style>
+</head>
+<body>
+
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini phase2" role="banner" aria-label="Hero Training Phase II">
+  <figure>
+    <img src="/img/hero-phase-2.jpg" alt="Colourful hybrid training: dumbbells, trail running, rings and mobility work">
+    <div class="overlay" aria-hidden="true" style="display:none"></div> <!-- gradient intentionally off -->
+  </figure>
+  <div class="content wrap">
+    <span class="eyebrow">Hero Training · Month 2</span>
+    <h1><span class="accent">Phase II — Build</span></h1>
+    <p class="lead">We turn the foundations into momentum: more volume, tidy technique, and a steady **Zone-2 streak** for engine. Fun, bright, and intentionally challenging.</p>
+    <nav class="pill-row" aria-label="Quick links">
+      <a class="pill str"   href="#strength">Strength</a>
+      <a class="pill cali"  href="#calisthenics">Calisthenics</a>
+      <a class="pill engine" href="#engine">Engine (Z2)</a>
+      <a class="pill mob"   href="#mobility">Mobility</a>
+      <a class="pill reco"  href="#boss">Boss Fight</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- What changes this phase -->
+  <section class="week-card">
+    <h3>What Phase II adds</h3>
+    <ul class="weeklist">
+      <li><strong>Strength:</strong> 3×/week full-body with smart supersets (push/pull, hinge/squat).</li>
+      <li><strong>Calisthenics:</strong> progress to <em>eccentrics</em> and assisted reps.</li>
+      <li><strong>Engine:</strong> keep the <strong>Z2 streak</strong> (2–3 easy sessions/wk; nasal breathing, can talk in sentences).</li>
+      <li><strong>Mobility:</strong> 10–15 min resets on training days (hips/ankles/shoulders).</li>
+    </ul>
+    <p class="mini">Z2 = heart-rate zone where you could hold a convo; think easy jog/brisk walk/cycle — it quietly builds your endurance “battery.”</p>
+  </section>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist" aria-label="Phase II training focus">
+    <button class="tab" role="tab" aria-selected="true"  aria-controls="p-strength"     id="t-strength">Strength</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-calisthenics" id="t-calisthenics">Calisthenics</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-engine"       id="t-engine">Engine</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-mobility"     id="t-mobility">Mobility</button>
+  </div>
+
+  <!-- Panels -->
+  <section id="p-strength" class="panel" aria-hidden="false">
+    <div class="grid two" id="strength">
+      <article class="block">
+        <h4>Full-Body A (push emphasis)</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form" target="_blank" rel="noopener">DB Floor Press</a> — 4×8–10 (2s down, pause)</li>
+          <li><a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">1-Arm DB Row</a> — 4×10/side</li>
+          <li><a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a> — 4×8–12</li>
+          <li><a href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form" target="_blank" rel="noopener">DB RDL</a> — 3×10</li>
+          <li><a href="https://www.youtube.com/results?search_query=plank+form+tips" target="_blank" rel="noopener">Plank</a> — 3×40–60s</li>
+        </ul>
+        <p class="mini">Tip: last 2 reps should feel challenging but clean. Add 1–2 kg when all sets hit the top rep.</p>
+      </article>
+
+      <article class="block">
+        <h4>Full-Body B (pull/legs)</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=standing+dumbbell+overhead+press+form" target="_blank" rel="noopener">DB Overhead Press</a> — 4×6–8</li>
+          <li><a href="https://www.youtube.com/results?search_query=hip+hinge+kb+swings+form" target="_blank" rel="noopener">Hip Hinge / KB Swings</a> — 4×12–15 (light/mod)</li>
+          <li><a href="https://www.youtube.com/results?search_query=reverse+lunge+dumbbells+form" target="_blank" rel="noopener">Reverse Lunge</a> — 3×8/side</li>
+          <li><a href="https://www.youtube.com/results?search_query=concentration+curl+form" target="_blank" rel="noopener">Concentration Curl</a> — 3×10/side</li>
+          <li><a href="https://www.youtube.com/results?search_query=side+plank+form" target="_blank" rel="noopener">Side Plank</a> — 3×30–45s/side</li>
+        </ul>
+        <div class="badges"><span class="badge">Superset: Press ↔ Row</span><span class="badge">Tempo Control</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="p-calisthenics" class="panel" aria-hidden="true">
+    <div class="grid two" id="calisthenics">
+      <article class="block">
+        <h4>Upper Body Progressions</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=assisted+pull+up+band+form" target="_blank" rel="noopener">Assisted Pull-ups</a> — 4×4–6 (band/chair)</li>
+          <li><a href="https://www.youtube.com/results?search_query=negative+pull+ups+eccentric+form" target="_blank" rel="noopener">Eccentric Pull-ups</a> — 3×3–5 (5s down)</li>
+          <li><a href="https://www.youtube.com/results?search_query=elevated+push+ups+form" target="_blank" rel="noopener">Elevated Push-ups</a> — 4×8–12</li>
+          <li><a href="https://www.youtube.com/results?search_query=ring+rows+form" target="_blank" rel="noopener">Ring/Table Rows</a> — 4×8–12</li>
+        </ul>
+      </article>
+      <article class="block">
+        <h4>Lower Body & Core</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=assisted+pistol+squat+progression" target="_blank" rel="noopener">Assisted Pistol Squat</a> — 3×6–8/side</li>
+          <li><a href="https://www.youtube.com/results?search_query=hip+thrust+bodyweight+form" target="_blank" rel="noopener">Hip Thrust</a> — 4×12–15</li>
+          <li><a href="https://www.youtube.com/results?search_query=hollow+body+hold+form" target="_blank" rel="noopener">Hollow Hold</a> — 4×20–30s</li>
+          <li><a href="https://www.youtube.com/results?search_query=dead+bug+exercise+form" target="_blank" rel="noopener">Dead Bug</a> — 3×8/side</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="p-engine" class="panel" aria-hidden="true">
+    <div class="grid two" id="engine">
+      <article class="block">
+        <h4>Zone-2 Streak (2–3×/week)</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=zone+2+training+explained" target="_blank" rel="noopener">Z2 Run/Walk</a> — 30–45 min conversational pace</li>
+          <li><a href="https://www.youtube.com/results?search_query=indoor+cycling+zone+2" target="_blank" rel="noopener">Z2 Cycle</a> — 45–60 min easy spin</li>
+          <li><a href="https://www.youtube.com/results?search_query=zone+2+rowing+tutorial" target="_blank" rel="noopener">Z2 Row</a> — 25–40 min smooth strokes</li>
+        </ul>
+        <p class="mini">Talk test ✅ / nasal breathing ✅ / finish feeling fresh ✅.</p>
+      </article>
+      <article class="block">
+        <h4>Tempo Bite (1×/week)</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=tempo+run+how+to" target="_blank" rel="noopener">Tempo Run</a> — 10 min easy + 10–15 min comfortably hard + easy cool-down</li>
+          <li><a href="https://www.youtube.com/results?search_query=row+intervals+beginner" target="_blank" rel="noopener">Row Intervals</a> — 6×2 min hard / 1 min easy</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="p-mobility" class="panel" aria-hidden="true">
+    <div class="grid two" id="mobility">
+      <article class="block">
+        <h4>Daily Reset (10–12 min)</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=90%2F90+hip+mobility" target="_blank" rel="noopener">90/90 Hips</a> — 2×60s/side</li>
+          <li><a href="https://www.youtube.com/results?search_query=thoracic+spine+openers" target="_blank" rel="noopener">T-Spine Openers</a> — 2×8/side</li>
+          <li><a href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+mobility" target="_blank" rel="noopener">Ankle Dorsiflexion</a> — 2×60s/side</li>
+        </ul>
+      </article>
+      <article class="block">
+        <h4>Post-Session Cool-down (6–8 min)</h4>
+        <ul class="weeklist">
+          <li><a href="https://www.youtube.com/results?search_query=box+breathing+how+to" target="_blank" rel="noopener">Box Breathing</a> — 2–3 min (4-4-4-4)</li>
+          <li><a href="https://www.youtube.com/results?search_query=child%27s+pose+yoga" target="_blank" rel="noopener">Child’s Pose</a> — 2–3 min</li>
+          <li><a href="https://www.youtube.com/results?search_query=lying+twist+stretch" target="_blank" rel="noopener">Supine Twist</a> — 60–90s/side</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- Weekly structure -->
+  <section class="week-card" id="structure">
+    <h3>Suggested Week (move sessions as needed)</h3>
+    <ul class="weeklist">
+      <li><strong>Mon:</strong> Strength A + Mobility</li>
+      <li><strong>Tue:</strong> Z2 (30–45 min)</li>
+      <li><strong>Wed:</strong> Calisthenics + Core</li>
+      <li><strong>Thu:</strong> Strength B + Mobility</li>
+      <li><strong>Fri:</strong> Z2 (45–60 min)</li>
+      <li><strong>Sat:</strong> Tempo Bite (run or row)</li>
+      <li><strong>Sun:</strong> Off / Easy Walk / Stretch</li>
+    </ul>
+    <div class="badges">
+      <span class="badge">Z2 Streak</span>
+      <span class="badge">Form First</span>
+      <span class="badge">Photo Log (private)</span>
+    </div>
+    <p class="mini">Snap a private photo weekly (same light/angle) to see real progress — no need to share it.</p>
+  </section>
+
+  <!-- Boss Fight -->
+  <section class="boss" id="boss" aria-label="Phase II Boss Fight">
+    <h3>Boss Fight — 5k Benchmark (pick one)</h3>
+    <p class="meta">Choose your arena. Log time or reps — beat it next month for a PR badge.</p>
+    <ul class="weeklist">
+      <li><strong>Run 5k</strong> — steady, even pace. <a href="https://www.youtube.com/results?search_query=how+to+pace+a+5k+run" target="_blank" rel="noopener">Pacing tips</a></li>
+      <li><strong>Row 5k</strong> — smooth strokes at consistent split. <a href="https://www.youtube.com/results?search_query=how+to+row+properly+erg+technique" target="_blank" rel="noopener">Row form</a></li>
+    </ul>
+    <div class="alt">
+      <strong>No rower? Strength alternative:</strong>
+      <ul class="weeklist">
+        <li><a href="https://www.youtube.com/results?search_query=table+rows+bodyweight+form" target="_blank" rel="noopener">Table/Inverted Rows</a> — AMRAP 10 min (good reps)</li>
+        <li><a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">1-Arm DB Row</a> — 4×12/side (heaviest clean)</li>
+        <li><a href="https://www.youtube.com/results?search_query=concentration+curl+form" target="_blank" rel="noopener">Concentration Curls</a> — 3×12/side finisher</li>
+      </ul>
+      <p class="mini">Record time/reps/weight. Next phase, try to beat **any one** metric to unlock your PR badge.</p>
+    </div>
+  </section>
+
+  <!-- Standard disclaimer -->
+  <section class="section" style="margin-top:12px">
+    <h2>Important Note</h2>
+    <p>The content is for general fitness education and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme — especially if you have health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script>
+  // Simple tabs
+  (function(){
+    const tabs=[...document.querySelectorAll('.tab')];
+    const panels=[...document.querySelectorAll('.panel')];
+    function select(idx){
+      tabs.forEach((t,i)=>t.setAttribute('aria-selected', i===idx ? 'true' : 'false'));
+      panels.forEach((p,i)=>p.setAttribute('aria-hidden', i===idx ? 'false' : 'true'));
+    }
+    tabs.forEach((t,i)=>t.addEventListener('click', ()=>select(i)));
+    // keyboard
+    tabs.forEach((t,i)=>t.addEventListener('keydown', e=>{
+      if(e.key==='ArrowRight') select((i+1)%tabs.length);
+      if(e.key==='ArrowLeft')  select((i-1+tabs.length)%tabs.length);
+    }));
+  })();
+</script>
+</body>
+</html>

@@ -1,238 +1,207 @@
-/* =========================================
-   FreeFitFuel — Global Styles (Stable Base)
-   ========================================= */
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — FreeFitFuel</title>
+  <link rel="stylesheet" href="/style.css?v=61">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+</head>
+<body class="hero-mode">
+  <!-- Header -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js"></script>
 
-/* ---------- Theme tokens ---------- */
-:root{
-  --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
-  --accent:#FF6A00; --accent2:#FF9A3D;
-  --blue:#9bc4f0;               /* header & footer background */
-  --glass:rgba(255,255,255,.08);
-  --stroke:rgba(255,255,255,.14);
-  --maxw:1140px;
-  --radius:16px;
+  <!-- HERO -->
+  <header class="hero hero-rainbow" role="banner" aria-label="Hero Training hero">
+    <figure class="hero-media">
+      <img src="/img/hero-training.jpg" alt="Colourful training montage">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="hero-content wrap">
+      <span class="eyebrow">Year-Long Transformation</span>
+      <h1 class="comic-title">Hero Training</h1>
+      <p class="lead comic-sub">Gamified progression to Marathon-ready engine and real-world strength. Earn XP, keep a streak, defeat Bosses.</p>
+      <div class="pills">
+        <a class="pill" href="#how">🎮 How it works</a>
+        <a class="pill" href="#phases">🧭 Pick your Phase</a>
+        <a class="pill" href="#bosses">💥 Boss Fights</a>
+      </div>
 
-  /* Hero sizing */
-  --hero-min:260px;
-  --hero-ideal:46vh;
-  --hero-max:560px;
-}
+      <!-- HUD -->
+      <div class="panel" style="margin-top:.6rem">
+        <strong>XP:</strong> <span id="hudXp">0</span> ·
+        <strong>Level:</strong> <span id="hudLvl">1</span> ·
+        <strong>Streak:</strong> <span id="hudStreak">0</span> days
+        <div class="xp" style="margin-top:.4rem"><span id="xpBar" style="width:0%"></span></div>
+      </div>
+    </div>
+    <div class="sparkle"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 7l4 13 13 4-13 4-4 13-4-13-13-4 13-4 4-13Z" fill="#FFD93B"/></svg></div>
+  </header>
 
-/* ---------- Base ---------- */
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.6}
-a{color:inherit;text-decoration:none}
-a:hover{color:var(--accent);text-decoration:underline}
-img{max-width:100%;height:auto;display:block}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:16px 20px}
-h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2rem,1.4rem + 3vw,3.3rem)}
-.accent{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{max-width:70ch;color:#c8c8d2;font-size:1.05rem}
-.meta{font-size:.92rem;color:#b6b6c6}
+  <main class="wrap">
+    <!-- How it works -->
+    <section id="how">
+      <h2 class="comic-title" style="font-size:1.5rem;margin:.2rem 0 .6rem;">How it works</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>1) Choose a Phase</h3>
+          <p class="meta">Phase I (Foundation) → Phase II (Build) → Phase III (Peak) → Phase IV (Marathon).</p>
+          <div class="badge-row">
+            <span class="badge">🔰 Starter</span><span class="badge">🏗️ Build</span><span class="badge">🚀 Peak</span><span class="badge">🏁 Marathon</span>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>2) Complete Weekly Quests</h3>
+          <p class="meta">Each phase page shows **exact weekly tasks** (checklists). Check them off → press **Claim XP**.</p>
+          <span class="goal-chip goal-strength">Strength</span>
+          <span class="goal-chip goal-engine">Engine</span>
+          <span class="goal-chip goal-mob">Mobility</span>
+        </article>
+        <article class="panel">
+          <h3>3) Defeat Bosses</h3>
+          <p class="meta">Monthly Boss = benchmark. Save PR → earn bonus XP. Bosses: 5k Run/Row, 12-min Strength AMRAP.</p>
+        </article>
+      </div>
+    </section>
 
-/* =========================================
-   HEADER
-   ========================================= */
-.site-header{position:sticky;top:0;z-index:1000;background:var(--blue);border-bottom:1px solid #cfd9e6}
-.site-header .container{max-width:var(--maxw);margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.site-header .logo img{height:56px}
-.main-nav{display:flex;gap:14px;margin-left:auto}
-.main-nav a{color:#111;font-weight:600;padding:.45rem .7rem;display:inline-block;border-radius:999px}
-.main-nav a[aria-current="page"]{background:var(--glass);border:1px solid var(--stroke);color:#111}
-.main-nav a:hover{color:var(--accent)}
-.hamburger{display:none;position:relative;width:44px;height:36px;border:0;background:transparent;padding:0;cursor:pointer}
-.hamburger span{position:absolute;left:8px;right:8px;height:3px;border-radius:2px;background:#111;transition:transform .25s ease,opacity .2s ease,top .25s ease}
-.hamburger span:nth-child(1){top:10px}
-.hamburger span:nth-child(2){top:16.5px}
-.hamburger span:nth-child(3){top:23px}
-.hamburger.active span:nth-child(1){top:16.5px;transform:rotate(45deg)}
-.hamburger.active span:nth-child(2){opacity:0}
-.hamburger.active span:nth-child(3){top:16.5px;transform:rotate(-45deg)}
-@media (max-width:820px){
-  :root{--headerH:72px}
-  .hamburger{display:block;z-index:1101}
-  .main-nav{
-    position:fixed;top:var(--headerH);left:0;right:0;display:flex;flex-direction:column;gap:0;
-    background:var(--blue);border-bottom:1px solid #cfd9e6;padding:10px 14px 12px;margin:0;z-index:1100;
-    visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-8px);
-    transition:visibility .0s .2s,opacity .2s ease,transform .2s ease
-  }
-  .main-nav a{padding:12px 16px;color:#111}
-  .main-nav.open{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0);transition:opacity .2s ease,transform .2s ease}
-}
+    <!-- Phases -->
+    <section id="phases" style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.5rem;margin:.2rem 0 .6rem;">Pick your Phase</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>Phase I — Foundation</h3>
+          <p class="meta">Weeks 1–8 · Consistency, movement standards, Z2 engine.</p>
+          <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
+        </article>
+        <article class="panel">
+          <h3>Phase II — Build</h3>
+          <p class="meta">Weeks 9–16 · More volume, tempo work, bodyweight skills.</p>
+          <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
+        </article>
+        <article class="panel">
+          <h3>Phase III & IV — Peak → Marathon</h3>
+          <p class="meta">Blend strength & engine. Marathon goal by 12 months.</p>
+          <a class="btn" href="#" onclick="alert('Coming soon');return false;">Coming Soon</a>
+        </article>
+      </div>
+    </section>
 
-/* =========================================
-   HERO — shared (overlay removed)
-   ========================================= */
-header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0000}
-header.hero-mini figure>img{
-  width:100% !important;height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
-  min-height:0 !important;max-height:none !important;object-fit:cover !important;object-position:center 12%;
-  display:block;filter:brightness(.88) saturate(1.05)
-}
-header.hero-mini .overlay{position:absolute;inset:0;pointer-events:none;background:none !important}
-header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-header.hero-mini h1{margin:0 0 .35rem}
-header.hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
+    <!-- Bosses -->
+    <section id="bosses" style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.5rem;margin:.2rem 0 .6rem;">Boss Fights</h2>
 
-header.hero{position:relative;border-bottom:1px solid #1b1b22}
-header.hero .hero-media{position:relative;margin:0}
-header.hero .hero-media img{width:100%;height:clamp(300px,46vh,520px);object-fit:cover;object-position:center 35%;display:block}
-header.hero .overlay{position:absolute;inset:0;pointer-events:none;background:none !important}
-/* opt-in gradient */
-header.has-gradient .overlay{background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6)) !important}
+      <article class="boss" aria-labelledby="boss-run">
+        <h3 id="boss-run">Boss: 5k Run (or Row / 30-min distance)</h3>
+        <p class="meta">Pick one: <strong>Run 5k</strong>, <strong>Row 5k</strong>, or record **distance in 30 min**. Save best.</p>
+        <div class="row" style="margin:.4rem 0">
+          <label>Result <input id="boss5k" type="text" placeholder="25:30 or 6.2km/30min"></label>
+          <button class="btn" id="saveBoss5k">Save PR</button>
+          <button class="btn" id="xpBoss5k">Claim 150 XP</button>
+          <span id="outBoss5k" class="hint"></span>
+        </div>
+        <p class="meta">Form refreshers:
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+running+form+tips">Run Form</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+row+technique">Row Form</a>
+        </p>
+      </article>
 
-/* Inline hero blocks */
-.page-hero{margin:0 0 14px}
-.page-hero img{width:100%;height:auto !important;max-height:clamp(220px,42vh,520px);object-fit:cover;display:block;border-radius:12px;border:1px solid var(--stroke)}
+      <article class="boss" aria-labelledby="boss-amrap" style="margin-top:12px">
+        <h3 id="boss-amrap">Boss: Strength AMRAP (12 min)</h3>
+        <p class="meta">8 goblet squats · 8 push-ups · 8 DB rows. As many rounds as possible.</p>
+        <div class="row" style="margin:.4rem 0">
+          <label>Rounds <input id="bossAmrap" type="number" min="0" step="1" placeholder="7"></label>
+          <button class="btn" id="saveBossAmrap">Save PR</button>
+          <button class="btn" id="xpBossAmrap">Claim 120 XP</button>
+          <span id="outBossAmrap" class="hint"></span>
+        </div>
+        <p class="meta">Technique:
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+form">Push-up</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form">DB Row</a>
+        </p>
+      </article>
+    </section>
+  </main>
 
-/* =========================================
-   Components
-   ========================================= */
-.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 1.15rem;border-radius:12px;font-weight:800;border:0;background:var(--accent);color:#111;box-shadow:0 2px 0 rgba(0,0,0,.15)}
-.btn:hover{filter:brightness(1.05)}
-.btn--pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:999px;padding:.34rem .65rem;font-size:.9rem;text-decoration:none}
-.btn--pill:hover{color:var(--accent)}
-.btn-row{display:flex;flex-wrap:wrap;gap:.45rem}
-.mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
-.mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);text-decoration:none;padding:.38rem .75rem;border-radius:999px;font-size:.92rem}
-.mini-nav a:hover{color:var(--accent)}
-.grid{display:grid;gap:14px;margin:22px 0}
-@media(min-width:780px){.grid.three{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
-.card{background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);padding:14px}
-.card h2,.card h3{margin:.1rem 0 .4rem}
-.split{display:grid;gap:14px;align-items:center;margin:26px 0}
-@media(min-width:900px){.split{grid-template-columns:1.15fr 1fr}}
-.split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);overflow:hidden;background:var(--glass)}
-.split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
 
-/* =========================================
-   Footer
-   ========================================= */
-.site-footer{background:var(--blue);border-top:1px solid #cfd9e6;text-align:center}
-.site-footer .container{max-width:var(--maxw);margin:0 auto;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.site-footer img{height:64px}
-.site-footer p{margin:4px 0;color:#111}
-.site-footer .credit{font-weight:700}
+  <script>
+    /* ===== Simple XP / Level / Streak system (localStorage) ===== */
+    const XP_PER_LEVEL = 200;
+    const LS = {
+      xp:'hero_xp', lvl:'hero_lvl', streak:'hero_streak', lastDay:'hero_last_day',
+      pr5k:'hero_pr_5k', prAmrap:'hero_pr_amrap',
+      claimed5k:'hero_claimed_5k', claimedAmrap:'hero_claimed_amrap'
+    };
+    function getNum(k, d=0){ const v = localStorage.getItem(k); const n = parseInt(v,10); return isNaN(n)?d:n; }
+    function setNum(k, n){ localStorage.setItem(k, String(n)); }
+    function addXP(n){
+      const cur = getNum(LS.xp,0)+n; setNum(LS.xp, cur);
+      setNum(LS.lvl, Math.floor(cur/XP_PER_LEVEL)+1);
+      renderHUD();
+      return cur;
+    }
+    function renderHUD(){
+      const xp=getNum(LS.xp,0), lvl=getNum(LS.lvl,1);
+      document.getElementById('hudXp').textContent=xp;
+      document.getElementById('hudLvl').textContent=lvl;
+      const pct = Math.min(99, (xp%XP_PER_LEVEL)/XP_PER_LEVEL*100);
+      document.getElementById('xpBar').style.width=pct+'%';
+      document.getElementById('hudStreak').textContent=getNum(LS.streak,0);
+    }
+    function tickStreakToday(){
+      const today = new Date(); today.setHours(0,0,0,0);
+      const last = parseInt(localStorage.getItem(LS.lastDay)||'0',10);
+      const diff = last? (today - new Date(last)) / 86400000 : null;
+      let s = getNum(LS.streak,0);
+      if(diff === 1){ s += 1; }
+      else if(diff !== 0){ s = 1; }
+      setNum(LS.streak, s);
+      localStorage.setItem(LS.lastDay, String(today.getTime()));
+      renderHUD();
+    }
 
-/* =========================================
-   Dialog (generic)
-   ========================================= */
-dialog{background:#111;color:var(--ink);border:1px solid var(--stroke);border-radius:12px}
-dialog::backdrop{background:rgba(0,0,0,.6)}
+    // PR handlers + Boss XP claim (guarded so XP is claimed once per boss)
+    document.addEventListener('DOMContentLoaded', ()=>{
+      renderHUD(); tickStreakToday();
 
-/* =========================================
-   Print
-   ========================================= */
-@media print{
-  html,body{background:#fff !important;color:#000 !important}
-  *{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important;border-color:#000 !important}
-  #printArea{display:block !important;color:#000 !important;background:#fff !important;visibility:visible !important}
-  body>*:not(#printArea){display:none !important}
-  #printArea article{margin:0 !important;padding:0 !important;border:0 !important}
-  #printArea h1,#printArea h2,#printArea h3{color:#000 !important;margin:.2rem 0}
-  #printArea p,#printArea li{line-height:1.35}
-  #printArea img{display:none !important}
-  @page{margin:12mm}
-}
+      // 5k Boss
+      const b5 = document.getElementById('boss5k');
+      const o5 = document.getElementById('outBoss5k');
+      b5.value = localStorage.getItem(LS.pr5k)||'';
+      document.getElementById('saveBoss5k').addEventListener('click', ()=>{
+        if(!b5.value.trim()){ o5.textContent='Enter a result first.'; return; }
+        localStorage.setItem(LS.pr5k, b5.value.trim());
+        o5.textContent='Saved! 🏅';
+      });
+      document.getElementById('xpBoss5k').addEventListener('click', ()=>{
+        if(localStorage.getItem(LS.claimed5k)==='1'){ o5.textContent='XP already claimed.'; return; }
+        if(!localStorage.getItem(LS.pr5k)){ o5.textContent='Save a PR first.'; return; }
+        addXP(150); localStorage.setItem(LS.claimed5k,'1'); o5.textContent='150 XP added! 🔥';
+      });
 
-/* =========================================
-   PAGE-SPECIFIC (kept)
-   ========================================= */
-header.hero-mini.yoga-hero figure{background:#000}
-header.hero-mini.yoga-hero figure>img{height:clamp(320px,48vh,560px) !important;object-fit:contain !important;object-position:center center !important;display:block;filter:brightness(.96) saturate(1.03)}
-header.hero-mini.yoga-hero .content{position:static}
-
-/* =========================================
-   HERO MODE (Gamified) — Scoped to .hero-mode
-   ========================================= */
-.hero-mode{
-  --cm-ink:#111;
-  --cm-a:#FF3B3B;        /* punch red */
-  --cm-b:#FFD93B;        /* badge yellow */
-  --cm-c:#34D399;        /* mint */
-  --cm-d:#60A5FA;        /* sky */
-  --cm-e:#A78BFA;        /* purple */
-  --cm-panel:#0c1017;    /* dark panel */
-  --cm-panel-2:#0f141c;
-  --cm-stroke:rgba(255,255,255,.18);
-}
-
-/* Orange titles restored */
-.hero-mode .comic-title{color:var(--accent);font-weight:900;letter-spacing:.3px;text-shadow:0 1px 0 rgba(0,0,0,.4)}
-.hero-mode .comic-sub{color:#ececf3}
-
-/* rainbow hero bg */
-.hero-mode .hero-rainbow{
-  background:
-    radial-gradient(1200px 1200px at -10% -40%, rgba(255,59,59,.16), transparent 50%),
-    radial-gradient(1200px 1200px at 110% -40%, rgba(96,165,250,.16), transparent 50%),
-    radial-gradient(1200px 1200px at 50% 120%, rgba(52,211,153,.14), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  border-bottom:1px solid var(--stroke);
-}
-
-/* pills */
-.hero-mode .pills{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 1.1rem}
-.hero-mode .pill{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .7rem;border-radius:999px;font-weight:800;background:var(--glass);border:1px solid var(--cm-stroke);color:var(--ink)}
-.hero-mode .pill:hover{filter:brightness(1.08)}
-
-/* panels */
-.hero-mode .panel{background:var(--cm-panel);border:1px solid var(--cm-stroke);border-radius:16px;padding:14px}
-.hero-mode .panel h3{margin:.1rem 0 .45rem}
-.hero-mode .grid-panels{display:grid;gap:14px}
-@media(min-width:900px){.hero-mode .grid-panels{grid-template-columns:repeat(3,1fr)}}
-
-/* badges */
-.hero-mode .badge-row{display:flex;flex-wrap:wrap;gap:.5rem}
-.hero-mode .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .65rem;border-radius:999px;border:1px solid var(--cm-stroke);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));font-weight:800}
-.hero-mode .badge i{font-style:normal}
-
-/* goal chips */
-.hero-mode .goal-chip{display:inline-block;margin:.2rem .3rem .2rem 0;padding:.3rem .6rem;border-radius:999px;border:1px dashed var(--cm-stroke);font-size:.85rem;opacity:.95}
-.hero-mode .goal-strength{background:rgba(255,59,59,.12)}
-.hero-mode .goal-engine{background:rgba(96,165,250,.12)}
-.hero-mode .goal-skill{background:rgba(167,139,250,.12)}
-.hero-mode .goal-mob{background:rgba(52,211,153,.12)}
-
-/* BOSSES (renamed from Trials) */
-.hero-mode .boss{background:var(--cm-panel-2);border:1px solid var(--cm-stroke);border-radius:16px;padding:14px}
-.hero-mode .boss h3{margin:.2rem 0 .5rem}
-.hero-mode .boss .row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
-.hero-mode input[type="number"],.hero-mode input[type="text"]{background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:.45rem .55rem}
-.hero-mode .boss .btn{box-shadow:none}
-
-/* Exercise list */
-.hero-mode .ex-list{margin:.4rem 0 .1rem;padding-left:1.1rem}
-.hero-mode .ex-list li{margin:.18rem 0}
-.hero-mode .ex-list a{color:var(--ink);text-decoration:underline dotted}
-.hero-mode .ex-list a:hover{color:var(--accent)}
-
-/* tabs */
-.hero-mode .phase-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1rem}
-.hero-mode .tab{background:var(--glass);border:1px solid var(--cm-stroke);border-radius:999px;padding:.45rem .8rem;font-weight:800}
-.hero-mode .tab.is-active{background:linear-gradient(90deg,var(--accent2),var(--accent));color:#111;border-color:transparent}
-
-/* XP */
-.hero-mode .xp{height:10px;border-radius:999px;border:1px solid var(--cm-stroke);overflow:hidden;background:#0b1016}
-.hero-mode .xp>span{display:block;height:100%;background:linear-gradient(90deg,var(--cm-b),var(--cm-d))}
-
-/* Taskboard (weekly guidance) */
-.hero-mode .taskboard{display:grid;gap:12px}
-@media(min-width:900px){.hero-mode .taskboard{grid-template-columns:repeat(2,1fr)}}
-.hero-mode .task{background:var(--cm-panel);border:1px solid var(--cm-stroke);border-radius:14px;padding:12px}
-.hero-mode .checks{display:grid;gap:.4rem;margin:.4rem 0}
-.hero-mode .checks label{display:flex;gap:.6rem;align-items:flex-start}
-.hero-mode .checks input[type="checkbox"]{width:18px;height:18px;margin-top:.1rem}
-.hero-mode .claim{display:flex;gap:.6rem;align-items:center;margin-top:.4rem}
-
-/* Sparkle */
-.hero-mode .sparkle{position:absolute;inset:auto 16px 16px auto;opacity:.9;pointer-events:none}
-.hero-mode .sparkle svg{width:64px;height:64px;animation:twinkle 2.4s ease-in-out infinite}
-@keyframes twinkle{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.08);opacity:1}}
-
-/* Ensure hero overlays also off in hero-mode */
-.hero-mode header.hero .overlay,
-.hero-mode header.hero-mini .overlay{background:none !important}
+      // AMRAP Boss
+      const ba = document.getElementById('bossAmrap');
+      const oa = document.getElementById('outBossAmrap');
+      ba.value = localStorage.getItem(LS.prAmrap)||'';
+      document.getElementById('saveBossAmrap').addEventListener('click', ()=>{
+        if(!ba.value.trim()){ oa.textContent='Enter rounds first.'; return; }
+        localStorage.setItem(LS.prAmrap, ba.value.trim());
+        oa.textContent='Saved! 🏅';
+      });
+      document.getElementById('xpBossAmrap').addEventListener('click', ()=>{
+        if(localStorage.getItem(LS.claimedAmrap)==='1'){ oa.textContent='XP already claimed.'; return; }
+        if(!localStorage.getItem(LS.prAmrap)){ oa.textContent='Save a PR first.'; return; }
+        addXP(120); localStorage.setItem(LS.claimedAmrap,'1'); oa.textContent='120 XP added! 💪';
+      });
+    });
+  </script>
+</body>
+</html>

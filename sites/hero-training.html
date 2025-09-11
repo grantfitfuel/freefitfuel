@@ -4,216 +4,206 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <style>
-    /* ---- Page-local polish ---- */
-    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-    .hero-mini figure{margin:0;position:relative;overflow:hidden}
-    .hero-mini img{width:100%;height:clamp(280px,42vh,520px);object-fit:cover;display:block;filter:brightness(.9) saturate(1.05)}
-    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.65))}
-
-    .pill-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
-    .pill{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
-      padding:.45rem .85rem;border-radius:999px;font-size:.92rem;cursor:pointer}
-    .pill:hover{color:var(--accent)}
-    .pill-pop{
-      position:absolute;z-index:1200;max-width:min(420px,92vw);
-      background:#0f1319;color:var(--ink);border:1px solid var(--stroke);
-      border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.45);
-      padding:.85rem 1rem;translate:0 8px
-    }
-    .pill-pop h4{margin:.1rem 0 .4rem;font-size:1.05rem}
-    .pill-pop p{margin:.25rem 0 .5rem;color:var(--inkdim)}
-    .pill-pop .row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
-    .pill-pop .pill-close{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:8px;padding:.3rem .6rem;cursor:pointer}
-
-    .phase-grid{display:grid;gap:14px;margin:16px 0}
-    @media(min-width:900px){.phase-grid{grid-template-columns:repeat(4,1fr)}}
-    .phase-card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-    .phase-card .thumb{aspect-ratio:16/9;background:#0c0f13;border-bottom:1px solid var(--stroke)}
-    .phase-card .thumb img{width:100%;height:100%;object-fit:cover}
-    .phase-card .body{padding:.75rem .9rem;display:grid;gap:.35rem}
-    .phase-card .body h3{margin:.1rem 0 .1rem;font-size:1.05rem}
-    .phase-card.highlight{outline:2px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 3px rgba(255,106,0,.2) inset}
-    .xp-bar{display:flex;gap:.5rem;align-items:center;margin:.5rem 0 1rem}
-    .xp-chip{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.28rem .6rem;font-size:.88rem}
-    .toast{position:fixed;right:14px;bottom:14px;background:#11161c;border:1px solid var(--stroke);border-radius:12px;padding:.6rem .8rem;box-shadow:0 10px 24px rgba(0,0,0,.45);display:none}
-    .toast.show{display:block;animation:fade .2s ease}
-    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    .pillrow{display:flex;flex-wrap:wrap;gap:.45rem}
+    .pill{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.35rem .7rem;font-weight:700}
+    .phase-card h3 a{text-decoration:underline dotted}
+    .engine-grid{display:grid;gap:14px}
+    @media(min-width:900px){.engine-grid{grid-template-columns:repeat(2,1fr)}}
+    .check{display:grid;gap:.35rem;margin:.35rem 0}
+    .check a{display:inline-block}
+    .trial{background:#0f1317;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .btn-row{display:flex;flex-wrap:wrap;gap:.5rem}
+    .muted{color:var(--inkdim);font-size:.92rem}
   </style>
 </head>
 <body>
+  <!-- Shared header -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js"></script>
 
-<!-- Shared header -->
-<div id="site-header"></div>
-<script src="/js/header-loader.js"></script>
-
-<header class="hero-mini" role="banner" aria-label="Hero Training hero">
-  <figure>
-    <img src="/img/hero-training.jpg" alt="Athlete moving through hybrid strength and endurance session">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="content wrap">
-    <span class="eyebrow">Quest-based hybrid programme</span>
-    <h1><span class="accent">Hero Training</span></h1>
-    <p class="lead">A 3–12 month path that blends <em>strength</em>, <em>engine</em>, <em>calisthenics</em> and <em>mobility</em>. Earn XP, clear weekly quests, and level up through Phase I–IV.</p>
-
-    <!-- Pill chips -->
-    <nav class="pill-row" aria-label="Training pillars">
-      <button class="pill" data-pill="strength" aria-haspopup="dialog">Strength</button>
-      <button class="pill" data-pill="engine" aria-haspopup="dialog">Engine</button>
-      <button class="pill" data-pill="calisthenics" aria-haspopup="dialog">Calisthenics</button>
-      <button class="pill" data-pill="mobility" aria-haspopup="dialog">Mobility</button>
-      <button class="pill" data-pill="recovery" aria-haspopup="dialog">Recovery</button>
-    </nav>
-
-    <div class="xp-bar">
-      <span class="xp-chip" id="xpChip" aria-live="polite">XP: 0</span>
-      <a class="btn" href="#phases">Start Phase I</a>
+  <!-- HERO -->
+  <header class="hero-mini" role="banner" aria-label="Hero Training hero">
+    <figure>
+      <img src="/img/hero-training-hero.jpg" alt="Hero training — hybrid strength, engine, and resilience">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <span class="eyebrow">Hybrid transformation</span>
+      <h1><span class="accent">Hero Training</span></h1>
+      <p class="lead">A 4-phase, 12-week cycle that blends strength, calisthenics, engine, and mobility. Clear sessions, weekly quests, and fun “boss fights.”</p>
+      <div class="pillrow">
+        <a class="pill" href="#strength">Strength</a>
+        <a class="pill" href="#calisthenics">Calisthenics</a>
+        <a class="pill" href="#engine">Engine</a>
+        <a class="pill" href="#mobility">Mobility</a>
+        <a class="pill" href="#recovery">Recovery</a>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<main class="wrap">
-  <section id="phases" aria-label="Programme phases">
-    <h2>Choose your current phase</h2>
-    <div class="phase-grid">
-      <article class="phase-card" data-tags="strength,engine,mobility,calisthenics">
-        <div class="thumb"><img src="/img/phase1.jpg" alt="Foundation training"></div>
-        <div class="body">
-          <h3>Phase I — Foundation (Weeks 1–12)</h3>
-          <p class="meta">Groove patterns, zone-2 base, consistency. 2–3 strength + 2–3 engine + daily mobility.</p>
-          <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
-        </div>
+  <main class="wrap">
+    <!-- Phase links -->
+    <section class="grid">
+      <article class="card phase-card">
+        <h3><a href="/hero-phase-1.html">Phase I — Foundation (Weeks 1–4)</a></h3>
+        <p class="meta">Skill the lifts, nail positions, build easy aerobic base, daily mobility minimums.</p>
       </article>
+      <article class="card phase-card">
+        <h3><a href="/hero-phase-2.html">Phase II — Build (Weeks 5–8)</a></h3>
+        <p class="meta">Progress volume/intensity, add tempos and mixed engine pieces.</p>
+      </article>
+      <article class="card phase-card">
+        <h3><a href="/hero-phase-3.html">Phase III — Peak (Weeks 9–12)</a></h3>
+        <p class="meta">Top sets, threshold work, “boss fights” show up more often.</p>
+      </article>
+      <article class="card phase-card">
+        <h3><a href="/hero-phase-4.html">Phase IV — Deload & Reforge</a></h3>
+        <p class="meta">Back the volume down, keep quality high, test & reset goals.</p>
+      </article>
+    </section>
 
-      <article class="phase-card" data-tags="strength,engine,calisthenics,mobility">
-        <div class="thumb"><img src="/img/phase2.jpg" alt="Build training"></div>
-        <div class="body">
-          <h3>Phase II — Build (Weeks 13–24)</h3>
-          <p class="meta">Progressive overload + threshold work. Add skill ladders (pull-ups, dips, HS prep).</p>
-          <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
+    <!-- Engines -->
+    <section id="strength" class="card">
+      <h2>Strength Engine (linked teaching for every move)</h2>
+      <div class="engine-grid">
+        <div class="check">
+          <strong>Lower Body</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+rdl+form">DB RDL</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat+form">Front-Foot Elevated Split Squat</a>
         </div>
-      </article>
+        <div class="check">
+          <strong>Upper Body Push</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Up</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+dumbbell+press+form">DB Overhead Press</a>
+        </div>
+        <div class="check">
+          <strong>Upper Body Pull</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+row+under+table">Table Rows (Inverted)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=face+pull+band+form">Band Face Pull</a>
+        </div>
+        <div class="check">
+          <strong>Carries/Core</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmer+carry+technique">Farmer Carry</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=pallof+press+band+form">Pallof Press</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hollow+hold+form">Hollow Hold</a>
+        </div>
+      </div>
+    </section>
 
-      <article class="phase-card" data-tags="strength,engine,mobility,calisthenics">
-        <div class="thumb"><img src="/img/phase3.jpg" alt="Peak training"></div>
-        <div class="body">
-          <h3>Phase III — Peak (Weeks 25–36)</h3>
-          <p class="meta">Specific prep for your event or “Boss Fights”. Sharpen, reduce junk volume.</p>
-          <a class="btn" href="/hero-phase-3.html">Open Phase III</a>
+    <section id="calisthenics" class="card">
+      <h2>Calisthenics Progressions</h2>
+      <div class="engine-grid">
+        <div class="check">
+          <strong>Push</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Up</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dips+bench+form">Bench Dips</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+negative+eccentric+form">Push-Up Eccentrics</a>
         </div>
-      </article>
+        <div class="check">
+          <strong>Pull</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=scapular+pull+ups+form">Scap Pulls (bar/doorframe)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home">Inverted Rows</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=doorway+row+band">Band Doorway Rows</a>
+        </div>
+        <div class="check">
+          <strong>Core</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form">Dead Bug</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=plank+form">Plank</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hanging+knee+raise+at+home">Knee Raises (chair support)</a>
+        </div>
+      </div>
+    </section>
 
-      <article class="phase-card" data-tags="recovery,mobility,engine">
-        <div class="thumb"><img src="/img/phase4.jpg" alt="Rebuild training"></div>
-        <div class="body">
-          <h3>Phase IV — Rebuild (Weeks 37–48)</h3>
-          <p class="meta">De-load, rebuild weak links, restore mobility & sprint the last 10% better.</p>
-          <a class="btn" href="/hero-phase-4.html">Open Phase IV</a>
+    <section id="engine" class="card">
+      <h2>Engine (Cardio)</h2>
+      <div class="engine-grid">
+        <div class="check">
+          <strong>Base</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cardio+explained">Zone-2 (Walk/Jog/Cycle)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=nasal+breathing+running">Nasal Breathing (Runs)</a>
         </div>
-      </article>
+        <div class="check">
+          <strong>Intervals</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=interval+running+beginners+session">Running Intervals</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assault+bike+intervals+beginner">Bike Intervals (alt)</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="mobility" class="card">
+      <h2>Mobility & Prehab</h2>
+      <div class="engine-grid">
+        <div class="check">
+          <strong>Shoulders</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=banded+pull+apart+form">Band Pull-Apart</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shoulder+cars+controlled+articular+rotations">Shoulder CARs</a>
+        </div>
+        <div class="check">
+          <strong>Hips/Spine</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hips+drill">90/90 Hips</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=cat+cow+yoga+form">Cat-Cow</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="recovery" class="card">
+      <h2>Recovery</h2>
+      <div class="engine-grid">
+        <div class="check">
+          <strong>Breath</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+how+to">Box Breathing</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+7+8+breathing+how+to">4-7-8 Breathing</a>
+        </div>
+        <div class="check">
+          <strong>Rituals</strong>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=sleep+wind+down+routine">Wind-Down Routine</a>
+          <span class="muted">10k steps target • Protein + fibre each meal • Lights low after 9pm</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Boss fights -->
+    <section class="trial">
+      <h2>Boss Fights (choose your path)</h2>
+      <p class="meta">Pick one test this week and log your time/reps.</p>
+      <ul>
+        <li>
+          <strong>5k Row</strong> —
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=how+to+row+concept2+technique">Row Technique</a>
+          &nbsp;|&nbsp;<em>No rower?</em>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+rows+at+home">Table Rows (AMRAP 10')</a> or
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">DB Rows (AMRAP 10')</a>
+        </li>
+        <li>
+          <strong>5k Run</strong> —
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+pacing+strategy+beginner">Pacing Strategy</a>
+        </li>
+        <li>
+          <strong>Engine AMRAP 12'</strong> — 10
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squats</a> +
+          10 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+hands+elevated+form">Incline Push-Ups</a> +
+          150m <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shuttle+runs+how+to">Shuttle Run</a>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
+        <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
-  </section>
-
-  <section aria-label="How it works" class="card">
-    <h2>How it works</h2>
-    <ul>
-      <li><strong>Weekly Quests:</strong> 4–6 small tasks (e.g., “Walk 45 min Z2”, “Mobility 10 min daily”).</li>
-      <li><strong>Boss Fights:</strong> short tests (5k engine, strength AMRAP) — PRs give **badges + XP**.</li>
-      <li><strong>Track XP:</strong> click “Claim XP” on phase pages; your total shows above.</li>
-      <li><strong>Photo log (private):</strong> take a progress photo each month — for you, not for social.</li>
-    </ul>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
-
-<div class="toast" id="toast">+50 XP — Badge Unlocked!</div>
-
-<script>
-/* ===== Pill popovers + highlights ===== */
-(function(){
-  const INFO = {
-    strength:{title:"Strength",dose:"2–3 sessions / week",copy:"Compound lifts + assistance to build force and resilience.",ex:"DB squat, floor press, hinge (RDL), row, carry",anchor:"#phases"},
-    engine:{title:"Engine",dose:"2–4 sessions / week (mix Z2 + intervals)",copy:"Cardio capacity and repeatability: Zone 2 base + smart intervals.",ex:"Z2 run/row/cycle, 4×4′ @ hard, 30/30s VO2 blocks",anchor:"#phases"},
-    calisthenics:{title:"Calisthenics",dose:"2–3 micro-sessions / week",copy:"Skill ladders + joint control with bodyweight.",ex:"Pull-ups/scaps, dips/push-ups, HS prep, pistols/regressions",anchor:"#phases"},
-    mobility:{title:"Mobility",dose:"Daily 5–10 min • 2 longer / week",copy:"Range + control for spine, hips, shoulders; pre-hab not rehab.",ex:"90/90s, thoracic openers, calf/ankle, shoulder CARs",anchor:"#phases"},
-    recovery:{title:"Recovery",dose:"Every week",copy:"Sleep, nutrition, breathwork & deload to absorb training.",ex:"Walks, breath (4-6), soft tissue, 20–40% deloads",anchor:"#phases"}
-  };
-  const pills = document.querySelectorAll('.pill-row .pill');
-  let current = null;
-
-  function highlight(key){
-    document.querySelectorAll('.phase-card').forEach(card=>{
-      const tags=(card.getAttribute('data-tags')||'').toLowerCase();
-      card.classList.toggle('highlight', tags.includes(key));
-    });
-  }
-  function clearHi(){ document.querySelectorAll('.phase-card.highlight').forEach(c=>c.classList.remove('highlight')); }
-
-  function closePop(){
-    if(!current) return;
-    current.remove(); current=null; clearHi();
-    document.removeEventListener('click', onDoc, true);
-    window.removeEventListener('keydown', onKey);
-  }
-  function onDoc(e){ if(current && !current.contains(e.target) && !e.target.closest('.pill')) closePop(); }
-  function onKey(e){ if(e.key==='Escape') closePop(); }
-
-  function openPop(btn, key){
-    closePop();
-    const data=INFO[key]; if(!data) return;
-    const pop=document.createElement('div');
-    pop.className='pill-pop'; pop.setAttribute('role','dialog'); pop.innerHTML=`
-      <h4>${data.title}</h4>
-      <p class="meta"><strong>Weekly dose:</strong> ${data.dose}</p>
-      <p>${data.copy}</p>
-      <p class="meta"><strong>Examples:</strong> ${data.ex}</p>
-      <div class="row">
-        <a class="btn--pill" href="${data.anchor}">See sample</a>
-        <button class="pill-close" type="button">Close</button>
-      </div>`;
-    document.body.appendChild(pop);
-    const r=btn.getBoundingClientRect();
-    const top=window.scrollY + r.bottom + 8;
-    const left=Math.min(window.scrollX+r.left, window.scrollX+document.documentElement.clientWidth - pop.offsetWidth - 12);
-    pop.style.top=top+'px'; pop.style.left=left+'px';
-    pop.querySelector('.pill-close').addEventListener('click', closePop);
-    document.addEventListener('click', onDoc, true);
-    window.addEventListener('keydown', onKey);
-    current=pop; highlight(key);
-  }
-  pills.forEach(b=>{
-    b.addEventListener('click', ()=>openPop(b, b.dataset.pill));
-    b.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openPop(b,b.dataset.pill); }});
-  });
-})();
-
-/* ===== Simple XP store (localStorage) ===== */
-(function(){
-  const KEY='fff_xp_total';
-  const chip=document.getElementById('xpChip');
-  const toast=document.getElementById('toast');
-  function getXP(){ return parseInt(localStorage.getItem(KEY)||'0',10); }
-  function setXP(v){ localStorage.setItem(KEY, String(v)); chip.textContent='XP: '+v; }
-  function boostXP(n=50){
-    const v=getXP()+n; setXP(v);
-    toast.textContent=`+${n} XP — Badge Unlocked!`; toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'),1800);
-  }
-  // Expose for phase pages to call: window.heroXP( amount )
-  window.heroXP = boostXP;
-  setXP(getXP());
-})();
-</script>
+  </footer>
 </body>
 </html>

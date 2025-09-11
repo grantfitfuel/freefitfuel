@@ -1,187 +1,142 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=40" />
-  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg" />
+  <link rel="stylesheet" href="/style.css?v=32">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <style>
-    /* Remove hero gradients */
-    header.hero .overlay, header.hero-mini .overlay { display:none !important; }
+    /* ===== Page-scoped polish ===== */
+    .hero-clean .overlay{ display:none !important; }                /* remove gradient */
+    .hero-clean .hero-media img{ filter:none !important; }          /* remove darkening */
 
-    /* Page flair */
-    .hero-content .accent{background:linear-gradient(90deg,#FF9A3D,#FF6A00,#FFC146);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .cta-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.4rem}
+    .chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.75rem 0 1rem}
+    .chip{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .75rem;border-radius:999px;font-weight:700;border:1px solid var(--stroke);background:var(--glass);font-size:.92rem;letter-spacing:.15px}
+    .chip--strength{ background:linear-gradient(90deg,#FF9A3D22,#FF6A0022); border-color:#FF6A0040 }
+    .chip--engine{ background:linear-gradient(90deg,#5cc2ff22,#0aa0ff22); border-color:#0aa0ff44 }
+    .chip--cal{ background:linear-gradient(90deg,#baffc222,#21d07a22); border-color:#21d07a44 }
+    .chip--mob{ background:linear-gradient(90deg,#c6a7ff22,#8c63ff22); border-color:#8c63ff44 }
+    .chip--rec{ background:linear-gradient(90deg,#ffd7a822,#ffb06722); border-color:#ffb06744 }
 
-    /* Colourful “mode” chips */
-    .mode-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 .2rem}
-    .mode{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.42rem .7rem;font-weight:800}
-    .mode[data-g="strength"]{outline:2px solid #FF6A00;outline-offset:1px}
-    .mode[data-g="engine"]{outline:2px solid #2EC4B6;outline-offset:1px}
-    .mode[data-g="mobility"]{outline:2px solid #9bc4f0;outline-offset:1px}
-    .mode[data-g="recovery"]{outline:2px solid #B483FF;outline-offset:1px}
+    .phase-grid{display:grid;gap:14px;margin:14px 0}
+    @media(min-width:900px){.phase-grid{grid-template-columns:repeat(2,1fr)}}
+    .phase-card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;overflow:hidden}
+    .phase-card .thumb{aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--stroke)}
+    .phase-card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .phase-card .inner{padding:12px}
+    .phase-card .inner h3{margin:.1rem 0 .35rem}
+    .phase-card .meta{margin:.15rem 0 .4rem}
+    .phase-actions{display:flex;flex-wrap:wrap;gap:.45rem}
 
-    /* Cards grid */
-    .grid.cards{grid-template-columns:repeat(2,1fr)}
-    @media(min-width:980px){.grid.cards{grid-template-columns:repeat(3,1fr)}}
+    .pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 0}
+    .pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.34rem .65rem;font-size:.9rem}
+    .pill--cta{background:var(--accent);color:#111;border:0;font-weight:800}
 
-    /* Legend + chips */
-    .goal-legend{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0 .4rem}
-    .goal-pill{--c:#aaa;display:inline-flex;align-items:center;gap:.45rem;padding:.28rem .6rem;border-radius:999px;border:1px solid var(--stroke);background:var(--glass);font-weight:700;font-size:.85rem;cursor:pointer}
-    .goal-pill .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--c);box-shadow:0 0 0 2px rgba(0,0,0,.2) inset}
-    .goal-pill[data-g="strength"]{--c:#FF6A00}
-    .goal-pill[data-g="engine"]{--c:#2EC4B6}
-    .goal-pill[data-g="mobility"]{--c:#9bc4f0}
-    .goal-pill[data-g="recovery"]{--c:#B483FF}
-    .goal-pill.is-on{outline:2px solid var(--c);outline-offset:1px}
-    .goal-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.18rem .5rem;border-radius:999px;border:1px solid var(--stroke);font-size:.78rem;margin-left:.35rem;background:rgba(255,255,255,.06)}
-    .goal-chip[data-g="strength"]{border-color:rgba(255,106,0,.35)}
-    .goal-chip[data-g="engine"]{border-color:rgba(46,196,182,.35)}
-    .goal-chip[data-g="mobility"]{border-color:rgba(155,196,240,.35)}
-    .goal-chip[data-g="recovery"]{border-color:rgba(180,131,255,.35)}
-    .ex-list{margin:.3rem 0 .8rem;padding-left:1.1rem}
-    .ex-list li{margin:.32rem 0}
-    .ex-list a.yt{color:var(--ink);text-decoration:underline dotted}
-    .ex-list a.yt:hover{color:var(--accent)}
-    [data-filtering="on"] .ex-item{display:none}
-    [data-filtering="on"] .ex-item.is-match{display:list-item}
+    /* section dividers */
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin:12px 0}
+    .section h2{margin:.15rem 0 .45rem}
   </style>
 </head>
 <body>
-  <!-- Shared header -->
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
 
-  <!-- HERO -->
-  <header class="hero" role="banner" aria-label="Hero Training hero">
-    <figure class="hero-media">
-      <img src="/img/hero-training.jpg" alt="Hybrid training: strength, calisthenics, endurance" />
-      <div class="overlay" aria-hidden="true"></div>
-    </figure>
-    <div class="hero-content wrap">
-      <span class="eyebrow">12-Month Hybrid Journey</span>
-      <h1><span class="accent">Hero Training</span></h1>
-      <p class="lead">Get seriously capable: lift heavier, move cleaner, and go longer — from 5k to marathon — with a fun, badge-driven path.</p>
-      <div class="cta-row">
-        <a class="btn" href="/hero-phase-1.html">Start Phase 1</a>
-        <a class="btn" href="/hero-phase-2.html">Phase 2</a>
-        <a class="btn" href="/workouts.html">All Workouts</a>
-      </div>
-      <div class="mode-row">
-        <span class="mode" data-g="strength">Strength</span>
-        <span class="mode" data-g="engine">Engine</span>
-        <span class="mode" data-g="mobility">Mobility</span>
-        <span class="mode" data-g="recovery">Recovery</span>
-      </div>
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO (clean, no gradient) -->
+<header class="hero hero-clean" role="banner" aria-label="Hero Training">
+  <figure class="hero-media">
+    <img src="/img/hero-training-hero.jpg" alt="Hybrid training — strength, engine, calisthenics, mobility">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="hero-content wrap">
+    <span class="eyebrow">Hybrid Transformation</span>
+    <h1><span class="accent">Hero Training</span></h1>
+    <p class="lead">A colourful, gamified path to a stronger body, bigger engine, better movement — and a calmer nervous system. Pick a phase, earn badges, track streaks.</p>
+    <div class="chips" aria-label="focus chips">
+      <span class="chip chip--strength">Strength</span>
+      <span class="chip chip--engine">Engine</span>
+      <span class="chip chip--cal">Calisthenics</span>
+      <span class="chip chip--mob">Mobility</span>
+      <span class="chip chip--rec">Recovery</span>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main class="wrap">
-    <section class="card">
-      <h2>How it works</h2>
-      <p class="meta">Four phases. Weekly “quests”. Monthly “boss fights”. Track PRs, collect badges, and keep a photo-journal just for you.</p>
-      <div class="goal-legend" id="goalLegend">
-        <span class="goal-pill" data-g="strength"><span class="dot"></span>Strength</span>
-        <span class="goal-pill" data-g="engine"><span class="dot"></span>Engine</span>
-        <span class="goal-pill" data-g="mobility"><span class="dot"></span>Mobility</span>
-        <span class="goal-pill" data-g="recovery"><span class="dot"></span>Recovery</span>
-      </div>
-      <ol class="ex-list" id="sampleList">
-        <li class="ex-item" data-g="strength">
-          DB Romanian Deadlift — 3×8 @ 3-1-2 tempo
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form">Form</a>
-          <span class="goal-chip" data-g="strength">Strength</span>
-        </li>
-        <li class="ex-item" data-g="engine">
-          Z2 Run — 25-35 min, nose-breathing (chatty pace)
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">What is Z2?</a>
-          <span class="goal-chip" data-g="engine">Engine</span>
-        </li>
-        <li class="ex-item" data-g="mobility">
-          Thoracic Openers — 2×60s/side
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=thoracic+spine+mobility+drills">Demo</a>
-          <span class="goal-chip" data-g="mobility">Mobility</span>
-        </li>
-        <li class="ex-item" data-g="recovery">
-          4-7-8 Breathing — 5 min
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+7+8+breathing+how+to">Guide</a>
-          <span class="goal-chip" data-g="recovery">Recovery</span>
-        </li>
-      </ol>
-      <div class="btn-row">
-        <a class="btn" href="/hero-phase-1.html">Phase 1: Foundation</a>
-        <a class="btn" href="/hero-phase-2.html">Phase 2: Build</a>
-      </div>
-    </section>
-
-    <section class="grid cards" aria-label="Phases">
-      <article class="card">
-        <h3>Phase 1 — Foundation (Weeks 1–12)</h3>
-        <p class="meta">Form first. Z2 streak. Calisthenics basics. Boss fight: 5k time-trial or home “engine ladder”.</p>
-        <a class="btn" href="/hero-phase-1.html">Open Phase 1</a>
+<main class="wrap">
+  <!-- Phases -->
+  <section class="section" id="phases">
+    <h2>Choose your phase</h2>
+    <div class="phase-grid">
+      <article class="phase-card">
+        <div class="thumb"><img src="/img/phase1.jpg" alt="Phase 1 thumbnail"></div>
+        <div class="inner">
+          <h3>Phase 1 · Foundation (Weeks 1–4)</h3>
+          <p class="meta">Build baseline strength, Z2 engine, joint prep, and daily habits. Friendly volumes, crisp form.</p>
+          <div class="phase-actions">
+            <a class="btn" href="/hero-phase-1.html">Open Phase 1</a>
+            <a class="pill" href="#how">How it works</a>
+          </div>
+          <div class="pill-row">
+            <span class="chip chip--strength">Strength</span>
+            <span class="chip chip--engine">Engine</span>
+            <span class="chip chip--mob">Mobility</span>
+          </div>
+        </div>
       </article>
-      <article class="card">
-        <h3>Phase 2 — Build (Weeks 13–24)</h3>
-        <p class="meta">Progressive loading, mixed-modality intervals, long run progression. Boss fight: 10–15k TT or row alt.</p>
-        <a class="btn" href="/hero-phase-2.html">Open Phase 2</a>
-      </article>
-      <article class="card">
-        <h3>Phase 3–4 — Peak & Marathon</h3>
-        <p class="meta">Peak strength endurance + marathon prep. Boss fight: 21k → 42.2k.</p>
-        <a class="btn" href="/contact.html">Get notified</a>
-      </article>
-    </section>
 
-    <section class="card">
-      <h2>Boss fights (w/ alternatives)</h2>
-      <ul class="ex-list">
-        <li class="ex-item" data-g="engine">
-          5k Row (or Run) — record time.
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concept2+5k+row+strategy">Row tips</a>
-          <span class="goal-chip" data-g="engine">Engine</span>
-        </li>
-        <li class="ex-item" data-g="engine">
-          No rower? DB Bent-Over Row 10-10-8-8-AMRAP (each arm) + 400m brisk walk between.
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form">Form</a>
-          <span class="goal-chip" data-g="engine">Engine</span>
-        </li>
-        <li class="ex-item" data-g="engine">
-          Table Rows (inverted) ladder: 2-4-6-8-AMRAP + 400m walk between.
-          <a class="yt" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home+table+row">Demo</a>
-          <span class="goal-chip" data-g="engine">Engine</span>
-        </li>
-      </ul>
-    </section>
-  </main>
+      <article class="phase-card">
+        <div class="thumb"><img src="/img/phase2.jpg" alt="Phase 2 thumbnail"></div>
+        <div class="inner">
+          <h3>Phase 2 · Build (Weeks 5–8)</h3>
+          <p class="meta">Progressive overload, tempo work, longer engines, first “boss fight” time-trial.</p>
+          <div class="phase-actions">
+            <a class="btn" href="/hero-phase-2.html">Open Phase 2</a>
+            <a class="pill" href="#boss">Boss fights</a>
+          </div>
+          <div class="pill-row">
+            <span class="chip chip--strength">Strength</span>
+            <span class="chip chip--engine">Engine</span>
+            <span class="chip chip--cal">Calisthenics</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <p class="meta">Later: Phase 3 (Peak) · Phase 4 (Event/Marathon prep)</p>
+  </section>
 
-  <!-- Goal filter JS -->
-  <script>
-  (function goalFilters(){
-    const legend=document.getElementById('goalLegend');
-    if(!legend) return;
-    const pills=[...legend.querySelectorAll('.goal-pill')];
-    const lists=[...document.querySelectorAll('.ex-list')];
-    const active=new Set();
-    function apply(){
-      const on=active.size>0;
-      lists.forEach(list=>{
-        if(on) list.setAttribute('data-filtering','on'); else list.removeAttribute('data-filtering');
-        list.querySelectorAll('.ex-item').forEach(li=>{
-          const g=li.getAttribute('data-g');
-          const match=!on||active.has(g);
-          li.classList.toggle('is-match',match);
-        });
-      });
-    }
-    pills.forEach(p=>p.addEventListener('click',()=>{
-      const g=p.getAttribute('data-g');
-      if(p.classList.toggle('is-on')) active.add(g); else active.delete(g);
-      apply();
-    }));
-    legend.addEventListener('dblclick',()=>{active.clear();pills.forEach(p=>p.classList.remove('is-on'));apply();});
-  })();
-  </script>
-  <script src="/app.js" defer></script>
+  <!-- How it works -->
+  <section class="section" id="how">
+    <h2>How it works</h2>
+    <ul>
+      <li><strong>Train 4–6 days/week</strong> using your phase page.</li>
+      <li><strong>Z2 streaks</strong> (easy cardio) for recovery and engine.</li>
+      <li><strong>Boss fights</strong>: occasional trials with PR badges.</li>
+      <li><strong>Form first:</strong> every move has a “Form” YouTube link.</li>
+      <li><strong>Photo journal</strong> (private) to see your arc over months.</li>
+    </ul>
+  </section>
+
+  <!-- Boss fight index -->
+  <section class="section" id="boss">
+    <h2>Boss Fights (Trials)</h2>
+    <ul>
+      <li>5k Row <em>or</em> 5k Run <em>or</em> Dumbbell-Row EMOM (no rower) — <a href="/hero-phase-2.html#trial">next trial in Phase 2</a>.</li>
+      <li>AMRAP 15: Burpees + DB Thrusters + Sit-ups (Phase 2+)</li>
+    </ul>
+    <p class="meta">Badges unlock on PRs. Trials are optional but fun.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script src="/app.js" defer></script>
 </body>
 </html>

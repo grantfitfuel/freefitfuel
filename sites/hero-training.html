@@ -4,131 +4,105 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=31">
-  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <link rel="stylesheet" href="style.css?v=21">
   <style>
-    /* page tweaks */
-    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 1.1rem}
-    .chip{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;
-      padding:.45rem .8rem;border-radius:999px;color:#111;border:0}
-    .chip svg{width:18px;height:18px}
-
+    /* Pills */
+    .chip{display:inline-flex;align-items:center;gap:.35rem;
+      padding:.42rem .9rem;border-radius:999px;border:0;cursor:pointer;
+      font-weight:700;color:#111;margin:.25rem;transition:transform .2s ease}
+    .chip:hover{transform:translateY(-2px)}
     .chip--str{background:#FF9432}
     .chip--eng{background:#63B0FF}
     .chip--cal{background:#2ECC71}
     .chip--mob{background:#B07CFF}
     .chip--rec{background:#FFD24D}
     .chip--boss{background:#FF6B6B}
+    .chip.active{outline:3px solid rgba(255,255,255,.25)}
 
-    .xpbar{display:flex;align-items:center;gap:.6rem;margin:.4rem 0 1.1rem}
-    .xptrack{flex:1;height:10px;border-radius:999px;background:#1a1f27;overflow:hidden;border:1px solid var(--stroke)}
-    .xpfill{height:100%;width:0;background:linear-gradient(90deg,#FF6A00,#FF9A3D)}
-    .card-row{display:grid;gap:14px}
-    @media(min-width:900px){.card-row{grid-template-columns:repeat(3,1fr)}}
-
-    .phase-card{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:14px;display:grid;gap:.55rem}
-    .phase-card h3{margin:.2rem 0 .2rem;font-size:1.15rem}
-    .phase-actions{display:flex;gap:.5rem;flex-wrap:wrap}
-    .focus{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.28rem .6rem;color:#cfd3de;font-size:.9rem}
-    .tip{background:#0f141b;border:1px solid var(--stroke);padding:.55rem .75rem;border-radius:10px;color:#c8c8d2}
+    .phase-card[hidden]{display:none!important}
+    .phase-card{background:var(--glass);border:1px solid var(--stroke);
+      border-radius:14px;padding:1rem;flex:1;min-width:240px}
+    .phase-card h3{margin-top:0}
+    .phases{display:grid;gap:1rem;margin-top:1rem}
+    @media(min-width:760px){.phases{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:1100px){.phases{grid-template-columns:repeat(4,1fr)}}
   </style>
 </head>
 <body>
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
 
-  <main class="wrap" id="top">
+<main class="wrap">
+  <header>
     <h1>Hero Training</h1>
-    <p class="lead">Four phases. Weekly quests. Boss fights. Track XP, earn badges, and aim the engine toward a <strong>marathon</strong> finish within 12 months—while getting stronger and sharper at calisthenics.</p>
+    <p>Hybrid transformation in four phases. Weekly quests, Boss Fights, XP, and badges.  
+       Aim for a <strong>marathon finish</strong> within 12 months — while building strength, calisthenics skill, and mobility.</p>
+  </header>
 
-    <div class="chips" aria-label="Themes">
-      <span class="chip chip--str">💪 Strength</span>
-      <span class="chip chip--eng">🏃‍♂️ Engine</span>
-      <span class="chip chip--cal">🤸 Calisthenics</span>
-      <span class="chip chip--mob">🧘 Mobility</span>
-      <span class="chip chip--rec">🛌 Recovery</span>
-      <span class="chip chip--boss">🗡️ Boss Fights</span>
-    </div>
+  <div id="themeChips" aria-label="Themes">
+    <button class="chip chip--str" data-tag="strength">💪 Strength</button>
+    <button class="chip chip--eng" data-tag="engine">🏃 Engine</button>
+    <button class="chip chip--cal" data-tag="calisthenics">🤸 Calisthenics</button>
+    <button class="chip chip--mob" data-tag="mobility">🧘 Mobility</button>
+    <button class="chip chip--rec" data-tag="recovery">🛌 Recovery</button>
+    <button class="chip chip--boss" data-tag="boss">⚔️ Boss Fights</button>
+  </div>
 
-    <div class="tip">Tip: click a phase to view details. Your XP is saved locally on this device.</div>
+  <section class="phases">
+    <article class="phase-card" data-tags="strength engine mobility">
+      <h3>⚒️ Phase I — Foundation (Weeks 1–4)</h3>
+      <p>Skill the lifts, build easy engine (Z2), 10-min daily mobility. Beginner-friendly but spicy.</p>
+      <a class="btn" href="hero-phase-1.html">Open Plan</a>
+      <a class="btn--pill" href="#">Boss Fights</a>
+    </article>
 
-    <div class="xpbar" aria-label="Season XP">
-      <strong id="lvl">Level 1 • Rookie</strong>
-      <div class="xptrack"><div class="xpfill" id="xp"></div></div>
-      <span id="xplabel">0 XP</span>
-    </div>
+    <article class="phase-card" data-tags="strength engine calisthenics">
+      <h3>🚀 Phase II — Build (Weeks 5–8)</h3>
+      <p>Volume + tempo; long run 10–12k; intro calisthenics progressions.</p>
+      <a class="btn" href="#">Open Plan</a>
+      <a class="btn--pill" href="#">Boss Fights</a>
+    </article>
 
-    <section class="card-row" aria-label="Phases">
-      <article class="phase-card">
-        <h3>🛠️ Phase I — Foundation (Weeks 1–4)</h3>
-        <p class="meta">Skill the lifts, build easy engine (Z2), daily 10-min mobility. Beginner-friendly but spicy.</p>
-        <div class="phase-actions">
-          <a class="btn" href="/hero-phase-1.html">Open Plan</a>
-          <a class="btn--pill" href="/hero-phase-1.html#boss">Boss Fights</a>
-        </div>
-        <span class="focus">🎯 Focus: strength + engine</span>
-      </article>
+    <article class="phase-card" data-tags="strength engine calisthenics">
+      <h3>🔥 Phase III — Peak (Weeks 9–12)</h3>
+      <p>Power + repeatability; half-marathon engines; strict pull-ups & pistols.</p>
+      <a class="btn" href="#">Open Plan</a>
+      <a class="btn--pill" href="#">Boss Fights</a>
+    </article>
 
-      <article class="phase-card">
-        <h3>🚀 Phase II — Build (Weeks 5–8)</h3>
-        <p class="meta">Add volume & tempo; long run heads to 10–12k. First calisthenics progressions.</p>
-        <div class="phase-actions">
-          <a class="btn--pill" href="#">Plan (coming soon)</a>
-          <a class="btn--pill" href="#">Boss Fights</a>
-        </div>
-        <span class="focus">🎯 Focus: mixed</span>
-      </article>
+    <article class="phase-card" data-tags="strength calisthenics recovery mobility">
+      <h3>🌟 Phase IV — Legacy</h3>
+      <p>Sustain & sharpen; marathon finish; play with skills; mentor others.</p>
+      <a class="btn" href="#">Open Plan</a>
+      <a class="btn--pill" href="#">Boss Fights</a>
+    </article>
+  </section>
+</main>
 
-      <article class="phase-card">
-        <h3>🔥 Phase III — Peak (Weeks 9–12)</h3>
-        <p class="meta">Power + repeatability; long engines into half-marathon prep. Strict pull-ups & pistols appear.</p>
-        <div class="phase-actions">
-          <a class="btn--pill" href="#">Plan (coming soon)</a>
-          <a class="btn--pill" href="#">Boss Fights</a>
-        </div>
-        <span class="focus">🎯 Focus: power</span>
-      </article>
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2025 FreeFitFuel</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
 
-      <article class="phase-card">
-        <h3>🏁 Phase IV — Legacy (maintenance / 12-mo)</h3>
-        <p class="meta">Sustain PRs, sharpen skills, and convert long engine toward the <strong>marathon</strong> finish.</p>
-        <div class="phase-actions">
-          <a class="btn--pill" href="#">Plan (coming soon)</a>
-          <a class="btn--pill" href="#">Boss Fights</a>
-        </div>
-        <span class="focus">🎯 Focus: sustain + skills</span>
-      </article>
-    </section>
-
-    <section class="grid" style="margin-top:18px">
-      <article class="card">
-        <h3>What counts as “Engine”?</h3>
-        <p class="meta">Any aerobic work that builds your ability to produce energy for a long time: easy running, brisk walking, cycling, rowing, rucking, or swim. We use <strong>Zone 2</strong> as the base, then sprinkle <em>tempo</em> or <em>threshold</em> in later phases. If you don’t have a rower, the Boss Fights include a <em>Row Alternative</em> with dumbbell or table rows.</p>
-      </article>
-      <article class="card">
-        <h3>Badges & Boss Fights</h3>
-        <p class="meta">Clear weekly quests to gain XP. Attempt a Boss Fight at the end of each phase (e.g., 5k row/run or an AMRAP). Hit a PR → auto-award a badge and a small shareable card (saved locally).</p>
-      </article>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-      <p>© 2025 FreeFitFuel · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
-    </div>
-  </footer>
-
-  <script>
-    // tiny local XP demo (you can extend later)
-    const KEY='hero_xp';
-    const xpEl=document.getElementById('xp'), xpl=document.getElementById('xplabel'), lvl=document.getElementById('lvl');
-    const xp=+localStorage.getItem(KEY)||0, cap=500;
-    function label(x){ if(x<100) return 'Level 1 • Rookie'; if(x<250) return 'Level 2 • Warrior'; if(x<400) return 'Level 3 • Ranger'; return 'Level 4 • Champion'; }
-    xpEl.style.width=Math.min(100, (xp/cap)*100)+'%';
-    xpl.textContent=`${xp} XP`;
-    lvl.textContent=label(xp);
-  </script>
+<script>
+(function(){
+  const chips=[...document.querySelectorAll('#themeChips .chip')];
+  const cards=[...document.querySelectorAll('.phase-card')];
+  function applyFilter(){
+    const active=chips.filter(c=>c.classList.contains('active')).map(c=>c.dataset.tag);
+    if(active.length===0){cards.forEach(c=>c.hidden=false);return;}
+    cards.forEach(c=>{
+      const tags=(c.dataset.tags||'').split(/\s+/);
+      c.hidden=!active.some(t=>tags.includes(t));
+    });
+  }
+  chips.forEach(ch=>{
+    ch.addEventListener('click',()=>{ch.classList.toggle('active');applyFilter();});
+  });
+})();
+</script>
+<script src="/app.js" defer></script>
 </body>
-</html>=
+</html>

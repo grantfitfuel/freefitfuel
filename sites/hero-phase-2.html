@@ -4,111 +4,115 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — Phase II (Build)</title>
-  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="stylesheet" href="/style.css?v=60">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-  <style>
-    :root{--fun1:#FF6A00;--fun2:#FF9A3D;--fun3:#7F5BFF;--fun4:#22D1EE;--fun5:#14F195;--chip:#ffffff10;--chipbd:#ffffff2a;}
-    /* Hero image only */
-    header.hero-mini figure{margin:0;position:relative;overflow:hidden}
-    header.hero-mini figure img{width:100%;height:clamp(300px,46vh,520px);object-fit:cover;display:block;filter:brightness(.97)}
-    header.hero-mini .overlay{display:none !important}
-    header.hero-mini .content{display:none}
-
-    .fun-pills{display:flex;flex-wrap:wrap;gap:.55rem;margin:12px 0 10px}
-    .fun-pills a{display:inline-flex;align-items:center;padding:.5rem .85rem;border-radius:999px;border:1px solid var(--chipbd);background:linear-gradient(90deg,var(--fun2),var(--fun1));color:#111;font-weight:800;text-decoration:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}
-    .fun-pills a:hover{filter:brightness(1.05)}
-    .fun-pills a[data-c="vio"]{background:linear-gradient(90deg,#A78BFA,#7C3AED)}
-    .fun-pills a[data-c="cy"]{background:linear-gradient(90deg,#67E8F9,#22D3EE)}
-    .fun-pills a[data-c="gr"]{background:linear-gradient(90deg,#34D399,#10B981)}
-    .day{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:14px;margin:12px 0}
-    .goal-tags{display:flex;flex-wrap:wrap;gap:.4rem}
-    .tag{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--chipbd);background:var(--chip);border-radius:999px;padding:.25rem .6rem;font-size:.84rem}
-    .tag i{width:.55rem;height:.55rem;border-radius:50%;display:inline-block}
-    .t-strength i{background:#FF6A00}.t-engine i{background:#22D1EE}.t-hybrid i{background:#A78BFA}.t-mobility i{background:#14F195}.t-recovery i{background:#9CA3AF}
-    .list{margin:.2rem 0 .2rem;padding-left:1.1rem}.list li{margin:.18rem 0}
-    .list a{color:var(--ink);text-decoration:underline dotted}.list a:hover{color:var(--accent)}
-    .notes{font-size:.92rem;color:#bfc3d2}
-  </style>
 </head>
-<body>
+<body class="hero-mode">
   <div id="site-header"></div>
   <script src="/js/header-loader.js"></script>
 
-  <header class="hero-mini" aria-label="Phase II hero">
-    <figure><img src="/img/hero-phase-2.jpg" alt="Phase II training montage"><div class="overlay"></div></figure>
+  <!-- HERO (title below image, no gradient) -->
+  <header class="hero-mini hero-rainbow" role="banner" aria-label="Phase II hero">
+    <figure>
+      <img src="/img/hero-phase-2.jpg" alt="Build phase">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1 class="comic-title">Phase II — Build (Weeks 9–16)</h1>
+      <p class="lead comic-sub">Turn the dial up: volume, tidy form, add fun challenges. Still friendly, still sustainable.</p>
+      <div class="phase-tabs">
+        <a class="tab" href="/hero-phase-1.html">Phase I</a>
+        <a class="tab is-active" href="/hero-phase-2.html">Phase II</a>
+        <a class="tab" href="/hero-training.html">Back to Hub</a>
+      </div>
+      <div class="xp" aria-label="Phase progress"><span style="width:50%"></span></div>
+    </div>
   </header>
 
   <main class="wrap">
-    <nav class="fun-pills" aria-label="Phase navigation">
-      <a href="#plan" data-c="vio">Plan</a>
-      <a href="#strength" data-c="gr">Strength</a>
-      <a href="#engine" data-c="cy">Engine</a>
-      <a href="#mobility" data-c="gr">Mobility</a>
-      <a href="/hero-training.html" data-c="vio">Back to Hub</a>
-    </nav>
+    <!-- Weekly structure -->
+    <section>
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weekly Rhythm</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>Strength A (Progression)</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+squat+dumbbell+form">DB Front Squat</a> — 4×6–10</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bench+press+dumbbell+form">DB Bench Press</a> — 4×6–10</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a> — 4×8/side</li>
+          </ul>
+          <span class="goal-chip goal-strength">Strength</span>
+        </article>
 
-    <section id="plan" class="day">
-      <h1 class="accent">Phase II — Build (Weeks 9–16)</h1>
-      <p class="notes">Goal: nudge loads up, add **tempo** and longer Z2, keep joints happy. Still fun, still finish fresh enough to win tomorrow.</p>
-      <div class="goal-tags">
-        <span class="tag t-strength"><i></i>Strength</span>
-        <span class="tag t-engine"><i></i>Engine</span>
-        <span class="tag t-mobility"><i></i>Mobility</span>
+        <article class="panel">
+          <h3>Strength B (Progression)</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> — 4×6–10</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=standing+overhead+press+dumbbell+form">DB Overhead Press</a> — 4×6–10</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=lateral+raise+form">Lateral Raise</a> — 3×12–15</li>
+          </ul>
+          <span class="goal-chip goal-strength">Strength</span>
+          <span class="goal-chip goal-skill">Shoulder Skill</span>
+        </article>
+
+        <article class="panel">
+          <h3>Engine (Tempo + Z2)</h3>
+          <p class="meta">1 tempo session + 1–2 Z2 sessions weekly.</p>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+explained">Tempo Run</a> — 20–30 min @ comfortably hard</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">Z2 Run</a> / <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cycling+explained">Z2 Bike</a></li>
+          </ul>
+          <span class="goal-chip goal-engine">Engine</span>
+        </article>
       </div>
     </section>
 
-    <section id="strength" class="day">
-      <h2>Day A — Strength (Upper Focus)</h2>
-      <ul class="list">
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a> — 4×6–8 / side (add weight if smooth)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a> — 4×6–8 (2s down, 1s pause)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concentration+curl+form">Concentration Curl</a> — 3×10–12 / side</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=face+pull+band+form">Band Face Pull</a> — 3×12–15</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-strength"><i></i>Strength</span></div>
+    <!-- Skill + Mobility -->
+    <section style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Skill + Mobility</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>Calisthenics</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+progressions">Push-up Progressions</a> — 3× max-2</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+chin+up+band+form">Assisted Chin-ups</a> — 4×3–6</li>
+          </ul>
+          <span class="goal-chip goal-skill">Bodyweight Skill</span>
+        </article>
+
+        <article class="panel">
+          <h3>Mobility & Breath</h3>
+          <ul class="ex-list">
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hip+mobility">90/90 Hips</a> — 2×60s/side</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent Breathing 5/5</a> — 5–8 min</li>
+          </ul>
+          <span class="goal-chip goal-mob">Mobility</span>
+        </article>
+
+        <article class="panel">
+          <h3>Weekly Photo (private)</h3>
+          <p class="meta">Check posture, confidence, and consistency. You’re building something.</p>
+        </article>
+      </div>
     </section>
 
-    <section id="engine" class="day">
-      <h2>Day B — Engine (Tempo + Z2)</h2>
-      <ul class="list">
-        <li>Run/Z2 20 min → tempo 10 min (RPE 7) → Z2 5 min</li>
-        <li>Alt: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assault+bike+intervals+beginner">Bike</a> 10 min Z2 → 6×(90s steady / 90s easy) → 5 min Z2</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-engine"><i></i>Engine</span></div>
+    <!-- Phase II Trial -->
+    <section style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Phase II Trial</h2>
+      <article class="trial">
+        <h3>5k Benchmark</h3>
+        <p class="meta">Run or Row 5k. Or: 30-min distance test (record metres/km).</p>
+        <div class="row" style="margin:.4rem 0">
+          <label>Time/Distance <input id="p2mark" type="text" placeholder="25:30 or 6.2km/30min"></label>
+          <button class="btn" id="p2save">Save PR</button>
+          <span id="p2out" class="hint"></span>
+        </div>
+        <p class="meta">Technique:
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+running+form+tips">Running Form</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+row+technique">Rowing Form</a>
+        </p>
+      </article>
     </section>
-
-    <section class="day">
-      <h2>Day C — Strength (Lower + Core)</h2>
-      <ul class="list">
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> — 4×6–8 (progress load)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> — 3×8–10 (hamstring stretch, flat back)</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmers+carry+dumbbells+form">Farmer Carry</a> — 3×40–60m heavy</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=pallof+press+band+form">Pallof Press</a> — 3×10–12 / side</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-strength"><i></i>Strength</span><span class="tag t-hybrid"><i></i>Hybrid</span></div>
-    </section>
-
-    <section id="mobility" class="day">
-      <h2>Mobility & Reset</h2>
-      <ul class="list">
-        <li>Pre: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=a-skip+drills+running">A-Skips</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hip+openers+dynamic">Hip Openers</a> (5–6 min)</li>
-        <li>Post: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=legs+up+the+wall+viparita+karani">Legs-Up-the-Wall</a> + <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent Breathing</a> 5–7 min</li>
-      </ul>
-      <div class="goal-tags"><span class="tag t-mobility"><i></i>Mobility</span><span class="tag t-recovery"><i></i>Recovery</span></div>
-    </section>
-
-    <section class="day">
-      <h2>Trial (Optional) — 5k Equivalents</h2>
-      <ul class="list">
-        <li>Run 5k (comfortable hard) — or —</li>
-        <li>Alt Circuit 20 min: 10 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+bodyweight+form">Table Rows</a> + 15 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=air+squat+form">Air Squats</a> + 200m carry (DBs)</li>
-      </ul>
-      <p class="notes">Record time/rounds. PR = badge (soon!).</p>
-      <div class="goal-tags"><span class="tag t-hybrid"><i></i>Hybrid</span><span class="tag t-engine"><i></i>Engine</span></div>
-    </section>
-
-    <p class="notes">Deload if needed in Week 13 or 14 (drop volume 25–40%).</p>
-    <p><a class="btn--pill" href="/hero-training.html">Back to Hero Training Hub</a> <a class="btn--pill" href="/hero-phase-1.html">← Phase I</a> <a class="btn--pill" href="/hero-phase-3.html">Phase III →</a></p>
   </main>
 
   <footer class="site-footer">
@@ -118,5 +122,18 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const f = document.getElementById('p2mark');
+      const o = document.getElementById('p2out');
+      f.value = localStorage.getItem('p2_benchmark') || '';
+      document.getElementById('p2save').addEventListener('click', ()=>{
+        if(!f.value.trim()){ o.textContent='Enter a time or distance.'; return; }
+        localStorage.setItem('p2_benchmark', f.value.trim());
+        o.textContent='Saved! 🏅';
+      });
+    });
+  </script>
 </body>
 </html>

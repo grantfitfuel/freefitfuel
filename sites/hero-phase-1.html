@@ -7,18 +7,21 @@
   <link rel="stylesheet" href="/style.css?v=31">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <style>
+    .weeknav{position:sticky;top:64px;z-index:20;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);border:1px solid var(--stroke);border-radius:999px;display:flex;flex-wrap:wrap;gap:.5rem;padding:.45rem .6rem;margin:.6rem 0 1rem}
+    .weeknav a{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.35rem .8rem;font-weight:700}
     .week{display:grid;gap:14px}
-    @media(min-width:980px){.week{grid-template-columns:repeat(3,1fr)}}
-    .day{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .day h3{margin:.2rem 0 .35rem}
-    .tag{display:inline-block;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.18rem .55rem;font-size:.8rem;margin-left:.35rem}
-    .meta{color:var(--inkdim)}
-    .sup{opacity:.9}
+    @media(min-width:1050px){.week{grid-template-columns:repeat(3,1fr)}}
+    details.day{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:.2rem .2rem}
+    .day > summary{list-style:none;cursor:pointer;padding:.7rem .9rem;font-weight:800;display:flex;align-items:center;justify-content:space-between}
+    .day[open]{outline:1px solid rgba(255,255,255,.15)}
+    .day .inner{padding:.1rem .9rem .9rem}
+    .tag{display:inline-block;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.18rem .55rem;font-size:.78rem;margin-left:.35rem}
+    .quick{display:flex;flex-wrap:wrap;gap:.4rem;margin:.25rem 0 .55rem}
+    .quick a{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.35rem .55rem;font-size:.9rem}
     .mini{font-size:.92rem;color:var(--inkdim)}
-    .breathe{background:#10161d;border:1px dashed var(--stroke);border-radius:10px;padding:.6rem .7rem}
-    .btn-row{display:flex;flex-wrap:wrap;gap:.45rem}
-    .day ul{margin:.25rem 0 .2rem;padding-left:1.1rem}
-    .day li{margin:.18rem 0}
+    .done{margin-top:.4rem}
+    .btn-sm{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.34rem .6rem;font-weight:700}
+    .sep{height:1px;background:var(--stroke);margin:.5rem 0}
   </style>
 </head>
 <body>
@@ -35,131 +38,151 @@
     <div class="content wrap">
       <span class="eyebrow">Weeks 1–4</span>
       <h1><span class="accent">Phase I — Foundation</span></h1>
-      <p class="lead">Skill first, volume second. Two full-body strength days, one calisthenics practice, two engine pieces, daily 10-minute mobility minimums.</p>
-      <div class="btn-row">
-        <a class="btn--pill" href="/hero-training.html">Back to Hero Training</a>
+      <p class="lead">Two full-body strength days, one calisthenics practice, two engine sessions, daily 10-min mobility. Simple. Effective. Fun.</p>
+      <div class="pillrow">
+        <a class="btn--pill" href="/hero-training.html">← Back to Hero Training</a>
+        <a class="btn--pill" id="phaseXp">+10 XP (mark a day done)</a>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="week">
-      <!-- Day A -->
-      <article class="day">
-        <h3>Day A — Full Body <span class="tag">Strength</span></h3>
-        <ul>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> — 4×8 (2s down)</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a> — 4×8 (pause on floor)</li>
-          <li class="sup"><em>Superset</em> →
-            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a> — 3×10/side +
-            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmer+carry+technique">Farmer Carry</a> — 3×30–40m
-          </li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=pallof+press+band+form">Pallof Press</a> — 3×12/side</li>
-        </ul>
-        <p class="mini">Form cues: ribs down, full foot pressure; rows—shoulder blade to spine, no twisting.</p>
-      </article>
+    <nav class="weeknav" aria-label="Jump to week">
+      <a href="#w1">Week 1</a><a href="#w2">Week 2</a><a href="#w3">Week 3</a><a href="#w4">Week 4</a>
+    </nav>
 
-      <!-- Day B -->
-      <article class="day">
-        <h3>Day B — Calisthenics Flow <span class="tag">Skill</span></h3>
-        <ul>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Ups</a> — 4×AMRAP @ RPE 7</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home">Inverted Rows</a> — 4×AMRAP @ RPE 7</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hollow+hold+form">Hollow Hold</a> — 3×20–30s</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form">Dead Bug</a> — 3×6/side slow</li>
-        </ul>
-        <p class="mini">Keep reps in reserve; quality beats fatigue. Elevate hands as needed to keep perfect lines.</p>
-      </article>
-
-      <!-- Day C -->
-      <article class="day">
-        <h3>Day C — Full Body <span class="tag">Strength</span></h3>
-        <ul>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat+form">Front-Foot Elevated Split Squat</a> — 3×10/side</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+dumbbell+press+form">DB Overhead Press</a> — 3×8</li>
-          <li class="sup"><em>Superset</em> →
-            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+rdl+form">DB RDL</a> — 3×10 +
-            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=band+face+pull+form">Band Face Pull</a> — 3×12–15
-          </li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hanging+knee+raises+chair">Supported Knee Raises</a> — 3×8–12</li>
-        </ul>
-        <p class="mini">RDL: hips back, shins near vertical, maintain neutral spine; press: ribs down, glutes on.</p>
-      </article>
-
-      <!-- Day D -->
-      <article class="day">
-        <h3>Day D — Engine Base <span class="tag">Zone-2</span></h3>
-        <ul>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cardio+explained">Zone-2</a> — 35–45 min walk/jog/cycle @ nasal breathing</li>
-        </ul>
-        <div class="breathe">
-          <strong>Cool-down</strong> —
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent Breathing</a> 5 min (in 5 / out 5)
+    <!-- Week 1 -->
+    <section id="w1" class="week" aria-label="Week 1">
+      <details class="day" open>
+        <summary>Day A — Full Body <span class="tag">Strength</span></summary>
+        <div class="inner">
+          <div class="quick">
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat ▶</a>
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">Floor Press ▶</a>
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">DB Row ▶</a>
+          </div>
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> — 4×8 (2s down)</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a> — 4×8 (pause on floor)</li>
+            <li><em>Superset</em> →
+              <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a> — 3×10/side +
+              <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmer+carry+technique">Farmer Carry</a> — 3×30–40m
+            </li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=pallof+press+band+form">Pallof Press</a> — 3×12/side</li>
+          </ul>
+          <p class="mini">Cues: full foot, ribs down; rows—elbow to back pocket, don’t twist.</p>
+          <div class="done"><button class="btn-sm" data-done>Mark done (+10 XP)</button></div>
         </div>
-      </article>
+      </details>
 
-      <!-- Day E -->
-      <article class="day">
-        <h3>Day E — Engine Intervals <span class="tag">Speed</span></h3>
-        <ul>
-          <li>Warm-up 8–10 min easy</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=interval+running+beginners+session">Intervals</a> — 8×(1:00 hard / 1:30 easy)</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=walking+cool+down+run">Cool-down 8 min walk</a></li>
-        </ul>
-        <p class="mini">Keep first 4 reps controlled; finish strong, not destroyed.</p>
-      </article>
+      <details class="day">
+        <summary>Day B — Calisthenics Flow <span class="tag">Skill</span></summary>
+        <div class="inner">
+          <div class="quick">
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Up ▶</a>
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home">Inverted Row ▶</a>
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hollow+hold+form">Hollow Hold ▶</a>
+          </div>
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Ups</a> — 4×AMRAP @ RPE 7</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home">Inverted Rows</a> — 4×AMRAP @ RPE 7</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hollow+hold+form">Hollow Hold</a> — 3×20–30s</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form">Dead Bug</a> — 3×6/side slow</li>
+          </ul>
+          <p class="mini">Keep 2–3 reps in reserve. Lower the box/bench height as you improve.</p>
+          <div class="done"><button class="btn-sm" data-done>Mark done (+10 XP)</button></div>
+        </div>
+      </details>
 
-      <!-- Daily Mobility -->
-      <article class="day">
-        <h3>Daily Minimums <span class="tag">Mobility</span></h3>
-        <ul>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=banded+pull+apart+form">Band Pull-Apart</a> — 2×15–20</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hips+drill">90/90 Hips</a> — 2–3 min easy flow</li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=cat+cow+yoga+form">Cat-Cow</a> — 1–2 min</li>
-        </ul>
-        <p class="mini">Aim for 10 minutes total most days. Scatter through your day if needed.</p>
-      </article>
+      <details class="day">
+        <summary>Day C — Full Body <span class="tag">Strength</span></summary>
+        <div class="inner">
+          <div class="quick">
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat+form">FFESS ▶</a>
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+dumbbell+press+form">DB OHP ▶</a>
+            <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+rdl+form">DB RDL ▶</a>
+          </div>
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat+form">Front-Foot Elevated Split Squat</a> — 3×10/side</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+dumbbell+press+form">DB Overhead Press</a> — 3×8</li>
+            <li><em>Superset</em> →
+              <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+rdl+form">DB RDL</a> — 3×10 +
+              <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=band+face+pull+form">Band Face Pull</a> — 3×12–15
+            </li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hanging+knee+raises+chair">Supported Knee Raises</a> — 3×8–12</li>
+          </ul>
+          <p class="mini">RDL: soft knees, hips back; OHP: glutes tight, no layback.</p>
+          <div class="done"><button class="btn-sm" data-done>Mark done (+10 XP)</button></div>
+        </div>
+      </details>
+
+      <details class="day">
+        <summary>Day D — Engine Base <span class="tag">Zone-2</span></summary>
+        <div class="inner">
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cardio+explained">Zone-2</a> — 35–45 min walk/jog/cycle @ nasal breathing</li>
+          </ul>
+          <div class="sep"></div>
+          <p class="mini"><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent Breathing</a> 5 min (in 5 / out 5) to finish.</p>
+          <div class="done"><button class="btn-sm" data-done>Mark done (+10 XP)</button></div>
+        </div>
+      </details>
+
+      <details class="day">
+        <summary>Day E — Engine Intervals <span class="tag">Speed</span></summary>
+        <div class="inner">
+          <ul>
+            <li>Warm-up 8–10 min easy</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=interval+running+beginners+session">Intervals</a> — 8×(1:00 hard / 1:30 easy)</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=walking+cool+down+run">Cool-down 8 min walk</a></li>
+          </ul>
+          <p class="mini">Keep first 4 reps controlled; finish strong, not wrecked.</p>
+          <div class="done"><button class="btn-sm" data-done>Mark done (+10 XP)</button></div>
+        </div>
+      </details>
+
+      <details class="day">
+        <summary>Daily Minimums <span class="tag">Mobility</span></summary>
+        <div class="inner">
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=banded+pull+apart+form">Band Pull-Apart</a> — 2×15–20</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hips+drill">90/90 Hips</a> — 2–3 min</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=cat+cow+yoga+form">Cat-Cow</a> — 1–2 min</li>
+          </ul>
+          <p class="mini">10 minutes total most days. Sprinkle between tasks.</p>
+          <div class="done"><button class="btn-sm" data-done>Mark done (+10 XP)</button></div>
+        </div>
+      </details>
     </section>
 
+    <!-- Boss fight + Optional fun -->
     <section class="card" style="margin-top:12px">
+      <h2>Weekly Boss Fight (choose one)</h2>
+      <ul>
+        <li><strong>5k Row</strong> — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=how+to+row+concept2+technique">Technique</a> · No rower? <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+row+under+table">Table Rows AMRAP 10'</a> or <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">DB Rows AMRAP 10'</a></li>
+        <li><strong>5k Run</strong> — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+beginner+pacing">Pacing guide</a></li>
+        <li><strong>Engine AMRAP 12'</strong> — 10 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squats</a> + 10 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+hands+elevated+form">Incline Push-Ups</a> + 150m <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shuttle+runs+how+to">Shuttles</a></li>
+      </ul>
+      <p class="mini">PR? Screenshot your timer. Claim +50 XP below.</p>
+      <button class="btn" id="bossXp">Claim PR (+50 XP)</button>
+    </section>
+
+    <section class="card">
       <h2>Optional — Arms & Extras (Saturday fun)</h2>
       <ul>
         <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concentration+curl+form">Concentration Curl</a> — 3×10/side</li>
         <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+triceps+extension+dumbbell+form">DB Overhead Triceps Extension</a> — 3×12</li>
-        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmers+carry+technique">Farmer Carry</a> — 4×40m (add grip challenge)</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>Weekly “Boss Fight” (choose one)</h2>
-      <ul>
-        <li><strong>5k Row</strong> —
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=how+to+row+concept2+technique">Technique</a>
-          · No rower? Do
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+row+under+table">Table Rows AMRAP 10'</a>
-          or
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Rows AMRAP 10'</a>.
-        </li>
-        <li><strong>5k Run</strong> —
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+beginner+pacing">Pacing guide</a>
-        </li>
-        <li><strong>Engine AMRAP 12'</strong> — 10
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squats</a>
-          + 10
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+hands+elevated+form">Incline Push-Ups</a>
-          + 150m
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shuttle+runs+how+to">Shuttles</a>.
-        </li>
+        <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmers+carry+technique">Farmer Carry</a> — 4×40m</li>
       </ul>
     </section>
 
     <section class="card">
       <h2>How to Progress (Weeks 2–4)</h2>
       <ul>
-        <li>Strength: add 1–2 reps per set or +1–2 kg when all sets @ RPE ≤8.</li>
-        <li>Calisthenics: reduce incline height, keep perfect tempo.</li>
-        <li>Engine: +5 min Zone-2 in Week 3; +2 intervals (total 10) in Week 4 if fresh.</li>
-        <li>Mobility: same drills, slower reps; aim to “feel easier” rather than force range.</li>
+        <li>Strength: add 1–2 reps/set or +1–2 kg when all sets ≤ RPE 8.</li>
+        <li>Calisthenics: reduce incline height; keep tempo honest.</li>
+        <li>Engine: +5 min Zone-2 in Week 3; +2 intervals in Week 4 if fresh.</li>
+        <li>Mobility: slower reps; aim for “feels easier,” not “force range.”</li>
       </ul>
     </section>
   </main>
@@ -171,5 +194,17 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <script>
+    // XP hooks (re-uses the same localStorage key as landing page)
+    const xpKey='fff_hero_xp';
+    function getXP(){ return parseInt(localStorage.getItem(xpKey)||'0',10); }
+    function setXP(v){ localStorage.setItem(xpKey, Math.max(0,v)); }
+    document.querySelectorAll('[data-done]').forEach(btn=>{
+      btn.addEventListener('click',()=>{ setXP(getXP()+10); btn.textContent='✓ Logged (+10 XP)'; btn.disabled=true; });
+    });
+    document.getElementById('phaseXp')?.addEventListener('click',()=>{ setXP(getXP()+10); });
+    document.getElementById('bossXp')?.addEventListener('click',()=>{ setXP(getXP()+50); });
+  </script>
 </body>
 </html>

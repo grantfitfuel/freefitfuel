@@ -105,10 +105,7 @@ header.hero-mini figure > img{
   display:block;
   filter:brightness(.88) saturate(1.05);
 }
-header.hero-mini .overlay{
-  position:absolute; inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
-}
+
 
 header.hero-mini h1{ margin:0 0 .35rem }
 header.hero-mini p{ max-width:70ch; margin:.2rem 0 .6rem; color:#d0d0da }

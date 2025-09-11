@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FreeFitFuel — Home</title>
 
-  <!-- Your global stylesheet -->
-  <link rel="stylesheet" href="style.css?v=21">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=20">
 
-  <!-- Favicons & PWA -->
+  <!-- Favicons & app icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
   <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
   <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
@@ -16,76 +16,82 @@
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
   <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/img/freefitfuel-logo-180.png">
 
-  <!-- Carousel + modal styles (scoped) -->
   <style>
-    /* --- HERO adjustment (optional: keep your current hero unless needed) --- */
-    .hero{position:relative;border-bottom:1px solid #1b1b22}
-    .hero-media{position:relative;margin:0}
-    .hero-media img{
-      width:100%;height:clamp(340px,46vh,560px);
-      object-fit:cover;object-position:center 35%;
-      display:block;filter:brightness(.88) saturate(1.05);
+    /* ===== Carousel styles (unchanged look) ===== */
+    #ideas .carousel {
+      --gap: 14px;
+      --h: 150px;          /* tile height */
+      --duration: 28s;     /* scroll speed */
+      display: flex;
+      gap: var(--gap);
+      overflow: hidden;
+      position: relative;
+      height: calc(var(--h) + 60px); /* add space for captions */
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      background: var(--glass);
+      padding: 10px 0;
     }
-    .hero-media .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
-    .hero-content{position:absolute;inset:auto 0 0 0}
-    .cta-row{display:flex;gap:.6rem;flex-wrap:wrap}
-
-    /* --- Polished continuous carousel --- */
-    #ideas{margin-top:10px}
-    #ideas h2{margin-bottom:.4rem}
-    .marquee-wrap{
-      position:relative; overflow:hidden;
-      border:1px solid var(--stroke); border-radius:14px;
-      background:var(--glass);
-      padding:10px 0;
-    }
-    .marquee-track{
-      display:flex; gap:12px; align-items:stretch;
-      width:max-content;              /* fits content width */
-      animation: marquee-scroll 30s linear infinite;
+    #ideas .carousel-track {
+      display: flex;
+      gap: var(--gap);
+      width: max-content;               /* for smooth loop */
+      animation: scroll-left var(--duration) linear infinite;
       will-change: transform;
     }
-    /* pause on hover or when a dialog is open */
-    .marquee-wrap:hover .marquee-track,
-    .marquee-wrap:has(dialog[open]) .marquee-track { animation-play-state: paused; }
+    /* Pause on hover OR when JS toggles .is-paused on the section */
+    #ideas .carousel:hover .carousel-track,
+    #ideas.is-paused .carousel-track { animation-play-state: paused; }
 
-    /* Larger, slick tiles */
-    .idea-tile{
-      flex:0 0 auto; width:320px;      /* slight upsize */
-      border-radius:14px; border:1px solid var(--stroke);
-      background:#0c0f13; color:var(--ink);
-      overflow:hidden; cursor:pointer; position:relative;
-      box-shadow:0 1px 0 rgba(0,0,0,.2);
-      transition:transform .2s ease, box-shadow .2s ease;
+    #ideas .idea {
+      flex: 0 0 auto;
+      width: 240px;                     /* tile width */
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: #0c0f13;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;                  /* clickable */
+      transition: transform .2s ease, box-shadow .2s ease;
     }
-    .idea-tile:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.35); }
-    .idea-thumb{ display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
-    .idea-body{ padding:.65rem .75rem .75rem; }
-    .idea-title{ font-weight:700; margin:0 0 .15rem; }
-    .idea-cap{ color:#c8c8d2; font-size:.95rem; margin:0; }
+    #ideas .idea:hover{ transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.35); }
 
-    /* Duplicate the set so the loop looks seamless */
-    .marquee-inner{ display:flex; gap:12px; padding:0 10px; }
-
-    @keyframes marquee-scroll{
+    #ideas .idea .thumb {
+      height: var(--h);
+      overflow: hidden;
+    }
+    #ideas .idea .thumb img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center;
+      display: block;
+    }
+    #ideas .idea figcaption {
+      padding: .55rem .7rem;
+      font-size: .92rem;
+      color: var(--inkdim);
+      line-height: 1.35;
+    }
+    @keyframes scroll-left {
       from { transform: translateX(0); }
-      to   { transform: translateX(-50%); } /* we’ll duplicate content so 50% loops cleanly */
+      to { transform: translateX(calc(-50% - var(--gap))); }
+    }
+    /* Mobile */
+    @media (max-width: 560px){
+      #ideas .carousel { --h: 130px; }
+      #ideas .idea { width: 200px; }
     }
 
-    /* reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .marquee-track{ animation: none; }
-    }
-
-    /* --- Idea Modal (native dialog) --- */
+    /* ===== Minimal modal styles ===== */
     dialog#ideaModal{
       background:#0f1319; color:var(--ink);
       border:1px solid var(--stroke); border-radius:14px; padding:0;
       max-width:min(720px, 92vw);
     }
     dialog::backdrop{ background:rgba(0,0,0,.55) }
-
     .modal-head{
       display:flex; align-items:center; justify-content:space-between;
       padding:.8rem 1rem; border-bottom:1px solid var(--stroke);
@@ -103,7 +109,6 @@
     .modal-media img{ width:100%; height:auto; display:block; object-fit:cover; }
     .modal-grid{ display:grid; gap:.6rem }
     @media(min-width:900px){ .modal-grid{ grid-template-columns:1.05fr .95fr } }
-
     .info-card{
       background:rgba(255,255,255,.05);
       border:1px solid var(--stroke); border-radius:12px; padding:.65rem .75rem;
@@ -111,20 +116,18 @@
     .info-card h4{ margin:.1rem 0 .35rem; font-size:1rem }
     .info-card ul{ margin:.15rem 0; padding-left:1.1rem }
     .info-card li{ margin:.18rem 0 }
-
-    .meta{ color:var(--inkdim); font-size:.92rem }
-    .btn-row{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.25rem }
     .btn--pill{ display:inline-flex; align-items:center; gap:.35rem; border:1px solid var(--stroke); background:var(--glass); color:var(--ink); border-radius:999px; padding:.34rem .65rem; font-size:.9rem; text-decoration:none }
     .btn--pill:hover{ color:var(--accent) }
+    .meta{ color:var(--inkdim); font-size:.92rem }
   </style>
 </head>
 
 <body>
-  <!-- Shared header -->
+  <!-- Shared header mount -->
   <div id="site-header"></div>
   <script src="/js/header-loader.js"></script>
 
-  <!-- HERO -->
+  <!-- HERO (unchanged) -->
   <header class="hero" role="banner" aria-label="FreeFitFuel hero">
     <figure class="hero-media">
       <img src="img/hero.jpg" alt="Home training on a mat with dumbbells">
@@ -142,7 +145,6 @@
   </header>
 
   <main class="wrap">
-    <!-- Key sections -->
     <section class="grid" aria-label="Key sections">
       <article class="card">
         <h2>Wellbeing</h2>
@@ -161,28 +163,37 @@
       </article>
     </section>
 
-    <!-- CONTINUOUS CAROUSEL -->
-    <section id="ideas" aria-label="Ideas carousel">
-      <h2>Ideas you can start this week</h2>
-
-      <div class="marquee-wrap">
-        <div class="marquee-track" id="marqueeTrack">
-          <!-- We render two identical inner tracks for a perfect loop -->
-          <div class="marquee-inner" id="marqueeInnerA"></div>
-          <div class="marquee-inner" id="marqueeInnerB"></div>
-        </div>
-      </div>
-      <p class="meta" style="margin:.45rem 0 0">Hover to pause. Click a tile for sets/reps & form cues.</p>
-    </section>
-
-    <!-- Standard site teaser -->
-    <section class="split" id="workouts-teaser" aria-label="Home workout highlight">
+    <section class="split" id="workouts" aria-label="Home workout highlight">
       <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
       <div>
         <h2>Move better at home</h2>
         <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight — realistic for busy days.</p>
         <a class="btn" href="workouts.html">See workout plans</a>
       </div>
+    </section>
+
+    <!-- Carousel section (same layout, with data-idea attributes) -->
+    <section id="ideas" class="strip" aria-label="Inspiration gallery">
+      <h2>Ideas you can start this week</h2>
+      <div class="carousel">
+        <div class="carousel-track">
+          <!-- first set -->
+          <figure class="idea" data-idea="bands"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption>Resistance bands — full-body, joint-friendly</figcaption></figure>
+          <figure class="idea" data-idea="rope"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption>Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+          <figure class="idea" data-idea="floorpress"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption>Floor press — chest &amp; triceps without a bench</figcaption></figure>
+          <figure class="idea" data-idea="yoga"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption>Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+          <figure class="idea" data-idea="mealprep"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption>Meal prep — clear portions, real food</figcaption></figure>
+          <figure class="idea" data-idea="curl"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption>Seated curls — simple strength you can feel</figcaption></figure>
+          <!-- duplicate set for smooth loop -->
+          <figure class="idea" data-idea="bands"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption>Resistance bands — full-body, joint-friendly</figcaption></figure>
+          <figure class="idea" data-idea="rope"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption>Skipping — 5–10 minutes for fast cardio</figcaption></figure>
+          <figure class="idea" data-idea="floorpress"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption>Floor press — chest &amp; triceps without a bench</figcaption></figure>
+          <figure class="idea" data-idea="yoga"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption>Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
+          <figure class="idea" data-idea="mealprep"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption>Meal prep — clear portions, real food</figcaption></figure>
+          <figure class="idea" data-idea="curl"><span class="thumb"><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></span><figcaption>Seated curls — simple strength you can feel</figcaption></figure>
+        </div>
+      </div>
+      <p class="meta" style="margin:.45rem 0 0">Hover to pause. Tap a tile for sets/reps & form cues.</p>
     </section>
 
     <!-- Disclaimer -->
@@ -205,7 +216,7 @@
   <dialog id="ideaModal" aria-labelledby="ideaTitle">
     <div class="modal-head">
       <h3 id="ideaTitle">Idea</h3>
-      <button class="modal-close" data-close>Close</button>
+      <button class="modal-close" data-close aria-label="Close">Close</button>
     </div>
     <div class="modal-body">
       <div class="modal-media"><img id="ideaImg" alt=""></div>
@@ -213,9 +224,7 @@
         <article class="info-card">
           <h4>Overview</h4>
           <p id="ideaDesc" class="meta"></p>
-          <div class="btn-row">
-            <a id="ideaGuide" class="btn--pill" href="#" target="_blank" rel="noopener">Technique / Demo</a>
-          </div>
+          <a id="ideaGuide" class="btn--pill" href="#" target="_blank" rel="noopener">Technique / Demo</a>
         </article>
         <article class="info-card">
           <h4>Sets • Reps • Form</h4>
@@ -225,203 +234,138 @@
     </div>
   </dialog>
 
-  <!-- Minimal JS for header burger (kept) -->
+  <!-- Minimal JS for hamburger toggle (unchanged) -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const btn = document.querySelector('.hamburger');
       const nav = document.querySelector('.main-nav');
-      if (btn && nav) {
-        btn.addEventListener('click', () => {
-          const open = btn.classList.toggle('active');
-          nav.classList.toggle('open', open);
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-      }
+      if (!btn || !nav) return;
+
+      btn.addEventListener('click', () => {
+        const open = btn.classList.toggle('active');
+        nav.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     });
   </script>
 
-  <!-- Carousel + modal logic -->
+  <!-- Modal + pause logic (small, scoped) -->
   <script>
-    // Data for tiles (extend anytime)
-    const IDEAS = [
-      {
-        title: 'Resistance Bands',
-        img: 'img/bands.jpg',
-        caption: 'Full-body, joint-friendly',
-        desc: 'Elastic resistance for smooth strength work at home.',
-        guide: 'https://www.youtube.com/results?search_query=resistance+bands+full+body+workout+form',
-        details: [
+    // Data for each tile
+    const IDEA_DATA = {
+      bands: {
+        title:'Resistance Bands',
+        img:'img/bands.jpg',
+        desc:'Elastic resistance for smooth strength work at home.',
+        guide:'https://www.youtube.com/results?search_query=resistance+bands+full+body+workout+form',
+        details:[
           'Full body circuit • 2–3 rounds',
           'Upper: Row 10–15 • Press 8–12',
           'Lower: Squat 10–15 • RDL 8–12',
           'Form: steady tempo, no slingshot at end range'
         ]
       },
-      {
-        title: 'Skipping Rope',
-        img: 'img/rope.jpg',
-        caption: '5–10 min fast cardio',
-        desc: 'Tiny footprint, big cardio hit with low setup time.',
-        guide: 'https://www.youtube.com/results?search_query=how+to+jump+rope+form',
-        details: [
+      rope: {
+        title:'Skipping Rope',
+        img:'img/rope.jpg',
+        desc:'Tiny footprint, big cardio hit with low setup time.',
+        guide:'https://www.youtube.com/results?search_query=how+to+jump+rope+form',
+        details:[
           'Blocks: 5 × 1 min on / 30s off',
           'Progress: add a set weekly',
           'Form: elbows tucked, wrists turn rope, soft knees'
         ]
       },
-      {
-        title: 'Floor Press',
-        img: 'img/floorpress.jpg',
-        caption: 'Chest & triceps — no bench',
-        desc: 'Press from the floor to protect shoulders while loading chest.',
-        guide: 'https://www.youtube.com/results?search_query=dumbbell+floor+press+form',
-        details: [
+      floorpress: {
+        title:'Floor Press',
+        img:'img/floorpress.jpg',
+        desc:'Press from the floor to protect shoulders while loading chest.',
+        guide:'https://www.youtube.com/results?search_query=dumbbell+floor+press+form',
+        details:[
           '3–4 sets • 6–10 reps',
           'Tempo: 2s down, pause on floor, press up',
           'Form: ribs down, forearms vertical at bottom'
         ]
       },
-      {
-        title: 'Yoga Flow',
-        img: 'img/yoga.jpg',
-        caption: 'Mobility & calm in 10 min',
-        desc: 'Short, gentle sequence to open hips, spine, and breathing.',
-        guide: 'https://www.youtube.com/results?search_query=10+minute+yoga+flow+beginner',
-        details: [
+      yoga: {
+        title:'Yoga Flow',
+        img:'img/yoga.jpg',
+        desc:'Short, gentle sequence to open hips, spine, and breathing.',
+        guide:'https://www.youtube.com/results?search_query=10+minute+yoga+flow+beginner',
+        details:[
           'Flow: 8–12 poses • 1–3 breaths each',
           'Add: 2–3 rounds as time allows',
           'Form: breathe through nose, keep shoulders soft'
         ]
       },
-      {
-        title: 'Meal Prep',
-        img: 'img/mealprep.jpg',
-        caption: 'Clear portions, real food',
-        desc: 'Batch cook base proteins & grains to make weeknights easy.',
-        guide: 'https://www.youtube.com/results?search_query=healthy+meal+prep+basics',
-        details: [
+      mealprep: {
+        title:'Meal Prep',
+        img:'img/mealprep.jpg',
+        desc:'Batch cook base proteins & grains to make weeknights easy.',
+        guide:'https://www.youtube.com/results?search_query=healthy+meal+prep+basics',
+        details:[
           'Cook once • eat 3–4 times',
           'Macro base: protein + fibre + colour',
           'Form: use a tray plan & portion before storing'
         ]
       },
-      {
-        title: 'Seated Curls',
-        img: 'img/curl.jpg',
-        caption: 'Simple strength you can feel',
-        desc: 'Strict seated curls to isolate biceps without momentum.',
-        guide: 'https://www.youtube.com/results?search_query=seated+dumbbell+curls+form',
-        details: [
+      curl: {
+        title:'Seated Curls',
+        img:'img/curl.jpg',
+        desc:'Strict seated curls to isolate biceps without momentum.',
+        guide:'https://www.youtube.com/results?search_query=seated+dumbbell+curls+form',
+        details:[
           '3–4 sets • 8–12 reps',
           'Tempo: 2s up • 3s down',
           'Form: elbows pinned, no sway, full range'
         ]
       }
-    ];
+    };
 
-    // Build one set of tiles
-    function buildTiles(intoEl){
-      IDEAS.forEach(item=>{
-        const fig = document.createElement('figure');
-        fig.className = 'idea-tile';
-        fig.setAttribute('tabindex','0'); // keyboard focus
-        fig.dataset.title  = item.title;
-        fig.dataset.img    = item.img;
-        fig.dataset.desc   = item.desc;
-        fig.dataset.guide  = item.guide;
-        fig.dataset.details = JSON.stringify(item.details || []);
-
-        const img = document.createElement('img');
-        img.className = 'idea-thumb';
-        img.src = item.img;
-        img.alt = item.title;
-
-        const body = document.createElement('figcaption');
-        body.className = 'idea-body';
-
-        const h3 = document.createElement('h3');
-        h3.className = 'idea-title';
-        h3.textContent = item.title;
-
-        const p = document.createElement('p');
-        p.className = 'idea-cap';
-        p.textContent = item.caption;
-
-        body.appendChild(h3);
-        body.appendChild(p);
-
-        fig.appendChild(img);
-        fig.appendChild(body);
-        intoEl.appendChild(fig);
-      });
-    }
-
-    // Duplicate content for seamless loop
-    function initMarquee(){
-      const a = document.getElementById('marqueeInnerA');
-      const b = document.getElementById('marqueeInnerB');
-      if(!a || !b) return;
-      buildTiles(a);
-      buildTiles(b);
-      // Set track width to 2x inner width => CSS animation goes -50%
-      const track = document.getElementById('marqueeTrack');
-      // No explicit JS sizing needed; animation uses translateX(-50%)
-      // Pause on focus for accessibility (keyboard users)
-      track.addEventListener('focusin', ()=> track.style.animationPlayState='paused');
-      track.addEventListener('focusout', ()=> track.style.animationPlayState='running');
-    }
-
-    // Modal wiring
-    function initModal(){
+    (function initIdeas(){
+      const ideasSection = document.getElementById('ideas');
       const dlg = document.getElementById('ideaModal');
       const title = document.getElementById('ideaTitle');
       const img   = document.getElementById('ideaImg');
       const desc  = document.getElementById('ideaDesc');
       const list  = document.getElementById('ideaDetails');
       const guide = document.getElementById('ideaGuide');
-      const closeEls = dlg.querySelectorAll('[data-close]');
 
-      function openFromTile(tile){
-        title.textContent = tile.dataset.title || 'Idea';
-        img.src = tile.dataset.img || '';
-        img.alt = tile.dataset.title || '';
-        desc.textContent = tile.dataset.desc || '';
-        guide.href = tile.dataset.guide || '#';
+      function openModal(key){
+        const d = IDEA_DATA[key]; if(!d) return;
+        title.textContent = d.title;
+        img.src = d.img; img.alt = d.title;
+        desc.textContent = d.desc;
+        guide.href = d.guide;
 
-        // details list
         list.innerHTML = '';
-        try {
-          (JSON.parse(tile.dataset.details || '[]')).forEach(li=>{
-            const item = document.createElement('li');
-            item.textContent = li;
-            list.appendChild(item);
-          });
-        } catch(e){}
+        d.details.forEach(t=>{
+          const li=document.createElement('li'); li.textContent=t; list.appendChild(li);
+        });
 
+        ideasSection.classList.add('is-paused'); // pause marquee while open
         dlg.showModal();
       }
 
-      // delegate clicks
-      document.addEventListener('click', (e)=>{
-        const tile = e.target.closest('.idea-tile');
-        if(tile){ openFromTile(tile); }
-      });
-      // keyboard Enter/Space on focused tile
-      document.addEventListener('keydown', (e)=>{
-        if((e.key === 'Enter' || e.key === ' ') && document.activeElement?.classList.contains('idea-tile')){
-          e.preventDefault(); openFromTile(document.activeElement);
-        }
+      function closeModal(){
+        dlg.close();
+        ideasSection.classList.remove('is-paused');
+      }
+
+      // Click / keyboard open
+      document.querySelectorAll('#ideas .idea').forEach(tile=>{
+        tile.setAttribute('tabindex','0');
+        tile.addEventListener('click', ()=> openModal(tile.dataset.idea));
+        tile.addEventListener('keydown', e=>{
+          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openModal(tile.dataset.idea); }
+        });
       });
 
-      closeEls.forEach(btn=> btn.addEventListener('click', ()=> dlg.close()));
-      dlg.addEventListener('click', (e)=>{ if(e.target === dlg) dlg.close(); });
-      window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && dlg.open) dlg.close(); });
-    }
-
-    document.addEventListener('DOMContentLoaded', ()=>{
-      initMarquee();
-      initModal();
-    });
+      // Close controls
+      dlg.querySelector('[data-close]').addEventListener('click', closeModal);
+      dlg.addEventListener('click', e=>{ if(e.target===dlg) closeModal(); });
+      window.addEventListener('keydown', e=>{ if(e.key==='Escape' && dlg.open) closeModal(); });
+    })();
   </script>
 
   <script src="/app.js" defer></script>

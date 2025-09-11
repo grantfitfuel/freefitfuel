@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — Phase II (Build)</title>
-  <link rel="stylesheet" href="/style.css?v=60">
+  <link rel="stylesheet" href="/style.css?v=61">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 </head>
 <body class="hero-mode">
   <div id="site-header"></div>
   <script src="/js/header-loader.js"></script>
 
-  <!-- HERO (title below image, no gradient) -->
+  <!-- HERO -->
   <header class="hero-mini hero-rainbow" role="banner" aria-label="Phase II hero">
     <figure>
       <img src="/img/hero-phase-2.jpg" alt="Build phase">
@@ -19,97 +19,80 @@
     </figure>
     <div class="content wrap">
       <h1 class="comic-title">Phase II — Build (Weeks 9–16)</h1>
-      <p class="lead comic-sub">Turn the dial up: volume, tidy form, add fun challenges. Still friendly, still sustainable.</p>
+      <p class="lead comic-sub">Add volume, control tempo, introduce tempo runs. Keep mobility daily.</p>
       <div class="phase-tabs">
         <a class="tab" href="/hero-phase-1.html">Phase I</a>
         <a class="tab is-active" href="/hero-phase-2.html">Phase II</a>
         <a class="tab" href="/hero-training.html">Back to Hub</a>
       </div>
-      <div class="xp" aria-label="Phase progress"><span style="width:50%"></span></div>
+      <div class="xp"><span id="p2xpbar" style="width:0%"></span></div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- Weekly structure -->
+    <!-- WEEKLY GUIDANCE -->
     <section>
-      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weekly Rhythm</h2>
-      <div class="grid-panels">
-        <article class="panel">
-          <h3>Strength A (Progression)</h3>
-          <ul class="ex-list">
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+squat+dumbbell+form">DB Front Squat</a> — 4×6–10</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bench+press+dumbbell+form">DB Bench Press</a> — 4×6–10</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a> — 4×8/side</li>
-          </ul>
-          <span class="goal-chip goal-strength">Strength</span>
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weeks 9–12</h2>
+      <div class="taskboard">
+        <article class="task">
+          <h3>Week Plan</h3>
+          <div class="checks" id="p2w1">
+            <label><input type="checkbox" data-key="p2_a"> Strength A — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+squat+dumbbell+form">DB Front Squat</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bench+press+dumbbell+form">DB Bench</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm Row</a> 4×8/side</label>
+            <label><input type="checkbox" data-key="p2_tempo"> Tempo Run 20–30 min — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+explained">what/why</a></label>
+            <label><input type="checkbox" data-key="p2_b"> Strength B — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=standing+overhead+press+dumbbell+form">DB OHP</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=lateral+raise+form">Lateral Raise</a> 3×12–15</label>
+            <label><input type="checkbox" data-key="p2_z2"> Z2 Cardio 30–45 min — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">Run/Bike</a></label>
+            <label><input type="checkbox" data-key="p2_mob"> Mobility Daily 8–10 min — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hip+mobility">90/90 Hips</a> + <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent 5/5</a></label>
+          </div>
+          <div class="claim"><button class="btn" id="p2w1claim" disabled>Claim 140 XP</button><span id="p2w1out" class="hint"></span></div>
         </article>
 
-        <article class="panel">
-          <h3>Strength B (Progression)</h3>
+        <article class="task">
+          <h3>Calisthenics Skill</h3>
           <ul class="ex-list">
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> — 4×6–10</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=standing+overhead+press+dumbbell+form">DB Overhead Press</a> — 4×6–10</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=lateral+raise+form">Lateral Raise</a> — 3×12–15</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+progressions">Push-up progressions</a> — 3× max-2</li>
+            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+chin+up+band+form">Assisted chin-ups</a> — 4×3–6</li>
           </ul>
-          <span class="goal-chip goal-strength">Strength</span>
-          <span class="goal-chip goal-skill">Shoulder Skill</span>
-        </article>
-
-        <article class="panel">
-          <h3>Engine (Tempo + Z2)</h3>
-          <p class="meta">1 tempo session + 1–2 Z2 sessions weekly.</p>
-          <ul class="ex-list">
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+explained">Tempo Run</a> — 20–30 min @ comfortably hard</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">Z2 Run</a> / <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cycling+explained">Z2 Bike</a></li>
-          </ul>
-          <span class="goal-chip goal-engine">Engine</span>
+          <span class="goal-chip goal-skill">Skill</span>
         </article>
       </div>
     </section>
 
-    <!-- Skill + Mobility -->
-    <section style="margin-top:18px">
-      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Skill + Mobility</h2>
-      <div class="grid-panels">
-        <article class="panel">
-          <h3>Calisthenics</h3>
-          <ul class="ex-list">
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+progressions">Push-up Progressions</a> — 3× max-2</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+chin+up+band+form">Assisted Chin-ups</a> — 4×3–6</li>
-          </ul>
-          <span class="goal-chip goal-skill">Bodyweight Skill</span>
+    <section style="margin-top:16px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weeks 13–16</h2>
+      <div class="taskboard">
+        <article class="task">
+          <h3>Week Plan</h3>
+          <div class="checks" id="p2w2">
+            <label><input type="checkbox" data-key="p2b_a"> Strength A — add 1 set on first lift</label>
+            <label><input type="checkbox" data-key="p2b_tempo"> Tempo Run 25–35 min</label>
+            <label><input type="checkbox" data-key="p2b_b"> Strength B — keep form strict</label>
+            <label><input type="checkbox" data-key="p2b_z2"> Z2 Cardio 30–45 min</label>
+            <label><input type="checkbox" data-key="p2b_mob"> Mobility Daily 8–10 min</label>
+          </div>
+          <div class="claim"><button class="btn" id="p2w2claim" disabled>Claim 160 XP</button><span id="p2w2out" class="hint"></span></div>
         </article>
 
-        <article class="panel">
-          <h3>Mobility & Breath</h3>
-          <ul class="ex-list">
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hip+mobility">90/90 Hips</a> — 2×60s/side</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent Breathing 5/5</a> — 5–8 min</li>
-          </ul>
-          <span class="goal-chip goal-mob">Mobility</span>
-        </article>
-
-        <article class="panel">
+        <article class="task">
           <h3>Weekly Photo (private)</h3>
-          <p class="meta">Check posture, confidence, and consistency. You’re building something.</p>
+          <p class="meta">Same light/angle. Track posture & confidence; this is for you.</p>
         </article>
       </div>
     </section>
 
-    <!-- Phase II Trial -->
+    <!-- Boss for Phase II -->
     <section style="margin-top:18px">
-      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Phase II Trial</h2>
-      <article class="trial">
-        <h3>5k Benchmark</h3>
-        <p class="meta">Run or Row 5k. Or: 30-min distance test (record metres/km).</p>
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Phase II Boss</h2>
+      <article class="boss">
+        <h3>5k Benchmark (or 30-min distance)</h3>
         <div class="row" style="margin:.4rem 0">
-          <label>Time/Distance <input id="p2mark" type="text" placeholder="25:30 or 6.2km/30min"></label>
-          <button class="btn" id="p2save">Save PR</button>
-          <span id="p2out" class="hint"></span>
+          <label>Result <input id="p2Boss" type="text" placeholder="25:30 or 6.4km/30min"></label>
+          <button class="btn" id="p2Save">Save PR</button>
+          <button class="btn" id="p2XP">Claim 150 XP</button>
+          <span id="p2Out" class="hint"></span>
         </div>
         <p class="meta">Technique:
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+running+form+tips">Running Form</a> ·
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+row+technique">Rowing Form</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+running+form+tips">Running form</a> ·
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+row+technique">Rowing form</a>
         </p>
       </article>
     </section>
@@ -124,14 +107,41 @@
   </footer>
 
   <script>
+    const XP_PER_LEVEL=200;
+    function getNum(k,d=0){ const v=localStorage.getItem(k); const n=parseInt(v,10); return isNaN(n)?d:n; }
+    function setNum(k,n){ localStorage.setItem(k,String(n)); }
+    function addXP(n){ const cur=getNum('hero_xp',0)+n; setNum('hero_xp',cur); setNum('hero_lvl',Math.floor(cur/XP_PER_LEVEL)+1); renderP2Bar(); return cur; }
+    function renderP2Bar(){ const xp=getNum('hero_xp',0); document.getElementById('p2xpbar').style.width=Math.min(99,(xp%XP_PER_LEVEL)/XP_PER_LEVEL*100)+'%'; }
+
+    function initWeek(groupId, claimBtnId, outId, reward, prefix){
+      const wrap=document.getElementById(groupId), btn=document.getElementById(claimBtnId), out=document.getElementById(outId);
+      const inputs=[...wrap.querySelectorAll('input[type="checkbox"]')];
+      inputs.forEach(i=>{ i.checked = localStorage.getItem(prefix+i.dataset.key)==='1'; });
+      function update(){ btn.disabled = !inputs.every(i=>i.checked); }
+      inputs.forEach(i=>i.addEventListener('change',()=>{ localStorage.setItem(prefix+i.dataset.key, i.checked?'1':'0'); update(); }));
+      update();
+      btn.addEventListener('click',()=>{
+        if(localStorage.getItem(prefix+'_claimed')==='1'){ out.textContent='XP already claimed.'; return; }
+        if(btn.disabled){ out.textContent='Complete all tasks first.'; return; }
+        addXP(reward); localStorage.setItem(prefix+'_claimed','1'); out.textContent=`${reward} XP added! 🔥`;
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', ()=>{
-      const f = document.getElementById('p2mark');
-      const o = document.getElementById('p2out');
-      f.value = localStorage.getItem('p2_benchmark') || '';
-      document.getElementById('p2save').addEventListener('click', ()=>{
-        if(!f.value.trim()){ o.textContent='Enter a time or distance.'; return; }
-        localStorage.setItem('p2_benchmark', f.value.trim());
-        o.textContent='Saved! 🏅';
+      renderP2Bar();
+      initWeek('p2w1','p2w1claim','p2w1out',140,'p2w1_');
+      initWeek('p2w2','p2w2claim','p2w2out',160,'p2w2_');
+
+      const pr=document.getElementById('p2Boss'), out=document.getElementById('p2Out');
+      pr.value = localStorage.getItem('p2_boss_pr')||'';
+      document.getElementById('p2Save').addEventListener('click',()=>{
+        if(!pr.value.trim()){ out.textContent='Enter your result first.'; return; }
+        localStorage.setItem('p2_boss_pr', pr.value.trim()); out.textContent='Saved! 🏅';
+      });
+      document.getElementById('p2XP').addEventListener('click',()=>{
+        if(localStorage.getItem('p2_boss_claimed')==='1'){ out.textContent='XP already claimed.'; return; }
+        if(!localStorage.getItem('p2_boss_pr')){ out.textContent='Save a PR first.'; return; }
+        addXP(150); localStorage.setItem('p2_boss_claimed','1'); out.textContent='150 XP added! 💥';
       });
     });
   </script>

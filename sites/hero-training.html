@@ -1,199 +1,261 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hero Training — FreeFitFuel</title>
-<link rel="stylesheet" href="style.css?v=22" />
-<style>
-  /* ===== Local accent UI ===== */
-  .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.4rem 0 1rem}
-  .chip{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem .9rem;
-        border-radius:999px;border:0;cursor:pointer;font-weight:800;color:#111}
-  .chip:hover{filter:brightness(1.05)}
-  .chip--str{background:#ff9432} .chip--eng{background:#63b0ff}
-  .chip--cal{background:#2ecc71} .chip--mob{background:#b07cff}
-  .chip--rec{background:#ffd24d} .chip--boss{background:#ff6b6b}
-  .chip.active{outline:3px solid rgba(255,255,255,.25)}
-  .progress{display:flex;align-items:center;gap:.6rem;margin:.6rem 0 1rem}
-  .bar{flex:1;height:12px;background:#1a1d24;border-radius:999px;overflow:hidden;border:1px solid var(--stroke)}
-  .bar>span{display:block;height:100%;background:linear-gradient(90deg,#ff6a00,#ff9a3d);width:0%}
-  .badge-row{display:flex;flex-wrap:wrap;gap:.35rem}
-  .badge{padding:.28rem .55rem;border-radius:999px;border:1px solid var(--stroke);background:var(--glass);font-size:.86rem}
-  .badge.unlocked{background:#1a2b18;border-color:#234a20;color:#9afc9a}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — Hybrid Transformation</title>
+  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
-  .phases{display:grid;gap:14px}
-  @media(min-width:820px){.phases{grid-template-columns:repeat(3,1fr)}}
-  .phase{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
-  .phase[hidden]{display:none!important}
-  .phase h3{margin:.15rem 0 .5rem}
-  .pill-note{display:inline-flex;align-items:center;gap:.35rem;font-size:.9rem;
-             border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.25rem .55rem;margin-top:.5rem}
+  <style>
+    /* ===== Scoped, landing-only colour & layout ===== */
+    :root{
+      --pill1:#FF6A00; --pill2:#FF9A3D; --pill3:#6AE3FF; --pill4:#9BCB50; --pill5:#D48BFF; --pill6:#FFC36A;
+    }
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
 
-  /* Boss modal */
-  dialog#trial{background:#0f1319;color:var(--ink);border:1px solid var(--stroke);border-radius:14px;max-width:min(760px,92vw)}
-  dialog::backdrop{background:rgba(0,0,0,.55)}
-  .modal-hd{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;border-bottom:1px solid var(--stroke)}
-  .modal-bd{padding:1rem;display:grid;gap:.8rem}
-  .btn-small{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px}
-</style>
+    /* Hero with no gradient overlay */
+    header.hero-mini.hero-landing{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini.hero-landing figure{margin:0;position:relative;overflow:hidden;background:#000}
+    header.hero-mini.hero-landing figure>img{
+      width:100%; height:clamp(320px,50vh,560px); object-fit:cover; object-position:center 35%;
+      display:block; filter:brightness(.92) saturate(1.06)
+    }
+    header.hero-mini.hero-landing .overlay{display:none !important}
+    header.hero-mini.hero-landing .content{position:static;padding:14px 0 10px}
+    header.hero-mini.hero-landing h1{margin:.15rem 0 .45rem}
+    header.hero-mini.hero-landing .lead{color:var(--inkdim)}
+
+    /* Colourful action pills (real links) */
+    .pill-row{display:flex;flex-wrap:wrap;gap:.55rem;margin:.7rem 0 1.1rem}
+    .pill{
+      --bg:var(--glass);
+      display:inline-flex;align-items:center;gap:.4rem;
+      padding:.5rem .95rem;border-radius:999px;border:1px solid var(--stroke);
+      background:var(--bg);color:var(--ink);font-weight:800;letter-spacing:.2px;
+      text-decoration:none;font-size:.95rem;transition:transform .15s ease,filter .15s ease
+    }
+    .pill:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .pill.str{--bg:linear-gradient(90deg,var(--pill1),var(--pill2))}
+    .pill.cali{--bg:linear-gradient(90deg,#FFD36A,#FF9A3D)}
+    .pill.eng{--bg:linear-gradient(90deg,var(--pill3),#3DCBFF)}
+    .pill.mob{--bg:linear-gradient(90deg,var(--pill4),#6AD47B)}
+    .pill.rec{--bg:linear-gradient(90deg,var(--pill5),#9BD1FF)}
+    .pill.plan{--bg:linear-gradient(90deg,var(--pill6),#FF9A3D)}
+
+    /* Section cards */
+    .section-card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin:12px 0}
+    .grid.three{display:grid;gap:14px}
+    @media(min-width:900px){.grid.three{grid-template-columns:repeat(3,1fr)}}
+    .tile{
+      background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px;
+      display:flex;flex-direction:column;gap:.5rem
+    }
+    .tile h3{margin:.1rem 0 .2rem}
+    .tile p{margin:0;color:var(--inkdim)}
+    .links{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.25rem}
+    .btn--pill{
+      display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);
+      background:var(--glass);color:var(--ink);border-radius:999px;padding:.36rem .7rem;
+      font-size:.9rem;text-decoration:none
+    }
+    .btn--pill:hover{color:var(--accent)}
+
+    /* Phases grid */
+    .phases{display:grid;gap:14px;margin-top:.3rem}
+    @media(min-width:980px){.phases{grid-template-columns:repeat(4,1fr)}}
+    .phase{
+      border:1px solid var(--stroke);border-radius:14px;overflow:hidden;background:#0f1217;
+      display:flex;flex-direction:column
+    }
+    .phase .media{aspect-ratio:16/9;background:#0b0f14;border-bottom:1px solid var(--stroke)}
+    .phase .media img{width:100%;height:100%;object-fit:cover;display:block}
+    .phase .body{padding:12px}
+    .phase .body h4{margin:.1rem 0 .35rem}
+    .phase .body p{margin:0 0 .6rem;color:var(--inkdim)}
+    .phase .cta-row{display:flex;gap:.45rem;flex-wrap:wrap}
+
+    /* Mini badges row */
+    .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0}
+    .badge{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.28rem .6rem;font-size:.85rem}
+
+    /* Marathon banner */
+    .goal{
+      background:linear-gradient(135deg, rgba(255,106,0,.15), rgba(0,0,0,0));
+      border:1px solid var(--stroke);border-radius:14px;padding:14px;margin-top:.6rem
+    }
+  </style>
 </head>
 <body>
+
+<!-- Shared header -->
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
 
+<!-- HERO -->
+<header class="hero-mini hero-landing" role="banner" aria-label="Hero Training">
+  <figure>
+    <img src="/img/hero-hybrid.jpg" alt="Hybrid training: strength, calisthenics, running, mobility in bright colours">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <span class="eyebrow">FreeFitFuel</span>
+    <h1><span class="accent">Hero Training — Hybrid Transformation</span></h1>
+    <p class="lead">A colourful, gamified path from foundation to **marathon-capable** hybrid athlete. Strength + Calisthenics + Engine + Mobility — built to be fun, clear and progression-based.</p>
+
+    <nav class="pill-row" aria-label="Quick links">
+      <a class="pill str" href="#strength">Strength</a>
+      <a class="pill cali" href="#calisthenics">Calisthenics</a>
+      <a class="pill eng" href="#engine">Engine (Z2→Tempo)</a>
+      <a class="pill mob" href="#mobility">Mobility</a>
+      <a class="pill rec" href="#recovery">Recovery</a>
+      <a class="pill plan" href="#phases">Phases I–IV</a>
+    </nav>
+  </div>
+</header>
+
 <main class="wrap">
-  <header>
-    <h1>Hero Training</h1>
-    <p>Four phases. Weekly quests. Boss fights. Track XP, earn badges, and aim the engine toward a <strong>marathon</strong> within 12 months — while getting stronger and sharper at calisthenics.</p>
-  </header>
 
-  <!-- theme filters -->
-  <div class="chips" id="themeChips" aria-label="Filter themes">
-    <button class="chip chip--str"  data-tag="strength">💪 Strength</button>
-    <button class="chip chip--eng"  data-tag="engine">🏃 Engine</button>
-    <button class="chip chip--cal"  data-tag="calisthenics">🤸 Calisthenics</button>
-    <button class="chip chip--mob"  data-tag="mobility">🧘 Mobility</button>
-    <button class="chip chip--rec"  data-tag="recovery">🛌 Recovery</button>
-    <button class="chip chip--boss" data-tag="boss">⚔️ Boss Fights</button>
-  </div>
-
-  <!-- XP + badges -->
-  <div class="progress">
-    <strong id="levelLbl">Level 1 • Rookie</strong>
-    <div class="bar" aria-label="Season XP"><span id="xpFill"></span></div>
-    <span id="xpLbl">0 XP</span>
-    <button class="btn--pill" id="claimXP">+25 XP (claim)</button>
-  </div>
-  <div class="badge-row" id="badges">
-    <span class="badge" data-key="z2">Z2 Streak</span>
-    <span class="badge" data-key="strength3">3× Strength Week</span>
-    <span class="badge" data-key="boss1">First Boss Fight</span>
-  </div>
-
-  <section class="phases" id="phaseGrid">
-    <article class="phase" data-tags="strength engine mobility">
-      <h3>⚒️ Phase I — Foundation (Weeks 1–4)</h3>
-      <p>Skill the lifts, build easy engine (Z2), 10-min daily mobility. Beginner-friendly but spicy.</p>
-      <div class="btn-row">
-        <a class="btn" href="hero-phase-1.html">Open Plan</a>
-        <button class="btn--pill" data-open-trial>Boss Fights</button>
+  <!-- Focus tiles (with YouTube search helpers) -->
+  <section class="section-card" id="strength" aria-label="Strength focus">
+    <div class="tile">
+      <h3>Strength — Simple, Strong, Repeatable</h3>
+      <p>Full-body 2–3×/week. Push/pull, hinge/squat, core. Progress when all sets hit the top rep with tidy form.</p>
+      <div class="links">
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat (form)</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press (form)</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm Row (form)</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL (form)</a>
       </div>
-      <div class="pill-note">🎯 Focus: strength + engine</div>
-    </article>
+      <div class="badges"><span class="badge">Tempo Control</span><span class="badge">Superset Smart</span></div>
+    </div>
+  </section>
 
-    <article class="phase" data-tags="strength engine calisthenics">
-      <h3>🚀 Phase II — Build (Weeks 5–8)</h3>
-      <p>Volume + tempo. Long run 10–12k. First calisthenics progressions.</p>
-      <div class="btn-row">
-        <a class="btn--pill" href="#">Open Plan</a>
-        <button class="btn--pill" data-open-trial>Boss Fights</button>
+  <section class="section-card" id="calisthenics" aria-label="Calisthenics focus">
+    <div class="tile">
+      <h3>Calisthenics — Skill & Control</h3>
+      <p>Eccentrics, assisted reps, and rings/table rows. Quality reps beat quantity.</p>
+      <div class="links">
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+pull+up+band+form">Assisted Pull-ups</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=elevated+push+ups+form">Elevated Push-ups</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ring+rows+form">Ring/Table Rows</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+pistol+squat+progression">Assisted Pistols</a>
       </div>
-      <div class="pill-note">🎯 Focus: mixed</div>
-    </article>
+      <div class="badges"><span class="badge">Grease the Groove</span><span class="badge">Eccentrics</span></div>
+    </div>
+  </section>
 
-    <article class="phase" data-tags="strength engine calisthenics">
-      <h3>🔥 Phase III — Peak (Weeks 9–12)</h3>
-      <p>Power + repeatability; long engines up to half-marathon; strict pull-ups and pistols appear.</p>
-      <div class="btn-row">
-        <a class="btn--pill" href="#">Open Plan</a>
-        <button class="btn--pill" data-open-trial>Boss Fights</button>
+  <section class="section-card" id="engine" aria-label="Engine focus">
+    <div class="tile">
+      <h3>Engine — Z2 Streak → Tempo → Marathon</h3>
+      <p>Keep the <strong>Z2 streak</strong> (conversational pace) and add a weekly tempo bite. Your end-goal across 12 months is a <strong>marathon finish</strong> while staying strong.</p>
+      <div class="links">
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+training+explained">Zone-2 Explained</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+how+to">Tempo Run Basics</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=how+to+pace+a+marathon">Pacing a Marathon</a>
       </div>
-      <div class="pill-note">🎯 Focus: power</div>
-    </article>
+      <div class="badges"><span class="badge">Z2 Streak</span><span class="badge">Build the Battery</span></div>
+    </div>
+  </section>
 
-    <article class="phase" data-tags="engine calisthenics recovery mobility">
-      <h3>🌟 Phase IV — Legacy</h3>
-      <p>Marathon finish. Sustain & sharpen; play with skills; mentor others.</p>
-      <div class="btn-row">
-        <a class="btn--pill" href="#">Open Plan</a>
-        <button class="btn--pill" data-open-trial>Boss Fights</button>
+  <section class="section-card" id="mobility" aria-label="Mobility focus">
+    <div class="tile">
+      <h3>Mobility — 10–15 Min Resets</h3>
+      <p>Hips, ankles, T-spine and shoulders. Short resets on training days = better positions, fewer niggles.</p>
+      <div class="links">
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90%2F90+hip+mobility">90/90 Hips</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=thoracic+spine+openers">T-Spine Openers</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+mobility">Ankle Dorsiflexion</a>
       </div>
-      <div class="pill-note">🎯 Focus: engine + mastery</div>
-    </article>
+      <div class="badges"><span class="badge">Positions First</span><span class="badge">Daily Micro-Dose</span></div>
+    </div>
+  </section>
+
+  <section class="section-card" id="recovery" aria-label="Recovery focus">
+    <div class="tile">
+      <h3>Recovery — Sleep, Fuel, Breath</h3>
+      <p>Consistent wake time, protein + fibre each meal, and down-shift breathing after sessions (4-6 or box).</p>
+      <div class="links">
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+6+breathing+exhale+longer">4-6 Breathing</a>
+        <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+how+to">Box Breathing</a>
+      </div>
+      <div class="badges"><span class="badge">Eat to Train</span><span class="badge">Down-Shift</span></div>
+    </div>
+  </section>
+
+  <!-- Phases with clear CTAs -->
+  <section id="phases" class="section-card" aria-label="Phases I–IV">
+    <h2 style="margin:.1rem 0 .6rem">Phases I–IV (link into each plan)</h2>
+    <div class="phases">
+      <article class="phase">
+        <div class="media"><img src="/img/phase-1.jpg" alt="Phase I foundation"></div>
+        <div class="body">
+          <h4>Phase I — Foundation (Weeks 1–4)</h4>
+          <p>Learn positions, start Z2 streak, set baselines. Friendly on-ramp.</p>
+          <div class="cta-row">
+            <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
+            <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=beginner+full+body+strength+form">Form playlist</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="media"><img src="/img/phase-2.jpg" alt="Phase II build"></div>
+        <div class="body">
+          <h4>Phase II — Build (Weeks 5–8)</h4>
+          <p>More volume, eccentrics, weekly tempo. Boss fight: 5k benchmark.</p>
+          <div class="cta-row">
+            <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
+            <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+how+to">Tempo how-to</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="media"><img src="/img/phase-3.jpg" alt="Phase III develop"></div>
+        <div class="body">
+          <h4>Phase III — Develop (Weeks 9–12)</h4>
+          <p>Strength progressions + threshold taste. Boss fight: 10k/row alt.</p>
+          <div class="cta-row">
+            <a class="btn" href="/hero-phase-3.html">Open Phase III</a>
+            <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=threshold+run+explained">Threshold basics</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="media"><img src="/img/phase-4.jpg" alt="Phase IV momentum"></div>
+        <div class="body">
+          <h4>Phase IV — Momentum (Weeks 13–16)</h4>
+          <p>Consolidate PRs, tidy technique, prep next blocks.</p>
+          <div class="cta-row">
+            <a class="btn" href="/hero-phase-4.html">Open Phase IV</a>
+            <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=deload+week+how+to">Deload tips</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="goal">
+      <h3 style="margin:.1rem 0 .35rem">Year Goal — Marathon Finish (Hybrid)</h3>
+      <p class="meta">Across 12 months, stack phases into cycles (I–IV × 3). Keep the Z2 streak, add a long-run progression, and preserve strength. You arrive marathon-ready — and still strong.</p>
+      <div class="badges"><span class="badge">Marathon Path</span><span class="badge">Strong & Durable</span></div>
+    </div>
+  </section>
+
+  <!-- Standard disclaimer -->
+  <section class="section-card" aria-labelledby="disc">
+    <h2 id="disc" style="margin:.1rem 0 .45rem">Important Note</h2>
+    <p>The content is for general fitness education and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme — especially if you have health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
   </section>
 </main>
 
-<footer class="site-footer"><div class="container"><p>© 2025 FreeFitFuel</p></div></footer>
-
-<!-- Boss Fight modal -->
-<dialog id="trial" aria-labelledby="trialT">
-  <div class="modal-hd">
-    <h3 id="trialT">⚔️ Boss Fight — 5k Check</h3>
-    <button class="btn-small" data-close>Close</button>
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
   </div>
-  <div class="modal-bd">
-    <p>Pick one. Hit a personal best to unlock the <strong>Boss 1</strong> badge.</p>
-    <ol>
-      <li><strong>5k Run</strong> — time it. (Treadmill or outdoors)</li>
-      <li><strong>5k Row</strong> — C2/erg time.</li>
-      <li><strong>No rower?</strong> Do <em>Row Alternative</em>: <strong>100 reps total</strong> of dumbbell/supported rows (5–10 reps/side EMOM) + 1 km brisk walk. Keep notes.</li>
-    </ol>
-    <div class="btn-row">
-      <button class="btn" id="logPR">Log PR & unlock</button>
-      <button class="btn--pill" id="trialGuide">Form tips (YouTube)</button>
-    </div>
-  </div>
-</dialog>
-
-<script>
-  /* ===== XP / badges ===== */
-  const XP_MAX = 500;
-  const xpFill = document.getElementById('xpFill');
-  const xpLbl  = document.getElementById('xpLbl');
-  const levelLbl = document.getElementById('levelLbl');
-  const claim = document.getElementById('claimXP');
-  const BADGE_KEYS = ['z2','strength3','boss1'];
-
-  function loadState(){
-    const s = JSON.parse(localStorage.getItem('heroXP')||'{}');
-    return {xp: s.xp||0, badges: s.badges||{}};
-  }
-  function saveState(s){ localStorage.setItem('heroXP', JSON.stringify(s)); }
-  function renderState(){
-    const s = loadState();
-    const pct = Math.min(100, (s.xp/XP_MAX)*100);
-    xpFill.style.width = pct + '%';
-    xpLbl.textContent = `${s.xp} XP`;
-    levelLbl.textContent = `Level ${1 + Math.floor(s.xp/250)} • Warrior`;
-    document.querySelectorAll('#badges .badge').forEach(b=>{
-      const k=b.dataset.key;
-      b.classList.toggle('unlocked', !!s.badges[k]);
-    });
-  }
-  claim.addEventListener('click', ()=>{
-    const s=loadState(); s.xp=Math.min(XP_MAX, s.xp+25); saveState(s); renderState();
-  });
-  renderState();
-
-  /* ===== Theme filtering ===== */
-  const chips=[...document.querySelectorAll('#themeChips .chip')];
-  const cards=[...document.querySelectorAll('#phaseGrid .phase')];
-  function applyFilter(){
-    const active=chips.filter(c=>c.classList.contains('active')).map(c=>c.dataset.tag);
-    if(!active.length){ cards.forEach(c=>c.hidden=false); return; }
-    cards.forEach(c=>{
-      const tags=(c.dataset.tags||'').split(/\s+/);
-      c.hidden = !active.some(t=>tags.includes(t));
-    });
-  }
-  chips.forEach(ch=>ch.addEventListener('click',()=>{ ch.classList.toggle('active'); applyFilter();}));
-
-  /* ===== Boss modal & badge unlock ===== */
-  const dlg=document.getElementById('trial');
-  document.querySelectorAll('[data-open-trial]').forEach(b=>b.addEventListener('click',()=>dlg.showModal()));
-  dlg.querySelector('[data-close]').addEventListener('click',()=>dlg.close());
-  document.getElementById('trialGuide').addEventListener('click',()=>{
-    window.open('https://www.youtube.com/results?search_query=5k+run+tips+and+5k+row+technique','_blank');
-  });
-  document.getElementById('logPR').addEventListener('click',()=>{
-    const s=loadState();
-    s.badges = s.badges||{}; s.badges.boss1 = true;
-    s.xp=Math.min(XP_MAX,(s.xp||0)+50);
-    saveState(s); renderState(); dlg.close();
-    alert('Nice! Boss 1 badge unlocked (+50 XP).');
-  });
-</script>
-<script src="/app.js" defer></script>
+</footer>
 </body>
 </html>

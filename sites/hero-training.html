@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — FreeFitFuel</title>
+  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page chrome (uses your tokens) */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 1.1rem}
+    .chip{border:1px solid var(--stroke);background:var(--glass);padding:.35rem .7rem;border-radius:999px}
+
+    /* Phase grid */
+    .phase-grid{display:grid;gap:14px;margin:14px 0}
+    @media(min-width:900px){.phase-grid{grid-template-columns:repeat(3,1fr)}}
+    .phase-card{
+      background:var(--glass);border:1px solid var(--stroke);border-radius:14px;
+      padding:14px;display:flex;flex-direction:column;gap:.8rem
+    }
+    .phase-card h3{margin:.25rem 0 .1rem}
+    .phase-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+
+    /* Weekly quests */
+    .quests{display:grid;gap:12px;margin:18px 0}
+    @media(min-width:860px){.quests{grid-template-columns:repeat(3,1fr)}}
+    .quest{background:#10151c;border:1px solid var(--stroke);border-radius:12px;padding:.75rem}
+    .quest h4{margin:.1rem 0 .35rem}
+    .quest .meta{font-size:.9rem}
+
+    /* Boss Fights modal */
+    dialog#bossModal{
+      background:#0f1319;color:var(--ink);
+      border:1px solid var(--stroke);border-radius:14px;padding:0;max-width:min(760px,94vw)
+    }
+    dialog::backdrop{background:rgba(0,0,0,.55)}
+    .bm-head{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1rem;border-bottom:1px solid var(--stroke)}
+    .bm-body{display:grid;gap:.9rem;padding:1rem}
+    .bm-grid{display:grid;gap:.8rem}
+    @media(min-width:880px){.bm-grid{grid-template-columns:1.15fr .85fr}}
+    .cardish{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:12px;padding:.7rem .8rem}
+    .bm-row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+    .bm-row input,.bm-row select{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.45rem .55rem}
+    .btn-ghost{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:10px;padding:.45rem .75rem}
+
+    /* Badge ribbon */
+    .badge{display:inline-block;padding:.2rem .5rem;border-radius:999px;border:1px solid var(--stroke);background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03))}
+    .b-bronze{color:#c97a3d}.b-silver{color:#cfd5df}.b-gold{color:#ffd469}.b-slayer{color:#ff6a00}
+
+    /* Tiny canvas preview */
+    .share-card{display:flex;gap:.7rem;align-items:center}
+    .share-preview{border:1px solid var(--stroke);border-radius:10px;background:#0b0f14;padding:.35rem}
+    canvas#badgeCard{width:260px;height:148px}
+  </style>
+</head>
+<body>
+
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<main class="wrap">
+  <header class="page-hero" aria-label="Hero Training header">
+    <img src="/img/hero-year.jpg" alt="Training montage" loading="eager">
+  </header>
+
+  <h1><span class="accent">Hero’s Year</span> — Become Your Own Champion</h1>
+  <p class="lead">
+    Four phases across <strong>3/6/9/12 months</strong>. Train strength, engine, and calisthenics skill.
+    Earn XP, unlock badges, beat <strong>Boss Fights</strong>, rotate weekly quests, and capture your progress with private photos & shareable cards.
+  </p>
+
+  <div class="chips">
+    <span class="chip">Strength</span>
+    <span class="chip">Engine</span>
+    <span class="chip">Calisthenics</span>
+    <span class="chip">Mobility</span>
+    <span class="chip">Recovery</span>
+  </div>
+
+  <!-- Phase grid -->
+  <section class="phase-grid" aria-label="Phases">
+    <article class="phase-card">
+      <h3>Phase I — Foundation</h3>
+      <p class="meta">Movement quality, base strength, Z2 engine, intro calisthenics.</p>
+      <div class="phase-actions">
+        <a class="btn" href="/hero-phase-1.html">Open Plan</a>
+        <button class="btn-ghost" data-boss="p1">Boss Fights</button>
+      </div>
+    </article>
+
+    <article class="phase-card">
+      <h3>Phase II — Ascent</h3>
+      <p class="meta">Heavier basics, threshold work, skill progressions (HS, pull-up).</p>
+      <div class="phase-actions">
+        <a class="btn" href="/hero-phase-2.html">Open Plan</a>
+        <button class="btn-ghost" data-boss="p2">Boss Fights</button>
+      </div>
+    </article>
+
+    <article class="phase-card">
+      <h3>Phase III — Peak</h3>
+      <p class="meta">Power & repeatability; long engines; strict pull-ups, pistols.</p>
+      <div class="phase-actions">
+        <a class="btn" href="/hero-phase-3.html">Open Plan</a>
+        <button class="btn-ghost" data-boss="p3">Boss Fights</button>
+      </div>
+    </article>
+
+    <article class="phase-card">
+      <h3>Phase IV — Legacy</h3>
+      <p class="meta">Sustain & sharpen; play with skills; maintain PRs; mentor others.</p>
+      <div class="phase-actions">
+        <a class="btn" href="/hero-phase-4.html">Open Plan</a>
+        <button class="btn-ghost" data-boss="p4">Boss Fights</button>
+      </div>
+    </article>
+  </section>
+
+  <!-- Weekly Quests -->
+  <section aria-label="Weekly Quests">
+    <h2>Weekly Quests</h2>
+    <p class="meta">Auto-rotates every ISO week. Finish any 3 this week for +50 XP.</p>
+    <div id="quests" class="quests"></div>
+  </section>
+
+  <!-- Progress photos -->
+  <section aria-label="Progress photos" class="details">
+    <summary><strong>Progress Photos (private)</strong></summary>
+    <p class="meta">Take a quick front/side photo at the start & end of each phase. Keep them for yourself — they’re the most honest metric of your journey.</p>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Boss Fight Modal -->
+<dialog id="bossModal" aria-labelledby="bmTitle">
+  <div class="bm-head">
+    <h3 id="bmTitle">Boss Fights</h3>
+    <button class="btn-ghost" data-close>Close</button>
+  </div>
+
+  <div class="bm-body">
+    <div class="bm-grid">
+      <!-- LEFT: chooser + timer/inputs -->
+      <article class="cardish">
+        <h4>Choose Fight</h4>
+        <div class="bm-row">
+          <label>Trial
+            <select id="bf-select" aria-label="Select boss fight">
+              <!-- Filled by JS per phase -->
+            </select>
+          </label>
+          <button class="btn" id="bf-start">Start</button>
+          <button class="btn-ghost" id="bf-stop">Stop</button>
+          <span class="badge" id="bf-clock">00:00</span>
+        </div>
+
+        <div class="bm-row" id="bf-inputs">
+          <!-- dynamic inputs depending on mode -->
+        </div>
+
+        <div class="bm-row">
+          <button class="btn" id="bf-save">Save Result</button>
+          <span class="meta" id="bf-status" role="status" aria-live="polite"></span>
+        </div>
+      </article>
+
+      <!-- RIGHT: PR + badge + share -->
+      <article class="cardish">
+        <h4>Personal Best</h4>
+        <p class="meta" id="bf-pr">No PR yet. Be the first.</p>
+        <div class="share-card">
+          <div class="share-preview">
+            <canvas id="badgeCard" width="520" height="296"></canvas>
+          </div>
+          <div>
+            <p class="meta">New PR? Claim your badge card.</p>
+            <button class="btn" id="bf-mint">Mint Card</button>
+            <a class="btn-ghost" id="bf-download" href="#" download="hero-badge.png" style="display:none">Download</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <article class="cardish">
+      <h4>How scoring works</h4>
+      <ul class="meta">
+        <li><strong>5k Row</strong> (or <em>Run 5k</em>): time faster = better.</li>
+        <li><strong>Dumbbell Row Trial</strong>: 150 strict alternating reps (2×12–22kg) — time faster = better. Scale as 120 reps if loads are heavy.</li>
+        <li><strong>Table Row Trial</strong>: 80 strict bodyweight rows — time faster = better (scale: 60).</li>
+      </ul>
+      <p class="meta">Badges: <span class="badge b-bronze">Bronze</span> • <span class="badge b-silver">Silver</span> • <span class="badge b-gold">Gold</span> • <span class="badge b-slayer">Slayer</span> (phase tuned).</p>
+    </article>
+  </div>
+</dialog>
+
+<script>
+/* =========================
+   Weekly Quests (auto-rotate)
+   ========================= */
+const QUESTS = {
+  p1: [
+    {t:'Walk/Run Z2', d:'40 min continuous, nasal breathing'},
+    {t:'Push-up Accrued', d:'50 total throughout the day'},
+    {t:'Mobility 1', d:'10-min hips & T-spine'},
+    {t:'Carry', d:'10 min farmer carry (light) continuous'},
+    {t:'Row/Run Intervals', d:'6×2 min on / 2 min off Z3'},
+    {t:'Squat Volume', d:'100 air squats crisp form'},
+    {t:'Core', d:'8 min hollow/arch alternation'},
+    {t:'Breath', d:'5 min coherent 5/5'},
+    {t:'Stretch', d:'Hamstrings + calves 10 min'},
+    {t:'Hike', d:'60–90 min easy trail'},
+    {t:'Skill', d:'Table rows 4×8 strict'},
+    {t:'Recovery', d:'Sleep 8h x 2 nights'}
+  ],
+  p2: [
+    {t:'8×400m', d:'Run or row, 90s rest'},
+    {t:'Goblet Ladder', d:'10-8-6-4-2 heavy'},
+    {t:'Pull-up Practice', d:'25 total (band ok)'},
+    {t:'RDL Volume', d:'4×10 moderate'},
+    {t:'Tempo Push-ups', d:'3×10, 3s down'},
+    {t:'Carry Uphill', d:'12 min'},
+    {t:'Burpee Density', d:'50 for time'},
+    {t:'Core Rotations', d:'Pallof 3×12/side'},
+    {t:'Mobility 2', d:'Ankles + hips 12 min'},
+    {t:'Threshold 20', d:'Z3 continuous 20 min'},
+    {t:'Row Technique', d:'Drills 15 min'},
+    {t:'Downshift', d:'Yin/restorative 20 min'}
+  ],
+  p3: [
+    {t:'Sprint Hill', d:'12×15–20s, walk down'},
+    {t:'AMRAP 20', d:'10 pull, 15 push, 20 squat'},
+    {t:'Push Press', d:'5×5 heavy'},
+    {t:'Pistol Prog', d:'Boxes 5×5/side'},
+    {t:'Farmer Carries', d:'5×60m heavy'},
+    {t:'Row 2k TT', d:'Even pacing'},
+    {t:'Handstand Wall', d:'Total 5 min'},
+    {t:'Core Anti-Ext', d:'Deadbug 3×10'},
+    {t:'Mobility 3', d:'Thoracic + lats 12 min'},
+    {t:'Ruck', d:'45–60 min'},
+    {t:'Burpee Power', d:'100 for time'},
+    {t:'Breathe/Nidra', d:'10 min'}
+  ],
+  p4: [
+    {t:'10k Run/Ruck', d:'Steady finish strong'},
+    {t:'Pull-up Maintenance', d:'30 total week'},
+    {t:'Complex', d:'Clean→Squat→Press 6×'},
+    {t:'Long Z2', d:'90 min bike/run/row'},
+    {t:'Sprint Repeat', d:'10×20s'},
+    {t:'Carry Sandbag', d:'5×100m'},
+    {t:'Play Skill', d:'Freestanding HS 10 min'},
+    {t:'AMRAP 30', d:'Hero mix'},
+    {t:'Mobility 4', d:'Adductors + hips 15 min'},
+    {t:'Yoga Downshift', d:'20–30 min'},
+    {t:'Row 5k', d:'Even splits'},
+    {t:'Sleep Priority', d:'8h x 3 nights'}
+  ]
+};
+function isoWeek(d=new Date()){
+  const date=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  const dayNum=(date.getUTCDay()+6)%7; date.setUTCDate(date.getUTCDate()-dayNum+3);
+  const firstThursday=new Date(Date.UTC(date.getUTCFullYear(),0,4));
+  const week=1+Math.round(((date-firstThursday)/86400000-3+((firstThursday.getUTCDay()+6)%7))/7);
+  return week;
+}
+function renderQuests(phase='p1'){
+  const list=QUESTS[phase], el=document.getElementById('quests'); el.innerHTML='';
+  const idx=isoWeek()%list.length;
+  for(let i=0;i<3;i++){
+    const q=list[(idx+i)%list.length];
+    const card=document.createElement('div'); card.className='quest';
+    card.innerHTML=`<h4>${q.t}</h4><p class="meta">${q.d}</p>`;
+    el.appendChild(card);
+  }
+}
+renderQuests('p1');
+
+/* =========================
+   Boss Fights
+   ========================= */
+const FIGHTS = {
+  p1: [
+    {key:'row5k', name:'Row 5k', mode:'time', hint:'Pace evenly. Drag 110–125.'},
+    {key:'run5k', name:'Run 5k', mode:'time', hint:'Negative split if possible.'},
+    {key:'dbrow', name:'Dumbbell Row Trial (150 reps)', mode:'time', hint:'2×12–22kg. Strict, no torso twist.'},
+    {key:'tablerow', name:'Table Row Trial (80 reps)', mode:'time', hint:'Heels down, hollow body; strict reps.'}
+  ],
+  p2: [
+    {key:'row2k', name:'Row 2k', mode:'time', hint:'Strong but even.'},
+    {key:'carry', name:'Farmer Carry 1km (segments)', mode:'time', hint:'Heavy, safe posture.'}
+  ],
+  p3: [
+    {key:'pull50', name:'Pull-up Ladder (50 total)', mode:'time', hint:'Band allowed. Strict reps.'}
+  ],
+  p4: [
+    {key:'run10k', name:'Run 10k', mode:'time', hint:'Steady Z3/4.'},
+    {key:'hybrid', name:'Hybrid 5R (400m + 20 SQ + 15 PU + 10 PUll)', mode:'time', hint:'Pace transitions.'}
+  ]
+};
+// Badge thresholds by fight (time in seconds for Bronze/Silver/Gold/Slayer)
+const BADGES = {
+  row5k:[1500, 1350, 1200, 1080], // 25:00 / 22:30 / 20:00 / 18:00
+  run5k:[1800, 1620, 1500, 1380], // 30:00 / 27:00 / 25:00 / 23:00
+  dbrow:[1200, 1020, 900, 780],   // 20:00 / 17:00 / 15:00 / 13:00
+  tablerow:[900, 780, 660, 600],  // 15:00 / 13:00 / 11:00 / 10:00
+  row2k:[540, 480, 420, 380],     // 9:00 / 8:00 / 7:00 / 6:20
+  carry:[2400, 2100, 1800, 1500],
+  pull50:[1200, 1020, 900, 780],
+  run10k:[4500, 4200, 3900, 3600],
+  hybrid:[3000, 2700, 2400, 2100]
+};
+
+const modal = document.getElementById('bossModal');
+let timer=null, t0=0, currentPhase='p1';
+
+function openBoss(phase){
+  currentPhase=phase;
+  const select=document.getElementById('bf-select'); select.innerHTML='';
+  (FIGHTS[phase]||[]).forEach(f=>{
+    const opt=document.createElement('option'); opt.value=f.key; opt.textContent=f.name; select.appendChild(opt);
+  });
+  document.getElementById('bmTitle').textContent = 'Boss Fights — ' + phase.toUpperCase();
+  buildInputs(); updatePR();
+  modal.showModal();
+}
+function closeBoss(){ try{modal.close();}catch{} }
+
+document.querySelectorAll('[data-boss]').forEach(b=>{
+  b.addEventListener('click',()=>openBoss(b.dataset.boss));
+});
+modal.querySelector('[data-close]').addEventListener('click', closeBoss);
+modal.addEventListener('click', e=>{ if(e.target===modal) closeBoss(); });
+
+document.getElementById('bf-select').addEventListener('change', ()=>{
+  buildInputs(); updatePR(); resetTimer();
+});
+
+/* Timer & inputs */
+function resetTimer(){ clearInterval(timer); timer=null; t0=0; document.getElementById('bf-clock').textContent='00:00'; }
+function startTimer(){ if(timer) return; t0 = Date.now(); timer=setInterval(()=>{ const s=Math.floor((Date.now()-t0)/1000); document.getElementById('bf-clock').textContent=fmt(s); }, 250); }
+function stopTimer(){ if(!timer) return; clearInterval(timer); timer=null; }
+document.getElementById('bf-start').addEventListener('click', startTimer);
+document.getElementById('bf-stop').addEventListener('click', stopTimer);
+
+function buildInputs(){
+  const wrap=document.getElementById('bf-inputs'); wrap.innerHTML='';
+  const key=document.getElementById('bf-select').value;
+  // For now all are "time" trials → allow manual time entry or use timer
+  const group=document.createElement('div'); group.className='bm-row';
+  group.innerHTML = `
+    <label>Time (mm:ss)
+      <input id="bf-time" type="text" inputmode="numeric" placeholder="e.g., 22:45">
+    </label>
+    <button class="btn-ghost" id="bf-from-timer">Use Timer</button>
+    <span class="meta" id="bf-hint">${(FIGHTS[currentPhase]||[]).find(f=>f.key===key)?.hint||''}</span>
+  `;
+  wrap.appendChild(group);
+  document.getElementById('bf-from-timer').addEventListener('click', ()=>{
+    const s=clockSeconds(); document.getElementById('bf-time').value=fmt(s);
+  });
+}
+function clockSeconds(){ const t=document.getElementById('bf-clock').textContent.trim(); return parseTime(t); }
+
+/* Save & PR + badge */
+document.getElementById('bf-save').addEventListener('click', ()=>{
+  const key=document.getElementById('bf-select').value;
+  const val=document.getElementById('bf-time').value.trim();
+  const secs=parseTime(val); if(!secs){ setStatus('Enter time like 22:45', true); return; }
+  const prKey='pr_'+key, old=getPR(key);
+  if(!old || secs<old){ localStorage.setItem(prKey, String(secs)); setStatus('🔥 New PR saved!'); updatePR(true, secs, key); }
+  else { setStatus('Saved, but not a PR. Keep grinding.'); }
+});
+
+function getPR(key){ const v=localStorage.getItem('pr_'+key); return v?parseInt(v,10):null; }
+function updatePR(justSet=false, newVal=null, keyOverride=null){
+  const key=keyOverride || document.getElementById('bf-select').value;
+  const pr=getPR(key);
+  const el=document.getElementById('bf-pr');
+  if(pr){ const badge = badgeFor(key, pr); el.innerHTML = `Best: <strong>${fmt(pr)}</strong> — <span class="badge ${badge.cls}">${badge.name}</span>`; }
+  else { el.textContent='No PR yet. Be the first.'; }
+  drawCard(key, pr ?? newVal ?? 0, justSet);
+}
+
+function badgeFor(key, secs){
+  const th = BADGES[key]||[Infinity,Infinity,Infinity,Infinity];
+  if(secs<=th[3]) return {name:'Slayer', cls:'b-slayer'};
+  if(secs<=th[2]) return {name:'Gold', cls:'b-gold'};
+  if(secs<=th[1]) return {name:'Silver', cls:'b-silver'};
+  if(secs<=th[0]) return {name:'Bronze', cls:'b-bronze'};
+  return {name:'Novice', cls:''};
+}
+function setStatus(msg,isErr=false){
+  const el=document.getElementById('bf-status'); el.textContent=msg; el.style.color=isErr?'#ff9a9a':'#c8c8d2';
+}
+
+/* Shareable badge card (canvas) */
+const C = document.getElementById('badgeCard');
+const CX = C.getContext('2d');
+function drawCard(key, secs, highlight=false){
+  CX.clearRect(0,0,C.width,C.height);
+  // bg
+  CX.fillStyle = '#0e1217'; CX.fillRect(0,0,C.width,C.height);
+  // accent stripe
+  const grd = CX.createLinearGradient(0,0,C.width,0);
+  grd.addColorStop(0,'#FF9A3D'); grd.addColorStop(1,'#FF6A00');
+  CX.fillStyle = grd; CX.fillRect(0,0,C.width,8);
+
+  // title
+  CX.fillStyle='#fff'; CX.font='700 28px Inter, Arial'; CX.fillText('Hero Training', 18, 44);
+  const nm = (Object.values(FIGHTS).flat().find(f=>f.key===key)?.name) || 'Boss Fight';
+  CX.font='600 20px Inter, Arial'; CX.fillText(nm, 18, 74);
+
+  // time
+  CX.font='800 44px Inter, Arial'; CX.fillStyle=highlight?'#FF6A00':'#dfe6f3';
+  CX.fillText(secs?fmt(secs):'--:--', 18, 124);
+
+  // badge
+  const badge = secs ? badgeFor(key, secs) : {name:'',cls:''};
+  CX.font='700 20px Inter, Arial';
+  CX.fillStyle={
+    'b-bronze':'#c97a3d','b-silver':'#cfd5df','b-gold':'#ffd469','b-slayer':'#ff6a00'
+  }[badge.cls] || '#8ea0b8';
+  CX.fillText(badge.name || 'Aim high', 18, 154);
+
+  // footer
+  CX.font='600 14px Inter, Arial'; CX.fillStyle='#9aa6b8';
+  const dt=new Date().toLocaleDateString();
+  CX.fillText('freefitfuel.com  •  '+dt, 18, 182);
+}
+drawCard('row5k', 0, false);
+
+document.getElementById('bf-mint').addEventListener('click', ()=>{
+  const key=document.getElementById('bf-select').value;
+  const pr=getPR(key) || 0; drawCard(key, pr, true);
+  const a=document.getElementById('bf-download');
+  a.href=C.toDataURL('image/png'); a.style.display='inline-flex';
+});
+
+function fmt(s){ const m=Math.floor(s/60), ss=String(Math.max(0,s%60)).padStart(2,'0'); return `${m}:${ss}`;}
+function parseTime(t){
+  const m = /^(\d{1,2}):([0-5]\d)$/.exec(t || '');
+  return m ? (parseInt(m[1],10)*60 + parseInt(m[2],10)) : 0;
+}
+</script>
+
+<script src="/app.js" defer></script>
+</body>
+</html>

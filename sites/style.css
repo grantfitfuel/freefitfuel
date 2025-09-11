@@ -109,6 +109,9 @@ header.hero-mini .overlay{
   position:absolute; inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6));
 }
+.hero-media .overlay {
+  background: none !important;
+}
 header.hero-mini .content{
   position:static; padding:16px 20px 22px;
   max-width:var(--maxw); margin:0 auto;

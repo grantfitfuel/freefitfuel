@@ -1,231 +1,199 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hero Training — Phase I</title>
-<link rel="stylesheet" href="/style.css?v=31">
-<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-<style>
-.page{max-width:1140px;margin:0 auto;padding:18px 20px}
-h1{font-size:clamp(2rem,1.1rem + 3vw,3rem);margin:.3rem 0}
-.sub{color:#c8c8d2;max-width:70ch}
-
-/* Tabs */
-.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 1.2rem}
-.tab{border:1px solid var(--stroke);background:var(--glass);padding:.45rem .8rem;border-radius:999px;cursor:pointer}
-.tab[aria-selected="true"]{background:#1c2432;color:#9bc4f0;border-color:#2c3a52}
-
-/* Panels */
-.panel{display:none}
-.panel.active{display:block}
-.grid{display:grid;gap:14px}
-@media(min-width:920px){.grid{grid-template-columns:repeat(2,1fr)}}
-
-.card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
-.card h3{margin:.15rem 0 .4rem}
-.card .meta{color:#b6b6c6}
-
-a.link{color:#9bc4f0}
-a.link:hover{color:#FF6A00}
-
-/* checklists */
-.task{display:flex;gap:.6rem;align-items:start;margin:.35rem 0}
-.task input{margin-top:.25rem}
-
-/* sticky helper */
-.helper{position:sticky;top:76px;background:#0e1218;border:1px solid var(--stroke);border-radius:12px;padding:.7rem .8rem;margin:1rem 0}
-.helper strong{color:#ffd54a}
-
-/* Boss mini */
-.mini{display:flex;flex-wrap:wrap;gap:.5rem}
-.btn--ghost{background:#0f1318;border:1px dashed var(--stroke);border-radius:10px;padding:.45rem .7rem}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training • Phase I — Foundation</title>
+  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <style>
+    /* clear, linear layout */
+    .crumb{display:inline-flex;align-items:center;gap:.5rem;margin:.4rem 0 1rem}
+    .toc{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1.1rem}
+    .toc a{border:1px solid var(--stroke);background:var(--glass);padding:.38rem .7rem;border-radius:999px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin:12px 0}
+    .cols{display:grid;gap:12px}
+    @media(min-width:900px){.cols{grid-template-columns:1fr 1fr}}
+    .check{display:flex;align-items:center;gap:.45rem;margin-top:.4rem}
+    .note{color:#cbd0db}
+    .yt a{color:#9bc4f0;text-decoration:underline}
+    .badge{display:inline-flex;gap:.4rem;align-items:center;background:rgba(255,255,255,.06);border:1px solid var(--stroke);padding:.28rem .6rem;border-radius:999px}
+    .boss{background:#1b0f0f;border-color:#4a1f1f}
+  </style>
 </head>
 <body>
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js"></script>
 
-<div id="site-header"></div>
-<script src="/js/header-loader.js"></script>
+  <main class="wrap">
+    <p class="crumb"><a href="/hero-training.html">← Back to Hero Training</a></p>
+    <h1>Phase I — Foundation (Weeks 1–4)</h1>
+    <p class="lead">Learn the movements, build an easy <strong>Zone 2</strong> engine, and do a daily 10-minute mobility. Long run eases up to ~6–8k. Keep it fun and consistent.</p>
 
-<main class="page">
-  <a class="btn--pill" href="/hero-training.html">← Back to Hero Training</a>
-  <h1>Phase I — Foundation (Weeks 1–4)</h1>
-  <p class="sub">Goal this phase: learn the movements, build easy <strong>Zone 2</strong> engine, and
-    hit 10-minute daily mobility. Long run eases up to ~6–8k. Keep it fun and consistent.</p>
+    <nav class="toc" aria-label="Quick nav">
+      <a href="#rhythm">Weekly Rhythm</a>
+      <a href="#strength">Strength Days</a>
+      <a href="#engine">Engine</a>
+      <a href="#mobility">Mobility</a>
+      <a href="#cal">Calisthenics</a>
+      <a href="#boss">Boss Fight (Preview)</a>
+      <a href="#recovery">Recovery</a>
+      <a href="#notes">Notes</a>
+    </nav>
 
-  <!-- tabs -->
-  <nav class="tabs" role="tablist" aria-label="Phase sections">
-    <button class="tab" role="tab" aria-selected="true" data-panel="strength">Strength</button>
-    <button class="tab" role="tab" aria-selected="false" data-panel="engine">Engine</button>
-    <button class="tab" role="tab" aria-selected="false" data-panel="calis">Calisthenics</button>
-    <button class="tab" role="tab" aria-selected="false" data-panel="mob">Mobility</button>
-    <button class="tab" role="tab" aria-selected="false" data-panel="recovery">Recovery</button>
-  </nav>
+    <section id="rhythm" class="section">
+      <strong>Weekly rhythm:</strong> <span class="badge">3× strength</span> · <span class="badge">2–3× engine</span> · <span class="badge">daily 10-min mobility</span>. Check things off to rack XP (stored locally).
+    </section>
 
-  <!-- helper -->
-  <div class="helper">
-    <strong>Weekly rhythm:</strong> 3× strength days • 2–3× engine days • daily 10-min mobility.  
-    Check things off to rack XP (stored locally).
-  </div>
+    <!-- STRENGTH -->
+    <section id="strength" class="section">
+      <h2>Strength Days</h2>
+      <div class="cols">
+        <article class="section">
+          <h3>Day A — Lower + Push</h3>
+          <ul class="yt">
+            <li><a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a> 4×6–10</li>
+            <li><a href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form" target="_blank" rel="noopener">DB Romanian Deadlift</a> 4×8–12</li>
+            <li><a href="https://www.youtube.com/results?search_query=dumbbell+floor+press+how+to" target="_blank" rel="noopener">DB Floor Press</a> 4×8–12</li>
+            <li><a href="https://www.youtube.com/results?search_query=side+plank+form" target="_blank" rel="noopener">Side Plank</a> 3×30–45s/side</li>
+          </ul>
+          <p class="note">Progression: add a rep or a tiny bit of load weekly while keeping <em>perfect</em> form.</p>
+          <label class="check"><input type="checkbox" data-xp="10"> Completed Day A</label>
+        </article>
 
-  <!-- STRENGTH -->
-  <section class="panel active" id="panel-strength">
-    <div class="grid">
-      <article class="card">
-        <h3>Day A — Lower + Push</h3>
-        <ul>
-          <li>Goblet Squat 4×6–10 — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=goblet+squat+form">YouTube</a></li>
-          <li>DB Romanian Deadlift 4×8–12 — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form">YouTube</a></li>
-          <li>DB Floor Press 4×8–12 — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">YouTube</a></li>
-          <li>Side Plank 3×30–45s/side — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=side+plank+form">YouTube</a></li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="10"><label>Completed Day A</label></div>
-      </article>
-
-      <article class="card">
-        <h3>Day B — Hinge + Pull</h3>
-        <ul>
-          <li>KB/DB Deadlift 5×5–8 — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+deadlift+form">YouTube</a></li>
-          <li>One-Arm Row 4×8–12/side — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">YouTube</a></li>
-          <li>Half-Kneeling Press 3×8–12/side — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=half+kneeling+dumbbell+press+form">YouTube</a></li>
-          <li>Carry (Front/Suitcase) 3×40–60m — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=farmers+carry+front+rack+carry+form">YouTube</a></li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="10"><label>Completed Day B</label></div>
-      </article>
-    </div>
-    <p class="meta">Progression: add a rep or a tiny bit of load weekly while keeping <em>perfect</em> form.</p>
-  </section>
-
-  <!-- ENGINE -->
-  <section class="panel" id="panel-engine">
-    <div class="grid">
-      <article class="card">
-        <h3>Easy Engine (Z2)</h3>
-        <p class="meta">2–3 sessions / week • 20–45 mins easy pace. Nasal breathing, can chat in full sentences.</p>
-        <ul>
-          <li>Run / brisk walk / bike / row — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=how+to+find+zone+2+heart+rate">How to find Z2</a></li>
-          <li>End-of-phase long effort ≈ 6–8 km run equivalent</li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="10"><label>Logged an easy engine session</label></div>
-      </article>
-
-      <article class="card">
-        <h3>Tempo Taster</h3>
-        <p class="meta">1 session / week • 20–30 mins incl. 2×5-min “comfortably hard”.</p>
-        <ul>
-          <li>Warm-up 10 min easy → 2×5 min strong with 3 min easy recovery</li>
-          <li>Cool-down 5–10 min</li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="10"><label>Did a tempo taster</label></div>
-      </article>
-    </div>
-
-    <div class="card">
-      <h3>Boss Fight Preview</h3>
-      <p class="meta">Optional check: 5k run/row time or “Row Alternative”. Aim to finish feeling like you could do more.</p>
-      <div class="mini">
-        <a class="btn--ghost" href="/hero-training.html" aria-label="Open boss fights">Open Boss Fights</a>
-        <a class="btn--pill" target="_blank" href="https://www.youtube.com/results?search_query=5k+run+strategy+for+beginners">5k pacing tips</a>
+        <article class="section">
+          <h3>Day B — Hinge + Pull</h3>
+          <ul class="yt">
+            <li><a href="https://www.youtube.com/results?search_query=kettlebell+deadlift+or+dumbbell+deadlift+form" target="_blank" rel="noopener">KB/DB Deadlift</a> 5×5–8</li>
+            <li><a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">One-Arm Row</a> 4×8–12/side</li>
+            <li><a href="https://www.youtube.com/results?search_query=half+kneeling+dumbbell+press+form" target="_blank" rel="noopener">Half-Kneeling Press</a> 3×8–12/side</li>
+            <li><a href="https://www.youtube.com/results?search_query=suitcase+carry+or+front+carry+form" target="_blank" rel="noopener">Carry (Front/Suitcase)</a> 3×40–60m</li>
+          </ul>
+          <label class="check"><input type="checkbox" data-xp="10"> Completed Day B</label>
+        </article>
       </div>
+    </section>
+
+    <!-- ENGINE -->
+    <section id="engine" class="section">
+      <h2>Engine</h2>
+      <div class="cols">
+        <article class="section">
+          <h3>Easy Engine (Z2)</h3>
+          <p class="note">2–3 sessions/week • 20–45 mins easy pace. Nasal breathing, able to chat in full sentences.</p>
+          <ul class="yt">
+            <li>Run / brisk walk / bike / row — <a href="https://www.youtube.com/results?search_query=how+to+find+zone+2+running" target="_blank" rel="noopener">How to find Z2</a></li>
+            <li>End-of-phase long effort ≈ 6–8 km run equivalent</li>
+          </ul>
+          <label class="check"><input type="checkbox" data-xp="10"> Logged an easy engine session</label>
+        </article>
+
+        <article class="section">
+          <h3>Tempo Taster (optional)</h3>
+          <ul>
+            <li>1×/week • 20–30 mins incl. 2×5-min “comfortably hard”</li>
+            <li>Warm-up 10 min easy → 2×5 min strong with 3 min easy recovery → cool-down 5–10 min</li>
+          </ul>
+          <label class="check"><input type="checkbox" data-xp="10"> Did a tempo taster</label>
+        </article>
+      </div>
+    </section>
+
+    <!-- MOBILITY -->
+    <section id="mobility" class="section">
+      <h2>Daily 10: Hips + T-spine</h2>
+      <div class="cols">
+        <article class="section">
+          <ul class="yt">
+            <li><a href="https://www.youtube.com/results?search_query=90+90+hip+flows" target="_blank" rel="noopener">90/90 hip flows</a> — 2–3 min</li>
+            <li><a href="https://www.youtube.com/results?search_query=open+book+thoracic+mobility" target="_blank" rel="noopener">Open book thoracic</a> — 2×8/side</li>
+            <li><a href="https://www.youtube.com/results?search_query=ankle+rocks+mobility" target="_blank" rel="noopener">Ankles (calf rocks)</a> — 2×10</li>
+          </ul>
+          <label class="check"><input type="checkbox" data-xp="5"> 10-minute mobility completed</label>
+        </article>
+
+        <article class="section">
+          <h3>Yoga Reset (1×/wk)</h3>
+          <p><a href="/yoga-meditation.html" target="_blank" rel="noopener">Open Yoga &amp; Meditation</a> — try “Desk Decompress” or “Evening Unwind”.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CALISTHENICS -->
+    <section id="cal" class="section">
+      <h2>Calisthenics — Intro Skills</h2>
+      <div class="cols">
+        <article class="section">
+          <ul class="yt">
+            <li><a href="https://www.youtube.com/results?search_query=hollow+hold+tutorial" target="_blank" rel="noopener">Hollow Hold</a> 3×15–30s</li>
+            <li><a href="https://www.youtube.com/results?search_query=ring+row+form" target="_blank" rel="noopener">Ring/Bar Row</a> 3×8–12</li>
+            <li><a href="https://www.youtube.com/results?search_query=assisted+pull+up+band+form" target="_blank" rel="noopener">Assisted Pull-up practice</a></li>
+            <li><a href="https://www.youtube.com/results?search_query=handstand+wall+walks+beginner" target="_blank" rel="noopener">Handstand wall walks</a> (comfort)</li>
+          </ul>
+          <label class="check"><input type="checkbox" data-xp="10"> Calisthenics practice done</label>
+        </article>
+
+        <article class="section">
+          <h3>Grease-the-Groove (optional)</h3>
+          <p class="note">Pick one skill (e.g., hanging) and do 20–40s holds 2–3×/day away from fatigue.</p>
+          <label class="check"><input type="checkbox" data-xp="5"> GtG day completed</label>
+        </article>
+      </div>
+    </section>
+
+    <!-- BOSS -->
+    <section id="boss" class="section boss">
+      <h2>Boss Fight • Preview (end of Phase I)</h2>
+      <ul>
+        <li>5k row / run time (or equivalent)</li>
+        <li><strong>Row Alternative</strong> (no rower): 5 rounds
+          <ul>
+            <li><a href="https://www.youtube.com/results?search_query=dumbbell+row+strict+form" target="_blank" rel="noopener">DB Row</a> 12/side (strict)</li>
+            <li><a href="https://www.youtube.com/results?search_query=table+rows+inverted+row+form" target="_blank" rel="noopener">Table/Inverted Row</a> 10</li>
+            <li>400 m brisk walk/jog</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="note">Aim to finish feeling like you could do more. Official timer & PR badge unlock in later phases.</p>
+    </section>
+
+    <!-- RECOVERY + NOTES -->
+    <section id="recovery" class="section">
+      <h2>Recovery Hygiene</h2>
+      <ul>
+        <li>Sleep: 7–9h (consistent times)</li>
+        <li>Food: protein 1.6–2.2g/kg; carbs around engine days</li>
+        <li>Hydration: bodyweight(kg) × 30–35 ml baseline</li>
+        <li>Breathing: 5–10 min coherent (in 5 / out 5) — <a href="https://www.youtube.com/results?search_query=coherent+breathing+5+5" target="_blank" rel="noopener">YouTube</a></li>
+      </ul>
+      <label class="check"><input type="checkbox" data-xp="5"> Recovery checklist hit</label>
+    </section>
+
+    <section id="notes" class="section">
+      <h2>Notes</h2>
+      <p>Take private progress photos weekly (not for sharing) to mark your journey. Future-you will be glad.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
-  </section>
+  </footer>
 
-  <!-- CALISTHENICS -->
-  <section class="panel" id="panel-calis">
-    <div class="grid">
-      <article class="card">
-        <h3>Intro Skills (sprinkle after strength)</h3>
-        <ul>
-          <li>Hollow Hold 3×15–30s — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=hollow+body+hold+form">YouTube</a></li>
-          <li>Ring/Bar Row 3×8–12 — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=bodyweight+row+form">YouTube</a></li>
-          <li>Assisted Pull-up Practice — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=band+assisted+pull+up+progression">YouTube</a></li>
-          <li>Handstand Wall Walks (comfort) — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=handstand+wall+walk+progression">YouTube</a></li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="8"><label>Calisthenics practice done</label></div>
-      </article>
-
-      <article class="card">
-        <h3>Grease-the-Groove (optional)</h3>
-        <p class="meta">Pick one skill (e.g., hanging) and do 20–40s holds 2–3×/day away from fatigue.</p>
-        <div class="task"><input type="checkbox" data-xp="6"><label>GtG day completed</label></div>
-      </article>
-    </div>
-  </section>
-
-  <!-- MOBILITY -->
-  <section class="panel" id="panel-mob">
-    <div class="grid">
-      <article class="card">
-        <h3>Daily 10: Hips + T-spine</h3>
-        <ul>
-          <li>90/90 hip flows — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=90+90+hip+mobility+flow">YouTube</a></li>
-          <li>Open book thoracic — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=open+book+thoracic+mobility">YouTube</a></li>
-          <li>Ankles (calf rocks) — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=ankle+mobility+exercises">YouTube</a></li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="5"><label>10-minute mobility completed</label></div>
-      </article>
-
-      <article class="card">
-        <h3>Yoga Reset (1×/wk)</h3>
-        <p class="meta"><a class="link" href="/yoga-meditation.html">Open Yoga & Meditation</a> • try “Desk Decompress” or “Evening Unwind”.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- RECOVERY -->
-  <section class="panel" id="panel-recovery">
-    <div class="grid">
-      <article class="card">
-        <h3>Recovery Hygiene</h3>
-        <ul>
-          <li>Sleep: 7–9h target (consistent times)</li>
-          <li>Food: protein 1.6–2.2g/kg; carbs around engine days</li>
-          <li>Hydration: bodyweight(kg) × 30–35 ml baseline</li>
-          <li>Breathing: 5–10 min coherent (in 5 / out 5) — <a class="link" target="_blank" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">YouTube</a></li>
-        </ul>
-        <div class="task"><input type="checkbox" data-xp="6"><label>Recovery checklist hit</label></div>
-      </article>
-
-      <article class="card">
-        <h3>Notes</h3>
-        <p class="meta">Take private progress photos weekly (not for sharing) to mark your journey. Future-you will be glad.</p>
-      </article>
-    </div>
-  </section>
-</main>
-
-<script>
-/* ----- Tabs ----- */
-const tabs=[...document.querySelectorAll('.tab')];
-const panels={
-  strength:document.getElementById('panel-strength'),
-  engine:document.getElementById('panel-engine'),
-  calis:document.getElementById('panel-calis'),
-  mob:document.getElementById('panel-mob'),
-  recovery:document.getElementById('panel-recovery')
-};
-tabs.forEach(t=>{
-  t.addEventListener('click', ()=>{
-    tabs.forEach(x=>x.setAttribute('aria-selected','false'));
-    t.setAttribute('aria-selected','true');
-    Object.values(panels).forEach(p=>p.classList.remove('active'));
-    panels[t.dataset.panel].classList.add('active');
-  });
-});
-
-/* ----- XP checkboxes (local) ----- */
-function getXP(){return parseInt(localStorage.getItem('phase1XP')||'0',10)}
-function setXP(v){localStorage.setItem('phase1XP', v)}
-document.querySelectorAll('input[type="checkbox"][data-xp]').forEach(box=>{
-  const key='p1_' + Math.random().toString(36).slice(2);
-  // lightweight persistence: only add if not seen (optional)
-  box.addEventListener('change', ()=>{
-    if(box.checked){ setXP(getXP() + parseInt(box.dataset.xp,10)); }
-    else { setXP(Math.max(0, getXP() - parseInt(box.dataset.xp,10))); }
-  });
-});
-</script>
-
-<script src="/app.js" defer></script>
+  <script>
+    // tiny XP logger (adds per checkbox)
+    const KEY='hero_xp';
+    const checks=[...document.querySelectorAll('input[type="checkbox"][data-xp]')];
+    function get(){return +localStorage.getItem(KEY)||0}
+    function set(v){localStorage.setItem(KEY, v)}
+    checks.forEach(cb=>{
+      cb.addEventListener('change',()=>{
+        if(cb.checked){ set(get()+(+cb.dataset.xp||0)); }
+      });
+    });
+  </script>
 </body>
 </html>

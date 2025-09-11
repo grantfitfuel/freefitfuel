@@ -93,71 +93,20 @@ h1{ margin:.6rem 0 .5rem; font-weight:800; letter-spacing:.2px; font-size:clamp(
 /* =========================================
    HERO — shared (fixed)
    ========================================= */
-
-/* Mini hero (used on ideas / workouts / endurance / nutrition / chill / contact) */
-header.hero-mini{ position:relative; border-bottom:1px solid #1b1b22 }
-header.hero-mini figure{ margin:0; position:relative; overflow:hidden }
-header.hero-mini figure > img{
+header.hero-mini figure > img,
+header.hero .hero-media img{
   width:100% !important;
   height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-  min-height:0 !important;
-  max-height:none !important;
   object-fit:cover !important;
-  object-position:center 12%;
-  display:block;
-  filter:brightness(.88) saturate(1.05);
-}
-/* Overlay should be positioned but transparent (no gradient) */
-header.hero-mini .overlay{
-  position:absolute; inset:0; pointer-events:none;
-  background:none !important;
-}
-
-/* Put the text UNDER the image by default */
-header.hero-mini .content{
-  position:static; inset:auto; /* keep text below */
-  padding:16px 20px 22px;
-  max-width:var(--maxw); margin:0 auto;
-}
-
-header.hero-mini h1{ margin:0 0 .35rem }
-header.hero-mini p{ max-width:70ch; margin:.2rem 0 .6rem; color:#d0d0da }
-
-/* Full hero (home) */
-header.hero{ position:relative; border-bottom:1px solid #1b1b22 }
-header.hero .hero-media{ position:relative; margin:0 }
-header.hero .hero-media img{
-  width:100%;
-  height:clamp(300px,46vh,520px); /* not overbearing */
-  object-fit:cover; object-position:center 35%;
+  object-position:center 35%;
   display:block;
 }
-/* Keep overlay element but make it transparent + positioned */
-header.hero .overlay{
-  position:absolute; inset:0; pointer-events:none;
-  background:none !important;
-}
-
-/* Optional: if you ever want a page WITH a gradient overlay,
-   add class="has-gradient" to the header element */
-header.has-gradient .overlay{
-  background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6)) !important;
-}
-
-/* Optional alternate hero blocks elsewhere */
-.page-hero{ margin:0 0 14px }
-.page-hero img{
-  width:100%; height:auto !important;
-  max-height:clamp(220px, 42vh, 520px);
-  object-fit:cover; display:block;
-  border-radius:12px; border:1px solid var(--stroke);
-}
+header.hero-mini .overlay,
+header.hero .overlay{ background:none !important; }
 
 /* =========================================
    Components
    ========================================= */
-
-/* Buttons */
 .btn{
   display:inline-flex; align-items:center; gap:.55rem;
   padding:.85rem 1.15rem; border-radius:12px; font-weight:800; border:0;
@@ -167,101 +116,85 @@ header.has-gradient .overlay{
 
 .btn--pill{
   display:inline-flex; align-items:center; gap:.35rem;
-  border:1px solid var(--stroke); background:var(--glass); color:var(--ink);
+  border:2px solid #000; background:var(--glass); color:var(--ink);
   border-radius:999px; padding:.34rem .65rem; font-size:.9rem; text-decoration:none;
 }
 .btn--pill:hover{ color:var(--accent) }
-.btn-row{ display:flex; flex-wrap:wrap; gap:.45rem }
 
-/* Mini-nav (pills) */
 .mini-nav{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.75rem 0 1rem }
-.mini-nav a{
-  border:1px solid var(--stroke); background:var(--glass); color:var(--ink);
-  text-decoration:none; padding:.38rem .75rem; border-radius:999px; font-size:.92rem;
-}
-.mini-nav a:hover{ color:var(--accent) }
-
-/* Cards, grids, splits */
-.grid{ display:grid; gap:14px; margin:22px 0 }
-@media(min-width:780px){ .grid.three{ grid-template-columns:repeat(3,1fr) } }
-@media(min-width:900px){ .grid.cols2{ grid-template-columns:repeat(2,1fr) } }
-.card{
-  background:var(--glass); border:1px solid var(--stroke);
-  border-radius:var(--radius); padding:14px;
-}
-.card h2, .card h3{ margin:.1rem 0 .4rem }
-
-.split{ display:grid; gap:14px; align-items:center; margin:26px 0 }
-@media(min-width:900px){ .split{ grid-template-columns:1.15fr 1fr } }
-.split figure{ margin:0; border-radius:16px; border:1px solid var(--stroke); overflow:hidden; background:var(--glass) }
-.split img{ width:100%; height:320px; object-fit:cover; object-position:center 45% }
+.mini-nav a{ border:1px solid var(--stroke); background:var(--glass); color:var(--ink); padding:.38rem .75rem; border-radius:999px; font-size:.92rem }
 
 /* =========================================
    Footer
    ========================================= */
-.site-footer{
-  background:var(--blue); border-top:1px solid #cfd9e6; text-align:center;
-}
-.site-footer .container{
-  max-width:var(--maxw); margin:0 auto; padding:20px;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-}
+.site-footer{ background:var(--blue); border-top:1px solid #cfd9e6; text-align:center }
+.site-footer .container{ max-width:var(--maxw); margin:0 auto; padding:20px; display:flex; flex-direction:column; align-items:center; gap:8px }
 .site-footer img{ height:64px }
 .site-footer p{ margin:4px 0; color:#111 }
 .site-footer .credit{ font-weight:700 }
 
 /* =========================================
-   Dialog / Modal
+   Hero-Training Comic Styles
    ========================================= */
-dialog#recipeModal{
-  background:#111 !important; color:var(--ink);
-  border:1px solid var(--stroke); border-radius:12px;
+.hero-training-page h1,
+.hero-training-page h2{
+  font-family:"Bangers", Impact, sans-serif;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  text-shadow:2px 2px #000;
 }
-dialog#recipeModal .modal-inner{ padding:16px }
-dialog::backdrop{ background:rgba(0,0,0,.6) }
-
-.macros{ display:flex; flex-wrap:wrap; gap:10px; margin:.4rem 0 .2rem }
-.macro-chip{
-  background:#0f0f15; border:1px solid #2b2b36; border-radius:999px;
-  padding:.18rem .55rem; font-size:.9rem; white-space:nowrap;
+.hero-training-page .phase-card{
+  background:#fff;
+  border:4px solid #000;
+  border-radius:12px;
+  padding:1rem;
+  margin:1rem 0;
+  box-shadow:6px 6px 0 #000;
+  transition:transform .2s ease;
 }
-
-/* =========================================
-   Print — recipe card & general
-   ========================================= */
-@media print {
-  html, body { background:#fff !important; color:#000 !important; }
-  * { background:transparent !important; color:#000 !important;
-      box-shadow:none !important; text-shadow:none !important;
-      border-color:#000 !important; }
-
-  #printArea { display:block !important; color:#000 !important; background:#fff !important; visibility:visible !important; }
-  body > *:not(#printArea) { display:none !important; }
-
-  #printArea article { margin:0 !important; padding:0 !important; border:0 !important; }
-  #printArea h1, #printArea h2, #printArea h3 { color:#000 !important; margin:.2rem 0; }
-  #printArea p, #printArea li { line-height:1.35; }
-  #printArea img { display:none !important; }
-  @page { margin:12mm; }
+.hero-training-page .phase-card:hover{
+  transform:translateY(-4px) rotate(-1deg);
 }
-
-/* =========================================
-   PAGE-SPECIFIC FIXES
-   ========================================= */
-
-/* Home hero fix already above */
-
-/* Yoga & Meditation hero */
-header.hero-mini.yoga-hero figure{
-  background:#000; /* black bars if needed */
+.hero-training-page .goal-pill{
+  display:inline-block;
+  padding:.4rem .8rem;
+  border-radius:999px;
+  font-weight:bold;
+  color:#000;
+  margin:.2rem;
+  border:3px solid #000;
 }
-header.hero-mini.yoga-hero figure > img{
-  height:clamp(320px,48vh,560px) !important;
-  object-fit:contain !important;
-  object-position:center center !important;
+.goal-pill.strength{ background:#ff4d4d; }
+.goal-pill.engine{ background:#4da6ff; }
+.goal-pill.calis{ background:#ffd633; }
+.goal-pill.recovery{ background:#66ff66; }
+
+.hero-training-page .speech-bubble{
+  position:relative;
+  background:#fff;
+  border:3px solid #000;
+  padding:.8rem 1rem;
+  border-radius:12px;
+  font-family:"Comic Sans MS", cursive, sans-serif;
+  margin:1rem 0;
+}
+.hero-training-page .speech-bubble:after{
+  content:"";
+  position:absolute;
+  bottom:-20px; left:40px;
+  border-width:20px 20px 0;
+  border-style:solid;
+  border-color:#fff transparent;
   display:block;
-  filter:brightness(.96) saturate(1.03);
+  width:0;
 }
-header.hero-mini.yoga-hero .content{
-  position:static;
+.hero-training-page .speech-bubble:before{
+  content:"";
+  position:absolute;
+  bottom:-24px; left:38px;
+  border-width:24px 24px 0;
+  border-style:solid;
+  border-color:#000 transparent;
+  display:block;
+  width:0;
 }

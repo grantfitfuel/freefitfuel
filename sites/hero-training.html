@@ -4,221 +4,129 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="stylesheet" href="/style.css?v=60">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-  <style>
-    /* ===== Page-scope (fun + consistent) ===== */
-    :root{
-      --fun1:#FF6A00; --fun2:#FF9A3D; --fun3:#7F5BFF; --fun4:#22D1EE; --fun5:#14F195;
-      --chip:#ffffff10; --chipbd:#ffffff2a;
-    }
-    /* Hero – no gradient, image only */
-    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-    header.hero-mini figure{margin:0;position:relative;overflow:hidden}
-    header.hero-mini figure img{
-      width:100%;height:clamp(300px,46vh,520px);object-fit:cover;object-position:center 35%;
-      display:block;filter:brightness(.97) saturate(1.02);
-    }
-    header.hero-mini .overlay{display:none !important}
-    header.hero-mini .content{display:none} /* no title/text over hero */
-
-    /* Fun pills (section nav) */
-    .fun-pills{display:flex;flex-wrap:wrap;gap:.55rem;margin:12px 0 10px}
-    .fun-pills a{
-      --bg:linear-gradient(90deg,var(--fun2),var(--fun1));
-      display:inline-flex;align-items:center;gap:.5rem;
-      padding:.5rem .85rem;border-radius:999px;border:1px solid var(--chipbd);
-      background:var(--bg);color:#111;font-weight:800;text-decoration:none;
-      box-shadow:0 2px 0 rgba(0,0,0,.25);transform:translateY(0);
-      transition:transform .15s ease, filter .15s ease;
-    }
-    .fun-pills a:hover{transform:translateY(-1px);filter:brightness(1.05)}
-    .fun-pills a[data-c="vio"]{background:linear-gradient(90deg,#A78BFA,#7C3AED)}
-    .fun-pills a[data-c="cy"]{background:linear-gradient(90deg,#67E8F9,#22D3EE)}
-    .fun-pills a[data-c="gr"]{background:linear-gradient(90deg,#34D399,#10B981)}
-    .fun-pills a[data-c="or"]{background:linear-gradient(90deg,#FF9A3D,#FF6A00)}
-
-    /* Cards + goal tags */
-    .deck{display:grid;gap:14px;margin:12px 0}
-    @media(min-width:960px){.deck{grid-template-columns:repeat(3,1fr)}}
-    .cardX{
-      background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:14px;
-      display:flex;flex-direction:column;gap:.45rem;
-    }
-    .goal-tags{display:flex;flex-wrap:wrap;gap:.4rem}
-    .tag{
-      display:inline-flex;align-items:center;gap:.4rem;
-      border:1px solid var(--chipbd);background:var(--chip);border-radius:999px;
-      padding:.25rem .6rem;font-size:.84rem
-    }
-    .tag i{width:.55rem;height:.55rem;border-radius:50%;display:inline-block}
-    .t-strength i{background:#FF6A00}
-    .t-engine i{background:#22D1EE}
-    .t-hybrid i{background:#A78BFA}
-    .t-mobility i{background:#14F195}
-    .t-recovery i{background:#9CA3AF}
-
-    .list{margin:.2rem 0 .2rem;padding-left:1.1rem}
-    .list li{margin:.18rem 0}
-    .list a{color:var(--ink);text-decoration:underline dotted}
-    .list a:hover{color:var(--accent)}
-
-    /* Phase row */
-    .phase-row{display:grid;gap:14px;margin:16px 0}
-    @media(min-width:820px){.phase-row{grid-template-columns:repeat(4,1fr)}}
-    .phase a{
-      display:block;border:1px solid var(--stroke);border-radius:14px;background:var(--glass);
-      padding:14px;text-align:center;font-weight:800;text-decoration:none
-    }
-    .phase a:hover{color:var(--accent)}
-  </style>
 </head>
-<body>
-  <!-- Shared header -->
+<body class="hero-mode">
+  <!-- Header -->
   <div id="site-header"></div>
   <script src="/js/header-loader.js"></script>
 
-  <!-- HERO (image only) -->
-  <header class="hero-mini" role="banner" aria-label="Hero Training hero">
-    <figure>
-      <img src="/img/hero-training.jpg" alt="Hero Training montage: lifting, running, mobility">
+  <!-- HERO -->
+  <header class="hero hero-rainbow" role="banner" aria-label="Hero Training hero">
+    <figure class="hero-media">
+      <img src="/img/hero-training.jpg" alt="Colourful training montage">
       <div class="overlay" aria-hidden="true"></div>
     </figure>
+    <div class="hero-content wrap">
+      <span class="eyebrow">Year-Long Transformation</span>
+      <h1 class="comic-title">Hero Training</h1>
+      <p class="lead comic-sub">Fun, gamified progression to a stronger, faster, more capable you. Collect badges, smash Trials, and build habits that stick.</p>
+      <div class="pills">
+        <a class="pill" href="#engines" aria-label="Strength Engine">💪 Strength</a>
+        <a class="pill" href="#engines" aria-label="Calisthenics">🤸 Calisthenics</a>
+        <a class="pill" href="#engines" aria-label="Mobility">🌀 Mobility</a>
+        <a class="pill" href="#engines" aria-label="Recovery">🛌 Recovery</a>
+      </div>
+      <div class="xp" aria-label="Your XP progress"><span style="width:18%"></span></div>
+    </div>
+    <div class="sparkle">
+      <!-- tiny animated comic star -->
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M32 7l4 13 13 4-13 4-4 13-4-13-13-4 13-4 4-13Z" fill="#FFD93B"/>
+      </svg>
+    </div>
   </header>
 
   <main class="wrap">
-    <!-- Colourful buttons -->
-    <nav class="fun-pills" aria-label="Sections">
-      <a href="#overview" data-c="or">Overview</a>
-      <a href="#strength" data-c="vio">Strength Engine</a>
-      <a href="#calis" data-c="gr">Calisthenics</a>
-      <a href="#mobility" data-c="cy">Mobility</a>
-      <a href="#recovery" data-c="or">Recovery</a>
-      <a href="#phases" data-c="vio">Phases</a>
-    </nav>
+    <!-- Phase tiles -->
+    <section aria-label="Phases">
+      <h2 class="comic-title" style="font-size:1.6rem;margin:.2rem 0 .6rem;">Pick Your Phase</h2>
+      <div class="grid-panels">
+        <article class="panel">
+          <h3>Phase I — Foundation</h3>
+          <p class="meta">Build consistency. Learn movements. Find your rhythm.</p>
+          <div class="badge-row">
+            <span class="badge">🔰 <i>Starter</i></span>
+            <span class="badge">🎯 <i>Form First</i></span>
+            <span class="badge">🔥 <i>Z2 streak</i></span>
+          </div>
+          <p class="hint">Z2 = Zone 2 heart-rate cardio pace (easy conversational effort).</p>
+          <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
+        </article>
 
-    <section id="overview" class="cardX">
-      <h1 class="accent">Hero Training</h1>
-      <p class="meta">A colourful, gamified programme to take you from “getting going” to **Hybrid Hero** (marathon-capable engine, strong-as-hell basics, bendy & bulletproof).</p>
-      <div class="goal-tags">
-        <span class="tag t-strength"><i></i>Strength</span>
-        <span class="tag t-engine"><i></i>Engine</span>
-        <span class="tag t-hybrid"><i></i>Hybrid</span>
-        <span class="tag t-mobility"><i></i>Mobility</span>
-        <span class="tag t-recovery"><i></i>Recovery</span>
+        <article class="panel">
+          <h3>Phase II — Build</h3>
+          <p class="meta">Add volume, tighten form, introduce challenges.</p>
+          <div class="badge-row">
+            <span class="badge">⬆️ <i>Progressive</i></span>
+            <span class="badge">🧠 <i>Skill</i></span>
+            <span class="badge">🏃 <i>Engine</i></span>
+          </div>
+          <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
+        </article>
+
+        <article class="panel">
+          <h3>Phase III & IV — Peak & Marathon</h3>
+          <p class="meta">Blend strength + engine + resilience. Aim: marathon-ready by 12 months.</p>
+          <div class="badge-row">
+            <span class="badge">🏅 <i>Milestones</i></span>
+            <span class="badge">🧭 <i>Hybrid</i></span>
+            <span class="badge">🕒 <i>Consistency</i></span>
+          </div>
+          <a class="btn" href="/hero-phase-3.html">Coming Soon</a>
+        </article>
       </div>
     </section>
 
-    <section id="strength" class="deck" aria-label="Strength Engine">
-      <article class="cardX">
-        <h3>Strength Engine — Pillars</h3>
-        <ul class="list">
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+squat+form">DB Squat</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a></li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+row+form">DB Row</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=concentration+curl+form">Concentration Curl</a></li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+proper+form">Push-up</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">Floor Press</a></li>
-        </ul>
-        <div class="goal-tags">
-          <span class="tag t-strength"><i></i>Strength</span>
-          <span class="tag t-hybrid"><i></i>Hybrid</span>
+    <!-- Engines quick links -->
+    <section id="engines" style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Your Engines</h2>
+      <div class="pills">
+        <a class="pill" href="/workouts.html">💪 Strength Engine</a>
+        <a class="pill" href="/workouts.html">🤸 Calisthenics Engine</a>
+        <a class="pill" href="/yoga-meditation.html">🌀 Mobility & Breath</a>
+        <a class="pill" href="/wellbeing.html">🛌 Recovery & Sleep</a>
+      </div>
+      <p class="meta">These are just shortcuts to the parts of the site that support each “engine”.</p>
+    </section>
+
+    <!-- Trials (boss fights) -->
+    <section style="margin-top:18px">
+      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Trials (Optional Boss Fights)</h2>
+
+      <article class="trial" aria-labelledby="trial-run">
+        <h3 id="trial-run">Trial: 5k Run OR Equivalents</h3>
+        <p class="meta">Pick one: 5k run, or <strong>Row 5k</strong>, or <strong>5 rounds</strong> of 3-min fast walk + 2-min jog (beginner). Log your best!</p>
+        <div class="row" style="margin:.4rem 0">
+          <label>Time (mm:ss)
+            <input id="t5k" type="text" placeholder="27:45">
+          </label>
+          <button class="btn" id="save5k">Save PR</button>
+          <span id="out5k" class="hint"></span>
         </div>
+        <p class="meta">Form refreshers:
+          <a href="https://www.youtube.com/results?search_query=5k+running+form+tips" target="_blank" rel="noopener">Run Form</a> ·
+          <a href="https://www.youtube.com/results?search_query=5k+row+technique" target="_blank" rel="noopener">Row Form</a>
+        </p>
       </article>
-      <article class="cardX">
-        <h3>Engine — Marathon Path</h3>
-        <ul class="list">
-          <li>Weeks build Z2 volume → tempo → long-run</li>
-          <li>Cross-Options: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=boxer+skip+technique">Skipping</a> / <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=airdyne+assault+bike+zone+2">Bike</a> / <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=running+cadence+drills">Run</a></li>
-        </ul>
-        <div class="goal-tags">
-          <span class="tag t-engine"><i></i>Engine</span>
+
+      <article class="trial" aria-labelledby="trial-strength" style="margin-top:12px">
+        <h3 id="trial-strength">Trial: Strength AMRAP (12 min)</h3>
+        <p class="meta">As Many Rounds As Possible — 8 DB goblet squats · 8 push-ups · 8 bent-over rows. Scale reps as needed.</p>
+        <div class="row" style="margin:.4rem 0">
+          <label>Rounds
+            <input id="amrap" type="number" min="0" step="1" placeholder="7">
+          </label>
+          <button class="btn" id="saveAmrap">Save PR</button>
+          <span id="outAmrap" class="hint"></span>
         </div>
+        <p class="meta">Technique:
+          <a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a> ·
+          <a href="https://www.youtube.com/results?search_query=push+up+form" target="_blank" rel="noopener">Push-up</a> ·
+          <a href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form" target="_blank" rel="noopener">DB Row</a>
+        </p>
       </article>
-      <article class="cardX">
-        <h3>Boss Fights (Trials)</h3>
-        <ul class="list">
-          <li>AMRAP 10: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=burpee+strict+form">Burpee</a> + <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+press+dumbbell+form">DB Push Press</a></li>
-          <li>5k Row / Run *or* alt: <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+bodyweight+form">Table Rows</a> + <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=farmers+carry+dumbbells+form">Farmer Carry</a> circuit</li>
-        </ul>
-        <div class="goal-tags">
-          <span class="tag t-hybrid"><i></i>Hybrid</span>
-        </div>
-      </article>
-    </section>
-
-    <section id="calis" class="deck" aria-label="Calisthenics">
-      <article class="cardX">
-        <h3>Calisthenics Staples</h3>
-        <ul class="list">
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=negative+pull+ups+form">Negative Pull-ups</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bodyweight+row+table+row+form">Bodyweight Rows</a></li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=pike+push+up+form">Pike Push-up</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dip+bench+form">Bench Dips</a></li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=squat+to+box+form">Box Squat</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=split+squat+form">Split Squat</a></li>
-        </ul>
-        <div class="goal-tags"><span class="tag t-strength"><i></i>Strength</span></div>
-      </article>
-      <article class="cardX">
-        <h3>Skill Paths</h3>
-        <ul class="list">
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=chin+up+progression">Chin-up Progression</a> → <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=pull+up+form+strict">Pull-up</a></li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=l-sit+progression">L-sit</a> / <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=handstand+kick+up+drills">HS Kick-ups</a> (optional)</li>
-        </ul>
-        <div class="goal-tags"><span class="tag t-hybrid"><i></i>Hybrid</span></div>
-      </article>
-      <article class="cardX">
-        <h3>Why This Rocks</h3>
-        <p class="meta">Stronger joints, connective tissue & core → better running economy and safer volume.</p>
-        <div class="goal-tags"><span class="tag t-mobility"><i></i>Mobility</span></div>
-      </article>
-    </section>
-
-    <section id="mobility" class="deck" aria-label="Mobility">
-      <article class="cardX">
-        <h3>Daily 8–10 min</h3>
-        <ul class="list">
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hips+90+90+mobility">Hips 90/90</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=thoracic+openers+mobility">T-spine Openers</a></li>
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+drills">Ankles DF</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=calf+eccentric+heel+drop">Calf Eccentrics</a></li>
-        </ul>
-        <div class="goal-tags"><span class="tag t-mobility"><i></i>Mobility</span></div>
-      </article>
-      <article class="cardX">
-        <h3>Pre-Run Prep</h3>
-        <ul class="list">
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=a-skip+drills+running">A-Skips</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=butt+kicks+drill+running">Butt Kicks</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=high+knees+drill+running">High Knees</a></li>
-        </ul>
-        <div class="goal-tags"><span class="tag t-engine"><i></i>Engine</span></div>
-      </article>
-      <article class="cardX">
-        <h3>Evening Reset</h3>
-        <ul class="list">
-          <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=legs+up+the+wall+viparita+karani">Legs-Up-the-Wall</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+how+to">Box Breathing</a></li>
-        </ul>
-        <div class="goal-tags"><span class="tag t-recovery"><i></i>Recovery</span></div>
-      </article>
-    </section>
-
-    <section id="recovery" class="deck" aria-label="Recovery">
-      <article class="cardX">
-        <h3>Recovery Potion</h3>
-        <ul class="list">
-          <li>Sleep: fixed wake time, dark cool room</li>
-          <li>Fuel: protein + fibre + hydration</li>
-          <li>Deload: 1 easy week every 4–6</li>
-        </ul>
-        <div class="goal-tags"><span class="tag t-recovery"><i></i>Recovery</span></div>
-      </article>
-      <article class="cardX">
-        <h3>Photo Log (Private)</h3>
-        <p class="meta">Weekly photos for your eyes only. See real change → motivation boost.</p>
-      </article>
-      <article class="cardX">
-        <h3>Boss Fights & Badges</h3>
-        <p class="meta">PR a trial = earn a badge (coming soon).</p>
-      </article>
-    </section>
-
-    <section id="phases" class="phase-row" aria-label="Phases">
-      <div class="phase"><a href="/hero-phase-1.html">Phase I — Base</a></div>
-      <div class="phase"><a href="/hero-phase-2.html">Phase II — Build</a></div>
-      <div class="phase"><a href="/hero-phase-3.html">Phase III — Peak</a></div>
-      <div class="phase"><a href="/hero-phase-4.html">Phase IV — Marathon</a></div>
     </section>
   </main>
 
@@ -229,5 +137,33 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <script>
+    // Simple localStorage PR saver
+    function savePR(key, val){
+      try{ localStorage.setItem(key, val); }catch{}
+    }
+    function getPR(key, val){ try{ return localStorage.getItem(key)||val; }catch{ return val; } }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const t5k = document.getElementById('t5k');
+      const o5k = document.getElementById('out5k');
+      t5k.value = getPR('pr_5k', '');
+      document.getElementById('save5k').addEventListener('click', ()=>{
+        if(!t5k.value.trim()){ o5k.textContent='Enter a time first.'; return; }
+        savePR('pr_5k', t5k.value.trim());
+        o5k.textContent = 'Saved! 🏅';
+      });
+
+      const am = document.getElementById('amrap');
+      const oa = document.getElementById('outAmrap');
+      am.value = getPR('pr_amrap12', '');
+      document.getElementById('saveAmrap').addEventListener('click', ()=>{
+        if(!am.value.trim()){ oa.textContent='Enter rounds first.'; return; }
+        savePR('pr_amrap12', am.value.trim());
+        oa.textContent = 'Saved! 🏅';
+      });
+    });
+  </script>
 </body>
 </html>

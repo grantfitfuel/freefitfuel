@@ -1,170 +1,268 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=31" />
-  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero Training — FreeFitFuel</title>
+<link rel="stylesheet" href="/style.css?v=31">
+<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
-  <style>
-    /* Page-local polish */
-    .ht-wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-    .title{margin:.4rem 0 0;font-size:clamp(2.2rem,1.5rem + 2.8vw,3.2rem);font-weight:900;letter-spacing:.2px}
-    .tagline-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1.1rem}
-    .pill{
-      display:inline-flex;align-items:center;gap:.45rem;
-      padding:.42rem .8rem;border-radius:999px;font-weight:700;font-size:.92rem;
-      color:#111;border:1px solid rgba(0,0,0,.12); box-shadow:0 2px 0 rgba(0,0,0,.15)
-    }
-    .p-strength{background:#FF8C3A}
-    .p-engine{background:#6EB6FF}
-    .p-cali{background:#37D07E}
-    .p-mob{background:#B384FF;color:#fff;border-color:rgba(255,255,255,.25)}
-    .p-recov{background:#FFD54D}
-    .p-boss{background:#FF6B6B;color:#fff;border-color:rgba(255,255,255,.25)}
+<style>
+/* ---------- Page theme (scoped) ---------- */
+:root{
+  --chipStrength:#ff8a00; --chipEngine:#55a9ff; --chipCali:#27c46b;
+  --chipMob:#a56cf5; --chipRec:#ffd54a; --chipBoss:#ff5555;
+}
 
-    /* XP bar */
-    .xp{display:flex;align-items:center;gap:.6rem;margin:.6rem 0 1.1rem}
-    .xp-label{font-weight:800;background:rgba(255,255,255,.06);border:1px solid var(--stroke);padding:.35rem .6rem;border-radius:10px}
-    .xp-rail{flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--stroke)}
-    .xp-fill{height:100%;width:35%;background:linear-gradient(90deg,#FF8C3A,#FF6A00)}
-    .xp-amt{background:rgba(255,255,255,.06);border:1px solid var(--stroke);padding:.3rem .55rem;border-radius:10px;font-weight:800}
+.page{max-width:1140px;margin:0 auto;padding:18px 20px}
+h1{font-size:clamp(2.2rem,1.3rem + 3.2vw,3.2rem);margin:.2rem 0}
+.sub{color:#c8c8d2;max-width:70ch}
 
-    /* Filter chips (interactive) */
-    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1rem}
-    .chip{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.45rem .8rem;border-radius:999px;cursor:pointer;font-weight:700}
-    .chip.active{outline:2px solid #fff;outline-offset:2px}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 1.2rem}
+.chip{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.5rem .9rem;border-radius:999px;color:#111;font-weight:800;
+  box-shadow:0 2px 0 rgba(0,0,0,.2);border:1px solid rgba(0,0,0,.15);
+  cursor:pointer;user-select:none
+}
+.chip[data-kind="strength"]{background:var(--chipStrength)}
+.chip[data-kind="engine"]{background:var(--chipEngine)}
+.chip[data-kind="calis"]{background:var(--chipCali)}
+.chip[data-kind="mob"]{background:var(--chipMob);color:#fff}
+.chip[data-kind="rec"]{background:var(--chipRec)}
+.chip[data-kind="boss"]{background:var(--chipBoss)}
 
-    /* Phase grid */
-    .phases{display:grid;gap:14px}
-    @media (min-width:920px){.phases{grid-template-columns:repeat(3,1fr)}}
-    .phase{
-      background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:16px;
-      padding:14px;display:flex;flex-direction:column;gap:.65rem
-    }
-    .phase h2{margin:.1rem 0 .2rem;font-size:1.15rem}
-    .phase .meta{color:var(--inkdim)}
-    .phase .row{display:flex;gap:.5rem;flex-wrap:wrap}
-    .badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:999px;padding:.28rem .55rem;font-weight:700;border:1px solid var(--stroke);background:var(--glass)}
-    .focus{align-self:flex-start;background:#111418;border:1px solid var(--stroke);padding:.35rem .6rem;border-radius:999px}
-    .btn{display:inline-flex;align-items:center;gap:.5rem;background:#FF6A00;color:#111;border:0;border-radius:12px;padding:.7rem 1rem;font-weight:800}
-    .btn:hover{filter:brightness(1.05)}
-    .btn--ghost{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:12px;padding:.7rem 1rem;font-weight:800}
-  </style>
+/* level bar */
+.level{
+  display:flex;align-items:center;gap:.6rem;margin:.6rem 0 1.2rem
+}
+.level .bar{flex:1;height:10px;border-radius:999px;background:#20222b;overflow:hidden}
+.level .bar>span{display:block;height:100%;background:linear-gradient(90deg,#ff6a00,#ffc107);width:35%}
+.level .tag{background:#0f1218;border:1px solid var(--stroke);padding:.25rem .6rem;border-radius:999px}
+
+/* phases */
+.grid{display:grid;gap:14px}
+@media(min-width:960px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+.phase{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:14px;
+  padding:14px;display:flex;flex-direction:column;gap:.65rem
+}
+.phase h3{margin:.1rem 0 .15rem}
+.phase .meta{color:#b8b8c8;font-size:.95rem}
+.actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid var(--stroke);
+  padding:.35rem .6rem;font-size:.9rem}
+
+/* Boss modal */
+dialog#boss{
+  background:#0e1218;border:1px solid var(--stroke);border-radius:14px;padding:0;
+  max-width:min(820px,92vw)
+}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.b-head{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;border-bottom:1px solid var(--stroke)}
+.b-body{padding:1rem;display:grid;gap:1rem}
+.row{display:grid;gap:.6rem}
+@media(min-width:820px){.row{grid-template-columns:1.1fr .9fr}}
+.card{background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:12px;padding:.7rem .8rem}
+.controls{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+input,select,button{background:#0b0f14;color:#f7f7fb;border:1px solid var(--stroke);border-radius:8px;padding:.45rem .6rem}
+button.primary{background:var(--accent);color:#111;border:0;font-weight:800}
+.pr{display:flex;gap:.5rem;flex-wrap:wrap}
+.pr .medal{background:#212736;border:1px solid #33415c;border-radius:999px;padding:.25rem .55rem}
+canvas#card{width:100%;max-width:420px;border:1px dashed var(--stroke);border-radius:10px}
+.small{font-size:.92rem;color:#c8c8d2}
+
+/* utility links */
+a.link{color:#9bc4f0}
+a.link:hover{color:#FF6A00}
+</style>
 </head>
 <body>
-  <!-- Shared header -->
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js" defer></script>
 
-  <main class="ht-wrap">
-    <h1 class="title">Hero Training</h1>
+<!-- shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
 
-    <!-- colourful tagline pills (fun, not random) -->
-    <div class="tagline-row" aria-label="What’s inside">
-      <span class="pill p-strength">💪 Strength</span>
-      <span class="pill p-engine">🚴 Engine</span>
-      <span class="pill p-cali">🧗 Calisthenics</span>
-      <span class="pill p-mob">🧘 Mobility</span>
-      <span class="pill p-recov">😴 Recovery</span>
-      <span class="pill p-boss">👹 Boss Fights</span>
-    </div>
+<main class="page">
+  <p class="small">Hybrid transformation</p>
+  <h1>Hero Training</h1>
+  <p class="sub">Four phases. Weekly quests. Boss fights. Track XP, earn badges, and aim the engine toward a
+    <strong>marathon</strong> finish within 12 months—while getting stronger and sharper at calisthenics.</p>
 
-    <p class="meta" style="margin:.2rem 0 1.1rem">
-      Four phases. Weekly quests. Boss fights. Track XP and watch your badges light up.
-      Tip: click a coloured chip to highlight phases with more of that theme.
-    </p>
+  <!-- colorful chips (filter + fun) -->
+  <div class="chips" id="chips">
+    <span class="chip" data-kind="strength">💪 Strength</span>
+    <span class="chip" data-kind="engine">🏃 Engine</span>
+    <span class="chip" data-kind="calis">🤸 Calisthenics</span>
+    <span class="chip" data-kind="mob">🧘 Mobility</span>
+    <span class="chip" data-kind="rec">🌙 Recovery</span>
+    <button class="chip" data-kind="boss" id="openBoss">🗡️ Boss Fights</button>
+  </div>
 
-    <!-- chips to “highlight” focus areas (just visual cues here) -->
-    <div class="chips" id="chips">
-      <button class="chip" data-key="strength">Strength</button>
-      <button class="chip" data-key="engine">Engine</button>
-      <button class="chip" data-key="cali">Calisthenics</button>
-      <button class="chip" data-key="mobility">Mobility</button>
-      <button class="chip" data-key="recovery">Recovery</button>
-      <button class="chip" data-key="boss">Boss Fights</button>
-    </div>
+  <!-- level / XP mock -->
+  <div class="level">
+    <strong class="tag" id="rankTag">Level 2 • Warrior</strong>
+    <div class="bar"><span id="xpFill"></span></div>
+    <strong class="tag" id="xpTag">250 XP</strong>
+  </div>
 
-    <!-- XP bar (example numbers) -->
-    <div class="xp">
-      <span class="xp-label">Level 2 • Warrior</span>
-      <div class="xp-rail"><div class="xp-fill" id="xpFill" style="width:35%"></div></div>
-      <span class="xp-amt" id="xpAmt">250 XP</span>
-    </div>
+  <!-- phase cards -->
+  <section class="grid" id="phaseGrid">
+    <article class="phase" data-tags="strength engine mobility">
+      <h3>⚒️ Phase I — Foundation (Weeks 1–4)</h3>
+      <p class="meta">Skill the lifts, build easy engine (Z2), 10-minute daily mobility. Beginner-friendly but spicy.</p>
+      <div class="actions">
+        <a class="btn" href="/hero-phase-1.html">Open Plan</a>
+        <button class="btn--pill" data-open-boss="p1">Boss Fights</button>
+      </div>
+      <span class="badge">🎯 Focus: strength + engine</span>
+    </article>
 
-    <!-- Phases -->
-    <section class="phases" id="phaseGrid" aria-label="Choose your phase">
-      <article class="phase" data-tags="strength engine">
-        <h2>🛠️ Phase I — Foundation (Weeks 1–4)</h2>
-        <p class="meta">Skill the lifts, build base engine (Z2), 10-minute daily mobility. Beginner-friendly but spicy.</p>
-        <div class="row">
-          <a class="btn" href="/hero-phase-1.html">Open Plan</a>
-          <a class="btn--ghost" href="/boss-fights.html#phase-1">Boss Fights</a>
+    <article class="phase" data-tags="engine strength calis">
+      <h3>🚀 Phase II — Build (Weeks 5–8)</h3>
+      <p class="meta">Add volume and tempo. Long run heads to 10–12k. First calisthenics progressions.</p>
+      <div class="actions">
+        <a class="btn--pill" href="/hero-phase-2.html">Open Plan</a>
+        <button class="btn--pill" data-open-boss="p2">Boss Fights</button>
+      </div>
+      <span class="badge">🎯 Focus: mixed</span>
+    </article>
+
+    <article class="phase" data-tags="engine strength calis">
+      <h3>🔥 Phase III — Peak (Weeks 9–12)</h3>
+      <p class="meta">Power + repeatability. Long engines into half-marathon. Strict pull-ups & pistols appear.</p>
+      <div class="actions">
+        <a class="btn--pill" href="/hero-phase-3.html">Open Plan</a>
+        <button class="btn--pill" data-open-boss="p3">Boss Fights</button>
+      </div>
+      <span class="badge">🎯 Focus: power</span>
+    </article>
+
+    <article class="phase" data-tags="engine mobility recovery">
+      <h3>🏹 Phase IV — Reload & Reforge</h3>
+      <p class="meta">Cycle back with intent: long runs stretch to 30–35k, then taper into your marathon window.</p>
+      <div class="actions">
+        <a class="btn--pill" href="/hero-phase-4.html">Open Plan</a>
+        <button class="btn--pill" data-open-boss="p4">Boss Fights</button>
+      </div>
+      <span class="badge">🎯 Focus: marathon</span>
+    </article>
+  </section>
+
+  <p class="small" style="margin-top:1rem">Tip: tap a chip above to highlight phases that lean into that theme.</p>
+</main>
+
+<!-- BOSS FIGHTS MODAL -->
+<dialog id="boss" aria-labelledby="bTitle">
+  <div class="b-head">
+    <h3 id="bTitle">Boss Fights</h3>
+    <button id="closeBoss" class="btn--pill">Close</button>
+  </div>
+  <div class="b-body">
+    <div class="row">
+      <article class="card">
+        <h4>⏱️ Time Trial</h4>
+        <p class="small">Pick your fight. We’ll time it and store your PR on this device.</p>
+        <div class="controls">
+          <label>Event
+            <select id="eventSel">
+              <option value="5kRun">5k Run</option>
+              <option value="10kRun">10k Run</option>
+              <option value="halfRun">Half-Marathon</option>
+              <option value="row5k">Row 5k</option>
+              <option value="rowAlt">Row Alternative (DB or Table Rows – see notes)</option>
+              <option value="amrap12">12-min AMRAP (Burpee + KB/DB Swing 10/10)</option>
+            </select>
+          </label>
+          <button class="primary" id="startTT">Start</button>
+          <button id="stopTT">Stop</button>
+          <strong id="timer">00:00</strong>
         </div>
-        <div class="focus">🎯 Focus: strength + engine</div>
+        <p class="small">No rower? Choose <strong>Row Alternative</strong> and complete: <em>12 rounds</em> of 10 Bent-Over DB Rows (per arm) OR 10 Table Rows + 100m easy jog between rounds. Time the total.</p>
       </article>
 
-      <article class="phase" data-tags="engine calisthenics">
-        <h2>🚀 Phase II — Build (Weeks 5–8)</h2>
-        <p class="meta">Add volume and tempo; threshold engines; first calisthenics progressions.</p>
-        <div class="row">
-          <a class="btn" href="/hero-phase-2.html">Open Plan</a>
-          <a class="btn--ghost" href="/boss-fights.html#phase-2">Boss Fights</a>
-        </div>
-        <div class="focus">🎯 Focus: mixed</div>
+      <article class="card">
+        <h4>🏅 Personal Records</h4>
+        <div id="prList" class="pr"></div>
+        <p class="small">Set a PR and we’ll mint a badge. Click “Save Card” to generate a shareable image.</p>
+        <canvas id="card" width="840" height="440"></canvas>
+        <button id="saveCard">Save Card</button>
       </article>
-
-      <article class="phase" data-tags="strength engine calisthenics">
-        <h2>🔥 Phase III — Peak (Weeks 9–12)</h2>
-        <p class="meta">Power + repeatability; long engines; strict pull-ups and pistol work appear.</p>
-        <div class="row">
-          <a class="btn" href="/hero-phase-3.html">Open Plan</a>
-          <a class="btn--ghost" href="/boss-fights.html#phase-3">Boss Fights</a>
-        </div>
-        <div class="focus">🎯 Focus: power</div>
-      </article>
-
-      <article class="phase" data-tags="recovery mobility">
-        <h2>🧩 Phase IV — Reload & Reforge (Weeks 13–16)</h2>
-        <p class="meta">Deload, refine technique, add play; set the stage for the next hero season.</p>
-        <div class="row">
-          <a class="btn" href="/hero-phase-4.html">Open Plan</a>
-          <a class="btn--ghost" href="/boss-fights.html#phase-4">Boss Fights</a>
-        </div>
-        <div class="focus">🎯 Focus: recover & sharpen</div>
-      </article>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64" />
-      <p>© 2025 FreeFitFuel · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
-  </footer>
+  </div>
+</dialog>
 
-  <script>
-    // Tiny UI: chip highlighting (filters visually by boosting opacity)
-    const chips = document.getElementById('chips');
-    const cards = [...document.querySelectorAll('.phase')];
+<script>
+/* ------- Chips filter (visual hint only) ------- */
+document.getElementById('chips').addEventListener('click', (e)=>{
+  const el=e.target.closest('.chip'); if(!el) return;
+  const kind=el.dataset.kind;
+  if(kind==='boss'){ document.getElementById('boss').showModal(); return; }
+  document.querySelectorAll('.phase').forEach(p=>{
+    const hit = p.dataset.tags.includes(kind);
+    p.style.outline = hit ? '2px solid rgba(255,255,255,.18)' : 'none';
+    p.style.filter  = hit ? 'none' : 'grayscale(.2) brightness(.9)';
+  });
+});
 
-    chips?.addEventListener('click', (e)=>{
-      const btn = e.target.closest('.chip');
-      if(!btn) return;
-      const key = btn.dataset.key;
-      btn.classList.toggle('active');
+/* ------- Boss fights (timer + PR + card) ------- */
+const dlg = document.getElementById('boss');
+document.getElementById('openBoss').addEventListener('click', ()=>dlg.showModal());
+document.getElementById('closeBoss').addEventListener('click', ()=>dlg.close());
 
-      const activeKeys = [...chips.querySelectorAll('.chip.active')].map(b=>b.dataset.key);
-      cards.forEach(card=>{
-        if(activeKeys.length===0){ card.style.filter='none'; card.style.opacity='1'; return; }
-        const tags = (card.dataset.tags||'').split(/\s+/);
-        const hit = activeKeys.some(k => tags.includes(k));
-        card.style.opacity = hit ? '1' : '.45';
-        card.style.filter = hit ? 'none' : 'grayscale(0.35)';
-      });
-    });
-  </script>
+let tick=null, startAt=0;
+const timerEl = document.getElementById('timer');
+function fmt(ms){const s=Math.floor(ms/1000), m=Math.floor(s/60).toString().padStart(2,'0'), ss=(s%60).toString().padStart(2,'0');return `${m}:${ss}`;}
+function renderPRs(){
+  const box=document.getElementById('prList'); box.innerHTML='';
+  const store=JSON.parse(localStorage.getItem('heroPRs')||'{}');
+  Object.entries(store).forEach(([key,val])=>{
+    const span=document.createElement('span'); span.className='medal';
+    span.textContent=`${key}: ${fmt(val)}`; box.appendChild(span);
+  });
+}
+renderPRs();
+
+document.getElementById('startTT').addEventListener('click', ()=>{
+  startAt=Date.now();
+  clearInterval(tick);
+  tick=setInterval(()=>{ timerEl.textContent=fmt(Date.now()-startAt); }, 200);
+});
+document.getElementById('stopTT').addEventListener('click', ()=>{
+  if(!startAt) return;
+  clearInterval(tick);
+  const ms = Date.now()-startAt;
+  const ev = document.getElementById('eventSel').value;
+  const store=JSON.parse(localStorage.getItem('heroPRs')||'{}');
+  const old=store[ev];
+  if(!old || ms<old){ store[ev]=ms; localStorage.setItem('heroPRs', JSON.stringify(store)); renderPRs(); drawCard(ev, ms, true); }
+  else { drawCard(ev, ms, false); }
+  startAt=0;
+});
+
+function drawCard(ev, ms, isPR){
+  const c=document.getElementById('card'), g=c.getContext('2d');
+  g.fillStyle='#0e1218'; g.fillRect(0,0,c.width,c.height);
+  const grd=g.createLinearGradient(0,0,c.width,0); grd.addColorStop(0,'#FF6A00'); grd.addColorStop(1,'#FFC107');
+  g.fillStyle=grd; g.fillRect(0,0,c.width,12);
+  g.fillStyle='#fff'; g.font='bold 42px Inter, Arial'; g.fillText('Hero Training', 28, 80);
+  g.font='28px Inter, Arial'; g.fillStyle='#9bc4f0'; g.fillText('Boss Fight', 28, 120);
+  g.font='60px Inter, Arial'; g.fillStyle='#fff'; g.fillText(fmt(ms), 28, 200);
+  g.font='26px Inter, Arial'; g.fillStyle='#c8c8d2'; g.fillText(`Event: ${ev}`, 28, 245);
+  if(isPR){ g.fillStyle='#27c46b'; g.font='bold 38px Inter, Arial'; g.fillText('NEW PR!', 28, 300); }
+}
+
+document.getElementById('saveCard').addEventListener('click', ()=>{
+  const link=document.createElement('a');
+  link.download='hero-boss-card.png';
+  link.href=document.getElementById('card').toDataURL('image/png');
+  link.click();
+});
+</script>
+
+<script src="/app.js" defer></script>
 </body>
 </html>

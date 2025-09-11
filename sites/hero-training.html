@@ -7,16 +7,26 @@
   <link rel="stylesheet" href="/style.css?v=31">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <style>
+    .subnav{position:sticky;top:64px;z-index:20;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);border:1px solid var(--stroke);border-radius:999px;display:flex;flex-wrap:wrap;gap:.5rem;padding:.45rem .6rem;margin:.6rem 0 1rem}
+    .subnav a{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.4rem .85rem;font-weight:700}
+    .progress{display:flex;align-items:center;gap:.6rem;margin:.6rem 0 1rem}
+    .bar{flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--stroke);overflow:hidden}
+    .bar > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+    .xp{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.2rem .6rem;font-weight:800}
+    .phase-grid{display:grid;gap:14px}
+    @media(min-width:920px){.phase-grid{grid-template-columns:repeat(2,1fr)}}
+    .phase-card h3 a{text-decoration:underline dotted}
     .pillrow{display:flex;flex-wrap:wrap;gap:.45rem}
     .pill{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.35rem .7rem;font-weight:700}
-    .phase-card h3 a{text-decoration:underline dotted}
-    .engine-grid{display:grid;gap:14px}
-    @media(min-width:900px){.engine-grid{grid-template-columns:repeat(2,1fr)}}
-    .check{display:grid;gap:.35rem;margin:.35rem 0}
-    .check a{display:inline-block}
+    .engine{display:grid;gap:14px}
+    @media(min-width:900px){.engine{grid-template-columns:repeat(2,1fr)}}
+    .check{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:.8rem}
+    .check strong{display:block;margin:0 0 .35rem}
+    .check a{display:inline-block;margin:.12rem .35rem .12rem 0}
     .trial{background:#0f1317;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .btn-row{display:flex;flex-wrap:wrap;gap:.5rem}
     .muted{color:var(--inkdim);font-size:.92rem}
+    .tiny{font-size:.86rem;color:var(--inkdim)}
   </style>
 </head>
 <body>
@@ -33,58 +43,81 @@
     <div class="content wrap">
       <span class="eyebrow">Hybrid transformation</span>
       <h1><span class="accent">Hero Training</span></h1>
-      <p class="lead">A 4-phase, 12-week cycle that blends strength, calisthenics, engine, and mobility. Clear sessions, weekly quests, and fun “boss fights.”</p>
+      <p class="lead">Four phases. Weekly quests. Boss fights. Track XP and watch your badges light up.</p>
       <div class="pillrow">
+        <a class="pill" href="#phases">Phases</a>
         <a class="pill" href="#strength">Strength</a>
         <a class="pill" href="#calisthenics">Calisthenics</a>
         <a class="pill" href="#engine">Engine</a>
         <a class="pill" href="#mobility">Mobility</a>
         <a class="pill" href="#recovery">Recovery</a>
+        <a class="pill" href="#boss">Boss Fights</a>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- Phase links -->
-    <section class="grid">
-      <article class="card phase-card">
-        <h3><a href="/hero-phase-1.html">Phase I — Foundation (Weeks 1–4)</a></h3>
-        <p class="meta">Skill the lifts, nail positions, build easy aerobic base, daily mobility minimums.</p>
-      </article>
-      <article class="card phase-card">
-        <h3><a href="/hero-phase-2.html">Phase II — Build (Weeks 5–8)</a></h3>
-        <p class="meta">Progress volume/intensity, add tempos and mixed engine pieces.</p>
-      </article>
-      <article class="card phase-card">
-        <h3><a href="/hero-phase-3.html">Phase III — Peak (Weeks 9–12)</a></h3>
-        <p class="meta">Top sets, threshold work, “boss fights” show up more often.</p>
-      </article>
-      <article class="card phase-card">
-        <h3><a href="/hero-phase-4.html">Phase IV — Deload & Reforge</a></h3>
-        <p class="meta">Back the volume down, keep quality high, test & reset goals.</p>
-      </article>
+    <!-- Sticky sub-nav + progress -->
+    <nav class="subnav" aria-label="Hero sub navigation">
+      <a href="#phases">Phases</a>
+      <a href="#strength">Strength</a>
+      <a href="#calisthenics">Calisthenics</a>
+      <a href="#engine">Engine</a>
+      <a href="#mobility">Mobility</a>
+      <a href="#recovery">Recovery</a>
+      <a href="#boss">Boss Fights</a>
+    </nav>
+
+    <div class="progress" aria-label="Training progress">
+      <span class="tiny">Season XP</span>
+      <div class="bar" aria-hidden="true"><span id="xpFill"></span></div>
+      <span class="xp" id="xpBadge">0 XP</span>
+      <a class="btn--pill" id="claimXp">+25 XP (claim)</a>
+    </div>
+
+    <!-- Phases -->
+    <section id="phases" class="card">
+      <h2>Choose your phase</h2>
+      <div class="phase-grid">
+        <article class="card phase-card">
+          <h3><a href="/hero-phase-1.html">Phase I — Foundation (Weeks 1–4)</a></h3>
+          <p class="meta">Skill the lifts, build easy engine, daily 10-minute mobility.</p>
+        </article>
+        <article class="card phase-card">
+          <h3><a href="/hero-phase-2.html">Phase II — Build (Weeks 5–8)</a></h3>
+          <p class="meta">More volume/tempo, mixed engine pieces, stricter form.</p>
+        </article>
+        <article class="card phase-card">
+          <h3><a href="/hero-phase-3.html">Phase III — Peak (Weeks 9–12)</a></h3>
+          <p class="meta">Top sets, threshold work, frequent boss fights.</p>
+        </article>
+        <article class="card phase-card">
+          <h3><a href="/hero-phase-4.html">Phase IV — Deload & Reforge</a></h3>
+          <p class="meta">Back off, test, lock in new baselines, reset goals.</p>
+        </article>
+      </div>
     </section>
 
-    <!-- Engines -->
+    <!-- Strength -->
     <section id="strength" class="card">
-      <h2>Strength Engine (linked teaching for every move)</h2>
-      <div class="engine-grid">
+      <h2>Strength (linked form)</h2>
+      <div class="engine">
         <div class="check">
           <strong>Lower Body</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+rdl+form">DB RDL</a>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat+form">Front-Foot Elevated Split Squat</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat+form">FFESS</a>
         </div>
         <div class="check">
-          <strong>Upper Body Push</strong>
+          <strong>Push</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Up</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+dumbbell+press+form">DB Overhead Press</a>
         </div>
         <div class="check">
-          <strong>Upper Body Pull</strong>
+          <strong>Pull</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm DB Row</a>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+row+under+table">Table Rows (Inverted)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+row+under+table">Table Rows</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=face+pull+band+form">Band Face Pull</a>
         </div>
         <div class="check">
@@ -94,11 +127,13 @@
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hollow+hold+form">Hollow Hold</a>
         </div>
       </div>
+      <p class="muted">Tip: save your favourite form videos as “Watch Later” so they’re one tap away during sets.</p>
     </section>
 
+    <!-- Calisthenics -->
     <section id="calisthenics" class="card">
-      <h2>Calisthenics Progressions</h2>
-      <div class="engine-grid">
+      <h2>Calisthenics (skill ladders)</h2>
+      <div class="engine">
         <div class="check">
           <strong>Push</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-Up</a>
@@ -107,7 +142,7 @@
         </div>
         <div class="check">
           <strong>Pull</strong>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=scapular+pull+ups+form">Scap Pulls (bar/doorframe)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=scapular+pull+ups+form">Scap Pulls</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=inverted+row+at+home">Inverted Rows</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=doorway+row+band">Band Doorway Rows</a>
         </div>
@@ -115,30 +150,32 @@
           <strong>Core</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form">Dead Bug</a>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=plank+form">Plank</a>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hanging+knee+raise+at+home">Knee Raises (chair support)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hanging+knee+raise+at+home">Knee Raises (chair)</a>
         </div>
       </div>
     </section>
 
+    <!-- Engine -->
     <section id="engine" class="card">
-      <h2>Engine (Cardio)</h2>
-      <div class="engine-grid">
+      <h2>Engine</h2>
+      <div class="engine">
         <div class="check">
           <strong>Base</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+cardio+explained">Zone-2 (Walk/Jog/Cycle)</a>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=nasal+breathing+running">Nasal Breathing (Runs)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=nasal+breathing+running">Nasal Running</a>
         </div>
         <div class="check">
           <strong>Intervals</strong>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=interval+running+beginners+session">Running Intervals</a>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assault+bike+intervals+beginner">Bike Intervals (alt)</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=interval+running+beginners+session">Run Intervals</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assault+bike+intervals+beginner">Bike Intervals</a>
         </div>
       </div>
     </section>
 
+    <!-- Mobility -->
     <section id="mobility" class="card">
       <h2>Mobility & Prehab</h2>
-      <div class="engine-grid">
+      <div class="engine">
         <div class="check">
           <strong>Shoulders</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=banded+pull+apart+form">Band Pull-Apart</a>
@@ -152,48 +189,39 @@
       </div>
     </section>
 
+    <!-- Recovery -->
     <section id="recovery" class="card">
       <h2>Recovery</h2>
-      <div class="engine-grid">
+      <div class="engine">
         <div class="check">
           <strong>Breath</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+how+to">Box Breathing</a>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+7+8+breathing+how+to">4-7-8 Breathing</a>
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+7+8+breathing+how+to">4-7-8</a>
         </div>
         <div class="check">
           <strong>Rituals</strong>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=sleep+wind+down+routine">Wind-Down Routine</a>
-          <span class="muted">10k steps target • Protein + fibre each meal • Lights low after 9pm</span>
+          <span class="muted">Protein + fibre each meal • 10k steps • Dim lights after 9pm</span>
         </div>
       </div>
     </section>
 
     <!-- Boss fights -->
-    <section class="trial">
-      <h2>Boss Fights (choose your path)</h2>
-      <p class="meta">Pick one test this week and log your time/reps.</p>
+    <section id="boss" class="trial">
+      <h2>Boss Fights (this week)</h2>
       <ul>
-        <li>
-          <strong>5k Row</strong> —
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=how+to+row+concept2+technique">Row Technique</a>
-          &nbsp;|&nbsp;<em>No rower?</em>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+rows+at+home">Table Rows (AMRAP 10')</a> or
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">DB Rows (AMRAP 10')</a>
-        </li>
-        <li>
-          <strong>5k Run</strong> —
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+pacing+strategy+beginner">Pacing Strategy</a>
-        </li>
-        <li>
-          <strong>Engine AMRAP 12'</strong> — 10
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squats</a> +
-          10 <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+hands+elevated+form">Incline Push-Ups</a> +
-          150m <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shuttle+runs+how+to">Shuttle Run</a>
-        </li>
+        <li><strong>5k Row</strong> — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=how+to+row+concept2+technique">Technique</a>
+          &nbsp;| No rower? <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=table+rows+inverted+rows+at+home">Table Rows (AMRAP 10')</a> or
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">DB Rows (AMRAP 10')</a></li>
+        <li><strong>5k Run</strong> — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+pacing+strategy+beginner">Pacing strategy</a></li>
+        <li><strong>Engine AMRAP 12'</strong> — 10
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squats</a> + 10
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+hands+elevated+form">Incline Push-Ups</a> + 150m
+          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shuttle+runs+how+to">Shuttles</a></li>
       </ul>
       <div class="btn-row">
         <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
-        <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
+        <a class="btn" href="/hero-phase-2.html">Preview Phase II</a>
       </div>
     </section>
   </main>
@@ -205,5 +233,17 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <script>
+    // Tiny XP tracker (localStorage)
+    const xpKey='fff_hero_xp';
+    const xpBadge=document.getElementById('xpBadge');
+    const xpFill=document.getElementById('xpFill');
+    function getXP(){ return parseInt(localStorage.getItem(xpKey)||'0',10); }
+    function setXP(v){ localStorage.setItem(xpKey,Math.max(0,v)); paint(); }
+    function paint(){ const v=getXP(); xpBadge.textContent = v+' XP'; xpFill.style.width = Math.min(100, v/10)+'%'; }
+    document.getElementById('claimXp')?.addEventListener('click',()=>setXP(getXP()+25));
+    paint();
+  </script>
 </body>
 </html>

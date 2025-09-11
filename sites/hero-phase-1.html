@@ -1,162 +1,631 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hero Training — Phase I</title>
-<link rel="stylesheet" href="style.css?v=22" />
-<style>
-  .toc{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1rem}
-  .pill{padding:.45rem .85rem;border-radius:999px;font-weight:800;color:#111;text-decoration:none}
-  .pill--str{background:#ff9432}.pill--eng{background:#63b0ff}
-  .pill--cal{background:#2ecc71}.pill--mob{background:#b07cff}
-  .pill--rec{background:#ffd24d}.pill--boss{background:#ff6b6b}
-  .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin:.8rem 0}
-  .grid2{display:grid;gap:14px}
-  @media(min-width:900px){.grid2{grid-template-columns:repeat(2,1fr)}}
-  .check{display:flex;align-items:center;gap:.6rem;margin-top:.5rem}
-  .yt a{color:#9bc4ff}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — Phase I (Foundation)</title>
+  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* ===== Scoped colours & layout for Phase I ===== */
+    :root{
+      --pill1:#FF6A00; --pill2:#FF9A3D; --pill3:#6AE3FF; --pill4:#9BCB50; --pill5:#D48BFF; --pill6:#FFC36A;
+    }
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+
+    /* Hero (image only, content below) */
+    header.hero-mini.phase-hero{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini.phase-hero figure{margin:0;position:relative;overflow:hidden;background:#000}
+    header.hero-mini.phase-hero figure>img{
+      width:100%; height:clamp(300px,48vh,540px); object-fit:cover; object-position:center 38%;
+      display:block; filter:brightness(.92) saturate(1.06)
+    }
+    header.hero-mini.phase-hero .overlay{display:none !important}
+    header.hero-mini.phase-hero .content{position:static;padding:14px 0 10px}
+
+    /* Colourful pills that link to sections */
+    .pill-row{display:flex;flex-wrap:wrap;gap:.55rem;margin:.7rem 0 1.1rem}
+    .pill{
+      --bg:var(--glass);
+      display:inline-flex;align-items:center;gap:.4rem;
+      padding:.5rem .95rem;border-radius:999px;border:1px solid var(--stroke);
+      background:var(--bg);color:var(--ink);font-weight:800;letter-spacing:.2px;
+      text-decoration:none;font-size:.95rem;transition:transform .15s ease,filter .15s ease
+    }
+    .pill:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .pill.wu{--bg:linear-gradient(90deg,var(--pill3),#3DCBFF)}
+    .pill.str{--bg:linear-gradient(90deg,var(--pill1),var(--pill2))}
+    .pill.cali{--bg:linear-gradient(90deg,#FFD36A,#FF9A3D)}
+    .pill.eng{--bg:linear-gradient(90deg,#6AE3FF,#3DD0B5)}
+    .pill.mob{--bg:linear-gradient(90deg,var(--pill4),#6AD47B)}
+    .pill.rec{--bg:linear-gradient(90deg,var(--pill5),#9BD1FF)}
+    .pill.boss{--bg:linear-gradient(90deg,var(--pill6),#FF9A3D)}
+
+    /* Section cards & tiles */
+    .section-card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin:12px 0}
+    .grid.two{display:grid;gap:14px}
+    @media(min-width:900px){.grid.two{grid-template-columns:repeat(2,1fr)}}
+    .tile{
+      background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px;
+      display:flex;flex-direction:column;gap:.55rem
+    }
+    .tile h3{margin:.1rem 0 .2rem}
+    .tile p{margin:0;color:var(--inkdim)}
+    .links{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.15rem}
+
+    .btn--pill{
+      display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);
+      background:var(--glass);color:var(--ink);border-radius:999px;padding:.36rem .7rem;
+      font-size:.9rem;text-decoration:none
+    }
+    .btn--pill:hover{color:var(--accent)}
+
+    .badge-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.2rem 0}
+    .badge{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.28rem .6rem;font-size:.85rem}
+
+    .list{margin:.1rem 0 .2rem;padding-left:1.1rem}
+    .list li{margin:.22rem 0}
+
+    /* Boss fight block */
+    .boss{display:grid;gap:12px}
+    @media(min-width:960px){.boss{grid-template-columns:1.05fr .95fr}}
+    .panel{background:#0f1217;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .field{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center;margin:.35rem 0}
+    .field input,.field select{
+      background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem
+    }
+    .actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:.35rem 0}
+    .btn-outline{
+      border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
+      padding:.45rem .8rem;border-radius:8px;cursor:pointer
+    }
+    .time-big{font-size:2rem;font-weight:800;letter-spacing:.5px}
+
+    .log{max-height:220px;overflow:auto;border:1px solid var(--stroke);border-radius:10px;padding:.55rem;background:#0b0f14}
+    .log table{width:100%;border-collapse:collapse}
+    .log th,.log td{border-bottom:1px solid rgba(255,255,255,.08);padding:.35rem .4rem;text-align:left;font-size:.92rem}
+    .pr{color:#6AE3FF;font-weight:800}
+
+    /* Share card preview */
+    canvas#sharecard{width:100%;max-width:520px;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14}
+
+    /* Back links */
+    .crumbs{display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0 0}
+  </style>
 </head>
 <body>
+
+<!-- Shared header -->
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
 
-<main class="wrap">
-  <a class="btn--pill" href="hero-training.html">← Back to Hero Training</a>
-  <h1>Phase I — Foundation (Weeks 1–4)</h1>
-  <p>Goal this phase: learn the movements, build <em>Zone 2</em> engine, and hit a 10-minute daily mobility habit. Long run eases up to ~6–8k. Keep it fun and consistent.</p>
+<!-- HERO -->
+<header class="hero-mini phase-hero" role="banner" aria-label="Phase I Foundation">
+  <figure>
+    <img src="/img/phase-1.jpg" alt="Hybrid foundation training: strength, calisthenics and easy runs">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <span class="eyebrow">Hero Training</span>
+    <h1><span class="accent">Phase I — Foundation (Weeks 1–4)</span></h1>
+    <p class="lead">Learn positions, start your <strong>Z2 streak</strong> (conversational pace), and set smart baselines. Short, repeatable sessions that feel good — and build momentum.</p>
 
-  <nav class="toc">
-    <a class="pill pill--str" href="#strength">Strength</a>
-    <a class="pill pill--eng" href="#engine">Engine</a>
-    <a class="pill pill--mob" href="#mobility">Mobility</a>
-    <a class="pill pill--cal" href="#cal">Calisthenics</a>
-    <a class="pill pill--boss" href="#boss">Boss Fight</a>
-    <a class="pill pill--rec" href="#recovery">Recovery</a>
-  </nav>
+    <nav class="pill-row" aria-label="Jump to sections">
+      <a class="pill wu"   href="#warmup">Warm-up</a>
+      <a class="pill str"  href="#strength">Strength</a>
+      <a class="pill cali" href="#calisthenics">Calisthenics</a>
+      <a class="pill eng"  href="#engine">Engine (Z2)</a>
+      <a class="pill mob"  href="#mobility">Mobility</a>
+      <a class="pill rec"  href="#recovery">Recovery</a>
+      <a class="pill boss" href="#bossfight">Boss Fight</a>
+    </nav>
 
-  <div class="section">
-    <strong>Weekly rhythm:</strong> 3× strength days • 2–3× engine days • daily 10-min mobility.  
-    Tick items to bank XP (stored on your device).
+    <div class="crumbs">
+      <a class="btn--pill" href="/hero-training.html">← Back to Hero Training</a>
+      <a class="btn" href="/hero-phase-2.html">Next: Phase II</a>
+    </div>
   </div>
+</header>
 
-  <!-- Strength -->
-  <section id="strength" class="section">
-    <h2>Strength</h2>
-    <div class="grid2">
-      <article class="card">
-        <h3>Day A — Lower + Push</h3>
-        <ul class="yt">
-          <li>Goblet Squat 4×6–10 — <a target="_blank" href="https://www.youtube.com/results?search_query=goblet+squat+form">YouTube</a></li>
-          <li>DB Romanian Deadlift 4×8–12 — <a target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form">YouTube</a></li>
-          <li>DB Floor Press 4×8–12 — <a target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">YouTube</a></li>
-          <li>Side Plank 3×30–45s/side — <a target="_blank" href="https://www.youtube.com/results?search_query=side+plank+exercise">YouTube</a></li>
+<main class="wrap">
+
+  <!-- Warm-up -->
+  <section id="warmup" class="section-card" aria-label="Warm-up">
+    <h2 style="margin:.1rem 0 .55rem">Warm-up (6–8 min)</h2>
+    <div class="grid two">
+      <article class="tile">
+        <h3>General</h3>
+        <ul class="list">
+          <li>2–3 min brisk walk / stairs / marching</li>
+          <li>30s Arm circles, 30s Hip hinges, 30s Squat to stand</li>
+          <li>30s Dead bug or Bird-dog</li>
         </ul>
-        <label class="check"><input type="checkbox" data-xp="15"> Completed Day A</label>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=squat+to+stand+mobility">Squat-to-Stand (demo)</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form">Dead Bug (form)</a>
+        </div>
       </article>
-
-      <article class="card">
-        <h3>Day B — Hinge + Pull</h3>
-        <ul class="yt">
-          <li>KB/DB Deadlift 5×5–8 — <a target="_blank" href="https://www.youtube.com/results?search_query=dumbbell+deadlift+form">YouTube</a></li>
-          <li>One-Arm Row 4×8–12/side — <a target="_blank" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">YouTube</a></li>
-          <li>Half-Kneeling Press 3×8–12/side — <a target="_blank" href="https://www.youtube.com/results?search_query=half+kneeling+press">YouTube</a></li>
-          <li>Carry (Suitcase) 3×40–60m — <a target="_blank" href="https://www.youtube.com/results?search_query=suitcase+carry+exercise">YouTube</a></li>
+      <article class="tile">
+        <h3>Movement Prep</h3>
+        <ul class="list">
+          <li>2 × 5 Tempo hinges (3s down)</li>
+          <li>2 × 5 Pause goblets (2s bottom)</li>
+          <li>10 Scap rows + 10 Incline push-ups</li>
         </ul>
-        <label class="check"><input type="checkbox" data-xp="15"> Completed Day B</label>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hip+hinge+drill+form">Hip Hinge drill</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=incline+push+up+form">Incline Push-up (form)</a>
+        </div>
       </article>
     </div>
-    <p class="meta">Progress each lift by a rep or small load weekly while keeping <em>perfect</em> form.</p>
+  </section>
+
+  <!-- Strength -->
+  <section id="strength" class="section-card" aria-label="Strength">
+    <h2 style="margin:.1rem 0 .55rem">Strength (3×/week · full-body)</h2>
+    <div class="grid two">
+      <article class="tile">
+        <h3>Day A</h3>
+        <ul class="list">
+          <li>Goblet Squat — 3×8–12 (RIR 2)</li>
+          <li>DB Floor Press — 3×8–12</li>
+          <li>1-Arm DB Row — 3×10/side</li>
+          <li>RDL (DB) — 2×8–10</li>
+          <li>Side Plank — 2×20–30s/side</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat (form)</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form">DB Floor Press</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm Row</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form">DB RDL</a>
+        </div>
+        <div class="badge-row"><span class="badge">Tempo: 2–3s down</span><span class="badge">Leave 1–2 reps</span></div>
+      </article>
+
+      <article class="tile">
+        <h3>Day B</h3>
+        <ul class="list">
+          <li>Split Squat — 3×8–10/side</li>
+          <li>Incline/Box Push-up — 3×8–12</li>
+          <li>Ring/Table Row — 3×8–12</li>
+          <li>Hip Hinge (KB/DB) — 3×10</li>
+          <li>Dead Bug — 2×8/side</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=split+squat+form">Split Squat (form)</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ring+row+form">Ring/Table Row (form)</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hip+hinge+form">Hip Hinge</a>
+        </div>
+        <div class="badge-row"><span class="badge">Supersets ok</span><span class="badge">Quality > load</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Calisthenics -->
+  <section id="calisthenics" class="section-card" aria-label="Calisthenics">
+    <h2 style="margin:.1rem 0 .55rem">Calisthenics (sprinkle 2×/week)</h2>
+    <div class="grid two">
+      <article class="tile">
+        <h3>Upper Skills</h3>
+        <ul class="list">
+          <li>Elevated Push-ups — 3×AMRAP (leave 2 reps)</li>
+          <li>Ring/Table Rows — 3×8–12</li>
+          <li>Assisted Pull-up Eccentrics — 3×3–5 (5s down)</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=elevated+push+ups+form">Elevated Push-up</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ring+rows+form">Ring Rows</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+pull+up+band+eccentric+form">Assisted Pull-up (ecc.)</a>
+        </div>
+      </article>
+
+      <article class="tile">
+        <h3>Lower / Core</h3>
+        <ul class="list">
+          <li>Assisted Pistol to Box — 3×5/side</li>
+          <li>Reverse Lunge — 3×8/side (bodyweight)</li>
+          <li>Hollow/Dead Bug — 3×20–30s</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+pistol+squat+progression">Assisted Pistol</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=reverse+lunge+form">Reverse Lunge</a>
+        </div>
+      </article>
+    </div>
   </section>
 
   <!-- Engine -->
-  <section id="engine" class="section">
-    <h2>Engine</h2>
-    <div class="grid2">
-      <article class="card">
-        <h3>Easy Engine (Z2)</h3>
-        <p>2–3 sessions/wk • 20–45 min easy. Nasal breathing; can talk in full sentences.</p>
-        <ul class="yt">
-          <li>Run / brisk walk / bike / row — <a target="_blank" href="https://www.youtube.com/results?search_query=zone+2+training">How to find Z2 (YouTube)</a></li>
-          <li>End-of-phase long effort ≈ 6–8k run equivalent</li>
+  <section id="engine" class="section-card" aria-label="Engine">
+    <h2 style="margin:.1rem 0 .55rem">Engine — Z2 Streak (3–4×/week)</h2>
+    <div class="grid two">
+      <article class="tile">
+        <h3>How</h3>
+        <ul class="list">
+          <li>Start at 20–30 min conversational pace (you can nose-breathe, talk in sentences)</li>
+          <li>Add +5 min when it feels easy 2 sessions in a row</li>
+          <li>Optional: one short tempo taste (8–12 min “comfortably hard”) in week 3–4</li>
         </ul>
-        <label class="check"><input type="checkbox" data-xp="10"> Logged an easy engine session</label>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+training+explained">Zone-2 Explained</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+how+to">Tempo Basics</a>
+        </div>
       </article>
-      <article class="card">
-        <h3>Tempo Taster</h3>
-        <p>1×/wk • 20–30 min including 2×5-min “comfortably hard”.</p>
-        <ul class="yt">
-          <li>Warm-up 10 min easy → 2×5-min strong w/ 3-min easy</li>
-          <li>Cool-down 5–10 min</li>
-          <li><a target="_blank" href="https://www.youtube.com/results?search_query=tempo+run+training">Tempo run basics — YouTube</a></li>
-        </ul>
-        <label class="check"><input type="checkbox" data-xp="10"> Did a tempo taster</label>
+      <article class="tile">
+        <h3>Alternatives</h3>
+        <p>Walk-jog, cycling, rowing, stepper — any modality works.</p>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=walk+jog+plan+beginner">Walk-Jog Start</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=rowing+technique+beginner+concept2">Rowing Technique</a>
+        </div>
       </article>
     </div>
   </section>
 
   <!-- Mobility -->
-  <section id="mobility" class="section">
-    <h2>Daily 10 — Hips & T-spine</h2>
-    <ul class="yt">
-      <li>90/90 hip flows — <a target="_blank" href="https://www.youtube.com/results?search_query=90+90+hip+flow">YouTube</a></li>
-      <li>Open book thoracic — <a target="_blank" href="https://www.youtube.com/results?search_query=open+book+thoracic+mobility">YouTube</a></li>
-      <li>Ankles (calf rocks) — <a target="_blank" href="https://www.youtube.com/results?search_query=ankle+mobility+calf+rocks">YouTube</a></li>
-    </ul>
-    <label class="check"><input type="checkbox" data-xp="5"> 10-minute mobility completed</label>
-  </section>
-
-  <!-- Calisthenics -->
-  <section id="cal" class="section">
-    <h2>Intro Skills (sprinkle after strength)</h2>
-    <ul class="yt">
-      <li>Hollow Hold 3×15–30s — <a target="_blank" href="https://www.youtube.com/results?search_query=hollow+body+hold">YouTube</a></li>
-      <li>Ring/Bar Row 3×8–12 — <a target="_blank" href="https://www.youtube.com/results?search_query=ring+row+exercise">YouTube</a></li>
-      <li>Assisted Pull-up Practice — <a target="_blank" href="https://www.youtube.com/results?search_query=assisted+pull+up">YouTube</a></li>
-      <li>Handstand Wall Walks — <a target="_blank" href="https://www.youtube.com/results?search_query=handstand+wall+walks">YouTube</a></li>
-    </ul>
-    <label class="check"><input type="checkbox" data-xp="10"> Calisthenics practice done</label>
-  </section>
-
-  <!-- Boss -->
-  <section id="boss" class="section">
-    <h2>Boss Fight Preview</h2>
-    <p>Optional check: 5k run/row, or <em>Row Alternative</em> (100 total dumbbell/table rows EMOM + 1 km brisk walk). Aim to finish feeling like you could do more.</p>
-    <button class="btn--pill" id="openTrial">Open Boss Fight</button>
+  <section id="mobility" class="section-card" aria-label="Mobility">
+    <h2 style="margin:.1rem 0 .55rem">Mobility — 10–15 min (daily-ish)</h2>
+    <div class="grid two">
+      <article class="tile">
+        <h3>Hips & Ankles</h3>
+        <ul class="list">
+          <li>90/90 Hips — 2×30–45s/side</li>
+          <li>Calf/Ankle wall rocks — 2×10/side</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90%2F90+hip+mobility">90/90 Hips</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+mobility+wall">Ankle Dorsiflexion</a>
+        </div>
+      </article>
+      <article class="tile">
+        <h3>T-Spine & Shoulders</h3>
+        <ul class="list">
+          <li>Open Book — 2×6/side</li>
+          <li>Wall Slides or Foam-roller extensions — 2×8–10</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=open+book+mobility+drill">Open Book</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=wall+slides+shoulder+mobility">Wall Slides</a>
+        </div>
+      </article>
+    </div>
   </section>
 
   <!-- Recovery -->
-  <section id="recovery" class="section">
-    <h2>Recovery Hygiene</h2>
-    <ul>
-      <li>Sleep 7–9 h (consistent times)</li>
-      <li>Protein 1.6–2.2 g/kg; carbs around engine days</li>
-      <li>Hydration: bodyweight × 30–35 ml baseline</li>
-      <li>Breathing 5–10 min coherent (in 5 / out 5) — <a target="_blank" href="https://www.youtube.com/results?search_query=coherent+breathing">YouTube</a></li>
-    </ul>
-    <label class="check"><input type="checkbox" data-xp="10"> Recovery checklist hit</label>
+  <section id="recovery" class="section-card" aria-label="Recovery">
+    <h2 style="margin:.1rem 0 .55rem">Recovery — Sleep, Fuel, Breath</h2>
+    <div class="grid two">
+      <article class="tile">
+        <h3>Simple Rules</h3>
+        <ul class="list">
+          <li>Consistent wake time; daylight in your eyes morning</li>
+          <li>Protein + fibre each meal; water each meal</li>
+          <li>Down-shift breathing after sessions (4-6 or box)</li>
+        </ul>
+        <div class="links">
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=4+6+breathing+exhale+longer">4-6 Breathing</a>
+          <a class="btn--pill" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=box+breathing+how+to">Box Breathing</a>
+        </div>
+      </article>
+      <article class="tile">
+        <h3>Track a Streak</h3>
+        <p>Mark a ✅ each day you either trained, Z2’d, or did 10 min mobility. Streaks build identity.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Boss Fight -->
+  <section id="bossfight" class="section-card" aria-label="Boss Fight">
+    <h2 style="margin:.1rem 0 .55rem">Boss Fight — Baseline Trial & PR Badge</h2>
+    <div class="boss">
+      <!-- Left: controls -->
+      <div class="panel">
+        <p class="meta">Pick one test. Set a baseline now; try again in Week 4. We’ll track your **PR** and let you save a tiny share card.</p>
+
+        <div class="field">
+          <label for="bf-type">Test</label>
+          <select id="bf-type">
+            <option value="run1mi">Run — 1 mile (stopwatch)</option>
+            <option value="dbrows12">DB Rows — 12 min AMRAP (total reps)</option>
+            <option value="tablerows12">Table/Ring Rows — 12 min AMRAP (total reps)</option>
+          </select>
+        </div>
+
+        <div id="bf-help" class="meta" style="margin:.25rem 0 .5rem"></div>
+
+        <div class="field">
+          <span class="time-big" id="bf-time">00:00</span>
+          <input id="bf-reps" type="number" min="0" step="1" placeholder="reps" style="display:none">
+        </div>
+
+        <div class="actions" id="bf-actions">
+          <button class="btn" id="bf-start">Start</button>
+          <button class="btn-outline" id="bf-stop" disabled>Stop</button>
+          <button class="btn-outline" id="bf-reset">Reset</button>
+          <button class="btn-outline" id="bf-save" disabled>Save Result</button>
+        </div>
+
+        <div class="badge-row" id="bf-status"></div>
+      </div>
+
+      <!-- Right: log + share card -->
+      <div class="panel">
+        <h3 style="margin:.1rem 0 .35rem">Your Results</h3>
+        <div class="log" aria-live="polite">
+          <table id="bf-log">
+            <thead><tr><th>Date</th><th>Test</th><th>Result</th><th>PR</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <h3 style="margin:.8rem 0 .35rem">Share Card (download)</h3>
+        <canvas id="sharecard" width="1024" height="576"></canvas>
+        <div class="actions">
+          <button class="btn-outline" id="bf-card">Render Card</button>
+          <a id="bf-dl" class="btn" download="hero-pr-card.png">Download PNG</a>
+        </div>
+      </div>
+    </div>
+
+    <details class="panel" style="margin-top:12px">
+      <summary><strong>How to run each test</strong></summary>
+      <ul class="list">
+        <li><strong>Run — 1 mile:</strong> warm up 5–10 min easy. Start stopwatch, cover 1 mile at best sustainable pace, stop at finish. Record time.</li>
+        <li><strong>DB Rows — 12 min AMRAP:</strong> choose a moderate DB. Set 12-min timer. Alternate: 10/10 rows per minute (or sets you can keep tidy). Count total reps. <em>Strict form beats speed.</em></li>
+        <li><strong>Table/Ring Rows — 12 min AMRAP:</strong> set a stable table/rings low. 8–12 clean reps per set; rest as needed. Count total reps.</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="section-card" aria-labelledby="disc">
+    <h2 id="disc" style="margin:.1rem 0 .45rem">Important Note</h2>
+    <p>The content is for general fitness education and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme — especially if you have health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
   </section>
 </main>
 
-<footer class="site-footer"><div class="container"><p>© 2025 FreeFitFuel</p></div></footer>
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
 
-<!-- Reuse training page modal via simple opener -->
+<!-- ===== Boss Fight JS (PR tracking + share card) ===== -->
 <script>
-  // award XP on checks
-  const XP_MAX=500;
-  function load(){return JSON.parse(localStorage.getItem('heroXP')||'{}')}
-  function save(s){localStorage.setItem('heroXP',JSON.stringify(s))}
-  function addXP(n){const s=load(); s.xp=Math.min(XP_MAX,(s.xp||0)+n); save(s)}
-  document.querySelectorAll('input[type="checkbox"][data-xp]').forEach(cb=>{
-    cb.addEventListener('change', e=>{ if(e.target.checked){ addXP(parseInt(e.target.dataset.xp,10)||0); } });
+(function(){
+  const typeEl = document.getElementById('bf-type');
+  const timeEl = document.getElementById('bf-time');
+  const repsEl = document.getElementById('bf-reps');
+  const helpEl = document.getElementById('bf-help');
+  const startBtn = document.getElementById('bf-start');
+  const stopBtn  = document.getElementById('bf-stop');
+  const resetBtn = document.getElementById('bf-reset');
+  const saveBtn  = document.getElementById('bf-save');
+  const status   = document.getElementById('bf-status');
+  const logBody  = document.querySelector('#bf-log tbody');
+  const cardBtn  = document.getElementById('bf-card');
+  const dlLink   = document.getElementById('bf-dl');
+  const canvas   = document.getElementById('sharecard');
+  const ctx      = canvas.getContext('2d');
+
+  let timer=null, startT=0, mode='run1mi', countingDown=false, remain=0;
+
+  const HELP = {
+    run1mi: 'Stopwatch: tap Start when you begin, Stop at 1 mile. Aim even pacing.',
+    dbrows12: '12-min AMRAP: total dumbbell row reps (strict). Timer counts down.',
+    tablerows12: '12-min AMRAP: total table/ring row reps (strict). Timer counts down.'
+  };
+
+  function loadLog(){
+    const data = JSON.parse(localStorage.getItem('hero_phase1_log')||'[]');
+    logBody.innerHTML='';
+    data.forEach(r=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML = `<td>${new Date(r.t).toLocaleDateString()}</td>
+                      <td>${labelFor(r.k)}</td>
+                      <td>${fmtResult(r)}</td>
+                      <td>${r.pr ? '🏆' : ''}</td>`;
+      logBody.appendChild(tr);
+    });
+  }
+
+  function labelFor(k){
+    if(k==='run1mi') return 'Run 1mi';
+    if(k==='dbrows12') return 'DB Rows 12′';
+    if(k==='tablerows12') return 'Table Rows 12′';
+    return k;
+  }
+
+  function fmtTime(ms){
+    const s = Math.round(ms/1000);
+    const m = Math.floor(s/60);
+    const ss = (s%60).toString().padStart(2,'0');
+    return `${m}:${ss}`;
+  }
+
+  function fmtResult(r){
+    if(r.k==='run1mi') return fmtTime(r.ms);
+    return `${r.reps} reps / 12′`;
+  }
+
+  function bestFor(k, arr){
+    const items = arr.filter(x=>x.k===k);
+    if(!items.length) return null;
+    if(k==='run1mi'){
+      return items.reduce((p,c)=> c.ms<p.ms?c:p);
+    }else{
+      return items.reduce((p,c)=> c.reps>p.reps?c:p);
+    }
+  }
+
+  function setMode(k){
+    mode=k;
+    helpEl.textContent = HELP[k];
+    status.innerHTML='';
+    clearTimer();
+    if(k==='run1mi'){
+      repsEl.style.display='none';
+      timeEl.textContent='00:00';
+    } else {
+      repsEl.style.display='inline-block';
+      repsEl.value='';
+      timeEl.textContent='12:00';
+    }
+  }
+
+  function clearTimer(){
+    if(timer){ clearInterval(timer); timer=null; }
+    startBtn.disabled=false;
+    stopBtn.disabled=true;
+    saveBtn.disabled=true;
+    countingDown=false;
+  }
+
+  function start(){
+    startBtn.disabled=true;
+    stopBtn.disabled=false;
+    saveBtn.disabled=true;
+
+    if(mode==='run1mi'){
+      // count up
+      startT = Date.now();
+      timer = setInterval(()=>{
+        timeEl.textContent = fmtTime(Date.now()-startT);
+      }, 200);
+    } else {
+      // 12 minute countdown
+      countingDown=true;
+      remain = 12*60*1000; // 12 min
+      startT = Date.now();
+      timer = setInterval(()=>{
+        const elapsed = Date.now()-startT;
+        const left = Math.max(0, remain - elapsed);
+        timeEl.textContent = fmtTime(left);
+        if(left<=0){ stop(); }
+      }, 200);
+    }
+  }
+
+  function stop(){
+    if(!timer) return;
+    clearInterval(timer); timer=null;
+    stopBtn.disabled=true;
+    saveBtn.disabled=false;
+  }
+
+  function reset(){
+    clearTimer();
+    if(mode==='run1mi') timeEl.textContent='00:00';
+    else timeEl.textContent='12:00';
+  }
+
+  function save(){
+    const data = JSON.parse(localStorage.getItem('hero_phase1_log')||'[]');
+    let rec = { k:mode, t: Date.now(), pr:false };
+
+    if(mode==='run1mi'){
+      // parse current time text back to ms (approx)
+      const [m, s] = timeEl.textContent.split(':').map(x=>parseInt(x,10)||0);
+      rec.ms = (m*60 + s)*1000;
+      if(!rec.ms || rec.ms<1000){ alert('Time looks invalid.'); return; }
+    } else {
+      const reps = parseInt(repsEl.value||'0',10);
+      if(!reps){ alert('Enter your total reps.'); return; }
+      rec.reps = reps;
+      rec.ms = 12*60*1000;
+    }
+
+    // check PR
+    const prevBest = bestFor(mode, data);
+    let isPR=false;
+    if(!prevBest){
+      isPR=true;
+    }else{
+      if(mode==='run1mi') isPR = rec.ms < prevBest.ms;
+      else isPR = rec.reps > prevBest.reps;
+    }
+    rec.pr = isPR;
+    data.push(rec);
+    localStorage.setItem('hero_phase1_log', JSON.stringify(data));
+
+    // status
+    status.innerHTML = isPR
+      ? '<span class="badge">🏆 Personal Record — nice!</span>'
+      : '<span class="badge">Saved. Chase that PR next time!</span>';
+
+    loadLog();
+    renderCard(rec);
+  }
+
+  function renderCard(rec){
+    // background
+    ctx.fillStyle = '#0e0e12';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // frame
+    ctx.strokeStyle = 'rgba(255,255,255,.18)';
+    ctx.strokeRect(16,16,canvas.width-32,canvas.height-32);
+
+    // title
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 44px Inter, Arial, sans-serif';
+    ctx.fillText('Hero Training — Phase I', 40, 90);
+
+    // test & result
+    ctx.font = 'bold 36px Inter, Arial, sans-serif';
+    const test = labelFor(rec.k);
+    const result = rec.k==='run1mi' ? fmtTime(rec.ms) : `${rec.reps} reps (12′)`;
+    ctx.fillStyle = '#FF9A3D';
+    ctx.fillText(test, 40, 160);
+    ctx.fillStyle = '#6AE3FF';
+    ctx.fillText(result, 40, 210);
+
+    // badge
+    if(rec.pr){
+      ctx.fillStyle = '#9BCB50';
+      ctx.fillRect(40, 240, 210, 48);
+      ctx.fillStyle = '#111';
+      ctx.font = 'bold 26px Inter, Arial';
+      ctx.fillText('🏆 PR UNLOCKED', 52, 274);
+    } else {
+      ctx.fillStyle = 'rgba(255,255,255,.6)';
+      ctx.font = '24px Inter, Arial';
+      ctx.fillText('Logged — keep going!', 40, 270);
+    }
+
+    // footer
+    ctx.fillStyle = 'rgba(255,255,255,.8)';
+    ctx.font = '20px Inter, Arial';
+    const d = new Date();
+    ctx.fillText(`Date: ${d.toLocaleDateString()}`, 40, 330);
+    ctx.fillText('FreeFitFuel', 40, 370);
+
+    // set link
+    dlLink.href = canvas.toDataURL('image/png');
+  }
+
+  // Events
+  typeEl.addEventListener('change', e=> setMode(e.target.value));
+  startBtn.addEventListener('click', start);
+  stopBtn.addEventListener('click', stop);
+  resetBtn.addEventListener('click', reset);
+  saveBtn.addEventListener('click', save);
+  cardBtn.addEventListener('click', ()=>{
+    const data = JSON.parse(localStorage.getItem('hero_phase1_log')||'[]');
+    const last = data[data.length-1];
+    if(last){ renderCard(last); }
+    else {
+      // Render an empty template
+      renderCard({k:'run1mi', ms:0, reps:0, pr:false});
+    }
   });
-  // open the global boss modal if present on this origin
-  document.getElementById('openTrial')?.addEventListener('click',()=>{
-    const dlg = parent?.document?.getElementById('trial') || document.getElementById('trial');
-    if(dlg && dlg.showModal) dlg.showModal(); else window.location.href='hero-training.html#boss';
-  });
+
+  // Init
+  setMode(typeEl.value);
+  loadLog();
+})();
 </script>
-<script src="/app.js" defer></script>
 </body>
 </html>

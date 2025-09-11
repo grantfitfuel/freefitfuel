@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-app="heroes">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hero’s Year — FreeFitFuel</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* ===== Hero’s Year — scoped styles ===== */
+    .heroes *{box-sizing:border-box}
+    .heroes .wrap{max-width:1140px;margin:0 auto;padding:16px 20px}
+    .heroes .accent{background:linear-gradient(90deg,#FF9A3D,#FF6A00);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .heroes h1{margin:.5rem 0 .25rem;font-weight:900;font-size:clamp(2.1rem,1.4rem + 2.6vw,3.1rem)}
+    .heroes .lead{color:#c8c8d2;max-width:70ch}
+    .heroes .pill{display:inline-block;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);border-radius:999px;padding:.34rem .7rem;font-size:.92rem;margin:.2rem .35rem .2rem 0}
+
+    .heroes .grid{display:grid;gap:14px;margin:16px 0}
+    @media(min-width:900px){ .heroes .grid.cols3{grid-template-columns:repeat(3,1fr)} }
+
+    .heroes .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px}
+    .heroes .card h2{margin:.1rem 0 .4rem;font-size:1.15rem}
+    .heroes .card h3{margin:.1rem 0 .35rem}
+    .heroes .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1rem;border-radius:12px;border:0;background:#FF6A00;color:#111;font-weight:800}
+    .heroes .btn--ghost{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;font-weight:700}
+    .heroes a.btn--ghost:hover{color:#FF6A00;text-decoration:none}
+
+    /* Phase tiles */
+    .heroes .phase{display:flex;flex-direction:column;gap:.45rem}
+    .heroes .phase .meta{color:#9a9aa6;font-size:.92rem}
+    .heroes .phase .xp{font-weight:800}
+
+    /* Quests strip */
+    .heroes .strip{scroll-margin-top:70px}
+    .heroes .quest{display:flex;flex-direction:column;gap:.35rem;border:1px solid rgba(255,255,255,.14);background:#0f1319;border-radius:12px;padding:.7rem}
+    .heroes .quest h4{margin:0 0 .15rem;font-size:1rem}
+    .heroes .quest .meta{color:#9a9aa6;font-size:.9rem}
+    .heroes .quest .act{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}
+    .heroes .badge{display:inline-flex;align-items:center;gap:.35rem;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);border-radius:999px;padding:.28rem .6rem;font-size:.86rem}
+
+    /* Boss Modal */
+    dialog#bossModal{max-width:min(840px,95vw);border-radius:14px;border:1px solid rgba(255,255,255,.14);background:#0f1319;color:#fff;padding:0}
+    #bossModal .head{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.14)}
+    #bossModal .body{display:grid;gap:12px;padding:12px}
+    @media(min-width:900px){ #bossModal .body{grid-template-columns:1.05fr .95fr} }
+    #bossModal .panel{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:12px;padding:.8rem}
+    #bossModal label{display:block;margin:.4rem 0 .2rem;font-weight:700}
+    #bossModal input[type="number"], #bossModal input[type="text"]{
+      width:100%;background:#0b0f14;border:1px solid rgba(255,255,255,.14);border-radius:8px;color:#fff;padding:.45rem .55rem
+    }
+    #bossModal .row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+    #bossModal .btn{padding:.55rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:#FF6A00;color:#111;font-weight:800}
+    #bossModal .btn--ghost{background:rgba(255,255,255,.08);color:#fff}
+    dialog::backdrop{background:rgba(0,0,0,.6)}
+
+    /* Badge shelf */
+    .heroes .shelf{display:flex;flex-wrap:wrap;gap:.45rem}
+    .heroes .shelf .pr{border:1px dashed rgba(255,255,255,.25);border-radius:10px;padding:.4rem .55rem;font-size:.88rem}
+    .heroes .shelf .pr.best{border-style:solid;background:rgba(255,255,255,.06)}
+    .heroes .canvasRow{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.4rem}
+    .heroes .canvasRow canvas{border:1px solid rgba(255,255,255,.2);border-radius:8px;background:#0b0f14;max-width:100%}
+  </style>
+</head>
+<body class="heroes">
+  <!-- Mount your shared header if you use it -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js"></script>
+
+  <main class="wrap">
+    <header>
+      <h1><span class="accent">Hero’s Year</span> — Become Your Own Champion</h1>
+      <p class="lead">Four phases over 3/6/9/12 months. Train strength, engine, and calisthenics skill. Earn XP, unlock badges, beat Boss Fights, and track your story with private photos and shareable progress cards.</p>
+      <div>
+        <span class="pill">Strength</span>
+        <span class="pill">Engine</span>
+        <span class="pill">Calisthenics</span>
+        <span class="pill">Mobility</span>
+        <span class="pill">Recovery</span>
+      </div>
+    </header>
+
+    <!-- Phase chooser -->
+    <section class="grid cols3" aria-label="Phases">
+      <article class="card phase">
+        <h2>Phase I — Foundation</h2>
+        <p class="meta">Movement quality, base strength, Z2 engine, intro calisthenics.</p>
+        <div class="row">
+          <a class="btn" href="heroes-phase.html?p=I">Open Plan</a>
+          <button class="btn--ghost" data-open-boss data-phase="I">Boss Fights</button>
+        </div>
+      </article>
+      <article class="card phase">
+        <h2>Phase II — Ascent</h2>
+        <p class="meta">Heavier basics, threshold work, skill progressions (HS, pull-up).</p>
+        <div class="row">
+          <a class="btn" href="heroes-phase.html?p=II">Open Plan</a>
+          <button class="btn--ghost" data-open-boss data-phase="II">Boss Fights</button>
+        </div>
+      </article>
+      <article class="card phase">
+        <h2>Phase III — Peak</h2>
+        <p class="meta">Power & repeatability; long engines; strict pull-ups, pistols.</p>
+        <div class="row">
+          <a class="btn" href="heroes-phase.html?p=III">Open Plan</a>
+          <button class="btn--ghost" data-open-boss data-phase="III">Boss Fights</button>
+        </div>
+      </article>
+      <article class="card phase">
+        <h2>Phase IV — Legacy</h2>
+        <p class="meta">Sustain & sharpen; play with skills; maintain PRs; mentor others.</p>
+        <div class="row">
+          <a class="btn" href="heroes-phase.html?p=IV">Open Plan</a>
+          <button class="btn--ghost" data-open-boss data-phase="IV">Boss Fights</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- Quests (auto-rotates weekly) -->
+    <section class="card" id="weekly" aria-label="This week’s quests">
+      <h2>This Week’s Quests</h2>
+      <p class="meta">Complete quests to gain XP. We rotate 12 per phase on a weekly seed (Mon–Sun). Mark complete to award XP & save.</p>
+      <div id="questList" class="grid"></div>
+      <div class="shelf" id="xpShelf"></div>
+    </section>
+
+    <!-- Badges & PRs -->
+    <section class="card" aria-label="Badges and PRs">
+      <h2>Badges & PRs</h2>
+      <div class="shelf" id="badgeShelf"></div>
+      <div class="canvasRow">
+        <button class="btn--ghost" id="makeCard">Claim Reward Card</button>
+        <canvas id="cardCanvas" width="680" height="360" aria-label="Shareable progress card"></canvas>
+        <a id="cardDownload" class="btn" download="heros-year-card.png" href="#" style="display:none">Download PNG</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Boss Modal -->
+  <dialog id="bossModal" aria-labelledby="bossTitle">
+    <div class="head">
+      <h3 id="bossTitle">Boss Fights</h3>
+      <button class="btn--ghost" data-close>Close</button>
+    </div>
+    <div class="body">
+      <section class="panel">
+        <h4>Endurance Trials</h4>
+        <label>5k Run (mm:ss)</label>
+        <div class="row">
+          <input type="text" id="run5k" placeholder="e.g. 24:30">
+          <button class="btn" data-save="run5k">Save PR</button>
+        </div>
+        <label>5k Row (Concept2, mm:ss)</label>
+        <div class="row">
+          <input type="text" id="row5k" placeholder="e.g. 21:10">
+          <button class="btn" data-save="row5k">Save PR</button>
+        </div>
+        <label>10-min Engine (distance meters or calories)</label>
+        <div class="row">
+          <input type="number" id="eng10" placeholder="e.g. 2500">
+          <button class="btn" data-save="eng10">Save PR</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h4>Strength / Calisthenics Trials</h4>
+        <label>Max Strict Pull-ups (best of 2)</label>
+        <div class="row">
+          <input type="number" id="pullups" min="0" step="1" placeholder="e.g. 8">
+          <button class="btn" data-save="pullups">Save PR</button>
+        </div>
+        <label>Longest Wall Handstand Hold (seconds)</label>
+        <div class="row">
+          <input type="number" id="hsHold" min="0" step="1" placeholder="e.g. 45">
+          <button class="btn" data-save="hsHold">Save PR</button>
+        </div>
+        <label>Pistol Squat AMRAP in 90s (L+R total)</label>
+        <div class="row">
+          <input type="number" id="pistols" min="0" step="1" placeholder="e.g. 22">
+          <button class="btn" data-save="pistols">Save PR</button>
+        </div>
+        <label>L-sit Accumulated Time (one set window, seconds)</label>
+        <div class="row">
+          <input type="number" id="lsit" min="0" step="1" placeholder="e.g. 30">
+          <button class="btn" data-save="lsit">Save PR</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h4>Notes</h4>
+        <p class="meta">PRs are saved privately in your browser (localStorage). Hitting thresholds unlocks badges and XP automatically.</p>
+        <ul class="meta">
+          <li>5k run: Sub-30 / Sub-25 / Sub-22 / Sub-20</li>
+          <li>5k row: Sub-23 / Sub-21 / Sub-19</li>
+          <li>Pull-ups: 1 / 5 / 10 / 15+</li>
+          <li>HS hold: 20s / 40s / 60s</li>
+          <li>Pistols AMRAP: 10 / 20 / 30+</li>
+          <li>L-sit: 10s / 20s / 40s / 60s</li>
+        </ul>
+      </section>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
+
+  <script>
+  ;(function(){
+    const LS = {
+      XP: 'hero_xp', BADGES:'hero_badges', PR:'hero_prs', QUESTS_DONE:'hero_qdone'
+    };
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => [...document.querySelectorAll(sel)];
+    const fmt = n => Number(n||0);
+
+    // ===== Quests per phase (12 each, rotate weekly) =====
+    const QUESTS = {
+      I: [
+        {k:'walk6k',t:'Walk 6,000 steps 5 days',xp:50},
+        {k:'z2_30',t:'Zone-2 30 min (RPE 3–4)',xp:40},
+        {k:'pushup_40',t:'Total 40 push-ups (any sets)',xp:40},
+        {k:'row50',t:'Ring/Table rows 50 total',xp:40},
+        {k:'hollow3',t:'Hollow hold 3×20s + 3×20s arch',xp:35},
+        {k:'mob15',t:'Mobility 15 min × 3',xp:35},
+        {k:'sleep',t:'7+ hours sleep × 4 nights',xp:35},
+        {k:'water',t:'6 glasses water daily × 5',xp:25},
+        {k:'food',t:'Protein at 2 meals × 5',xp:25},
+        {k:'hsIntro',t:'Wall HS line drills 10 min × 2',xp:35},
+        {k:'pullStart',t:'Pull-up practice: 20 total reps (assisted ok)',xp:45},
+        {k:'pic',t:'Take weekly progress photo (private)',xp:15},
+      ],
+      II: [
+        {k:'thresh',t:'Threshold 2×10 min (RPE 7)',xp:60},
+        {k:'sqd',t:'Split squat 4×8/side (RIR 2)',xp:45},
+        {k:'pushHard',t:'Diamond/deficit push-ups total 60',xp:55},
+        {k:'rowsHard',t:'Hard angle rows 60',xp:50},
+        {k:'coreL',t:'Hanging knee raises 3×8–12',xp:45},
+        {k:'hs20',t:'HS wall holds total 60s+ (clusters)',xp:60},
+        {k:'pull5',t:'Pull-ups 25 total (bands fine)',xp:60},
+        {k:'z2_40',t:'Zone-2 40–50 min',xp:55},
+        {k:'mob20',t:'Mobility 20 min × 3',xp:40},
+        {k:'water',t:'8 glasses water × 5',xp:25},
+        {k:'sleep',t:'7.5h sleep × 4',xp:35},
+        {k:'pic',t:'Weekly progress photo',xp:15},
+      ],
+      III: [
+        {k:'longRun',t:'Long engine 60–75 min (Z2)',xp:80},
+        {k:'int',t:'3×(4 min hard / 2 min easy)',xp:70},
+        {k:'pull10',t:'Strict pull-ups 30 total (weighted ok)',xp:80},
+        {k:'pistol',t:'Pistol practice 30 total/leg (levels ok)',xp:70},
+        {k:'pushPow',t:'Explosive push-ups 5×5',xp:55},
+        {k:'hs40',t:'Wall HS 40s unbroken',xp:90},
+        {k:'lsit20',t:'L-sit accum 60s in set window',xp:80},
+        {k:'mob25',t:'Mobility 25 min × 3',xp:45},
+        {k:'sleep8',t:'8h sleep × 3',xp:40},
+        {k:'protein',t:'Hit protein target × 5 days',xp:35},
+        {k:'z2_30',t:'Bonus Z2 30 min',xp:30},
+        {k:'pic',t:'Weekly progress photo',xp:15},
+      ],
+      IV: [
+        {k:'pr_try',t:'Attempt a PR (any boss trial)',xp:100},
+        {k:'mentor',t:'Teach someone a movement',xp:60},
+        {k:'play',t:'Play session 30–45 min',xp:50},
+        {k:'maint',t:'Full-body maintain 45–60 min',xp:60},
+        {k:'hs60',t:'HS 60s unbroken (clusters ok)',xp:120},
+        {k:'pull15',t:'Strict pull-ups 40 total',xp:100},
+        {k:'engine45',t:'Engine 45 min mixed',xp:60},
+        {k:'mobAny',t:'Mobility 20 min × 3',xp:45},
+        {k:'sleep',t:'Sleep 8h × 3',xp:40},
+        {k:'water',t:'Hydration target × 5',xp:30},
+        {k:'grat',t:'Gratitude note × 3',xp:20},
+        {k:'pic',t:'Weekly progress photo',xp:15},
+      ],
+    };
+
+    // rotate quests weekly by seeding index
+    function weekSeed(){
+      const now = new Date();
+      // ISO week index:
+      const onejan = new Date(now.getFullYear(),0,1);
+      const week = Math.ceil((((now - onejan) / 86400000) + onejan.getDay()+1) / 7);
+      return week;
+    }
+
+    // State helpers
+    function getLS(k,def){ try{ return JSON.parse(localStorage.getItem(k)) ?? def; }catch{ return def; } }
+    function setLS(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+    const XP = { get(){return fmt(getLS(LS.XP,0))}, add(n){ const v=fmt(n)+XP.get(); setLS(LS.XP,v); return v; } };
+    const BADGES = { get(){return getLS(LS.BADGES,[])}, add(b){ const cur=BADGES.get(); if(!cur.includes(b)){ cur.push(b); setLS(LS.BADGES,cur); } } };
+    const PR = { get(){return getLS(LS.PR,{})}, set(key,val){ const cur=PR.get(); cur[key]=val; setLS(LS.PR,cur); return cur; } };
+    const QDONE = { get(){return getLS(LS.QUESTS_DONE,{})}, toggle(k,xp){ const cur=QDONE.get(); if(cur[k]){ delete cur[k]; setLS(LS.QUESTS_DONE,cur); return -xp; } else { cur[k]=true; setLS(LS.QUESTS_DONE,cur); return xp; } } };
+
+    // Render quests for current phase (defaults to Phase I list on hub)
+    function renderQuests(phase='I'){
+      const list = $('#questList');
+      list.classList.add('grid'); // keep grid
+      list.innerHTML='';
+      const week = weekSeed();
+      const qs = QUESTS[phase].slice(); // copy
+      // rotate by week index
+      const rot = week % qs.length;
+      const rotated = qs.slice(rot).concat(qs.slice(0,rot));
+      rotated.forEach(q=>{
+        const done = !!QDONE.get()[q.k];
+        const el = document.createElement('article');
+        el.className='quest';
+        el.innerHTML = `
+          <h4>${q.t}</h4>
+          <div class="act">
+            <button class="btn--ghost" data-q="${q.k}" data-xp="${q.xp}">${done?'Undo':'Mark complete'} (+${q.xp} XP)</button>
+            <span class="badge">ID: ${q.k}</span>
+          </div>
+        `;
+        list.appendChild(el);
+      });
+      // bind
+      list.addEventListener('click', e=>{
+        const b = e.target.closest('button[data-q]');
+        if(!b) return;
+        const id=b.dataset.q, val=fmt(b.dataset.xp);
+        const delta = QDONE.toggle(id,val);
+        const total = XP.add(delta);
+        b.textContent = (delta>0? 'Undo':'Mark complete') + ` (${delta>0?'-':'+'}${Math.abs(val)} XP)`;
+        renderShelf();
+      }, {once:true}); // rebind per render
+      renderShelf();
+    }
+
+    function renderShelf(){
+      $('#xpShelf').innerHTML = `<span class="badge">XP: <strong>${XP.get()}</strong></span>`;
+      const shelf = $('#badgeShelf');
+      const badges = BADGES.get();
+      shelf.innerHTML = badges.length ? badges.map(b=>`<span class="badge">${b}</span>`).join(' ') : '<span class="meta">No badges yet — hit a Boss PR threshold to unlock.</span>';
+    }
+
+    // ===== Boss Modal / PR recording + Badges logic =====
+    const B_THRESH = {
+      run5k: [{t:'5k Sub-30',v:30*60},{t:'5k Sub-25',v:25*60},{t:'5k Sub-22',v:22*60},{t:'5k Sub-20',v:20*60}],
+      row5k: [{t:'Row 5k Sub-23',v:23*60},{t:'Row 5k Sub-21',v:21*60},{t:'Row 5k Sub-19',v:19*60}],
+      eng10: [{t:'Engine 10′ 2,000+',v:2000},{t:'Engine 10′ 2,400+',v:2400},{t:'Engine 10′ 2,800+',v:2800}],
+      pullups: [{t:'First Pull-up',v:1},{t:'Pull-ups ×5',v:5},{t:'Pull-ups ×10',v:10},{t:'Pull-ups ×15',v:15}],
+      hsHold: [{t:'HS 20s',v:20},{t:'HS 40s',v:40},{t:'HS 60s',v:60}],
+      pistols: [{t:'Pistols 10',v:10},{t:'Pistols 20',v:20},{t:'Pistols 30',v:30}],
+      lsit: [{t:'L-sit 10s',v:10},{t:'L-sit 20s',v:20},{t:'L-sit 40s',v:40},{t:'L-sit 60s',v:60}],
+    };
+
+    function mmssToSec(s){
+      const m = (s||'').trim().split(':');
+      if(m.length===2) return (+m[0])*60 + (+m[1]);
+      return isFinite(+s)? +s : 0;
+    }
+    function savePR(key, raw){
+      let val = raw;
+      if(key==='run5k' || key==='row5k'){ val = mmssToSec(raw); }
+      else{ val = fmt(raw); }
+      const cur = PR.get()[key];
+      let better=false;
+      if(cur==null) better=true;
+      else{
+        // lower is better for times; higher is better for counts/distance
+        if(key==='run5k' || key==='row5k'){ better = val>0 && val < cur; }
+        else { better = val > cur; }
+      }
+      const updated = PR.set(key, better?val:(cur??val));
+      // Grant badges on thresholds
+      const th = B_THRESH[key]||[];
+      th.forEach(thr=>{
+        const ok = (key==='run5k' || key==='row5k') ? (updated[key] && updated[key] <= thr.v) : (updated[key] && updated[key] >= thr.v);
+        if(ok){ BADGES.add(thr.t); XP.add(50); }
+      });
+      renderShelf();
+    }
+
+    // Modal wiring
+    const bossModal = $('#bossModal');
+    $$('#bossModal [data-save]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-save');
+        const el = $('#'+id);
+        if(!el) return;
+        savePR(id, el.value);
+        el.value='';
+      });
+    });
+    $$('[data-open-boss]').forEach(b=> b.addEventListener('click', ()=>{ $('#bossTitle').textContent = `Boss Fights — Phase ${b.dataset.phase}`; bossModal.showModal(); }));
+    $$('#bossModal [data-close]').forEach(b=> b.addEventListener('click', ()=> bossModal.close() ));
+    bossModal.addEventListener('click', e=>{ if(e.target===bossModal) bossModal.close(); });
+
+    // Weekly render default to Phase I
+    renderQuests('I');
+
+    // Shareable card (canvas)
+    const canv = $('#cardCanvas'), ctx = canv.getContext('2d'), dl = $('#cardDownload');
+    function drawCard(){
+      const w=canv.width,h=canv.height;
+      // bg
+      const g=ctx.createLinearGradient(0,0,w,h);
+      g.addColorStop(0,'#151b22'); g.addColorStop(1,'#0f1319');
+      ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+      // title
+      ctx.fillStyle='#FF6A00'; ctx.font='700 26px Inter, Arial'; ctx.fillText('Hero’s Year — Progress', 24, 40);
+      ctx.fillStyle='#fff'; ctx.font='700 20px Inter, Arial'; ctx.fillText(`XP: ${XP.get()}`, 24, 72);
+      // badges
+      const badges = BADGES.get();
+      ctx.font='600 16px Inter, Arial';
+      ctx.fillStyle='#cfd3dc';
+      ctx.fillText('Badges:', 24, 104);
+      let x=24,y=128;
+      badges.slice(-8).forEach(b=>{
+        const pad=10; const txtW = ctx.measureText(b).width;
+        const bw = txtW + pad*2, bh = 30;
+        // pill
+        ctx.fillStyle='rgba(255,255,255,.08)'; ctx.fillRect(x,y,bw,bh);
+        ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.strokeRect(x,y,bw,bh);
+        ctx.fillStyle='#fff'; ctx.fillText(b, x+pad, y+20);
+        x += bw + 8;
+        if(x> w-200){ x=24; y+= bh+10; }
+      });
+      // footer
+      ctx.fillStyle='#9aa6b2'; ctx.font='600 14px Inter, Arial';
+      ctx.fillText('freefitfuel.co.uk • Hero’s Year', 24, h-18);
+    }
+    $('#makeCard').addEventListener('click', ()=>{
+      drawCard();
+      dl.href = canv.toDataURL('image/png'); dl.style.display='inline-flex';
+    });
+  })();
+  </script>
+</body>
+</html>

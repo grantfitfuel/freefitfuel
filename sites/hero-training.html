@@ -1,233 +1,170 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hero Training – FreeFitFuel</title>
-<link rel="stylesheet" href="/style.css?v=33">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hero Training — FreeFitFuel</title>
+  <link rel="stylesheet" href="/style.css?v=31" />
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg" />
 
-<style>
-/* ===== Colourful UI just for Hero pages ===== */
-:root{
-  --pill-ink:#111;
-  --c-strength:#FF6A00;   /* orange */
-  --c-engine:#3498db;     /* blue   */
-  --c-calis:#2ecc71;      /* green  */
-  --c-mob:#9b59b6;        /* purple */
-  --c-recov:#f1c40f;      /* yellow */
-  --c-boss:#e74c3c;       /* red    */
-}
+  <style>
+    /* Page-local polish */
+    .ht-wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .title{margin:.4rem 0 0;font-size:clamp(2.2rem,1.5rem + 2.8vw,3.2rem);font-weight:900;letter-spacing:.2px}
+    .tagline-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1.1rem}
+    .pill{
+      display:inline-flex;align-items:center;gap:.45rem;
+      padding:.42rem .8rem;border-radius:999px;font-weight:700;font-size:.92rem;
+      color:#111;border:1px solid rgba(0,0,0,.12); box-shadow:0 2px 0 rgba(0,0,0,.15)
+    }
+    .p-strength{background:#FF8C3A}
+    .p-engine{background:#6EB6FF}
+    .p-cali{background:#37D07E}
+    .p-mob{background:#B384FF;color:#fff;border-color:rgba(255,255,255,.25)}
+    .p-recov{background:#FFD54D}
+    .p-boss{background:#FF6B6B;color:#fff;border-color:rgba(255,255,255,.25)}
 
-/* Big title */
-.hero-title{margin:10px 0 6px;font-weight:900;font-size:clamp(2.1rem,1.4rem + 2.6vw,3.2rem)}
-.hero-sub{color:var(--inkdim);max-width:72ch}
+    /* XP bar */
+    .xp{display:flex;align-items:center;gap:.6rem;margin:.6rem 0 1.1rem}
+    .xp-label{font-weight:800;background:rgba(255,255,255,.06);border:1px solid var(--stroke);padding:.35rem .6rem;border-radius:10px}
+    .xp-rail{flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--stroke)}
+    .xp-fill{height:100%;width:35%;background:linear-gradient(90deg,#FF8C3A,#FF6A00)}
+    .xp-amt{background:rgba(255,255,255,.06);border:1px solid var(--stroke);padding:.3rem .55rem;border-radius:10px;font-weight:800}
 
-/* Category bar (single row) */
-.catbar{display:flex;flex-wrap:wrap;gap:.55rem;margin:14px 0 18px}
-.pill{
-  display:inline-flex;align-items:center;gap:.45rem;
-  padding:.48rem .9rem;border-radius:999px;font-weight:800;
-  color:var(--pill-ink); border:0; cursor:pointer; text-decoration:none;
-  box-shadow:0 2px 6px rgba(0,0,0,.25); transition:transform .18s,filter .18s;
-}
-.pill:hover{transform:translateY(-1px);filter:brightness(1.05)}
-.pill span{opacity:.85;font-weight:700}
+    /* Filter chips (interactive) */
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1rem}
+    .chip{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.45rem .8rem;border-radius:999px;cursor:pointer;font-weight:700}
+    .chip.active{outline:2px solid #fff;outline-offset:2px}
 
-/* colours */
-.pill.str{background:var(--c-strength)}
-.pill.eng{background:var(--c-engine)}
-.pill.cal{background:var(--c-calis)}
-.pill.mob{background:var(--c-mob);color:#fff}
-.pill.rec{background:var(--c-recov)}
-.pill.boss{background:var(--c-boss);color:#fff}
-
-/* XP meter */
-.xp-wrap{display:flex;align-items:center;gap:.6rem;margin:6px 0 18px}
-.level-tag{font-weight:900;padding:.35rem .6rem;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--stroke)}
-.xp-bar{flex:1;height:14px;background:#0f1217;border:1px solid var(--stroke);border-radius:999px;overflow:hidden;position:relative}
-.xp-fill{
-  position:absolute;inset:0 auto 0 0;width:0%;
-  background:linear-gradient(90deg,#ffd580,#ff6a00,#ff9a3d);
-  filter:saturate(1.1); box-shadow:0 0 16px rgba(255,145,0,.35) inset;
-  transition:width .6s ease;
-}
-
-/* Phase cards */
-.phase-grid{display:grid;gap:14px;margin:10px 0 30px}
-@media(min-width:900px){.phase-grid{grid-template-columns:repeat(3,1fr)}}
-.phase{
-  background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;
-  display:flex;flex-direction:column;gap:.6rem;min-height:180px
-}
-.phase h3{margin:.1rem 0 .2rem;font-size:1.2rem;display:flex;align-items:center;gap:.5rem}
-.phase .meta{color:var(--inkdim)}
-.badge{
-  font-weight:900;border-radius:999px;padding:.2rem .55rem;border:1px solid var(--stroke);
-  display:inline-flex;align-items:center;gap:.35rem
-}
-.icon{font-size:1.15rem}
-
-/* CTA row on card */
-.card-ctas{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:auto}
-.btn-cta{background:#fff;color:#111;border:0;border-radius:10px;padding:.55rem .8rem;font-weight:800;cursor:pointer}
-.btn-ghost{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:10px;padding:.52rem .8rem}
-
-/* Boss fight callout */
-.callout{
-  border:1px solid var(--stroke);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
-  padding:16px;display:grid;gap:.6rem;margin:8px 0 26px
-}
-.boss-cta{
-  display:inline-flex;align-items:center;gap:.55rem;padding:.7rem 1rem;border-radius:12px;
-  background:var(--c-boss);color:#fff;font-weight:900;border:0;cursor:pointer;
-  box-shadow:0 8px 22px rgba(231,76,60,.35);transition:transform .15s
-}
-.boss-cta:hover{transform:translateY(-1px)}
-
-/* Mini filter text (when clicking pills) */
-.filter-note{font-size:.92rem;color:var(--inkdim);margin-top:-6px}
-.hide{display:none !important}
-</style>
+    /* Phase grid */
+    .phases{display:grid;gap:14px}
+    @media (min-width:920px){.phases{grid-template-columns:repeat(3,1fr)}}
+    .phase{
+      background:rgba(255,255,255,.05);border:1px solid var(--stroke);border-radius:16px;
+      padding:14px;display:flex;flex-direction:column;gap:.65rem
+    }
+    .phase h2{margin:.1rem 0 .2rem;font-size:1.15rem}
+    .phase .meta{color:var(--inkdim)}
+    .phase .row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:999px;padding:.28rem .55rem;font-weight:700;border:1px solid var(--stroke);background:var(--glass)}
+    .focus{align-self:flex-start;background:#111418;border:1px solid var(--stroke);padding:.35rem .6rem;border-radius:999px}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;background:#FF6A00;color:#111;border:0;border-radius:12px;padding:.7rem 1rem;font-weight:800}
+    .btn:hover{filter:brightness(1.05)}
+    .btn--ghost{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:12px;padding:.7rem 1rem;font-weight:800}
+  </style>
 </head>
-
 <body>
   <!-- Shared header -->
   <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
+  <script src="/js/header-loader.js" defer></script>
 
-  <main class="wrap" id="top">
-    <p class="meta">Hybrid transformation</p>
-    <h1 class="hero-title">Hero Training</h1>
-    <p class="hero-sub">Four phases. Weekly quests. Boss fights. Track XP and watch your badges light up.</p>
+  <main class="ht-wrap">
+    <h1 class="title">Hero Training</h1>
 
-    <!-- SINGLE colourful category row -->
-    <nav class="catbar" aria-label="Categories">
-      <button class="pill str" data-filter="strength">💪 <span>Strength</span></button>
-      <button class="pill eng" data-filter="engine">🏃 <span>Engine</span></button>
-      <button class="pill cal" data-filter="calisthenics">🧗 <span>Calisthenics</span></button>
-      <button class="pill mob" data-filter="mobility">🧘 <span>Mobility</span></button>
-      <button class="pill rec" data-filter="recovery">🛌 <span>Recovery</span></button>
-      <a class="pill boss" href="#boss" role="button">⚔️ <span>Boss Fights</span></a>
-    </nav>
-    <p class="filter-note" id="filterNote">Tip: click a pill to highlight phases heavy on that theme.</p>
+    <!-- colourful tagline pills (fun, not random) -->
+    <div class="tagline-row" aria-label="What’s inside">
+      <span class="pill p-strength">💪 Strength</span>
+      <span class="pill p-engine">🚴 Engine</span>
+      <span class="pill p-cali">🧗 Calisthenics</span>
+      <span class="pill p-mob">🧘 Mobility</span>
+      <span class="pill p-recov">😴 Recovery</span>
+      <span class="pill p-boss">👹 Boss Fights</span>
+    </div>
 
-    <!-- XP meter -->
-    <div class="xp-wrap" aria-label="Season XP">
-      <span class="level-tag" id="levelTag">Level 1 • Apprentice</span>
-      <div class="xp-bar" aria-hidden="true"><div class="xp-fill" id="xpFill" style="width:20%"></div></div>
-      <span class="level-tag" id="xpNum">250 XP</span>
+    <p class="meta" style="margin:.2rem 0 1.1rem">
+      Four phases. Weekly quests. Boss fights. Track XP and watch your badges light up.
+      Tip: click a coloured chip to highlight phases with more of that theme.
+    </p>
+
+    <!-- chips to “highlight” focus areas (just visual cues here) -->
+    <div class="chips" id="chips">
+      <button class="chip" data-key="strength">Strength</button>
+      <button class="chip" data-key="engine">Engine</button>
+      <button class="chip" data-key="cali">Calisthenics</button>
+      <button class="chip" data-key="mobility">Mobility</button>
+      <button class="chip" data-key="recovery">Recovery</button>
+      <button class="chip" data-key="boss">Boss Fights</button>
+    </div>
+
+    <!-- XP bar (example numbers) -->
+    <div class="xp">
+      <span class="xp-label">Level 2 • Warrior</span>
+      <div class="xp-rail"><div class="xp-fill" id="xpFill" style="width:35%"></div></div>
+      <span class="xp-amt" id="xpAmt">250 XP</span>
     </div>
 
     <!-- Phases -->
-    <section aria-label="Choose your phase" class="phase-grid" id="phaseGrid">
-      <article class="phase" data-tags="strength engine mobility">
-        <h3><span class="icon">🛠️</span>Phase I — Foundation (Weeks 1–4)</h3>
+    <section class="phases" id="phaseGrid" aria-label="Choose your phase">
+      <article class="phase" data-tags="strength engine">
+        <h2>🛠️ Phase I — Foundation (Weeks 1–4)</h2>
         <p class="meta">Skill the lifts, build base engine (Z2), 10-minute daily mobility. Beginner-friendly but spicy.</p>
-        <div class="card-ctas">
-          <a class="btn-cta" href="/hero-phase-1.html">Open Plan</a>
-          <a class="btn-ghost" href="#boss">Boss Fights</a>
-          <span class="badge">🏷️ <strong>Focus</strong>: strength + engine</span>
+        <div class="row">
+          <a class="btn" href="/hero-phase-1.html">Open Plan</a>
+          <a class="btn--ghost" href="/boss-fights.html#phase-1">Boss Fights</a>
         </div>
+        <div class="focus">🎯 Focus: strength + engine</div>
+      </article>
+
+      <article class="phase" data-tags="engine calisthenics">
+        <h2>🚀 Phase II — Build (Weeks 5–8)</h2>
+        <p class="meta">Add volume and tempo; threshold engines; first calisthenics progressions.</p>
+        <div class="row">
+          <a class="btn" href="/hero-phase-2.html">Open Plan</a>
+          <a class="btn--ghost" href="/boss-fights.html#phase-2">Boss Fights</a>
+        </div>
+        <div class="focus">🎯 Focus: mixed</div>
       </article>
 
       <article class="phase" data-tags="strength engine calisthenics">
-        <h3><span class="icon">🚀</span>Phase II — Build (Weeks 5–8)</h3>
-        <p class="meta">Add volume and tempo; threshold engines; first calisthenics progressions.</p>
-        <div class="card-ctas">
-          <a class="btn-cta" href="/hero-phase-2.html">Open Plan</a>
-          <a class="btn-ghost" href="#boss">Boss Fights</a>
-          <span class="badge">🏷️ <strong>Focus</strong>: mixed</span>
-        </div>
-      </article>
-
-      <article class="phase" data-tags="engine strength calisthenics">
-        <h3><span class="icon">🔥</span>Phase III — Peak (Weeks 9–12)</h3>
+        <h2>🔥 Phase III — Peak (Weeks 9–12)</h2>
         <p class="meta">Power + repeatability; long engines; strict pull-ups and pistol work appear.</p>
-        <div class="card-ctas">
-          <a class="btn-cta" href="/hero-phase-3.html">Open Plan</a>
-          <a class="btn-ghost" href="#boss">Boss Fights</a>
-          <span class="badge">🏷️ <strong>Focus</strong>: power</span>
+        <div class="row">
+          <a class="btn" href="/hero-phase-3.html">Open Plan</a>
+          <a class="btn--ghost" href="/boss-fights.html#phase-3">Boss Fights</a>
         </div>
+        <div class="focus">🎯 Focus: power</div>
       </article>
 
-      <article class="phase" data-tags="recovery mobility calisthenics">
-        <h3><span class="icon">🛡️</span>Phase IV — Legacy (Weeks 13–16)</h3>
-        <p class="meta">Deload, refine skills, maintain PRs, and build habits that stick. Mentor someone new.</p>
-        <div class="card-ctas">
-          <a class="btn-cta" href="/hero-phase-4.html">Open Plan</a>
-          <a class="btn-ghost" href="#boss">Boss Fights</a>
-          <span class="badge">🏷️ <strong>Focus</strong>: sustain</span>
+      <article class="phase" data-tags="recovery mobility">
+        <h2>🧩 Phase IV — Reload & Reforge (Weeks 13–16)</h2>
+        <p class="meta">Deload, refine technique, add play; set the stage for the next hero season.</p>
+        <div class="row">
+          <a class="btn" href="/hero-phase-4.html">Open Plan</a>
+          <a class="btn--ghost" href="/boss-fights.html#phase-4">Boss Fights</a>
         </div>
+        <div class="focus">🎯 Focus: recover & sharpen</div>
       </article>
     </section>
-
-    <!-- Boss fights -->
-    <section id="boss" class="callout" aria-label="Boss fights">
-      <h2 style="margin:.2rem 0">Boss Fights</h2>
-      <p class="meta">Pick your test: 5k Row/Run (or DB/Table Row alt), 10-min AMRAP, or 1-mile loaded carry. Beat your PR to auto-earn a badge.</p>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-        <a class="boss-cta" href="/boss-fights.html">Enter Battle</a>
-        <a class="btn-ghost" href="/badges.html">View Badges</a>
-      </div>
-    </section>
-
-    <p class="meta">Everything here is optional fun. If you’re new, start with Phase I. You’ll level up fast.</p>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64" />
       <p>© 2025 FreeFitFuel · All rights reserved.</p>
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
 
-<script>
-/* ===== Small interactivity ===== */
+  <script>
+    // Tiny UI: chip highlighting (filters visually by boosting opacity)
+    const chips = document.getElementById('chips');
+    const cards = [...document.querySelectorAll('.phase')];
 
-/* 1) XP demo (replace with your real state later) */
-const levels = [
-  {name:'Apprentice', need:0},
-  {name:'Warrior',    need:250},
-  {name:'Vanguard',   need:600},
-  {name:'Champion',   need:1000},
-  {name:'Legend',     need:1600}
-];
-// Example current XP — wire to storage later:
-let xp = 250;                       // change as needed
+    chips?.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.chip');
+      if(!btn) return;
+      const key = btn.dataset.key;
+      btn.classList.toggle('active');
 
-function updateXP(){
-  const fill = document.getElementById('xpFill');
-  const tag  = document.getElementById('levelTag');
-  const num  = document.getElementById('xpNum');
-
-  // find current & next level
-  let idx = 0; for (let i=0;i<levels.length;i++){ if (xp >= levels[i].need) idx=i; }
-  const cur = levels[idx];
-  const next = levels[idx+1] || levels[idx];
-  const span = next.need - cur.need || 1;
-  const pct  = Math.max(0, Math.min(100, ((xp - cur.need)/span)*100));
-  fill.style.width = (idx===levels.length-1 ? 100 : pct) + '%';
-  tag.textContent = `Level ${idx+1} • ${cur.name}`;
-  num.textContent = `${xp} XP`;
-}
-updateXP();
-
-/* 2) Category filtering hint — dims non-matching phases */
-const pills = document.querySelectorAll('.catbar .pill');
-const grid  = document.getElementById('phaseGrid');
-const note  = document.getElementById('filterNote');
-pills.forEach(p=>{
-  if(!p.dataset.filter) return;
-  p.addEventListener('click', ()=>{
-    const k = p.dataset.filter;
-    grid.querySelectorAll('.phase').forEach(card=>{
-      const tags = card.dataset.tags || '';
-      card.classList.toggle('hide', !tags.includes(k));
+      const activeKeys = [...chips.querySelectorAll('.chip.active')].map(b=>b.dataset.key);
+      cards.forEach(card=>{
+        if(activeKeys.length===0){ card.style.filter='none'; card.style.opacity='1'; return; }
+        const tags = (card.dataset.tags||'').split(/\s+/);
+        const hit = activeKeys.some(k => tags.includes(k));
+        card.style.opacity = hit ? '1' : '.45';
+        card.style.filter = hit ? 'none' : 'grayscale(0.35)';
+      });
     });
-    note.textContent = `Filtering by “${k}”. Click any other pill (or reload) to reset.`;
-  });
-});
-</script>
+  </script>
 </body>
 </html>

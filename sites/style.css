@@ -62,7 +62,7 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
 }
 
 /* =========================================
-   HERO — shared (overlay removed)
+   HERO — shared (overlay removed by default)
    ========================================= */
 header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0000}
@@ -87,25 +87,6 @@ header.has-gradient .overlay{background:linear-gradient(180deg,rgba(0,0,0,.35),r
 .page-hero{margin:0 0 14px}
 .page-hero img{width:100%;height:auto !important;max-height:clamp(220px,42vh,520px);object-fit:cover;display:block;border-radius:12px;border:1px solid var(--stroke)}
 
-/* ==== Strict hero fit (only when <body class="hero-mode">) ==== */
-.hero-mode .fit-hero{
-  width:100% !important;
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-  object-fit:contain !important;          /* no face/edge cropping */
-  object-position:center center !important;
-  background:#000;                         /* subtle letterbox if needed */
-  filter:none !important;                  /* cancel brightness from base */
-}
-
-/* Belt-and-braces in case the helper class is missed */
-.hero-mode header.hero-mini figure>img,
-.hero-mode header.hero .hero-media img{
-  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  background:#000;
-  filter:none !important;
-}
 /* =========================================
    Components
    ========================================= */
@@ -161,11 +142,18 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
    PAGE-SPECIFIC (kept)
    ========================================= */
 header.hero-mini.yoga-hero figure{background:#000}
-header.hero-mini.yoga-hero figure>img{height:clamp(320px,48vh,560px) !important;object-fit:contain !important;object-position:center center !important;display:block;filter:brightness(.96) saturate(1.03)}
+header.hero-mini.yoga-hero figure>img{
+  height:clamp(320px,48vh,560px) !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block;
+  filter:brightness(.96) saturate(1.03)
+}
 header.hero-mini.yoga-hero .content{position:static}
 
 /* =========================================
-   HERO MODE (Gamified) — Scoped to .hero-mode
+   HERO MODE — Scoped ONLY to Hero Training + Phases
+   (Add class="hero-mode" to <body> on those pages.)
    ========================================= */
 .hero-mode{
   --cm-ink:#111;
@@ -179,93 +167,71 @@ header.hero-mini.yoga-hero .content{position:static}
   --cm-stroke:rgba(255,255,255,.18);
 }
 
-/* Orange titles restored */
-.hero-mode .comic-title{color:var(--accent);font-weight:900;letter-spacing:.3px;text-shadow:0 1px 0 rgba(0,0,0,.4)}
+/* Orange page titles in hero-mode */
+.hero-mode h1,.hero-mode .comic-title{
+  color:var(--accent);font-weight:900;letter-spacing:.3px;text-shadow:0 1px 0 rgba(0,0,0,.4)
+}
 .hero-mode .comic-sub{color:#ececf3}
 
-/* rainbow hero bg */
-.hero-mode .hero-rainbow{
-  background:
-    radial-gradient(1200px 1200px at -10% -40%, rgba(255,59,59,.16), transparent 50%),
-    radial-gradient(1200px 1200px at 110% -40%, rgba(96,165,250,.16), transparent 50%),
-    radial-gradient(1200px 1200px at 50% 120%, rgba(52,211,153,.14), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  border-bottom:1px solid var(--stroke);
+/* Remove overlay + FIT hero IMAGES only in hero-mode pages */
+.hero-mode header.hero .overlay,
+.hero-mode header.hero-mini .overlay{background:none !important}
+.hero-mode header.hero-mini figure>img,
+.hero-mode header.hero .hero-media img,
+.hero-mode .fit-hero{
+  width:100%;
+  height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
+  object-fit:contain !important;      /* prevent face/edge cropping */
+  object-position:center center !important;
+  background-color:#000;               /* subtle letterbox if needed */
+  filter:none !important;              /* keep natural tones */
 }
 
-/* pills */
+/* helper UI used in hero-mode pages */
 .hero-mode .pills{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 1.1rem}
 .hero-mode .pill{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .7rem;border-radius:999px;font-weight:800;background:var(--glass);border:1px solid var(--cm-stroke);color:var(--ink)}
 .hero-mode .pill:hover{filter:brightness(1.08)}
 
-/* panels */
 .hero-mode .panel{background:var(--cm-panel);border:1px solid var(--cm-stroke);border-radius:16px;padding:14px}
 .hero-mode .panel h3{margin:.1rem 0 .45rem}
 .hero-mode .grid-panels{display:grid;gap:14px}
 @media(min-width:900px){.hero-mode .grid-panels{grid-template-columns:repeat(3,1fr)}}
 
-/* badges */
 .hero-mode .badge-row{display:flex;flex-wrap:wrap;gap:.5rem}
 .hero-mode .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .65rem;border-radius:999px;border:1px solid var(--cm-stroke);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));font-weight:800}
 .hero-mode .badge i{font-style:normal}
 
-/* goal chips */
 .hero-mode .goal-chip{display:inline-block;margin:.2rem .3rem .2rem 0;padding:.3rem .6rem;border-radius:999px;border:1px dashed var(--cm-stroke);font-size:.85rem;opacity:.95}
 .hero-mode .goal-strength{background:rgba(255,59,59,.12)}
 .hero-mode .goal-engine{background:rgba(96,165,250,.12)}
 .hero-mode .goal-skill{background:rgba(167,139,250,.12)}
 .hero-mode .goal-mob{background:rgba(52,211,153,.12)}
 
-/* BOSSES (renamed from Trials) */
 .hero-mode .boss{background:var(--cm-panel-2);border:1px solid var(--cm-stroke);border-radius:16px;padding:14px}
 .hero-mode .boss h3{margin:.2rem 0 .5rem}
 .hero-mode .boss .row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
 .hero-mode input[type="number"],.hero-mode input[type="text"]{background:#0b0f14;color:var(--ink);border:1px solid var(--stroke);border-radius:8px;padding:.45rem .55rem}
 .hero-mode .boss .btn{box-shadow:none}
 
-/* Exercise list */
 .hero-mode .ex-list{margin:.4rem 0 .1rem;padding-left:1.1rem}
 .hero-mode .ex-list li{margin:.18rem 0}
 .hero-mode .ex-list a{color:var(--ink);text-decoration:underline dotted}
 .hero-mode .ex-list a:hover{color:var(--accent)}
 
-/* tabs */
 .hero-mode .phase-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1rem}
 .hero-mode .tab{background:var(--glass);border:1px solid var(--cm-stroke);border-radius:999px;padding:.45rem .8rem;font-weight:800}
 .hero-mode .tab.is-active{background:linear-gradient(90deg,var(--accent2),var(--accent));color:#111;border-color:transparent}
 
-/* XP */
 .hero-mode .xp{height:10px;border-radius:999px;border:1px solid var(--cm-stroke);overflow:hidden;background:#0b1016}
 .hero-mode .xp>span{display:block;height:100%;background:linear-gradient(90deg,var(--cm-b),var(--cm-d))}
 
-/* Taskboard (weekly guidance) */
 .hero-mode .taskboard{display:grid;gap:12px}
 @media(min-width:900px){.hero-mode .taskboard{grid-template-columns:repeat(2,1fr)}}
 .hero-mode .task{background:var(--cm-panel);border:1px solid var(--cm-stroke);border-radius:14px;padding:12px}
 .hero-mode .checks{display:grid;gap:.4rem;margin:.4rem 0}
 .hero-mode .checks label{display:flex;gap:.6rem;align-items:flex-start}
 .hero-mode .checks input[type="checkbox"]{width:18px;height:18px;margin-top:.1rem}
-.hero-mode .claim{display:flex;gap:.6rem;align-items:center;margin-top:.4rem}
 
-/* Sparkle */
 .hero-mode .sparkle{position:absolute;inset:auto 16px 16px auto;opacity:.9;pointer-events:none}
 .hero-mode .sparkle svg{width:64px;height:64px;animation:twinkle 2.4s ease-in-out infinite}
 @keyframes twinkle{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.08);opacity:1}}
-
-/* Ensure hero overlays also off in hero-mode */
-.hero-mode header.hero .overlay,
-.hero-mode header.hero-mini .overlay{background:none !important}
-
-/* =======================================================
-   SCOPED HERO FIT FIX (only Hero Training & Phase pages)
-   Add .hero-mode to <body> on those pages.
-   Shows full hero image without cropping; other pages unchanged.
-   ======================================================= */
-.hero-mode header.hero-mini figure>img,
-.hero-mode header.hero .hero-media img{
-  height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
-  object-fit:contain !important;          /* prevent face/edge cropping */
-  object-position:center center !important;
-  background-color:#000;                   /* subtle letterbox if needed */
-  filter:none;
-}

@@ -1,132 +1,224 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hero Training — Phase 1 (Foundation)</title>
-  <link rel="stylesheet" href="/style.css?v=42">
-  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero Training — Phase I (Foundation)</title>
+<link rel="stylesheet" href="/style.css?v=42">
+<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+<style>
+  .hero-mini .content{position:static} /* text below image */
+
+  .plan{display:grid;gap:14px}
+  @media(min-width:920px){.plan{grid-template-columns:repeat(2,1fr)}}
+  .sess{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
+  .sess h3{margin:.1rem 0 .35rem}
+  .ex{border:1px solid var(--stroke);border-radius:12px;padding:.6rem .7rem;margin:.45rem 0 .35rem;background:#10141a}
+  .ex-head{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;justify-content:space-between}
+  .name-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+  .goal-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+  .tag{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.2rem .55rem;font-size:.8rem}
+  .yt-link{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.32rem .6rem;font-size:.9rem}
+  .yt-link:hover{color:var(--accent)}
+  .log{display:grid;gap:.5rem;margin-top:.6rem}
+  .log-row{display:grid;grid-template-columns:68px 1fr 1fr auto;gap:.45rem;align-items:center}
+  .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem}
+  .log-row .save{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.35rem .6rem;cursor:pointer}
+  .timer{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}
+  .timer input{width:90px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem}
+  .timer button{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.35rem .6rem;cursor:pointer}
+  .pr{font-size:.9rem;color:#b6b6c6}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.4rem;flex-wrap:wrap}
+  .complete-btn{background:var(--accent);color:#111;border:0;border-radius:10px;padding:.55rem .85rem;font-weight:800}
+  .toast{position:fixed;right:16px;bottom:16px;background:#0f1319;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .8rem;box-shadow:0 6px 20px rgba(0,0,0,.35);z-index:9999;display:none}
+  .toast.show{display:block}
+</style>
 </head>
 <body>
 
+<!-- Shared header -->
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
 
-<header class="hero-mini" role="banner" aria-label="Phase 1 hero">
+<header class="hero-mini" aria-label="Phase 1 hero">
   <figure>
-    <img src="/img/phase1-foundation.jpg" alt="Mixed-age group practicing foundational strength and easy running">
+    <img src="/img/hero-phase-1.jpg" alt="People of different ages training fundamentals with great form">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content wrap">
-    <h1><span class="accent">Phase 1 — Foundation (Weeks 1–8)</span></h1>
-    <p class="lead">Movement quality, base strength, and the aerobic habit (Zone 2). We start small and build steadily.</p>
+    <span class="eyebrow">Phase I · Weeks 1–12</span>
+    <h1><span class="accent">Foundation</span></h1>
+    <p class="lead">Perfect technique, build your aerobic base, establish baseline numbers. Deload every 4th week.</p>
+    <nav class="mini-nav" aria-label="Navigate phases">
+      <a href="/hero-training.html">Hero Home</a>
+      <a href="/hero-phase-1.html" aria-current="page">Phase I</a>
+      <a href="/hero-phase-2.html">Phase II</a>
+      <a href="/hero-phase-3.html">Phase III</a>
+      <a href="/hero-phase-4.html">Phase IV</a>
+    </nav>
   </div>
 </header>
 
 <main class="wrap">
+  <section class="card">
+    <h2>Weekly structure (example)</h2>
+    <p><strong>Mon</strong> Lower A · <strong>Tue</strong> Z2 30–45 min · <strong>Wed</strong> Upper A · <strong>Thu</strong> Mobility 20 min · <strong>Fri</strong> Lower B · <strong>Sat</strong> Z2 45–60 min · <strong>Sun</strong> Off / walk.</p>
+    <p class="meta">Z2 = conversational pace. Overload: add 2.5–5 kg or +1–2 reps if last rep is clean. Every 4th week: deload (~30% volume).</p>
+  </section>
 
-  <nav class="mini-nav" aria-label="Quick links">
-    <a href="#overview">Overview</a>
-    <a href="#weekly">Weekly Structure</a>
-    <a href="#strength">Strength Plan</a>
-    <a href="#conditioning">Conditioning Plan</a>
-    <a href="#mobility">Mobility</a>
-    <a href="#progress">How to Progress</a>
+  <section class="plan" aria-label="Sessions">
+    <!-- Lower A -->
+    <article class="sess">
+      <h3>Lower A</h3>
+
+      <!-- Exercise block template repeated -->
+      <div class="ex" data-ex="back-squat">
+        <div class="ex-head">
+          <div class="name-row">
+            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=back+squat+setup+and+form" aria-label="Technique video search">Back Squat — 3×5</a>
+            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Quads/Glutes</span></div>
+          </div>
+          <div class="pr" data-pr="back-squat">PB: —</div>
+        </div>
+        <div class="log">
+          <!-- 3 rows default; user can change freely -->
+          <div class="log-row">
+            <label class="meta">Set 1</label>
+            <input type="number" inputmode="decimal" placeholder="kg" aria-label="Set 1 kg">
+            <input type="number" inputmode="numeric" placeholder="reps" aria-label="Set 1 reps">
+            <button class="save">Save</button>
+          </div>
+          <div class="log-row">
+            <label class="meta">Set 2</label>
+            <input type="number" inputmode="decimal" placeholder="kg" aria-label="Set 2 kg">
+            <input type="number" inputmode="numeric" placeholder="reps" aria-label="Set 2 reps">
+            <button class="save">Save</button>
+          </div>
+          <div class="log-row">
+            <label class="meta">Set 3</label>
+            <input type="number" inputmode="decimal" placeholder="kg" aria-label="Set 3 kg">
+            <input type="number" inputmode="numeric" placeholder="reps" aria-label="Set 3 reps">
+            <button class="save">Save</button>
+          </div>
+          <div class="timer">
+            <label class="meta">Rest</label>
+            <input type="number" min="10" step="5" value="120" aria-label="Rest seconds">
+            <button data-t="start">Start</button>
+            <button data-t="stop">Stop</button>
+            <span class="meta" data-t="left">120s</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex" data-ex="romanian-deadlift">
+        <div class="ex-head">
+          <div class="name-row">
+            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+form+hips+hinge">Romanian Deadlift — 3×8</a>
+            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Hamstrings</span></div>
+          </div>
+          <div class="pr" data-pr="romanian-deadlift">PB: —</div>
+        </div>
+        <div class="log">
+          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
+        </div>
+      </div>
+
+      <div class="ex" data-ex="split-squat">
+        <div class="ex-head">
+          <div class="name-row">
+            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+form+setup">Bulgarian Split Squat — 3×8/side</a>
+            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Unilateral</span></div>
+          </div>
+          <div class="pr" data-pr="split-squat">PB: —</div>
+        </div>
+        <div class="log">
+          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
+        </div>
+      </div>
+
+      <div class="foot-row">
+        <span class="meta">Finish: calf raises 2×15 · couch stretch 2×45s/side</span>
+        <button class="complete-btn" data-complete="lower-a">Complete Session</button>
+      </div>
+    </article>
+
+    <!-- Upper A -->
+    <article class="sess">
+      <h3>Upper A</h3>
+
+      <div class="ex" data-ex="bench-press">
+        <div class="ex-head">
+          <div class="name-row">
+            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bench+press+setup+scapular+retraction+form">Bench Press — 3×5</a>
+            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Chest</span></div>
+          </div>
+          <div class="pr" data-pr="bench-press">PB: —</div>
+        </div>
+        <div class="log">
+          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="timer"><label class="meta">Rest</label><input type="number" value="120"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">120s</span></div>
+        </div>
+      </div>
+
+      <div class="ex" data-ex="one-arm-row">
+        <div class="ex-head">
+          <div class="name-row">
+            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+bench+form">One-Arm DB Row — 3×8/side</a>
+            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Back</span></div>
+          </div>
+          <div class="pr" data-pr="one-arm-row">PB: —</div>
+        </div>
+        <div class="log">
+          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
+        </div>
+      </div>
+
+      <div class="ex" data-ex="overhead-press">
+        <div class="ex-head">
+          <div class="name-row">
+            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+press+standing+strict+form">Overhead Press — 3×6</a>
+            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Shoulders</span></div>
+          </div>
+          <div class="pr" data-pr="overhead-press">PB: —</div>
+        </div>
+        <div class="log">
+          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
+          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
+        </div>
+      </div>
+
+      <div class="foot-row">
+        <span class="meta">Finish: face pulls 2×15 · band pull-aparts 2×20</span>
+        <button class="complete-btn" data-complete="upper-a">Complete Session</button>
+      </div>
+    </article>
+  </section>
+
+  <section class="card">
+    <h2>Cardio & Mobility</h2>
+    <ul>
+      <li><strong>Z2 x 2/wk</strong> — 30–60 min, nasal breathing if possible. Walk/jog or bike. <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+training+explained">What is Zone 2?</a></li>
+      <li><strong>Mobility</strong> — 15–20 min hips/ankles/shoulders. <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hip+mobility+routine+beginner">Hip routine</a> · <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shoulder+mobility+routine+band">Shoulder routine</a></li>
+    </ul>
+  </section>
+
+  <nav class="mini-nav">
+    <a href="/hero-training.html">Back to Hero Home</a>
+    <a href="/hero-phase-2.html">Next: Phase II</a>
   </nav>
-
-  <section id="overview" class="card">
-    <h2>Overview</h2>
-    <ul class="meta">
-      <li>3 strength days (full-body) + 2–3 conditioning (Z2) + daily 6–12 min mobility.</li>
-      <li><strong>Overload rule:</strong> add a little (load, reps or a set) only when all sets are clean with stable technique.</li>
-      <li>Older trainees: consider 48–72h between hard strength sessions, and keep long Z2 truly easy.</li>
-    </ul>
-  </section>
-
-  <section id="weekly" class="card">
-    <h2>Weekly Structure (example)</h2>
-    <ul>
-      <li><strong>Mon</strong> — Strength A + mobility</li>
-      <li><strong>Tue</strong> — Z2 30–45 min + mobility</li>
-      <li><strong>Wed</strong> — Strength B + mobility</li>
-      <li><strong>Thu</strong> — Z2 30–45 min (walk/run/cycle/row) + mobility</li>
-      <li><strong>Fri</strong> — Strength A (lighter or technique focus) + mobility</li>
-      <li><strong>Sat</strong> — Optional Z2 30–60 min (easy) or rest + mobility</li>
-      <li><strong>Sun</strong> — Rest + mobility</li>
-    </ul>
-  </section>
-
-  <section id="strength" class="split">
-    <figure>
-      <img src="/img/phase1-strength.jpg" alt="Dumbbell goblet squat and floor press being performed with good form">
-    </figure>
-    <div>
-      <h2>Strength Plan (Weeks 1–8)</h2>
-
-      <article class="card">
-        <h3>Day A</h3>
-        <ul>
-          <li><a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a> — 3×8–10</li>
-          <li><a href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form" target="_blank" rel="noopener">DB Floor Press</a> — 3×8–10</li>
-          <li><a href="https://www.youtube.com/results?search_query=dumbbell+row+form" target="_blank" rel="noopener">DB Row</a> — 3×10–12 /side</li>
-          <li><a href="https://www.youtube.com/results?search_query=split+squat+form" target="_blank" rel="noopener">Split Squat</a> — 2–3×8 /side</li>
-          <li><a href="https://www.youtube.com/results?search_query=dead+bug+exercise+form" target="_blank" rel="noopener">Dead Bug</a> — 2–3×8 /side (slow)</li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>Day B</h3>
-        <ul>
-          <li><a href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form" target="_blank" rel="noopener">DB RDL</a> — 3×8–10</li>
-          <li><a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+press+form" target="_blank" rel="noopener">1-Arm DB Press</a> — 3×8–10 /side</li>
-          <li><a href="https://www.youtube.com/results?search_query=concentration+curl+form" target="_blank" rel="noopener">Concentration Curl</a> — 2–3×10–12 /side</li>
-          <li><a href="https://www.youtube.com/results?search_query=hip+thrust+dumbbell+form" target="_blank" rel="noopener">DB Hip Thrust</a> — 3×10–12</li>
-          <li><a href="https://www.youtube.com/results?search_query=side+plank+form" target="_blank" rel="noopener">Side Plank</a> — 2–3×20–40s /side</li>
-        </ul>
-      </article>
-
-      <p class="meta"><strong>Progressive Overload:</strong> if you hit the top of the rep range across all sets with perfect form, next time increase the load ~2.5–5% (or add 1–2 reps if you can’t add load).</p>
-    </div>
-  </section>
-
-  <section id="conditioning" class="split">
-    <figure>
-      <img src="/img/phase1-z2.jpg" alt="Relaxed outdoor Zone 2 cardio">
-    </figure>
-    <div>
-      <h2>Conditioning Plan (Weeks 1–8)</h2>
-      <ul>
-        <li><strong>Goal:</strong> 150–240 min/week of true Z2 by week 8, built gradually.</li>
-        <li><strong>Start:</strong> 2–3 × 20–30 min (walk, run/walk, cycle, row) — conversation pace.</li>
-        <li><strong>Build:</strong> add ~5–10 min total weekly; every 3rd or 4th week ease back ~20%.</li>
-      </ul>
-      <p class="meta">Rowing alternative if no machine: <a href="https://www.youtube.com/results?search_query=inverted+row+table+row+setup" target="_blank" rel="noopener">Inverted/Table Rows</a> won’t replace Z2 cardio, but can be used for pulling volume on strength days.</p>
-    </div>
-  </section>
-
-  <section id="mobility" class="card">
-    <h2>Mobility (daily 6–12 min)</h2>
-    <ul>
-      <li><a href="https://www.youtube.com/results?search_query=worlds+greatest+stretch" target="_blank" rel="noopener">World’s Greatest Stretch</a> • 2–3 min</li>
-      <li><a href="https://www.youtube.com/results?search_query=couch+stretch+form" target="_blank" rel="noopener">Couch Stretch</a> • 2–3 min /side</li>
-      <li><a href="https://www.youtube.com/results?search_query=thoracic+spine+openers" target="_blank" rel="noopener">T-spine openers</a> • 2–3 min</li>
-    </ul>
-  </section>
-
-  <section id="progress" class="card">
-    <h2>How to Progress</h2>
-    <ul>
-      <li><strong>Strength:</strong> when you complete all sets at the upper rep target with crisp form, add load next time (2.5–5%). If load options are coarse, alternate adding reps then load.</li>
-      <li><strong>Conditioning:</strong> extend one Z2 session by 5–10 min. Keep it truly easy.</li>
-      <li><strong>Recovery:</strong> if fatigued, hold loads steady a week and sleep more — consistency wins.</li>
-    </ul>
-  </section>
-
-  <section class="section">
-    <h2>Important Note</h2>
-    <p>General guidance only. If you have health conditions or injuries, consult a professional. Stop any session that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
-  </section>
-
 </main>
 
 <footer class="site-footer">
@@ -137,6 +229,132 @@
   </div>
 </footer>
 
-<script src="/app.js" defer></script>
+<div class="toast" id="toast">Saved.</div>
+
+<script>
+/* =========================================================
+   IndexedDB store (survives normal cookie/history clears)
+   Stores:
+   - logs: {id, ts, ex, kg, reps, volume}
+   - pr:   {key: 'ex:<id>:(load|volume)', value:number}
+   - meta: {key:'sessions', value:number}, {key:'badges', value:[...]}
+   ========================================================= */
+const DB_NAME='fff-hero', DB_VER=1;
+let DB;
+
+function idbOpen(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME, DB_VER);
+    r.onupgradeneeded=(e)=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains('logs')) db.createObjectStore('logs',{keyPath:'id',autoIncrement:true});
+      if(!db.objectStoreNames.contains('pr'))   db.createObjectStore('pr',{keyPath:'key'});
+      if(!db.objectStoreNames.contains('meta')) db.createObjectStore('meta',{keyPath:'key'});
+    };
+    r.onsuccess=()=>{DB=r.result;res();}
+    r.onerror=()=>rej(r.error);
+  });
+}
+function idbPut(store,obj){return new Promise((res,rej)=>{const tx=DB.transaction(store,'readwrite');tx.objectStore(store).put(obj).onsuccess=()=>res();tx.onerror=()=>rej(tx.error);});}
+function idbGet(store,key){return new Promise((res,rej)=>{const tx=DB.transaction(store,'readonly');const req=tx.objectStore(store).get(key);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});}
+function idbAdd(store,obj){return new Promise((res,rej)=>{const tx=DB.transaction(store,'readwrite');const req=tx.objectStore(store).add(obj);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});}
+
+/* ---------- UI helpers ---------- */
+const toast = document.getElementById('toast');
+let toastTO=null;
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toastTO);toastTO=setTimeout(()=>toast.classList.remove('show'),1800);}
+
+/* ---------- PR + save logic ---------- */
+async function saveSet(exId, kg, reps){
+  const nKg = parseFloat(kg||'0'), nReps=parseInt(reps||'0',10);
+  if(!(nKg>0 && nReps>0)){ showToast('Enter kg and reps'); return; }
+  const volume = nKg * nReps;
+  await idbAdd('logs', {ts:Date.now(), ex:exId, kg:nKg, reps:nReps, volume});
+
+  // PRs
+  let loadPR = await idbGet('pr', `ex:${exId}:load`);
+  let volPR  = await idbGet('pr', `ex:${exId}:volume`);
+  let newBadges=[];
+  if(!loadPR || nKg > loadPR.value){ await idbPut('pr', {key:`ex:${exId}:load`, value:nKg}); newBadges.push(`New Load PB — ${exId} ${nKg} kg`); }
+  if(!volPR  || volume > volPR.value){ await idbPut('pr', {key:`ex:${exId}:volume`, value:volume}); newBadges.push(`New Volume PB — ${exId} ${Math.round(volume)} kg·reps`); }
+
+  // write badges to meta
+  if(newBadges.length){
+    const m=await idbGet('meta','badges')||{key:'badges',value:[]};
+    m.value = m.value.concat(newBadges);
+    await idbPut('meta', m);
+  }
+
+  // refresh PR label
+  await renderPR(exId);
+  showToast(newBadges.length ? 'Saved ✔  PB unlocked!' : 'Saved ✔');
+}
+async function renderPR(exId){
+  const span = document.querySelector(`.pr[data-pr="${exId}"]`); if(!span) return;
+  const l=await idbGet('pr',`ex:${exId}:load`);
+  const v=await idbGet('pr',`ex:${exId}:volume`);
+  if(!l && !v){ span.textContent='PB: —'; return; }
+  span.textContent = `PB: Load ${l?l.value+'kg':'—'} · Vol ${v?Math.round(v.value):'—'}`;
+}
+
+/* ---------- Session complete counter + milestone badges ---------- */
+async function completeSession(key){
+  const s=await idbGet('meta','sessions')||{key:'sessions',value:0};
+  s.value += 1; await idbPut('meta', s);
+
+  const milestones=[10,25,50,100];
+  if(milestones.includes(s.value)){
+    const b=await idbGet('meta','badges')||{key:'badges',value:[]};
+    b.value.push(`Milestone — ${s.value} Sessions`);
+    await idbPut('meta', b);
+    showToast(`Session saved · 🎉 ${s.value}-session badge!`);
+  } else {
+    showToast('Session saved ✔');
+  }
+}
+
+/* ---------- Rest timers per exercise block ---------- */
+const timers = new Map();
+function startTimer(wrap){
+  const leftEl=wrap.querySelector('[data-t="left"]');
+  const inp=wrap.querySelector('input[type="number"]');
+  let secs=parseInt(inp.value||'60',10); if(secs<5) secs=5;
+  clearInterval(timers.get(wrap)); const end=Date.now()+secs*1000;
+  function tick(){ const r = Math.max(0, Math.ceil((end-Date.now())/1000)); leftEl.textContent = r+'s'; if(r<=0){ clearInterval(timers.get(wrap)); timers.delete(wrap); showToast('Rest done'); } }
+  tick(); const id=setInterval(tick,200); timers.set(wrap,id);
+}
+function stopTimer(wrap){ clearInterval(timers.get(wrap)); timers.delete(wrap); const leftEl=wrap.querySelector('[data-t="left"]'); const inp=wrap.querySelector('input[type="number"]'); leftEl.textContent=(parseInt(inp.value||'60',10))+'s'; }
+
+/* ---------- Wire up page ---------- */
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await idbOpen();
+
+  // PR labels init
+  document.querySelectorAll('.ex').forEach(ex=>{
+    const id=ex.dataset.ex; renderPR(id);
+  });
+
+  // Save buttons
+  document.querySelectorAll('.ex .log-row .save').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const row=btn.closest('.log-row'); const ex=btn.closest('.ex').dataset.ex;
+      const kg=row.querySelector('input[placeholder*="kg"]').value;
+      const reps=row.querySelector('input[placeholder*="reps"]').value;
+      saveSet(ex, kg, reps);
+    });
+  });
+
+  // Timers
+  document.querySelectorAll('.ex .timer').forEach(w=>{
+    w.querySelector('[data-t="start"]').addEventListener('click', ()=>startTimer(w));
+    w.querySelector('[data-t="stop"]').addEventListener('click', ()=>stopTimer(w));
+  });
+
+  // Complete session
+  document.querySelectorAll('[data-complete]').forEach(b=>{
+    b.addEventListener('click', ()=>completeSession(b.dataset.complete));
+  });
+});
+</script>
 </body>
 </html>

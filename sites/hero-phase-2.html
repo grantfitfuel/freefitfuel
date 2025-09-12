@@ -4,26 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — Phase II (Build)</title>
-  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="stylesheet" href="/style.css?v=42">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <style>
     .week-grid{display:grid;gap:14px}
     @media(min-width:980px){.week-grid{grid-template-columns:repeat(2,1fr)}}
+
     .wk{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
+    .wk h3{margin:.1rem 0 .35rem}
+    .wk .meta{margin:.1rem 0 .6rem}
+
     .ex{border:1px solid var(--stroke);border-radius:12px;padding:.65rem .75rem;margin:.5rem 0;background:#0f1319}
-    .ex h4{margin:0 0 .15rem;font-size:1rem;display:flex;align-items:center;gap:.5rem}
+    .ex h4{margin:0 0 .15rem;font-size:1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
     .ex h4 a{color:var(--accent)}
     .tag{display:inline-block;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.18rem .5rem;font-size:.78rem}
+    .note{font-size:.9rem;color:var(--inkdim);margin:.35rem 0 0}
+
     .log{display:grid;gap:.4rem;margin-top:.4rem}
     .log-row{display:grid;grid-template-columns:1fr repeat(3,90px) auto;gap:.4rem;align-items:center}
     .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .45rem}
     .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+
     .rest{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.25rem}
     .rest .left{min-width:64px;text-align:right;opacity:.85}
     .pb{margin-top:.3rem;color:#90ee90}
     .badge{display:inline-block;margin-top:.35rem;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:10px;padding:.25rem .5rem}
     .navRow{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
-    .note{font-size:.9rem;color:var(--inkdim);margin:.35rem 0 0}
   </style>
 </head>
 <body>
@@ -103,14 +109,39 @@
           </div>
         </div>
 
-        <div class="ex" data-key="mob2">
+        <!-- MOBILITY — Hips + T-spine broken down -->
+        <div class="ex" data-key="mob2-9090">
           <h4>
-            <a href="https://www.youtube.com/results?search_query=thoracic+spine+rotation+drill" target="_blank" rel="noopener">Mobility (Hips + T-Spine)</a>
-            <span class="tag">Mobility</span>
+            <a href="https://www.youtube.com/results?search_query=90+90+hip+mobility+flow" target="_blank" rel="noopener">90/90 Hip Flow</a>
+            <span class="tag">Mobility · Hips</span>
           </h4>
-          <p class="note">10–15 min · position, breathe, control, repeat.</p>
+          <p class="note">2–3 min slow transitions; keep chest tall; breathe quietly.</p>
           <div class="log">
-            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="drills"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="rounds"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="mob2-couch">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=couch+stretch+hip+flexor+how+to" target="_blank" rel="noopener">Couch Stretch (Hip Flexor)</a>
+            <span class="tag">Mobility · Hips</span>
+          </h4>
+          <p class="note">1–2 min/side; squeeze glute on back leg; ribs down.</p>
+          <div class="log">
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="per side"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="mob2-tspine">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=thoracic+spine+rotation+open+book" target="_blank" rel="noopener">T-Spine Open Books</a>
+            <span class="tag">Mobility · T-Spine</span>
+          </h4>
+          <p class="note">1–2 min/side; exhale into the end range; keep knees stacked.</p>
+          <div class="log">
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="per side"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
             <div class="pb" data-pb></div><div class="badge" data-badge></div>
           </div>
         </div>
@@ -121,36 +152,84 @@
         <h3>Week D</h3>
         <p class="meta">Strength D · Z2 x2 · Threshold x1 · Mobility</p>
 
-        <div class="ex" data-key="hinge-row">
+        <!-- Hinge + Row Combo — broken out -->
+        <div class="ex" data-key="hinge-rdl">
           <h4>
-            <a href="https://www.youtube.com/results?search_query=hip+hinge+form+rdl" target="_blank" rel="noopener">Hinge + Row Combo</a>
-            <span class="tag">Strength</span>
+            <a href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form" target="_blank" rel="noopener">RDL (from Combo)</a>
+            <span class="tag">Strength · Hinge</span>
           </h4>
-          <p class="note">Tri-set: RDL 8–10 → DB Row 8–10/side → Plank 30–45s. 3 rounds.</p>
+          <p class="note">8–10 reps · slow down, keep lats on, soft knees.</p>
           <div class="log">
-            <div class="log-row"><label>RDL</label><input data-field="w1" placeholder="kg"><input data-field="r1" placeholder="reps"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
-            <div class="log-row"><label>Row</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
-            <div class="log-row"><label>Plank</label><input data-field="w3" placeholder="sec"><input data-field="r3" placeholder="RPE"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
-            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="90">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
-            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+            <div class="log-row"><label>Set</label><input data-field="w1" placeholder="kg"><input data-field="r1" placeholder="reps"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="75">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div> <div class="badge" data-badge></div>
           </div>
         </div>
 
-        <div class="ex" data-key="calisthenics">
+        <div class="ex" data-key="hinge-row-db">
           <h4>
-            <a href="https://www.youtube.com/results?search_query=pull+up+progression+band+assisted" target="_blank" rel="noopener">Calisthenics Progression (Pull/Push)</a>
-            <span class="tag">Strength</span>
+            <a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">DB Row (from Combo)</a>
+            <span class="tag">Strength · Pull</span>
           </h4>
-          <p class="note">Pull-ups (band/rows) 3×AMRAP · Dips/Push-ups 3×AMRAP · Hollow holds 3×20–40s.</p>
+          <p class="note">8–10/side · pull elbow to back pocket · pause & squeeze.</p>
           <div class="log">
-            <div class="log-row"><label>Pull</label><input data-field="w1" placeholder="assist/rows"><input data-field="r1" placeholder="reps"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
-            <div class="log-row"><label>Push</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
-            <div class="log-row"><label>Core</label><input data-field="w3" placeholder="sec"><input data-field="r3" placeholder="RPE"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set</label><input data-field="w1" placeholder="kg"><input data-field="r1" placeholder="reps/side"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
             <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="60">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
-            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+            <div class="pb" data-pb></div> <div class="badge" data-badge></div>
           </div>
         </div>
 
+        <div class="ex" data-key="hinge-core-plank">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=plank+form+how+to" target="_blank" rel="noopener">Plank (from Combo)</a>
+            <span class="tag">Core</span>
+          </h4>
+          <p class="note">30–45s · ribs down, glutes on, breathe quietly through nose.</p>
+          <div class="log">
+            <div class="log-row"><label>Set</label><input data-field="w1" placeholder="sec"><input data-field="r1" placeholder="RPE"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="10" value="45">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div> <div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <!-- Calisthenics — broken out -->
+        <div class="ex" data-key="cal-pull">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=pull+up+progression+band+assisted" target="_blank" rel="noopener">Pull-Up Progression (Band/Rows)</a>
+            <span class="tag">Calisthenics · Pull</span>
+          </h4>
+          <p class="note">3×AMRAP · strong hollow body · full hang to chest-to-bar path (or row to ribcage).</p>
+          <div class="log">
+            <div class="log-row"><label>Set</label><input data-field="w1" placeholder="assist/band"><input data-field="r1" placeholder="reps"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div> <div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="cal-push">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=dips+progression+or+push+ups+progression" target="_blank" rel="noopener">Dips / Push-Ups Progression</a>
+            <span class="tag">Calisthenics · Push</span>
+          </h4>
+          <p class="note">3×AMRAP · range you can control · shoulders away from ears.</p>
+          <div class="log">
+            <div class="log-row"><label>Set</label><input data-field="w1" placeholder="variant"><input data-field="r1" placeholder="reps"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div> <div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="cal-core-hollow">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=hollow+body+hold+how+to" target="_blank" rel="noopener">Hollow Body Hold</a>
+            <span class="tag">Calisthenics · Core</span>
+          </h4>
+          <p class="note">3×20–40s · low back gently pressed to floor · smooth nasal breathing.</p>
+          <div class="log">
+            <div class="log-row"><label>Set</label><input data-field="w1" placeholder="sec"><input data-field="r1" placeholder="RPE"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div> <div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <!-- Z2 + Strides -->
         <div class="ex" data-key="z2-2">
           <h4>
             <a href="https://www.youtube.com/results?search_query=zone+2+training+explained" target="_blank" rel="noopener">Z2 Cardio (40–55 min)</a>
@@ -224,18 +303,22 @@
             const row={}; qa('[data-field]', box).forEach(inp=> row[inp.dataset.field]=inp.value.trim());
             const merged = {...saved, ...row};
             localStorage.setItem(NS+key, JSON.stringify(merged));
+
             const bestNow=bestScore(merged), bestWas=parseFloat(localStorage.getItem(NS+key+'.best')||'0')||0;
-            if(bestNow>bestWas){ localStorage.setItem(NS+key+'.best', bestNow); pbEl.textContent='New best — onwards!'; } else { pbEl.textContent='Saved.'; }
-            const total=(parseInt(localStorage.getItem(NS+'saves')||'0',10)+1); localStorage.setItem(NS+'saves', total);
+            pbEl.textContent = (bestNow>bestWas) ? 'New best — onwards!' : 'Saved.';
+            if(bestNow>bestWas){ localStorage.setItem(NS+key+'.best', bestNow); }
+
+            const total=(parseInt(localStorage.getItem(NS+'saves')||'0',10)+1);
+            localStorage.setItem(NS+'saves', total);
             if([5,10,25,50,100].includes(total)) badgeEl.textContent=`Milestone: ${total} logs 🎉`;
           });
         });
 
         // Timer
         let t=null,end=0; const left=q('[data-remaining]',box), secs=q('.rest-sec',box);
-        q('[data-act="start"]',box)?.addEventListener('click',()=>{ stop(); const s=Math.max(10,parseInt(secs.value||'90',10)); end=Date.now()+s*1000; left.textContent=fmt(s); t=setInterval(tick,200); });
+        q('[data-act="start"]',box)?.addEventListener('click',()=>{ stop(); const s=Math.max(10,parseInt(secs?.value||'90',10)); end=Date.now()+s*1000; if(left) left.textContent=fmt(s); t=setInterval(tick,200); });
         q('[data-act="stop"]',box)?.addEventListener('click',stop);
-        function tick(){ const r=Math.max(0,Math.ceil((end-Date.now())/1000)); left.textContent=fmt(r); if(r<=0) stop(true); }
+        function tick(){ const r=Math.max(0,Math.ceil((end-Date.now())/1000)); if(left) left.textContent=fmt(r); if(r<=0) stop(true); }
         function stop(chime=false){ if(t){clearInterval(t); t=null;} if(chime){try{new Audio('/audio/chime.mp3').play().catch(()=>{});}catch{}} }
         function bestScore(o){ let b=0; for(let i=1;i<=5;i++){ b=Math.max(b,(parseFloat(o['w'+i]||'0')||0)*(parseFloat(o['r'+i]||'0')||0)); } return b; }
         function fmt(s){return s+'s';}

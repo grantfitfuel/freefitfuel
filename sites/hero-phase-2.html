@@ -3,147 +3,139 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hero Training — Phase II (Build)</title>
-  <link rel="stylesheet" href="/style.css?v=61">
+  <title>Hero Training — Phase 2 (Progression)</title>
+  <link rel="stylesheet" href="/style.css?v=42">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 </head>
-<body class="hero-mode">
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
+<body>
 
-  <!-- HERO -->
-  <header class="hero-mini hero-rainbow" role="banner" aria-label="Phase II hero">
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<header class="hero-mini" role="banner" aria-label="Phase 2 hero">
+  <figure>
+    <img src="/img/phase2-progression.jpg" alt="Mixed-age athletes progressing: heavier dumbbells and longer runs">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Phase 2 — Progression (Weeks 9–16)</span></h1>
+    <p class="lead">We keep technique crisp and apply planned overload. Conditioning adds the first threshold pieces while the long run grows.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <nav class="mini-nav" aria-label="Quick links">
+    <a href="#overview">Overview</a>
+    <a href="#weekly">Weekly Structure</a>
+    <a href="#strength">Strength Progression</a>
+    <a href="#conditioning">Conditioning Progression</a>
+    <a href="#mobility">Mobility</a>
+    <a href="#check">Checkpoint</a>
+  </nav>
+
+  <section id="overview" class="card">
+    <h2>Overview</h2>
+    <ul class="meta">
+      <li>3 strength days (upper/lower split or full-body), 2–3 conditioning (Z2 + 1 threshold), mobility daily.</li>
+      <li><strong>Overload:</strong> add load or total work on 1–2 lifts per week; rotate which lift you push.</li>
+      <li>Every 4th week: deload ~20–30% volume or intensity (feel fresh by week’s end).</li>
+    </ul>
+  </section>
+
+  <section id="weekly" class="card">
+    <h2>Weekly Structure (example)</h2>
+    <ul>
+      <li><strong>Mon</strong> — Strength Upper + mobility</li>
+      <li><strong>Tue</strong> — Z2 40–60 min</li>
+      <li><strong>Wed</strong> — Strength Lower + mobility</li>
+      <li><strong>Thu</strong> — Threshold: e.g., 3 × 8 min “comfortably hard” (90–95% of 10k effort) with easy jog recoveries</li>
+      <li><strong>Fri</strong> — Mobility + optional accessory strength (lighter)</li>
+      <li><strong>Sat</strong> — Long Z2 (build 10–20% over Phase 1’s longest</li>
+      <li><strong>Sun</strong> — Rest + mobility</li>
+    </ul>
+  </section>
+
+  <section id="strength" class="split">
     <figure>
-      <img src="/img/hero-phase-2.jpg" alt="Build phase">
-      <div class="overlay" aria-hidden="true"></div>
+      <img src="/img/phase2-strength.jpg" alt="Heavier dumbbells with steady tempo under control">
     </figure>
-    <div class="content wrap">
-      <h1 class="comic-title">Phase II — Build (Weeks 9–16)</h1>
-      <p class="lead comic-sub">Add volume, control tempo, introduce tempo runs. Keep mobility daily.</p>
-      <div class="phase-tabs">
-        <a class="tab" href="/hero-phase-1.html">Phase I</a>
-        <a class="tab is-active" href="/hero-phase-2.html">Phase II</a>
-        <a class="tab" href="/hero-training.html">Back to Hub</a>
-      </div>
-      <div class="xp"><span id="p2xpbar" style="width:0%"></span></div>
-    </div>
-  </header>
+    <div>
+      <h2>Strength Progression (Weeks 9–16)</h2>
 
-  <main class="wrap">
-    <!-- WEEKLY GUIDANCE -->
-    <section>
-      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weeks 9–12</h2>
-      <div class="taskboard">
-        <article class="task">
-          <h3>Week Plan</h3>
-          <div class="checks" id="p2w1">
-            <label><input type="checkbox" data-key="p2_a"> Strength A — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=front+squat+dumbbell+form">DB Front Squat</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bench+press+dumbbell+form">DB Bench</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form">1-Arm Row</a> 4×8/side</label>
-            <label><input type="checkbox" data-key="p2_tempo"> Tempo Run 20–30 min — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=tempo+run+explained">what/why</a></label>
-            <label><input type="checkbox" data-key="p2_b"> Strength B — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form">DB RDL</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=standing+overhead+press+dumbbell+form">DB OHP</a> 4×6–10 · <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=lateral+raise+form">Lateral Raise</a> 3×12–15</label>
-            <label><input type="checkbox" data-key="p2_z2"> Z2 Cardio 30–45 min — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+running+explained">Run/Bike</a></label>
-            <label><input type="checkbox" data-key="p2_mob"> Mobility Daily 8–10 min — <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=90+90+hip+mobility">90/90 Hips</a> + <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=coherent+breathing+5+5">Coherent 5/5</a></label>
-          </div>
-          <div class="claim"><button class="btn" id="p2w1claim" disabled>Claim 140 XP</button><span id="p2w1out" class="hint"></span></div>
-        </article>
-
-        <article class="task">
-          <h3>Calisthenics Skill</h3>
-          <ul class="ex-list">
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+progressions">Push-up progressions</a> — 3× max-2</li>
-            <li><a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=assisted+chin+up+band+form">Assisted chin-ups</a> — 4×3–6</li>
-          </ul>
-          <span class="goal-chip goal-skill">Skill</span>
-        </article>
-      </div>
-    </section>
-
-    <section style="margin-top:16px">
-      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Weeks 13–16</h2>
-      <div class="taskboard">
-        <article class="task">
-          <h3>Week Plan</h3>
-          <div class="checks" id="p2w2">
-            <label><input type="checkbox" data-key="p2b_a"> Strength A — add 1 set on first lift</label>
-            <label><input type="checkbox" data-key="p2b_tempo"> Tempo Run 25–35 min</label>
-            <label><input type="checkbox" data-key="p2b_b"> Strength B — keep form strict</label>
-            <label><input type="checkbox" data-key="p2b_z2"> Z2 Cardio 30–45 min</label>
-            <label><input type="checkbox" data-key="p2b_mob"> Mobility Daily 8–10 min</label>
-          </div>
-          <div class="claim"><button class="btn" id="p2w2claim" disabled>Claim 160 XP</button><span id="p2w2out" class="hint"></span></div>
-        </article>
-
-        <article class="task">
-          <h3>Weekly Photo (private)</h3>
-          <p class="meta">Same light/angle. Track posture & confidence; this is for you.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Boss for Phase II -->
-    <section style="margin-top:18px">
-      <h2 class="comic-title" style="font-size:1.4rem;margin:.2rem 0 .6rem;">Phase II Boss</h2>
-      <article class="boss">
-        <h3>5k Benchmark (or 30-min distance)</h3>
-        <div class="row" style="margin:.4rem 0">
-          <label>Result <input id="p2Boss" type="text" placeholder="25:30 or 6.4km/30min"></label>
-          <button class="btn" id="p2Save">Save PR</button>
-          <button class="btn" id="p2XP">Claim 150 XP</button>
-          <span id="p2Out" class="hint"></span>
-        </div>
-        <p class="meta">Technique:
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+running+form+tips">Running form</a> ·
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+row+technique">Rowing form</a>
-        </p>
+      <article class="card">
+        <h3>Upper Focus</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+press+form" target="_blank" rel="noopener">1-Arm DB Press</a> — 4×6–8 /side (slower down, strong lockout)</li>
+          <li><a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">1-Arm DB Row</a> — 4×8–10 /side</li>
+          <li><a href="https://www.youtube.com/results?search_query=concentration+curl+form" target="_blank" rel="noopener">Concentration Curl</a> — 3×8–12 /side</li>
+          <li><a href="https://www.youtube.com/results?search_query=triceps+overhead+extension+dumbbell+form" target="_blank" rel="noopener">DB Overhead Triceps</a> — 3×10–12</li>
+        </ul>
       </article>
-    </section>
-  </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-      <p>© 2025 FreeFitFuel · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
+      <article class="card">
+        <h3>Lower Focus</h3>
+        <ul>
+          <li><a href="https://www.youtube.com/results?search_query=front+foot+elevated+split+squat" target="_blank" rel="noopener">FFESS / Split Squat</a> — 4×6–8 /side</li>
+          <li><a href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form" target="_blank" rel="noopener">DB RDL</a> — 4×6–8</li>
+          <li><a href="https://www.youtube.com/results?search_query=hip+thrust+dumbbell+form" target="_blank" rel="noopener">DB Hip Thrust</a> — 3×8–10</li>
+          <li><a href="https://www.youtube.com/results?search_query=calf+raise+form" target="_blank" rel="noopener">Calf Raise</a> — 3×10–15</li>
+        </ul>
+      </article>
+
+      <p class="meta"><strong>Overload plan:</strong> prioritise adding load on the first big lift of each day; on secondary lifts add a rep or a set. If reps stall, reduce tempo (3–1–1) for a week to spur adaptation.</p>
     </div>
-  </footer>
+  </section>
 
-  <script>
-    const XP_PER_LEVEL=200;
-    function getNum(k,d=0){ const v=localStorage.getItem(k); const n=parseInt(v,10); return isNaN(n)?d:n; }
-    function setNum(k,n){ localStorage.setItem(k,String(n)); }
-    function addXP(n){ const cur=getNum('hero_xp',0)+n; setNum('hero_xp',cur); setNum('hero_lvl',Math.floor(cur/XP_PER_LEVEL)+1); renderP2Bar(); return cur; }
-    function renderP2Bar(){ const xp=getNum('hero_xp',0); document.getElementById('p2xpbar').style.width=Math.min(99,(xp%XP_PER_LEVEL)/XP_PER_LEVEL*100)+'%'; }
+  <section id="conditioning" class="split">
+    <figure>
+      <img src="/img/phase2-run.jpg" alt="Structured threshold intervals on a quiet path">
+    </figure>
+    <div>
+      <h2>Conditioning Progression (Weeks 9–16)</h2>
+      <ul>
+        <li><strong>Z2 volume:</strong> lift to ~180–240 min/week by week 16 if recovery is good.</li>
+        <li><strong>Threshold day (1×/week):</strong> e.g., 3 × 8 min @ comfortably hard with 3–4 min easy between. Build to 4 × 8 or 3 × 10 as tolerated.</li>
+        <li><strong>Long Z2:</strong> add 10% most weeks; every 3–4th week, reduce volume ~20% to freshen.</li>
+      </ul>
+      <p class="meta">If running hurts, substitute cycling or brisk incline walking. Keep the *effort* matched (not the speed).</p>
+    </div>
+  </section>
 
-    function initWeek(groupId, claimBtnId, outId, reward, prefix){
-      const wrap=document.getElementById(groupId), btn=document.getElementById(claimBtnId), out=document.getElementById(outId);
-      const inputs=[...wrap.querySelectorAll('input[type="checkbox"]')];
-      inputs.forEach(i=>{ i.checked = localStorage.getItem(prefix+i.dataset.key)==='1'; });
-      function update(){ btn.disabled = !inputs.every(i=>i.checked); }
-      inputs.forEach(i=>i.addEventListener('change',()=>{ localStorage.setItem(prefix+i.dataset.key, i.checked?'1':'0'); update(); }));
-      update();
-      btn.addEventListener('click',()=>{
-        if(localStorage.getItem(prefix+'_claimed')==='1'){ out.textContent='XP already claimed.'; return; }
-        if(btn.disabled){ out.textContent='Complete all tasks first.'; return; }
-        addXP(reward); localStorage.setItem(prefix+'_claimed','1'); out.textContent=`${reward} XP added! 🔥`;
-      });
-    }
+  <section id="mobility" class="card">
+    <h2>Mobility (daily 8–15 min)</h2>
+    <ul>
+      <li><a href="https://www.youtube.com/results?search_query=90+90+hips+mobility" target="_blank" rel="noopener">90/90 Hips</a> • 3–5 min</li>
+      <li><a href="https://www.youtube.com/results?search_query=lat+openers+banded" target="_blank" rel="noopener">Lat Openers (banded)</a> • 2–3 min /side</li>
+      <li><a href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+mobility+test+and+drills" target="_blank" rel="noopener">Ankle Dorsiflexion Drills</a> • 2–3 min</li>
+    </ul>
+  </section>
 
-    document.addEventListener('DOMContentLoaded', ()=>{
-      renderP2Bar();
-      initWeek('p2w1','p2w1claim','p2w1out',140,'p2w1_');
-      initWeek('p2w2','p2w2claim','p2w2out',160,'p2w2_');
+  <section id="check" class="card">
+    <h2>Checkpoint & Next</h2>
+    <ul>
+      <li><strong>Strength:</strong> main lifts up 5–10% from Phase 1 end? Good. If not, deload a week, then climb again.</li>
+      <li><strong>Stamina:</strong> long Z2 extended without niggles? If yes, you’re ready for Phase 3 build.</li>
+      <li><strong>Recovery:</strong> sleep steady, appetite normal, mood stable — green lights to progress.</li>
+    </ul>
+    <p class="meta">When ready, continue to Phase 3 (Performance) or hold this phase longer if life is busy — sustainability first.</p>
+  </section>
 
-      const pr=document.getElementById('p2Boss'), out=document.getElementById('p2Out');
-      pr.value = localStorage.getItem('p2_boss_pr')||'';
-      document.getElementById('p2Save').addEventListener('click',()=>{
-        if(!pr.value.trim()){ out.textContent='Enter your result first.'; return; }
-        localStorage.setItem('p2_boss_pr', pr.value.trim()); out.textContent='Saved! 🏅';
-      });
-      document.getElementById('p2XP').addEventListener('click',()=>{
-        if(localStorage.getItem('p2_boss_claimed')==='1'){ out.textContent='XP already claimed.'; return; }
-        if(!localStorage.getItem('p2_boss_pr')){ out.textContent='Save a PR first.'; return; }
-        addXP(150); localStorage.setItem('p2_boss_claimed','1'); out.textContent='150 XP added! 💥';
-      });
-    });
-  </script>
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>This is general guidance. If you have conditions or injuries, speak to a professional. Stop any session that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script src="/app.js" defer></script>
 </body>
 </html>

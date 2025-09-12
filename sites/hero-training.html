@@ -1,177 +1,138 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hero Training — FreeFitFuel</title>
-<link rel="stylesheet" href="/style.css?v=42">
-<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-<style>
-  /* Page-local sugar that won’t clash with your global CSS */
-  .hero-mini .content{position:static} /* text under image (explicit) */
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — FreeFitFuel</title>
+  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <style>
+    /* Page-only accents that reuse your tokens */
+    .hero-training .phase-grid{display:grid;gap:14px}
+    @media(min-width:900px){.hero-training .phase-grid{grid-template-columns:repeat(4,1fr)}}
 
-  .phase-grid{display:grid;gap:14px;margin:14px 0}
-  @media(min-width:900px){.phase-grid{grid-template-columns:repeat(4,1fr)}}
-  .phase-card{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:.4rem}
-  .phase-card h3{margin:.1rem 0 .15rem}
-  .pill-row{display:flex;flex-wrap:wrap;gap:.35rem}
-  .pill{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.28rem .6rem;font-size:.86rem}
-  .go{display:inline-flex;align-items:center;gap:.5rem;margin-top:.35rem}
-  .go a.btn{padding:.62rem .9rem}
+    .pill-note{display:inline-flex;align-items:center;gap:.45rem;
+      border:1px solid var(--stroke);background:var(--glass);border-radius:999px;
+      padding:.42rem .75rem;font-size:.92rem}
 
-  .legend{display:flex;flex-wrap:wrap;gap:.35rem;margin:.4rem 0 .2rem}
-  .legend span{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.25rem .55rem;font-size:.82rem}
-  .badge-bar{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
-  .badge{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--stroke);background:rgba(255,255,255,.05);border-radius:12px;padding:.35rem .6rem;font-size:.9rem}
-  .badge svg{width:18px;height:18px}
+    .cta-phase{
+      display:flex;flex-direction:column;gap:.6rem;
+      background:var(--glass);border:1px solid var(--stroke);
+      border-radius:14px;padding:14px
+    }
+    .cta-phase h3{margin:.15rem 0 .2rem}
+    .cta-phase p{color:var(--inkdim);margin:0}
+    .cta-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem}
 
-  .toast{position:fixed;right:16px;bottom:16px;background:#0f1319;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .8rem;box-shadow:0 6px 20px rgba(0,0,0,.35);z-index:9999;display:none}
-  .toast.show{display:block}
-  .yt-btn{display:inline-flex;align-items:center;gap:.45rem;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.34rem .65rem;font-size:.9rem}
-  .yt-btn:hover{color:var(--accent)}
-</style>
+    .btn-phase{
+      display:inline-flex;align-items:center;justify-content:center;
+      gap:.5rem;padding:.8rem 1rem;border-radius:12px;border:0;
+      background:var(--accent);color:#111;font-weight:800;
+      box-shadow:0 2px 0 rgba(0,0,0,.15);cursor:pointer;text-decoration:none
+    }
+    .btn-phase.secondary{background:linear-gradient(90deg,var(--accent2),var(--accent))}
+    .btn-phase:focus{outline:2px solid var(--ink)}
+
+    .legend{display:flex;flex-wrap:wrap;gap:.45rem}
+    .legend .chip{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.32rem .6rem;font-size:.86rem}
+    .callout{background:#0f1319;border:1px solid var(--stroke);border-radius:12px;padding:.8rem}
+  </style>
 </head>
-<body>
+<body class="hero-training">
 
-<!-- Shared header mount -->
-<div id="site-header"></div>
-<script src="/js/header-loader.js"></script>
+  <!-- Shared header mount (your partial) -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js" defer></script>
 
-<header class="hero-mini" aria-label="Hero Training hero">
-  <figure>
-    <img src="/img/hero-training-hero.jpg" alt="Mixed ages training together: older runner, young lifter, midlife athlete">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="content wrap">
-    <span class="eyebrow">Ultimate Challenge · Science-led</span>
-    <h1><span class="accent">Hero Training</span></h1>
-    <p class="lead">A 12-month, progressive path for strong, durable, enduring humans. Clear phases, smart overload, and habits that fit real life — for any age.</p>
-    <div class="legend">
-      <span>Strength (progressive overload)</span>
-      <span>Endurance (Z2 → Tempo → Threshold)</span>
-      <span>Mobility (hips/shoulders/spine)</span>
-      <span>Recovery (sleep, deloads, nutrition)</span>
+  <!-- HERO (image only; text sits below per your CSS) -->
+  <header class="hero-mini" role="banner" aria-label="Hero Training hero">
+    <figure>
+      <img src="/img/hero-training-hero.jpg" alt="Mixed-age athletes training together: young and older, strength and endurance">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1><span class="accent">Hero Training</span></h1>
+      <p class="lead">
+        A professional, science-led long-term system to build a stronger, faster, more resilient you.
+        Progressive overload for strength, smart aerobic conditioning, mobility that moves the needle, and recovery that actually restores.
+      </p>
+      <div class="legend" aria-label="Page legend">
+        <span class="chip">Strength (Progressive Overload)</span>
+        <span class="chip">Endurance (Z2 base + Threshold)</span>
+        <span class="chip">Mobility (Position + Control)</span>
+        <span class="chip">Recovery (Sleep, Breath, De-load)</span>
+      </div>
     </div>
-    <div class="badge-bar" id="landingBadges"></div>
-  </div>
-</header>
+  </header>
 
-<main class="wrap">
+  <main class="wrap">
+    <section class="callout" aria-label="How this works">
+      <h2>Your path</h2>
+      <p class="meta">
+        Click a phase to open its plan. Inside each phase you’ll find weekly guidance, exercise form links (tap the exercise name),
+        logging for sets/reps/weights, rest timers, PB highlights and milestone badges — stored locally on your device.
+      </p>
+      <p class="pill-note">Tip: <strong>Overload</strong> = add reps or small weight each week while keeping solid form.</p>
+    </section>
 
-  <section class="card">
-    <h2>How it works</h2>
-    <ul>
-      <li><strong>Phases (I–IV)</strong> — 12 weeks each. Basics → Build → Peak → Sustain. Marathon as the year-end stamina goal (walk/run ramps included).</li>
-      <li><strong>Overload</strong> — add a little load, a rep, or a set when form is clean. Deload every 4th week.</li>
-      <li><strong>Form first</strong> — tap any workout to open a <em>YouTube form search</em> in a new tab.</li>
-      <li><strong>Track locally</strong> — log kg + reps per set; data is stored in <em>IndexedDB</em> (survives normal cookie/history clears).</li>
-    </ul>
-    <p class="meta">Tip: snap a private progress photo each month for yourself. Consistency + evidence = motivation.</p>
-  </section>
+    <section aria-label="Phase selector" class="phase-grid" style="margin-top:14px">
+      <article class="cta-phase">
+        <h3>Phase I — Foundation (Weeks 1–8)</h3>
+        <p>Learn pristine form, build Z2 aerobic base, establish mobility/range and recovery habits.</p>
+        <div class="cta-row">
+          <a class="btn-phase" href="/hero-phase-1.html">Open Phase I</a>
+        </div>
+      </article>
 
-  <section class="phase-grid" aria-label="Phases">
-    <article class="phase-card">
-      <h3>Phase I — Foundation (Weeks 1–12)</h3>
-      <div class="pill-row">
-        <span class="pill">Movement quality</span><span class="pill">Z2 base</span><span class="pill">Core/hips</span>
-      </div>
-      <p class="meta">Learn perfect technique, build aerobic base, set your baseline lifts.</p>
-      <div class="go">
-        <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
-        <a class="yt-btn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=beginner+strength+training+form">Form playlist</a>
-      </div>
-    </article>
-    <article class="phase-card">
-      <h3>Phase II — Build (Weeks 13–24)</h3>
-      <div class="pill-row">
-        <span class="pill">Hypertrophy</span><span class="pill">Tempo run</span><span class="pill">Progressive load</span>
-      </div>
-      <p class="meta">Gradual overload across main lifts; tempo intervals for efficient stamina.</p>
-      <div class="go">
-        <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
-        <a class="yt-btn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hypertrophy+compound+lift+form">Form playlist</a>
-      </div>
-    </article>
-    <article class="phase-card">
-      <h3>Phase III — Peak (Weeks 25–36)</h3>
-      <div class="pill-row">
-        <span class="pill">Strength peaking</span><span class="pill">Threshold</span><span class="pill">Race prep</span>
-      </div>
-      <p class="meta">Sharpen lifts with lower reps; build threshold sessions; specific event rehearsal.</p>
-      <div class="go">
-        <a class="btn" href="/hero-phase-3.html">Open Phase III</a>
-        <a class="yt-btn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=powerlifting+form+setup">Form playlist</a>
-      </div>
-    </article>
-    <article class="phase-card">
-      <h3>Phase IV — Sustain (Weeks 37–52)</h3>
-      <div class="pill-row">
-        <span class="pill">Maintain</span><span class="pill">Marathon build</span><span class="pill">Enjoyment</span>
-      </div>
-      <p class="meta">Lock habits in; consolidate PRs; long-run progression (or event of choice).</p>
-      <div class="go">
-        <a class="btn" href="/hero-phase-4.html">Open Phase IV</a>
-        <a class="yt-btn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=marathon+long+run+strategy+beginner">Form playlist</a>
-      </div>
-    </article>
-  </section>
+      <article class="cta-phase">
+        <h3>Phase II — Build (Weeks 9–16)</h3>
+        <p>Progressive overload on key lifts, introduce short threshold work, keep Z2 streak alive.</p>
+        <div class="cta-row">
+          <a class="btn-phase" href="/hero-phase-2.html">Open Phase II</a>
+        </div>
+      </article>
 
-  <nav class="mini-nav" aria-label="Quick links">
-    <a href="/workouts.html">Workouts</a>
-    <a href="/nutrition.html">Nutrition</a>
-    <a href="/wellbeing.html">Wellbeing</a>
-    <a href="/contact.html">Contact</a>
-  </nav>
+      <article class="cta-phase">
+        <h3>Phase III — Peak (Weeks 17–24)</h3>
+        <p>Heavier strength blocks, specific workouts for your main event, mobility under fatigue.</p>
+        <div class="cta-row">
+          <a class="btn-phase secondary" href="/hero-phase-3.html">Open Phase III</a>
+        </div>
+      </article>
 
-  <section class="card">
-    <h2>Strength overload — the simple rule</h2>
-    <p>Add load or 1–2 reps per set <em>only</em> when the last rep is clean: neutral spine, full range, no jerk. If the last rep gets messy, keep the load and build control first. Every 4th week: reduce volume by ~30% (deload) to bank adaptation.</p>
-  </section>
-</main>
+      <article class="cta-phase">
+        <h3>Phase IV — Marathon Block (Weeks 25–52)</h3>
+        <p>Steady long-run progression, strength maintenance, deload waves, taper into race.</p>
+        <div class="cta-row">
+          <a class="btn-phase secondary" href="/hero-phase-4.html">Open Phase IV</a>
+        </div>
+      </article>
+    </section>
 
-<footer class="site-footer">
-  <div class="container">
-    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
+    <nav class="mini-nav" aria-label="Navigate phases" style="margin-top:12px">
+      <a href="/hero-phase-1.html">Phase I</a>
+      <a href="/hero-phase-2.html">Phase II</a>
+      <a href="/hero-phase-3.html">Phase III</a>
+      <a href="/hero-phase-4.html">Phase IV</a>
+    </nav>
 
-<div class="toast" id="toast">Saved.</div>
+    <section class="card">
+      <h2>Principles at a glance</h2>
+      <ul>
+        <li><strong>Strength</strong>: 2–4 working sets per lift. Add 1–2 reps or 1–2.5 kg weekly if technique is clean.</li>
+        <li><strong>Endurance</strong>: 80–90% easy Z2, 10–20% quality (threshold/strides), 1 long session weekly.</li>
+        <li><strong>Mobility</strong>: Repeat key positions you’ll need for lifting/running — slow, controlled ranges.</li>
+        <li><strong>Recovery</strong>: Sleep target 7–9h; de-load every 4th week; breathe through nose on easy work.</li>
+      </ul>
+    </section>
+  </main>
 
-<script>
-/* ---------- tiny IndexedDB helper to read badges to show on landing ---------- */
-(function(){
-  const dbn='fff-hero', ver=1;
-  let db;
-  const openReq = indexedDB.open(dbn, ver);
-  openReq.onupgradeneeded = (e)=>{
-    const x=e.target.result;
-    if(!x.objectStoreNames.contains('logs')) x.createObjectStore('logs',{keyPath:'id',autoIncrement:true});
-    if(!x.objectStoreNames.contains('pr'))   x.createObjectStore('pr',{keyPath:'key'}); // per-exercise PRs
-    if(!x.objectStoreNames.contains('meta')) x.createObjectStore('meta',{keyPath:'key'}); // e.g., sessions, badges
-  };
-  openReq.onsuccess = ()=>{
-    db=openReq.result;
-    // pull milestone badges (simple read)
-    const tx=db.transaction('meta','readonly');
-    const os=tx.objectStore('meta');
-    const req=os.get('badges');
-    req.onsuccess = ()=>{
-      const wrap=document.getElementById('landingBadges');
-      if(!wrap) return;
-      const badges=(req.result && req.result.value) || [];
-      if(!badges.length){ wrap.innerHTML='<span class="meta">Train to unlock badges (PBs, 10/25/50 sessions).</span>'; return;}
-      wrap.innerHTML='';
-      badges.slice(-6).forEach(b=>{
-        const el=document.createElement('span');
-        el.className='badge';
-        el.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 8.8l6.5-.9L12 2z"/></svg>'+b;
-        wrap.appendChild(el);
-      });
-    };
-  };
-})();
-</script>
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
 </body>
 </html>

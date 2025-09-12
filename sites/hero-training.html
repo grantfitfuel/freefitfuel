@@ -6,47 +6,72 @@
   <title>Hero Training — FreeFitFuel</title>
   <link rel="stylesheet" href="/style.css?v=51">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <!-- Page-only styles (scoped and minimal; won’t affect other pages) -->
   <style>
-    /* Page-only accents that reuse your tokens */
+    /* Make THIS page’s hero image fit without cropping (faces intact) */
+    .fit-hero{
+      width:100%;
+      height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
+      object-fit:contain !important;
+      object-position:center center !important;
+      background:#000; /* subtle letterbox if needed */
+      filter:none !important;
+      display:block;
+    }
+
+    /* Phase grid + cards */
     .hero-training .phase-grid{display:grid;gap:14px}
     @media(min-width:900px){.hero-training .phase-grid{grid-template-columns:repeat(4,1fr)}}
 
-    .pill-note{display:inline-flex;align-items:center;gap:.45rem;
-      border:1px solid var(--stroke);background:var(--glass);border-radius:999px;
-      padding:.42rem .75rem;font-size:.92rem}
-
     .cta-phase{
+      position:relative;
       display:flex;flex-direction:column;gap:.6rem;
       background:var(--glass);border:1px solid var(--stroke);
-      border-radius:14px;padding:14px
+      border-radius:14px;padding:14px;
     }
     .cta-phase h3{margin:.15rem 0 .2rem}
     .cta-phase p{color:var(--inkdim);margin:0}
-    .cta-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem}
+    .cta-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
+    /* Whole card clickable (kept accessible) */
+    .cta-phase a.card-link{
+      position:absolute; inset:0; border-radius:14px;
+      /* make the whole card clickable but keep normal links tabbable */
+    }
+    .cta-phase a.card-link:focus{outline:2px solid var(--accent);outline-offset:2px;border-radius:14px}
 
+    /* Buttons – orange, chunky, consistent */
     .btn-phase{
       display:inline-flex;align-items:center;justify-content:center;
-      gap:.5rem;padding:.8rem 1rem;border-radius:12px;border:0;
+      gap:.5rem;padding:.85rem 1.05rem;border-radius:12px;border:0;
       background:var(--accent);color:#111;font-weight:800;
       box-shadow:0 2px 0 rgba(0,0,0,.15);cursor:pointer;text-decoration:none
     }
+    .btn-phase:hover{filter:brightness(1.05)}
     .btn-phase.secondary{background:linear-gradient(90deg,var(--accent2),var(--accent))}
     .btn-phase:focus{outline:2px solid var(--ink)}
 
+    /* Legend + callout */
     .legend{display:flex;flex-wrap:wrap;gap:.45rem}
     .legend .chip{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.32rem .6rem;font-size:.86rem}
-    .callout{background:#0f1319;border:1px solid var(--stroke);border-radius:12px;padding:.8rem}
+    .callout{background:#0f1319;border:1px solid var(--stroke);border-radius:12px;padding:.9rem}
+
+    /* Small helper note */
+    .pill-note{display:inline-flex;align-items:center;gap:.45rem;
+      border:1px solid var(--stroke);background:var(--glass);border-radius:999px;
+      padding:.42rem .75rem;font-size:.92rem}
   </style>
 </head>
-<body class="hero-mode">
 
-  <!-- Shared header mount (your partial) -->
+<body class="hero-mode hero-training">
+  <!-- Shared header mount -->
   <div id="site-header"></div>
   <script src="/js/header-loader.js" defer></script>
 
-  <!-- HERO (image only; text sits below per your CSS) -->
-  <header class="hero-mini">
+  <!-- HERO (image only above; text below per global CSS) -->
+  <header class="hero-mini" aria-label="Hero Training hero">
     <figure>
+      <!-- Use your final landscape image here -->
       <img class="fit-hero" src="/img/hero-training-hero.png" alt="Mixed-age athletes training together: young and older, strength and endurance">
       <div class="overlay" aria-hidden="true"></div>
     </figure>
@@ -60,31 +85,34 @@
         <span class="chip">Strength (Progressive Overload)</span>
         <span class="chip">Endurance (Z2 base + Threshold)</span>
         <span class="chip">Mobility (Position + Control)</span>
-        <span class="chip">Recovery (Sleep, Breath, De-load)</span>
+        <span class="chip">Recovery (Sleep, Breath, Deload)</span>
       </div>
     </div>
   </header>
 
   <main class="wrap">
     <section class="callout" aria-label="How this works">
-      <h2>Your path</h2>
+      <h2>How it works</h2>
       <p class="meta">
-        Click a phase to open its plan. Inside each phase you’ll find weekly guidance, exercise form links (tap the exercise name),
-        logging for sets/reps/weights, rest timers, PB highlights and milestone badges — stored locally on your device.
+        Tap a phase to open the full plan. Inside phases you’ll get crystal-clear weekly guidance, YouTube search links for form (tap exercise names),
+        logging for sets/reps/weights, rest timers, PB highlights and milestone badges — all stored locally on your device.
       </p>
-      <p class="pill-note">Tip: <strong>Overload</strong> = add reps or small weight each week while keeping solid form.</p>
+      <p class="pill-note">Overload = add a rep or 1–2.5&nbsp;kg when you finish clean with ~1–2 reps in reserve.</p>
     </section>
 
+    <!-- Phase selector -->
     <section aria-label="Phase selector" class="phase-grid" style="margin-top:14px">
       <article class="cta-phase">
+        <a class="card-link" href="/hero-phase-1.html" aria-label="Open Phase I — Foundation"></a>
         <h3>Phase I — Foundation (Weeks 1–8)</h3>
-        <p>Learn pristine form, build Z2 aerobic base, establish mobility/range and recovery habits.</p>
+        <p>Learn pristine form, build Z2 aerobic base, establish mobility range and recovery habits.</p>
         <div class="cta-row">
           <a class="btn-phase" href="/hero-phase-1.html">Open Phase I</a>
         </div>
       </article>
 
       <article class="cta-phase">
+        <a class="card-link" href="/hero-phase-2.html" aria-label="Open Phase II — Build"></a>
         <h3>Phase II — Build (Weeks 9–16)</h3>
         <p>Progressive overload on key lifts, introduce short threshold work, keep Z2 streak alive.</p>
         <div class="cta-row">
@@ -93,14 +121,16 @@
       </article>
 
       <article class="cta-phase">
+        <a class="card-link" href="/hero-phase-3.html" aria-label="Open Phase III — Peak"></a>
         <h3>Phase III — Peak (Weeks 17–24)</h3>
-        <p>Heavier strength blocks, specific workouts for your main event, mobility under fatigue.</p>
+        <p>Heavier strength blocks, specific workouts toward your goal, mobility under fatigue.</p>
         <div class="cta-row">
           <a class="btn-phase secondary" href="/hero-phase-3.html">Open Phase III</a>
         </div>
       </article>
 
       <article class="cta-phase">
+        <a class="card-link" href="/hero-phase-4.html" aria-label="Open Phase IV — Marathon Block"></a>
         <h3>Phase IV — Marathon Block (Weeks 25–52)</h3>
         <p>Steady long-run progression, strength maintenance, deload waves, taper into race.</p>
         <div class="cta-row">
@@ -109,6 +139,7 @@
       </article>
     </section>
 
+    <!-- Simple in-page nav -->
     <nav class="mini-nav" aria-label="Navigate phases" style="margin-top:12px">
       <a href="/hero-phase-1.html">Phase I</a>
       <a href="/hero-phase-2.html">Phase II</a>
@@ -119,10 +150,10 @@
     <section class="card">
       <h2>Principles at a glance</h2>
       <ul>
-        <li><strong>Strength</strong>: 2–4 working sets per lift. Add 1–2 reps or 1–2.5 kg weekly if technique is clean.</li>
+        <li><strong>Strength</strong>: 2–4 working sets per lift. Add a rep or 1–2.5&nbsp;kg weekly if technique stays clean (RIR ~1–2).</li>
         <li><strong>Endurance</strong>: 80–90% easy Z2, 10–20% quality (threshold/strides), 1 long session weekly.</li>
-        <li><strong>Mobility</strong>: Repeat key positions you’ll need for lifting/running — slow, controlled ranges.</li>
-        <li><strong>Recovery</strong>: Sleep target 7–9h; de-load every 4th week; breathe through nose on easy work.</li>
+        <li><strong>Mobility</strong>: Repeat key positions you need for lifting/running — slow, controlled ranges.</li>
+        <li><strong>Recovery</strong>: Sleep 7–9h; deload every 4th week; nasal breathing on easy work; fuel & hydrate.</li>
       </ul>
     </section>
   </main>
@@ -134,5 +165,26 @@
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
+
+  <!-- Make entire card keyboard-clickable without hijacking inner links -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.cta-phase').forEach(card => {
+        const link = card.querySelector('.card-link');
+        card.addEventListener('click', (e) => {
+          // ignore clicks on real buttons/links inside
+          const isInner = e.target.closest('a:not(.card-link),button');
+          if (!isInner && link) window.location.href = link.href;
+        });
+        card.addEventListener('keydown', (e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && document.activeElement === card) {
+            e.preventDefault(); if (link) window.location.href = link.href;
+          }
+        });
+        // make the card itself focusable
+        card.setAttribute('tabindex', '0');
+      });
+    });
+  </script>
 </body>
 </html>

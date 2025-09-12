@@ -4,30 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — Phase I (Foundation)</title>
-  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="stylesheet" href="/style.css?v=42">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
   <style>
-    /* Page-only layout helpers */
     .week-grid{display:grid;gap:14px}
     @media(min-width:980px){.week-grid{grid-template-columns:repeat(2,1fr)}}
 
     .wk{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
     .wk h3{margin:.1rem 0 .35rem}
     .wk .meta{margin:.1rem 0 .6rem}
+
     .ex{border:1px solid var(--stroke);border-radius:12px;padding:.65rem .75rem;margin:.5rem 0;background:#0f1319}
-    .ex h4{margin:0 0 .15rem;font-size:1rem;display:flex;align-items:center;gap:.5rem}
+    .ex h4{margin:0 0 .15rem;font-size:1rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
     .ex h4 a{color:var(--accent);text-decoration:none}
     .ex h4 a:hover{text-decoration:underline}
     .tag{display:inline-block;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.18rem .5rem;font-size:.78rem}
+    .note{font-size:.9rem;color:var(--inkdim);margin:.35rem 0 0}
+
     .log{display:grid;gap:.4rem;margin-top:.4rem}
     .log-row{display:grid;grid-template-columns:1fr repeat(3,90px) auto;gap:.4rem;align-items:center}
     .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .45rem}
     .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+
     .rest{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.25rem}
     .rest .left{min-width:64px;text-align:right;opacity:.85}
+
     .pb{margin-top:.3rem;color:#90ee90}
     .badge{display:inline-block;margin-top:.35rem;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:10px;padding:.25rem .5rem}
-    .note{font-size:.9rem;color:var(--inkdim);margin:.35rem 0 0}
     .navRow{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
   </style>
 </head>
@@ -54,7 +57,7 @@
   <main class="wrap">
     <section class="card">
       <h2>Weekly Structure</h2>
-      <p class="meta">2× full-body strength, 2–3× Z2 cardio, 1× mobility circuit, 1× optional strides. Deload every 4th week (reduce total work ~30%). Overload: add 1–2 reps or 1–2.5 kg weekly if technique is clean.</p>
+      <p class="meta">2× full-body strength, 2–3× Z2 cardio, 1× mobility circuit (broken out below), 1× optional strides. Deload every 4th week (reduce total work ~30%). Overload: add 1–2 reps or 1–2.5 kg weekly if technique is clean.</p>
     </section>
 
     <section class="week-grid">
@@ -63,7 +66,6 @@
         <h3>Week A</h3>
         <p class="meta">Strength A · Z2 x2 · Mobility · Optional strides</p>
 
-        <!-- Exercise blocks -->
         <div class="ex" data-key="goblet-squat">
           <h4>
             <a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a>
@@ -184,14 +186,39 @@
           </div>
         </div>
 
-        <div class="ex" data-key="mobility">
+        <!-- MOBILITY CIRCUIT — broken into individual drills -->
+        <div class="ex" data-key="mob-9090">
           <h4>
-            <a href="https://www.youtube.com/results?search_query=hip+90+90+mobility+drill" target="_blank" rel="noopener">Mobility Circuit (hips/ankles/T-spine)</a>
-            <span class="tag">Mobility</span>
+            <a href="https://www.youtube.com/results?search_query=90+90+hip+mobility+drill" target="_blank" rel="noopener">90/90 Hip Rotations</a>
+            <span class="tag">Mobility · Hips</span>
           </h4>
-          <p class="note">10–15 min · slow reps, breathe through nose, own end ranges.</p>
+          <p class="note">2–3 min slow rotations; keep spine tall; breathe quietly.</p>
           <div class="log">
-            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="drills"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="rounds"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="mob-ankle">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=ankle+dorsiflexion+wall+test+mobility" target="_blank" rel="noopener">Ankle Dorsiflexion Rocks (Wall)</a>
+            <span class="tag">Mobility · Ankles</span>
+          </h4>
+          <p class="note">2–3 min per side; heel stays down; knee tracks over toes.</p>
+          <div class="log">
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="per side"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="mob-tspine">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=open+book+thoracic+rotation+drill" target="_blank" rel="noopener">T-Spine Rotations (Open Book)</a>
+            <span class="tag">Mobility · T-Spine</span>
+          </h4>
+          <p class="note">1–2 min/side; slow breaths; keep knees stacked.</p>
+          <div class="log">
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="per side"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
             <div class="pb" data-pb></div><div class="badge" data-badge></div>
           </div>
         </div>
@@ -224,20 +251,18 @@
     </div>
   </footer>
 
-  <!-- Local logging + rest timers + PBs + badges (self-contained, localStorage only) -->
+  <!-- Local logging + rest timers + PBs + badges (localStorage only) -->
   <script>
     (function(){
       const NS = 'fff.hero.phase1.';
       const q = (sel,root=document)=>root.querySelector(sel);
       const qa = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
 
-      // Save button: persist row data
       qa('.ex').forEach(box=>{
         const key = box.dataset.key;
         const pbEl = q('[data-pb]', box);
         const badgeEl = q('[data-badge]', box);
 
-        // Load existing
         const saved = JSON.parse(localStorage.getItem(NS+key) || '{}');
         qa('[data-field]', box).forEach(inp=>{
           const id = inp.dataset.field;
@@ -251,17 +276,11 @@
             const merged = {...saved, ...row};
             localStorage.setItem(NS+key, JSON.stringify(merged));
 
-            // Simple PB check: compare best "wX * rX"
             const bestNow = bestScore(merged);
             const bestWas = parseFloat(localStorage.getItem(NS+key+'.best')||'0')||0;
-            if(bestNow > bestWas){
-              localStorage.setItem(NS+key+'.best', bestNow);
-              pbEl.textContent = 'New best set score! Great work.';
-            } else {
-              pbEl.textContent = 'Saved.';
-            }
+            pbEl.textContent = (bestNow > bestWas) ? 'New best set score! Great work.' : 'Saved.';
+            if(bestNow>bestWas){ localStorage.setItem(NS+key+'.best', bestNow); }
 
-            // Milestones: count total saved clicks
             const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10)+1);
             localStorage.setItem(NS+'saves', total);
             if([5,10,25,50,100].includes(total)){
@@ -275,16 +294,16 @@
         const left=q('[data-remaining]', box), secs=q('.rest-sec', box);
         q('[data-act="start"]', box)?.addEventListener('click', ()=>{
           stop();
-          let s = Math.max(10, parseInt(secs.value||'60',10));
+          let s = Math.max(10, parseInt(secs?.value||'60',10));
           end = Date.now()+s*1000;
-          left.textContent = fmt(s);
+          if(left) left.textContent = fmt(s);
           timer = setInterval(tick, 200);
         });
         q('[data-act="stop"]', box)?.addEventListener('click', stop);
 
         function tick(){
           const remain=Math.max(0, Math.ceil((end-Date.now())/1000));
-          left.textContent = fmt(remain);
+          if(left) left.textContent = fmt(remain);
           if(remain<=0) stop(true);
         }
         function stop(chime=false){
@@ -293,7 +312,7 @@
         }
 
         function bestScore(obj){
-          // crude: max over (w * r) for w1..w4 * r1..r4
+          // max over (w * r) where wN may be minutes for mobility (fine — lower PB noise there)
           let best=0;
           for(let i=1;i<=5;i++){
             const w=parseFloat(obj['w'+i]||'0')||0;

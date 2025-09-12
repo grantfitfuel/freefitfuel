@@ -1,360 +1,310 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hero Training — Phase I (Foundation)</title>
-<link rel="stylesheet" href="/style.css?v=42">
-<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
-<style>
-  .hero-mini .content{position:static} /* text below image */
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero Training — Phase I (Foundation)</title>
+  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <style>
+    /* Page-only layout helpers */
+    .week-grid{display:grid;gap:14px}
+    @media(min-width:980px){.week-grid{grid-template-columns:repeat(2,1fr)}}
 
-  .plan{display:grid;gap:14px}
-  @media(min-width:920px){.plan{grid-template-columns:repeat(2,1fr)}}
-  .sess{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
-  .sess h3{margin:.1rem 0 .35rem}
-  .ex{border:1px solid var(--stroke);border-radius:12px;padding:.6rem .7rem;margin:.45rem 0 .35rem;background:#10141a}
-  .ex-head{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;justify-content:space-between}
-  .name-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
-  .goal-tags{display:flex;gap:.35rem;flex-wrap:wrap}
-  .tag{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.2rem .55rem;font-size:.8rem}
-  .yt-link{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.32rem .6rem;font-size:.9rem}
-  .yt-link:hover{color:var(--accent)}
-  .log{display:grid;gap:.5rem;margin-top:.6rem}
-  .log-row{display:grid;grid-template-columns:68px 1fr 1fr auto;gap:.45rem;align-items:center}
-  .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem}
-  .log-row .save{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.35rem .6rem;cursor:pointer}
-  .timer{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}
-  .timer input{width:90px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .5rem}
-  .timer button{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.35rem .6rem;cursor:pointer}
-  .pr{font-size:.9rem;color:#b6b6c6}
-  .foot-row{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.4rem;flex-wrap:wrap}
-  .complete-btn{background:var(--accent);color:#111;border:0;border-radius:10px;padding:.55rem .85rem;font-weight:800}
-  .toast{position:fixed;right:16px;bottom:16px;background:#0f1319;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .8rem;box-shadow:0 6px 20px rgba(0,0,0,.35);z-index:9999;display:none}
-  .toast.show{display:block}
-</style>
+    .wk{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
+    .wk h3{margin:.1rem 0 .35rem}
+    .wk .meta{margin:.1rem 0 .6rem}
+    .ex{border:1px solid var(--stroke);border-radius:12px;padding:.65rem .75rem;margin:.5rem 0;background:#0f1319}
+    .ex h4{margin:0 0 .15rem;font-size:1rem;display:flex;align-items:center;gap:.5rem}
+    .ex h4 a{color:var(--accent);text-decoration:none}
+    .ex h4 a:hover{text-decoration:underline}
+    .tag{display:inline-block;border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.18rem .5rem;font-size:.78rem}
+    .log{display:grid;gap:.4rem;margin-top:.4rem}
+    .log-row{display:grid;grid-template-columns:1fr repeat(3,90px) auto;gap:.4rem;align-items:center}
+    .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .45rem}
+    .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+    .rest{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.25rem}
+    .rest .left{min-width:64px;text-align:right;opacity:.85}
+    .pb{margin-top:.3rem;color:#90ee90}
+    .badge{display:inline-block;margin-top:.35rem;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:10px;padding:.25rem .5rem}
+    .note{font-size:.9rem;color:var(--inkdim);margin:.35rem 0 0}
+    .navRow{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
+  </style>
 </head>
 <body>
 
-<!-- Shared header -->
-<div id="site-header"></div>
-<script src="/js/header-loader.js"></script>
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js" defer></script>
 
-<header class="hero-mini" aria-label="Phase 1 hero">
-  <figure>
-    <img src="/img/hero-phase-1.jpg" alt="People of different ages training fundamentals with great form">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="content wrap">
-    <span class="eyebrow">Phase I · Weeks 1–12</span>
-    <h1><span class="accent">Foundation</span></h1>
-    <p class="lead">Perfect technique, build your aerobic base, establish baseline numbers. Deload every 4th week.</p>
+  <header class="hero-mini" aria-label="Phase I hero">
+    <figure>
+      <img src="/img/hero-phase1.jpg" alt="Athletes training with focus on fundamental movement and easy aerobic base">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1><span class="accent">Phase I — Foundation (Weeks 1–8)</span></h1>
+      <p class="lead">Master form, build an easy Z2 engine, and cement recovery habits. Click any <strong>exercise name</strong> to open YouTube form searches. Log your sets to track progression.</p>
+      <div class="navRow">
+        <a class="btn--pill" href="/hero-training.html">Back to Hero Training</a>
+        <a class="btn--pill" href="/hero-phase-2.html">Next: Phase II</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Weekly Structure</h2>
+      <p class="meta">2× full-body strength, 2–3× Z2 cardio, 1× mobility circuit, 1× optional strides. Deload every 4th week (reduce total work ~30%). Overload: add 1–2 reps or 1–2.5 kg weekly if technique is clean.</p>
+    </section>
+
+    <section class="week-grid">
+      <!-- Week A -->
+      <article class="wk" id="weekA">
+        <h3>Week A</h3>
+        <p class="meta">Strength A · Z2 x2 · Mobility · Optional strides</p>
+
+        <!-- Exercise blocks -->
+        <div class="ex" data-key="goblet-squat">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a>
+            <span class="tag">Strength</span>
+          </h4>
+          <p class="note">3–4 sets · 8–12 reps · add small weight weekly with pristine depth & control.</p>
+          <div class="log" aria-label="Log sets">
+            <div class="log-row">
+              <label>Set 1</label><input data-field="w1" placeholder="kg"><input data-field="r1" placeholder="reps"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button>
+            </div>
+            <div class="log-row">
+              <label>Set 2</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button>
+            </div>
+            <div class="log-row">
+              <label>Set 3</label><input data-field="w3"><input data-field="r3"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button>
+            </div>
+            <div class="rest">
+              <span class="left" data-remaining>Rest</span>
+              <input class="rest-sec" type="number" min="15" value="90">s
+              <button class="btn-sm" data-act="start">Start</button>
+              <button class="btn-sm" data-act="stop">Stop</button>
+            </div>
+            <div class="pb" data-pb></div>
+            <div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="db-row">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+form" target="_blank" rel="noopener">One-Arm DB Row</a>
+            <span class="tag">Strength</span>
+          </h4>
+          <p class="note">3–4 sets · 8–12 reps/side · stable torso, pull elbow to back pocket.</p>
+          <div class="log">
+            <div class="log-row"><label>Set 1</label><input data-field="w1"><input data-field="r1"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 2</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 3</label><input data-field="w3"><input data-field="r3"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="75">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="pushup">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=push+up+form+beginner" target="_blank" rel="noopener">Push-Up (incline if needed)</a>
+            <span class="tag">Strength</span>
+          </h4>
+          <p class="note">3 sets · AMRAP with 2 reps in reserve · full plank, chest to target.</p>
+          <div class="log">
+            <div class="log-row"><label>Set 1</label><input data-field="w1" placeholder="BW"><input data-field="r1"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 2</label><input data-field="w2" placeholder="BW"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 3</label><input data-field="w3" placeholder="BW"><input data-field="r3"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="60">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="z2">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=zone+2+training+explained" target="_blank" rel="noopener">Z2 Cardio (30–45 min)</a>
+            <span class="tag">Endurance</span>
+          </h4>
+          <p class="note">Nasal-breathable pace, conversational. Track time not weight.</p>
+          <div class="log">
+            <div class="log-row"><label>Session</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="RPE"><input data-field="n1" placeholder="route/device"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Week B -->
+      <article class="wk" id="weekB">
+        <h3>Week B</h3>
+        <p class="meta">Strength B · Z2 x3 · Mobility · Optional strides</p>
+
+        <div class="ex" data-key="rdl">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+form" target="_blank" rel="noopener">DB Romanian Deadlift</a>
+            <span class="tag">Strength</span>
+          </h4>
+          <p class="note">3–4 sets · 8–12 reps · hinge from hips, neutral spine, slow eccentric.</p>
+          <div class="log">
+            <div class="log-row"><label>Set 1</label><input data-field="w1"><input data-field="r1"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 2</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 3</label><input data-field="w3"><input data-field="r3"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="90">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="ohp">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=standing+dumbbell+overhead+press+form" target="_blank" rel="noopener">DB Overhead Press</a>
+            <span class="tag">Strength</span>
+          </h4>
+          <p class="note">3–4 sets · 6–10 reps · ribs down, glutes on, press vertical.</p>
+          <div class="log">
+            <div class="log-row"><label>Set 1</label><input data-field="w1"><input data-field="r1"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 2</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 3</label><input data-field="w3"><input data-field="r3"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="90">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="split-squat">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=bulgarian+split+squat+form" target="_blank" rel="noopener">Split Squat / Bulgarian</a>
+            <span class="tag">Strength</span>
+          </h4>
+          <p class="note">3 sets · 8–12 reps/side · upright torso, knee tracks toes, slow down.</p>
+          <div class="log">
+            <div class="log-row"><label>Set 1</label><input data-field="w1"><input data-field="r1"><input data-field="n1"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 2</label><input data-field="w2"><input data-field="r2"><input data-field="n2"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="log-row"><label>Set 3</label><input data-field="w3"><input data-field="r3"><input data-field="n3"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="rest"><span class="left" data-remaining>Rest</span><input class="rest-sec" type="number" min="15" value="75">s<button class="btn-sm" data-act="start">Start</button><button class="btn-sm" data-act="stop">Stop</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+        <div class="ex" data-key="mobility">
+          <h4>
+            <a href="https://www.youtube.com/results?search_query=hip+90+90+mobility+drill" target="_blank" rel="noopener">Mobility Circuit (hips/ankles/T-spine)</a>
+            <span class="tag">Mobility</span>
+          </h4>
+          <p class="note">10–15 min · slow reps, breathe through nose, own end ranges.</p>
+          <div class="log">
+            <div class="log-row"><label>Block</label><input data-field="w1" placeholder="mins"><input data-field="r1" placeholder="drills"><input data-field="n1" placeholder="notes"><button class="btn-sm" data-act="save">Save</button></div>
+            <div class="pb" data-pb></div><div class="badge" data-badge></div>
+          </div>
+        </div>
+
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Notes</h2>
+      <ul>
+        <li><strong>Z2</strong>: able to speak in full sentences; mostly nasal breathing. Build time gradually.</li>
+        <li><strong>Overload</strong>: Only add load if the last set is clean with 1–2 reps in reserve.</li>
+        <li><strong>Deload</strong>: Every 4th week cut total sets/time by about a third; focus on form and sleep.</li>
+      </ul>
+    </section>
+
     <nav class="mini-nav" aria-label="Navigate phases">
-      <a href="/hero-training.html">Hero Home</a>
-      <a href="/hero-phase-1.html" aria-current="page">Phase I</a>
+      <a href="/hero-training.html">Hero Training</a>
       <a href="/hero-phase-2.html">Phase II</a>
       <a href="/hero-phase-3.html">Phase III</a>
       <a href="/hero-phase-4.html">Phase IV</a>
     </nav>
-  </div>
-</header>
+  </main>
 
-<main class="wrap">
-  <section class="card">
-    <h2>Weekly structure (example)</h2>
-    <p><strong>Mon</strong> Lower A · <strong>Tue</strong> Z2 30–45 min · <strong>Wed</strong> Upper A · <strong>Thu</strong> Mobility 20 min · <strong>Fri</strong> Lower B · <strong>Sat</strong> Z2 45–60 min · <strong>Sun</strong> Off / walk.</p>
-    <p class="meta">Z2 = conversational pace. Overload: add 2.5–5 kg or +1–2 reps if last rep is clean. Every 4th week: deload (~30% volume).</p>
-  </section>
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
 
-  <section class="plan" aria-label="Sessions">
-    <!-- Lower A -->
-    <article class="sess">
-      <h3>Lower A</h3>
+  <!-- Local logging + rest timers + PBs + badges (self-contained, localStorage only) -->
+  <script>
+    (function(){
+      const NS = 'fff.hero.phase1.';
+      const q = (sel,root=document)=>root.querySelector(sel);
+      const qa = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
 
-      <!-- Exercise block template repeated -->
-      <div class="ex" data-ex="back-squat">
-        <div class="ex-head">
-          <div class="name-row">
-            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=back+squat+setup+and+form" aria-label="Technique video search">Back Squat — 3×5</a>
-            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Quads/Glutes</span></div>
-          </div>
-          <div class="pr" data-pr="back-squat">PB: —</div>
-        </div>
-        <div class="log">
-          <!-- 3 rows default; user can change freely -->
-          <div class="log-row">
-            <label class="meta">Set 1</label>
-            <input type="number" inputmode="decimal" placeholder="kg" aria-label="Set 1 kg">
-            <input type="number" inputmode="numeric" placeholder="reps" aria-label="Set 1 reps">
-            <button class="save">Save</button>
-          </div>
-          <div class="log-row">
-            <label class="meta">Set 2</label>
-            <input type="number" inputmode="decimal" placeholder="kg" aria-label="Set 2 kg">
-            <input type="number" inputmode="numeric" placeholder="reps" aria-label="Set 2 reps">
-            <button class="save">Save</button>
-          </div>
-          <div class="log-row">
-            <label class="meta">Set 3</label>
-            <input type="number" inputmode="decimal" placeholder="kg" aria-label="Set 3 kg">
-            <input type="number" inputmode="numeric" placeholder="reps" aria-label="Set 3 reps">
-            <button class="save">Save</button>
-          </div>
-          <div class="timer">
-            <label class="meta">Rest</label>
-            <input type="number" min="10" step="5" value="120" aria-label="Rest seconds">
-            <button data-t="start">Start</button>
-            <button data-t="stop">Stop</button>
-            <span class="meta" data-t="left">120s</span>
-          </div>
-        </div>
-      </div>
+      // Save button: persist row data
+      qa('.ex').forEach(box=>{
+        const key = box.dataset.key;
+        const pbEl = q('[data-pb]', box);
+        const badgeEl = q('[data-badge]', box);
 
-      <div class="ex" data-ex="romanian-deadlift">
-        <div class="ex-head">
-          <div class="name-row">
-            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=romanian+deadlift+form+hips+hinge">Romanian Deadlift — 3×8</a>
-            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Hamstrings</span></div>
-          </div>
-          <div class="pr" data-pr="romanian-deadlift">PB: —</div>
-        </div>
-        <div class="log">
-          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
-        </div>
-      </div>
+        // Load existing
+        const saved = JSON.parse(localStorage.getItem(NS+key) || '{}');
+        qa('[data-field]', box).forEach(inp=>{
+          const id = inp.dataset.field;
+          if(saved[id]) inp.value = saved[id];
+        });
 
-      <div class="ex" data-ex="split-squat">
-        <div class="ex-head">
-          <div class="name-row">
-            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bulgarian+split+squat+form+setup">Bulgarian Split Squat — 3×8/side</a>
-            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Unilateral</span></div>
-          </div>
-          <div class="pr" data-pr="split-squat">PB: —</div>
-        </div>
-        <div class="log">
-          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
-        </div>
-      </div>
+        qa('[data-act="save"]', box).forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const row = {};
+            qa('[data-field]', box).forEach(inp=> row[inp.dataset.field] = inp.value.trim());
+            const merged = {...saved, ...row};
+            localStorage.setItem(NS+key, JSON.stringify(merged));
 
-      <div class="foot-row">
-        <span class="meta">Finish: calf raises 2×15 · couch stretch 2×45s/side</span>
-        <button class="complete-btn" data-complete="lower-a">Complete Session</button>
-      </div>
-    </article>
+            // Simple PB check: compare best "wX * rX"
+            const bestNow = bestScore(merged);
+            const bestWas = parseFloat(localStorage.getItem(NS+key+'.best')||'0')||0;
+            if(bestNow > bestWas){
+              localStorage.setItem(NS+key+'.best', bestNow);
+              pbEl.textContent = 'New best set score! Great work.';
+            } else {
+              pbEl.textContent = 'Saved.';
+            }
 
-    <!-- Upper A -->
-    <article class="sess">
-      <h3>Upper A</h3>
+            // Milestones: count total saved clicks
+            const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10)+1);
+            localStorage.setItem(NS+'saves', total);
+            if([5,10,25,50,100].includes(total)){
+              badgeEl.textContent = `Milestone: ${total} logs saved 🎉`;
+            }
+          });
+        });
 
-      <div class="ex" data-ex="bench-press">
-        <div class="ex-head">
-          <div class="name-row">
-            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=bench+press+setup+scapular+retraction+form">Bench Press — 3×5</a>
-            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Chest</span></div>
-          </div>
-          <div class="pr" data-pr="bench-press">PB: —</div>
-        </div>
-        <div class="log">
-          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="timer"><label class="meta">Rest</label><input type="number" value="120"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">120s</span></div>
-        </div>
-      </div>
+        // Rest timer
+        let timer=null, end=0;
+        const left=q('[data-remaining]', box), secs=q('.rest-sec', box);
+        q('[data-act="start"]', box)?.addEventListener('click', ()=>{
+          stop();
+          let s = Math.max(10, parseInt(secs.value||'60',10));
+          end = Date.now()+s*1000;
+          left.textContent = fmt(s);
+          timer = setInterval(tick, 200);
+        });
+        q('[data-act="stop"]', box)?.addEventListener('click', stop);
 
-      <div class="ex" data-ex="one-arm-row">
-        <div class="ex-head">
-          <div class="name-row">
-            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=one+arm+dumbbell+row+bench+form">One-Arm DB Row — 3×8/side</a>
-            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Back</span></div>
-          </div>
-          <div class="pr" data-pr="one-arm-row">PB: —</div>
-        </div>
-        <div class="log">
-          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg (each)"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
-        </div>
-      </div>
+        function tick(){
+          const remain=Math.max(0, Math.ceil((end-Date.now())/1000));
+          left.textContent = fmt(remain);
+          if(remain<=0) stop(true);
+        }
+        function stop(chime=false){
+          if(timer){ clearInterval(timer); timer=null; }
+          if(chime){ try{ new Audio('/audio/chime.mp3').play().catch(()=>{});}catch{} }
+        }
 
-      <div class="ex" data-ex="overhead-press">
-        <div class="ex-head">
-          <div class="name-row">
-            <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=overhead+press+standing+strict+form">Overhead Press — 3×6</a>
-            <div class="goal-tags"><span class="tag">Strength</span><span class="tag">Shoulders</span></div>
-          </div>
-          <div class="pr" data-pr="overhead-press">PB: —</div>
-        </div>
-        <div class="log">
-          <div class="log-row"><label class="meta">Set 1</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 2</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="log-row"><label class="meta">Set 3</label><input placeholder="kg"><input placeholder="reps"><button class="save">Save</button></div>
-          <div class="timer"><label class="meta">Rest</label><input type="number" value="90"><button data-t="start">Start</button><button data-t="stop">Stop</button><span class="meta" data-t="left">90s</span></div>
-        </div>
-      </div>
-
-      <div class="foot-row">
-        <span class="meta">Finish: face pulls 2×15 · band pull-aparts 2×20</span>
-        <button class="complete-btn" data-complete="upper-a">Complete Session</button>
-      </div>
-    </article>
-  </section>
-
-  <section class="card">
-    <h2>Cardio & Mobility</h2>
-    <ul>
-      <li><strong>Z2 x 2/wk</strong> — 30–60 min, nasal breathing if possible. Walk/jog or bike. <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=zone+2+training+explained">What is Zone 2?</a></li>
-      <li><strong>Mobility</strong> — 15–20 min hips/ankles/shoulders. <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=hip+mobility+routine+beginner">Hip routine</a> · <a class="yt-link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=shoulder+mobility+routine+band">Shoulder routine</a></li>
-    </ul>
-  </section>
-
-  <nav class="mini-nav">
-    <a href="/hero-training.html">Back to Hero Home</a>
-    <a href="/hero-phase-2.html">Next: Phase II</a>
-  </nav>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
-
-<div class="toast" id="toast">Saved.</div>
-
-<script>
-/* =========================================================
-   IndexedDB store (survives normal cookie/history clears)
-   Stores:
-   - logs: {id, ts, ex, kg, reps, volume}
-   - pr:   {key: 'ex:<id>:(load|volume)', value:number}
-   - meta: {key:'sessions', value:number}, {key:'badges', value:[...]}
-   ========================================================= */
-const DB_NAME='fff-hero', DB_VER=1;
-let DB;
-
-function idbOpen(){
-  return new Promise((res,rej)=>{
-    const r=indexedDB.open(DB_NAME, DB_VER);
-    r.onupgradeneeded=(e)=>{
-      const db=e.target.result;
-      if(!db.objectStoreNames.contains('logs')) db.createObjectStore('logs',{keyPath:'id',autoIncrement:true});
-      if(!db.objectStoreNames.contains('pr'))   db.createObjectStore('pr',{keyPath:'key'});
-      if(!db.objectStoreNames.contains('meta')) db.createObjectStore('meta',{keyPath:'key'});
-    };
-    r.onsuccess=()=>{DB=r.result;res();}
-    r.onerror=()=>rej(r.error);
-  });
-}
-function idbPut(store,obj){return new Promise((res,rej)=>{const tx=DB.transaction(store,'readwrite');tx.objectStore(store).put(obj).onsuccess=()=>res();tx.onerror=()=>rej(tx.error);});}
-function idbGet(store,key){return new Promise((res,rej)=>{const tx=DB.transaction(store,'readonly');const req=tx.objectStore(store).get(key);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});}
-function idbAdd(store,obj){return new Promise((res,rej)=>{const tx=DB.transaction(store,'readwrite');const req=tx.objectStore(store).add(obj);req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});}
-
-/* ---------- UI helpers ---------- */
-const toast = document.getElementById('toast');
-let toastTO=null;
-function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toastTO);toastTO=setTimeout(()=>toast.classList.remove('show'),1800);}
-
-/* ---------- PR + save logic ---------- */
-async function saveSet(exId, kg, reps){
-  const nKg = parseFloat(kg||'0'), nReps=parseInt(reps||'0',10);
-  if(!(nKg>0 && nReps>0)){ showToast('Enter kg and reps'); return; }
-  const volume = nKg * nReps;
-  await idbAdd('logs', {ts:Date.now(), ex:exId, kg:nKg, reps:nReps, volume});
-
-  // PRs
-  let loadPR = await idbGet('pr', `ex:${exId}:load`);
-  let volPR  = await idbGet('pr', `ex:${exId}:volume`);
-  let newBadges=[];
-  if(!loadPR || nKg > loadPR.value){ await idbPut('pr', {key:`ex:${exId}:load`, value:nKg}); newBadges.push(`New Load PB — ${exId} ${nKg} kg`); }
-  if(!volPR  || volume > volPR.value){ await idbPut('pr', {key:`ex:${exId}:volume`, value:volume}); newBadges.push(`New Volume PB — ${exId} ${Math.round(volume)} kg·reps`); }
-
-  // write badges to meta
-  if(newBadges.length){
-    const m=await idbGet('meta','badges')||{key:'badges',value:[]};
-    m.value = m.value.concat(newBadges);
-    await idbPut('meta', m);
-  }
-
-  // refresh PR label
-  await renderPR(exId);
-  showToast(newBadges.length ? 'Saved ✔  PB unlocked!' : 'Saved ✔');
-}
-async function renderPR(exId){
-  const span = document.querySelector(`.pr[data-pr="${exId}"]`); if(!span) return;
-  const l=await idbGet('pr',`ex:${exId}:load`);
-  const v=await idbGet('pr',`ex:${exId}:volume`);
-  if(!l && !v){ span.textContent='PB: —'; return; }
-  span.textContent = `PB: Load ${l?l.value+'kg':'—'} · Vol ${v?Math.round(v.value):'—'}`;
-}
-
-/* ---------- Session complete counter + milestone badges ---------- */
-async function completeSession(key){
-  const s=await idbGet('meta','sessions')||{key:'sessions',value:0};
-  s.value += 1; await idbPut('meta', s);
-
-  const milestones=[10,25,50,100];
-  if(milestones.includes(s.value)){
-    const b=await idbGet('meta','badges')||{key:'badges',value:[]};
-    b.value.push(`Milestone — ${s.value} Sessions`);
-    await idbPut('meta', b);
-    showToast(`Session saved · 🎉 ${s.value}-session badge!`);
-  } else {
-    showToast('Session saved ✔');
-  }
-}
-
-/* ---------- Rest timers per exercise block ---------- */
-const timers = new Map();
-function startTimer(wrap){
-  const leftEl=wrap.querySelector('[data-t="left"]');
-  const inp=wrap.querySelector('input[type="number"]');
-  let secs=parseInt(inp.value||'60',10); if(secs<5) secs=5;
-  clearInterval(timers.get(wrap)); const end=Date.now()+secs*1000;
-  function tick(){ const r = Math.max(0, Math.ceil((end-Date.now())/1000)); leftEl.textContent = r+'s'; if(r<=0){ clearInterval(timers.get(wrap)); timers.delete(wrap); showToast('Rest done'); } }
-  tick(); const id=setInterval(tick,200); timers.set(wrap,id);
-}
-function stopTimer(wrap){ clearInterval(timers.get(wrap)); timers.delete(wrap); const leftEl=wrap.querySelector('[data-t="left"]'); const inp=wrap.querySelector('input[type="number"]'); leftEl.textContent=(parseInt(inp.value||'60',10))+'s'; }
-
-/* ---------- Wire up page ---------- */
-document.addEventListener('DOMContentLoaded', async ()=>{
-  await idbOpen();
-
-  // PR labels init
-  document.querySelectorAll('.ex').forEach(ex=>{
-    const id=ex.dataset.ex; renderPR(id);
-  });
-
-  // Save buttons
-  document.querySelectorAll('.ex .log-row .save').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const row=btn.closest('.log-row'); const ex=btn.closest('.ex').dataset.ex;
-      const kg=row.querySelector('input[placeholder*="kg"]').value;
-      const reps=row.querySelector('input[placeholder*="reps"]').value;
-      saveSet(ex, kg, reps);
-    });
-  });
-
-  // Timers
-  document.querySelectorAll('.ex .timer').forEach(w=>{
-    w.querySelector('[data-t="start"]').addEventListener('click', ()=>startTimer(w));
-    w.querySelector('[data-t="stop"]').addEventListener('click', ()=>stopTimer(w));
-  });
-
-  // Complete session
-  document.querySelectorAll('[data-complete]').forEach(b=>{
-    b.addEventListener('click', ()=>completeSession(b.dataset.complete));
-  });
-});
-</script>
+        function bestScore(obj){
+          // crude: max over (w * r) for w1..w4 * r1..r4
+          let best=0;
+          for(let i=1;i<=5;i++){
+            const w=parseFloat(obj['w'+i]||'0')||0;
+            const r=parseFloat(obj['r'+i]||'0')||0;
+            best=Math.max(best, w*r);
+          }
+          return best;
+        }
+        function fmt(s){ return s+'s'; }
+      });
+    })();
+  </script>
 </body>
 </html>

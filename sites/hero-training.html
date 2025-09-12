@@ -3,205 +3,154 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=61">
+  <title>Hero Training — The Ultimate Challenge</title>
+  <link rel="stylesheet" href="/style.css?v=42">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 </head>
-<body class="hero-mode">
-  <!-- Header -->
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
+<body>
 
-  <!-- HERO -->
-  <header class="hero hero-rainbow" role="banner" aria-label="Hero Training hero">
-    <figure class="hero-media">
-      <img src="/img/hero-training.jpg" alt="Colourful training montage">
-      <div class="overlay" aria-hidden="true"></div>
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<header class="hero-mini" role="banner" aria-label="Hero Training hero">
+  <figure>
+    <!-- Image should show more than one person (younger & older athletes) -->
+    <img src="/img/hero-training-multiathletes.jpg"
+         alt="Younger and older athletes training together: running track start and dumbbell work side by side">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Hero Training — The Ultimate Challenge</span></h1>
+    <p class="lead">
+      A science-driven progression to build strength, stamina, mobility and health — at any age.
+      The aim isn’t a 30-day fix; it’s a durable body and a calmer mind for the long haul.
+    </p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Navigation chips to key sections -->
+  <nav class="mini-nav" aria-label="Sections">
+    <a href="#why">Why this works</a>
+    <a href="#strength">Strength</a>
+    <a href="#conditioning">Conditioning</a>
+    <a href="#mobility">Mobility</a>
+    <a href="#recovery">Recovery</a>
+    <a href="#phases">Phase Guides</a>
+  </nav>
+
+  <section id="why" class="card">
+    <h2>Why this works (science, simply explained)</h2>
+    <ul class="meta">
+      <li><strong>Progressive overload:</strong> muscles, tendons and bones adapt to slightly greater demand over time (load, reps, sets, tempo, or range). <em>No overload = no new stimulus.</em></li>
+      <li><strong>Specificity:</strong> you improve what you train — we cycle strength, aerobic base (Z2), threshold, and long stamina.</li>
+      <li><strong>Recovery builds you:</strong> adaptations happen between sessions; sleep, protein, and easy days matter.</li>
+      <li><strong>Age-inclusive:</strong> same principles, but older trainees often benefit from slightly more recovery and a steadier ramp.</li>
+    </ul>
+  </section>
+
+  <section id="strength" class="split" aria-label="Strength section">
+    <figure>
+      <img src="/img/strength-dumbbell.jpg" alt="Dumbbell strength training with controlled form">
     </figure>
-    <div class="hero-content wrap">
-      <span class="eyebrow">Year-Long Transformation</span>
-      <h1 class="comic-title">Hero Training</h1>
-      <p class="lead comic-sub">Gamified progression to Marathon-ready engine and real-world strength. Earn XP, keep a streak, defeat Bosses.</p>
-      <div class="pills">
-        <a class="pill" href="#how">🎮 How it works</a>
-        <a class="pill" href="#phases">🧭 Pick your Phase</a>
-        <a class="pill" href="#bosses">💥 Boss Fights</a>
-      </div>
-
-      <!-- HUD -->
-      <div class="panel" style="margin-top:.6rem">
-        <strong>XP:</strong> <span id="hudXp">0</span> ·
-        <strong>Level:</strong> <span id="hudLvl">1</span> ·
-        <strong>Streak:</strong> <span id="hudStreak">0</span> days
-        <div class="xp" style="margin-top:.4rem"><span id="xpBar" style="width:0%"></span></div>
-      </div>
+    <div>
+      <h2>Strength (progressive overload is the driver)</h2>
+      <p class="meta">
+        We use dumbbells + bodyweight for accessible, joint-friendly training. Each 1–2 weeks,
+        push <em>one</em> overload lever: +2.5–5% load, +1–2 reps, +1 set, slower negatives (tempo), or a touch more range.
+      </p>
+      <ul>
+        <li><a href="https://www.youtube.com/results?search_query=goblet+squat+form" target="_blank" rel="noopener">Goblet Squat</a> •
+            <a href="https://www.youtube.com/results?search_query=romanian+deadlift+dumbbell+form" target="_blank" rel="noopener">DB RDL</a> •
+            <a href="https://www.youtube.com/results?search_query=dumbbell+row+form" target="_blank" rel="noopener">DB Row</a></li>
+        <li><a href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form" target="_blank" rel="noopener">DB Floor Press</a> •
+            <a href="https://www.youtube.com/results?search_query=concentration+curl+form" target="_blank" rel="noopener">Concentration Curl</a> •
+            <a href="https://www.youtube.com/results?search_query=split+squat+form" target="_blank" rel="noopener">Split Squat</a></li>
+      </ul>
+      <p class="meta"><strong>Rule:</strong> last 2 reps feel challenging but controlled; form never breaks.</p>
     </div>
-    <div class="sparkle"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M32 7l4 13 13 4-13 4-4 13-4-13-13-4 13-4 4-13Z" fill="#FFD93B"/></svg></div>
-  </header>
+  </section>
 
-  <main class="wrap">
-    <!-- How it works -->
-    <section id="how">
-      <h2 class="comic-title" style="font-size:1.5rem;margin:.2rem 0 .6rem;">How it works</h2>
-      <div class="grid-panels">
-        <article class="panel">
-          <h3>1) Choose a Phase</h3>
-          <p class="meta">Phase I (Foundation) → Phase II (Build) → Phase III (Peak) → Phase IV (Marathon).</p>
-          <div class="badge-row">
-            <span class="badge">🔰 Starter</span><span class="badge">🏗️ Build</span><span class="badge">🚀 Peak</span><span class="badge">🏁 Marathon</span>
-          </div>
-        </article>
-        <article class="panel">
-          <h3>2) Complete Weekly Quests</h3>
-          <p class="meta">Each phase page shows **exact weekly tasks** (checklists). Check them off → press **Claim XP**.</p>
-          <span class="goal-chip goal-strength">Strength</span>
-          <span class="goal-chip goal-engine">Engine</span>
-          <span class="goal-chip goal-mob">Mobility</span>
-        </article>
-        <article class="panel">
-          <h3>3) Defeat Bosses</h3>
-          <p class="meta">Monthly Boss = benchmark. Save PR → earn bonus XP. Bosses: 5k Run/Row, 12-min Strength AMRAP.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Phases -->
-    <section id="phases" style="margin-top:18px">
-      <h2 class="comic-title" style="font-size:1.5rem;margin:.2rem 0 .6rem;">Pick your Phase</h2>
-      <div class="grid-panels">
-        <article class="panel">
-          <h3>Phase I — Foundation</h3>
-          <p class="meta">Weeks 1–8 · Consistency, movement standards, Z2 engine.</p>
-          <a class="btn" href="/hero-phase-1.html">Open Phase I</a>
-        </article>
-        <article class="panel">
-          <h3>Phase II — Build</h3>
-          <p class="meta">Weeks 9–16 · More volume, tempo work, bodyweight skills.</p>
-          <a class="btn" href="/hero-phase-2.html">Open Phase II</a>
-        </article>
-        <article class="panel">
-          <h3>Phase III & IV — Peak → Marathon</h3>
-          <p class="meta">Blend strength & engine. Marathon goal by 12 months.</p>
-          <a class="btn" href="#" onclick="alert('Coming soon');return false;">Coming Soon</a>
-        </article>
-      </div>
-    </section>
-
-    <!-- Bosses -->
-    <section id="bosses" style="margin-top:18px">
-      <h2 class="comic-title" style="font-size:1.5rem;margin:.2rem 0 .6rem;">Boss Fights</h2>
-
-      <article class="boss" aria-labelledby="boss-run">
-        <h3 id="boss-run">Boss: 5k Run (or Row / 30-min distance)</h3>
-        <p class="meta">Pick one: <strong>Run 5k</strong>, <strong>Row 5k</strong>, or record **distance in 30 min**. Save best.</p>
-        <div class="row" style="margin:.4rem 0">
-          <label>Result <input id="boss5k" type="text" placeholder="25:30 or 6.2km/30min"></label>
-          <button class="btn" id="saveBoss5k">Save PR</button>
-          <button class="btn" id="xpBoss5k">Claim 150 XP</button>
-          <span id="outBoss5k" class="hint"></span>
-        </div>
-        <p class="meta">Form refreshers:
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+running+form+tips">Run Form</a> ·
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=5k+row+technique">Row Form</a>
-        </p>
-      </article>
-
-      <article class="boss" aria-labelledby="boss-amrap" style="margin-top:12px">
-        <h3 id="boss-amrap">Boss: Strength AMRAP (12 min)</h3>
-        <p class="meta">8 goblet squats · 8 push-ups · 8 DB rows. As many rounds as possible.</p>
-        <div class="row" style="margin:.4rem 0">
-          <label>Rounds <input id="bossAmrap" type="number" min="0" step="1" placeholder="7"></label>
-          <button class="btn" id="saveBossAmrap">Save PR</button>
-          <button class="btn" id="xpBossAmrap">Claim 120 XP</button>
-          <span id="outBossAmrap" class="hint"></span>
-        </div>
-        <p class="meta">Technique:
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=goblet+squat+form">Goblet Squat</a> ·
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=push+up+form">Push-up</a> ·
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=dumbbell+bent+over+row+form">DB Row</a>
-        </p>
-      </article>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-      <p>© 2025 FreeFitFuel · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
+  <section id="conditioning" class="split" aria-label="Conditioning section">
+    <figure>
+      <img src="/img/endurance-run-cycle.jpg" alt="Athletes building aerobic base with steady running and cycling">
+    </figure>
+    <div>
+      <h2>Conditioning (from base to marathon)</h2>
+      <p class="meta">
+        We progress from conversational aerobic base (Zone 2) → threshold work → long stamina.
+        If you choose the endurance track, the 12-month peak targets a marathon-equivalent.
+      </p>
+      <ul>
+        <li><strong>Base (Z2):</strong> 2–4 × 30–60 min per week at easy pace — you can talk in sentences.</li>
+        <li><strong>Progress:</strong> sprinkle 1 threshold session (e.g., 3 × 8 min comfortably hard) once base is solid.</li>
+        <li><strong>Long run:</strong> extend by ~10% most weeks; back off every 3–4 weeks.</li>
+      </ul>
     </div>
-  </footer>
+  </section>
 
-  <script>
-    /* ===== Simple XP / Level / Streak system (localStorage) ===== */
-    const XP_PER_LEVEL = 200;
-    const LS = {
-      xp:'hero_xp', lvl:'hero_lvl', streak:'hero_streak', lastDay:'hero_last_day',
-      pr5k:'hero_pr_5k', prAmrap:'hero_pr_amrap',
-      claimed5k:'hero_claimed_5k', claimedAmrap:'hero_claimed_amrap'
-    };
-    function getNum(k, d=0){ const v = localStorage.getItem(k); const n = parseInt(v,10); return isNaN(n)?d:n; }
-    function setNum(k, n){ localStorage.setItem(k, String(n)); }
-    function addXP(n){
-      const cur = getNum(LS.xp,0)+n; setNum(LS.xp, cur);
-      setNum(LS.lvl, Math.floor(cur/XP_PER_LEVEL)+1);
-      renderHUD();
-      return cur;
-    }
-    function renderHUD(){
-      const xp=getNum(LS.xp,0), lvl=getNum(LS.lvl,1);
-      document.getElementById('hudXp').textContent=xp;
-      document.getElementById('hudLvl').textContent=lvl;
-      const pct = Math.min(99, (xp%XP_PER_LEVEL)/XP_PER_LEVEL*100);
-      document.getElementById('xpBar').style.width=pct+'%';
-      document.getElementById('hudStreak').textContent=getNum(LS.streak,0);
-    }
-    function tickStreakToday(){
-      const today = new Date(); today.setHours(0,0,0,0);
-      const last = parseInt(localStorage.getItem(LS.lastDay)||'0',10);
-      const diff = last? (today - new Date(last)) / 86400000 : null;
-      let s = getNum(LS.streak,0);
-      if(diff === 1){ s += 1; }
-      else if(diff !== 0){ s = 1; }
-      setNum(LS.streak, s);
-      localStorage.setItem(LS.lastDay, String(today.getTime()));
-      renderHUD();
-    }
+  <section id="mobility" class="split" aria-label="Mobility section">
+    <figure>
+      <img src="/img/mobility-floor.jpg" alt="Floor mobility drills for hips, shoulders and spine">
+    </figure>
+    <div>
+      <h2>Mobility & Joint Health</h2>
+      <p class="meta">Short daily pieces beat rare marathons. Think 6–12 minutes most days.</p>
+      <ul>
+        <li><a href="https://www.youtube.com/results?search_query=worlds+greatest+stretch" target="_blank" rel="noopener">World’s Greatest Stretch</a>,
+            <a href="https://www.youtube.com/results?search_query=couch+stretch+form" target="_blank" rel="noopener">Couch Stretch</a>,
+            <a href="https://www.youtube.com/results?search_query=thoracic+spine+openers" target="_blank" rel="noopener">T-spine Openers</a></li>
+      </ul>
+    </div>
+  </section>
 
-    // PR handlers + Boss XP claim (guarded so XP is claimed once per boss)
-    document.addEventListener('DOMContentLoaded', ()=>{
-      renderHUD(); tickStreakToday();
+  <section id="recovery" class="split" aria-label="Recovery section">
+    <figure>
+      <img src="/img/recovery-sleep.jpg" alt="Calm sleep environment and hydration for recovery">
+    </figure>
+    <div>
+      <h2>Recovery & Nutrition</h2>
+      <ul>
+        <li><strong>Sleep:</strong> consistent window; reduce late caffeine; wind-down routine.</li>
+        <li><strong>Protein:</strong> ~1.6–2.2 g/kg/day (spread over meals) to support repair.</li>
+        <li><strong>Easy days:</strong> walks, mobility, light cycle; you should finish feeling better.</li>
+      </ul>
+    </div>
+  </section>
 
-      // 5k Boss
-      const b5 = document.getElementById('boss5k');
-      const o5 = document.getElementById('outBoss5k');
-      b5.value = localStorage.getItem(LS.pr5k)||'';
-      document.getElementById('saveBoss5k').addEventListener('click', ()=>{
-        if(!b5.value.trim()){ o5.textContent='Enter a result first.'; return; }
-        localStorage.setItem(LS.pr5k, b5.value.trim());
-        o5.textContent='Saved! 🏅';
-      });
-      document.getElementById('xpBoss5k').addEventListener('click', ()=>{
-        if(localStorage.getItem(LS.claimed5k)==='1'){ o5.textContent='XP already claimed.'; return; }
-        if(!localStorage.getItem(LS.pr5k)){ o5.textContent='Save a PR first.'; return; }
-        addXP(150); localStorage.setItem(LS.claimed5k,'1'); o5.textContent='150 XP added! 🔥';
-      });
+  <section id="phases" class="card">
+    <h2>Phases & Timelines</h2>
+    <p class="meta">Pick your horizon; the structure is the same — the ramp differs.</p>
+    <ul>
+      <li><a href="/hero-phase-1.html">Phase 1 — Foundation (Weeks 1–8)</a> • movement quality, base strength, Z2 habit.</li>
+      <li><a href="/hero-phase-2.html">Phase 2 — Progression (Weeks 9–16)</a> • progressive overload, first threshold pieces, long run growth.</li>
+      <li>Phase 3 — Performance (Weeks 17–28) • heavier strength cycles, structured tempo / threshold blocks.</li>
+      <li>Phase 4 — Peak & Sustain (Months 9–12) • marathon-equivalent option; integrate for life.</li>
+    </ul>
+    <p class="meta">Not sure where to start? Begin at Phase 1 — your future self will thank you.</p>
+  </section>
 
-      // AMRAP Boss
-      const ba = document.getElementById('bossAmrap');
-      const oa = document.getElementById('outBossAmrap');
-      ba.value = localStorage.getItem(LS.prAmrap)||'';
-      document.getElementById('saveBossAmrap').addEventListener('click', ()=>{
-        if(!ba.value.trim()){ oa.textContent='Enter rounds first.'; return; }
-        localStorage.setItem(LS.prAmrap, ba.value.trim());
-        oa.textContent='Saved! 🏅';
-      });
-      document.getElementById('xpBossAmrap').addEventListener('click', ()=>{
-        if(localStorage.getItem(LS.claimedAmrap)==='1'){ oa.textContent='XP already claimed.'; return; }
-        if(!localStorage.getItem(LS.prAmrap)){ oa.textContent='Save a PR first.'; return; }
-        addXP(120); localStorage.setItem(LS.claimedAmrap,'1'); oa.textContent='120 XP added! 💪';
-      });
-    });
-  </script>
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>
+      This programme is general education, not personalised medical advice. If you have conditions, injuries,
+      or concerns, consult a qualified professional. Stop any session that causes sharp pain, dizziness, chest pain,
+      or unusual shortness of breath.
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<script src="/app.js" defer></script>
 </body>
 </html>

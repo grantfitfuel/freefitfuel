@@ -87,6 +87,25 @@ header.has-gradient .overlay{background:linear-gradient(180deg,rgba(0,0,0,.35),r
 .page-hero{margin:0 0 14px}
 .page-hero img{width:100%;height:auto !important;max-height:clamp(220px,42vh,520px);object-fit:cover;display:block;border-radius:12px;border:1px solid var(--stroke)}
 
+/* ==== Strict hero fit (only when <body class="hero-mode">) ==== */
+.hero-mode .fit-hero{
+  width:100% !important;
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+  object-fit:contain !important;          /* no face/edge cropping */
+  object-position:center center !important;
+  background:#000;                         /* subtle letterbox if needed */
+  filter:none !important;                  /* cancel brightness from base */
+}
+
+/* Belt-and-braces in case the helper class is missed */
+.hero-mode header.hero-mini figure>img,
+.hero-mode header.hero .hero-media img{
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  background:#000;
+  filter:none !important;
+}
 /* =========================================
    Components
    ========================================= */

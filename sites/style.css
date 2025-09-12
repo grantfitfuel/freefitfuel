@@ -236,3 +236,17 @@ header.hero-mini.yoga-hero .content{position:static}
 /* Ensure hero overlays also off in hero-mode */
 .hero-mode header.hero .overlay,
 .hero-mode header.hero-mini .overlay{background:none !important}
+
+/* =======================================================
+   SCOPED HERO FIT FIX (only Hero Training & Phase pages)
+   Add .hero-mode to <body> on those pages.
+   Shows full hero image without cropping; other pages unchanged.
+   ======================================================= */
+.hero-mode header.hero-mini figure>img,
+.hero-mode header.hero .hero-media img{
+  height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
+  object-fit:contain !important;          /* prevent face/edge cropping */
+  object-position:center center !important;
+  background-color:#000;                   /* subtle letterbox if needed */
+  filter:none;                             /* keep natural tones */
+}

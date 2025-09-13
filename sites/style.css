@@ -173,19 +173,24 @@ header.hero-mini.yoga-hero .content{position:static}
 }
 .hero-mode .comic-sub{color:#ececf3}
 
-/* Remove overlay + FIT hero IMAGES only in hero-mode pages */
+/* Remove overlay + FILL hero images only in hero-mode pages */
 .hero-mode header.hero .overlay,
 .hero-mode header.hero-mini .overlay{background:none !important}
-.hero-mode header.hero-mini figure{background:#000;}                 /* letterbox only on hero-mode */
+/* NEW: fill the slot; bias upward to protect faces */
 .hero-mode header.hero-mini figure>img,
 .hero-mode header.hero .hero-media img,
 .hero-mode .fit-hero{
   width:100%;
   height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
-  object-fit:contain !important;      /* prevent face/edge cropping */
-  object-position:center center !important;
-  background-color:#000;               /* subtle letterbox if needed */
-  filter:none !important;              /* remove global darkening on hero-mode */
+  object-fit:cover !important;                 /* fill: no side bars */
+  object-position:center 35% !important;       /* nudge up a bit */
+  background:none !important;                  /* no forced letterbox */
+  filter:none !important;                      /* remove global darken */
+}
+@media (max-width:700px){
+  /* Slightly higher crop on small screens to keep eyes in frame */
+  .hero-mode header.hero-mini figure>img,
+  .hero-mode .fit-hero{ object-position:center 28% !important; }
 }
 
 /* helper UI used in hero-mode pages */

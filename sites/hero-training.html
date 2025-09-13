@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=51">
+  <link rel="stylesheet" href="/style.css?v=52">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
-  <!-- Page-only styles (scoped and minimal; won’t affect other pages) -->
+  <!-- Page-only styles (scoped; won’t affect other pages) -->
   <style>
     /* Make THIS page’s hero image fit without cropping (faces intact) */
     .fit-hero{
@@ -33,10 +33,10 @@
     .cta-phase h3{margin:.15rem 0 .2rem}
     .cta-phase p{color:var(--inkdim);margin:0}
     .cta-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
+
     /* Whole card clickable (kept accessible) */
     .cta-phase a.card-link{
       position:absolute; inset:0; border-radius:14px;
-      /* make the whole card clickable but keep normal links tabbable */
     }
     .cta-phase a.card-link:focus{outline:2px solid var(--accent);outline-offset:2px;border-radius:14px}
 
@@ -68,7 +68,7 @@
   <div id="site-header"></div>
   <script src="/js/header-loader.js" defer></script>
 
-  <!-- HERO (image only above; text below per global CSS) -->
+  <!-- HERO -->
   <header class="hero-mini" aria-label="Hero Training hero">
     <figure>
       <!-- Use your final landscape image here -->
@@ -84,7 +84,7 @@
       <div class="legend" aria-label="Page legend">
         <span class="chip">Strength (Progressive Overload)</span>
         <span class="chip">Endurance (Z2 base + Threshold)</span>
-        <span class="chip">Mobility (Position + Control)</span>
+        <span class="chip">Mobility (Position &amp; Control)</span>
         <span class="chip">Recovery (Sleep, Breath, Deload)</span>
       </div>
     </div>
@@ -153,7 +153,7 @@
         <li><strong>Strength</strong>: 2–4 working sets per lift. Add a rep or 1–2.5&nbsp;kg weekly if technique stays clean (RIR ~1–2).</li>
         <li><strong>Endurance</strong>: 80–90% easy Z2, 10–20% quality (threshold/strides), 1 long session weekly.</li>
         <li><strong>Mobility</strong>: Repeat key positions you need for lifting/running — slow, controlled ranges.</li>
-        <li><strong>Recovery</strong>: Sleep 7–9h; deload every 4th week; nasal breathing on easy work; fuel & hydrate.</li>
+        <li><strong>Recovery</strong>: Sleep 7–9h; deload every 4th week; nasal breathing on easy work; fuel &amp; hydrate.</li>
       </ul>
     </section>
   </main>
@@ -172,7 +172,6 @@
       document.querySelectorAll('.cta-phase').forEach(card => {
         const link = card.querySelector('.card-link');
         card.addEventListener('click', (e) => {
-          // ignore clicks on real buttons/links inside
           const isInner = e.target.closest('a:not(.card-link),button');
           if (!isInner && link) window.location.href = link.href;
         });
@@ -181,7 +180,6 @@
             e.preventDefault(); if (link) window.location.href = link.href;
           }
         });
-        // make the card itself focusable
         card.setAttribute('tabindex', '0');
       });
     });

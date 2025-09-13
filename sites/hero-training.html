@@ -4,42 +4,64 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-
-  <!-- Global CSS -->
   <link rel="stylesheet" href="/style.css?v=54">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
-  <!-- Page-scoped styles (only this page) -->
+  <!-- Page-only styles (scoped) -->
   <style>
-    /* Cross-fade rotator box */
-    .hero-rotator{ position:relative; }
-    .hero-rotator .slide{
-      position:absolute; inset:0; width:100%;
+    /* Keep your no-crop behaviour */
+    .fit-hero{
+      width:100% !important;
+      height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+      object-fit:contain !important;
+      object-position:center center !important;
+      background:#000; /* gentle letterbox if needed */
+      filter:none !important;
+      display:block;
+    }
+
+    /* Crossfade rotator: two stacked images, fade by class */
+    .hero-rotator{position:relative}
+    .hero-rotator img{
+      position:absolute; inset:0; width:100%; height:100%;
+      opacity:0; transition:opacity .9s ease;
+    }
+    .hero-rotator img.is-show{opacity:1; position:absolute}
+    /* ensure the figure reserves height even though imgs are absolute */
+    .hero-rotator::before{
+      content:"";
+      display:block;
       height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
-      object-fit:contain; object-position:center center;
-      background:#000; /* gentle letterbox if aspect differs */
-      display:block; opacity:0; transition:opacity .7s ease;
-      filter:none !important; /* keep tones natural on this page */
-    }
-    .hero-rotator .slide.is-active{ opacity:1; }
-
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .hero-rotator .slide{ transition:none }
     }
 
-    /* Cards & page bits */
+    /* Phase grid + cards */
     .hero-training .phase-grid{display:grid;gap:14px}
     @media(min-width:900px){.hero-training .phase-grid{grid-template-columns:repeat(4,1fr)}}
-    .cta-phase{position:relative;display:flex;flex-direction:column;gap:.6rem;background:var(--glass);border:1px solid var(--stroke);border-radius:14px;padding:14px}
+
+    .cta-phase{
+      position:relative; display:flex; flex-direction:column; gap:.6rem;
+      background:var(--glass); border:1px solid var(--stroke);
+      border-radius:14px; padding:14px;
+    }
     .cta-phase h3{margin:.15rem 0 .2rem}
-    .cta-phase p{color:var(--inkdim);margin:0}
-    .cta-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
-    .btn-phase{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.05rem;border-radius:12px;border:0;background:var(--accent);color:#111;font-weight:800;box-shadow:0 2px 0 rgba(0,0,0,.15);text-decoration:none}
+    .cta-phase p{color:var(--inkdim); margin:0}
+    .cta-row{display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.5rem}
+
+    .btn-phase{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:.5rem; padding:.85rem 1.05rem; border-radius:12px; border:0;
+      background:var(--accent); color:#111; font-weight:800; box-shadow:0 2px 0 rgba(0,0,0,.15);
+      text-decoration:none; cursor:pointer;
+    }
+    .btn-phase:hover{filter:brightness(1.05)}
     .btn-phase.secondary{background:linear-gradient(90deg,var(--accent2),var(--accent))}
-    .legend{display:flex;flex-wrap:wrap;gap:.45rem}
-    .legend .chip{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.32rem .6rem;font-size:.86rem}
-    .callout{background:#0f1319;border:1px solid var(--stroke);border-radius:12px;padding:.9rem}
+    .btn-phase:focus{outline:2px solid var(--ink)}
+
+    .legend{display:flex; flex-wrap:wrap; gap:.45rem}
+    .legend .chip{border:1px solid var(--stroke); background:var(--glass); border-radius:999px; padding:.32rem .6rem; font-size:.86rem}
+    .callout{background:#0f1319; border:1px solid var(--stroke); border-radius:12px; padding:.9rem}
+    .pill-note{display:inline-flex; align-items:center; gap:.45rem; border:1px solid var(--stroke); background:var(--glass);
+      border-radius:999px; padding:.42rem .75rem; font-size:.92rem}
   </style>
 </head>
 
@@ -48,26 +70,14 @@
   <div id="site-header"></div>
   <script src="/js/header-loader.js" defer></script>
 
-  <!-- HERO with cross-fade -->
+  <!-- HERO -->
   <header class="hero-mini" aria-label="Hero Training hero">
     <figure class="hero-rotator">
-      <!-- Slide A -->
-      <img
-        class="slide is-active"
-        src="/img/hero-training-hero.png"
-        alt="Five athletes in light blue tops; one raises an orange dumbbell — FreeFitFuel"
-        width="2400" height="850" fetchpriority="high">
-
-      <!-- Slide B -->
-      <img
-        class="slide"
-        src="/img/hero-training-hero2.png"
-        alt="Five athletes in black; studio portrait with dumbbells — FreeFitFuel"
-        width="2400" height="850" loading="eager">
-
+      <!-- Two layered images for crossfade -->
+      <img class="fit-hero is-show" src="/img/hero-training-hero.png"  alt="Mixed-age athletes training together">
+      <img class="fit-hero"        src="/img/hero-training-hero2.png" alt="Mixed-age athletes training together (alt)">
       <div class="overlay" aria-hidden="true"></div>
     </figure>
-
     <div class="content wrap">
       <h1><span class="accent">Hero Training</span></h1>
       <p class="lead">
@@ -87,10 +97,10 @@
     <section class="callout" aria-label="How this works">
       <h2>How it works</h2>
       <p class="meta">
-        Tap a phase to open the full plan. Inside phases you’ll get weekly guidance, form links (tap exercise names),
+        Tap a phase to open the full plan. Inside phases you’ll get crystal-clear weekly guidance, YouTube search links for form (tap exercise names),
         logging for sets/reps/weights, rest timers, PB highlights and milestone badges — all stored locally on your device.
       </p>
-      <p class="btn--pill">Overload = add a rep or 1–2.5&nbsp;kg when you finish clean with ~1–2 reps in reserve.</p>
+      <p class="pill-note">Overload = add a rep or 1–2.5&nbsp;kg when you finish clean with ~1–2 reps in reserve.</p>
     </section>
 
     <!-- Phase selector -->
@@ -120,7 +130,7 @@
       </article>
     </section>
 
-    <!-- Quick links -->
+    <!-- Simple in-page nav -->
     <nav class="mini-nav" aria-label="Navigate phases" style="margin-top:12px">
       <a href="/hero-phase-1.html">Phase I</a>
       <a href="/hero-phase-2.html">Phase II</a>
@@ -147,26 +157,23 @@
     </div>
   </footer>
 
-  <!-- Cross-fade script (page-only) -->
+  <!-- Crossfade logic (tiny, scoped) -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const rotator = document.querySelector('.hero-rotator');
-      if (!rotator) return;
+      const rot = document.querySelector('.hero-rotator');
+      if(!rot) return;
+      const imgs = rot.querySelectorAll('img.fit-hero');
+      if(imgs.length < 2) return;
 
-      const slides = Array.from(rotator.querySelectorAll('.slide'));
-      if (slides.length < 2) return;
+      // Preload both sources just in case
+      imgs.forEach(i => { if(i.complete) return; const _ = new Image(); _.src = i.src; });
 
-      // Preload for a clean first swap
-      slides.forEach(img => { if (img.decode) img.decode().catch(()=>{}); });
-
-      let i = 0;
-      const DURATION = 6000; // ms between swaps
-
+      let idx = 0;
       setInterval(() => {
-        slides[i].classList.remove('is-active');
-        i = (i + 1) % slides.length;
-        slides[i].classList.add('is-active');
-      }, DURATION);
+        imgs[idx].classList.remove('is-show');
+        idx = (idx + 1) % imgs.length;
+        imgs[idx].classList.add('is-show');
+      }, 6000); // 6s per image; adjust if you want
     });
   </script>
 </body>

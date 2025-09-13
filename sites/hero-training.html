@@ -9,15 +9,23 @@
 
   <!-- Scoped page-only fix: beat global hero rule -->
   <style>
-    body.hero-mode header.hero-mini figure > img.fit-hero{
-      width:100% !important;
-      height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
-      object-fit:contain !important;        /* no cropping */
-      object-position:center center !important;
-      filter:none !important;                /* remove darkening */
-      background:#000;                       /* gentle letterbox if needed */
-      display:block;
-    }
+    /* Fill hero, no side bars, slight upward bias */
+body.hero-mode header.hero-mini figure > img.fit-hero{
+  width:100% !important;
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+  object-fit:cover !important;                 /* fill instead of contain */
+  object-position:center 35% !important;       /* nudge up to protect faces */
+  background:none !important;                  /* no letterbox */
+  filter:none !important;
+  display:block;
+}
+
+/* Optional: a touch more upward bias on phones */
+@media (max-width:700px){
+  body.hero-mode header.hero-mini figure > img.fit-hero{
+    object-position:center 28% !important;
+  }
+}
 
     /* Phase grid + cards */
     .hero-training .phase-grid{display:grid;gap:14px}

@@ -4,19 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hero Training — FreeFitFuel</title>
-  <link rel="stylesheet" href="/style.css?v=52">
+  <link rel="stylesheet" href="/style.css?v=53">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
-  <!-- Page-only styles (scoped; won’t affect other pages) -->
+  <!-- Scoped page-only fix: beat global hero rule -->
   <style>
-    /* Make THIS page’s hero image fit without cropping (faces intact) */
-    .fit-hero{
-      width:100%;
-      height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max));
-      object-fit:contain !important;
+    body.hero-mode header.hero-mini figure > img.fit-hero{
+      width:100% !important;
+      height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+      object-fit:contain !important;        /* no cropping */
       object-position:center center !important;
-      background:#000; /* subtle letterbox if needed */
-      filter:none !important;
+      filter:none !important;                /* remove darkening */
+      background:#000;                       /* gentle letterbox if needed */
       display:block;
     }
 
@@ -25,53 +24,44 @@
     @media(min-width:900px){.hero-training .phase-grid{grid-template-columns:repeat(4,1fr)}}
 
     .cta-phase{
-      position:relative;
-      display:flex;flex-direction:column;gap:.6rem;
-      background:var(--glass);border:1px solid var(--stroke);
-      border-radius:14px;padding:14px;
+      position:relative; display:flex; flex-direction:column; gap:.6rem;
+      background:var(--glass); border:1px solid var(--stroke);
+      border-radius:14px; padding:14px;
     }
     .cta-phase h3{margin:.15rem 0 .2rem}
-    .cta-phase p{color:var(--inkdim);margin:0}
-    .cta-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.5rem}
+    .cta-phase p{color:var(--inkdim); margin:0}
+    .cta-row{display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.5rem}
 
-    /* Whole card clickable (kept accessible) */
-    .cta-phase a.card-link{
-      position:absolute; inset:0; border-radius:14px;
-    }
-    .cta-phase a.card-link:focus{outline:2px solid var(--accent);outline-offset:2px;border-radius:14px}
+    /* Whole card clickable but keep inner links normal */
+    .cta-phase a.card-link{position:absolute; inset:0; border-radius:14px}
+    .cta-phase a.card-link:focus{outline:2px solid var(--accent); outline-offset:2px; border-radius:14px}
 
-    /* Buttons – orange, chunky, consistent */
     .btn-phase{
-      display:inline-flex;align-items:center;justify-content:center;
-      gap:.5rem;padding:.85rem 1.05rem;border-radius:12px;border:0;
-      background:var(--accent);color:#111;font-weight:800;
-      box-shadow:0 2px 0 rgba(0,0,0,.15);cursor:pointer;text-decoration:none
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:.5rem; padding:.85rem 1.05rem; border-radius:12px; border:0;
+      background:var(--accent); color:#111; font-weight:800; box-shadow:0 2px 0 rgba(0,0,0,.15);
+      text-decoration:none; cursor:pointer;
     }
     .btn-phase:hover{filter:brightness(1.05)}
     .btn-phase.secondary{background:linear-gradient(90deg,var(--accent2),var(--accent))}
     .btn-phase:focus{outline:2px solid var(--ink)}
 
-    /* Legend + callout */
-    .legend{display:flex;flex-wrap:wrap;gap:.45rem}
-    .legend .chip{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.32rem .6rem;font-size:.86rem}
-    .callout{background:#0f1319;border:1px solid var(--stroke);border-radius:12px;padding:.9rem}
-
-    /* Small helper note */
-    .pill-note{display:inline-flex;align-items:center;gap:.45rem;
-      border:1px solid var(--stroke);background:var(--glass);border-radius:999px;
-      padding:.42rem .75rem;font-size:.92rem}
+    .legend{display:flex; flex-wrap:wrap; gap:.45rem}
+    .legend .chip{border:1px solid var(--stroke); background:var(--glass); border-radius:999px; padding:.32rem .6rem; font-size:.86rem}
+    .callout{background:#0f1319; border:1px solid var(--stroke); border-radius:12px; padding:.9rem}
+    .pill-note{display:inline-flex; align-items:center; gap:.45rem; border:1px solid var(--stroke); background:var(--glass);
+      border-radius:999px; padding:.42rem .75rem; font-size:.92rem}
   </style>
 </head>
 
 <body class="hero-mode hero-training">
-  <!-- Shared header mount -->
+  <!-- Shared header -->
   <div id="site-header"></div>
   <script src="/js/header-loader.js" defer></script>
 
   <!-- HERO -->
   <header class="hero-mini" aria-label="Hero Training hero">
     <figure>
-      <!-- Use your final landscape image here -->
       <img class="fit-hero" src="/img/hero-training-hero.png" alt="Mixed-age athletes training together: young and older, strength and endurance">
       <div class="overlay" aria-hidden="true"></div>
     </figure>
@@ -106,40 +96,32 @@
         <a class="card-link" href="/hero-phase-1.html" aria-label="Open Phase I — Foundation"></a>
         <h3>Phase I — Foundation (Weeks 1–8)</h3>
         <p>Learn pristine form, build Z2 aerobic base, establish mobility range and recovery habits.</p>
-        <div class="cta-row">
-          <a class="btn-phase" href="/hero-phase-1.html">Open Phase I</a>
-        </div>
+        <div class="cta-row"><a class="btn-phase" href="/hero-phase-1.html">Open Phase I</a></div>
       </article>
 
       <article class="cta-phase">
         <a class="card-link" href="/hero-phase-2.html" aria-label="Open Phase II — Build"></a>
         <h3>Phase II — Build (Weeks 9–16)</h3>
         <p>Progressive overload on key lifts, introduce short threshold work, keep Z2 streak alive.</p>
-        <div class="cta-row">
-          <a class="btn-phase" href="/hero-phase-2.html">Open Phase II</a>
-        </div>
+        <div class="cta-row"><a class="btn-phase" href="/hero-phase-2.html">Open Phase II</a></div>
       </article>
 
       <article class="cta-phase">
         <a class="card-link" href="/hero-phase-3.html" aria-label="Open Phase III — Peak"></a>
         <h3>Phase III — Peak (Weeks 17–24)</h3>
         <p>Heavier strength blocks, specific workouts toward your goal, mobility under fatigue.</p>
-        <div class="cta-row">
-          <a class="btn-phase secondary" href="/hero-phase-3.html">Open Phase III</a>
-        </div>
+        <div class="cta-row"><a class="btn-phase secondary" href="/hero-phase-3.html">Open Phase III</a></div>
       </article>
 
       <article class="cta-phase">
         <a class="card-link" href="/hero-phase-4.html" aria-label="Open Phase IV — Marathon Block"></a>
         <h3>Phase IV — Marathon Block (Weeks 25–52)</h3>
         <p>Steady long-run progression, strength maintenance, deload waves, taper into race.</p>
-        <div class="cta-row">
-          <a class="btn-phase secondary" href="/hero-phase-4.html">Open Phase IV</a>
-        </div>
+        <div class="cta-row"><a class="btn-phase secondary" href="/hero-phase-4.html">Open Phase IV</a></div>
       </article>
     </section>
 
-    <!-- Simple in-page nav -->
+    <!-- In-page nav -->
     <nav class="mini-nav" aria-label="Navigate phases" style="margin-top:12px">
       <a href="/hero-phase-1.html">Phase I</a>
       <a href="/hero-phase-2.html">Phase II</a>
@@ -166,7 +148,7 @@
     </div>
   </footer>
 
-  <!-- Make entire card keyboard-clickable without hijacking inner links -->
+  <!-- Make card itself clickable without hijacking inner links -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.cta-phase').forEach(card => {

@@ -176,6 +176,7 @@ header.hero-mini.yoga-hero .content{position:static}
 /* Remove overlay + FIT hero IMAGES only in hero-mode pages */
 .hero-mode header.hero .overlay,
 .hero-mode header.hero-mini .overlay{background:none !important}
+.hero-mode header.hero-mini figure{background:#000;}                 /* letterbox only on hero-mode */
 .hero-mode header.hero-mini figure>img,
 .hero-mode header.hero .hero-media img,
 .hero-mode .fit-hero{
@@ -184,7 +185,7 @@ header.hero-mini.yoga-hero .content{position:static}
   object-fit:contain !important;      /* prevent face/edge cropping */
   object-position:center center !important;
   background-color:#000;               /* subtle letterbox if needed */
-  filter:none !important;              /* keep natural tones */
+  filter:none !important;              /* remove global darkening on hero-mode */
 }
 
 /* helper UI used in hero-mode pages */

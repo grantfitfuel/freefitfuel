@@ -447,9 +447,10 @@ const CIRCUITS = [
           });
         });
 
-        planEl.appendChild(blk);
-        blk.appendChild(row);
-      });
+          blk.appendChild(row);
+});
+
+planEl.appendChild(blk); // append once, after the loop
     });
   }
 
@@ -712,7 +713,7 @@ function renderCircuits(){
     });
 
     // timer hook (reuses same helper style you use elsewhere)
-    hookTimers && hookTimers();
+if (typeof hookTimers === 'function') { hookTimers(); }
 
     wrap.appendChild(blk);
   });

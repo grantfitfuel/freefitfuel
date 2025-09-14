@@ -87,6 +87,16 @@ header.has-gradient .overlay{background:linear-gradient(180deg,rgba(0,0,0,.35),r
 .page-hero{margin:0 0 14px}
 .page-hero img{width:100%;height:auto !important;max-height:clamp(220px,42vh,520px);object-fit:cover;display:block;border-radius:12px;border:1px solid var(--stroke)}
 
+/* HERO: no-crop option for wide banners */
+header.hero-mini figure > img.fit-hero,
+header.hero .hero-media img.fit-hero{
+  height:clamp(var(--hero-min), var(--hero-ideal), var(--hero-max)) !important;
+  object-fit:contain !important;          /* stop cropping */
+  object-position:center center !important;
+  background:#000;                         /* gentle letterbox if needed */
+  filter:none !important;                  /* remove global darkening */
+}
+
 /* =========================================
    Components
    ========================================= */

@@ -239,51 +239,49 @@
     ]}
   ];
 
-/* ========= Cross-Training Circuits DATA (generic names) ========= */
-/* ========= Cross-Training Circuits (generic names, no trademarks) ========= */
+/* ========= Cross-Training Circuits (generic names; no trademarks) ========= */
 const CIRCUITS = [
   {
-    code: 'amrap20_triplet',
-    title: '20-Minute Triplet (AMRAP)',
-    blurb: 'Cycle the three movements for 20:00 at a steady, sustainable pace.',
-    score: 'Score: total rounds + extra reps',
-    movements: [
-      { name: 'Row (table/door or band)', yt: 'bodyweight row at home form' },
-      { name: 'Push-up',                   yt: 'push up form' },
-      { name: 'Air Squat',                 yt: 'air squat form' }
-    ],
-    reps: {
-      beginner:     [3, 6, 10],
-      intermediate: [5, 10, 15],
-      advanced:     [5, 10, 15]
-    }
+    k:'amrap20-triplet',
+    title:'Triplet — AMRAP 20',
+    desc:'20:00 continuous: Pull/Row • Push-up • Air Squat. Keep sets submax.',
+    levelRx:{
+      beginner:'3 Rows • 6 Incline Push-ups • 10 Air Squats — repeat for 20:00',
+      intermediate:'5 Pull-ups/Rows • 10 Push-ups • 15 Air Squats — 20:00',
+      advanced:'5 Strict Pull-ups • 10 Push-ups • 15 Air Squats — 20:00'
+    },
+    how:'AMRAP = as many rounds + reps as possible in the time. First 5 ≈ last 5.',
+    presetSec:1200, // 20:00
+    scoreHint:'Score = rounds + extra reps',
+    scoreType:'roundsreps' // PB: higher better
   },
   {
-    code: 'emom30_triplet',
-    title: 'Every-Minute Triplet (30:00)',
-    blurb: 'At the start of each minute do the listed reps; rest in the remainder.',
-    score: 'Score: minutes completed unbroken (or total reps)',
-    movements: [
-      { name: 'Row (table/door or band)', yt: 'bodyweight row at home form' },
-      { name: 'Push-up',                   yt: 'push up form' },
-      { name: 'Air Squat',                 yt: 'air squat form' }
-    ],
-    reps: {
-      beginner:     [3, 6, 10],
-      intermediate: [5, 10, 15],
-      advanced:     [5, 10, 15]
-    }
+    k:'emom30-triplet',
+    title:'Triplet — EMOM 30',
+    desc:'Every minute for 30:00 do the triplet; rest in the remainder.',
+    levelRx:{
+      beginner:'3 Rows • 6 Incline Push-ups • 10 Air Squats — every minute ×30',
+      intermediate:'5 Pull-ups/Rows • 10 Push-ups • 15 Air Squats — EMOM 30',
+      advanced:'5 Pull-ups • 10 Push-ups • 15 Air Squats — hold as long as possible'
+    },
+    how:'If you miss a minute, drop reps ~20% or switch remaining time to AMRAP.',
+    presetSec:1800, // 30:00
+    scoreHint:'Score = minutes completed unbroken (or total completed minutes)',
+    scoreType:'higher' // PB: higher better
   },
   {
-    code: 'ladder_rope_core',
-    title: 'Rope & Core Ladder (For Time)',
-    blurb: 'Complete 50-40-30-20-10 of each movement, as fast as is tidy.',
-    score: 'Score: total time (cap ~12–15 min)',
-    ladder: '50-40-30-20-10',
-    movements: [
-      { name: 'Jump Rope (single or double)', yt: 'jump rope double under tutorial' },
-      { name: 'Sit-up',                        yt: 'sit up standards form' }
-    ]
+    k:'ladder-rope-situp',
+    title:'Rope + Sit-up Ladder — For Time',
+    desc:'50-40-30-20-10 of jump-rope & sit-ups.',
+    levelRx:{
+      beginner:'Single-unders & Sit-ups (scale volume if needed)',
+      intermediate:'Single-unders (2:1) or DU attempts & Sit-ups',
+      advanced:'Double-unders & Sit-ups'
+    },
+    how:'Break rope early to keep crisp; smooth sit-ups. Cap 12–15 min.',
+    presetSec:900, // 15:00
+    scoreHint:'Score = finish time (mm:ss) — lower is better',
+    scoreType:'lower' // PB: lower better
   }
 ];
     
@@ -576,46 +574,150 @@ function renderCircuits(){
   const wrap = document.getElementById('circuits');
   if(!wrap) return;
 
+  const f = filters(); // we’ll respect equipment filters only for the form links below if you extend later
   wrap.innerHTML = '';
-  CIRCUITS.forEach(w => {
+
+  CIRCUITS.forEach(c=>{
     const blk = document.createElement('div');
     blk.className = 'block';
 
-    // Header
-    blk.innerHTML = `<h3>${w.title}</h3>
-      <p class="meta" style="margin:.2rem 0 .5rem">${w.blurb}</p>`;
+    const rx = (level==='beginner') ? c.levelRx.beginner
+            : (level==='intermediate') ? c.levelRx.intermediate
+            : c.levelRx.advanced;
 
-    // Movements (each name is a separate, clickable search link)
-    const list = document.createElement('div');
-    w.movements.forEach((m, i) => {
-      // reps per level (or ladder label)
-      let rx = '';
-      if(w.ladder){
-        rx = `${w.ladder} each`;
-      }else{
-        const set = (level==='beginner') ? w.reps.beginner
-                  : (level==='intermediate') ? w.reps.intermediate
-                  : w.reps.advanced;
-        rx = `${set[i]} reps`;
-      }
+    blk.innerHTML = `
+      <h3>${c.title}</h3>
+      <p class="meta">${c.desc}</p>
 
-      const row = document.createElement('div');
-      row.className = 'mov';
-      const url = ytSearchURL(m.yt || (m.name + ' exercise form'));
-      row.innerHTML = `
+      <div class="mov">
         <div class="mov-head">
-          <div class="mov-title"><a href="${url}" target="_blank" rel="noopener">${m.name}</a></div>
-          <div class="rx">${rx}</div>
+          <div class="mov-title"><span>${rx}</span></div>
+          <div class="rx">${c.scoreHint}</div>
+          <div class="mov-tools">
+            <button class="btn-sm" data-open>Log</button>
+            <button class="btn-sm" data-clear title="Clear saved attempts">Clear</button>
+          </div>
         </div>
-      `;
-      list.appendChild(row);
+
+        <div class="drawer" data-drawer>
+          <div class="log-grid" data-log>
+            ${[1,2,3,4,5].map(i=>`
+              <div class="log-row">
+                <strong>Attempt ${i}</strong>
+                <input inputmode="numeric" placeholder="rounds" data-field="r${i}">
+                <input inputmode="numeric" placeholder="reps"   data-field="x${i}">
+                <input placeholder="time mm:ss (optional)"      data-field="t${i}">
+                <button class="btn-sm" data-save>Save</button>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="meta-row">
+            <span class="pb" data-pb></span>
+            <span class="badge" data-badge></span>
+          </div>
+          <div class="quote" data-quote></div>
+
+          <div class="timer" data-timer="${c.k}">
+            <label class="visually-hidden" for="t-${c.k}">Timer (seconds)</label>
+            <input id="t-${c.k}" type="number" min="5" step="5" value="${c.presetSec}">
+            <button class="btn-sm" data-act="start">Start</button>
+            <button class="btn-sm" data-act="stop">Stop</button>
+            <span class="left" aria-live="polite">${c.presetSec}s</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const drawer  = blk.querySelector('[data-drawer]');
+    const openBtn = blk.querySelector('[data-open]');
+    const clrBtn  = blk.querySelector('[data-clear]');
+    const logArea = blk.querySelector('[data-log]');
+    const pbEl    = blk.querySelector('[data-pb]');
+    const badgeEl = blk.querySelector('[data-badge]');
+    const quoteEl = blk.querySelector('[data-quote]');
+
+    openBtn.addEventListener('click', ()=> drawer.classList.toggle('open'));
+
+    // storage keys per circuit
+    const baseK = NS + 'ct.' + c.k;
+
+    function scoreCircuit(obj){
+      // Build a single numeric “higher-is-better” score
+      // rounds + reps/1000 for AMRAP/EMOM; time is converted so lower time -> higher score
+      let best = 0;
+      for(let i=1;i<=5;i++){
+        const rounds = parseFloat(obj['r'+i]||'0')||0;
+        const reps   = parseFloat(obj['x'+i]||'0')||0;
+        const time   = (obj['t'+i]||'').trim(); // mm:ss optional
+
+        // Convert time to seconds
+        const sec = (/^\d{1,2}:\d{2}$/.test(time))
+          ? (parseInt(time.split(':')[0],10)*60 + parseInt(time.split(':')[1],10))
+          : 0;
+
+        let s = 0;
+        if(c.scoreType==='lower' && sec>0){
+          s = 100000 - sec; // lower time -> larger score
+        }else if(c.scoreType==='higher'){
+          // minutes completed (use rounds as minutes proxy if user enters it)
+          s = rounds + reps/1000;
+        }else{ // rounds + reps
+          s = rounds + reps/1000;
+        }
+        best = Math.max(best, s);
+      }
+      return best;
+    }
+
+    function populate(){
+      const saved = JSON.parse(localStorage.getItem(baseK) || '{}');
+      logArea.querySelectorAll('[data-field]').forEach(inp=>{
+        const id = inp.dataset.field; if(saved[id]) inp.value = saved[id];
+      });
+      const bestWas = parseFloat(localStorage.getItem(baseK+'.best')||'0')||0;
+      pbEl.textContent = bestWas>0 ? `PB: ${bestWas.toFixed(3)} (see rounds/reps or time)` : '';
+      badgeEl.textContent = milestoneText();
+    }
+    populate();
+
+    logArea.querySelectorAll('[data-save]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const obj = {};
+        logArea.querySelectorAll('[data-field]').forEach(inp=>{
+          obj[inp.dataset.field] = inp.value.trim();
+        });
+        localStorage.setItem(baseK, JSON.stringify(obj));
+
+        const bestNow = scoreCircuit(obj);
+        const bestWas = parseFloat(localStorage.getItem(baseK+'.best')||'0')||0;
+        if(bestNow > bestWas){
+          localStorage.setItem(baseK+'.best', bestNow);
+          pbEl.textContent = `New PB! ${bestNow.toFixed(3)}`;
+        }else{
+          pbEl.textContent = bestWas>0 ? `PB: ${bestWas.toFixed(3)}` : 'Saved.';
+        }
+
+        const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+        localStorage.setItem(NS+'saves', total);
+        badgeEl.textContent = milestoneText(total);
+        flash(quoteEl, pick(QUOTES));
+      });
     });
 
-    blk.appendChild(list);
-    blk.insertAdjacentHTML('beforeend', `<p class="meta" style="margin:.35rem 0 0">${w.score}</p>`);
+    clrBtn.addEventListener('click', ()=>{
+      localStorage.removeItem(baseK);
+      localStorage.removeItem(baseK+'.best');
+      populate(); flash(quoteEl, 'Cleared. Fresh slate.');
+    });
+
+    // timer hook (reuses same helper style you use elsewhere)
+    hookTimers && hookTimers();
+
     wrap.appendChild(blk);
   });
-}    
+}
+    
   /* ========= Helpers ========= */
   function bestScore(obj){
     let best = 0;

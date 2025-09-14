@@ -421,19 +421,19 @@ function renderPlan(){
   ];
 
   groups.forEach(([key,label])=>{
-    const blk = document.createElement('div'); 
-    blk.className='block';
+    const blk = document.createElement('div');
+    blk.className = 'block';
     blk.innerHTML = `<h3>${label}</h3>`;
 
     PLAN[key][level].forEach(item=>{
       // choose primary or alternative based on equipment
       const pick = pickExerciseOrAlt(item.k);
-      if(!pick.ex) return;  // nothing usable with current filters
-      const ex = pick.ex;   // the exercise we will show (primary or alt)
+      if(!pick.ex) return;           // nothing usable with current filters
+      const ex = pick.ex;            // the exercise we will show (primary or alt)
 
       // Row
-      const row = document.createElement('div'); 
-      row.className='mov';
+      const row = document.createElement('div');
+      row.className = 'mov';
       row.innerHTML = `
         <div class="mov-head">
           <div class="mov-title">
@@ -528,9 +528,6 @@ function renderPlan(){
     planEl.appendChild(blk); // append the block once per day
   });
 }
-
-  /return;
-
 
 /* ========= Render: Cross-Training Circuits ========= */
 function renderCircuits(){

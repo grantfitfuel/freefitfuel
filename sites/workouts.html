@@ -343,116 +343,121 @@ const CIRCUITS = [
     return rx;
   }
 
-  /* ========= Rendering: Weekly Split ========= */
-  const planEl = document.getElementById('plan');
+/* ========= Rendering: Weekly Split ========= */
+const planEl = document.getElementById('plan');
 
-  function renderPlan(){
-    const f = filters();
-    planEl.innerHTML = '';
-    const groups = [
-      ['push', 'Push Day'],
-      ['pull', 'Pull Day'],
-      ['legs', 'Legs / Core Day'],
-      ['full', 'Full-Body Day']
-    ];
+function renderPlan(){
+  const f = filters();
+  planEl.innerHTML = '';
 
-    groups.forEach(([key,label])=>{
-      const blk = document.createElement('div'); blk.className='block';
-      blk.innerHTML = `<h3>${label}</h3>`;
-      PLAN[key][level].forEach(item=>{
-        const e = exByKey(item.k); if(!e) return;
-        if(!f[e.eq]) return;
+  const groups = [
+    ['push', 'Push Day'],
+    ['pull', 'Pull Day'],
+    ['legs', 'Legs / Core Day'],
+    ['full', 'Full-Body Day']
+  ];
 
-        const row = document.createElement('div'); row.className='mov';
-        row.innerHTML = `
-          <div class="mov-head">
-            <div class="mov-title">
-              <a href="${ytSearchURL(e.yt)}" target="_blank" rel="noopener" title="YouTube form search">${e.n}</a>
-            </div>
-            <div class="rx">${applyGoal(item.rx)}</div>
-            <div class="mov-tools">
-              <button class="btn-sm" data-open>Log</button>
-              <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
-            </div>
+  groups.forEach(([key,label])=>{
+    const blk = document.createElement('div'); 
+    blk.className='block';
+    blk.innerHTML = `<h3>${label}</h3>`;
+
+    // --- inner loop: build rows ---
+    PLAN[key][level].forEach(item=>{
+      const e = exByKey(item.k); if(!e) return;
+      if(!f[e.eq]) return;
+
+      const row = document.createElement('div'); 
+      row.className='mov';
+      row.innerHTML = `
+        <div class="mov-head">
+          <div class="mov-title">
+            <a href="${ytSearchURL(e.yt)}" target="_blank" rel="noopener" title="YouTube form search">${e.n}</a>
           </div>
-          <div class="drawer" data-drawer>
-            <div class="log-grid" data-log>
-              ${[1,2,3,4,5].map(i=>`
-                <div class="log-row">
-                  <strong>Set ${i}</strong>
-                  <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
-                  <input inputmode="numeric" placeholder="reps" data-field="r${i}">
-                  <input placeholder="notes" data-field="n${i}">
-                  <button class="btn-sm" data-save>Save</button>
-                </div>
-              `).join('')}
-            </div>
-            <div class="meta-row">
-              <span class="pb" data-pb></span>
-              <span class="badge" data-badge></span>
-            </div>
-            <div class="quote" data-quote></div>
+          <div class="rx">${applyGoal(item.rx)}</div>
+          <div class="mov-tools">
+            <button class="btn-sm" data-open>Log</button>
+            <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
           </div>
-        `;
+        </div>
+        <div class="drawer" data-drawer>
+          <div class="log-grid" data-log>
+            ${[1,2,3,4,5].map(i=>`
+              <div class="log-row">
+                <strong>Set ${i}</strong>
+                <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
+                <input inputmode="numeric" placeholder="reps" data-field="r${i}">
+                <input placeholder="notes" data-field="n${i}">
+                <button class="btn-sm" data-save>Save</button>
+              </div>
+            `).join('')}
+          </div>
+          <div class="meta-row">
+            <span class="pb" data-pb></span>
+            <span class="badge" data-badge></span>
+          </div>
+          <div class="quote" data-quote></div>
+        </div>
+      `;
 
-        // Wire drawer & storage
-        const drawer = row.querySelector('[data-drawer]');
-        row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
-        row.querySelector('[data-clear]').addEventListener('click', ()=>{
-          localStorage.removeItem(NS+e.k);
-          localStorage.removeItem(NS+e.k+'.best');
-          populateFromStore();
-          flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
-        });
-
-        const logArea = row.querySelector('[data-log]');
-        const pbEl    = row.querySelector('[data-pb]');
-        const badgeEl = row.querySelector('[data-badge]');
-        const quoteEl = row.querySelector('[data-quote]');
-
-        function populateFromStore(){
-          const saved = JSON.parse(localStorage.getItem(NS+e.k) || '{}');
-          logArea.querySelectorAll('[data-field]').forEach(inp=>{
-            const id = inp.dataset.field;
-            if(saved[id]) inp.value = saved[id];
-          });
-          const bestWas = parseFloat(localStorage.getItem(NS+e.k+'.best')||'0')||0;
-          pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
-          badgeEl.textContent = milestoneText();
-        }
+      // wire up (unchanged) ...
+      const drawer = row.querySelector('[data-drawer]');
+      row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
+      row.querySelector('[data-clear]').addEventListener('click', ()=>{
+        localStorage.removeItem(NS+e.k);
+        localStorage.removeItem(NS+e.k+'.best');
         populateFromStore();
+        flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+      });
 
-        logArea.querySelectorAll('[data-save]').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            const obj = {};
-            logArea.querySelectorAll('[data-field]').forEach(inp=>{
-              obj[inp.dataset.field] = inp.value.trim();
-            });
-            localStorage.setItem(NS+e.k, JSON.stringify(obj));
+      const logArea = row.querySelector('[data-log]');
+      const pbEl    = row.querySelector('[data-pb]');
+      const badgeEl = row.querySelector('[data-badge]');
+      const quoteEl = row.querySelector('[data-quote]');
 
-            const bestNow = bestScore(obj);
-            const bestWas = parseFloat(localStorage.getItem(NS+e.k+'.best')||'0')||0;
-            if(bestNow > bestWas){
-              localStorage.setItem(NS+e.k+'.best', bestNow);
-              pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
-              flash(quoteEl, pick(QUOTES));
-            }else{
-              pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
-              flash(quoteEl, pick(QUOTES));
-            }
-
-            const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
-            localStorage.setItem(NS+'saves', total);
-            badgeEl.textContent = milestoneText(total);
-          });
+      function populateFromStore(){
+        const saved = JSON.parse(localStorage.getItem(NS+e.k) || '{}');
+        logArea.querySelectorAll('[data-field]').forEach(inp=>{
+          const id = inp.dataset.field;
+          if(saved[id]) inp.value = saved[id];
         });
+        const bestWas = parseFloat(localStorage.getItem(NS+e.k+'.best')||'0')||0;
+        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+        badgeEl.textContent = milestoneText();
+      }
+      populateFromStore();
 
-          blk.appendChild(row);
-});
+      logArea.querySelectorAll('[data-save]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const obj = {};
+          logArea.querySelectorAll('[data-field]').forEach(inp=>{
+            obj[inp.dataset.field] = inp.value.trim();
+          });
+          localStorage.setItem(NS+e.k, JSON.stringify(obj));
 
-planEl.appendChild(blk); // append once, after the loop
-    });
-  }
+          const bestNow = bestScore(obj);
+          const bestWas = parseFloat(localStorage.getItem(NS+e.k+'.best')||'0')||0;
+          if(bestNow > bestWas){
+            localStorage.setItem(NS+e.k+'.best', bestNow);
+            pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
+            flash(quoteEl, pick(QUOTES));
+          }else{
+            pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
+            flash(quoteEl, pick(QUOTES));
+          }
+
+          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+          localStorage.setItem(NS+'saves', total);
+          badgeEl.textContent = milestoneText(total);
+        });
+      });
+
+      blk.appendChild(row);
+    }); // ← end inner PLAN loop
+
+    planEl.appendChild(blk); // ← append ONCE per group, still inside groups.forEach
+  }); // ← end groups loop
+}
 
   /* ========= Render: Calisthenics ========= */
   function renderCal(){

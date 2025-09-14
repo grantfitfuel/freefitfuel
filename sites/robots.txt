@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow obvious admin/private paths (edit if you have these)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /drafts/
+
+Sitemap: https://freefitfuel.com/sitemap.xml

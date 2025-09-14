@@ -3,40 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Workouts – FreeFitFuel</title>
+  <title>Workouts — FreeFitFuel</title>
+
   <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
-    /* Page-only touches */
+    /* Page-only additions (keeps your global style.css intact) */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
-    /* HERO (unchanged layout) */
-    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-    .hero-mini figure{margin:0;position:relative}
-    .hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
-    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
-    .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    .hero-mini h1{margin:0 0 .35rem}
-    .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
-    .hero-media .overlay{background:none !important}
+    /* HERO */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative}
+    header.hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    header.hero-mini h1{margin:0 0 .35rem}
+    header.hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
 
     /* Toolbar */
     .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0 1.1rem}
     .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
     .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
     .seg button[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
-
     .equip{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-left:auto}
     .equip .label{opacity:.9}
     .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .65rem;font-size:.92rem}
     .pill input{accent-color:var(--accent)}
 
-    .goals-note{color:var(--inkdim);margin-top:-.35rem}
-    @media (max-width:820px){.equip{width:100%}.equip .label{width:100%;margin-bottom:.2rem}}
-
-    /* Blocks */
+    /* Sections & blocks */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
     .plan{display:grid;gap:12px}
@@ -44,62 +40,59 @@
     .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .block h3{margin:.1rem 0 .35rem;font-size:1.05rem}
 
-    /* Movements + log panel */
-    .mov{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:center;padding:.55rem .65rem;border:1px dashed var(--stroke);border-radius:10px;margin:.45rem 0}
-    .mov .name a{font-weight:700;color:var(--ink);text-decoration:underline dotted}
-    .mov .name a:hover{color:var(--accent)}
+    /* Movement rows + logging drawer */
+    .mov{border:1px dashed var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.45rem 0}
+    .mov-head{display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .mov-title a{color:var(--ink);text-decoration:underline dotted}
+    .mov-title a:hover{color:var(--accent)}
     .rx{opacity:.9}
-
-    .log{display:grid;gap:.45rem;margin-top:.45rem;background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .65rem}
-    .log-row{display:grid;grid-template-columns:1fr repeat(3,110px) auto;gap:.4rem;align-items:center}
-    .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .45rem}
+    .mov-tools{display:flex;gap:.4rem;align-items:center}
     .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
-    .meta-mini{font-size:.88rem;color:var(--inkdim)}
-    .pb{color:#90ee90}
-    .badge{display:inline-block;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.25rem .55rem;margin-right:.4rem}
-    .quote{font-style:italic;color:#cfd3df}
+    .drawer{display:none;margin:.45rem 0 0}
+    .drawer.open{display:block}
+    .log-grid{display:grid;gap:.35rem}
+    .log-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr auto;gap:.35rem;align-items:center}
+    .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .45rem}
+    .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
+    .meta-row .pb{color:#90ee90}
+    .meta-row .badge{border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;background:rgba(255,255,255,.06)}
+    .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
 
-    /* Timers */
-    .timer{display:flex;gap:.4rem;align-items:center}
-    .timer input{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:6px;color:var(--ink);padding:.35rem .45rem}
-    .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
-    .timer .left{min-width:60px;text-align:right;opacity:.85}
-
-    /* We removed the big video library; keep a tiny “Find form” helper list instead */
-    .finder{display:grid;gap:10px}
-    @media(min-width:900px){.finder{grid-template-columns:repeat(3,1fr)}}
-    .finder .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
-    .finder h4{margin:.2rem 0 .4rem}
-    .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.18rem .55rem;font-size:.82rem;margin-right:.3rem}
+    /* Export/import */
+    .backup{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 0}
+    .backup .btn-sm{white-space:nowrap}
   </style>
 </head>
 <body>
   <!-- Shared header -->
   <div id="site-header"></div>
-  <script src="/js/header-loader.js"></script>
+  <script src="/js/header-loader.js" defer></script>
 
   <!-- HERO -->
   <header class="hero-mini" role="banner" aria-label="Workouts hero">
     <figure>
-      <img src="img/curl.jpg" alt="dumbbell curl">
+      <img src="img/curl.jpg" alt="Seated dumbbell curl at home">
       <div class="overlay" aria-hidden="true"></div>
     </figure>
     <div class="content wrap">
       <h1><span class="accent">Workouts that fit life</span></h1>
-      <p>Clear plans, <strong>click any exercise name</strong> to open a YouTube form search.<br>Log sets in-page, track PBs, earn badges, and get a little encouragement.</p>
+      <p class="lead">Clear plans with clickable form lookups, personal logging, badges and gentle nudges. Train smart with dumbbells, bands or bodyweight.</p>
     </div>
   </header>
 
   <main class="wrap">
-    <p class="lead">Pick your <strong>difficulty</strong>, <strong>goal</strong> and <strong>equipment</strong>. Plans update instantly.</p>
+    <p class="lead">Pick your <strong>difficulty</strong>, <strong>goal</strong> and <strong>equipment</strong>. Titles open a YouTube search for form. Your logs stay on this device (with export/import backup).</p>
 
-    <!-- Global controls -->
+    <!-- ===== Controls ===== -->
     <div class="toolbar" aria-label="Workout controls">
+      <!-- Difficulty -->
       <div class="seg" role="tablist" aria-label="Difficulty">
         <button role="tab" aria-pressed="true"  data-level="beginner">Beginner</button>
         <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
         <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
       </div>
+
+      <!-- Goals -->
       <div class="seg" role="tablist" aria-label="Goal" style="margin-left:.5rem">
         <button role="tab" aria-pressed="true"  data-goal="maintain">Maintain</button>
         <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
@@ -110,39 +103,33 @@
       <!-- Equipment -->
       <div class="equip" aria-label="Equipment filters">
         <span class="label">Equipment:</span>
-        <span class="pill"><input type="checkbox" id="f-db" checked> <label for="f-db">Dumbbells</label></span>
+        <span class="pill"><input type="checkbox" id="f-db"   checked> <label for="f-db">Dumbbells</label></span>
         <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
-        <span class="pill"><input type="checkbox" id="f-bw" checked> <label for="f-bw">Bodyweight</label></span>
+        <span class="pill"><input type="checkbox" id="f-bw"   checked> <label for="f-bw">Bodyweight</label></span>
         <span class="pill"><input type="checkbox" id="f-rack"> <label for="f-rack">Bar / Door anchor</label></span>
-        <span class="pill"><input type="checkbox" id="f-rings"> <label for="f-rings">Rings</label></span>
+        <span class="pill"><input type="checkbox" id="f-rings"><label for="f-rings">Rings</label></span>
       </div>
     </div>
 
-    <p class="goals-note">
-      <strong>Maintain:</strong> steady work · <strong>Cut:</strong> more reps/shorter rests ·
-      <strong>Build:</strong> add a set or load weekly · <strong>Transform:</strong> strength + conditioning mix.
-    </p>
+    <!-- Backup -->
+    <div class="backup" aria-label="Backup controls">
+      <button class="btn-sm" id="btnExport">Export logs (.json)</button>
+      <label class="btn-sm" for="importFile" style="cursor:pointer">Import logs</label>
+      <input id="importFile" type="file" accept="application/json" style="display:none">
+      <span class="meta">Tip: export occasionally to guard against browser cleanup.</span>
+    </div>
 
-    <!-- Weekly split -->
+    <!-- ===== Weekly Split (Chunk 1) ===== -->
     <section class="section">
       <h2>Weekly Split</h2>
-      <div class="plan" id="plan"></div>
-      <p class="meta">Short on time? Do the <strong>Full-Body</strong> day 2–3×/week.</p>
+      <div id="plan" class="plan"></div>
+      <p class="meta">Short on time? Run the <strong>Full-Body</strong> day 2–3×/week and sprinkle easy cardio or mobility between.</p>
     </section>
 
-    <!-- Calisthenics -->
-    <section class="section">
-      <h2>Calisthenics Progressions</h2>
-      <div class="plan" id="cal"></div>
-    </section>
+    <!-- (Chunk 2 will add Calisthenics Progressions here) -->
+    <!-- (Chunk 3 will add Cross-Training Circuits here) -->
 
-    <!-- Tiny “Form Finder” (no embeds) -->
-    <section class="section" id="finder">
-      <h2>Form Finder (quick links)</h2>
-      <div class="finder" id="finderGrid"></div>
-      <p class="meta">Tip: when in doubt, add “form” or “coaching” after any exercise name in YouTube search.</p>
-    </section>
-
+    <!-- Disclaimer -->
     <section class="section">
       <h2>Important Note</h2>
       <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
@@ -157,83 +144,69 @@
     </div>
   </footer>
 
-  <!-- JS -->
   <script>
-  /* ===== Header burger ===== */
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('.hamburger');
-    const nav = document.querySelector('.main-nav');
-    if(btn && nav){
-      btn.addEventListener('click', () => {
-        const open = btn.classList.toggle('active');
-        nav.classList.toggle('open', open);
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    }
-  });
+  /* ========= DATA (no trademarked names; every exercise is standalone) ========= */
+  const EXERCISES = [
+    /* PUSH */
+    {k:'pushup',  n:'Push-up',                        eq:'bw',   yt:'push up form'},
+    {k:'dbfloor', n:'Dumbbell Floor Press',           eq:'db',   yt:'dumbbell floor press form'},
+    {k:'dbbench', n:'Dumbbell Bench Press',           eq:'db',   yt:'dumbbell bench press form'},
+    {k:'latraise',n:'Lateral Raise',                  eq:'db',   yt:'lateral raise form'},
+    {k:'ohpress', n:'Dumbbell Overhead Press',        eq:'db',   yt:'standing dumbbell overhead press form'},
 
-  /* ===== Data ===== */
-  const EX = [
-    {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw'},
-    {k:'dbfloor', n:'DB Floor Press',         cat:'push',  eq:'db'},
-    {k:'dbbench', n:'DB Bench Press',         cat:'push',  eq:'db'},
-    {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db'},
-    {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db'},
-    {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db'},
+    /* PULL */
+    {k:'bandrow', n:'Band Row',                       eq:'band', yt:'resistance band row form'},
+    {k:'doorrow', n:'Door/Table Row',                 eq:'bw',   yt:'bodyweight row at home form'},
+    {k:'bandlat', n:'Band Lat Pulldown',              eq:'band', yt:'band lat pulldown form'},
+    {k:'csrow',   n:'Chest-Supported DB Row',         eq:'db',   yt:'chest supported dumbbell row form'},
+    {k:'chin',    n:'Chin-up (assisted if needed)',   eq:'rack', yt:'chin up progression form'},
 
-    {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band'},
-    {k:'doorrow', n:'Doorway Row',            cat:'bw',    eq:'bw'},
-    {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band'},
-    {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'rack'},
-    {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack', badges:['Bar']},
-    {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db'},
-    {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db'},
-    {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db'},
+    /* LEGS / CORE */
+    {k:'stepup',  n:'Step-up',                        eq:'db',   yt:'dumbbell step up form'},
+    {k:'dbrdl',   n:'Dumbbell Romanian Deadlift',     eq:'db',   yt:'dumbbell romanian deadlift form'},
+    {k:'split',   n:'Split Squat / Bulgarian',        eq:'db',   yt:'bulgarian split squat form'},
+    {k:'sidepl',  n:'Side Plank',                     eq:'bw',   yt:'side plank form'},
 
-    {k:'stepup',  n:'Step-up',                cat:'legs',  eq:'db'},
-    {k:'dbrdl',   n:'DB Romanian Deadlift',   cat:'legs',  eq:'db'},
-    {k:'sidepl',  n:'Side Plank',             cat:'legs',  eq:'bw'},
-
-    {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db'},
-    {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db'},
-    {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw'}
+    /* FULL BODY */
+    {k:'dbcp',    n:'DB Clean & Press',               eq:'db',   yt:'dumbbell clean and press form'},
+    {k:'manmaker',n:'Man Maker',                      eq:'db',   yt:'dumbbell man maker form'}
   ];
 
-  const RX = {
+  /* Prescriptions per day by level (each item is a single, ungrouped movement) */
+  const PLAN = {
     push:{
-      beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true}],
-      intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'arnold',rx:'4×8–12'},{k:'latraise',rx:'3×12–15'},{k:'thruster',rx:'3×8–12'}],
-      advanced:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×12–15'},{k:'thruster',rx:'4×10–12'}]
+      beginner:     [{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15'}],
+      intermediate: [{k:'dbbench',rx:'4×6–10'},{k:'ohpress',rx:'4×6–10'},{k:'latraise',rx:'3×12–15'}],
+      advanced:     [{k:'dbbench',rx:'5×5–8'},{k:'ohpress',rx:'5×6–8'},{k:'latraise',rx:'4×12–15'}]
     },
     pull:{
-      beginner:[{k:'bandrow',rx:'3×10–12'},{k:'zott',rx:'3×10–12'}],
-      intermediate:[{k:'doorrow',rx:'4×8–12'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×10–12'}],
-      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'},{k:'renrow',rx:'4×8–12'}]
+      beginner:     [{k:'doorrow',rx:'3×8–12'},{k:'bandrow',rx:'3×10–12'}],
+      intermediate: [{k:'csrow',rx:'4×8–12'},{k:'bandlat',rx:'4×10–12'}],
+      advanced:     [{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'}]
     },
     legs:{
-      beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-      intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'sidepl',rx:'3×30–45s'}],
-      advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'thruster',rx:'4×10–12'}]
+      beginner:     [{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
+      intermediate: [{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'split',rx:'3×8–12/leg'}],
+      advanced:     [{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'split',rx:'4×8–12/leg'}]
     },
     full:{
-      beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-      intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
-      advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
+      beginner:     [{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
+      intermediate: [{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
+      advanced:     [{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
     }
   };
 
   const QUOTES = [
-    'Small wins, stacked weekly, move mountains.',
-    'Quality reps beat heroic grinders.',
-    'Show up, breathe, add a brick.',
-    'Strong + kind beats tired + perfect.'
+    "Small wins compound. Log the set, own the day.",
+    "Perfect form, steady breath, then add a little.",
+    "Consistency beats intensity when intensity is inconsistent.",
+    "One clean rep better than five messy ones.",
+    "Show up. Scale smart. Keep going."
   ];
 
-  /* ===== State ===== */
-  const planEl = document.getElementById('plan');
-  const calEl  = document.getElementById('cal');
-  const finderGrid = document.getElementById('finderGrid');
+  const NS = 'fff.workouts.v1.'; // localStorage namespace
 
+  /* ========= State / Controls ========= */
   let level = 'beginner';
   let goal  = 'maintain';
 
@@ -242,260 +215,223 @@
       document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
       b.setAttribute('aria-pressed','true');
       level = b.dataset.level;
-      renderAll();
+      renderPlan();
     });
   });
+
   document.querySelectorAll('.seg [data-goal]').forEach(b=>{
     b.addEventListener('click', ()=>{
       document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
       b.setAttribute('aria-pressed','true');
       goal = b.dataset.goal;
-      renderAll();
+      renderPlan();
     });
   });
 
-  function getFilters(){
+  ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('change', renderPlan);
+  });
+
+  function filters(){
     return {
-      db:   document.getElementById('f-db').checked,
+      db: document.getElementById('f-db').checked,
       band: document.getElementById('f-band').checked,
-      bw:   document.getElementById('f-bw').checked,
+      bw: document.getElementById('f-bw').checked,
       rack: document.getElementById('f-rack').checked,
-      rings:document.getElementById('f-rings').checked
+      rings: document.getElementById('f-rings').checked
     };
   }
-  ;['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
-    document.getElementById(id).addEventListener('change', renderAll);
-  });
 
-  /* ===== Storage (IndexedDB with localStorage fallback) ===== */
-  const Store = (()=> {
-    let db=null, ok=false;
-    function idb(){
-      return new Promise(res=>{
-        if(db) return res(db);
-        const req = indexedDB.open('fff-db',1);
-        req.onupgradeneeded = e => e.target.result.createObjectStore('logs');
-        req.onsuccess = e => { db = e.target.result; ok=true; res(db); };
-        req.onerror = ()=> res(null);
-      });
-    }
-    async function set(key, val){
-      try{
-        const d = await idb(); if(!d) throw 0;
-        const tx = d.transaction('logs','readwrite'); tx.objectStore('logs').put(val,key);
-        return tx.complete;
-      }catch{ localStorage.setItem(key, JSON.stringify(val)); }
-    }
-    async function get(key){
-      try{
-        const d = await idb(); if(!d) throw 0;
-        return await new Promise(r=>{
-          const tx=d.transaction('logs'); const req=tx.objectStore('logs').get(key);
-          req.onsuccess=()=>r(req.result||null); req.onerror=()=>r(null);
-        });
-      }catch{
-        const s = localStorage.getItem(key); return s?JSON.parse(s):null;
-      }
-    }
-    return {set,get};
-  })();
+  function exByKey(k){ return EXERCISES.find(e=>e.k===k); }
+  function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }
 
-  /* ===== Helpers ===== */
-  function exByKey(k){ return EX.find(x=>x.k===k); }
-  function ytSearchURL(name){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(name+' exercise form'); }
-  function applyGoal(rxStr){
-    if(goal==='cut')       return rxStr + ' · 45–60s rest';
-    if(goal==='build')     return rxStr + ' · 60–90s rest';
-    if(goal==='transform') return rxStr + ' + finisher';
-    return rxStr;
-  }
-  function epley1RM(w,r){ return r>0 ? w*(1+r/30) : 0; }
-
-  function timerHTML(id, preset=60){
-    return `
-      <div class="timer" data-timer="${id}">
-        <input type="number" min="5" step="5" value="${preset}">
-        <button data-act="start">Start</button>
-        <button data-act="stop">Stop</button>
-        <span class="left" aria-live="polite">${preset}s</span>
-      </div>`;
+  /* Goal tweaks (light touch) */
+  function applyGoal(rx){
+    if(goal==='cut')       return rx+' · short rests';
+    if(goal==='build')     return rx.replace(/(\d+)×/,(m,n)=>(+n+1)+'×')+' · add load';
+    if(goal==='transform') return rx+' + finisher';
+    return rx;
   }
 
-  function logBlockHTML(code){
-    return `
-      <div class="log" data-log="${code}">
-        <div class="log-row">
-          <label>Set 1</label>
-          <input data-f="w1" placeholder="kg"><input data-f="r1" placeholder="reps"><input data-f="n1" placeholder="notes">
-          <button class="btn-sm" data-act="save">Save</button>
-        </div>
-        <div class="log-row">
-          <label>Set 2</label>
-          <input data-f="w2"><input data-f="r2"><input data-f="n2">
-          <button class="btn-sm" data-act="save">Save</button>
-        </div>
-        <div class="log-row">
-          <label>Set 3</label>
-          <input data-f="w3"><input data-f="r3"><input data-f="n3">
-          <button class="btn-sm" data-act="save">Save</button>
-        </div>
-        <div class="timer-row">${timerHTML('tm-'+code, 75)}</div>
-        <div class="meta-mini"><span class="pb" data-pb></span> <span class="badges" data-badges></span></div>
-        <div class="quote" data-quote></div>
-      </div>
-    `;
-  }
+  /* ========= Rendering: Weekly Split ========= */
+  const planEl = document.getElementById('plan');
 
-  function attachLogBehavior(scope){
-    scope.querySelectorAll('[data-log]').forEach(async box=>{
-      const code = box.dataset.log;
-      const key  = 'workouts.logs.'+code;
-
-      // Load saved
-      const saved = await Store.get(key) || {};
-      box.querySelectorAll('[data-f]').forEach(inp=>{
-        const id=inp.dataset.f; if(saved[id]) inp.value = saved[id];
-      });
-
-      const pbEl = box.querySelector('[data-pb]');
-      const bdEl = box.querySelector('[data-badges]');
-      const qtEl = box.querySelector('[data-quote]');
-
-      // Save actions
-      box.querySelectorAll('[data-act="save"]').forEach(btn=>{
-        btn.addEventListener('click', async ()=>{
-          const row = {};
-          box.querySelectorAll('[data-f]').forEach(inp=> row[inp.dataset.f] = inp.value.trim());
-          const merged = {...saved, ...row};
-          await Store.set(key, merged);
-
-          // PB check (max weight*reps & best 1RM est)
-          let bestVol=0, best1RM=0;
-          for(let i=1;i<=5;i++){
-            const w=parseFloat(merged['w'+i]||0)||0;
-            const r=parseFloat(merged['r'+i]||0)||0;
-            bestVol = Math.max(bestVol, w*r);
-            best1RM = Math.max(best1RM, epley1RM(w,r));
-          }
-          const pbKeyV = key+'.pb.vol';
-          const pbKeyR = key+'.pb.1rm';
-          const prevV  = (await Store.get(pbKeyV))||0;
-          const prevR  = (await Store.get(pbKeyR))||0;
-
-          let msg = 'Saved.';
-          if(bestVol>prevV || best1RM>prevR){
-            msg = 'New PB! ';
-            if(best1RM>prevR) msg += `1RM≈${best1RM.toFixed(1)}kg `;
-            if(bestVol>prevV) msg += `(best set volume ${bestVol.toFixed(0)})`;
-            Store.set(pbKeyV,bestVol); Store.set(pbKeyR,best1RM);
-          }
-          pbEl.textContent = msg;
-
-          // Milestones (total saves)
-          const totalKey='workouts.totalSaves';
-          const tPrev=(await Store.get(totalKey))||0;
-          const tNow=tPrev+1; await Store.set(totalKey,tNow);
-          const milestones=[5,10,25,50,100,250];
-          if(milestones.includes(tNow)){
-            const span=document.createElement('span');
-            span.className='badge'; span.textContent=`${tNow} logs 🎉`;
-            bdEl.appendChild(span);
-          }
-
-          // Encouragement
-          qtEl.textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
-        });
-      });
-
-      // Rest timer bind
-      hookTimers(box);
-    });
-  }
-
-  /* ===== Timers with gentle beep ===== */
-  let audioCtx, unlocked=false;
-  function ensureAudio(){ if(!audioCtx){ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); } if(audioCtx.state==='suspended'){ audioCtx.resume(); } unlocked=true; }
-  function beepAt(t, f, d){ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.value=0.0001; o.connect(g); g.connect(audioCtx.destination); o.start(t); g.gain.exponentialRampToValueAtTime(0.2, t+.01); g.gain.exponentialRampToValueAtTime(0.0001, t+d); o.stop(t+d+.01); }
-  function chime(){ if(!unlocked) return; const now=audioCtx.currentTime; beepAt(now+0.00,880,.12); beepAt(now+0.25,880,.12); beepAt(now+0.50,660,.22); }
-  function hookTimers(scope=document){
-    scope.querySelectorAll('[data-timer]').forEach(box=>{
-      const input=box.querySelector('input'); const left=box.querySelector('.left');
-      let t=null,end=0;
-      function fmt(s){return s+'s'}
-      function tick(){ const remain=Math.max(0, Math.ceil((end-Date.now())/1000)); left.textContent=fmt(remain); if(remain<=0){ clearInterval(t); t=null; chime(); } }
-      box.querySelector('[data-act="start"]').onclick = ()=>{ if(!unlocked) ensureAudio(); const sec=Math.max(5, parseInt(input.value||'60',10)); left.textContent=fmt(sec); end=Date.now()+sec*1000; clearInterval(t); t=setInterval(tick,200); };
-      box.querySelector('[data-act="stop"]').onclick  = ()=>{ clearInterval(t); t=null; left.textContent=fmt(Math.max(5, parseInt(input.value||'60',10))); };
-    });
-  }
-
-  /* ===== Renderers ===== */
   function renderPlan(){
-    const f = getFilters();
-    planEl.innerHTML='';
-    ['push','pull','legs','full'].forEach(group=>{
-      const blk=document.createElement('div'); blk.className='block';
-      const title = group==='full'?'Full-Body Day Combination' : group[0].toUpperCase()+group.slice(1)+' Day';
-      blk.innerHTML = `<h3>${title}</h3>`;
-      RX[group][level].forEach(it=>{
-        const e = exByKey(it.k); if(!e) return;
+    const f = filters();
+    planEl.innerHTML = '';
+    const groups = [
+      ['push', 'Push Day'],
+      ['pull', 'Pull Day'],
+      ['legs', 'Legs / Core Day'],
+      ['full', 'Full-Body Day']
+    ];
+
+    groups.forEach(([key,label])=>{
+      const blk = document.createElement('div'); blk.className='block';
+      blk.innerHTML = `<h3>${label}</h3>`;
+      PLAN[key][level].forEach(item=>{
+        const e = exByKey(item.k); if(!e) return;
         if(!f[e.eq]) return;
 
-        const row=document.createElement('div'); row.className='mov';
-        const link=`<a href="${ytSearchURL(e.n)}" target="_blank" rel="noopener">${e.n}</a>`;
-        row.innerHTML = `<span class="name">${link}</span><span class="rx">${applyGoal(it.rx)}</span>`;
+        // Row
+        const row = document.createElement('div'); row.className='mov';
+        row.innerHTML = `
+          <div class="mov-head">
+            <div class="mov-title">
+              <a href="${ytSearchURL(e.yt)}" target="_blank" rel="noopener" title="YouTube form search">${e.n}</a>
+            </div>
+            <div class="rx">${applyGoal(item.rx)}</div>
+            <div class="mov-tools">
+              <button class="btn-sm" data-open>Log</button>
+              <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
+            </div>
+          </div>
+          <div class="drawer" data-drawer>
+            <div class="log-grid" data-log>
+              ${[1,2,3,4,5].map(i=>`
+                <div class="log-row">
+                  <strong>Set ${i}</strong>
+                  <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
+                  <input inputmode="numeric" placeholder="reps" data-field="r${i}">
+                  <input placeholder="notes" data-field="n${i}">
+                  <button class="btn-sm" data-save>Save</button>
+                </div>
+              `).join('')}
+            </div>
+            <div class="meta-row">
+              <span class="pb" data-pb></span>
+              <span class="badge" data-badge></span>
+            </div>
+            <div class="quote" data-quote></div>
+          </div>
+        `;
+
+        // Wire drawer & storage
+        const drawer = row.querySelector('[data-drawer]');
+        row.querySelector('[data-open]').addEventListener('click', ()=>{
+          drawer.classList.toggle('open');
+        });
+        row.querySelector('[data-clear]').addEventListener('click', ()=>{
+          localStorage.removeItem(NS+e.k);
+          localStorage.removeItem(NS+e.k+'.best');
+          populateFromStore();
+          flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+        });
+
+        const logArea = row.querySelector('[data-log]');
+        const pbEl    = row.querySelector('[data-pb]');
+        const badgeEl = row.querySelector('[data-badge]');
+        const quoteEl = row.querySelector('[data-quote]');
+
+        function populateFromStore(){
+          const saved = JSON.parse(localStorage.getItem(NS+e.k) || '{}');
+          logArea.querySelectorAll('[data-field]').forEach(inp=>{
+            const id = inp.dataset.field;
+            if(saved[id]) inp.value = saved[id];
+          });
+          const bestWas = parseFloat(localStorage.getItem(NS+e.k+'.best')||'0')||0;
+          pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+          badgeEl.textContent = milestoneText();
+        }
+        populateFromStore();
+
+        logArea.querySelectorAll('[data-save]').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const obj = {};
+            logArea.querySelectorAll('[data-field]').forEach(inp=>{
+              obj[inp.dataset.field] = inp.value.trim();
+            });
+            localStorage.setItem(NS+e.k, JSON.stringify(obj));
+
+            const bestNow = bestScore(obj);
+            const bestWas = parseFloat(localStorage.getItem(NS+e.k+'.best')||'0')||0;
+            if(bestNow > bestWas){
+              localStorage.setItem(NS+e.k+'.best', bestNow);
+              pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
+              flash(quoteEl, pick(QUOTES));
+            }else{
+              pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
+              flash(quoteEl, pick(QUOTES));
+            }
+
+            // global save counter -> badges
+            const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+            localStorage.setItem(NS+'saves', total);
+            badgeEl.textContent = milestoneText(total);
+          });
+        });
+
         blk.appendChild(row);
-        blk.insertAdjacentHTML('beforeend', logBlockHTML(e.k));
       });
       planEl.appendChild(blk);
     });
-    attachLogBehavior(planEl);
   }
 
-  const CAL = [
-    {title:'Push Progression', items:[
-      {k:'pushup', rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'}
-    ]},
-    {title:'Pull Progression', items:[
-      {k:'doorrow', rxB:'Table/door row 3×8–12', rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
-    ]},
-    {title:'Core Progression', items:[
-      {k:'sidepl', rxB:'Side plank 2×25–40s/side', rxI:'Side plank 3×30–45s', rxA:'Star plank 3×20–30s'}
-    ]}
-  ];
-
-  function renderCal(){
-    const f=getFilters(); calEl.innerHTML='';
-    CAL.forEach(col=>{
-      const b=document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
-      col.items.forEach(it=>{
-        const e=exByKey(it.k); if(!e || !f[e.eq]) return;
-        const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
-        const row=document.createElement('div'); row.className='mov';
-        const link=`<a href="${ytSearchURL(e.n)}" target="_blank" rel="noopener">${e.n}</a>`;
-        row.innerHTML=`<span class="name">${link}</span><span class="rx">${rx}</span>`;
-        b.appendChild(row);
-        b.insertAdjacentHTML('beforeend', logBlockHTML(e.k));
-      });
-      calEl.appendChild(b);
-    });
-    attachLogBehavior(calEl);
+  function bestScore(obj){
+    let best = 0;
+    for(let i=1;i<=5;i++){
+      const w = parseFloat(obj['w'+i]||'0')||0;   // kg or minutes
+      const r = parseFloat(obj['r'+i]||'0')||0;   // reps or RPE
+      best = Math.max(best, w*r);
+    }
+    return best;
   }
 
-  function renderFinder(){
-    finderGrid.innerHTML='';
-    EX.forEach(e=>{
-      const card=document.createElement('div'); card.className='card';
-      card.innerHTML = `
-        <h4>${e.n}</h4>
-        <p><a class="btn--pill" href="${ytSearchURL(e.n)}" target="_blank" rel="noopener">Search form on YouTube</a></p>
-        <p class="meta">Category: <span class="tag">${e.cat}</span> Equipment: <span class="tag">${e.eq}</span></p>
-      `;
-      finderGrid.appendChild(card);
-    });
+  function milestoneText(count){
+    const n = typeof count==='number' ? count : parseInt(localStorage.getItem(NS+'saves')||'0',10);
+    if(n>=200) return 'Milestone: 200 logs saved 🔥';
+    if(n>=100) return 'Milestone: 100 logs saved 🎉';
+    if(n>=50)  return 'Milestone: 50 logs saved 💪';
+    if(n>=25)  return 'Milestone: 25 logs saved 🙌';
+    if(n>=10)  return 'Milestone: 10 logs saved ✅';
+    if(n>=5)   return 'Milestone: 5 logs saved ✨';
+    return '';
+    }
+
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function flash(el, text){
+    if(!el) return;
+    el.textContent = text;
+    el.style.opacity = '1';
+    setTimeout(()=>{ el.style.opacity='.92'; }, 50);
   }
 
-  function renderAll(){ renderPlan(); renderCal(); renderFinder(); }
-  renderAll();
+  /* ========= Export / Import ========= */
+  document.getElementById('btnExport').addEventListener('click', ()=>{
+    const dump = {};
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(k && k.startsWith(NS)){ dump[k] = localStorage.getItem(k); }
+    }
+    const blob = new Blob([JSON.stringify(dump,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'freefitfuel-workouts-backup.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('importFile').addEventListener('change', (e)=>{
+    const file = e.target.files?.[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const obj = JSON.parse(String(reader.result||'{}'));
+        Object.keys(obj).forEach(k=>{
+          if(k.startsWith(NS)) localStorage.setItem(k, obj[k]);
+        });
+        alert('Logs imported ✅');
+        renderPlan();
+      }catch{
+        alert('Import failed — invalid file.');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  /* ========= Mount ========= */
+  renderPlan();
   </script>
 </body>
 </html>

@@ -4,12 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Workouts – FreeFitFuel</title>
-
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=24">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <style>
-    /* Page-only styling (kept your structure) */
+    /* Page-only touches */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
 
@@ -21,11 +20,9 @@
     .hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
     .hero-mini h1{margin:0 0 .35rem}
     .hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
-    .hero-media .overlay {
-  background: none !important;
-}
+    .hero-media .overlay{background:none !important}
 
-    /* Toolbar with goals & equipment */
+    /* Toolbar */
     .toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0 1.1rem}
     .seg{display:inline-flex;border:1px solid var(--stroke);border-radius:999px;overflow:hidden}
     .seg button{background:var(--glass);color:var(--ink);border:0;padding:.45rem .85rem;cursor:pointer}
@@ -36,742 +33,469 @@
     .pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .65rem;font-size:.92rem}
     .pill input{accent-color:var(--accent)}
 
-    /* Smaller goal explainers on mobile */
     .goals-note{color:var(--inkdim);margin-top:-.35rem}
-    @media (max-width: 820px){
-      .goals-note{font-size:.9rem;opacity:.9}
-      .equip{width:100%;margin:0}
-      .equip .label{width:100%;margin-bottom:.2rem}
-    }
+    @media (max-width:820px){.equip{width:100%}.equip .label{width:100%;margin-bottom:.2rem}}
 
-    /* Sections & blocks */
+    /* Blocks */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .section>h2{margin:.15rem 0 .45rem;font-size:1.2rem}
     .plan{display:grid;gap:12px}
     @media (min-width:780px){.plan{grid-template-columns:repeat(2,1fr)}}
     .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .block h3{margin:.1rem 0 .35rem;font-size:1.05rem}
-    .mov{display:flex;justify-content:space-between;gap:.6rem;padding:.45rem .55rem;border:1px dashed var(--stroke);border-radius:8px;margin:.35rem 0}
-    .mov .name{font-weight:600}
-    .mov .rx{opacity:.85}
 
-    /* Cards / library */
-    .grid{display:grid;gap:14px}
-    @media (min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
-    .card h4{margin:.7rem .9rem .35rem}
-    .badge{
-      display:inline-block; margin-left:.35rem; padding:.1rem .45rem;
-      border:1px solid var(--stroke); border-radius:999px; font-size:.78rem;
-      background:rgba(255,255,255,.08); color:var(--ink);
-    }
+    /* Movements + log panel */
+    .mov{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:center;padding:.55rem .65rem;border:1px dashed var(--stroke);border-radius:10px;margin:.45rem 0}
+    .mov .name a{font-weight:700;color:var(--ink);text-decoration:underline dotted}
+    .mov .name a:hover{color:var(--accent)}
+    .rx{opacity:.9}
 
-    .tile{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden;border-radius:8px}
-    .tile button.play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
-    .tile .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.88)}
-    .tile iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none}
-
-    .tile .openers{position:absolute;right:.45rem;bottom:.45rem;display:flex;gap:.35rem;z-index:2}
-    .tile .openers a{background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:.8rem;padding:.25rem .45rem;border-radius:6px;text-decoration:none}
-
-    .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem .9rem .6rem}
-    .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.18rem .55rem;font-size:.82rem}
-
-    .anatomy{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .85rem}
-    .anatomy img{width:92px;height:auto;border-radius:8px;border:1px solid var(--stroke);background:#0b0f14}
+    .log{display:grid;gap:.45rem;margin-top:.45rem;background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .65rem}
+    .log-row{display:grid;grid-template-columns:1fr repeat(3,110px) auto;gap:.4rem;align-items:center}
+    .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.35rem .45rem}
+    .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+    .meta-mini{font-size:.88rem;color:var(--inkdim)}
+    .pb{color:#90ee90}
+    .badge{display:inline-block;border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.25rem .55rem;margin-right:.4rem}
+    .quote{font-style:italic;color:#cfd3df}
 
     /* Timers */
-    .timer{display:flex;gap:.4rem;align-items:center;margin-top:.5rem}
+    .timer{display:flex;gap:.4rem;align-items:center}
     .timer input{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:6px;color:var(--ink);padding:.35rem .45rem}
     .timer button{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
     .timer .left{min-width:60px;text-align:right;opacity:.85}
 
-    /* Shared collapsible panels */
-    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.55rem .7rem;margin:.5rem 0}
-    .details summary{cursor:pointer;font-weight:600}
-    .details p,.details ul,.details ol{margin:.35rem 0}
-
-    /* Compact demo grid inside standards */
-    .mini-grid{display:grid;gap:.6rem;margin-top:.5rem}
-    @media (min-width:700px){.mini-grid{grid-template-columns:repeat(3,1fr)}}
-    .demo-caption{font-size:.86rem;color:var(--inkdim);margin:.25rem 0 0 .15rem}
-
-    /* Minor helper */
-    .info{color:var(--inkdim);margin:.35rem 0 .2rem}
+    /* We removed the big video library; keep a tiny “Find form” helper list instead */
+    .finder{display:grid;gap:10px}
+    @media(min-width:900px){.finder{grid-template-columns:repeat(3,1fr)}}
+    .finder .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .finder h4{margin:.2rem 0 .4rem}
+    .tag{background:rgba(255,255,255,.08);border:1px solid var(--stroke);border-radius:999px;padding:.18rem .55rem;font-size:.82rem;margin-right:.3rem}
   </style>
 </head>
 <body>
+  <!-- Shared header -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js"></script>
 
-<!-- Shared header mount -->
-<div id="site-header"></div>
-<script src="/js/header-loader.js"></script>
+  <!-- HERO -->
+  <header class="hero-mini" role="banner" aria-label="Workouts hero">
+    <figure>
+      <img src="img/curl.jpg" alt="dumbbell curl">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1><span class="accent">Workouts that fit life</span></h1>
+      <p>Clear plans, <strong>click any exercise name</strong> to open a YouTube form search.<br>Log sets in-page, track PBs, earn badges, and get a little encouragement.</p>
+    </div>
+  </header>
 
-<!-- HERO -->
-<header class="hero-mini" role="banner" aria-label="Workouts hero">
-  <figure>
-    <img src="img/curl.jpg" alt="dumbbell curl">
-    <div class="overlay" aria-hidden="true"></div>
-  </figure>
-  <div class="content wrap">
-    <h1><span class="accent">Workouts that fit life</span></h1>
-    <p>Clear plans, video form, anatomy diagrams, and audible timers. Train smart at home with dumbbells, bands, or bodyweight.</p>
-  </div>
-</header>
+  <main class="wrap">
+    <p class="lead">Pick your <strong>difficulty</strong>, <strong>goal</strong> and <strong>equipment</strong>. Plans update instantly.</p>
 
-<main class="wrap">
-  <p class="lead">Pick your <strong>difficulty</strong>, <strong>goal</strong> and <strong>equipment</strong>. Plans update instantly. Tap a tile to play the clip. If a video is blocked, use “Open on YouTube” or “Search”.</p>
+    <!-- Global controls -->
+    <div class="toolbar" aria-label="Workout controls">
+      <div class="seg" role="tablist" aria-label="Difficulty">
+        <button role="tab" aria-pressed="true"  data-level="beginner">Beginner</button>
+        <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
+        <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
+      </div>
+      <div class="seg" role="tablist" aria-label="Goal" style="margin-left:.5rem">
+        <button role="tab" aria-pressed="true"  data-goal="maintain">Maintain</button>
+        <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
+        <button role="tab" aria-pressed="false" data-goal="build">Build</button>
+        <button role="tab" aria-pressed="false" data-goal="transform">Transform</button>
+      </div>
 
-  <!-- Global controls -->
-  <div class="toolbar" aria-label="Workout controls">
-    <!-- Difficulty -->
-    <div class="seg" role="tablist" aria-label="Difficulty">
-      <button role="tab" aria-pressed="true" data-level="beginner">Beginner</button>
-      <button role="tab" aria-pressed="false" data-level="intermediate">Intermediate</button>
-      <button role="tab" aria-pressed="false" data-level="advanced">Advanced</button>
+      <!-- Equipment -->
+      <div class="equip" aria-label="Equipment filters">
+        <span class="label">Equipment:</span>
+        <span class="pill"><input type="checkbox" id="f-db" checked> <label for="f-db">Dumbbells</label></span>
+        <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
+        <span class="pill"><input type="checkbox" id="f-bw" checked> <label for="f-bw">Bodyweight</label></span>
+        <span class="pill"><input type="checkbox" id="f-rack"> <label for="f-rack">Bar / Door anchor</label></span>
+        <span class="pill"><input type="checkbox" id="f-rings"> <label for="f-rings">Rings</label></span>
+      </div>
     </div>
 
-    <!-- Goals -->
-    <div class="seg" role="tablist" aria-label="Goal" style="margin-left:.5rem">
-      <button role="tab" aria-pressed="true" data-goal="maintain">Maintain</button>
-      <button role="tab" aria-pressed="false" data-goal="cut">Cut</button>
-      <button role="tab" aria-pressed="false" data-goal="build">Build</button>
-      <button role="tab" aria-pressed="false" data-goal="transform">Transform</button>
+    <p class="goals-note">
+      <strong>Maintain:</strong> steady work · <strong>Cut:</strong> more reps/shorter rests ·
+      <strong>Build:</strong> add a set or load weekly · <strong>Transform:</strong> strength + conditioning mix.
+    </p>
+
+    <!-- Weekly split -->
+    <section class="section">
+      <h2>Weekly Split</h2>
+      <div class="plan" id="plan"></div>
+      <p class="meta">Short on time? Do the <strong>Full-Body</strong> day 2–3×/week.</p>
+    </section>
+
+    <!-- Calisthenics -->
+    <section class="section">
+      <h2>Calisthenics Progressions</h2>
+      <div class="plan" id="cal"></div>
+    </section>
+
+    <!-- Tiny “Form Finder” (no embeds) -->
+    <section class="section" id="finder">
+      <h2>Form Finder (quick links)</h2>
+      <div class="finder" id="finderGrid"></div>
+      <p class="meta">Tip: when in doubt, add “form” or “coaching” after any exercise name in YouTube search.</p>
+    </section>
+
+    <section class="section">
+      <h2>Important Note</h2>
+      <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>© 2025 FreeFitFuel · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
-  </div>
+  </footer>
 
-  <p class="goals-note">
-    <strong>Maintain:</strong> keep strength/fitness steady ·
-    <strong>Cut:</strong> higher reps/shorter rests to support fat loss ·
-    <strong>Build (Bulk):</strong> moderate reps; add load or sets over weeks ·
-    <strong>Transform:</strong> mixed strength/conditioning — challenging but scalable.
-  </p>
-
-  <!-- Equipment -->
-  <div class="toolbar equip" aria-label="Equipment filters">
-    <span class="label">Equipment:</span>
-    <span class="pill"><input type="checkbox" id="f-db" checked> <label for="f-db">Dumbbells</label></span>
-    <span class="pill"><input type="checkbox" id="f-band" checked> <label for="f-band">Bands</label></span>
-    <span class="pill"><input type="checkbox" id="f-bw" checked> <label for="f-bw">Bodyweight</label></span>
-    <span class="pill"><input type="checkbox" id="f-rack"> <label for="f-rack">Bar / Door anchor</label></span>
-    <span class="pill"><input type="checkbox" id="f-rings"> <label for="f-rings">Rings</label></span>
-  </div>
-
-  <!-- Weekly split -->
-  <div class="section">
-    <h2>Weekly Split</h2>
-    <div class="plan" id="plan"></div>
-    <p class="meta">Short on time? Do the <strong>Full-Body</strong> day 2–3×/week with a walk or mobility between.</p>
-  </div>
-
-  <!-- Calisthenics -->
-  <div class="section">
-    <h2>Calisthenics Progressions</h2>
-    <p class="info">Simple bodyweight progressions that build tendon strength, control and balance. Move up when all reps are clean with full range.</p>
-    <div class="plan" id="cal"></div>
-    <p class="meta">Start comfortably; progress when all reps are clean with full range.</p>
-  </div>
-
-  <!-- Cross-Training Benchmarks -->
-  <div class="section" id="xfit-section">
-    <h2>Cross-Training Benchmarks 🏋️‍♀️ <span class="meta" style="font-weight:normal">(colloquially known as “Cindy”, “Chelsea”, “Annie”)</span></h2>
-    <p class="meta">These are community-famous benchmark formats. <strong>CrossFit® is a registered trademark of CrossFit, LLC.</strong> FreeFitFuel is not affiliated with, endorsed, or sponsored by CrossFit, LLC.</p>
-    <div class="plan" id="xfit"></div>
-    <p class="meta">Choose a level, set the timer on each card, and log total rounds, splits, or time to complete.</p>
-  </div>
-
-  <!-- Library -->
-  <div class="section" id="library">
-    <h2>Form Library (watch & copy)</h2>
-    <div class="grid" id="lib"></div>
-  </div>
-
-  <!-- Disclaimer (standard) -->
-  <section class="section">
-    <h2>Important Note</h2>
-    <p>The content on FreeFitFuel is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>© 2025 FreeFitFuel · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
-</footer>
-
-<!-- JS -->
-<script>
-/* ===== Header burger ===== */
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector('.hamburger');
-  const nav = document.querySelector('.main-nav');
-  if(btn && nav){
-    btn.addEventListener('click', () => {
-      const open = btn.classList.toggle('active');
-      nav.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  }
-});
-
-/* ===== Form Library DATA (unchanged core set) ===== */
-const EX = [
-  /* ---------- PUSH ---------- */
-  {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw',    yt:'IODxDxX7oi4', muscles:['muscles-front-chest-pecs','muscles-back-triceps-long','muscles-front-deltoids-front']},
-  {k:'dbfloor', n:'DB Floor Press',         cat:'push',  eq:'db',    yt:'uUGDRwge4F8', muscles:['muscles-front-chest-pecs','muscles-back-triceps-long','muscles-front-deltoids-front']},
-  {k:'dbbench', n:'DB Bench Press',         cat:'push',  eq:'db',    yt:'VmB1G1K7v94', muscles:['muscles-front-chest-pecs','muscles-back-triceps-long','muscles-front-deltoids-front']},
-  {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db',    yt:'3ml7BH7mNwQ', muscles:['muscles-front-deltoids-front','muscles-front-deltoids-mid','muscles-back-deltoids-rear']},
-  {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db',    yt:'3VcKaXpzqRo', muscles:['muscles-front-deltoids-mid']},
-  {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db',    yt:'mtbZQsHwauI', muscles:['muscles-front-quads-rectus','muscles-back-glutes-maximus','muscles-front-deltoids-front']},
-
-  /* ---------- PULL ---------- */
-  {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band',  yt:'aA2yvYz6xs8', muscles:['muscles-back-lats-upper','muscles-back-rhomboids','muscles-back-deltoids-rear']},
-  {k:'doorrow', n:'Doorway Row',            cat:'pull',  eq:'bw',    yt:'r8NzhNe9Res', muscles:['muscles-back-lats-mid','muscles-back-rhomboids','muscles-back-deltoids-rear']},
-  {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band',  yt:'f4ZkQem6FGo', muscles:['muscles-back-lats-lower','muscles-back-lats-upper','muscles-front-biceps-long']},
-  {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'rack',  yt:'h2f_v6v3OQI', muscles:['muscles-back-lats-lower','muscles-front-biceps-long','muscles-back-traps-mid']},
-  {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack',  yt:'z9x2rYc4qYI', muscles:['muscles-back-lats-upper','muscles-front-biceps-long','muscles-back-traps-mid'], badges:['Bar']},
-  {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db',    yt:'wzj8gBqGxF4', muscles:['muscles-back-lats-mid','muscles-back-rhomboids','muscles-back-deltoids-rear']},
-  {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db',    yt:'R5rj8m9r-1g', muscles:['muscles-back-lats-mid','muscles-front-obliques-external','muscles-front-abs-upper']},
-  {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db',    yt:'l0gDqsSUtWo', muscles:['muscles-front-biceps-long','muscles-front-forearms-flexors','muscles-back-forearms-extensors']},
-
-  /* ---------- LEGS / CORE ---------- */
-  {k:'stepup',  n:'Step-up',                cat:'legs',  eq:'db',    yt:'yQ0Z5zq2mTw', muscles:['muscles-front-quads-rectus','muscles-back-glutes-maximus','muscles-back-hamstrings-biceps-femoris']},
-  {k:'dbrdl',   n:'DB Romanian Deadlift',   cat:'legs',  eq:'db',    yt:'2SHsk9AzdjA', muscles:['muscles-back-hamstrings-biceps-femoris','muscles-back-glutes-maximus','muscles-back-erector-spinae']},
-  {k:'sidepl',  n:'Side Plank',             cat:'legs',  eq:'bw',    yt:'K2VljzCC16g', muscles:['muscles-front-obliques-external','muscles-front-abs-lower']},
-
-  /* ---------- FULL BODY ---------- */
-  {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db',    yt:'wV2bF1X8Y4M', muscles:['muscles-front-abs-upper','muscles-front-deltoids-front','muscles-back-lats-upper']},
-  {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db',    yt:'zQ6ZlJkFQ3E', muscles:['muscles-front-deltoids-front','muscles-back-glutes-maximus','muscles-front-quads-rectus']},
-  {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw',    yt:'tZyq3x1y9mQ', muscles:['muscles-front-deltoids-front','muscles-back-triceps-long','muscles-back-traps-upper']}
-];
-
-/* Weekly prescriptions */
-const RX = {
-  push:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true},{k:'sidepl',rx:'2×25–40s',opt:true}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'arnold',rx:'4×8–12'},{k:'latraise',rx:'3×12–15'},{k:'thruster',rx:'3×8–12',finisher:true}],
-    advanced:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×12–15'},{k:'thruster',rx:'4×10–12'}]
-  },
-  pull:{
-    beginner:[{k:'bandrow',rx:'3×10–12'},{k:'zott',rx:'3×10–12'}],
-    intermediate:[{k:'doorrow',rx:'4×8–12'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×10–12'}],
-    advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'},{k:'renrow',rx:'4×8–12'}]
-  },
-  legs:{
-    beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'sidepl',rx:'3×30–45s'}],
-    advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'thruster',rx:'4×10–12'}]
-  },
-  full:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
-    advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
-  }
-};
-
-/* ===== Calisthenics with explicit sessions for Core & Legs ===== */
-const CAL = [
-  {title:'Push', items:[
-    {k:'pushup',  rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'},
-    {k:'dipbench',rxB:'Bench dip 3×8–12',       rxI:'Feet-elevated dip 4×8–12', rxA:'Parallel bar dip 5×6–10'}
-  ]},
-  {title:'Pull', items:[
-    {k:'doorrow', rxB:'Table/door row 3×8–12',  rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
-  ]},
-
-  /* ---------- CORE with “About” + Suggested Sessions ---------- */
-  {title:'Core', about:{
-      why:[
-        'Strong trunk protects the spine and transfers force between upper and lower body.'
-      ],
-      cues:[
-        'Ribs down, light brace; breathe behind the brace.',
-        'Neutral pelvis; avoid over-arching or tucking.'
-      ],
-      faults:[
-        'Holding breath hard on every rep; flared ribs; neck pulling on sit-ups.'
-      ],
-      progress:[
-        'Hollow: tuck → full hold → rocks. L-sit: tuck → one-leg → full.'
-      ],
-      safety:[
-        'If you feel back pain, shorten the lever and re-brace; add time in 5–10s steps.'
-      ],
-      prep:[
-        '2–3 rounds: cat–cow ×8, dead bug ×6/side, glute bridge (2s pause) ×8.'
-      ]
-    },
-    items:[
-      {k:'hollow',  rxB:'Hollow tuck 3×20–30s',   rxI:'Hollow body 4×20–40s',     rxA:'Hollow + rocks 4×30–45s'},
-      {k:'lsit',    rxB:'Tuck L-sit 6×10–15s',    rxI:'One-leg L-sit 6×10–15s',   rxA:'Full L-sit 6×10–20s'}
-    ],
-    sessions:{
-      beginner:[
-        'Prep circuit (2 rounds): cat–cow ×8 · dead bug ×6/side · glute bridge (2s hold) ×8',
-        'Hollow tuck — 3×20–30s · rest 30–45s',
-        'Side plank — 2×25–40s/side · rest 20–30s between sides',
-        'Tuck L-sit (on boxes or parallettes) — accumulate 60–90s total in small sets',
-        'Finisher: dead bug — 2×6/side slow'
-      ],
-      intermediate:[
-        'Prep circuit (2 rounds): cat–cow ×8 · dead bug ×6/side · glute bridge (2s hold) ×10',
-        'Hollow body — 4×20–40s · rest 30–45s',
-        'One-leg L-sit — 6×10–15s alternating legs · rest 20–30s',
-        'Side plank — 3×30–45s/side · rest 30s',
-        'Optional: slow cross-body mountain climber — 2×20 total'
-      ],
-      advanced:[
-        'Prep (2 rounds): segmental cat–cow ×6 · dead bug iso holds ×5/side',
-        'Hollow rocks — 4×30–45s · rest 45–60s',
-        'Full L-sit — 6×10–20s · rest 30–45s',
-        'Long-lever side plank or star plank — 3×20–30s/side',
-        'Optional: strict toes-to-bar negatives — 3×3 slow'
-      ]
+  <!-- JS -->
+  <script>
+  /* ===== Header burger ===== */
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector('.hamburger');
+    const nav = document.querySelector('.main-nav');
+    if(btn && nav){
+      btn.addEventListener('click', () => {
+        const open = btn.classList.toggle('active');
+        nav.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     }
-  },
+  });
 
-  /* ---------- LEGS with “About” + Suggested Sessions ---------- */
-  {title:'Legs', about:{
-      why:[
-        'Single-leg strength improves balance, joint control and everyday movement.'
-      ],
-      cues:[
-        'Foot tripod: big toe, little toe, heel pressed evenly.',
-        'Knee tracks over 2nd–3rd toe; chest tall; control the lower for 2–3s.'
-      ],
-      faults:[
-        'Knee valgus (caving), bouncing off the box, heels lifting.'
-      ],
-      progress:[
-        'Box pistol → assisted pistol → full pistol; add tempo/pauses before load.'
-      ],
-      safety:[
-        'No knee pain: raise the box, shorten the range, slow the tempo if needed.'
-      ],
-      prep:[
-        '2 rounds: ankle rocks ×10/side, supported hip airplane ×5/side, calf raises ×12.'
-      ]
+  /* ===== Data ===== */
+  const EX = [
+    {k:'pushup',  n:'Push-up',                cat:'push',  eq:'bw'},
+    {k:'dbfloor', n:'DB Floor Press',         cat:'push',  eq:'db'},
+    {k:'dbbench', n:'DB Bench Press',         cat:'push',  eq:'db'},
+    {k:'arnold',  n:'Arnold Press',           cat:'push',  eq:'db'},
+    {k:'latraise',n:'Lateral Raise',          cat:'push',  eq:'db'},
+    {k:'thruster',n:'DB Thruster',            cat:'push',  eq:'db'},
+
+    {k:'bandrow', n:'Band Row',               cat:'pull',  eq:'band'},
+    {k:'doorrow', n:'Doorway Row',            cat:'bw',    eq:'bw'},
+    {k:'bandlat', n:'Band Lat Pulldown',      cat:'pull',  eq:'band'},
+    {k:'anchorpd',n:'Door Anchor Pull-down',  cat:'pull',  eq:'rack'},
+    {k:'chin',    n:'Chin-up (band assist)',  cat:'pull',  eq:'rack', badges:['Bar']},
+    {k:'csrow',   n:'Chest-Supported DB Row', cat:'pull',  eq:'db'},
+    {k:'renrow',  n:'Renegade Row',           cat:'pull',  eq:'db'},
+    {k:'zott',    n:'Zottman Curl',           cat:'pull',  eq:'db'},
+
+    {k:'stepup',  n:'Step-up',                cat:'legs',  eq:'db'},
+    {k:'dbrdl',   n:'DB Romanian Deadlift',   cat:'legs',  eq:'db'},
+    {k:'sidepl',  n:'Side Plank',             cat:'legs',  eq:'bw'},
+
+    {k:'manmaker',n:'Man Maker',              cat:'full',  eq:'db'},
+    {k:'dbcp',    n:'DB Clean & Press',       cat:'full',  eq:'db'},
+    {k:'hswall',  n:'Wall Handstand (beginner)',cat:'full',eq:'bw'}
+  ];
+
+  const RX = {
+    push:{
+      beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15',opt:true}],
+      intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'arnold',rx:'4×8–12'},{k:'latraise',rx:'3×12–15'},{k:'thruster',rx:'3×8–12'}],
+      advanced:[{k:'dbbench',rx:'5×5–8'},{k:'arnold',rx:'5×6–10'},{k:'latraise',rx:'4×12–15'},{k:'thruster',rx:'4×10–12'}]
     },
-    items:[
-      {k:'pistol',  rxB:'Box pistol 3×6–10/leg',  rxI:'Assisted pistol 4×6–10',   rxA:'Pistol 5×5–8'}
-    ],
-    sessions:{
-      beginner:[
-        'Prep (2 rounds): ankle rocks ×10/side · hip airplane (supported) ×5/side · calf raises ×12',
-        'Box pistol to target — 3×6–10/leg @ 3–1–1–0 tempo · rest 45–60s',
-        'Step-up (knee-height) — 2×10/leg controlled · rest 30–45s',
-        'Calf raises — 2×12 slow with 1–2s top pause'
-      ],
-      intermediate:[
-        'Prep (2 rounds): ankle rocks ×12/side · hip airplane ×6/side · calf raises ×15',
-        'Assisted pistol — 4×6–10/leg @ 3–1–1–0 · rest 60–90s',
-        'Split squat — 3×8–12/leg (last 2 reps close to failure) · rest 60s',
-        'Cossack squat (mobility) — 2×6/side smooth'
-      ],
-      advanced:[
-        'Prep (2 rounds): deep calf pulses ×15 · hip airplane ×6/side',
-        'Full pistol — 5×5–8/leg @ 3–1–1–0 · rest 90s',
-        'Bulgarian split squat — 3×8–10/leg · rest 60–90s',
-        'Optional power: low box jump — 3×8 crisp reps · full control'
-      ]
+    pull:{
+      beginner:[{k:'bandrow',rx:'3×10–12'},{k:'zott',rx:'3×10–12'}],
+      intermediate:[{k:'doorrow',rx:'4×8–12'},{k:'csrow',rx:'4×8–12'},{k:'zott',rx:'3×10–12'}],
+      advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'},{k:'renrow',rx:'4×8–12'}]
+    },
+    legs:{
+      beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
+      intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'sidepl',rx:'3×30–45s'}],
+      advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'thruster',rx:'4×10–12'}]
+    },
+    full:{
+      beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
+      intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
+      advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
     }
-  },
-
-  {title:'Skills', items:[
-    {k:'hswall',  rxB:'Wall handstand hold 5×20–30s', rxI:'Wall shoulder taps 4×10/side', rxA:'Freestanding attempts 8–10×15s'}
-  ]}
-];
-
-/* ===== Cross-Training Benchmarks (Cindy / Chelsea / Annie styles) ===== */
-const XWODS = [
-  {
-    code:'amrap-20-5-10-15',
-    title:'AMRAP 20: Pull • Push • Squat',
-    aka:'(aka “Cindy” format)',
-    rx:{
-      beginner:'20:00 AMRAP — 3 Rows • 6 Incline Push-ups • 10 Air Squats',
-      intermediate:'20:00 AMRAP — 5 Pull-ups (or rows) • 10 Push-ups • 15 Air Squats',
-      advanced:'20:00 AMRAP — 5 Strict Pull-ups • 10 Push-ups • 15 Air Squats'
-    },
-    notes:'Score = total completed rounds + extra reps. Pace so first 5 min ≈ last 5.',
-    presets:{seconds:1200},
-    demos:[
-      {title:'Pull-up / Row (scales)', yt:'r8NzhNe9Res'},
-      {title:'Push-up (standards)', yt:'IODxDxX7oi4'},
-      {title:'Air Squat (standards)', yt:'UXJrBgI2RxA'}
-    ]
-  },
-  {
-    code:'emom-30-5-10-15',
-    title:'EMOM 30: Triplet Every Minute',
-    aka:'(aka “Chelsea” format)',
-    rx:{
-      beginner:'30:00 EMOM — 3 Rows • 6 Incline Push-ups • 10 Air Squats (scale as needed)',
-      intermediate:'30:00 EMOM — 5 Pull-ups (or rows) • 10 Push-ups • 15 Air Squats',
-      advanced:'30:00 EMOM — 5 Pull-ups • 10 Push-ups • 15 Air Squats (hold for max unbroken minutes)'
-    },
-    notes:'If you miss a minute, reduce reps by ~20% or turn remaining time into AMRAP.',
-    presets:{seconds:1800},
-    demos:[
-      {title:'Pull-up / Row (scales)', yt:'r8NzhNe9Res'},
-      {title:'Push-up (standards)', yt:'IODxDxX7oi4'},
-      {title:'Air Squat (standards)', yt:'UXJrBgI2RxA'}
-    ]
-  },
-  {
-    code:'for-time-50-40-30-20-10-du-situps',
-    title:'For Time: Rope + Sit-up Ladder',
-    aka:'(aka “Annie” format)',
-    rx:{
-      beginner:'50-40-30-20-10 — Single-unders & Sit-ups (or 40-30-20-10-10 to manage volume)',
-      intermediate:'50-40-30-20-10 — Single-unders (2:1) or DU attempts & Sit-ups',
-      advanced:'50-40-30-20-10 — Double-unders & Sit-ups'
-    },
-    notes:'Break jump-rope sets early; keep sit-ups smooth. Time cap: 12–15 min.',
-    presets:{seconds:900},
-    demos:[
-      {title:'Double-Under', yt:'2gthFu0JFy4'},
-      {title:'Sit-up (standards)', yt:'1fbU_MkV7NE'}
-    ]
-  }
-];
-
-/* ===== State ===== */
-const planEl = document.getElementById('plan');
-const calEl  = document.getElementById('cal');
-const libEl  = document.getElementById('lib');
-const xfitEl = document.getElementById('xfit');
-
-let level = 'beginner';
-let goal  = 'maintain';
-
-/* Difficulty + Goal toggles */
-document.querySelectorAll('.seg [data-level]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    level = b.dataset.level;
-    renderPlan(); renderCal(); renderXFit();
-  });
-});
-
-document.querySelectorAll('.seg [data-goal]').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');
-    goal = b.dataset.goal;
-    renderPlan(); renderCal(); renderXFit();
-  });
-});
-
-/* Equipment filters */
-function getFilters(){
-  return {
-    db: document.getElementById('f-db').checked,
-    band: document.getElementById('f-band').checked,
-    bw: document.getElementById('f-bw').checked,
-    rack: document.getElementById('f-rack').checked,
-    rings: document.getElementById('f-rings').checked
   };
-}
-['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
-  const el = document.getElementById(id);
-  if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); renderLibrary(); });
-});
 
-/* ===== Helpers ===== */
-function anatomy(ms){
-  const imgs = ms.slice(0,3).map(m=>`<img src="img/anatomy/${m}.png" alt="${m} diagram" onerror="this.style.display='none'">`).join('');
-  return `<div class="anatomy">${imgs}</div>`;
-}
-function timerHTML(id, preset=60){
-  return `
-  <div class="timer" data-timer="${id}">
-    <label for="t-${id}" class="visually-hidden">Timer (seconds)</label>
-    <input id="t-${id}" type="number" min="5" step="5" value="${preset}">
-    <button data-act="start">Start</button>
-    <button data-act="stop">Stop</button>
-    <span class="left" aria-live="polite">${preset}s</span>
-  </div>`;
-}
-function demoTileHTML(yt, title){
-  const thumb = `https://img.youtube.com/vi/${yt}/hqdefault.jpg`;
-  const safe = title.replace(/"/g,'&quot;');
-  return `
-    <div class="tile" data-yt="${yt}">
-      <img class="thumb" src="${thumb}" alt="${safe} thumbnail" loading="lazy">
-      <button class="play" aria-label="Play ${safe}">
-        <svg width="60" height="60" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-          <circle cx="36" cy="36" r="34" stroke="white" stroke-opacity=".85" stroke-width="3"/>
-          <polygon points="30,24 52,36 30,48" fill="white" />
-        </svg>
-      </button>
-      <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              title="${safe} form video"></iframe>
-    </div>
-    <div class="demo-caption">${safe}</div>
-  `;
-}
-function exByKey(k){ return EX.find(x=>x.k===k); }
+  const QUOTES = [
+    'Small wins, stacked weekly, move mountains.',
+    'Quality reps beat heroic grinders.',
+    'Show up, breathe, add a brick.',
+    'Strong + kind beats tired + perfect.'
+  ];
 
-/* Goal scaling: light touch (applies to Weekly Split & XFit rx text) */
-function applyGoal(rxStr){
-  if(goal==='cut')       return rxStr.replace(/(\d+)×/g,(m,n)=>(Math.max(2,+n+0))+'×') + ' · 45–60s rest';
-  if(goal==='build')     return rxStr.replace(/(\d+)×/g,(m,n)=>(Math.max(2,+n+1))+'×') + ' · 60–90s rest';
-  if(goal==='transform') return rxStr + ' + finisher';
-  return rxStr;
-}
+  /* ===== State ===== */
+  const planEl = document.getElementById('plan');
+  const calEl  = document.getElementById('cal');
+  const finderGrid = document.getElementById('finderGrid');
 
-/* Collapsible info block (matches Cross-Training style) */
-function infoBlock(about, title='About'){
-  if(!about) return '';
-  const li = a => (a||[]).map(x=>`<li>${x}</li>`).join('');
-  const safety = (about.safety||[]).join(' ');
-  return `
-    <details class="details">
-      <summary>${title}: why, cues & safety</summary>
-      <p><strong>Why it matters</strong></p><ul>${li(about.why)}</ul>
-      <p><strong>Set-up & cues</strong></p><ul>${li(about.cues)}</ul>
-      <p><strong>Common faults (fixes)</strong></p><ul>${li(about.faults)}</ul>
-      <p><strong>Progression path</strong></p><ul>${li(about.progress)}</ul>
-      <p><strong>Warm-up / prep</strong></p><ul>${li(about.prep)}</ul>
-      <p class="meta">Safety: ${safety}</p>
-    </details>
-  `;
-}
+  let level = 'beginner';
+  let goal  = 'maintain';
 
-/* Render one level’s ordered session */
-function sessionBlock(label, steps){
-  if(!steps || !steps.length) return '';
-  const lis = steps.map(s=>`<li>${s}</li>`).join('');
-  return `
-    <details class="details">
-      <summary>${label} — suggested session</summary>
-      <ol>${lis}</ol>
-    </details>
-  `;
-}
-
-/* ===== Renderers ===== */
-function renderPlan(){
-  const f = getFilters(); 
-  planEl.innerHTML='';
-  ['push','pull','legs','full'].forEach(group=>{
-    const blk = document.createElement('div'); blk.className='block';
-    const title = group==='full'?'Full-Body Day Combination':
-                  group==='legs'?'Legs Day · Quads • Glutes • Hamstrings • Calves':
-                  group[0].toUpperCase()+group.slice(1)+' Day';
-    blk.innerHTML = `<h3>${title}</h3>`;
-    const list = document.createElement('div');
-    RX[group][level].forEach(it=>{
-      const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      if(e.eq==='rings' && !f.rings) return;
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${applyGoal(it.rx)}</span>`;
-      list.appendChild(row);
-    });
-    blk.appendChild(list);
-    blk.insertAdjacentHTML('beforeend', timerHTML('tm-'+group));
-    planEl.appendChild(blk);
-  });
-  hookTimers();
-}
-
-/* Calisthenics render (with sessions for Core & Legs) */
-function renderCal(){
-  const f = getFilters(); 
-  calEl.innerHTML='';
-  CAL.forEach(col=>{
-    const b = document.createElement('div'); 
-    b.className='block';
-
-    // Header + About
-    b.innerHTML = `<h3>${col.title}</h3>${col.about ? infoBlock(col.about, col.title) : ''}`;
-
-    // Level sessions (Core/Legs only)
-    if(col.sessions){
-      b.insertAdjacentHTML('beforeend', 
-        sessionBlock('Beginner', col.sessions.beginner) +
-        sessionBlock('Intermediate', col.sessions.intermediate) +
-        sessionBlock('Advanced', col.sessions.advanced)
-      );
-    }
-
-    // Progression rows
-    col.items.forEach(it=>{
-      const e = exByKey(it.k); if(!e) return;
-      if(!f[e.eq]) return;
-      const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
-      const row = document.createElement('div'); 
-      row.className='mov';
-      row.innerHTML = `<span class="name">${e.n}</span><span class="rx">${rx}</span>`;
-      b.appendChild(row);
-    });
-
-    // Timer per block
-    b.insertAdjacentHTML('beforeend', timerHTML('cal-'+col.title));
-    calEl.appendChild(b);
-  });
-  hookTimers();
-}
-
-function renderLibrary(){
-  const f = getFilters(); libEl.innerHTML='';
-  EX.forEach(e=>{
-    if(!f[e.eq]) return;
-    if(e.eq==='rings' && !f.rings) return;
-
-    const card = document.createElement('article'); card.className='card';
-    const thumb = `https://img.youtube.com/vi/${e.yt}/hqdefault.jpg`;
-    card.innerHTML = `
-      <h4>${e.n} ${e.badges ? e.badges.map(b=>`<span class="badge">${b}</span>`).join('') : ''}</h4>
-      <div class="tile" data-yt="${e.yt}">
-        <img class="thumb" src="${thumb}" alt="${e.n} thumbnail" loading="lazy">
-        <button class="play" aria-label="Play ${e.n}">
-          <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
-            <circle cx="36" cy="36" r="34" stroke="white" stroke-opacity=".85" stroke-width="3"/>
-            <polygon points="30,24 52,36 30,48" fill="white" />
-          </svg>
-        </button>
-        <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                title="${e.n} form video"></iframe>
-        <div class="openers">
-          <a href="https://www.youtube.com/watch?v=${e.yt}" target="_blank" rel="noopener">Open on YouTube</a>
-          <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.n+' exercise form')}" target="_blank" rel="noopener">Search</a>
-        </div>
-      </div>
-      <div class="tags">${e.muscles.map(m=>`<span class="tag">${m.replace(/muscles-/,'').replace(/-/g,' ')}</span>`).join('')}</div>
-      ${anatomy(e.muscles)}
-    `;
-    libEl.appendChild(card);
-  });
-
-  // lazy-load on click
-  bindTiles(libEl);
-}
-
-/* Cross-Training render (with how-to + standards + demo tiles) */
-function renderXFit(){
-  if(!xfitEl) return;
-  xfitEl.innerHTML = '';
-  XWODS.forEach(w=>{
-    const blk = document.createElement('div'); blk.className='block';
-    const rx = w.rx[level] || '';
-
-    const howTo = {
-      'amrap-20-5-10-15': `
-        <p><strong>How it works:</strong> AMRAP 20 = “as many rounds & reps as possible in 20 minutes”.
-        Cycle through pull/row, push-ups, and squats continuously. Keep sets submaximal so your first 5 minutes ≈ your last 5.</p>`,
-      'emom-30-5-10-15': `
-        <p><strong>How it works:</strong> EMOM 30 = do the listed reps <em>every minute</em> for 30 minutes.
-        Rest in the remaining time. If you can’t finish a minute, reduce reps by ~20% or switch the rest to AMRAP.</p>`,
-      'for-time-50-40-30-20-10-du-situps': `
-        <p><strong>How it works:</strong> Complete 50/40/30/20/10 of jump-rope and sit-ups as fast as possible.
-        Break rope sets early to stay crisp; keep sit-ups smooth. Suggested time cap: 12–15 min.</p>`
-    }[w.code] || '';
-
-    const standards = `
-      <details class="details"><summary>Movement standards, scaling & demos</summary>
-        <ul>
-          <li><strong>Pull-up / Row (scale):</strong> Full hang to chin-over-bar. Scale to band-assisted or table/door rows at a challenging angle. <em>Faults:</em> short range, loose core, early kip.</li>
-          <li><strong>Push-up:</strong> Hands under shoulders, body in one line, chest to target, full lockout. Scale to incline, then knees. <em>Faults:</em> hips sag, elbows flare, half reps.</li>
-          <li><strong>Air squat:</strong> Hips below knee crease, heels down, full stand. Scale to box/target or pain-free depth. <em>Faults:</em> knees cave, heels lift.</li>
-          <li><strong>Double-/Single-unders:</strong> Tall posture, small fast jumps, wrists turn rope. Scale to single-unders (1:1 or 2:1), penguin taps, or 30–50 jumping jacks.</li>
-          <li><strong>Sit-up:</strong> Shoulders pass hips; choose a consistent ROM/target. Scale to anchored feet, butterfly sit-ups, or crunches.</li>
-        </ul>
-        <div class="mini-grid">
-          ${w.demos.map(d=>demoTileHTML(d.yt, d.title)).join('')}
-        </div>
-      </details>
-    `;
-
-    blk.innerHTML = `
-      <h3>${w.title}</h3>
-      <p class="meta" style="margin:.2rem 0 .5rem">${w.aka}</p>
-
-      <div class="mov">
-        <span class="name">Prescription</span>
-        <span class="rx">${applyGoal(rx)}</span>
-      </div>
-
-      ${howTo}
-      <p class="meta">${w.notes}</p>
-
-      ${standards}
-    `;
-
-    blk.insertAdjacentHTML('beforeend', timerHTML('xfit-'+w.code, w.presets.seconds));
-    xfitEl.appendChild(blk);
-  });
-
-  // bind the newly created demo tiles inside the section
-  bindTiles(xfitEl);
-  hookTimers();
-}
-
-/* ===== Tile binding (play on click, no-cookie embeds) ===== */
-function bindTiles(scopeEl){
-  scopeEl.querySelectorAll('.tile').forEach(tile=>{
-    const id = tile.dataset.yt;
-    const btn = tile.querySelector('.play');
-    const iframe = tile.querySelector('iframe');
-    btn.addEventListener('click', ()=>{
-      iframe.src = 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0&modestbranding=1&autoplay=1';
-      iframe.style.display='block';
-      btn.style.display='none';
+  document.querySelectorAll('.seg [data-level]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      level = b.dataset.level;
+      renderAll();
     });
   });
-}
+  document.querySelectorAll('.seg [data-goal]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      goal = b.dataset.goal;
+      renderAll();
+    });
+  });
 
-/* ===== Audible timers (3-beep finish) ===== */
-let audioCtx, unlocked=false;
-function ensureAudio(){
-  if(!audioCtx){ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }
-  if(audioCtx.state==='suspended'){ audioCtx.resume(); }
-  unlocked=true;
-}
-function beepAt(t, freq, dur){
-  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-  o.type='sine'; o.frequency.value=freq; g.gain.value=0.0001;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start(t); g.gain.exponentialRampToValueAtTime(0.2, t+.01);
-  g.gain.exponentialRampToValueAtTime(0.0001, t+dur); o.stop(t+dur+.01);
-}
-function chime(){
-  if(!unlocked) return;
-  const now = audioCtx.currentTime;
-  beepAt(now+0.00, 880, .15);
-  beepAt(now+0.25, 880, .15);
-  beepAt(now+0.55, 660, .25);
-}
-function hookTimers(){
-  document.querySelectorAll('[data-timer]').forEach(box=>{
-    const input = box.querySelector('input');
-    const left  = box.querySelector('.left');
-    let t=null, end=0;
-    function fmt(s){ return s+'s'; }
-    function tick(){
-      const remain = Math.max(0, Math.ceil((end - Date.now())/1000));
-      left.textContent = fmt(remain);
-      if(remain<=0){ clearInterval(t); t=null; chime(); }
-    }
-    box.querySelector('[data-act="start"]').onclick = ()=>{
-      if(!unlocked){ ensureAudio(); }
-      const sec = Math.max(5, parseInt(input.value||'60',10));
-      left.textContent = fmt(sec); end = Date.now()+sec*1000;
-      clearInterval(t); t=setInterval(tick, 200);
+  function getFilters(){
+    return {
+      db:   document.getElementById('f-db').checked,
+      band: document.getElementById('f-band').checked,
+      bw:   document.getElementById('f-bw').checked,
+      rack: document.getElementById('f-rack').checked,
+      rings:document.getElementById('f-rings').checked
     };
-    box.querySelector('[data-act="stop"]').onclick = ()=>{
-      clearInterval(t); t=null;
-      left.textContent = fmt(Math.max(5, parseInt(input.value||'60',10)));
-    };
+  }
+  ;['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', renderAll);
   });
-}
 
-/* ===== Boot ===== */
-renderPlan(); renderCal(); renderXFit(); renderLibrary();
-</script>
+  /* ===== Storage (IndexedDB with localStorage fallback) ===== */
+  const Store = (()=> {
+    let db=null, ok=false;
+    function idb(){
+      return new Promise(res=>{
+        if(db) return res(db);
+        const req = indexedDB.open('fff-db',1);
+        req.onupgradeneeded = e => e.target.result.createObjectStore('logs');
+        req.onsuccess = e => { db = e.target.result; ok=true; res(db); };
+        req.onerror = ()=> res(null);
+      });
+    }
+    async function set(key, val){
+      try{
+        const d = await idb(); if(!d) throw 0;
+        const tx = d.transaction('logs','readwrite'); tx.objectStore('logs').put(val,key);
+        return tx.complete;
+      }catch{ localStorage.setItem(key, JSON.stringify(val)); }
+    }
+    async function get(key){
+      try{
+        const d = await idb(); if(!d) throw 0;
+        return await new Promise(r=>{
+          const tx=d.transaction('logs'); const req=tx.objectStore('logs').get(key);
+          req.onsuccess=()=>r(req.result||null); req.onerror=()=>r(null);
+        });
+      }catch{
+        const s = localStorage.getItem(key); return s?JSON.parse(s):null;
+      }
+    }
+    return {set,get};
+  })();
+
+  /* ===== Helpers ===== */
+  function exByKey(k){ return EX.find(x=>x.k===k); }
+  function ytSearchURL(name){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(name+' exercise form'); }
+  function applyGoal(rxStr){
+    if(goal==='cut')       return rxStr + ' · 45–60s rest';
+    if(goal==='build')     return rxStr + ' · 60–90s rest';
+    if(goal==='transform') return rxStr + ' + finisher';
+    return rxStr;
+  }
+  function epley1RM(w,r){ return r>0 ? w*(1+r/30) : 0; }
+
+  function timerHTML(id, preset=60){
+    return `
+      <div class="timer" data-timer="${id}">
+        <input type="number" min="5" step="5" value="${preset}">
+        <button data-act="start">Start</button>
+        <button data-act="stop">Stop</button>
+        <span class="left" aria-live="polite">${preset}s</span>
+      </div>`;
+  }
+
+  function logBlockHTML(code){
+    return `
+      <div class="log" data-log="${code}">
+        <div class="log-row">
+          <label>Set 1</label>
+          <input data-f="w1" placeholder="kg"><input data-f="r1" placeholder="reps"><input data-f="n1" placeholder="notes">
+          <button class="btn-sm" data-act="save">Save</button>
+        </div>
+        <div class="log-row">
+          <label>Set 2</label>
+          <input data-f="w2"><input data-f="r2"><input data-f="n2">
+          <button class="btn-sm" data-act="save">Save</button>
+        </div>
+        <div class="log-row">
+          <label>Set 3</label>
+          <input data-f="w3"><input data-f="r3"><input data-f="n3">
+          <button class="btn-sm" data-act="save">Save</button>
+        </div>
+        <div class="timer-row">${timerHTML('tm-'+code, 75)}</div>
+        <div class="meta-mini"><span class="pb" data-pb></span> <span class="badges" data-badges></span></div>
+        <div class="quote" data-quote></div>
+      </div>
+    `;
+  }
+
+  function attachLogBehavior(scope){
+    scope.querySelectorAll('[data-log]').forEach(async box=>{
+      const code = box.dataset.log;
+      const key  = 'workouts.logs.'+code;
+
+      // Load saved
+      const saved = await Store.get(key) || {};
+      box.querySelectorAll('[data-f]').forEach(inp=>{
+        const id=inp.dataset.f; if(saved[id]) inp.value = saved[id];
+      });
+
+      const pbEl = box.querySelector('[data-pb]');
+      const bdEl = box.querySelector('[data-badges]');
+      const qtEl = box.querySelector('[data-quote]');
+
+      // Save actions
+      box.querySelectorAll('[data-act="save"]').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const row = {};
+          box.querySelectorAll('[data-f]').forEach(inp=> row[inp.dataset.f] = inp.value.trim());
+          const merged = {...saved, ...row};
+          await Store.set(key, merged);
+
+          // PB check (max weight*reps & best 1RM est)
+          let bestVol=0, best1RM=0;
+          for(let i=1;i<=5;i++){
+            const w=parseFloat(merged['w'+i]||0)||0;
+            const r=parseFloat(merged['r'+i]||0)||0;
+            bestVol = Math.max(bestVol, w*r);
+            best1RM = Math.max(best1RM, epley1RM(w,r));
+          }
+          const pbKeyV = key+'.pb.vol';
+          const pbKeyR = key+'.pb.1rm';
+          const prevV  = (await Store.get(pbKeyV))||0;
+          const prevR  = (await Store.get(pbKeyR))||0;
+
+          let msg = 'Saved.';
+          if(bestVol>prevV || best1RM>prevR){
+            msg = 'New PB! ';
+            if(best1RM>prevR) msg += `1RM≈${best1RM.toFixed(1)}kg `;
+            if(bestVol>prevV) msg += `(best set volume ${bestVol.toFixed(0)})`;
+            Store.set(pbKeyV,bestVol); Store.set(pbKeyR,best1RM);
+          }
+          pbEl.textContent = msg;
+
+          // Milestones (total saves)
+          const totalKey='workouts.totalSaves';
+          const tPrev=(await Store.get(totalKey))||0;
+          const tNow=tPrev+1; await Store.set(totalKey,tNow);
+          const milestones=[5,10,25,50,100,250];
+          if(milestones.includes(tNow)){
+            const span=document.createElement('span');
+            span.className='badge'; span.textContent=`${tNow} logs 🎉`;
+            bdEl.appendChild(span);
+          }
+
+          // Encouragement
+          qtEl.textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)];
+        });
+      });
+
+      // Rest timer bind
+      hookTimers(box);
+    });
+  }
+
+  /* ===== Timers with gentle beep ===== */
+  let audioCtx, unlocked=false;
+  function ensureAudio(){ if(!audioCtx){ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); } if(audioCtx.state==='suspended'){ audioCtx.resume(); } unlocked=true; }
+  function beepAt(t, f, d){ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.value=0.0001; o.connect(g); g.connect(audioCtx.destination); o.start(t); g.gain.exponentialRampToValueAtTime(0.2, t+.01); g.gain.exponentialRampToValueAtTime(0.0001, t+d); o.stop(t+d+.01); }
+  function chime(){ if(!unlocked) return; const now=audioCtx.currentTime; beepAt(now+0.00,880,.12); beepAt(now+0.25,880,.12); beepAt(now+0.50,660,.22); }
+  function hookTimers(scope=document){
+    scope.querySelectorAll('[data-timer]').forEach(box=>{
+      const input=box.querySelector('input'); const left=box.querySelector('.left');
+      let t=null,end=0;
+      function fmt(s){return s+'s'}
+      function tick(){ const remain=Math.max(0, Math.ceil((end-Date.now())/1000)); left.textContent=fmt(remain); if(remain<=0){ clearInterval(t); t=null; chime(); } }
+      box.querySelector('[data-act="start"]').onclick = ()=>{ if(!unlocked) ensureAudio(); const sec=Math.max(5, parseInt(input.value||'60',10)); left.textContent=fmt(sec); end=Date.now()+sec*1000; clearInterval(t); t=setInterval(tick,200); };
+      box.querySelector('[data-act="stop"]').onclick  = ()=>{ clearInterval(t); t=null; left.textContent=fmt(Math.max(5, parseInt(input.value||'60',10))); };
+    });
+  }
+
+  /* ===== Renderers ===== */
+  function renderPlan(){
+    const f = getFilters();
+    planEl.innerHTML='';
+    ['push','pull','legs','full'].forEach(group=>{
+      const blk=document.createElement('div'); blk.className='block';
+      const title = group==='full'?'Full-Body Day Combination' : group[0].toUpperCase()+group.slice(1)+' Day';
+      blk.innerHTML = `<h3>${title}</h3>`;
+      RX[group][level].forEach(it=>{
+        const e = exByKey(it.k); if(!e) return;
+        if(!f[e.eq]) return;
+
+        const row=document.createElement('div'); row.className='mov';
+        const link=`<a href="${ytSearchURL(e.n)}" target="_blank" rel="noopener">${e.n}</a>`;
+        row.innerHTML = `<span class="name">${link}</span><span class="rx">${applyGoal(it.rx)}</span>`;
+        blk.appendChild(row);
+        blk.insertAdjacentHTML('beforeend', logBlockHTML(e.k));
+      });
+      planEl.appendChild(blk);
+    });
+    attachLogBehavior(planEl);
+  }
+
+  const CAL = [
+    {title:'Push Progression', items:[
+      {k:'pushup', rxB:'Incline push-up 3×8–12', rxI:'Flat push-up 4×8–12', rxA:'Feet-elevated / ring push-up 5×6–10'}
+    ]},
+    {title:'Pull Progression', items:[
+      {k:'doorrow', rxB:'Table/door row 3×8–12', rxI:'Feet-elevated row 4×8–12', rxA:'Chin-up 5×AMRAP'}
+    ]},
+    {title:'Core Progression', items:[
+      {k:'sidepl', rxB:'Side plank 2×25–40s/side', rxI:'Side plank 3×30–45s', rxA:'Star plank 3×20–30s'}
+    ]}
+  ];
+
+  function renderCal(){
+    const f=getFilters(); calEl.innerHTML='';
+    CAL.forEach(col=>{
+      const b=document.createElement('div'); b.className='block'; b.innerHTML=`<h3>${col.title}</h3>`;
+      col.items.forEach(it=>{
+        const e=exByKey(it.k); if(!e || !f[e.eq]) return;
+        const rx = level==='beginner'?it.rxB:level==='intermediate'?it.rxI:it.rxA;
+        const row=document.createElement('div'); row.className='mov';
+        const link=`<a href="${ytSearchURL(e.n)}" target="_blank" rel="noopener">${e.n}</a>`;
+        row.innerHTML=`<span class="name">${link}</span><span class="rx">${rx}</span>`;
+        b.appendChild(row);
+        b.insertAdjacentHTML('beforeend', logBlockHTML(e.k));
+      });
+      calEl.appendChild(b);
+    });
+    attachLogBehavior(calEl);
+  }
+
+  function renderFinder(){
+    finderGrid.innerHTML='';
+    EX.forEach(e=>{
+      const card=document.createElement('div'); card.className='card';
+      card.innerHTML = `
+        <h4>${e.n}</h4>
+        <p><a class="btn--pill" href="${ytSearchURL(e.n)}" target="_blank" rel="noopener">Search form on YouTube</a></p>
+        <p class="meta">Category: <span class="tag">${e.cat}</span> Equipment: <span class="tag">${e.eq}</span></p>
+      `;
+      finderGrid.appendChild(card);
+    });
+  }
+
+  function renderAll(){ renderPlan(); renderCal(); renderFinder(); }
+  renderAll();
+  </script>
 </body>
 </html>

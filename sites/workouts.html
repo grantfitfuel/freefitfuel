@@ -127,7 +127,12 @@
       <p class="meta">Short on time? Run the <strong>Full-Body</strong> day 2–3×/week and sprinkle easy cardio or mobility between.</p>
     </section>
 
-    <!-- (Chunk 2 will add Calisthenics Progressions here) -->
+    <section class="section">
+      <h2>Calisthenics Progressions</h2>
+      <div id="cal" class="plan"></div>
+      <p class="meta">Bodyweight mastery: start with regressions, progress steadily to harder versions. Adjust volume by your selected difficulty.</p>
+    </section>
+    
     <!-- (Chunk 3 will add Cross-Training Circuits here) -->
 
     <!-- Disclaimer -->
@@ -197,6 +202,42 @@
     }
   };
 
+/* ========= Calisthenics DATA ========= */
+const CAL = [
+  {title:'Push', items:[
+    {k:'pushup',
+     name:'Push-up',
+     eq:'bw',
+     rxB:'Incline push-up — 3×8–12',
+     rxI:'Flat push-up — 4×8–12',
+     rxA:'Feet-elevated or ring push-up — 5×6–10'}
+  ]},
+  {title:'Pull', items:[
+    {k:'doorrow',
+     name:'Bodyweight Row (table/door)',
+     eq:'bw',
+     rxB:'Row (high angle) — 3×8–12',
+     rxI:'Row (feet further) — 4×8–12',
+     rxA:'Row (feet elevated) — 5×6–10'}
+  ]},
+  {title:'Core', items:[
+    {k:'sidepl',
+     name:'Side Plank',
+     eq:'bw',
+     rxB:'3×25–40s/side',
+     rxI:'3×35–50s/side',
+     rxA:'3×45–60s/side (long lever)'}
+  ]},
+  {title:'Legs', items:[
+    {k:'stepup',
+     name:'Step-up',
+     eq:'db',
+     rxB:'Box height just below knee — 3×8–12/leg',
+     rxI:'Add load — 4×8–12/leg',
+     rxA:'Higher box or tempo pauses — 5×6–10/leg'}
+  ]}
+];
+    
   const QUOTES = [
     "Small wins compound. Log the set, own the day.",
     "Perfect form, steady breath, then add a little.",
@@ -369,6 +410,47 @@
     });
   }
 
+/* ========= Render: Calisthenics ========= */
+function renderCal(){
+  const calEl = document.getElementById('cal');
+  if(!calEl) return;
+
+  const f = filters();
+  calEl.innerHTML = '';
+
+  CAL.forEach(group=>{
+    // Block wrapper
+    const blk = document.createElement('div');
+    blk.className = 'block';
+    blk.innerHTML = `<h3>${group.title}</h3>`;
+
+    // Rows
+    group.items.forEach(item=>{
+      // equipment filter
+      if(item.eq && !f[item.eq]) return;
+
+      // level prescription
+      const rx = (level==='beginner') ? item.rxB
+              : (level==='intermediate') ? item.rxI
+              : item.rxA;
+
+      // link target: build a safe YT search term based on the EXERCISE name if present
+      const ex = EXERCISES.find(e=>e.k===item.k);
+      const search = ex ? ex.yt : item.name + ' exercise form';
+      const url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(search);
+
+      const row = document.createElement('div');
+      row.className = 'mov';
+      row.innerHTML = `
+        <div class="mov-head">
+          <div class="mov-title">
+            <a href="${url}" target="_blank" rel="noopener" title="YouTube form search">${item.name || (ex?ex.n:item.k)}</a>
+          </div>
+          <div class="rx">${rx}</div>
+          <div class="mov-tools">
+            <button class="btn-sm" data-open>Log</button>
+            <button class="btn-sm" data-clear title="Clear this exercise’s saved data">
+
   function bestScore(obj){
     let best = 0;
     for(let i=1;i<=5;i++){
@@ -431,8 +513,9 @@
     reader.readAsText(file);
   });
 
-  /* ========= Mount ========= */
-  renderPlan();
+/* ========= Mount ========= */
+renderPlan();
+renderCalisthenics();
   </script>
 </body>
 </html>

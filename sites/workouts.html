@@ -529,6 +529,126 @@ function renderPlan(){
   });
 }
 
+/* ========= Render: Calisthenics ========= */
+function renderCal(){
+  const calEl = document.getElementById('cal');
+  if(!calEl) return;
+
+  const f = filters();
+  calEl.innerHTML = '';
+
+  CAL.forEach(group=>{
+    const blk = document.createElement('div');
+    blk.className = 'block';
+    blk.innerHTML = `<h3>${group.title}</h3>`;
+
+    group.items.forEach(item=>{
+      // respect equipment filter
+      if(item.eq && !f[item.eq]) return;
+
+      // try to use EXERCISES’ YouTube term if we have a match
+      const ex = EXERCISES.find(e=>e.k===item.k);
+      const name = item.name || (ex ? ex.n : item.k);
+      const q = ex ? ex.yt : (name + ' exercise form');
+      const url = ytSearchURL(q);
+
+      // level-specific prescription
+      const rx = (level==='beginner') ? item.rxB
+              : (level==='intermediate') ? item.rxI
+              : item.rxA;
+
+      const row = document.createElement('div');
+      row.className = 'mov';
+      row.innerHTML = `
+        <div class="mov-head">
+          <div class="mov-title">
+            <a href="${url}" target="_blank" rel="noopener" title="YouTube form search">${name}</a>
+          </div>
+          <div class="rx">${rx}</div>
+          <div class="mov-tools">
+            <button class="btn-sm" data-open>Log</button>
+            <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
+          </div>
+        </div>
+        <div class="drawer" data-drawer>
+          <div class="log-grid" data-log>
+            ${[1,2,3,4,5].map(i=>`
+              <div class="log-row">
+                <strong>Set ${i}</strong>
+                <input inputmode="decimal" placeholder="kg/mins" data-field="w${i}">
+                <input inputmode="numeric" placeholder="reps/RPE" data-field="r${i}">
+                <input placeholder="notes" data-field="n${i}">
+                <button class="btn-sm" data-save>Save</button>
+              </div>
+            `).join('')}
+          </div>
+          <div class="meta-row">
+            <span class="pb" data-pb></span>
+            <span class="badge" data-badge></span>
+          </div>
+          <div class="quote" data-quote></div>
+        </div>
+      `;
+
+      // wiring & storage (keyed by item.k)
+      const drawer = row.querySelector('[data-drawer]');
+      row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
+      row.querySelector('[data-clear]').addEventListener('click', ()=>{
+        localStorage.removeItem(NS+item.k);
+        localStorage.removeItem(NS+item.k+'.best');
+        populateFromStore();
+        flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+      });
+
+      const logArea = row.querySelector('[data-log]');
+      const pbEl    = row.querySelector('[data-pb]');
+      const badgeEl = row.querySelector('[data-badge]');
+      const quoteEl = row.querySelector('[data-quote]');
+
+      function populateFromStore(){
+        const saved = JSON.parse(localStorage.getItem(NS+item.k) || '{}');
+        logArea.querySelectorAll('[data-field]').forEach(inp=>{
+          const id = inp.dataset.field;
+          if(saved[id]) inp.value = saved[id];
+        });
+        const bestWas = parseFloat(localStorage.getItem(NS+item.k+'.best')||'0')||0;
+        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+        badgeEl.textContent = milestoneText();
+      }
+      populateFromStore();
+
+      logArea.querySelectorAll('[data-save]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const obj = {};
+          logArea.querySelectorAll('[data-field]').forEach(inp=>{
+            obj[inp.dataset.field] = inp.value.trim();
+          });
+          localStorage.setItem(NS+item.k, JSON.stringify(obj));
+
+          const bestNow = bestScore(obj);
+          const bestWas = parseFloat(localStorage.getItem(NS+item.k+'.best')||'0')||0;
+          if(bestNow > bestWas){
+            localStorage.setItem(NS+item.k+'.best', bestNow);
+            pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
+            flash(quoteEl, pick(QUOTES));
+          }else{
+            pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
+            flash(quoteEl, pick(QUOTES));
+          }
+
+          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+          localStorage.setItem(NS+'saves', total);
+          badgeEl.textContent = milestoneText(total);
+        });
+      });
+
+      blk.appendChild(row);
+    });
+
+    calEl.appendChild(blk);
+  });
+}
+    
 /* ========= Render: Cross-Training Circuits ========= */
 function renderCircuits(){
   const wrap = document.getElementById('circuits');

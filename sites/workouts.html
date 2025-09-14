@@ -239,6 +239,57 @@
     ]}
   ];
 
+/* ========= Cross-Training Circuits DATA (generic names) ========= */
+const CIRCUITS = [
+  {
+    code:'amrap-20-pull-push-squat',
+    title:'AMRAP 20 — Pull • Push • Squat',
+    preset: 20*60, // seconds
+    rx:{
+      beginner:     '3 Rows • 6 Incline Push-ups • 10 Air Squats',
+      intermediate: '5 Pull-ups/Rows • 10 Push-ups • 15 Air Squats',
+      advanced:     '5 Strict Pull-ups • 10 Push-ups • 15 Air Squats'
+    },
+    notes:'Pace so the first 5 minutes ≈ the last 5. Keep sets submaximal, breathe through your nose when possible.',
+    demos:[
+      {q:'bodyweight row at home form', label:'Row (table/door)'},
+      {q:'push up form',                label:'Push-up'},
+      {q:'air squat standards form',    label:'Air Squat'}
+    ]
+  },
+  {
+    code:'emom-30-triplet',
+    title:'EMOM 30 — Triplet Every Minute',
+    preset: 30*60,
+    rx:{
+      beginner:     'Each minute: 3 Rows • 6 Incline Push-ups • 10 Air Squats',
+      intermediate: 'Each minute: 5 Pull-ups/Rows • 10 Push-ups • 15 Air Squats',
+      advanced:     'Each minute: 5 Pull-ups • 10 Push-ups • 15 Air Squats (hold unbroken as long as possible)'
+    },
+    notes:'If you miss a minute, reduce reps by ~20% or switch remaining time to steady AMRAP.',
+    demos:[
+      {q:'pull up band assistance form', label:'Pull-up (assisted)'},
+      {q:'push up form standards',       label:'Push-up'},
+      {q:'air squat standards form',     label:'Air Squat'}
+    ]
+  },
+  {
+    code:'for-time-rope-situps-ladder',
+    title:'For-Time — Rope & Sit-up Ladder (50-40-30-20-10)',
+    preset: 15*60,
+    rx:{
+      beginner:     'Singles + Sit-ups (or 40-30-20-10-10 total to manage volume)',
+      intermediate: 'Singles (2:1) or DU attempts + Sit-ups',
+      advanced:     'Double-unders + Sit-ups'
+    },
+    notes:'Break rope sets early; keep sit-ups smooth. Time cap: 12–15 minutes.',
+    demos:[
+      {q:'double under jump rope form',  label:'Double-Under'},
+      {q:'sit up standards form',        label:'Sit-up'}
+    ]
+  }
+];
+    
   const QUOTES = [
     "Small wins compound. Log the set, own the day.",
     "Perfect form, steady breath, then add a little.",
@@ -523,6 +574,171 @@
     });
   }
 
+/* ========= Render: Cross-Training Circuits ========= */
+function renderCircuits(){
+  const host = document.getElementById('xtList');
+  if(!host) return;
+
+  host.innerHTML = '';
+
+  CIRCUITS.forEach(w=>{
+    const blk = document.createElement('div');
+    blk.className = 'block';
+
+    const rxText = w.rx[level] || w.rx.beginner;
+
+    // Build tiny demo links (YouTube searches) for standards/scales
+    const demoLinks = (w.demos||[]).map(d=>{
+      const href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(d.q);
+      return `<a href="${href}" target="_blank" rel="noopener">${d.label}</a>`;
+    }).join(' · ');
+
+    blk.innerHTML = `
+      <h3>${w.title}</h3>
+
+      <div class="mov">
+        <div class="mov-head">
+          <div class="mov-title">Prescription</div>
+          <div class="rx">${rxText}</div>
+          <div class="mov-tools">
+            <button class="btn-sm" data-open>Log</button>
+            <button class="btn-sm" data-clear title="Clear this circuit’s saved data">Clear</button>
+          </div>
+        </div>
+
+        <div class="quote" style="margin-top:.35rem">${w.notes}</div>
+
+        <div class="drawer" data-drawer>
+          <!-- Timer -->
+          <div class="log-grid" style="margin-bottom:.35rem">
+            <div class="log-row" style="grid-template-columns:120px 120px auto;">
+              <strong>Timer</strong>
+              <input type="number" min="30" step="10" value="${w.preset||600}" data-sec>
+              <div class="mov-tools">
+                <button class="btn-sm" data-start>Start</button>
+                <button class="btn-sm" data-stop>Stop</button>
+                <span class="meta" data-left style="margin-left:.5rem;opacity:.9"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score logging (time, rounds, notes) -->
+          <div class="log-grid" data-log>
+            <div class="log-row">
+              <strong>Score</strong>
+              <input placeholder="rounds or time (mm:ss)" data-field="score">
+              <input placeholder="mods / splits" data-field="mods">
+              <input placeholder="notes" data-field="notes">
+              <button class="btn-sm" data-save>Save</button>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <span class="pb" data-pb></span>
+            <span class="badge" data-badge></span>
+          </div>
+
+          <div class="quote" style="margin-top:.25rem">
+            Standards & scales: ${demoLinks || '—'}
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Drawer & storage wiring
+    const drawer = blk.querySelector('[data-drawer]');
+    blk.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
+    blk.querySelector('[data-clear]').addEventListener('click', ()=>{
+      localStorage.removeItem(NS+w.code);
+      localStorage.removeItem(NS+w.code+'.best');
+      populateFromStore();
+    });
+
+    // PB = we’ll treat "rounds" numbers as higher-is-better; if user logs time (mm:ss), lower is better.
+    const logArea = blk.querySelector('[data-log]');
+    const pbEl    = blk.querySelector('[data-pb]');
+    const badgeEl = blk.querySelector('[data-badge]');
+
+    function parseScore(s){
+      const t = String(s||'').trim();
+      if(!t) return {type:'none', value:0};
+      if(/^\d+(:\d{2})$/.test(t)){ // mm:ss
+        const [m,ss] = t.split(':'); return {type:'time', value:(+m)*60+(+ss)};
+      }
+      const num = parseFloat(t.replace(/[^\d.]/g,''))||0;
+      return {type:'rounds', value:num};
+    }
+    function betterScore(a,b){ // true if a is better than b (a wins)
+      if(a.type!==b.type) return false; // different types — skip PB compare
+      if(a.type==='time')   return a.value>0 && (b.value===0 || a.value<b.value);
+      if(a.type==='rounds') return a.value>0 && a.value>b.value;
+      return false;
+    }
+
+    function populateFromStore(){
+      const saved = JSON.parse(localStorage.getItem(NS+w.code)||'{}');
+      logArea.querySelectorAll('[data-field]').forEach(inp=>{
+        const id = inp.dataset.field; if(saved[id]) inp.value = saved[id];
+      });
+      const best = JSON.parse(localStorage.getItem(NS+w.code+'.best')||'{}');
+      if(best && best.type){
+        pbEl.textContent = best.type==='time'
+          ? `PB: ${Math.floor(best.value/60)}:${String(best.value%60).padStart(2,'0')} (time)`
+          : `PB: ${best.value} rounds`;
+      }else{
+        pbEl.textContent = '';
+      }
+      badgeEl.textContent = milestoneText();
+    }
+    populateFromStore();
+
+    // Save
+    blk.querySelector('[data-save]').addEventListener('click', ()=>{
+      const obj = {};
+      logArea.querySelectorAll('[data-field]').forEach(inp=>{
+        obj[inp.dataset.field] = inp.value.trim();
+      });
+      localStorage.setItem(NS+w.code, JSON.stringify(obj));
+
+      // PB compare
+      const curr = parseScore(obj.score);
+      const prev = JSON.parse(localStorage.getItem(NS+w.code+'.best')||'{}');
+      if(curr.type && betterScore(curr, prev)){
+        localStorage.setItem(NS+w.code+'.best', JSON.stringify(curr));
+      }
+      populateFromStore();
+
+      const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+      localStorage.setItem(NS+'saves', total);
+      badgeEl.textContent = milestoneText(total);
+    });
+
+    // Simple countdown timer
+    (function(){
+      const sec  = blk.querySelector('[data-sec]');
+      const left = blk.querySelector('[data-left]');
+      let t=null, end=0;
+
+      function fmt(s){ s=Math.max(0,s|0); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+      function tick(){
+        const remain = Math.max(0, Math.ceil((end - Date.now())/1000));
+        left.textContent = `Time left: ${fmt(remain)}`;
+        if(remain<=0){ clearInterval(t); t=null; left.textContent = 'Done!'; }
+      }
+      blk.querySelector('[data-start]').addEventListener('click', ()=>{
+        const secs = Math.max(30, parseInt(sec.value||w.preset||600,10));
+        end = Date.now()+secs*1000;
+        clearInterval(t); t=setInterval(tick, 200); tick();
+      });
+      blk.querySelector('[data-stop]').addEventListener('click', ()=>{
+        clearInterval(t); t=null; left.textContent = '';
+      });
+    })();
+
+    host.appendChild(blk);
+  });
+}
+    
   /* ========= Helpers ========= */
   function bestScore(obj){
     let best = 0;
@@ -587,8 +803,9 @@
   });
 
   /* ========= Mount ========= */
-  renderPlan();
-  renderCal();
+renderPlan();
+renderCal();
+renderCircuits();
   </script>
 </body>
 </html>

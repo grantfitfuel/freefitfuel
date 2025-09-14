@@ -18,7 +18,7 @@
     header.hero-mini figure{margin:0;position:relative}
     header.hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.88) saturate(1.05)}
     header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65))}
-    /* 👇 Key change: put hero text BELOW the image */
+    /* key: hero text sits BELOW the image */
     header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
     header.hero-mini h1{margin:0 0 .35rem}
     header.hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
@@ -127,12 +127,13 @@
       <p class="meta">Short on time? Run the <strong>Full-Body</strong> day 2–3×/week and sprinkle easy cardio or mobility between.</p>
     </section>
 
+    <!-- ===== Calisthenics (Chunk 2) ===== -->
     <section class="section">
       <h2>Calisthenics Progressions</h2>
       <div id="cal" class="plan"></div>
       <p class="meta">Bodyweight mastery: start with regressions, progress steadily to harder versions. Adjust volume by your selected difficulty.</p>
     </section>
-    
+
     <!-- (Chunk 3 will add Cross-Training Circuits here) -->
 
     <!-- Disclaimer -->
@@ -202,47 +203,39 @@
     }
   };
 
-/* ========= Calisthenics DATA ========= */
-const CAL = [
-  {title:'Push', items:[
-    {k:'pushup',
-     name:'Push-up',
-     eq:'bw',
-     rxB:'Incline push-up — 3×8–12',
-     rxI:'Flat push-up — 4×8–12',
-     rxA:'Feet-elevated or ring push-up — 5×6–10'}
-  ]},
-  {title:'Pull', items:[
-    {k:'doorrow',
-     name:'Bodyweight Row (table/door)',
-     eq:'bw',
-     rxB:'Row (high angle) — 3×8–12',
-     rxI:'Row (feet further) — 4×8–12',
-     rxA:'Row (feet elevated) — 5×6–10'}
-  ]},
-  {title:'Core', items:[
-    {k:'sidepl',
-     name:'Side Plank',
-     eq:'bw',
-     rxB:'3×25–40s/side',
-     rxI:'3×35–50s/side',
-     rxA:'3×45–60s/side (long lever)'}
-  ]},
-  {title:'Legs', items:[
-    {k:'stepup',
-     name:'Step-up',
-     eq:'db',
-     rxB:'Box height just below knee — 3×8–12/leg',
-     rxI:'Add load — 4×8–12/leg',
-     rxA:'Higher box or tempo pauses — 5×6–10/leg'}
-  ]}
-];
-    
+  /* ========= Calisthenics DATA ========= */
+  const CAL = [
+    {title:'Push', items:[
+      {k:'pushup', name:'Push-up', eq:'bw',
+       rxB:'Incline push-up — 3×8–12',
+       rxI:'Flat push-up — 4×8–12',
+       rxA:'Feet-elevated or ring push-up — 5×6–10'}
+    ]},
+    {title:'Pull', items:[
+      {k:'doorrow', name:'Bodyweight Row (table/door)', eq:'bw',
+       rxB:'Row (high angle) — 3×8–12',
+       rxI:'Row (feet further) — 4×8–12',
+       rxA:'Row (feet elevated) — 5×6–10'}
+    ]},
+    {title:'Core', items:[
+      {k:'sidepl', name:'Side Plank', eq:'bw',
+       rxB:'3×25–40s/side',
+       rxI:'3×35–50s/side',
+       rxA:'3×45–60s/side (long lever)'}
+    ]},
+    {title:'Legs', items:[
+      {k:'stepup', name:'Step-up', eq:'db',
+       rxB:'Box height just below knee — 3×8–12/leg',
+       rxI:'Add load — 4×8–12/leg',
+       rxA:'Higher box or tempo pauses — 5×6–10/leg'}
+    ]}
+  ];
+
   const QUOTES = [
     "Small wins compound. Log the set, own the day.",
     "Perfect form, steady breath, then add a little.",
     "Consistency beats intensity when intensity is inconsistent.",
-    "One clean rep better than five messy ones.",
+    "One clean rep beats five messy ones.",
     "Show up. Scale smart. Keep going."
   ];
 
@@ -257,7 +250,7 @@ const CAL = [
       document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
       b.setAttribute('aria-pressed','true');
       level = b.dataset.level;
-      renderPlan();
+      renderPlan(); renderCal();
     });
   });
 
@@ -266,13 +259,13 @@ const CAL = [
       document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
       b.setAttribute('aria-pressed','true');
       goal = b.dataset.goal;
-      renderPlan();
+      renderPlan(); renderCal();
     });
   });
 
   ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
     const el = document.getElementById(id);
-    if(el) el.addEventListener('change', renderPlan);
+    if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); });
   });
 
   function filters(){
@@ -316,7 +309,6 @@ const CAL = [
         const e = exByKey(item.k); if(!e) return;
         if(!f[e.eq]) return;
 
-        // Row
         const row = document.createElement('div'); row.className='mov';
         row.innerHTML = `
           <div class="mov-head">
@@ -351,9 +343,7 @@ const CAL = [
 
         // Wire drawer & storage
         const drawer = row.querySelector('[data-drawer]');
-        row.querySelector('[data-open]').addEventListener('click', ()=>{
-          drawer.classList.toggle('open');
-        });
+        row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
         row.querySelector('[data-clear]').addEventListener('click', ()=>{
           localStorage.removeItem(NS+e.k);
           localStorage.removeItem(NS+e.k+'.best');
@@ -397,7 +387,121 @@ const CAL = [
               flash(quoteEl, pick(QUOTES));
             }
 
-            // global save counter -> badges
+            const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+            localStorage.setItem(NS+'saves', total);
+            badgeEl.textContent = milestoneText(total);
+          });
+        });
+
+        planEl.appendChild(blk);
+        blk.appendChild(row);
+      });
+    });
+  }
+
+  /* ========= Render: Calisthenics ========= */
+  function renderCal(){
+    const calEl = document.getElementById('cal');
+    if(!calEl) return;
+
+    const f = filters();
+    calEl.innerHTML = '';
+
+    CAL.forEach(group=>{
+      const blk = document.createElement('div');
+      blk.className = 'block';
+      blk.innerHTML = `<h3>${group.title}</h3>`;
+
+      group.items.forEach(item=>{
+        if(item.eq && !f[item.eq]) return;
+
+        const rx = (level==='beginner') ? item.rxB
+                : (level==='intermediate') ? item.rxI
+                : item.rxA;
+
+        const ex = EXERCISES.find(e=>e.k===item.k);
+        const search = ex ? ex.yt : item.name + ' exercise form';
+        const url = ytSearchURL(search);
+        const displayName = item.name || (ex ? ex.n : item.k);
+
+        const row = document.createElement('div');
+        row.className = 'mov';
+        row.innerHTML = `
+          <div class="mov-head">
+            <div class="mov-title">
+              <a href="${url}" target="_blank" rel="noopener" title="YouTube form search">${displayName}</a>
+            </div>
+            <div class="rx">${rx}</div>
+            <div class="mov-tools">
+              <button class="btn-sm" data-open>Log</button>
+              <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
+            </div>
+          </div>
+          <div class="drawer" data-drawer>
+            <div class="log-grid" data-log>
+              ${[1,2,3,4,5].map(i=>`
+                <div class="log-row">
+                  <strong>Set ${i}</strong>
+                  <input inputmode="decimal" placeholder="kg/mins" data-field="w${i}">
+                  <input inputmode="numeric" placeholder="reps/RPE" data-field="r${i}">
+                  <input placeholder="notes" data-field="n${i}">
+                  <button class="btn-sm" data-save>Save</button>
+                </div>
+              `).join('')}
+            </div>
+            <div class="meta-row">
+              <span class="pb" data-pb></span>
+              <span class="badge" data-badge></span>
+            </div>
+            <div class="quote" data-quote></div>
+          </div>
+        `;
+
+        const drawer = row.querySelector('[data-drawer]');
+        row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
+        row.querySelector('[data-clear]').addEventListener('click', ()=>{
+          localStorage.removeItem(NS+item.k);
+          localStorage.removeItem(NS+item.k+'.best');
+          populateFromStore();
+          flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+        });
+
+        const logArea = row.querySelector('[data-log]');
+        const pbEl    = row.querySelector('[data-pb]');
+        const badgeEl = row.querySelector('[data-badge]');
+        const quoteEl = row.querySelector('[data-quote]');
+
+        function populateFromStore(){
+          const saved = JSON.parse(localStorage.getItem(NS+item.k) || '{}');
+          logArea.querySelectorAll('[data-field]').forEach(inp=>{
+            const id = inp.dataset.field;
+            if(saved[id]) inp.value = saved[id];
+          });
+          const bestWas = parseFloat(localStorage.getItem(NS+item.k+'.best')||'0')||0;
+          pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+          badgeEl.textContent = milestoneText();
+        }
+        populateFromStore();
+
+        logArea.querySelectorAll('[data-save]').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const obj = {};
+            logArea.querySelectorAll('[data-field]').forEach(inp=>{
+              obj[inp.dataset.field] = inp.value.trim();
+            });
+            localStorage.setItem(NS+item.k, JSON.stringify(obj));
+
+            const bestNow = bestScore(obj);
+            const bestWas = parseFloat(localStorage.getItem(NS+item.k+'.best')||'0')||0;
+            if(bestNow > bestWas){
+              localStorage.setItem(NS+item.k+'.best', bestNow);
+              pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
+              flash(quoteEl, pick(QUOTES));
+            }else{
+              pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
+              flash(quoteEl, pick(QUOTES));
+            }
+
             const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
             localStorage.setItem(NS+'saves', total);
             badgeEl.textContent = milestoneText(total);
@@ -406,51 +510,12 @@ const CAL = [
 
         blk.appendChild(row);
       });
-      planEl.appendChild(blk);
+
+      calEl.appendChild(blk);
     });
   }
 
-/* ========= Render: Calisthenics ========= */
-function renderCal(){
-  const calEl = document.getElementById('cal');
-  if(!calEl) return;
-
-  const f = filters();
-  calEl.innerHTML = '';
-
-  CAL.forEach(group=>{
-    // Block wrapper
-    const blk = document.createElement('div');
-    blk.className = 'block';
-    blk.innerHTML = `<h3>${group.title}</h3>`;
-
-    // Rows
-    group.items.forEach(item=>{
-      // equipment filter
-      if(item.eq && !f[item.eq]) return;
-
-      // level prescription
-      const rx = (level==='beginner') ? item.rxB
-              : (level==='intermediate') ? item.rxI
-              : item.rxA;
-
-      // link target: build a safe YT search term based on the EXERCISE name if present
-      const ex = EXERCISES.find(e=>e.k===item.k);
-      const search = ex ? ex.yt : item.name + ' exercise form';
-      const url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(search);
-
-      const row = document.createElement('div');
-      row.className = 'mov';
-      row.innerHTML = `
-        <div class="mov-head">
-          <div class="mov-title">
-            <a href="${url}" target="_blank" rel="noopener" title="YouTube form search">${item.name || (ex?ex.n:item.k)}</a>
-          </div>
-          <div class="rx">${rx}</div>
-          <div class="mov-tools">
-            <button class="btn-sm" data-open>Log</button>
-            <button class="btn-sm" data-clear title="Clear this exercise’s saved data">
-
+  /* ========= Helpers ========= */
   function bestScore(obj){
     let best = 0;
     for(let i=1;i<=5;i++){
@@ -470,7 +535,7 @@ function renderCal(){
     if(n>=10)  return 'Milestone: 10 logs saved ✅';
     if(n>=5)   return 'Milestone: 5 logs saved ✨';
     return '';
-    }
+  }
 
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
   function flash(el, text){
@@ -505,7 +570,7 @@ function renderCal(){
           if(k.startsWith(NS)) localStorage.setItem(k, obj[k]);
         });
         alert('Logs imported ✅');
-        renderPlan();
+        renderPlan(); renderCal();
       }catch{
         alert('Import failed — invalid file.');
       }
@@ -513,9 +578,9 @@ function renderCal(){
     reader.readAsText(file);
   });
 
-/* ========= Mount ========= */
-renderPlan();
-renderCalisthenics();
+  /* ========= Mount ========= */
+  renderPlan();
+  renderCal();
   </script>
 </body>
 </html>

@@ -306,7 +306,7 @@ const CIRCUITS = [
       document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
       b.setAttribute('aria-pressed','true');
       level = b.dataset.level;
-      renderPlan(); renderCal();
+    renderPlan(); renderCal(); renderCircuits();
     });
   });
 
@@ -315,13 +315,13 @@ const CIRCUITS = [
       document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
       b.setAttribute('aria-pressed','true');
       goal = b.dataset.goal;
-      renderPlan(); renderCal();
+    renderPlan(); renderCal(); renderCircuits();
     });
   });
 
   ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
     const el = document.getElementById(id);
-    if(el) el.addEventListener('change', ()=>{ renderPlan(); renderCal(); });
+    if(el) el.addEventListener('change', ()=>{renderPlan(); renderCal(); renderCircuits(); });
   });
 
   function filters(){
@@ -671,7 +671,7 @@ function renderCircuits(){
           if(k.startsWith(NS)) localStorage.setItem(k, obj[k]);
         });
         alert('Logs imported ✅');
-        renderPlan(); renderCal();
+    renderPlan(); renderCal(); renderCircuits();
       }catch{
         alert('Import failed — invalid file.');
       }

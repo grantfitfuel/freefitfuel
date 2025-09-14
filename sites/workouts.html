@@ -135,12 +135,12 @@
     </section>
 
     <!-- ===== Cross Training (Chunk 3) ===== -->
-<section class="section">
+<section class="section" id="circuits-section">
   <h2>Cross-Training Circuits</h2>
-  <div id="xtList" class="plan"></div>
+  <div id="circuits" class="plan"></div>
   <p class="meta">
-    Community-style conditioning formats (AMRAP, EMOM, For-Time). Not affiliated with any organisation.
-    Use the built-in timer, log your score, and chase steady, repeatable effort.
+    Simple formats to build engine and grit. Click any exercise name for a YouTube form search.
+    FreeFitFuel is not affiliated with any third-party fitness brand.
   </p>
 </section>
 
@@ -240,52 +240,49 @@
   ];
 
 /* ========= Cross-Training Circuits DATA (generic names) ========= */
+/* ========= Cross-Training Circuits (generic names, no trademarks) ========= */
 const CIRCUITS = [
   {
-    code:'amrap-20-pull-push-squat',
-    title:'AMRAP 20 — Pull • Push • Squat',
-    preset: 20*60, // seconds
-    rx:{
-      beginner:     '3 Rows • 6 Incline Push-ups • 10 Air Squats',
-      intermediate: '5 Pull-ups/Rows • 10 Push-ups • 15 Air Squats',
-      advanced:     '5 Strict Pull-ups • 10 Push-ups • 15 Air Squats'
-    },
-    notes:'Pace so the first 5 minutes ≈ the last 5. Keep sets submaximal, breathe through your nose when possible.',
-    demos:[
-      {q:'bodyweight row at home form', label:'Row (table/door)'},
-      {q:'push up form',                label:'Push-up'},
-      {q:'air squat standards form',    label:'Air Squat'}
-    ]
+    code: 'amrap20_triplet',
+    title: '20-Minute Triplet (AMRAP)',
+    blurb: 'Cycle the three movements for 20:00 at a steady, sustainable pace.',
+    score: 'Score: total rounds + extra reps',
+    movements: [
+      { name: 'Row (table/door or band)', yt: 'bodyweight row at home form' },
+      { name: 'Push-up',                   yt: 'push up form' },
+      { name: 'Air Squat',                 yt: 'air squat form' }
+    ],
+    reps: {
+      beginner:     [3, 6, 10],
+      intermediate: [5, 10, 15],
+      advanced:     [5, 10, 15]
+    }
   },
   {
-    code:'emom-30-triplet',
-    title:'EMOM 30 — Triplet Every Minute',
-    preset: 30*60,
-    rx:{
-      beginner:     'Each minute: 3 Rows • 6 Incline Push-ups • 10 Air Squats',
-      intermediate: 'Each minute: 5 Pull-ups/Rows • 10 Push-ups • 15 Air Squats',
-      advanced:     'Each minute: 5 Pull-ups • 10 Push-ups • 15 Air Squats (hold unbroken as long as possible)'
-    },
-    notes:'If you miss a minute, reduce reps by ~20% or switch remaining time to steady AMRAP.',
-    demos:[
-      {q:'pull up band assistance form', label:'Pull-up (assisted)'},
-      {q:'push up form standards',       label:'Push-up'},
-      {q:'air squat standards form',     label:'Air Squat'}
-    ]
+    code: 'emom30_triplet',
+    title: 'Every-Minute Triplet (30:00)',
+    blurb: 'At the start of each minute do the listed reps; rest in the remainder.',
+    score: 'Score: minutes completed unbroken (or total reps)',
+    movements: [
+      { name: 'Row (table/door or band)', yt: 'bodyweight row at home form' },
+      { name: 'Push-up',                   yt: 'push up form' },
+      { name: 'Air Squat',                 yt: 'air squat form' }
+    ],
+    reps: {
+      beginner:     [3, 6, 10],
+      intermediate: [5, 10, 15],
+      advanced:     [5, 10, 15]
+    }
   },
   {
-    code:'for-time-rope-situps-ladder',
-    title:'For-Time — Rope & Sit-up Ladder (50-40-30-20-10)',
-    preset: 15*60,
-    rx:{
-      beginner:     'Singles + Sit-ups (or 40-30-20-10-10 total to manage volume)',
-      intermediate: 'Singles (2:1) or DU attempts + Sit-ups',
-      advanced:     'Double-unders + Sit-ups'
-    },
-    notes:'Break rope sets early; keep sit-ups smooth. Time cap: 12–15 minutes.',
-    demos:[
-      {q:'double under jump rope form',  label:'Double-Under'},
-      {q:'sit up standards form',        label:'Sit-up'}
+    code: 'ladder_rope_core',
+    title: 'Rope & Core Ladder (For Time)',
+    blurb: 'Complete 50-40-30-20-10 of each movement, as fast as is tidy.',
+    score: 'Score: total time (cap ~12–15 min)',
+    ladder: '50-40-30-20-10',
+    movements: [
+      { name: 'Jump Rope (single or double)', yt: 'jump rope double under tutorial' },
+      { name: 'Sit-up',                        yt: 'sit up standards form' }
     ]
   }
 ];
@@ -576,169 +573,49 @@ const CIRCUITS = [
 
 /* ========= Render: Cross-Training Circuits ========= */
 function renderCircuits(){
-  const host = document.getElementById('xtList');
-  if(!host) return;
+  const wrap = document.getElementById('circuits');
+  if(!wrap) return;
 
-  host.innerHTML = '';
-
-  CIRCUITS.forEach(w=>{
+  wrap.innerHTML = '';
+  CIRCUITS.forEach(w => {
     const blk = document.createElement('div');
     blk.className = 'block';
 
-    const rxText = w.rx[level] || w.rx.beginner;
+    // Header
+    blk.innerHTML = `<h3>${w.title}</h3>
+      <p class="meta" style="margin:.2rem 0 .5rem">${w.blurb}</p>`;
 
-    // Build tiny demo links (YouTube searches) for standards/scales
-    const demoLinks = (w.demos||[]).map(d=>{
-      const href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(d.q);
-      return `<a href="${href}" target="_blank" rel="noopener">${d.label}</a>`;
-    }).join(' · ');
-
-    blk.innerHTML = `
-      <h3>${w.title}</h3>
-
-      <div class="mov">
-        <div class="mov-head">
-          <div class="mov-title">Prescription</div>
-          <div class="rx">${rxText}</div>
-          <div class="mov-tools">
-            <button class="btn-sm" data-open>Log</button>
-            <button class="btn-sm" data-clear title="Clear this circuit’s saved data">Clear</button>
-          </div>
-        </div>
-
-        <div class="quote" style="margin-top:.35rem">${w.notes}</div>
-
-        <div class="drawer" data-drawer>
-          <!-- Timer -->
-          <div class="log-grid" style="margin-bottom:.35rem">
-            <div class="log-row" style="grid-template-columns:120px 120px auto;">
-              <strong>Timer</strong>
-              <input type="number" min="30" step="10" value="${w.preset||600}" data-sec>
-              <div class="mov-tools">
-                <button class="btn-sm" data-start>Start</button>
-                <button class="btn-sm" data-stop>Stop</button>
-                <span class="meta" data-left style="margin-left:.5rem;opacity:.9"></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Score logging (time, rounds, notes) -->
-          <div class="log-grid" data-log>
-            <div class="log-row">
-              <strong>Score</strong>
-              <input placeholder="rounds or time (mm:ss)" data-field="score">
-              <input placeholder="mods / splits" data-field="mods">
-              <input placeholder="notes" data-field="notes">
-              <button class="btn-sm" data-save>Save</button>
-            </div>
-          </div>
-
-          <div class="meta-row">
-            <span class="pb" data-pb></span>
-            <span class="badge" data-badge></span>
-          </div>
-
-          <div class="quote" style="margin-top:.25rem">
-            Standards & scales: ${demoLinks || '—'}
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Drawer & storage wiring
-    const drawer = blk.querySelector('[data-drawer]');
-    blk.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
-    blk.querySelector('[data-clear]').addEventListener('click', ()=>{
-      localStorage.removeItem(NS+w.code);
-      localStorage.removeItem(NS+w.code+'.best');
-      populateFromStore();
-    });
-
-    // PB = we’ll treat "rounds" numbers as higher-is-better; if user logs time (mm:ss), lower is better.
-    const logArea = blk.querySelector('[data-log]');
-    const pbEl    = blk.querySelector('[data-pb]');
-    const badgeEl = blk.querySelector('[data-badge]');
-
-    function parseScore(s){
-      const t = String(s||'').trim();
-      if(!t) return {type:'none', value:0};
-      if(/^\d+(:\d{2})$/.test(t)){ // mm:ss
-        const [m,ss] = t.split(':'); return {type:'time', value:(+m)*60+(+ss)};
-      }
-      const num = parseFloat(t.replace(/[^\d.]/g,''))||0;
-      return {type:'rounds', value:num};
-    }
-    function betterScore(a,b){ // true if a is better than b (a wins)
-      if(a.type!==b.type) return false; // different types — skip PB compare
-      if(a.type==='time')   return a.value>0 && (b.value===0 || a.value<b.value);
-      if(a.type==='rounds') return a.value>0 && a.value>b.value;
-      return false;
-    }
-
-    function populateFromStore(){
-      const saved = JSON.parse(localStorage.getItem(NS+w.code)||'{}');
-      logArea.querySelectorAll('[data-field]').forEach(inp=>{
-        const id = inp.dataset.field; if(saved[id]) inp.value = saved[id];
-      });
-      const best = JSON.parse(localStorage.getItem(NS+w.code+'.best')||'{}');
-      if(best && best.type){
-        pbEl.textContent = best.type==='time'
-          ? `PB: ${Math.floor(best.value/60)}:${String(best.value%60).padStart(2,'0')} (time)`
-          : `PB: ${best.value} rounds`;
+    // Movements (each name is a separate, clickable search link)
+    const list = document.createElement('div');
+    w.movements.forEach((m, i) => {
+      // reps per level (or ladder label)
+      let rx = '';
+      if(w.ladder){
+        rx = `${w.ladder} each`;
       }else{
-        pbEl.textContent = '';
+        const set = (level==='beginner') ? w.reps.beginner
+                  : (level==='intermediate') ? w.reps.intermediate
+                  : w.reps.advanced;
+        rx = `${set[i]} reps`;
       }
-      badgeEl.textContent = milestoneText();
-    }
-    populateFromStore();
 
-    // Save
-    blk.querySelector('[data-save]').addEventListener('click', ()=>{
-      const obj = {};
-      logArea.querySelectorAll('[data-field]').forEach(inp=>{
-        obj[inp.dataset.field] = inp.value.trim();
-      });
-      localStorage.setItem(NS+w.code, JSON.stringify(obj));
-
-      // PB compare
-      const curr = parseScore(obj.score);
-      const prev = JSON.parse(localStorage.getItem(NS+w.code+'.best')||'{}');
-      if(curr.type && betterScore(curr, prev)){
-        localStorage.setItem(NS+w.code+'.best', JSON.stringify(curr));
-      }
-      populateFromStore();
-
-      const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
-      localStorage.setItem(NS+'saves', total);
-      badgeEl.textContent = milestoneText(total);
+      const row = document.createElement('div');
+      row.className = 'mov';
+      const url = ytSearchURL(m.yt || (m.name + ' exercise form'));
+      row.innerHTML = `
+        <div class="mov-head">
+          <div class="mov-title"><a href="${url}" target="_blank" rel="noopener">${m.name}</a></div>
+          <div class="rx">${rx}</div>
+        </div>
+      `;
+      list.appendChild(row);
     });
 
-    // Simple countdown timer
-    (function(){
-      const sec  = blk.querySelector('[data-sec]');
-      const left = blk.querySelector('[data-left]');
-      let t=null, end=0;
-
-      function fmt(s){ s=Math.max(0,s|0); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
-      function tick(){
-        const remain = Math.max(0, Math.ceil((end - Date.now())/1000));
-        left.textContent = `Time left: ${fmt(remain)}`;
-        if(remain<=0){ clearInterval(t); t=null; left.textContent = 'Done!'; }
-      }
-      blk.querySelector('[data-start]').addEventListener('click', ()=>{
-        const secs = Math.max(30, parseInt(sec.value||w.preset||600,10));
-        end = Date.now()+secs*1000;
-        clearInterval(t); t=setInterval(tick, 200); tick();
-      });
-      blk.querySelector('[data-stop]').addEventListener('click', ()=>{
-        clearInterval(t); t=null; left.textContent = '';
-      });
-    })();
-
-    host.appendChild(blk);
+    blk.appendChild(list);
+    blk.insertAdjacentHTML('beforeend', `<p class="meta" style="margin:.35rem 0 0">${w.score}</p>`);
+    wrap.appendChild(blk);
   });
-}
-    
+}    
   /* ========= Helpers ========= */
   function bestScore(obj){
     let best = 0;

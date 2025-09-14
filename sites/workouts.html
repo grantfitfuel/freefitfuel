@@ -200,7 +200,30 @@
     {k:'dbcp',    n:'DB Clean & Press',               eq:'db',   yt:'dumbbell clean and press form'},
     {k:'manmaker',n:'Man Maker',                      eq:'db',   yt:'dumbbell man maker form'}
   ];
+/* Alternatives per movement (ordered by preference) */
+const ALTS = {
+  // PULL
+  chin:    ['doorrow','bandlat','bandrow'],           // bar → table/door row → bands
+  bandlat: ['doorrow','bandrow'],                     // if no band
+  csrow:   ['doorrow','bandrow'],                     // if no DBs
+  doorrow: ['bandrow','bandlat'],                     // if no sturdy surface
 
+  // PUSH / SHOULDERS
+  dbbench: ['pushup','dbfloor'],                      // no DB bench? floor/PU
+  dbfloor: ['pushup'],                                // no DBs
+  ohpress: ['pushup'],                                // no DBs
+  latraise:['ohpress','pushup'],                      // no DBs
+
+  // LEGS / CORE
+  stepup:  ['split','sidepl'],                        // no DBs/box
+  dbrdl:   ['split','sidepl'],                        // no DBs
+  split:   ['stepup','sidepl'],                       // if needed
+  sidepl:  [],
+
+  // FULL BODY
+  dbcp:    ['manmaker','pushup','doorrow'],           // no DBs
+  manmaker:['dbcp','pushup','doorrow']
+};
   /* Prescriptions per day by level (each item is a single, ungrouped movement) */
   const PLAN = {
     push:{

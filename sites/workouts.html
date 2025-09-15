@@ -178,49 +178,72 @@
   </footer>
 
   <script>
-/* ========= Storage namespace ========= */
+/* ========= NAMESPACE / PREFS ========= */
 const NS = 'fff.workouts.v1.';
+const PREFS_KEY = NS + 'prefs';
 
-/* ========= DATA ========= */
+function defaultPrefs(){
+  return {
+    level: 'beginner',
+    goal:  'maintain',
+    equip: { db:true, band:true, bw:true, rack:false, rings:false }
+  };
+}
+function loadPrefs(){
+  try{
+    const p = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');
+    const d = defaultPrefs();
+    return {
+      level: p.level || d.level,
+      goal:  p.goal  || d.goal,
+      equip: {...d.equip, ...(p.equip||{})}
+    };
+  }catch{ return defaultPrefs(); }
+}
+function savePrefs(prefs){
+  try{ localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); }catch{}
+}
+
+/* ========= DATA (no trademarked names; every exercise is standalone) ========= */
 const EXERCISES = [
   /* PUSH */
-  {k:'pushup',  n:'Push-up',                        eq:'bw',    yt:'push up form'},
-  {k:'dbfloor', n:'Dumbbell Floor Press',           eq:'db',    yt:'dumbbell floor press form'},
-  {k:'dbbench', n:'Dumbbell Bench Press',           eq:'db',    yt:'dumbbell bench press form'},
-  {k:'latraise',n:'Lateral Raise',                  eq:'db',    yt:'lateral raise form'},
-  {k:'ohpress', n:'Dumbbell Overhead Press',        eq:'db',    yt:'standing dumbbell overhead press form'},
+  {k:'pushup',  n:'Push-up',                        eq:'bw',   yt:'push up form'},
+  {k:'dbfloor', n:'Dumbbell Floor Press',           eq:'db',   yt:'dumbbell floor press form'},
+  {k:'dbbench', n:'Dumbbell Bench Press',           eq:'db',   yt:'dumbbell bench press form'},
+  {k:'latraise',n:'Lateral Raise',                  eq:'db',   yt:'lateral raise form'},
+  {k:'ohpress', n:'Dumbbell Overhead Press',        eq:'db',   yt:'standing dumbbell overhead press form'},
 
   /* PULL */
-  {k:'bandrow', n:'Band Row',                       eq:'band',  yt:'resistance band row form'},
-  {k:'doorrow', n:'Door/Table Row',                 eq:'bw',    yt:'bodyweight row at home form'},
-  {k:'bandlat', n:'Band Lat Pulldown',              eq:'band',  yt:'band lat pulldown form'},
-  {k:'csrow',   n:'Chest-Supported DB Row',         eq:'db',    yt:'chest supported dumbbell row form'},
-  {k:'chin',    n:'Chin-up (assisted if needed)',   eq:'rack',  yt:'chin up progression form'},
+  {k:'bandrow', n:'Band Row',                       eq:'band', yt:'resistance band row form'},
+  {k:'doorrow', n:'Door/Table Row',                 eq:'bw',   yt:'bodyweight row at home form'},
+  {k:'bandlat', n:'Band Lat Pulldown',              eq:'band', yt:'band lat pulldown form'},
+  {k:'csrow',   n:'Chest-Supported DB Row',         eq:'db',   yt:'chest supported dumbbell row form'},
+  {k:'chin',    n:'Chin-up (assisted if needed)',   eq:'rack', yt:'chin up progression form'},
 
   /* LEGS / CORE */
-  {k:'stepup',  n:'Step-up',                        eq:'db',    yt:'dumbbell step up form'},
-  {k:'dbrdl',   n:'Dumbbell Romanian Deadlift',     eq:'db',    yt:'dumbbell romanian deadlift form'},
-  {k:'split',   n:'Split Squat / Bulgarian',        eq:'db',    yt:'bulgarian split squat form'},
-  {k:'sidepl',  n:'Side Plank',                     eq:'bw',    yt:'side plank form'},
+  {k:'stepup',  n:'Step-up',                        eq:'db',   yt:'dumbbell step up form'},
+  {k:'dbrdl',   n:'Dumbbell Romanian Deadlift',     eq:'db',   yt:'dumbbell romanian deadlift form'},
+  {k:'split',   n:'Split Squat / Bulgarian',        eq:'db',   yt:'bulgarian split squat form'},
+  {k:'sidepl',  n:'Side Plank',                     eq:'bw',   yt:'side plank form'},
 
   /* FULL BODY */
-  {k:'dbcp',    n:'DB Clean & Press',               eq:'db',    yt:'dumbbell clean and press form'},
-  {k:'manmaker',n:'Man Maker',                      eq:'db',    yt:'dumbbell man maker form'},
+  {k:'dbcp',    n:'DB Clean & Press',               eq:'db',   yt:'dumbbell clean and press form'},
+  {k:'manmaker',n:'Man Maker',                      eq:'db',   yt:'dumbbell man maker form'},
 
-  /* BW helpers for circuits */
-  {k:'airsquat', n:'Air Squat',                     eq:'bw',    yt:'air squat form'},
-  {k:'jumprope', n:'Jump Rope',                     eq:'bw',    yt:'jump rope single unders form'},
-  {k:'situp',    n:'Sit-up',                        eq:'bw',    yt:'abmat sit up form'},
+  /* Simple BW used in circuits */
+  {k:'airsquat', n:'Air Squat',                     eq:'bw',   yt:'air squat form'},
+  {k:'jumprope', n:'Jump Rope',                     eq:'bw',   yt:'jump rope single unders form'},
+  {k:'situp',    n:'Sit-up',                        eq:'bw',   yt:'abmat sit up form'},
 
   /* RINGS */
-  {k:'ringrow',  n:'Ring Row',                      eq:'rings', yt:'gymnastic ring row form'},
-  {k:'ringdip',  n:'Ring Dip',                      eq:'rings', yt:'ring dip progression form'},
-  {k:'ringpush', n:'Ring Push-up',                  eq:'rings', yt:'ring push up form'},
-  {k:'ringsup',  n:'Ring Support Hold',             eq:'rings', yt:'ring support hold form'},
-  {k:'ringlsit', n:'Ring L-Sit (tuck→L)',           eq:'rings', yt:'ring l sit progression'}
+  {k:'ringrow',   n:'Ring Row',               eq:'rings', yt:'gymnastic ring row form'},
+  {k:'ringdip',   n:'Ring Dip',               eq:'rings', yt:'ring dip progression form'},
+  {k:'ringpush',  n:'Ring Push-up',           eq:'rings', yt:'ring push up form'},
+  {k:'ringsup',   n:'Ring Support Hold',      eq:'rings', yt:'ring support hold form'},
+  {k:'ringlsit',  n:'Ring L-Sit (tuck→L)',    eq:'rings', yt:'ring l sit progression'}
 ];
 
-/* ===== Alternatives (ordered) ===== */
+/* ===== Alternatives per movement (ordered by preference) ===== */
 const ALTS = {
   // PULL
   chin:     ['ringrow','doorrow','bandlat','bandrow'],
@@ -248,7 +271,7 @@ const ALTS = {
   manmaker: ['dbcp','pushup','doorrow']
 };
 
-/* ===== Weekly Split per level ===== */
+/* ===== Weekly Split (per level) ===== */
 const PLAN = {
   push:{
     beginner:     [{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15'}],
@@ -272,39 +295,51 @@ const PLAN = {
   }
 };
 
-/* ===== Calisthenics (each item uses ALTS via pickExerciseOrAlt) ===== */
+/* ========= Calisthenics (primary skill; equipment-aware via ALTS) ========= */
 const CAL = [
   {title:'Push', items:[
-    {k:'pushup',   name:'Push-up',      eq:'bw',
-     rxB:'Incline push-up — 3×8–12', rxI:'Flat push-up — 4×8–12', rxA:'Feet-elevated or ring push-up — 5×6–10'},
+    {k:'pushup',   name:'Push-up',    eq:'bw',
+     rxB:'Incline push-up — 3×8–12',
+     rxI:'Flat push-up — 4×8–12',
+     rxA:'Feet-elevated or ring push-up — 5×6–10'},
     {k:'ringpush', name:'Ring Push-up', eq:'rings',
-     rxB:'Rings high (inclined) — 3×8–12 (stable)',
-     rxI:'Rings mid-height — 4×8–12 (tempo 3–1–1)',
-     rxA:'Rings low / feet-elevated — 5×6–10 (slow negative)'}
+     rxB:'Rings high (inclined) — 3×8–12',
+     rxI:'Rings mid — 4×8–12 (tempo 3–1–1)',
+     rxA:'Rings low/feet-up — 5×6–10 (slow negative)'}
   ]},
   {title:'Pull', items:[
     {k:'doorrow',  name:'Bodyweight Row (table/door)', eq:'bw',
-     rxB:'Row (high angle) — 3×8–12', rxI:'Row (feet further) — 4×8–12', rxA:'Row (feet elevated) — 5×6–10'},
+     rxB:'Row (high angle) — 3×8–12',
+     rxI:'Row (feet further) — 4×8–12',
+     rxA:'Row (feet elevated) — 5×6–10'},
     {k:'ringrow',  name:'Ring Row', eq:'rings',
      rxB:'Rings high, knees bent — 3×8–12',
      rxI:'Rings mid, straight body — 4×8–12',
-     rxA:'Rings low, feet elevated — 5×6–10 (pause top 1s)'}
+     rxA:'Rings low, feet elevated — 5×6–10 (1s pause top)'}
   ]},
   {title:'Core / Stability', items:[
     {k:'sidepl',   name:'Side Plank', eq:'bw',
-     rxB:'3×25–40s/side', rxI:'3×35–50s/side', rxA:'3×45–60s/side (long lever)'},
+     rxB:'3×25–40s/side',
+     rxI:'3×35–50s/side',
+     rxA:'3×45–60s/side (long lever)'},
     {k:'ringsup',  name:'Ring Support Hold', eq:'rings',
-     rxB:'Support hold — 5×10–20s', rxI:'Support + knee raises — 4×6–10', rxA:'Support + tuck-to-L pulses — 4×6–8'},
+     rxB:'Support holds — 5×10–20s',
+     rxI:'Support + knee raises — 4×6–10',
+     rxA:'Support + tuck→L pulses — 4×6–8'},
     {k:'ringlsit', name:'Ring L-Sit (tuck→L)', eq:'rings',
-     rxB:'Tuck holds — 6×5–10s', rxI:'Advanced tuck — 5×5–10s', rxA:'Partial→full L-sit — 8–10×3–8s'}
+     rxB:'Tuck holds — 6×5–10s',
+     rxI:'Advanced tuck — 5×5–10s',
+     rxA:'Partial→full L — 8–10×3–8s'}
   ]},
   {title:'Legs', items:[
     {k:'stepup', name:'Step-up', eq:'db',
-     rxB:'Box just below knee — 3×8–12/leg', rxI:'Add load — 4×8–12/leg', rxA:'Higher box / tempo — 5×6–10/leg'}
+     rxB:'Box just below knee — 3×8–12/leg',
+     rxI:'Add load — 4×8–12/leg',
+     rxA:'Higher box / tempo pauses — 5×6–10/leg'}
   ]}
 ];
 
-/* ===== Cross-Training Circuits ===== */
+/* ========= Cross-Training Circuits ========= */
 const CIRCUITS = [
   {
     k:'amrap20-triplet',
@@ -314,11 +349,11 @@ const CIRCUITS = [
     scoreHint:'Score = rounds + extra reps',
     scoreType:'roundsreps',
     items:[
-      {k:'doorrow',  name:'Row / Pull-up', yt:'bodyweight row form',
+      {k:'doorrow',  name:'Row / Pull-up',   yt:'bodyweight row form',
        rx:{beginner:'3', intermediate:'5', advanced:'5'}},
-      {k:'pushup',   name:'Push-up',       yt:'push up form',
+      {k:'pushup',   name:'Push-up',         yt:'push up form',
        rx:{beginner:'6 (incline)', intermediate:'10', advanced:'10'}},
-      {k:'airsquat', name:'Air Squat',     yt:'air squat form',
+      {k:'airsquat', name:'Air Squat',       yt:'air squat form',
        rx:{beginner:'10', intermediate:'15', advanced:'15'}}
     ],
     tailNote:' — repeat for 20:00'
@@ -328,7 +363,7 @@ const CIRCUITS = [
     title:'Triplet — EMOM 30',
     desc:'Every minute for 30:00 do the triplet; rest in the remainder.',
     presetSec:1800,
-    scoreHint:'Score = minutes completed unbroken (or total completed minutes)',
+    scoreHint:'Score = minutes completed unbroken (or total minutes)',
     scoreType:'higher',
     items:[
       {k:'doorrow',  name:'Row / Pull-up', yt:'pull up strict form',
@@ -357,7 +392,7 @@ const CIRCUITS = [
   }
 ];
 
-/* ===== Quotes ===== */
+/* ========= QUOTES ========= */
 const QUOTES = [
   "Small wins compound. Log the set, own the day.",
   "Perfect form, steady breath, then add a little.",
@@ -366,51 +401,42 @@ const QUOTES = [
   "Show up. Scale smart. Keep going."
 ];
 
-/* ========= State (restored) ========= */
-let level = localStorage.getItem(NS+'ui.level') || 'beginner';
-let goal  = localStorage.getItem(NS+'ui.goal')  || 'maintain';
-const FILTER_DEFAULTS = {db:true, band:true, bw:true, rack:false, rings:false};
-function loadFilter(name){
-  const v = localStorage.getItem(NS+'ui.f.'+name);
-  if(v===null) return FILTER_DEFAULTS[name];
-  return v==='1';
-}
+/* ========= STATE (from prefs) ========= */
+let PREFS = loadPrefs();
+let level = PREFS.level;
+let goal  = PREFS.goal;
 
-/* ========= DOM helpers ========= */
-function $(sel,root=document){ return root.querySelector(sel); }
-function $all(sel,root=document){ return Array.from(root.querySelectorAll(sel)); }
-function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }
-
-/* ========= Filters object (live) ========= */
+/* ========= DOM HELPERS ========= */
 function filters(){
-  // tolerate missing inputs on first paint
+  // read from checkbox DOM; if missing, fall back to prefs
+  const d = PREFS.equip;
   return {
-    db:   $('#f-db')?.checked   ?? loadFilter('db'),
-    band: $('#f-band')?.checked ?? loadFilter('band'),
-    bw:   $('#f-bw')?.checked   ?? loadFilter('bw'),
-    rack: $('#f-rack')?.checked ?? loadFilter('rack'),
-    rings:$('#f-rings')?.checked?? loadFilter('rings')
+    db:    document.getElementById('f-db')?.checked    ?? d.db,
+    band:  document.getElementById('f-band')?.checked  ?? d.band,
+    bw:    document.getElementById('f-bw')?.checked    ?? d.bw,
+    rack:  document.getElementById('f-rack')?.checked  ?? d.rack,
+    rings: document.getElementById('f-rings')?.checked ?? d.rings
   };
 }
-
-/* ========= Equipment gating & alternatives ========= */
-function gearOK(ex){ return !!filters()[ex.eq]; }
-function findExerciseByKey(k){ return EXERCISES.find(e=>e.k===k); }
-
-/** Returns {ex, isAlt} suitable for current filters */
-function pickExerciseOrAlt(primaryKey){
-  let ex = findExerciseByKey(primaryKey);
-  if(ex && gearOK(ex)) return {ex, isAlt:false};
-  const tries = (ALTS[primaryKey]||[])
-    .map(findExerciseByKey)
-    .filter(Boolean);
-  for(const cand of tries){
-    if(gearOK(cand)) return {ex:cand, isAlt:true};
-  }
-  return {ex:null, isAlt:false};
+function applyPrefsToUI(){
+  // Difficulty buttons
+  document.querySelectorAll('.seg [data-level]').forEach(b=>{
+    b.setAttribute('aria-pressed', b.dataset.level===PREFS.level ? 'true' : 'false');
+  });
+  // Goal buttons
+  document.querySelectorAll('.seg [data-goal]').forEach(b=>{
+    b.setAttribute('aria-pressed', b.dataset.goal===PREFS.goal ? 'true' : 'false');
+  });
+  // Equipment checkboxes
+  const e = PREFS.equip;
+  const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.checked = !!val; };
+  set('f-db',   e.db);
+  set('f-band', e.band);
+  set('f-bw',   e.bw);
+  set('f-rack', e.rack);
+  set('f-rings',e.rings);
 }
-
-/* ========= Goal tweaks ========= */
+function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }
 function applyGoal(rx){
   if(goal==='cut')       return rx+' · short rests';
   if(goal==='build')     return rx.replace(/(\d+)×/,(m,n)=>(+n+1)+'×')+' · add load';
@@ -418,24 +444,44 @@ function applyGoal(rx){
   return rx;
 }
 
-/* ========= RENDER: Weekly Split ========= */
+/* ========= ALT / PICK HELPERS ========= */
+function findExerciseByKey(k){ return EXERCISES.find(e=>e.k===k); }
+function gearOK(ex){ return !!filters()[ex.eq]; }
+/** Returns {ex, isAlt} or {ex:null,isAlt:false} if nothing fits */
+function pickExerciseOrAlt(primaryKey){
+  let ex = findExerciseByKey(primaryKey);
+  if(ex && gearOK(ex)) return {ex, isAlt:false};
+  const tries = (ALTS[primaryKey]||[])
+    .map(k=>findExerciseByKey(k))
+    .filter(Boolean);
+  for(const cand of tries){
+    if(gearOK(cand)) return {ex:cand, isAlt:true};
+  }
+  return {ex:null, isAlt:false};
+}
+
+/* ========= RENDER: WEEKLY SPLIT ========= */
 const planEl = document.getElementById('plan');
+
 function renderPlan(){
   planEl.innerHTML = '';
   const groups = [
-    ['push','Push Day'],
-    ['pull','Pull Day'],
-    ['legs','Legs / Core Day'],
-    ['full','Full-Body Day']
+    ['push', 'Push Day'],
+    ['pull', 'Pull Day'],
+    ['legs', 'Legs / Core Day'],
+    ['full', 'Full-Body Day']
   ];
+
   groups.forEach(([key,label])=>{
     const blk = document.createElement('div');
     blk.className = 'block';
     blk.innerHTML = `<h3>${label}</h3>`;
+
     PLAN[key][level].forEach(item=>{
       const pick = pickExerciseOrAlt(item.k);
       if(!pick.ex) return;
       const ex = pick.ex;
+
       const row = document.createElement('div');
       row.className = 'mov';
       row.innerHTML = `
@@ -469,21 +515,24 @@ function renderPlan(){
             <span class="badge" data-badge></span>
           </div>
           <div class="quote" data-quote></div>
-        </div>`;
+        </div>
+      `;
+
       // wiring
       const drawer = row.querySelector('[data-drawer]');
-      addRestTimer(drawer, (ex?.k || item.k));
       row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
       row.querySelector('[data-clear]').addEventListener('click', ()=>{
         localStorage.removeItem(NS+ex.k);
         localStorage.removeItem(NS+ex.k+'.best');
         populateFromStore();
-        flash(row.querySelector('[data-quote]'), 'Cleared. Fresh start.');
+        flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
       });
+
       const logArea = row.querySelector('[data-log]');
       const pbEl    = row.querySelector('[data-pb]');
       const badgeEl = row.querySelector('[data-badge]');
       const quoteEl = row.querySelector('[data-quote]');
+
       function populateFromStore(){
         const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
         logArea.querySelectorAll('[data-field]').forEach(inp=>{
@@ -495,6 +544,7 @@ function renderPlan(){
         badgeEl.textContent = milestoneText();
       }
       populateFromStore();
+
       logArea.querySelectorAll('[data-save]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const obj = {};
@@ -502,27 +552,32 @@ function renderPlan(){
             obj[inp.dataset.field] = inp.value.trim();
           });
           localStorage.setItem(NS+ex.k, JSON.stringify(obj));
+
           const bestNow = bestScore(obj);
           const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
           if(bestNow > bestWas){
             localStorage.setItem(NS+ex.k+'.best', bestNow);
             pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
+            flash(quoteEl, pick(QUOTES));
           }else{
             pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
+            flash(quoteEl, pick(QUOTES));
           }
+
           const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
           localStorage.setItem(NS+'saves', total);
           badgeEl.textContent = milestoneText(total);
-          flash(quoteEl, pick(QUOTES));
         });
       });
+
       blk.appendChild(row);
     });
+
     planEl.appendChild(blk);
   });
 }
 
-/* ========= RENDER: Calisthenics ========= */
+/* ========= RENDER: CALISTHENICS ========= */
 function renderCal(){
   const calEl = document.getElementById('cal');
   if(!calEl) return;
@@ -532,6 +587,7 @@ function renderCal(){
     const blk = document.createElement('div');
     blk.className = 'block';
     blk.innerHTML = `<h3>${group.title}</h3>`;
+
     group.items.forEach(item=>{
       const pick = pickExerciseOrAlt(item.k);
       if(!pick.ex) return;
@@ -565,8 +621,8 @@ function renderCal(){
               <div class="log-row">
                 <strong>Set ${i}</strong>
                 <input inputmode="decimal" placeholder="kg/mins" data-field="w${i}">
-                <input inputmode="numeric"  placeholder="reps/RPE" data-field="r${i}">
-                <input placeholder="notes"   data-field="n${i}">
+                <input inputmode="numeric" placeholder="reps/RPE" data-field="r${i}">
+                <input placeholder="notes" data-field="n${i}">
                 <button class="btn-sm" data-save>Save</button>
               </div>
             `).join('')}
@@ -576,20 +632,23 @@ function renderCal(){
             <span class="badge" data-badge></span>
           </div>
           <div class="quote" data-quote></div>
-        </div>`;
+        </div>
+      `;
 
-      const drawer = row.querySelector('[data-addRestTimer(drawer, (ex?.k || item.k));
+      const drawer = row.querySelector('[data-drawer]');
       row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
       row.querySelector('[data-clear]').addEventListener('click', ()=>{
         localStorage.removeItem(NS+ex.k);
         localStorage.removeItem(NS+ex.k+'.best');
         populateFromStore();
-        flash(row.querySelector('[data-quote]'), 'Cleared. Fresh start.');
+        flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
       });
+
       const logArea = row.querySelector('[data-log]');
       const pbEl    = row.querySelector('[data-pb]');
       const badgeEl = row.querySelector('[data-badge]');
       const quoteEl = row.querySelector('[data-quote]');
+
       function populateFromStore(){
         const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
         logArea.querySelectorAll('[data-field]').forEach(inp=>{
@@ -601,6 +660,7 @@ function renderCal(){
         badgeEl.textContent = milestoneText();
       }
       populateFromStore();
+
       logArea.querySelectorAll('[data-save]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           const obj = {};
@@ -608,27 +668,32 @@ function renderCal(){
             obj[inp.dataset.field] = inp.value.trim();
           });
           localStorage.setItem(NS+ex.k, JSON.stringify(obj));
+
           const bestNow = bestScore(obj);
           const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
           if(bestNow > bestWas){
             localStorage.setItem(NS+ex.k+'.best', bestNow);
             pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
+            flash(quoteEl, pick(QUOTES));
           }else{
             pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
+            flash(quoteEl, pick(QUOTES));
           }
+
           const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
           localStorage.setItem(NS+'saves', total);
           badgeEl.textContent = milestoneText(total);
-          flash(quoteEl, pick(QUOTES));
         });
       });
+
       blk.appendChild(row);
     });
+
     calEl.appendChild(blk);
   });
 }
 
-/* ========= RENDER: Cross-Training Circuits ========= */
+/* ========= RENDER: CIRCUITS ========= */
 function renderCircuits(){
   const wrap = document.getElementById('circuits');
   if(!wrap) return;
@@ -651,6 +716,7 @@ function renderCircuits(){
     blk.innerHTML = `
       <h3>${c.title}</h3>
       <p class="meta">${c.desc}</p>
+
       <div class="mov">
         <div class="mov-head">
           <div class="mov-title"><span>${presc}${c.tailNote||''}</span></div>
@@ -660,6 +726,7 @@ function renderCircuits(){
             <button class="btn-sm" data-clear title="Clear saved attempts">Clear</button>
           </div>
         </div>
+
         <div class="drawer" data-drawer>
           <div class="log-grid" data-log>
             ${[1,2,3,4,5].map(i=>`
@@ -672,11 +739,13 @@ function renderCircuits(){
               </div>
             `).join('')}
           </div>
+
           <div class="meta-row">
             <span class="pb" data-pb></span>
             <span class="badge" data-badge></span>
           </div>
           <div class="quote" data-quote></div>
+
           <div class="timer" data-timer="${c.k}">
             <label class="visually-hidden" for="t-${c.k}">Timer (seconds)</label>
             <input id="t-${c.k}" type="number" min="5" step="5" value="${c.presetSec}">
@@ -685,9 +754,9 @@ function renderCircuits(){
             <span class="left" aria-live="polite">${c.presetSec}s</span>
           </div>
         </div>
-      </div>`;
+      </div>
+    `;
 
-    // wiring
     const drawer  = blk.querySelector('[data-drawer]');
     const openBtn = blk.querySelector('[data-open]');
     const clrBtn  = blk.querySelector('[data-clear]');
@@ -709,7 +778,7 @@ function renderCircuits(){
           ? (parseInt(time.split(':')[0],10)*60 + parseInt(time.split(':')[1],10))
           : 0;
         let s = 0;
-        if(c.scoreType==='lower' && sec>0) s = 100000 - sec;
+        if(c.scoreType==='lower' && sec>0) s = 100000 - sec;  // lower is better
         else s = rounds + reps/1000;
         best = Math.max(best, s);
       }
@@ -760,7 +829,7 @@ function renderCircuits(){
   });
 }
 
-/* ========= Helpers ========= */
+/* ========= MISC HELPERS ========= */
 function bestScore(obj){
   let best = 0;
   for(let i=1;i<=5;i++){
@@ -788,69 +857,7 @@ function flash(el, text){
   setTimeout(()=>{ el.style.opacity='.92'; }, 50);
 }
 
-/* ========= UI Persistence: write on change, restore on load ========= */
-function saveUI(){
-  localStorage.setItem(NS+'ui.level', level);
-  localStorage.setItem(NS+'ui.goal',  goal);
-  const f = filters();
-  Object.keys(f).forEach(name=>{
-    localStorage.setItem(NS+'ui.f.'+name, f[name] ? '1':'0');
-  });
-}
-function restoreUIToControls(){
-  // difficulty buttons
-  $all('.seg [data-level]').forEach(b=>{
-    const on = b.dataset.level===level;
-    b.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
-  // goal buttons
-  $all('.seg [data-goal]').forEach(b=>{
-    const on = b.dataset.goal===goal;
-    b.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
-  // equipment checkboxes
-  const f = {
-    db:   loadFilter('db'),
-    band: loadFilter('band'),
-    bw:   loadFilter('bw'),
-    rack: loadFilter('rack'),
-    rings:loadFilter('rings')
-  };
-  if($('#f-db'))    $('#f-db').checked    = f.db;
-  if($('#f-band'))  $('#f-band').checked  = f.band;
-  if($('#f-bw'))    $('#f-bw').checked    = f.bw;
-  if($('#f-rack'))  $('#f-rack').checked  = f.rack;
-  if($('#f-rings')) $('#f-rings').checked = f.rings;
-}
-
-/* ========= Event bindings (with persistence) ========= */
-function bindControls(){
-  // Difficulty
-  $all('.seg [data-level]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      $all('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-      level = b.dataset.level;
-      saveUI(); renderPlan(); renderCal(); renderCircuits();
-    });
-  });
-  // Goal
-  $all('.seg [data-goal]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      $all('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-      goal = b.dataset.goal;
-      saveUI(); renderPlan(); renderCal(); renderCircuits();
-    });
-  });
-  // Equipment
-  ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('change', ()=>{ saveUI(); renderPlan(); renderCal(); renderCircuits(); });
-  });
-}
-
-/* ========= Export / Import ========= */
+/* ========= EXPORT / IMPORT ========= */
 document.getElementById('btnExport')?.addEventListener('click', ()=>{
   const dump = {};
   for(let i=0;i<localStorage.length;i++){
@@ -864,6 +871,7 @@ document.getElementById('btnExport')?.addEventListener('click', ()=>{
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
 });
+
 document.getElementById('importFile')?.addEventListener('change', (e)=>{
   const file = e.target.files?.[0]; if(!file) return;
   const reader = new FileReader();
@@ -874,10 +882,6 @@ document.getElementById('importFile')?.addEventListener('change', (e)=>{
         if(k.startsWith(NS)) localStorage.setItem(k, obj[k]);
       });
       alert('Logs imported ✅');
-      // reload UI prefs after import in case user imported UI keys
-      level = localStorage.getItem(NS+'ui.level') || level;
-      goal  = localStorage.getItem(NS+'ui.goal')  || goal;
-      restoreUIToControls();
       renderPlan(); renderCal(); renderCircuits();
     }catch{
       alert('Import failed — invalid file.');
@@ -885,175 +889,44 @@ document.getElementById('importFile')?.addEventListener('change', (e)=>{
   };
   reader.readAsText(file);
 });
-/* ========= Beep utility (Web Audio API) ========= */
-function playBeep(times=1, freq=880, dur=160){
-  try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    let when = ctx.currentTime;
-    for(let i=0;i<times;i++){
-      const o=ctx.createOscillator(), g=ctx.createGain();
-      o.type='sine'; o.frequency.setValueAtTime(freq, when);
-      g.gain.setValueAtTime(0.0001, when);
-      g.gain.exponentialRampToValueAtTime(0.15, when+0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, when+dur/1000);
-      o.connect(g).connect(ctx.destination);
-      o.start(when); o.stop(when+dur/1000+0.02);
-      when += (dur+80)/1000;
-    }
-  }catch(e){ /* ignore if blocked */ }
-}
 
-/* ========= Circuit timers (hook existing [data-timer]) ========= */
-
-/* Replace your existing hookTimers() with this upgraded version */
-function hookTimers(){
-  const nodes = document.querySelectorAll('[data-timer]');
-  if(!nodes.length) return;
-
-  nodes.forEach(box=>{
-    if(box.__wired) return; box.__wired = true;
-
-    const input   = box.querySelector('input[type="number"]');
-    const span    = box.querySelector('.left');
-    const btnStart= box.querySelector('[data-act="start"]');
-    const btnStop = box.querySelector('[data-act="stop"]');
-
-    let t=null, left=+input.value||0, pre=null, preLeft=PRE_ROLL;
-
-    function tickMain(){
-      left = Math.max(0, left-1);
-      span.textContent = left+'s';
-      if(left===0){ clearInterval(t); t=null; playBeep(2); }
-    }
-
-    function stopAll(){
-      if(pre){ clearInterval(pre); pre=null; }
-      if(t){ clearInterval(t); t=null; }
-    }
-
-    btnStart.addEventListener('click', ()=>{
-      if(t || pre) return;                    // already running
-      left = +input.value||0;
-      if(left<=0) return;
-
-      // 3-2-1 pre-roll
-      preLeft = PRE_ROLL;
-      span.textContent = `Starting in ${preLeft}…`;
-      playBeep(1, 1000, 100);
-
-      pre = setInterval(()=>{
-        preLeft--;
-        if(preLeft>0){
-          span.textContent = `Starting in ${preLeft}…`;
-          playBeep(1, 1000, 100);
-        }else{
-          clearInterval(pre); pre=null;
-          span.textContent = left+'s';
-          playBeep(1, 1200, 140);            // go beep
-          t = setInterval(tickMain, 1000);   // start main timer
-        }
-      }, 1000);
-    });
-
-    btnStop.addEventListener('click', ()=>{
-      stopAll();
-      playBeep(1, 600, 80);
+/* ========= CONTROLS WIRING (persists prefs) ========= */
+function wireControls(){
+  // Difficulty
+  document.querySelectorAll('.seg [data-level]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      level = b.dataset.level;
+      PREFS.level = level; savePrefs(PREFS);
+      renderPlan(); renderCal(); renderCircuits();
     });
   });
-}}
-
-/* ========= Per-exercise REST timer (inserted into each drawer) ========= */
-function addRestTimer(drawerEl, storageKey){
-  if(!drawerEl || drawerEl.querySelector('.restbar')) return; // already added
-
-  const wrap = document.createElement('div');
-  wrap.className = 'restbar';
-  const sel = document.createElement('select');
-  sel.setAttribute('data-rest','');
-  [30,45,60,90,120].forEach(s=>{
-    const o = document.createElement('option');
-    o.value = s; o.textContent = `${s}s`;
-    sel.appendChild(o);
+  // Goal
+  document.querySelectorAll('.seg [data-goal]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+      goal = b.dataset.goal;
+      PREFS.goal = goal; savePrefs(PREFS);
+      renderPlan(); renderCal(); renderCircuits();
+    });
   });
-
-  // restore last choice
-  const REST_KEY = NS + storageKey + '.rest';
-  const saved = parseInt(localStorage.getItem(REST_KEY)||'60',10);
-  if([30,45,60,90,120].includes(saved)) sel.value = String(saved);
-
-  const bStart = document.createElement('button');
-  bStart.className='btn-sm';
-  bStart.textContent='Rest';
-  bStart.title='Start rest countdown';
-
-  const bStop = document.createElement('button');
-  bStop.className='btn-sm';
-  bStop.textContent='Stop';
-
-  const left = document.createElement('span');
-  left.className='left';
-  left.textContent='ready';
-
-  wrap.append('Rest:', sel, bStart, bStop, left);
-  drawerEl.appendChild(wrap);
-
-  let t=null, cur=0;
-  function tick(){
-    cur = Math.max(0, cur-1);
-    left.textContent = cur+'s';
-    if(cur===0){ clearInterval(t); t=null; playBeep(2,1000,140); }
-  }
-  bStart.addEventListener('click', ()=>{
-    const secs = parseInt(sel.value, 10) || 60;
-    localStorage.setItem(REST_KEY, String(secs));
-    cur = secs;
-    left.textContent = cur+'s';
-    if(t) clearInterval(t);
-    t = setInterval(tick, 1000);
-    playBeep(1, 1200, 120);
-  });
-  bStop.addEventListener('click', ()=>{ if(t){ clearInterval(t); t=null; playBeep(1,600,80);} });
-}
-
-/* Find all log drawers and install a rest timer keyed to the exercise shown */
-function installRestTimers(){
-  document.querySelectorAll('.mov .drawer').forEach(drawer=>{
-    // key by closest movement title text’s data or fallback: derive from link href query
-    const titleA = drawer.closest('.mov')?.querySelector('.mov-title a');
-    // Try to grab the exercise key from previous wiring: we stored under NS+ex.k in handlers.
-    // Easiest reliable key: use the first Save button’s dataset path to its nearest fields.
-    // We’ll allow override via data-exk if present in future; fallback to sanitized link text.
-    let k = drawer.getAttribute('data-exk');
-    if(!k && titleA){
-      k = (titleA.textContent||'').toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,24) || 'ex';
-    }
-    addRestTimer(drawer, k);
+  // Equipment
+  ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('change', ()=>{
+      PREFS.equip = filters();
+      savePrefs(PREFS);
+      renderPlan(); renderCal(); renderCircuits();
+    });
   });
 }
 
-/* ========= Reset-all (delete every NS key) ========= */
-document.getElementById('btnResetAll')?.addEventListener('click', ()=>{
-  const ok = confirm('This will delete ALL FreeFitFuel logs and PBs stored on this device. Continue?');
-  if(!ok) return;
-  const toDelete = [];
-  for(let i=0;i<localStorage.length;i++){
-    const k = localStorage.key(i);
-    if(k && k.startsWith(NS)) toDelete.push(k);
-  }
-  toDelete.forEach(k=>localStorage.removeItem(k));
-  alert('All FreeFitFuel logs cleared ✅');
-  // re-render UI to reflect clears
-  renderPlan(); renderCal(); renderCircuits();
-  // reinstall rest timers (fresh drawers)
-  setTimeout(()=>{ installRestTimers(); hookTimers(); }, 0);
-});
-
-/* ========= Reinstall timers whenever content changes ========= */
-/* Call once on initial mount too (after your first renderPlan/renderCal/renderCircuits). */
-setTimeout(()=>{ installRestTimers(); hookTimers(); }, 0);
-/* ========= Mount ========= */
-restoreUIToControls();
-bindControls();
+/* ========= MOUNT ========= */
+applyPrefsToUI();  // set UI from saved prefs (before first render)
+wireControls();    // attach handlers (after UI set)
 renderPlan();
 renderCal();
 renderCircuits();

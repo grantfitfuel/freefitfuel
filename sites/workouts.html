@@ -58,7 +58,7 @@
     .meta-row .badge{border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;background:rgba(255,255,255,.06)}
     .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
 
-    /* Export/import */
+    /* Export/import + timers */
     .backup{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 0}
     .backup .btn-sm{white-space:nowrap}
     .restbar{display:flex;align-items:center;gap:.4rem;margin-top:.4rem;flex-wrap:wrap}
@@ -66,20 +66,20 @@
     .timer .left{margin-left:.4rem;opacity:.9}
   </style>
   <title>FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands</title>
-<meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
+  <meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
 
-<!-- OpenGraph -->
-<meta property="og:title" content="FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands">
-<meta property="og:description" content="Weekly splits, calisthenics progressions & cross-training circuits. Log reps, save PBs & build consistency.">
-<meta property="og:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://www.freefitfuel.com/workouts.html">
+  <!-- OpenGraph -->
+  <meta property="og:title" content="FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands">
+  <meta property="og:description" content="Weekly splits, calisthenics progressions & cross-training circuits. Log reps, save PBs & build consistency.">
+  <meta property="og:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.freefitfuel.com/workouts.html">
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands">
-<meta name="twitter:description" content="Free structured workouts. Track PBs. Train anywhere with dumbbells, bands & bodyweight.">
-<meta name="twitter:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands">
+  <meta name="twitter:description" content="Free structured workouts. Track PBs. Train anywhere with dumbbells, bands & bodyweight.">
+  <meta name="twitter:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
 </head>
 <body>
   <!-- Shared header -->
@@ -153,14 +153,14 @@
     </section>
 
     <!-- ===== Cross Training (Chunk 3) ===== -->
-<section class="section" id="circuits-section">
-  <h2>Cross-Training Circuits</h2>
-  <div id="circuits" class="plan"></div>
-  <p class="meta">
-    Simple formats to build engine and grit. Click any exercise name for a YouTube form search.
-    FreeFitFuel is not affiliated with any third-party fitness brand.
-  </p>
-</section>
+    <section class="section" id="circuits-section">
+      <h2>Cross-Training Circuits</h2>
+      <div id="circuits" class="plan"></div>
+      <p class="meta">
+        Simple formats to build engine and grit. Click any exercise name for a YouTube form search.
+        FreeFitFuel is not affiliated with any third-party fitness brand.
+      </p>
+    </section>
 
     <section class="section">
       <h2>Important Note</h2>
@@ -408,7 +408,6 @@ let goal  = PREFS.goal;
 
 /* ========= DOM HELPERS ========= */
 function filters(){
-  // read from checkbox DOM; if missing, fall back to prefs
   const d = PREFS.equip;
   return {
     db:    document.getElementById('f-db')?.checked    ?? d.db,
@@ -419,15 +418,12 @@ function filters(){
   };
 }
 function applyPrefsToUI(){
-  // Difficulty buttons
   document.querySelectorAll('.seg [data-level]').forEach(b=>{
     b.setAttribute('aria-pressed', b.dataset.level===PREFS.level ? 'true' : 'false');
   });
-  // Goal buttons
   document.querySelectorAll('.seg [data-goal]').forEach(b=>{
     b.setAttribute('aria-pressed', b.dataset.goal===PREFS.goal ? 'true' : 'false');
   });
-  // Equipment checkboxes
   const e = PREFS.equip;
   const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.checked = !!val; };
   set('f-db',   e.db);
@@ -829,6 +825,61 @@ function renderCircuits(){
   });
 }
 
+/* ========= TIMER WIRING (for circuit drawers) ========= */
+function hookTimers(){
+  document.querySelectorAll('.timer').forEach(box=>{
+    if (box.dataset.bound === '1') return; // avoid rebinding on re-render
+    box.dataset.bound = '1';
+
+    const input  = box.querySelector('input[type="number"]');
+    const leftEl = box.querySelector('.left');
+    const start  = box.querySelector('[data-act="start"]');
+    const stop   = box.querySelector('[data-act="stop"]');
+    let tick = null;
+
+    function fmt(sec){
+      sec = Math.max(0, Math.floor(Number(sec)||0));
+      const m = Math.floor(sec/60), s = sec%60;
+      return m > 0 ? `${m}:${String(s).padStart(2,'0')}` : `${s}s`;
+    }
+    function show(sec){ leftEl.textContent = fmt(sec); }
+
+    // init from input value
+    show(parseInt(input?.value||'0',10));
+
+    start?.addEventListener('click', ()=>{
+      let remaining = Math.max(5, parseInt(input?.value||'0',10) || 0);
+      clearInterval(tick);
+      show(remaining);
+      tick = setInterval(()=>{
+        remaining -= 1;
+        show(remaining);
+        if(remaining <= 0){
+          clearInterval(tick);
+          leftEl.textContent = 'Done!';
+          // small visual cue
+          box.animate([{opacity:1},{opacity:.3},{opacity:1}], {duration:600, iterations:2});
+          try{
+            const ctx = new (window.AudioContext||window.webkitAudioContext)();
+            const o = ctx.createOscillator(); const g = ctx.createGain();
+            o.type='sine'; o.frequency.value=880; g.gain.value=0.02;
+            o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop(); ctx.close();}, 180);
+          }catch{}
+        }
+      }, 1000);
+    });
+
+    stop?.addEventListener('click', ()=>{
+      clearInterval(tick);
+      show(parseInt(input?.value||'0',10));
+    });
+
+    input?.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){ start?.click(); }
+    });
+  });
+}
+
 /* ========= MISC HELPERS ========= */
 function bestScore(obj){
   let best = 0;
@@ -857,7 +908,7 @@ function flash(el, text){
   setTimeout(()=>{ el.style.opacity='.92'; }, 50);
 }
 
-/* ========= EXPORT / IMPORT ========= */
+/* ========= EXPORT / IMPORT / RESET ========= */
 document.getElementById('btnExport')?.addEventListener('click', ()=>{
   const dump = {};
   for(let i=0;i<localStorage.length;i++){
@@ -888,6 +939,21 @@ document.getElementById('importFile')?.addEventListener('change', (e)=>{
     }
   };
   reader.readAsText(file);
+});
+
+document.getElementById('btnResetAll')?.addEventListener('click', ()=>{
+  if(!confirm('Delete all saved logs, PBs and preferences?')) return;
+  const keys = [];
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(k && k.startsWith(NS)) keys.push(k);
+  }
+  keys.forEach(k=>localStorage.removeItem(k));
+  localStorage.removeItem(PREFS_KEY);
+  PREFS = loadPrefs();
+  applyPrefsToUI();
+  renderPlan(); renderCal(); renderCircuits();
+  alert('All logs & prefs cleared.');
 });
 
 /* ========= CONTROLS WIRING (persists prefs) ========= */
@@ -925,8 +991,8 @@ function wireControls(){
 }
 
 /* ========= MOUNT ========= */
-applyPrefsToUI();  // set UI from saved prefs (before first render)
-wireControls();    // attach handlers (after UI set)
+applyPrefsToUI();      // set UI from saved prefs (before first render)
+wireControls();        // attach handlers (after UI set)
 renderPlan();
 renderCal();
 renderCircuits();

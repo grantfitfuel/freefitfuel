@@ -472,6 +472,7 @@ function renderPlan(){
         </div>`;
       // wiring
       const drawer = row.querySelector('[data-drawer]');
+      addRestTimer(drawer, (ex?.k || item.k));
       row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
       row.querySelector('[data-clear]').addEventListener('click', ()=>{
         localStorage.removeItem(NS+ex.k);
@@ -576,7 +577,8 @@ function renderCal(){
           </div>
           <div class="quote" data-quote></div>
         </div>`;
-      const drawer = row.querySelector('[data-drawer]');
+
+      const drawer = row.querySelector('[data-addRestTimer(drawer, (ex?.k || item.k));
       row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
       row.querySelector('[data-clear]').addEventListener('click', ()=>{
         localStorage.removeItem(NS+ex.k);

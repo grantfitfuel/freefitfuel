@@ -177,211 +177,161 @@
     </div>
   </footer>
 
-  <script>
+<script>
 /* ========= NAMESPACE / PREFS ========= */
 const NS = 'fff.workouts.v1.';
 const PREFS_KEY = NS + 'prefs';
 
 function defaultPrefs(){
-  return {
-    level: 'beginner',
-    goal:  'maintain',
-    equip: { db:true, band:true, bw:true, rack:false, rings:false }
-  };
+  return { level:'beginner', goal:'maintain',
+    equip:{ db:true, band:true, bw:true, rack:false, rings:false } };
 }
 function loadPrefs(){
   try{
-    const p = JSON.parse(localStorage.getItem(PREFS_KEY)||'{}');
+    const p = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');
     const d = defaultPrefs();
-    return {
-      level: p.level || d.level,
-      goal:  p.goal  || d.goal,
-      equip: {...d.equip, ...(p.equip||{})}
-    };
+    return { level: p.level || d.level, goal: p.goal || d.goal, equip:{...d.equip, ...(p.equip||{})} };
   }catch{ return defaultPrefs(); }
 }
-function savePrefs(p){ try{ localStorage.setItem(PREFS_KEY, JSON.stringify(p)); }catch{} }
+function savePrefs(prefs){ try{ localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); }catch{} }
 
-/* ========= DATA ========= */
+/* ========= DATA (no brand names) ========= */
 const EXERCISES = [
   /* PUSH */
-  {k:'pushup',  n:'Push-up',                        eq:'bw',   yt:'push up form'},
-  {k:'dbfloor', n:'Dumbbell Floor Press',           eq:'db',   yt:'dumbbell floor press form'},
-  {k:'dbbench', n:'Dumbbell Bench Press',           eq:'db',   yt:'dumbbell bench press form'},
-  {k:'latraise',n:'Lateral Raise',                  eq:'db',   yt:'lateral raise form'},
-  {k:'ohpress', n:'Dumbbell Overhead Press',        eq:'db',   yt:'standing dumbbell overhead press form'},
-
+  {k:'pushup',  n:'Push-up', eq:'bw',   yt:'push up form'},
+  {k:'dbfloor', n:'Dumbbell Floor Press', eq:'db', yt:'dumbbell floor press form'},
+  {k:'dbbench', n:'Dumbbell Bench Press', eq:'db', yt:'dumbbell bench press form'},
+  {k:'latraise',n:'Lateral Raise', eq:'db', yt:'lateral raise form'},
+  {k:'ohpress', n:'Dumbbell Overhead Press', eq:'db', yt:'standing dumbbell overhead press form'},
   /* PULL */
-  {k:'bandrow', n:'Band Row',                       eq:'band', yt:'resistance band row form'},
-  {k:'doorrow', n:'Door/Table Row',                 eq:'bw',   yt:'bodyweight row at home form'},
-  {k:'bandlat', n:'Band Lat Pulldown',              eq:'band', yt:'band lat pulldown form'},
-  {k:'csrow',   n:'Chest-Supported DB Row',         eq:'db',   yt:'chest supported dumbbell row form'},
-  {k:'chin',    n:'Chin-up (assisted if needed)',   eq:'rack', yt:'chin up progression form'},
-
+  {k:'bandrow', n:'Band Row', eq:'band', yt:'resistance band row form'},
+  {k:'doorrow', n:'Door/Table Row', eq:'bw', yt:'bodyweight row at home form'},
+  {k:'bandlat', n:'Band Lat Pulldown', eq:'band', yt:'band lat pulldown form'},
+  {k:'csrow',   n:'Chest-Supported DB Row', eq:'db', yt:'chest supported dumbbell row form'},
+  {k:'chin',    n:'Chin-up (assisted if needed)', eq:'rack', yt:'chin up progression form'},
   /* LEGS / CORE */
-  {k:'stepup',  n:'Step-up',                        eq:'db',   yt:'dumbbell step up form'},
-  {k:'dbrdl',   n:'Dumbbell Romanian Deadlift',     eq:'db',   yt:'dumbbell romanian deadlift form'},
-  {k:'split',   n:'Split Squat / Bulgarian',        eq:'db',   yt:'bulgarian split squat form'},
-  {k:'sidepl',  n:'Side Plank',                     eq:'bw',   yt:'side plank form'},
-
+  {k:'stepup',  n:'Step-up', eq:'db', yt:'dumbbell step up form'},
+  {k:'dbrdl',   n:'Dumbbell Romanian Deadlift', eq:'db', yt:'dumbbell romanian deadlift form'},
+  {k:'split',   n:'Split Squat / Bulgarian', eq:'db', yt:'bulgarian split squat form'},
+  {k:'sidepl',  n:'Side Plank', eq:'bw', yt:'side plank form'},
   /* FULL BODY */
-  {k:'dbcp',    n:'DB Clean & Press',               eq:'db',   yt:'dumbbell clean and press form'},
-  {k:'manmaker',n:'Man Maker',                      eq:'db',   yt:'dumbbell man maker form'},
-
-  /* Simple BW for circuits */
-  {k:'airsquat', n:'Air Squat',                     eq:'bw',   yt:'air squat form'},
-  {k:'jumprope', n:'Jump Rope',                     eq:'bw',   yt:'jump rope single unders form'},
-  {k:'situp',    n:'Sit-up',                        eq:'bw',   yt:'abmat sit up form'},
-
+  {k:'dbcp',    n:'DB Clean & Press', eq:'db', yt:'dumbbell clean and press form'},
+  {k:'manmaker',n:'Man Maker', eq:'db', yt:'dumbbell man maker form'},
+  /* BW helpers */
+  {k:'airsquat', n:'Air Squat', eq:'bw', yt:'air squat form'},
+  {k:'jumprope', n:'Jump Rope', eq:'bw', yt:'jump rope single unders form'},
+  {k:'situp',    n:'Sit-up',    eq:'bw', yt:'abmat sit up form'},
   /* RINGS */
-  {k:'ringrow',   n:'Ring Row',                eq:'rings', yt:'gymnastic ring row form'},
-  {k:'ringdip',   n:'Ring Dip',                eq:'rings', yt:'ring dip progression form'},
-  {k:'ringpush',  n:'Ring Push-up',            eq:'rings', yt:'ring push up form'},
-  {k:'ringsup',   n:'Ring Support Hold',       eq:'rings', yt:'ring support hold form'},
-  {k:'ringlsit',  n:'Ring L-Sit (tuck→L)',     eq:'rings', yt:'ring l sit progression'}
+  {k:'ringrow',  n:'Ring Row', eq:'rings', yt:'gymnastic ring row form'},
+  {k:'ringdip',  n:'Ring Dip', eq:'rings', yt:'ring dip progression form'},
+  {k:'ringpush', n:'Ring Push-up', eq:'rings', yt:'ring push up form'},
+  {k:'ringsup',  n:'Ring Support Hold', eq:'rings', yt:'ring support hold form'},
+  {k:'ringlsit', n:'Ring L-Sit (tuck→L)', eq:'rings', yt:'ring l sit progression'}
 ];
 
-/* ===== Alternatives (ordered) ===== */
 const ALTS = {
-  // Pull
   chin:['ringrow','doorrow','bandlat','bandrow'],
   bandlat:['ringrow','doorrow','bandrow'],
   csrow:['ringrow','doorrow','bandrow'],
   doorrow:['ringrow','bandrow','bandlat'],
   ringrow:['doorrow','bandrow','bandlat'],
-  // Push / Shoulders
   dbbench:['ringpush','pushup','dbfloor'],
   dbfloor:['ringpush','pushup'],
   ohpress:['ringpush','pushup'],
   latraise:['ohpress','ringpush','pushup'],
   pushup:['ringpush','dbfloor'],
-  // Legs / Core
   stepup:['split','sidepl'],
   dbrdl:['split','sidepl'],
   split:['stepup','sidepl'],
   sidepl:['ringsup'],
   ringsup:['sidepl'],
-  // Full body
   dbcp:['manmaker','pushup','doorrow'],
   manmaker:['dbcp','pushup','doorrow']
 };
 
-/* ===== Weekly Split ===== */
 const PLAN = {
   push:{
-    beginner:     [{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15'}],
-    intermediate: [{k:'dbbench',rx:'4×6–10'},{k:'ohpress',rx:'4×6–10'},{k:'latraise',rx:'3×12–15'}],
-    advanced:     [{k:'dbbench',rx:'5×5–8'},{k:'ohpress',rx:'5×6–8'},{k:'latraise',rx:'4×12–15'}]
+    beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15'}],
+    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'ohpress',rx:'4×6–10'},{k:'latraise',rx:'3×12–15'}],
+    advanced:[{k:'dbbench',rx:'5×5–8'},{k:'ohpress',rx:'5×6–8'},{k:'latraise',rx:'4×12–15'}]
   },
   pull:{
-    beginner:     [{k:'doorrow',rx:'3×8–12'},{k:'bandrow',rx:'3×10–12'}],
-    intermediate: [{k:'csrow',rx:'4×8–12'},{k:'bandlat',rx:'4×10–12'}],
-    advanced:     [{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'}]
+    beginner:[{k:'doorrow',rx:'3×8–12'},{k:'bandrow',rx:'3×10–12'}],
+    intermediate:[{k:'csrow',rx:'4×8–12'},{k:'bandlat',rx:'4×10–12'}],
+    advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'}]
   },
   legs:{
-    beginner:     [{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate: [{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'split',rx:'3×8–12/leg'}],
-    advanced:     [{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'split',rx:'4×8–12/leg'}]
+    beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
+    intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'split',rx:'3×8–12/leg'}],
+    advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'split',rx:'4×8–12/leg'}]
   },
   full:{
-    beginner:     [{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate: [{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
-    advanced:     [{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
+    beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
+    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
+    advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
   }
 };
 
-/* ===== Calisthenics ===== */
 const CAL = [
   {title:'Push', items:[
     {k:'pushup', name:'Push-up', eq:'bw',
-     rxB:'Incline push-up — 3×8–12',
-     rxI:'Flat push-up — 4×8–12',
-     rxA:'Feet-elevated or ring push-up — 5×6–10'},
+     rxB:'Incline push-up — 3×8–12', rxI:'Flat push-up — 4×8–12', rxA:'Feet-elevated or ring push-up — 5×6–10'},
     {k:'ringpush', name:'Ring Push-up', eq:'rings',
-     rxB:'Rings high (inclined) — 3×8–12',
-     rxI:'Rings mid-height — 4×8–12 (tempo 3–1–1)',
-     rxA:'Rings low / feet-elevated — 5×6–10 (slow negative)'}
+     rxB:'Rings high (inclined) — 3×8–12', rxI:'Rings mid — 4×8–12 (tempo 3–1–1)', rxA:'Rings low/feet-up — 5×6–10 (slow negative)'}
   ]},
   {title:'Pull', items:[
     {k:'doorrow', name:'Bodyweight Row (table/door)', eq:'bw',
-     rxB:'Row (high angle) — 3×8–12',
-     rxI:'Row (feet further) — 4×8–12',
-     rxA:'Row (feet elevated) — 5×6–10'},
+     rxB:'Row (high angle) — 3×8–12', rxI:'Row (feet further) — 4×8–12', rxA:'Row (feet elevated) — 5×6–10'},
     {k:'ringrow', name:'Ring Row', eq:'rings',
-     rxB:'Rings high, knees bent — 3×8–12',
-     rxI:'Rings mid, straight body — 4×8–12',
-     rxA:'Rings low, feet elevated — 5×6–10 (1s pause top)'}
+     rxB:'Rings high, knees bent — 3×8–12', rxI:'Rings mid, straight body — 4×8–12', rxA:'Rings low, feet elevated — 5×6–10 (1s pause top)'}
   ]},
   {title:'Core / Stability', items:[
-    {k:'sidepl',   name:'Side Plank', eq:'bw',
+    {k:'sidepl', name:'Side Plank', eq:'bw',
      rxB:'3×25–40s/side', rxI:'3×35–50s/side', rxA:'3×45–60s/side (long lever)'},
-    {k:'ringsup',  name:'Ring Support Hold', eq:'rings',
+    {k:'ringsup', name:'Ring Support Hold', eq:'rings',
      rxB:'Support holds — 5×10–20s', rxI:'Support + knee raises — 4×6–10', rxA:'Support + tuck→L pulses — 4×6–8'},
     {k:'ringlsit', name:'Ring L-Sit (tuck→L)', eq:'rings',
      rxB:'Tuck holds — 6×5–10s', rxI:'Advanced tuck — 5×5–10s', rxA:'Partial→full L — 8–10×3–8s'}
   ]},
   {title:'Legs', items:[
     {k:'stepup', name:'Step-up', eq:'db',
-     rxB:'Box just below knee — 3×8–12/leg',
-     rxI:'Add load — 4×8–12/leg',
-     rxA:'Higher box / tempo pauses — 5×6–10/leg'}
+     rxB:'Box just below knee — 3×8–12/leg', rxI:'Add load — 4×8–12/leg', rxA:'Higher box / tempo pauses — 5×6–10/leg'}
   ]}
 ];
 
-/* ===== Cross-Training Circuits ===== */
 const CIRCUITS = [
-  {
-    k:'amrap20-triplet',
-    title:'Triplet — AMRAP 20',
+  { k:'amrap20-triplet', title:'Triplet — AMRAP 20',
     desc:'20:00 continuous: pull/row • push • squat. Keep sets submax.',
-    presetSec:1200,
-    scoreHint:'Score = rounds + extra reps',
-    scoreType:'roundsreps',
+    presetSec:1200, scoreHint:'Score = rounds + extra reps', scoreType:'roundsreps',
     items:[
-      {k:'doorrow',  name:'Row / Pull-up',   yt:'bodyweight row form',
-       rx:{beginner:'3',  intermediate:'5',  advanced:'5'}},
-      {k:'pushup',   name:'Push-up',         yt:'push up form',
-       rx:{beginner:'6 (incline)', intermediate:'10', advanced:'10'}},
-      {k:'airsquat', name:'Air Squat',       yt:'air squat form',
-       rx:{beginner:'10', intermediate:'15', advanced:'15'}}
+      {k:'doorrow',name:'Row / Pull-up',yt:'bodyweight row form',rx:{beginner:'3',intermediate:'5',advanced:'5'}},
+      {k:'pushup', name:'Push-up', yt:'push up form', rx:{beginner:'6 (incline)',intermediate:'10',advanced:'10'}},
+      {k:'airsquat',name:'Air Squat', yt:'air squat form', rx:{beginner:'10',intermediate:'15',advanced:'15'}}
     ],
     tailNote:' — repeat for 20:00'
   },
-  {
-    k:'emom30-triplet',
-    title:'Triplet — EMOM 30',
+  { k:'emom30-triplet', title:'Triplet — EMOM 30',
     desc:'Every minute for 30:00 do the triplet; rest in the remainder.',
-    presetSec:1800,
-    scoreHint:'Score = minutes completed unbroken (or total minutes)',
-    scoreType:'higher',
+    presetSec:1800, scoreHint:'Score = minutes completed unbroken (or total minutes)', scoreType:'higher',
     items:[
-      {k:'doorrow',  name:'Row / Pull-up', yt:'pull up strict form',
-       rx:{beginner:'3',  intermediate:'5',  advanced:'5 strict'}},
-      {k:'pushup',   name:'Push-up',       yt:'push up form',
-       rx:{beginner:'6 (incline)', intermediate:'10', advanced:'10'}},
-      {k:'airsquat', name:'Air Squat',     yt:'air squat form',
-       rx:{beginner:'10', intermediate:'15', advanced:'15'}}
+      {k:'doorrow',name:'Row / Pull-up',yt:'pull up strict form',rx:{beginner:'3',intermediate:'5',advanced:'5 strict'}},
+      {k:'pushup', name:'Push-up', yt:'push up form', rx:{beginner:'6 (incline)',intermediate:'10',advanced:'10'}},
+      {k:'airsquat',name:'Air Squat', yt:'air squat form', rx:{beginner:'10',intermediate:'15',advanced:'15'}}
     ],
     tailNote:' — every minute ×30'
   },
-  {
-    k:'ladder-rope-situp',
-    title:'Rope + Sit-up Ladder — For Time',
+  { k:'ladder-rope-situp', title:'Rope + Sit-up Ladder — For Time',
     desc:'50-40-30-20-10 of jump-rope & sit-ups.',
-    presetSec:900,
-    scoreHint:'Score = finish time (mm:ss) — lower is better',
-    scoreType:'lower',
+    presetSec:900, scoreHint:'Score = finish time (mm:ss) — lower is better', scoreType:'lower',
     items:[
-      {k:'jumprope', name:'Jump Rope', yt:'single unders jump rope form',
-       rx:{beginner:'Singles', intermediate:'Singles (2:1) or DU attempts', advanced:'Double-unders'}},
-      {k:'situp',    name:'Sit-up',    yt:'abmat sit up form',
-       rx:{beginner:'Sit-ups', intermediate:'Sit-ups', advanced:'Sit-ups'}}
+      {k:'jumprope',name:'Jump Rope',yt:'single unders jump rope form',rx:{beginner:'Singles',intermediate:'Singles (2:1) or DU attempts',advanced:'Double-unders'}},
+      {k:'situp',   name:'Sit-up',  yt:'abmat sit up form',rx:{beginner:'Sit-ups',intermediate:'Sit-ups',advanced:'Sit-ups'}}
     ],
     tailNote:' — cap 12–15 min'
   }
 ];
 
-/* ===== Quotes ===== */
+/* ========= QUOTES ========= */
 const QUOTES = [
   "Small wins compound. Log the set, own the day.",
   "Perfect form, steady breath, then add a little.",
@@ -395,7 +345,7 @@ let PREFS = loadPrefs();
 let level = PREFS.level;
 let goal  = PREFS.goal;
 
-/* ========= GENERAL HELPERS ========= */
+/* ========= DOM + UTIL HELPERS ========= */
 function filters(){
   const d = PREFS.equip;
   return {
@@ -406,6 +356,12 @@ function filters(){
     rings: document.getElementById('f-rings')?.checked ?? d.rings
   };
 }
+function applyPrefsToUI(){
+  document.querySelectorAll('.seg [data-level]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.level===PREFS.level ? 'true' : 'false'));
+  document.querySelectorAll('.seg [data-goal]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.goal===PREFS.goal ? 'true' : 'false'));
+  const e = PREFS.equip, set=(id,val)=>{const el=document.getElementById(id); if(el) el.checked = !!val;};
+  set('f-db',e.db); set('f-band',e.band); set('f-bw',e.bw); set('f-rack',e.rack); set('f-rings',e.rings);
+}
 function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }
 function applyGoal(rx){
   if(goal==='cut')       return rx+' · short rests';
@@ -415,23 +371,16 @@ function applyGoal(rx){
 }
 function findExerciseByKey(k){ return EXERCISES.find(e=>e.k===k); }
 function gearOK(ex){ return !!filters()[ex.eq]; }
-/** pick primary or first matching alt */
 function pickExerciseOrAlt(primaryKey){
   let ex = findExerciseByKey(primaryKey);
   if(ex && gearOK(ex)) return {ex, isAlt:false};
   const tries = (ALTS[primaryKey]||[]).map(k=>findExerciseByKey(k)).filter(Boolean);
   for(const cand of tries){ if(gearOK(cand)) return {ex:cand, isAlt:true}; }
-  return {ex:null, isAlt:false};
+  return {ex:null,isAlt:false};
 }
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-function flash(el, text){ if(!el) return; el.textContent = text; el.style.opacity = '1'; setTimeout(()=>{ el.style.opacity='.92'; }, 50); }
 function bestScore(obj){
   let best = 0;
-  for(let i=1;i<=5;i++){
-    const w = parseFloat(obj['w'+i]||'0')||0;
-    const r = parseFloat(obj['r'+i]||'0')||0;
-    best = Math.max(best, w*r);
-  }
+  for(let i=1;i<=5;i++){ const w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0; best=Math.max(best,w*r); }
   return best;
 }
 function milestoneText(count){
@@ -444,55 +393,129 @@ function milestoneText(count){
   if(n>=5)   return 'Milestone: 5 logs saved ✨';
   return '';
 }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function flash(el, text){ if(!el) return; el.textContent=text; el.style.opacity='1'; setTimeout(()=>{ el.style.opacity='.92'; },50); }
 
-/* ====== Beeper (3-beep lead-in & finish) ====== */
-function beepOnce(freq=880, dur=140, vol=0.03){
+/* ========= BEEPS (lead-in & lead-out) ========= */
+function playBeep(freq=880, ms=160, gain=0.025){
   try{
     const Ctx = window.AudioContext || window.webkitAudioContext;
     const ctx = new Ctx();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.type='sine'; o.frequency.value=freq; g.gain.value=vol;
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type='sine'; o.frequency.value=freq; g.gain.value=gain;
     o.connect(g); g.connect(ctx.destination);
-    o.start(); setTimeout(()=>{o.stop(); ctx.close();}, dur);
+    o.start(); setTimeout(()=>{ o.stop(); ctx.close(); }, ms);
   }catch{}
 }
-function beepSeries(n=3, gap=220){ for(let i=0;i<n;i++){ setTimeout(()=>beepOnce(880,140,0.03), i*gap); } }
-
-/* ========= SECTION QUOTES ========= */
-function setSectionQuote(containerEl){
-  if(!containerEl) return;
-  const sec = containerEl.closest('.section') || containerEl.parentElement;
-  if(!sec) return;
-  let q = sec.querySelector('.section-quote');
-  if(!q){ q = document.createElement('p'); q.className='section-quote quote'; sec.appendChild(q); }
-  q.textContent = pick(QUOTES);
+function tripleLeadIn(next){
+  // 3 quick beeps: 3..2..1
+  let i=0;
+  const seq=[600,700,800]; // rising
+  const t=setInterval(()=>{
+    playBeep(seq[i],120,0.03);
+    i++; if(i>=3){ clearInterval(t); setTimeout(()=>next&&next(),140); }
+  }, 280);
+}
+function tripleFinish(){
+  // 3 beeps at finish: short fanfare
+  [900,700,500].forEach((f,idx)=>setTimeout(()=>playBeep(f,140,0.035), idx*220));
 }
 
+/* ========= REST TIMER HTML + BINDING ========= */
+function restControlsHTML(exKey, setNum){
+  // data-rest = unique identity for binding
+  const id = `${exKey}.s${setNum}`;
+  return `
+    <div class="restbar" data-rest="${id}" data-bound="0">
+      <span>⏱ Rest:</span>
+      <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
+      <button class="btn-sm" data-act="rest-start" title="3-beep lead-in then countdown">Start</button>
+      <button class="btn-sm" data-act="rest-stop">Stop</button>
+      <span class="left" aria-live="polite">90s</span>
+    </div>
+  `;
+}
+
+function hookRestTimers(scope){
+  scope.querySelectorAll('.restbar').forEach(bar=>{
+    if(bar.dataset.bound==='1') return;
+    bar.dataset.bound='1';
+    const input = bar.querySelector('input[type="number"]');
+    const left  = bar.querySelector('.left');
+    const btnS  = bar.querySelector('[data-act="rest-start"]');
+    const btnP  = bar.querySelector('[data-act="rest-stop"]');
+    let timer = null;
+
+    function fmt(sec){ sec=Math.max(0,Math.floor(Number(sec)||0)); const m=Math.floor(sec/60), s=sec%60; return m>0?`${m}:${String(s).padStart(2,'0')}`:`${s}s`; }
+    function show(v){ left.textContent = fmt(v); }
+    show(parseInt(input?.value||'0',10));
+
+    btnS?.addEventListener('click', ()=>{
+      let total = Math.max(5, parseInt(input?.value||'0',10) || 0);
+      clearInterval(timer);
+      tripleLeadIn(()=>{
+        let remain = total;
+        show(remain);
+        timer = setInterval(()=>{
+          remain -= 1; show(remain);
+          if(remain<=0){ clearInterval(timer); left.textContent='Go!'; bar.animate([{opacity:1},{opacity:.3},{opacity:1}],{duration:600,iterations:2}); tripleFinish(); }
+        },1000);
+      });
+    });
+    btnP?.addEventListener('click', ()=>{ clearInterval(timer); show(parseInt(input?.value||'0',10)); });
+    input?.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ btnS?.click(); } });
+  });
+}
+</script>  
+<script>
+// --- Part 2 loader guard (keep this at the very top of Part 2) ---
+(function startWhenReady(){
+  // Wait until Part 1 has attached its globals and the DOM is ready
+  function ready(){
+    return typeof renderPlan === 'function'
+        && typeof renderCal === 'function'
+        && typeof renderCircuits === 'function'
+        && document.getElementById('plan')
+        && document.getElementById('cal')
+        && document.getElementById('circuits');
+  }
+  function boot(){
+    try{
+      // applyPrefsToUI / wireControls / initial renders are in Part 1 already
+      // If Part 1 didn’t already render (e.g. you moved calls), you can safely call:
+      if (typeof applyPrefsToUI === 'function') applyPrefsToUI();
+      if (typeof wireControls   === 'function') wireControls();
+      renderPlan(); renderCal(); renderCircuits();
+      if (typeof hookTimers === 'function') hookTimers();
+    }catch(e){
+      console.error('Boot error:', e);
+    }
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive'){
+    const t = setInterval(()=>{
+      if (ready()){ clearInterval(t); boot(); }
+    }, 30);
+    setTimeout(()=>clearInterval(t), 5000); // fail-safe
+  }else{
+    window.addEventListener('DOMContentLoaded', startWhenReady, {once:true});
+  }
+})();
+    
 /* ========= RENDER: WEEKLY SPLIT ========= */
 const planEl = document.getElementById('plan');
 
 function renderPlan(){
-  if(!planEl) return;
   planEl.innerHTML = '';
-  const groups = [
-    ['push', 'Push Day'],
-    ['pull', 'Pull Day'],
-    ['legs', 'Legs / Core Day'],
-    ['full', 'Full-Body Day']
-  ];
+  const groups = [['push','Push Day'],['pull','Pull Day'],['legs','Legs / Core Day'],['full','Full-Body Day']];
 
   groups.forEach(([key,label])=>{
-    const blk = document.createElement('div');
-    blk.className = 'block';
-    blk.innerHTML = `<h3>${label}</h3>`;
+    const blk = document.createElement('div'); blk.className='block'; blk.innerHTML = `<h3>${label}</h3>`;
+
     PLAN[key][level].forEach(item=>{
-      const pickRes = pickExerciseOrAlt(item.k);
-      if(!pickRes.ex) return;
+      const pickRes = pickExerciseOrAlt(item.k); if(!pickRes.ex) return;
       const ex = pickRes.ex;
 
-      const row = document.createElement('div');
-      row.className = 'mov';
+      const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `
         <div class="mov-head">
           <div class="mov-title">
@@ -517,11 +540,7 @@ function renderPlan(){
                 <input placeholder="notes" data-field="n${i}">
                 <button class="btn-sm" data-save>Save</button>
               </div>
-              <div class="restbar">
-                <input type="number" value="60" min="5" step="5" aria-label="Rest seconds for set ${i}">
-                <button class="btn-sm" data-act="rest">Rest</button>
-                <span class="left" aria-live="polite"></span>
-              </div>
+              ${restControlsHTML(ex.k, i)}
             `).join('')}
           </div>
           <div class="meta-row">
@@ -533,12 +552,10 @@ function renderPlan(){
       `;
 
       const drawer = row.querySelector('[data-drawer]');
-      row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
+      row.querySelector('[data-open]').addEventListener('click', ()=>{ drawer.classList.toggle('open'); if(drawer.classList.contains('open')) hookRestTimers(drawer); });
       row.querySelector('[data-clear]').addEventListener('click', ()=>{
-        localStorage.removeItem(NS+ex.k);
-        localStorage.removeItem(NS+ex.k+'.best');
-        populateFromStore();
-        flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+        localStorage.removeItem(NS+ex.k); localStorage.removeItem(NS+ex.k+'.best');
+        populateFromStore(); flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
       });
 
       const logArea = row.querySelector('[data-log]');
@@ -548,10 +565,7 @@ function renderPlan(){
 
       function populateFromStore(){
         const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
-        logArea.querySelectorAll('[data-field]').forEach(inp=>{
-          const id = inp.dataset.field;
-          if(saved[id]) inp.value = saved[id];
-        });
+        logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value = saved[id]; });
         const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
         pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
         badgeEl.textContent = milestoneText();
@@ -560,26 +574,13 @@ function renderPlan(){
 
       logArea.querySelectorAll('[data-save]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const obj = {};
-          logArea.querySelectorAll('[data-field]').forEach(inp=>{
-            obj[inp.dataset.field] = inp.value.trim();
-          });
+          const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
           localStorage.setItem(NS+ex.k, JSON.stringify(obj));
-
-          const bestNow = bestScore(obj);
-          const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-          if(bestNow > bestWas){
-            localStorage.setItem(NS+ex.k+'.best', bestNow);
-            pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
-            flash(quoteEl, pick(QUOTES));
-          }else{
-            pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
-            flash(quoteEl, pick(QUOTES));
-          }
-
-          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
-          localStorage.setItem(NS+'saves', total);
-          badgeEl.textContent = milestoneText(total);
+          const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
+          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
+          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
+          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
+          badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
         });
       });
 
@@ -589,42 +590,30 @@ function renderPlan(){
     planEl.appendChild(blk);
   });
 
-  // bind rest bars & add section quote
-  hookRestTimers();
-  setSectionQuote(planEl);
+  // Section quote
+  const q = document.createElement('p'); q.className='quote'; q.textContent = pick(QUOTES);
+  planEl.parentElement.appendChild(q);
 }
 
 /* ========= RENDER: CALISTHENICS ========= */
 function renderCal(){
-  const calEl = document.getElementById('cal');
-  if(!calEl) return;
-  calEl.innerHTML = '';
-
+  const calEl = document.getElementById('cal'); if(!calEl) return; calEl.innerHTML='';
   CAL.forEach(group=>{
-    const blk = document.createElement('div');
-    blk.className = 'block';
-    blk.innerHTML = `<h3>${group.title}</h3>`;
+    const blk = document.createElement('div'); blk.className='block'; blk.innerHTML = `<h3>${group.title}</h3>`;
 
     group.items.forEach(item=>{
-      const pickRes = pickExerciseOrAlt(item.k);
-      if(!pickRes.ex) return;
+      const pickRes = pickExerciseOrAlt(item.k); if(!pickRes.ex) return;
       const ex = pickRes.ex;
-      const displayName = item.name || ex.n || item.k;
-      const q = ex.yt || (displayName + ' exercise form');
-      const url = ytSearchURL(q);
-      const rx = (level==='beginner') ? item.rxB
-              : (level==='intermediate') ? item.rxI
-              : item.rxA;
+      const name = item.name || ex.n || item.k;
+      const url  = ytSearchURL(ex.yt || (name + ' exercise form'));
+      const rx   = (level==='beginner')?item.rxB : (level==='intermediate')?item.rxI : item.rxA;
 
-      const row = document.createElement('div');
-      row.className = 'mov';
+      const row = document.createElement('div'); row.className='mov';
       row.innerHTML = `
         <div class="mov-head">
-          <div class="mov-title">
-            <a href="${url}" target="_blank" rel="noopener" title="YouTube form search">
-              ${displayName}${pickRes.isAlt ? ' <span class="meta">(alt)</span>' : ''}
-            </a>
-          </div>
+          <div class="mov-title"><a href="${url}" target="_blank" rel="noopener" title="YouTube form search">
+            ${name}${pickRes.isAlt?' <span class="meta">(alt)</span>':''}
+          </a></div>
           <div class="rx">${rx}</div>
           <div class="mov-tools">
             <button class="btn-sm" data-open>Log</button>
@@ -638,15 +627,11 @@ function renderCal(){
               <div class="log-row">
                 <strong>Set ${i}</strong>
                 <input inputmode="decimal" placeholder="kg/mins" data-field="w${i}">
-                <input inputmode="numeric" placeholder="reps/RPE" data-field="r${i}">
+                <input inputmode="numeric" placeholder="reps/RPE"  data-field="r${i}">
                 <input placeholder="notes" data-field="n${i}">
                 <button class="btn-sm" data-save>Save</button>
               </div>
-              <div class="restbar">
-                <input type="number" value="60" min="5" step="5" aria-label="Rest seconds for set ${i}">
-                <button class="btn-sm" data-act="rest">Rest</button>
-                <span class="left" aria-live="polite"></span>
-              </div>
+              ${restControlsHTML(ex.k, i)}
             `).join('')}
           </div>
           <div class="meta-row">
@@ -658,12 +643,10 @@ function renderCal(){
       `;
 
       const drawer = row.querySelector('[data-drawer]');
-      row.querySelector('[data-open]').addEventListener('click', ()=>drawer.classList.toggle('open'));
+      row.querySelector('[data-open]').addEventListener('click', ()=>{ drawer.classList.toggle('open'); if(drawer.classList.contains('open')) hookRestTimers(drawer); });
       row.querySelector('[data-clear]').addEventListener('click', ()=>{
-        localStorage.removeItem(NS+ex.k);
-        localStorage.removeItem(NS+ex.k+'.best');
-        populateFromStore();
-        flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+        localStorage.removeItem(NS+ex.k); localStorage.removeItem(NS+ex.k+'.best');
+        populateFromStore(); flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
       });
 
       const logArea = row.querySelector('[data-log]');
@@ -673,10 +656,7 @@ function renderCal(){
 
       function populateFromStore(){
         const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
-        logArea.querySelectorAll('[data-field]').forEach(inp=>{
-          const id = inp.dataset.field;
-          if(saved[id]) inp.value = saved[id];
-        });
+        logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value=saved[id]; });
         const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
         pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
         badgeEl.textContent = milestoneText();
@@ -685,26 +665,13 @@ function renderCal(){
 
       logArea.querySelectorAll('[data-save]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const obj = {};
-          logArea.querySelectorAll('[data-field]').forEach(inp=>{
-            obj[inp.dataset.field] = inp.value.trim();
-          });
+          const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
           localStorage.setItem(NS+ex.k, JSON.stringify(obj));
-
-          const bestNow = bestScore(obj);
-          const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-          if(bestNow > bestWas){
-            localStorage.setItem(NS+ex.k+'.best', bestNow);
-            pbEl.textContent = `New PB! ${bestNow.toFixed(1)} (best w×r)`;
-            flash(quoteEl, pick(QUOTES));
-          }else{
-            pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.';
-            flash(quoteEl, pick(QUOTES));
-          }
-
-          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
-          localStorage.setItem(NS+'saves', total);
-          badgeEl.textContent = milestoneText(total);
+          const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
+          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
+          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
+          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
+          badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
         });
       });
 
@@ -714,34 +681,29 @@ function renderCal(){
     calEl.appendChild(blk);
   });
 
-  hookRestTimers();
-  setSectionQuote(calEl);
+  // Section quote
+  const q = document.createElement('p'); q.className='quote'; q.textContent = pick(QUOTES);
+  calEl.parentElement.appendChild(q);
 }
 
-/* ========= RENDER: CIRCUITS (with one drawer timer per circuit) ========= */
+/* ========= RENDER: CIRCUITS (with drawer timers) ========= */
 function renderCircuits(){
-  const wrap = document.getElementById('circuits');
-  if(!wrap) return;
-  wrap.innerHTML = '';
+  const wrap = document.getElementById('circuits'); if(!wrap) return; wrap.innerHTML='';
 
   CIRCUITS.forEach(c=>{
-    const blk = document.createElement('div');
-    blk.className = 'block';
+    const blk = document.createElement('div'); blk.className='block';
 
     const presc = c.items.map(it=>{
       const ex = EXERCISES.find(e=>e.k===it.k);
       const q  = ex ? ex.yt : (it.yt || (it.name + ' exercise form'));
       const link = `<a href="${ytSearchURL(q)}" target="_blank" rel="noopener" title="YouTube form search">${it.name}</a>`;
-      const dose = (level==='beginner') ? it.rx.beginner
-                 : (level==='intermediate') ? it.rx.intermediate
-                 : it.rx.advanced;
+      const dose = (level==='beginner')?it.rx.beginner : (level==='intermediate')?it.rx.intermediate : it.rx.advanced;
       return `${link} — ${dose}`;
     }).join(' &nbsp;•&nbsp; ');
 
     blk.innerHTML = `
       <h3>${c.title}</h3>
       <p class="meta">${c.desc}</p>
-
       <div class="mov">
         <div class="mov-head">
           <div class="mov-title"><span>${presc}${c.tailNote||''}</span></div>
@@ -751,7 +713,6 @@ function renderCircuits(){
             <button class="btn-sm" data-clear title="Clear saved attempts">Clear</button>
           </div>
         </div>
-
         <div class="drawer" data-drawer>
           <div class="log-grid" data-log>
             ${[1,2,3,4,5].map(i=>`
@@ -764,14 +725,12 @@ function renderCircuits(){
               </div>
             `).join('')}
           </div>
-
           <div class="meta-row">
             <span class="pb" data-pb></span>
             <span class="badge" data-badge></span>
           </div>
           <div class="quote" data-quote></div>
 
-          <!-- Single circuit timer -->
           <div class="timer" data-timer="${c.k}">
             <label class="visually-hidden" for="t-${c.k}">Timer (seconds)</label>
             <input id="t-${c.k}" type="number" min="5" step="5" value="${c.presetSec}">
@@ -790,32 +749,26 @@ function renderCircuits(){
     const pbEl    = blk.querySelector('[data-pb]');
     const badgeEl = blk.querySelector('[data-badge]');
     const quoteEl = blk.querySelector('[data-quote]');
-    openBtn.addEventListener('click', ()=> drawer.classList.toggle('open'));
+
+    openBtn.addEventListener('click', ()=>{ drawer.classList.toggle('open'); if(drawer.classList.contains('open')) hookTimers(); });
 
     const baseK = NS + 'ct.' + c.k;
 
     function scoreCircuit(obj){
-      let best = 0;
+      let best=0;
       for(let i=1;i<=5;i++){
-        const rounds = parseFloat(obj['r'+i]||'0')||0;
-        const reps   = parseFloat(obj['x'+i]||'0')||0;
-        const time   = (obj['t'+i]||'').trim();
-        const sec = (/^\d{1,2}:\d{2}$/.test(time))
-          ? (parseInt(time.split(':')[0],10)*60 + parseInt(time.split(':')[1],10))
-          : 0;
-        let s = 0;
-        if(c.scoreType==='lower' && sec>0) s = 100000 - sec;  // lower is better
-        else s = rounds + reps/1000;
-        best = Math.max(best, s);
+        const rounds=parseFloat(obj['r'+i]||'0')||0;
+        const reps=parseFloat(obj['x'+i]||'0')||0;
+        const time=(obj['t'+i]||'').trim();
+        const sec=/^\d{1,2}:\d{2}$/.test(time) ? (parseInt(time.split(':')[0],10)*60 + parseInt(time.split(':')[1],10)) : 0;
+        let s=0; if(c.scoreType==='lower' && sec>0) s = 100000 - sec; else s = rounds + reps/1000;
+        best=Math.max(best,s);
       }
       return best;
     }
-
     function populate(){
       const saved = JSON.parse(localStorage.getItem(baseK) || '{}');
-      logArea.querySelectorAll('[data-field]').forEach(inp=>{
-        const id = inp.dataset.field; if(saved[id]) inp.value = saved[id];
-      });
+      logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value=saved[id]; });
       const bestWas = parseFloat(localStorage.getItem(baseK+'.best')||'0')||0;
       pbEl.textContent = bestWas>0 ? `PB: ${bestWas.toFixed(3)} (see rounds/reps or time)` : '';
       badgeEl.textContent = milestoneText();
@@ -824,219 +777,110 @@ function renderCircuits(){
 
     logArea.querySelectorAll('[data-save]').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        const obj = {};
-        logArea.querySelectorAll('[data-field]').forEach(inp=>{
-          obj[inp.dataset.field] = inp.value.trim();
-        });
+        const obj={}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
         localStorage.setItem(baseK, JSON.stringify(obj));
-        const bestNow = scoreCircuit(obj);
-        const bestWas = parseFloat(localStorage.getItem(baseK+'.best')||'0')||0;
-        if(bestNow > bestWas){
-          localStorage.setItem(baseK+'.best', bestNow);
-          pbEl.textContent = `New PB! ${bestNow.toFixed(3)}`;
-        }else{
-          pbEl.textContent = bestWas>0 ? `PB: ${bestWas.toFixed(3)}` : 'Saved.';
-        }
-        const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
-        localStorage.setItem(NS+'saves', total);
-        badgeEl.textContent = milestoneText(total);
-        flash(quoteEl, pick(QUOTES));
+        const bestNow=scoreCircuit(obj); const bestWas=parseFloat(localStorage.getItem(baseK+'.best')||'0')||0;
+        if(bestNow>bestWas){ localStorage.setItem(baseK+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(3)}`; }
+        else{ pbEl.textContent = bestWas>0 ? `PB: ${bestWas.toFixed(3)}` : 'Saved.'; }
+        const total=(parseInt(localStorage.getItem(NS+'saves')||'0',10)+1); localStorage.setItem(NS+'saves',total);
+        badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
       });
     });
 
     clrBtn.addEventListener('click', ()=>{
-      localStorage.removeItem(baseK);
-      localStorage.removeItem(baseK+'.best');
-      populate(); flash(quoteEl, 'Cleared. Fresh slate.');
+      localStorage.removeItem(baseK); localStorage.removeItem(baseK+'.best'); populate(); flash(quoteEl,'Cleared. Fresh slate.');
     });
 
     wrap.appendChild(blk);
   });
 
-  hookCircuitTimers();  // ensure timers are bound
-  setSectionQuote(wrap); // section quote after circuits grid
+  // Section quote
+  const q = document.createElement('p'); q.className='quote'; q.textContent = pick(QUOTES);
+  wrap.parentElement.appendChild(q);
 }
 
-/* ========= REST TIMERS (per set) ========= */
-function hookRestTimers(){
-  document.querySelectorAll('.restbar').forEach(bar=>{
-    if(bar.dataset.bound==='1') return; bar.dataset.bound='1';
-    const input=bar.querySelector('input[type="number"]');
-    const span =bar.querySelector('.left');
-    const btn  =bar.querySelector('[data-act="rest"]');
-    let iv=null;
-
-    function show(sec){
-      sec = Math.max(0, Math.floor(Number(sec)||0));
-      span.textContent = sec>0 ? `${sec}s` : 'Done!';
-    }
-
-    btn?.addEventListener('click', ()=>{
-      let t = Math.max(5, parseInt(input?.value||'0',10)||0);
-      clearInterval(iv);
-      // 3-beep lead-in, then start
-      beepSeries(3);
-      setTimeout(()=>{
-        show(t);
-        iv = setInterval(()=>{
-          t -= 1; show(t);
-          if(t<=0){ clearInterval(iv); beepSeries(3); }
-        }, 1000);
-      }, 3*220 + 120); // small delay after beeps
-    });
-  });
-}
-
-/* ========= CIRCUIT TIMERS (one per drawer) ========= */
-function hookCircuitTimers(){
+/* ========= CIRCUIT TIMERS (3-beep in & out) ========= */
+function hookTimers(){
   document.querySelectorAll('.timer').forEach(box=>{
     if (box.dataset.bound === '1') return;
     box.dataset.bound = '1';
-
     const input  = box.querySelector('input[type="number"]');
     const leftEl = box.querySelector('.left');
     const start  = box.querySelector('[data-act="start"]');
     const stop   = box.querySelector('[data-act="stop"]');
     let tick = null;
 
-    function fmt(sec){
-      sec = Math.max(0, Math.floor(Number(sec)||0));
-      const m = Math.floor(sec/60), s = sec%60;
-      return m > 0 ? `${m}:${String(s).padStart(2,'0')}` : `${s}s`;
-    }
+    function fmt(sec){ sec=Math.max(0, Math.floor(Number(sec)||0)); const m=Math.floor(sec/60), s=sec%60; return m>0?`${m}:${String(s).padStart(2,'0')}`:`${s}s`; }
     function show(sec){ leftEl.textContent = fmt(sec); }
     show(parseInt(input?.value||'0',10));
 
     start?.addEventListener('click', ()=>{
-      let remaining = Math.max(5, parseInt(input?.value||'0',10)||0);
+      let remaining = Math.max(5, parseInt(input?.value||'0',10) || 0);
       clearInterval(tick);
-      // 3-beep lead-in
-      beepSeries(3);
-      setTimeout(()=>{
+      tripleLeadIn(()=>{
         show(remaining);
         tick = setInterval(()=>{
-          remaining -= 1;
-          show(remaining);
-          if(remaining <= 0){
+          remaining -= 1; show(remaining);
+          if(remaining<=0){
             clearInterval(tick);
-            leftEl.textContent = 'Done!';
-            // 3-beep finish
-            beepSeries(3);
-            box.animate([{opacity:1},{opacity:.3},{opacity:1}], {duration:600, iterations:2});
+            leftEl.textContent='Done!';
+            box.animate([{opacity:1},{opacity:.3},{opacity:1}],{duration:600,iterations:2});
+            tripleFinish();
           }
-        }, 1000);
-      }, 3*220 + 120);
+        },1000);
+      });
     });
 
-    stop?.addEventListener('click', ()=>{
-      clearInterval(tick);
-      show(parseInt(input?.value||'0',10));
-    });
-
+    stop?.addEventListener('click', ()=>{ clearInterval(tick); show(parseInt(input?.value||'0',10)); });
     input?.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ start?.click(); } });
   });
 }
 
 /* ========= EXPORT / IMPORT / RESET ========= */
 document.getElementById('btnExport')?.addEventListener('click', ()=>{
-  const dump = {};
-  for(let i=0;i<localStorage.length;i++){
-    const k = localStorage.key(i);
-    if(k && k.startsWith(NS)){ dump[k] = localStorage.getItem(k); }
-  }
-  const blob = new Blob([JSON.stringify(dump,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'freefitfuel-workouts-backup.json';
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
+  const dump={}; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith(NS)) dump[k]=localStorage.getItem(k); }
+  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='freefitfuel-workouts-backup.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 });
-
 document.getElementById('importFile')?.addEventListener('change', (e)=>{
-  const file = e.target.files?.[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try{
-      const obj = JSON.parse(String(reader.result||'{}'));
-      Object.keys(obj).forEach(k=>{ if(k.startsWith(NS)) localStorage.setItem(k, obj[k]); });
-      alert('Logs imported ✅');
-      renderPlan(); renderCal(); renderCircuits();
-    }catch{ alert('Import failed — invalid file.'); }
-  };
+  const file=e.target.files?.[0]; if(!file) return; const reader=new FileReader();
+  reader.onload=()=>{ try{ const obj=JSON.parse(String(reader.result||'{}')); Object.keys(obj).forEach(k=>{ if(k.startsWith(NS)) localStorage.setItem(k,obj[k]);});
+    alert('Logs imported ✅'); renderPlan(); renderCal(); renderCircuits(); }catch{ alert('Import failed — invalid file.'); } };
   reader.readAsText(file);
 });
-
 document.getElementById('btnResetAll')?.addEventListener('click', ()=>{
   if(!confirm('Delete all saved logs, PBs and preferences?')) return;
-  const keys = [];
-  for(let i=0;i<localStorage.length;i++){
-    const k = localStorage.key(i);
-    if(k && k.startsWith(NS)) keys.push(k);
-  }
-  keys.forEach(k=>localStorage.removeItem(k));
-  localStorage.removeItem(PREFS_KEY);
-  PREFS = loadPrefs();
-  applyPrefsToUI();
-  renderPlan(); renderCal(); renderCircuits();
-  alert('All logs & prefs cleared.');
+  const keys=[]; for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith(NS)) keys.push(k); }
+  keys.forEach(k=>localStorage.removeItem(k)); localStorage.removeItem(PREFS_KEY);
+  PREFS=loadPrefs(); applyPrefsToUI(); renderPlan(); renderCal(); renderCircuits(); alert('All logs & prefs cleared.');
 });
 
-/* ========= PREFS → UI + CONTROLS ========= */
-function applyPrefsToUI(){
-  // Difficulty
-  document.querySelectorAll('.seg [data-level]').forEach(b=>{
-    b.setAttribute('aria-pressed', b.dataset.level===PREFS.level ? 'true' : 'false');
-  });
-  // Goal
-  document.querySelectorAll('.seg [data-goal]').forEach(b=>{
-    b.setAttribute('aria-pressed', b.dataset.goal===PREFS.goal ? 'true' : 'false');
-  });
-  // Equipment
-  const e = PREFS.equip;
-  const set = (id,val)=>{ const el=document.getElementById(id); if(el) el.checked = !!val; };
-  set('f-db',   e.db);
-  set('f-band', e.band);
-  set('f-bw',   e.bw);
-  set('f-rack', e.rack);
-  set('f-rings',e.rings);
-}
-
+/* ========= CONTROLS WIRING (persist prefs) ========= */
 function wireControls(){
-  // Difficulty
   document.querySelectorAll('.seg [data-level]').forEach(b=>{
     b.addEventListener('click', ()=>{
       document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-      level = b.dataset.level;
-      PREFS.level = level; savePrefs(PREFS);
+      b.setAttribute('aria-pressed','true'); level=b.dataset.level; PREFS.level=level; savePrefs(PREFS);
       renderPlan(); renderCal(); renderCircuits();
     });
   });
-  // Goal
   document.querySelectorAll('.seg [data-goal]').forEach(b=>{
     b.addEventListener('click', ()=>{
       document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-      goal = b.dataset.goal;
-      PREFS.goal = goal; savePrefs(PREFS);
+      b.setAttribute('aria-pressed','true'); goal=b.dataset.goal; PREFS.goal=goal; savePrefs(PREFS);
       renderPlan(); renderCal(); renderCircuits();
     });
   });
-  // Equipment
   ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.addEventListener('change', ()=>{
-      PREFS.equip = filters();
-      savePrefs(PREFS);
-      renderPlan(); renderCal(); renderCircuits();
-    });
+    const el=document.getElementById(id); if(!el) return;
+    el.addEventListener('change', ()=>{ PREFS.equip=filters(); savePrefs(PREFS); renderPlan(); renderCal(); renderCircuits(); });
   });
 }
 
 /* ========= MOUNT ========= */
-applyPrefsToUI();   // set UI from saved prefs first
-wireControls();     // then wire controls
+applyPrefsToUI();
+wireControls();
 renderPlan();
 renderCal();
 renderCircuits();

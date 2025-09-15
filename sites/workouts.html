@@ -286,28 +286,57 @@ const PLAN = {
 /* ========= Calisthenics DATA (primary skill + ALTS via pickExerciseOrAlt) ========= */
 const CAL = [
   {title:'Push', items:[
-    {k:'pushup', name:'Push-up',
+    // Standard push-up path
+    {k:'pushup', name:'Push-up', eq:'bw',
      rxB:'Incline push-up — 3×8–12',
      rxI:'Flat push-up — 4×8–12',
-     rxA:'Feet-elevated or ring push-up — 5×6–10'}
+     rxA:'Feet-elevated or ring push-up — 5×6–10'},
+
+    // Rings push progression
+    {k:'ringpush', name:'Ring Push-up', eq:'rings',
+     rxB:'Rings high (inclined) — 3×8–12 (stable)',
+     rxI:'Rings mid-height — 4×8–12 (add tempo 3–1–1)',
+     rxA:'Rings low / feet-elevated — 5×6–10 (slow negative)'}
   ]},
+
   {title:'Pull', items:[
-    {k:'chin', name:'Chin-up / Pull-up',
-     rxB:'Band-assisted or bodyweight row — 3×8–12',
-     rxI:'Strict chin-up — 4×5–8',
-     rxA:'Weighted chin-up / L-sit — 5×3–6'}
+    // Table/Door row path
+    {k:'doorrow', name:'Bodyweight Row (table/door)', eq:'bw',
+     rxB:'Row (high angle) — 3×8–12',
+     rxI:'Row (feet further) — 4×8–12',
+     rxA:'Row (feet elevated) — 5×6–10'},
+
+    // Rings row progression
+    {k:'ringrow', name:'Ring Row', eq:'rings',
+     rxB:'Rings high, knees bent — 3×8–12',
+     rxI:'Rings mid, straight body — 4×8–12',
+     rxA:'Rings low, feet elevated — 5×6–10 (pause top 1s)'}
   ]},
-  {title:'Core', items:[
-    {k:'sidepl', name:'Side Plank',
+
+  {title:'Core / Stability', items:[
+    // Side plank path
+    {k:'sidepl', name:'Side Plank', eq:'bw',
      rxB:'3×25–40s/side',
      rxI:'3×35–50s/side',
-     rxA:'3×45–60s/side (long lever)'}
+     rxA:'3×45–60s/side (long lever)'},
+
+    // Rings support / L-sit path
+    {k:'ringsup', name:'Ring Support Hold', eq:'rings',
+     rxB:'Straight-arm support hold — 5×10–20s',
+     rxI:'Support + knee raises — 4×6–10',
+     rxA:'Support + small tuck-to-L pulses — 4×6–8'},
+
+    {k:'ringlsit', name:'Ring L-Sit (tuck→L)', eq:'rings',
+     rxB:'Tuck holds — 6×5–10s',
+     rxI:'Advanced tuck — 5×5–10s',
+     rxA:'Partial→full L-sit — 8–10×3–8s (quality)'}
   ]},
+
   {title:'Legs', items:[
-    {k:'stepup', name:'Step-up',
-     rxB:'Box below knee — 3×8–12/leg',
+    {k:'stepup', name:'Step-up', eq:'db',
+     rxB:'Box just below knee — 3×8–12/leg',
      rxI:'Add load — 4×8–12/leg',
-     rxA:'Higher box or tempo — 5×6–10/leg'}
+     rxA:'Higher box or tempo pauses — 5×6–10/leg'}
   ]}
 ];
 

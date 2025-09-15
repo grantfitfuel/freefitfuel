@@ -215,26 +215,29 @@ const EXERCISES = [
 /* ===== Alternatives per movement (ordered by preference) ===== */
 const ALTS = {
   // PULL
-  chin:    ['doorrow','bandlat','bandrow'],   // bar → door/table row → bands
-  bandlat: ['doorrow','bandrow'],
-  csrow:   ['doorrow','bandrow'],
-  doorrow: ['bandrow','bandlat'],
+  chin:     ['ringrow','doorrow','bandlat','bandrow'],
+  bandlat:  ['ringrow','doorrow','bandrow'],
+  csrow:    ['ringrow','doorrow','bandrow'],
+  doorrow:  ['ringrow','bandrow','bandlat'],
+  ringrow:  ['doorrow','bandrow','bandlat'],
 
   // PUSH / SHOULDERS
-  dbbench: ['pushup','dbfloor'],
-  dbfloor: ['pushup'],
-  ohpress: ['pushup'],
-  latraise:['ohpress','pushup'],
+  dbbench:  ['ringpush','pushup','dbfloor'],
+  dbfloor:  ['ringpush','pushup'],
+  ohpress:  ['ringpush','pushup'],
+  latraise: ['ohpress','ringpush','pushup'],
+  pushup:   ['ringpush','dbfloor'],
 
   // LEGS / CORE
-  stepup:  ['split','sidepl'],
-  dbrdl:   ['split','sidepl'],
-  split:   ['stepup','sidepl'],
-  sidepl:  [],
+  stepup:   ['split','sidepl'],
+  dbrdl:    ['split','sidepl'],
+  split:    ['stepup','sidepl'],
+  sidepl:   ['ringsup'],       // core stability option
+  ringsup:  ['sidepl'],        // and back
 
   // FULL BODY
-  dbcp:    ['manmaker','pushup','doorrow'],
-  manmaker:['dbcp','pushup','doorrow']
+  dbcp:     ['manmaker','pushup','doorrow'],
+  manmaker: ['dbcp','pushup','doorrow']
 };
 
 /* ===== Helpers for gear filtering & alt-picking ===== */

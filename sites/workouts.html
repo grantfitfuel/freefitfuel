@@ -904,40 +904,63 @@ function playBeep(times=1, freq=880, dur=160){
 }
 
 /* ========= Circuit timers (hook existing [data-timer]) ========= */
+
+/* Replace your existing hookTimers() with this upgraded version */
 function hookTimers(){
   const nodes = document.querySelectorAll('[data-timer]');
   if(!nodes.length) return;
-  // avoid double-wiring
+
   nodes.forEach(box=>{
     if(box.__wired) return; box.__wired = true;
 
-    const id = box.getAttribute('data-timer');
-    const input = box.querySelector('input[type="number"]');
-    const span  = box.querySelector('.left');
-    const btnStart = box.querySelector('[data-act="start"]');
-    const btnStop  = box.querySelector('[data-act="stop"]');
+    const input   = box.querySelector('input[type="number"]');
+    const span    = box.querySelector('.left');
+    const btnStart= box.querySelector('[data-act="start"]');
+    const btnStop = box.querySelector('[data-act="stop"]');
 
-    let t = null;       // interval id
-    let left = +input.value||0;
+    let t=null, left=+input.value||0, pre=null, preLeft=PRE_ROLL;
 
-    function tick(){
+    function tickMain(){
       left = Math.max(0, left-1);
       span.textContent = left+'s';
       if(left===0){ clearInterval(t); t=null; playBeep(2); }
     }
+
+    function stopAll(){
+      if(pre){ clearInterval(pre); pre=null; }
+      if(t){ clearInterval(t); t=null; }
+    }
+
     btnStart.addEventListener('click', ()=>{
-      if(t) return;
+      if(t || pre) return;                    // already running
       left = +input.value||0;
       if(left<=0) return;
-      span.textContent = left+'s';
-      t = setInterval(tick, 1000);
-      playBeep(1, 1200, 120); // lil chirp to confirm start
+
+      // 3-2-1 pre-roll
+      preLeft = PRE_ROLL;
+      span.textContent = `Starting in ${preLeft}…`;
+      playBeep(1, 1000, 100);
+
+      pre = setInterval(()=>{
+        preLeft--;
+        if(preLeft>0){
+          span.textContent = `Starting in ${preLeft}…`;
+          playBeep(1, 1000, 100);
+        }else{
+          clearInterval(pre); pre=null;
+          span.textContent = left+'s';
+          playBeep(1, 1200, 140);            // go beep
+          t = setInterval(tickMain, 1000);   // start main timer
+        }
+      }, 1000);
     });
+
     btnStop.addEventListener('click', ()=>{
-      if(t){ clearInterval(t); t=null; playBeep(1, 600, 80); }
+      stopAll();
+      playBeep(1, 600, 80);
     });
   });
-}
+}}
 
 /* ========= Per-exercise REST timer (inserted into each drawer) ========= */
 function addRestTimer(drawerEl, storageKey){

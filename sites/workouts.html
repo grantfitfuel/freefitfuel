@@ -61,6 +61,9 @@
     /* Export/import */
     .backup{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 0}
     .backup .btn-sm{white-space:nowrap}
+    .restbar{display:flex;align-items:center;gap:.4rem;margin-top:.4rem;flex-wrap:wrap}
+    .restbar .left{opacity:.9}
+    .timer .left{margin-left:.4rem;opacity:.9}
   </style>
   <title>FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands</title>
 <meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
@@ -880,7 +883,149 @@ document.getElementById('importFile')?.addEventListener('change', (e)=>{
   };
   reader.readAsText(file);
 });
+/* ========= Beep utility (Web Audio API) ========= */
+function playBeep(times=1, freq=880, dur=160){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    let when = ctx.currentTime;
+    for(let i=0;i<times;i++){
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(freq, when);
+      g.gain.setValueAtTime(0.0001, when);
+      g.gain.exponentialRampToValueAtTime(0.15, when+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, when+dur/1000);
+      o.connect(g).connect(ctx.destination);
+      o.start(when); o.stop(when+dur/1000+0.02);
+      when += (dur+80)/1000;
+    }
+  }catch(e){ /* ignore if blocked */ }
+}
 
+/* ========= Circuit timers (hook existing [data-timer]) ========= */
+function hookTimers(){
+  const nodes = document.querySelectorAll('[data-timer]');
+  if(!nodes.length) return;
+  // avoid double-wiring
+  nodes.forEach(box=>{
+    if(box.__wired) return; box.__wired = true;
+
+    const id = box.getAttribute('data-timer');
+    const input = box.querySelector('input[type="number"]');
+    const span  = box.querySelector('.left');
+    const btnStart = box.querySelector('[data-act="start"]');
+    const btnStop  = box.querySelector('[data-act="stop"]');
+
+    let t = null;       // interval id
+    let left = +input.value||0;
+
+    function tick(){
+      left = Math.max(0, left-1);
+      span.textContent = left+'s';
+      if(left===0){ clearInterval(t); t=null; playBeep(2); }
+    }
+    btnStart.addEventListener('click', ()=>{
+      if(t) return;
+      left = +input.value||0;
+      if(left<=0) return;
+      span.textContent = left+'s';
+      t = setInterval(tick, 1000);
+      playBeep(1, 1200, 120); // lil chirp to confirm start
+    });
+    btnStop.addEventListener('click', ()=>{
+      if(t){ clearInterval(t); t=null; playBeep(1, 600, 80); }
+    });
+  });
+}
+
+/* ========= Per-exercise REST timer (inserted into each drawer) ========= */
+function addRestTimer(drawerEl, storageKey){
+  if(!drawerEl || drawerEl.querySelector('.restbar')) return; // already added
+
+  const wrap = document.createElement('div');
+  wrap.className = 'restbar';
+  const sel = document.createElement('select');
+  sel.setAttribute('data-rest','');
+  [30,45,60,90,120].forEach(s=>{
+    const o = document.createElement('option');
+    o.value = s; o.textContent = `${s}s`;
+    sel.appendChild(o);
+  });
+
+  // restore last choice
+  const REST_KEY = NS + storageKey + '.rest';
+  const saved = parseInt(localStorage.getItem(REST_KEY)||'60',10);
+  if([30,45,60,90,120].includes(saved)) sel.value = String(saved);
+
+  const bStart = document.createElement('button');
+  bStart.className='btn-sm';
+  bStart.textContent='Rest';
+  bStart.title='Start rest countdown';
+
+  const bStop = document.createElement('button');
+  bStop.className='btn-sm';
+  bStop.textContent='Stop';
+
+  const left = document.createElement('span');
+  left.className='left';
+  left.textContent='ready';
+
+  wrap.append('Rest:', sel, bStart, bStop, left);
+  drawerEl.appendChild(wrap);
+
+  let t=null, cur=0;
+  function tick(){
+    cur = Math.max(0, cur-1);
+    left.textContent = cur+'s';
+    if(cur===0){ clearInterval(t); t=null; playBeep(2,1000,140); }
+  }
+  bStart.addEventListener('click', ()=>{
+    const secs = parseInt(sel.value, 10) || 60;
+    localStorage.setItem(REST_KEY, String(secs));
+    cur = secs;
+    left.textContent = cur+'s';
+    if(t) clearInterval(t);
+    t = setInterval(tick, 1000);
+    playBeep(1, 1200, 120);
+  });
+  bStop.addEventListener('click', ()=>{ if(t){ clearInterval(t); t=null; playBeep(1,600,80);} });
+}
+
+/* Find all log drawers and install a rest timer keyed to the exercise shown */
+function installRestTimers(){
+  document.querySelectorAll('.mov .drawer').forEach(drawer=>{
+    // key by closest movement title text’s data or fallback: derive from link href query
+    const titleA = drawer.closest('.mov')?.querySelector('.mov-title a');
+    // Try to grab the exercise key from previous wiring: we stored under NS+ex.k in handlers.
+    // Easiest reliable key: use the first Save button’s dataset path to its nearest fields.
+    // We’ll allow override via data-exk if present in future; fallback to sanitized link text.
+    let k = drawer.getAttribute('data-exk');
+    if(!k && titleA){
+      k = (titleA.textContent||'').toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,24) || 'ex';
+    }
+    addRestTimer(drawer, k);
+  });
+}
+
+/* ========= Reset-all (delete every NS key) ========= */
+document.getElementById('btnResetAll')?.addEventListener('click', ()=>{
+  const ok = confirm('This will delete ALL FreeFitFuel logs and PBs stored on this device. Continue?');
+  if(!ok) return;
+  const toDelete = [];
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(k && k.startsWith(NS)) toDelete.push(k);
+  }
+  toDelete.forEach(k=>localStorage.removeItem(k));
+  alert('All FreeFitFuel logs cleared ✅');
+  // re-render UI to reflect clears
+  renderPlan(); renderCal(); renderCircuits();
+  // reinstall rest timers (fresh drawers)
+  setTimeout(()=>{ installRestTimers(); hookTimers(); }, 0);
+});
+
+/* ========= Reinstall timers whenever content changes ========= */
+/* Call once on initial mount too (after your first renderPlan/renderCal/renderCircuits). */
+setTimeout(()=>{ installRestTimers(); hookTimers(); }, 0);
 /* ========= Mount ========= */
 restoreUIToControls();
 bindControls();

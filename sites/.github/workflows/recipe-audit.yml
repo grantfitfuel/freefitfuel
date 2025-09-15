@@ -1,0 +1,36 @@
+name: Recipe Audit
+
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - 'data/recipes-*.json'
+      - 'scripts/check-recipes.mjs'
+      - '.github/workflows/recipe-audit.yml'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟩 Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: ▶️ Run auditor
+        run: |
+          node scripts/check-recipes.mjs data || true
+
+      - name: 📤 Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: recipe-audit-reports
+          path: |
+            reports/invalid-names.csv
+            reports/duplicate-ids.csv
+            reports/summary.txt
+          if-no-files-found: warn

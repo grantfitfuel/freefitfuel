@@ -4,13 +4,56 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Brain Reprogramming – Patch & Pot</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta name="description" content="Use neuroplasticity to gently reshape habits, thoughts, feelings, and attention. Clear explanations plus tiny actions that compound over time.">
+  <link rel="stylesheet" href="../style.css?v=br2">
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="../img/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../img/favicon-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="../img/favicon-512.png">
+
+  <style>
+    /* Page-local layout (light touch; respects site vars) */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:950px){.grid.cols3{grid-template-columns:repeat(3,1fr)}}
+    @media (min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .meta{color:var(--muted);font-size:.92rem}
+
+    /* HERO (no crop / no zoom, consistent with other pages) */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;
+      height:auto !important;
+      max-height:460px !important;
+      object-fit:scale-down !important;
+      object-position:center center !important;
+      display:block; filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
+
+    /* Mini-nav (sticky + active) */
+    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
+    html{scroll-behavior:smooth}
+
+    /* Figures */
+    figure{margin:.6rem 0}
+    figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--stroke);background:#0a0f0c}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+
+    /* Callouts */
+    .do-now{background:var(--glass);border:1px dashed var(--stroke);border-radius:10px;padding:10px;margin-top:8px}
+    .do-now strong{color:var(--accent,#1ea672)}
+  </style>
 </head>
 <body>
 
@@ -21,12 +64,10 @@
     <span class="site-title">Patch &amp; Pot</span>
   </div>
 
-  <!-- Hamburger button -->
   <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">
     <span class="menu-ico"><span></span><span></span><span></span></span>
   </button>
 
-  <!-- Primary nav -->
   <nav class="nav" id="primaryNav" aria-label="Primary">
     <a href="../index.html">Home</a>
     <a href="../growing.html">Growing</a>
@@ -39,124 +80,126 @@
   </nav>
 </header>
 
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Brain Reprogramming hero">
+  <figure>
+    <img src="../img/brain-reprogramming-hero.png" alt="Warm, hopeful scene suggesting new neural pathways and habit change">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content">
+    <div class="wrap">
+      <h1><span class="accent">Brain Reprogramming</span></h1>
+      <p class="lead">Use neuroplasticity to reshape habits, thoughts, and attention — with tiny steps that stick.</p>
+    </div>
+  </div>
+</header>
+
 <main class="wrap">
-  <h1>Brain Reprogramming</h1>
   <p class="lead">
-    “Reprogramming” your brain means using <strong>neuroplasticity</strong> (the brain’s capacity to change) to
-    gently reshape habits, thoughts, feelings, and attention. Below you’ll find clear explanations and
-    small actions that compound over time.
+    “Reprogramming” your brain = working with <strong>neuroplasticity</strong>, not against it.
+    Below you’ll find plain-English explanations and <em>small, repeatable actions</em> that compound over time.
   </p>
 
-  <!-- HERO (photographic) -->
-  <figure>
-    <img src="../img/brain-reprogramming-hero.png" alt="Warm, hopeful photo representing new neural pathways and habit change" style="border-radius:12px; width:100%; height:auto; max-height:460px; object-fit:cover;">
-    <figcaption class="cap">Change grows with repetition, rest and kindness to yourself.</figcaption>
-  </figure>
+  <!-- Mini-nav -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#plasticity-basics">Neuroplasticity basics</a>
+    <a href="#habit-engine">Habit engine</a>
+    <a href="#cognitive-tools">Thought tools</a>
+    <a href="#state">State management</a>
+    <a href="#environment-identity">Environment & identity</a>
+    <a href="#lifestyle">Lifestyle builders</a>
+    <a href="#neurodivergent-notes">ADHD & Autism</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+    <a href="#starter-kit">7-day starter</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
 
   <!-- 1. What changes in the brain -->
-  <section id="plasticity-basics">
+  <section id="plasticity-basics" class="section">
     <h2>1) Neuroplasticity — what actually changes</h2>
     <p>
-      When you repeat an action or a way of thinking, certain networks fire in sequence and strengthen
-      (<em>“what fires together, wires together”</em>). With practice and rest, those pathways insulate and
-      become easier to activate; unused pathways fade (<em>synaptic pruning</em>). This is true for movement,
-      mood regulation, attention, language, and habits.
+      Repeated actions fire networks together — and what <em>fires together, wires together</em>.
+      Over time, useful pathways strengthen and insulate; unused ones fade (<em>pruning</em>).
+      This applies to movement, mood regulation, focus, language, and habits.
     </p>
     <ul>
       <li><strong>Repetition:</strong> short, frequent reps beat occasional marathons.</li>
-      <li><strong>Emotion + meaning:</strong> change sticks when it matters to you.</li>
+      <li><strong>Emotion & meaning:</strong> change sticks when it matters to you.</li>
       <li><strong>Sleep:</strong> consolidation happens most efficiently during sleep.</li>
-      <li><strong>Safety:</strong> calmer states (parasympathetic) help new learning integrate.</li>
+      <li><strong>Safety:</strong> calmer states (parasympathetic) help learning integrate.</li>
     </ul>
     <figure>
-      <img src="../img/ns-neuroplasticity.png" alt="Neuroplasticity: strengthening and pruning of neural pathways" style="border-radius:12px; width:100%; max-height:420px; object-fit:contain; background:#0a0f0c; padding:8px;">
+      <img src="../img/ns-neuroplasticity.png" alt="Neuroplasticity illustration: strengthening and pruning of neural pathways">
       <figcaption class="cap">Practice strengthens pathways; rest consolidates them.</figcaption>
     </figure>
+    <div class="do-now"><strong>Do now (30s):</strong> Name one 60-second behaviour you could repeat daily (e.g., 4–6 breath, one pushup, water one pot).</div>
   </section>
 
   <!-- 2. Habit engine -->
-  <section id="habit-engine">
+  <section id="habit-engine" class="section">
     <h2>2) Your habit engine (cue → routine → reward)</h2>
-    <p>
-      Habits run as loops. Keep the <strong>cue</strong> and the <strong>reward</strong>, swap the
-      <strong>routine</strong>. That change is smaller and more realistic than “pure willpower.”
-    </p>
-    <div class="grid">
+    <p>Keep the <strong>cue</strong> and the <strong>reward</strong>, swap the <strong>routine</strong>. It’s easier than “willpower”.</p>
+    <div class="grid cols3">
       <article class="card">
         <h3>Map a loop</h3>
-        <p><strong>Cue:</strong> Bored mid-afternoon. <strong>Routine:</strong> Scroll phone. <strong>Reward:</strong> Stimulation.</p>
-        <p><u>Swap:</u> 20 wall pushups + water → stimulation + small win.</p>
+        <p><strong>Cue:</strong> mid-afternoon dip. <strong>Routine:</strong> mindless scroll. <strong>Reward:</strong> stimulation.</p>
+        <p><u>Swap:</u> 20 wall pushups + water → same reward + mini win.</p>
       </article>
       <article class="card">
         <h3>Tiny Habits</h3>
-        <p>Anchor a 30–60 sec action to something you already do.</p>
-        <p><u>Example:</u> After I put the kettle on, I’ll water one pot. Celebrate micro-wins.</p>
+        <p>Anchor a 30–60s action to something you already do.</p>
+        <p><u>Example:</u> After the kettle clicks, water one pot. Celebrate micro-wins.</p>
       </article>
       <article class="card">
-        <h3>Implementation intentions</h3>
-        <p><em>If</em> (situation), <em>then</em> (next small step). Pre-decide to reduce friction.</p>
-        <p><u>Example:</u> If I feel overwhelmed, then I’ll breathe 4–6 for one minute.</p>
+        <h3>If–Then plans</h3>
+        <p><em>If</em> (situation), <em>then</em> (tiny next step) to reduce friction.</p>
+        <p><u>Example:</u> If I feel overwhelmed, then I breathe 4–6 for one minute.</p>
       </article>
     </div>
     <figure>
-      <img src="../img/ns-habit-loop.png" alt="Habit loop: cue, routine, reward with swap arrows" style="border-radius:12px; width:100%; max-height:400px; object-fit:contain; background:#0a0f0c; padding:8px;">
+      <img src="../img/ns-habit-loop.png" alt="Habit loop diagram showing cue, routine, reward and how to swap the routine">
       <figcaption class="cap">Keep the cue and reward; experiment with new routines.</figcaption>
     </figure>
   </section>
 
   <!-- 3. Thought tools -->
-  <section id="cognitive-tools">
+  <section id="cognitive-tools" class="section">
     <h2>3) Thought tools that reshape pathways</h2>
-    <article class="card">
-      <h3>Thought reframing</h3>
-      <p>
-        Notice a sticky thought → check the evidence → craft a balanced alternative. This is accuracy,
-        not forced positivity.
-      </p>
-      <ul>
-        <li>“I always fail” → “I sometimes struggle, and I’ve finished X and Y.”</li>
-        <li>“It must be perfect” → “Done at 80% beats stuck at 0%.”</li>
-      </ul>
-      <p class="meta">
-        See <a href="./neuroscience.html#reframing">Neuroscience: Reframing</a> for more examples and cards.
-      </p>
-    </article>
-
-    <article class="card">
-      <h3>Affirmations that actually work</h3>
-      <p>
-        Use believable, present-tense phrases tied to action. They prime your attention to notice matching evidence.
-      </p>
-      <ul>
-        <li>“I can take one step now.” → start a 2-minute task.</li>
-        <li>“I fuel my body kindly.” → pour a glass of water.</li>
-      </ul>
-      <p class="meta">
-        See <a href="./neuroscience.html#affirmations">Neuroscience: Affirmations</a>.
-      </p>
-    </article>
-
-    <article class="card">
+    <div class="grid cols2">
+      <article class="card">
+        <h3>Thought reframing</h3>
+        <p>Notice a sticky thought → check evidence → craft a balanced alternative (accuracy, not forced positivity).</p>
+        <ul>
+          <li>“I always fail” → “I sometimes struggle, and I finished X and Y.”</li>
+          <li>“It must be perfect” → “Done at 80% beats stuck at 0%.”</li>
+        </ul>
+        <p class="meta">See <a href="./thought-reframing.html">Thought Reframing</a> for cards and examples.</p>
+      </article>
+      <article class="card">
+        <h3>Affirmations that work</h3>
+        <p>Believable, present-tense, and tied to action. They prime attention to notice matching evidence.</p>
+        <ul>
+          <li>“I can take one step now.” → start a 2-minute task.</li>
+          <li>“I fuel my body kindly.” → pour a glass of water.</li>
+        </ul>
+        <p class="meta">See <a href="./affirmations.html">Affirmations</a> for a starter set.</p>
+      </article>
+    </div>
+    <article class="card" style="margin-top:12px">
       <h3>Exposure, gently</h3>
-      <p>
-        For fears/avoidance, create a graded ladder (easy → moderate → hard). Pair exposures with calm breathing,
-        stop when you hit a 5–6/10 and let the wave pass. Repeat another day.
-      </p>
+      <p>Create a graded ladder (easy → moderate → hard). Pair exposures with calm breathing; stop around 5–6/10, let the wave pass, repeat another day.</p>
     </article>
   </section>
 
   <!-- 4. State management -->
-  <section id="state">
-    <h2>4) State management (ANS: fight/flight, rest/digest, shutdown)</h2>
-    <p>
-      Change sticks best when your nervous system is steady. Build switches that nudge you toward
-      <strong>parasympathetic</strong> (rest/digest) when you’re too amped, or toward gentle activation when flat.
-    </p>
-    <div class="grid">
+  <section id="state" class="section">
+    <h2>4) State management (fight/flight, rest/digest, shutdown)</h2>
+    <p>Change sticks best when your nervous system is steady. Use small switches to nudge toward calm or gentle activation.</p>
+    <div class="grid cols2">
       <article class="card">
         <h3>Down-shift (too revved)</h3>
         <ul>
-          <li>4–6 breathing (inhale 4, exhale 6) × 2 minutes</li>
+          <li>4–6 breathing × 2 minutes</li>
           <li>Long exhale sighs; unclench jaw; drop shoulders</li>
           <li>Warm drink; dim lights; slower music</li>
         </ul>
@@ -164,130 +207,119 @@
       <article class="card">
         <h3>Up-shift (too flat)</h3>
         <ul>
-          <li>60–120 seconds of brisk walking or stairs</li>
-          <li>Cold splash on wrists/face; sunlight</li>
+          <li>60–120s brisk walk or stairs</li>
+          <li>Cool water splash; morning daylight</li>
           <li>Upbeat track + simple movement</li>
         </ul>
       </article>
     </div>
     <figure>
-      <img src="../img/ans-three-states.png" alt="Autonomic Nervous System: fight/flight, rest/digest, shutdown" style="border-radius:12px; width:100%; max-height:420px; object-fit:contain; background:#0a0f0c; padding:8px;">
-      <figcaption class="cap">Three-state map: sympathetic (fight/flight), parasympathetic (rest/digest), protective shutdown.</figcaption>
+      <img src="../img/ans-three-states.png" alt="Autonomic states: sympathetic, parasympathetic, and protective shutdown">
+      <figcaption class="cap">Three-state map: sympathetic, parasympathetic, protective shutdown.</figcaption>
     </figure>
   </section>
 
   <!-- 5. Environment & identity -->
-  <section id="environment-identity">
-    <h2>5) Environment & identity (make the good path the easy path)</h2>
+  <section id="environment-identity" class="section">
+    <h2>5) Environment & identity (make the good path easy)</h2>
     <ul>
       <li><strong>Prompt the cue:</strong> dumbbells by the kettle; watering can by the door.</li>
       <li><strong>Remove friction:</strong> pre-chopped veg; seeds + compost ready in a tray.</li>
-      <li><strong>Identity shift:</strong> “What would a person-who-trains do next?”; “What would a grower do today?”</li>
-      <li><strong>Streaks & tracking:</strong> tick a calendar; celebrate small wins.</li>
+      <li><strong>Identity questions:</strong> “What would a person-who-trains do next?”</li>
+      <li><strong>Streaks & tracking:</strong> tick a calendar; visible wins motivate.</li>
       <li><strong>Accountability:</strong> text a friend after your 2-minute action.</li>
     </ul>
   </section>
 
   <!-- 6. Lifestyle builders -->
-  <section id="lifestyle">
+  <section id="lifestyle" class="section">
     <h2>6) Lifestyle builders that amplify change</h2>
-    <div class="grid">
+    <div class="grid cols2">
       <article class="card">
         <h3>Sleep</h3>
-        <p>Consistent wake time; light in the morning; reduce late caffeine; wind-down ritual (+ phone out of reach).</p>
+        <p>Consistent wake time; morning light; reduce late caffeine; wind-down; phone out of reach.</p>
       </article>
       <article class="card">
         <h3>Movement</h3>
-        <p>Daily “minimums”: 10–20 minutes any pace; sprinkle in 30–60 sec “movement snacks.”</p>
+        <p>Daily “minimums” (10–20 minutes); sprinkle 30–60s “movement snacks”.</p>
       </article>
       <article class="card">
         <h3>Nutrition</h3>
-        <p>Protein + fibre each meal; hydration goal (glass per meal); simple batch-cook base (beans/rice/soup).</p>
+        <p>Protein + fibre each meal; hydration habit (glass per meal); batch a simple base (beans/rice/soup).</p>
       </article>
       <article class="card">
         <h3>Sunlight & connection</h3>
-        <p>Morning daylight when possible; tiny check-ins with safe people; brief nature exposure.</p>
+        <p>Morning daylight; brief nature; small, regular check-ins with safe people.</p>
       </article>
     </div>
   </section>
 
   <!-- 7. ADHD / Autism notes -->
-  <section id="neurodivergent-notes">
+  <section id="neurodivergent-notes" class="section">
     <h2>7) Notes for ADHD & Autism</h2>
-    <article class="card">
-      <h3>ADHD</h3>
-      <ul>
-        <li>Lean on <strong>body-doubling</strong>, visual timers, and 2-minute starts.</li>
-        <li>Make the first step <strong>ridiculously small</strong>; use novelty to spark interest.</li>
-        <li>Externalise everything: checklists, calendar blocks, pinned tabs.</li>
-      </ul>
-    </article>
-    <article class="card">
-      <h3>Autism</h3>
-      <ul>
-        <li>Prioritise <strong>sensory comfort</strong>; reduce transitions; predictable routines help.</li>
-        <li>Use <strong>written plans</strong> and scripts for tricky moments.</li>
-        <li>Protect low-mask time and decompression after high-demand events.</li>
-      </ul>
-    </article>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>ADHD</h3>
+        <ul>
+          <li><strong>Body-doubling</strong>, visual timers, 2-minute starts.</li>
+          <li>Make step one <strong>ridiculously small</strong>; use novelty.</li>
+          <li>Externalise: checklists, calendar blocks, pinned tabs.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Autism</h3>
+        <ul>
+          <li>Prioritise <strong>sensory comfort</strong>; reduce transitions.</li>
+          <li>Use <strong>written plans</strong> and simple scripts for tricky moments.</li>
+          <li>Protect decompression after high-demand events.</li>
+        </ul>
+      </article>
+    </div>
   </section>
 
   <!-- 8. Troubleshooting & relapse -->
-  <section id="troubleshooting">
+  <section id="troubleshooting" class="section">
     <h2>8) Troubleshooting & relapse plan</h2>
     <ul>
-      <li><strong>Too big?</strong> Halve it until it’s doable in 60 seconds.</li>
+      <li><strong>Too big?</strong> Halve it until it fits 60 seconds.</li>
       <li><strong>Forgetting?</strong> Attach to a strong anchor (kettle, door, calendar alert).</li>
-      <li><strong>Bored?</strong> Change the soundtrack, location, or tool — but keep the cue and time.</li>
-      <li><strong>Bad week?</strong> Switch to “minimum viable habit” (one rep, one breath, one page).</li>
+      <li><strong>Bored?</strong> Change soundtrack/location/tool — keep the cue/time.</li>
+      <li><strong>Bad week?</strong> Switch to “minimum viable habit”: one rep, one breath, one page.</li>
       <li><strong>Relapse script:</strong> “I’m restarting today with one tiny step.”</li>
     </ul>
   </section>
 
-  <!-- 9. Long-term tracker (added) -->
-  <section id="long-term-tracker">
-    <h2>9) Long-term tracker (make wins visible)</h2>
-    <p>Keep it scrappy and visual — the brain loves streaks:</p>
-    <ul>
-      <li>Print a 30-day grid or draw one in your notebook.</li>
-      <li>Pick one habit (60 seconds is fine). Tick the day if you did it at all.</li>
-      <li>Miss a day? No drama. Restart tomorrow. Avoid two misses in a row.</li>
-    </ul>
-  </section>
-
-  <!-- 10. Starter kit (added) -->
-  <section id="starter-kit">
-    <h2>10) Starter kit for the next 7 days</h2>
+  <!-- 9. Starter kit -->
+  <section id="starter-kit" class="section">
+    <h2>9) Starter kit for the next 7 days</h2>
     <ol>
-      <li><strong>Choose one loop:</strong> Kettle cue → 4–6 breathing (60–120 sec) → Reward: calmer start.</li>
+      <li><strong>Choose one loop:</strong> Kettle cue → 4–6 breathing (60–120s) → Reward: calmer start.</li>
       <li><strong>One tiny action:</strong> “Open the note and write one ugly sentence.”</li>
       <li><strong>Emergency phrase:</strong> “Lower the bar. One minute counts.”</li>
-      <li><strong>Track:</strong> draw 7 boxes, tick daily.</li>
+      <li><strong>Track:</strong> draw 7 boxes; tick daily; avoid two misses in a row.</li>
     </ol>
+    <div class="mini-nav" aria-label="Related">
+      <a href="./neuroscience.html#habits">Neuroscience: Habits</a>
+      <a href="./thought-reframing.html">Thought Reframing</a>
+      <a href="./affirmations.html">Affirmations</a>
+      <a href="./neurodiversity.html">Neurodiversity</a>
+    </div>
   </section>
 
-  <!-- Mini links to related tools -->
-  <div class="mini-nav">
-    <a href="./neuroscience.html#habits">Neuroscience: Habits</a>
-    <a href="./neuroscience.html#reframing">Neuroscience: Reframing</a>
-    <a href="./neuroscience.html#affirmations">Neuroscience: Affirmations</a>
-    <a href="./neurodiversity.html">Neurodiversity</a>
-  </div>
-
-  <!-- Standardised disclaimer -->
-  <section class="disclaimer" id="disclaimer">
-  <h2>Important Note</h2>
-  <p>
-    The information on this page is for <strong>general understanding and support</strong>. It is
-    <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel
-    unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.
-    If you’re outside the UK, contact your local emergency number.
-  </p>
-  <p>
-    For non-emergency concerns, consider speaking with a qualified health professional or one of the
-    support services listed on our site.
-  </p>
-</section>
+  <!-- Disclaimer -->
+  <section class="disclaimer section" id="disclaimer">
+    <h2>Important Note</h2>
+    <p>
+      The information on this page is for <strong>general understanding and support</strong>. It is
+      <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel
+      unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.
+      If you’re outside the UK, contact your local emergency number.
+    </p>
+    <p>
+      For non-emergency concerns, consider speaking with a qualified health professional or one of the
+      support services listed on our site.
+    </p>
+  </section>
 </main>
 
 <footer>
@@ -302,26 +334,29 @@
 <script>
   (function(){
     const header = document.getElementById('siteHeader');
-    const toggle = header.querySelector('.menu-toggle');
+    const toggle = header?.querySelector('.menu-toggle');
     const nav = document.getElementById('primaryNav');
-
     function setExpanded(on){
-      if(on){
-        header.classList.add('menu-open');
-        toggle.classList.add('menu-open');
-        toggle.setAttribute('aria-expanded','true');
-      } else {
-        header.classList.remove('menu-open');
-        toggle.classList.remove('menu-open');
-        toggle.setAttribute('aria-expanded','false');
-      }
+      if(on){ header.classList.add('menu-open'); toggle?.classList.add('menu-open'); toggle?.setAttribute('aria-expanded','true'); }
+      else  { header.classList.remove('menu-open'); toggle?.classList.remove('menu-open'); toggle?.setAttribute('aria-expanded','false'); }
     }
-    if(toggle){
-      toggle.addEventListener('click', () => setExpanded(!header.classList.contains('menu-open')));
-    }
-    if(nav){
-      nav.addEventListener('click', e => { if(e.target.tagName === 'A') setExpanded(false); });
-    }
+    toggle?.addEventListener('click', () => setExpanded(!header.classList.contains('menu-open')));
+    nav?.addEventListener('click', e => { if(e.target.tagName === 'A') setExpanded(false); });
+  })();
+</script>
+
+<!-- mini-nav scroll-spy -->
+<script>
+  (function(){
+    const nav = document.querySelector('.mini-nav'); if(!nav) return;
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    const targets = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) })).filter(x=>x.el);
+    const setActive = id => links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
+    const io = new IntersectionObserver((entries)=>{
+      const top = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+      if(top) setActive(top.target.id);
+    }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
+    targets.forEach(t => io.observe(t.el));
   })();
 </script>
 

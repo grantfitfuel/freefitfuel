@@ -11,7 +11,35 @@
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+/* Collapsible panels */
+details.collapsible{
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  margin:12px 0;
+  background:var(--glass);
+  overflow:hidden;
+}
+details.collapsible > summary{
+  cursor:pointer;
+  font-weight:700;
+  padding:14px 16px;
+  list-style:none;
+}
+details.collapsible > summary::-webkit-details-marker{ display:none; }
+details.collapsible > summary::after{
+  content:"▸";
+  float:right;
+  transition:transform .2s ease;
+}
+details.collapsible[open] > summary::after{ transform:rotate(90deg); }
+details.collapsible .panel{ padding:0 16px 16px 16px; }
 
+/* Print: expand everything */
+@media print{
+  details.collapsible > summary{ display:none; }
+  details.collapsible .panel{ display:block !important; }
+  details.collapsible{ border:none; }
+}
     /* Recipe grid */
     #recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
     #recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}

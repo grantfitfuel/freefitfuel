@@ -1,11 +1,12 @@
-/* Nutrition JS — full replacement (merged & restored)
-   - Robust loader: multi-file, '../' fallback, Promise.allSettled, defensive JSON parse
-   - Future-proof file list (recipes-01..-99 + legacy recipes.json)
-   - Tiles: text-only; chilli icons for spiciness; View/Print/Add actions
-   - Modal: on-screen viewing (no auto-print)
-   - Planner: Today + Week (Mon–Sun), no duplicates, Swap/Remove
-   - Week summary on main page (mirrors planner panel)
-   - Start-empty: NO default filter selected; grid empty until user chooses
+/* FreeFitFuel — Nutrition App (FULL)
+   - Multi-file recipe loader (recipes-01..99.json + legacy recipes.json) with ../ fallback
+   - Safe JSON parse, de-dup + normalise, enrich (noCook / slowCook, dietary autofill)
+   - Recipe cards: chilli icons 🌶️, View Recipe Card (modal), Print Recipe Card, Add to Planner
+   - Modal structure matches CSS (.recipe-modal .modal-header/.modal-body/.cols)
+   - Today planner + Week planner (Mon–Sun), swap/remove, no duplicates
+   - Week summary on main page mirrors planner panel
+   - Start-empty: NO default filter selected; grid empty until user chooses a filter or ALL
+   - Pantry mode with tokens and options
 */
 
 (function () {
@@ -41,7 +42,7 @@
   let FIRST_SUCCESSFUL_LOAD = false;
 
   const FILTERS = {
-    ALL: false, // start empty — don't show anything until a user chooses
+    ALL: false, // start empty — show nothing until the user selects a filter or presses ALL
     search: '',
     MealType: new Set(),
     Dietary: new Set(),
@@ -78,7 +79,7 @@
     filterBar.innerHTML = '';
     const all = document.createElement('button');
     all.className = 'chip'; all.dataset.filter='ALL';
-    all.setAttribute('aria-pressed','false'); // not pressed by default
+    all.setAttribute('aria-pressed','false'); // not pressed by default (start-empty)
     all.textContent='ALL';
     filterBar.appendChild(all);
 
@@ -89,6 +90,14 @@
         b.textContent=v; filterBar.appendChild(b);
       });
     });
+  }
+
+  function hasActiveFilters(){
+    if (FILTERS.ALL) return true;
+    if (FILTERS.search) return true;
+    if (FILTERS.Pantry?.active) return true;
+    const sets = ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'];
+    return sets.some(k => FILTERS[k] && FILTERS[k].size>0);
   }
 
   function updateChipStates(){
@@ -382,7 +391,7 @@
     return true;
   }
 
-  // ---------- Cards / Modal / Print (RESTORED) ----------
+  // ---------- Cards / Modal / Print ----------
   function card(r){
     const el=document.createElement('article');
     el.className='card';
@@ -400,59 +409,131 @@
         <button class="btn" data-action="add">Add to Planner</button>
       </div>
     `;
-    el.querySelector('[data-action="view"]').onclick=()=>openModal(r);   // on-screen view
-    el.querySelector('[data-action="print"]').onclick=()=>printRecipe(r); // print when clicked
+    el.querySelector('[data-action="view"]').onclick=()=>openModal(r);
+    el.querySelector('[data-action="print"]').onclick=()=>printRecipe(r);
     el.querySelector('[data-action="add"]').onclick=()=>addToPlannerPrompt(r);
     return el;
   }
 
+  // RESTORED modal structure that matches your CSS classes
   function ensureModalTemplate(){
     if(!modal || modal.dataset.wired) return;
     modal.innerHTML = `
-      <div style="padding:16px;max-height:80vh;overflow:auto">
-        <header style="display:flex;justify-content:space-between;align-items:center;gap:.6rem">
-          <h2 id="recipeTitle" style="margin:0"></h2>
-          <button id="modalClose" class="btn" type="button">Close</button>
-        </header>
-        <p class="meta"><span id="recipeTime"></span> • Serves <span id="recipeServes"></span> • <span id="recipeSpice"></span></p>
-        <h3>Ingredients</h3><ul id="recipeIngredients"></ul>
-        <h3>Method</h3><ol id="recipeMethod"></ol>
-        <h3>Macros (per serving)</h3><ul id="recipeMacros"></ul>
-        <p id="recipeAllergens" class="meta"></p>
-        <h3>Swaps</h3><ul id="recipeSwaps"></ul>
-        <p id="recipeHydration" class="meta"></p>
-        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.6rem">
+      <div class="modal-header">
+        <h2 id="recipeTitle"></h2>
+        <button id="modalClose" class="btn" type="button" aria-label="Close recipe card">Close</button>
+      </div>
+      <div class="modal-body">
+        <p class="meta" id="recipeMeta"></p>
+
+        <div class="cols">
+          <!-- LEFT: Ingredients + Macros -->
+          <div>
+            <h3>Ingredients</h3>
+            <ul id="recipeIngredients"></ul>
+
+            <h3>Macros (per serving)</h3>
+            <ul id="recipeMacros"></ul>
+            <p class="meta" id="recipeAllergens"></p>
+          </div>
+
+          <!-- RIGHT: Method + Swaps + Hydration -->
+          <div>
+            <h3>Method</h3>
+            <ol id="recipeMethod"></ol>
+
+            <h3>Swaps</h3>
+            <ul id="recipeSwaps"></ul>
+
+            <p class="meta" id="recipeHydration"></p>
+          </div>
+        </div>
+
+        <div class="btn-row">
           <button id="modalAddToPlanner" class="btn" type="button">Add to Planner</button>
           <button id="modalPrint" class="btn" type="button">Print</button>
         </div>
-      </div>`;
+      </div>
+    `;
     modal.dataset.wired='1';
+
+    const close = () => { try { modal.close(); } catch { modal.classList.remove('fallback-open'); } };
+    const closeBtn = modal.querySelector('#modalClose');
+    if (closeBtn) closeBtn.onclick = close;
   }
 
   function openModal(r){
     if(!modal) return;
     ensureModalTemplate();
-    const get=s=>qs(s,modal);
-    get('#recipeTitle')       && (get('#recipeTitle').textContent=safeTitle(r));
-    get('#recipeServes')      && (get('#recipeServes').textContent=r.serves||1);
-    get('#recipeTime')        && (get('#recipeTime').textContent=`${r.time_mins||0} min`);
-    get('#recipeSpice')       && (get('#recipeSpice').textContent=r.spiceLevel? `${spiceIcons(r.spiceLevel)} (${['','Mild','Medium','Hot'][r.spiceLevel]||'Spicy'})` : '');
-    get('#recipeIngredients') && (get('#recipeIngredients').innerHTML=(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join(''));
-    get('#recipeMethod')      && (get('#recipeMethod').innerHTML=(r.method||[]).map(s=>`<li>${s}</li>`).join(''));
-    if(get('#recipeMacros')){
-      const n=r.nutritionPerServing||{};
-      get('#recipeMacros').innerHTML=`<li>${n.kcal??'—'} kcal</li><li>Protein ${n.protein_g??'—'} g</li><li>Carbs ${n.carbs_g??'—'} g</li><li>Fat ${n.fat_g??'—'} g</li>${n.fibre_g!=null?`<li>Fibre ${n.fibre_g} g</li>`:''}${n.sugar_g!=null?`<li>Sugar ${n.sugar_g} g</li>`:''}${n.salt_g!=null?`<li>Salt ${n.salt_g} g</li>`:''}`;
+
+    const get = (sel) => modal.querySelector(sel);
+
+    // Title + meta line
+    const title = get('#recipeTitle');
+    if (title) title.textContent = safeTitle(r);
+
+    const meta = get('#recipeMeta');
+    if (meta) {
+      const parts = [];
+      parts.push(`${r.time_mins || 0} min`);
+      parts.push(`Serves ${r.serves || 1}`);
+      if (r.mealType) parts.push(r.mealType);
+      if (r.spiceLevel) {
+        const levelText = ['','Mild','Medium','Hot'][r.spiceLevel] || 'Spicy';
+        parts.push(`${spiceIcons(r.spiceLevel)} (${levelText})`);
+      }
+      meta.textContent = parts.join(' • ');
     }
-    get('#recipeAllergens') && (get('#recipeAllergens').textContent=(r.allergensPresent&&r.allergensPresent.length)?`Allergens: ${r.allergensPresent.join(', ')}`:'Allergens: none listed');
-    get('#recipeSwaps')     && (get('#recipeSwaps').innerHTML=(r.swaps||[]).map(s=>`<li>${s}</li>`).join(''));
-    get('#recipeHydration') && (get('#recipeHydration').textContent=r.hydrationTip||'');
 
-    get('#modalAddToPlanner') && (get('#modalAddToPlanner').onclick=()=>addToPlannerPrompt(r));
-    get('#modalPrint')        && (get('#modalPrint').onclick=()=>printRecipe(r));
-    get('#modalClose')        && (get('#modalClose').onclick=()=>{ try{ modal.close(); }catch{ modal.classList.remove('fallback-open'); } });
+    // Ingredients
+    const ing = get('#recipeIngredients');
+    if (ing) {
+      ing.innerHTML = (r.ingredients || [])
+        .map(i => `<li>${i.qty ? `${i.qty} ` : ''}${i.item}</li>`).join('');
+    }
 
-    // Show modal
-    try { modal.showModal(); } catch { modal.classList.add('fallback-open'); }
+    // Method
+    const method = get('#recipeMethod');
+    if (method) {
+      method.innerHTML = (r.method || []).map(step => `<li>${step}</li>`).join('');
+    }
+
+    // Macros
+    const n = r.nutritionPerServing || {};
+    const macros = get('#recipeMacros');
+    if (macros) {
+      macros.innerHTML = `
+        <li>${n.kcal ?? '—'} kcal</li>
+        <li>Protein ${n.protein_g ?? '—'} g</li>
+        <li>Carbs ${n.carbs_g ?? '—'} g</li>
+        <li>Fat ${n.fat_g ?? '—'} g</li>
+        ${n.fibre_g != null ? `<li>Fibre ${n.fibre_g} g</li>` : ''}
+        ${n.sugar_g != null ? `<li>Sugar ${n.sugar_g} g</li>` : ''}
+        ${n.salt_g  != null ? `<li>Salt ${n.salt_g} g</li>`  : ''}
+      `;
+    }
+
+    // Allergens / swaps / hydration
+    const al = get('#recipeAllergens');
+    if (al) al.textContent = (r.allergensPresent && r.allergensPresent.length)
+      ? `Allergens: ${r.allergensPresent.join(', ')}`
+      : 'Allergens: none listed';
+
+    const swaps = get('#recipeSwaps');
+    if (swaps) swaps.innerHTML = (r.swaps || []).map(s => `<li>${s}</li>`).join('');
+
+    const hyd = get('#recipeHydration');
+    if (hyd) hyd.textContent = r.hydrationTip || '';
+
+    // Actions
+    const addBtn   = get('#modalAddToPlanner');
+    const printBtn = get('#modalPrint');
+    if (addBtn)   addBtn.onclick   = () => addToPlannerPrompt(r);
+    if (printBtn) printBtn.onclick = () => printRecipe(r);
+
+    // Open dialog with fallback
+    try { modal.showModal(); }
+    catch { modal.classList.add('fallback-open'); }
   }
 
   function printRecipe(r){
@@ -484,15 +565,6 @@
   // ---------- Panels / Overlay ----------
   function openPanel(p){ p && p.classList.add('open'); p && p.setAttribute('aria-hidden','false'); overlay && overlay.classList.add('show'); }
   function closePanel(p){ p && p.classList.remove('open'); p && p.setAttribute('aria-hidden','true'); if(!document.querySelector('.panel.open') && overlay) overlay.classList.remove('show'); }
-
-  // ---------- Render gating (start empty) ----------
-  function hasActiveFilters(){
-    if (FILTERS.ALL) return true;
-    if (FILTERS.search) return true;
-    if (FILTERS.Pantry?.active) return true;
-    const sets = ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'];
-    return sets.some(k => FILTERS[k] && FILTERS[k].size>0);
-  }
 
   // ---------- Render grid ----------
   function render(){

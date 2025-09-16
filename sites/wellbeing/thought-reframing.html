@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patch & Pot – Thought Reframing</title>
+  <meta name="description" content="Catch-Think-Do: identify unhelpful thoughts, test them, and choose a helpful action.">
+  <link rel="stylesheet" href="../style.css?v=tr1">
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="brand">
+    <img src="../img/patchandpot-logo.png" alt="Patch &amp; Pot logo" class="logo" onerror="this.style.display='none'">
+    <span class="site-title">Patch &amp; Pot</span>
+  </div>
+  <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">
+    <span class="menu-ico"><span></span><span></span><span></span></span>
+  </button>
+  <nav class="nav" id="primaryNav" aria-label="Primary">
+    <a href="../index.html">Home</a>
+    <a href="../growing.html">Growing</a>
+    <a href="../recipes.html">Recipes</a>
+    <a href="../exercise.html">Exercise</a>
+    <a href="../wellbeing.html" aria-current="page">Wellbeing</a>
+    <a href="../guides.html">Guides</a>
+    <a href="../ideas.html">Ideas</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1>Thought Reframing</h1>
+  <p class="lead">We can’t stop thoughts appearing — but we can change how we respond.</p>
+
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#catch">Catch</a>
+    <a href="#think">Think</a>
+    <a href="#do">Do</a>
+    <a href="#traps">Thinking traps</a>
+    <a href="#reframes">Reframe examples</a>
+    <a href="#grounding">Grounding</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <section class="grid" aria-label="Catch-Think-Do">
+    <article class="card" id="catch">
+      <img src="../img/tr-catch.png" alt="Magnifier over thought bubble" class="thumb">
+      <h2>1) Catch</h2>
+      <p>Write the thought. Note trigger, body feelings, urge (e.g., avoid, scroll, snap).</p>
+    </article>
+
+    <article class="card" id="think">
+      <img src="../img/tr-think.png" alt="Scale weighing evidence" class="thumb">
+      <h2>2) Think</h2>
+      <ul>
+        <li>What’s the <em>evidence for/against</em>?</li>
+        <li>Is this <em>all-or-nothing</em> or <em>mind-reading</em>?</li>
+        <li>What would I say to a friend?</li>
+      </ul>
+    </article>
+
+    <article class="card" id="do">
+      <img src="../img/tr-do.png" alt="Small action arrow" class="thumb">
+      <h2>3) Do</h2>
+      <p>Choose a helpful micro-action (2 minutes) that moves you toward values.</p>
+    </article>
+  </section>
+
+  <section class="grid" aria-label="Common thinking traps">
+    <article class="card" id="traps">
+      <img src="../img/tr-traps.png" alt="Icons for common thinking traps" class="thumb">
+      <h2>Thinking Traps</h2>
+      <ul>
+        <li>All-or-nothing, catastrophising</li>
+        <li>Over-generalising, should/oughts</li>
+        <li>Mind-reading, fortune-telling</li>
+      </ul>
+    </article>
+
+    <article class="card" id="reframes">
+      <img src="../img/tr-reframes.png" alt="Reframe cards: from harsh to helpful" class="thumb">
+      <h2>Reframe Examples</h2>
+      <ul>
+        <li>“I always fail” → “I struggled last time; I can try a smaller step.”</li>
+        <li>“It must be perfect” → “Done at 80% beats stalled.”</li>
+        <li>“They’ll judge me” → “I can’t know; I’ll ask one clarifying question.”</li>
+      </ul>
+    </article>
+
+    <article class="card" id="grounding">
+      <img src="../img/tr-ground.png" alt="Grounding: breathe, look, touch" class="thumb">
+      <h2>Grounding</h2>
+      <p>5-4-3-2-1: notice 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste.</p>
+      <a class="btn primary" href="../guides.html#calm">Try a 2-minute calm</a>
+    </article>
+  </section>
+
+  <div class="mini-nav">
+    <a class="btn primary" href="./neurolinguistics.html">Neurolinguistics</a>
+    <a class="btn primary" href="./therapies-tools.html">Therapies &amp; Tools</a>
+    <a class="btn ghost" href="../growing.html">Visit the Growing hub</a>
+  </div>
+
+  <p class="meta" style="margin-top:8px">← <a href="../wellbeing.html">Back to Wellbeing</a></p>
+
+  <section class="disclaimer" id="disclaimer">
+    <h2>Important Note</h2>
+    <p>
+      The information on this page is for <strong>general understanding and support</strong>. It is
+      <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel
+      unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.
+      If you’re outside the UK, contact your local emergency number.
+    </p>
+    <p>
+      For non-emergency concerns, consider speaking with a qualified health professional or one of the
+      support services listed on our site.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <img src="../img/patchandpot-icon.png" alt="Patch &amp; Pot icon" class="footer-icon" onerror="this.style.display='none'">
+    <p>© <span>Patch &amp; Pot</span> | Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Mobile menu -->
+<script>
+  (function(){
+    const header = document.getElementById('siteHeader');
+    const toggle = header?.querySelector('.menu-toggle');
+    const nav = document.getElementById('primaryNav');
+    function setExpanded(on){
+      if(on){
+        header.classList.add('menu-open'); toggle?.classList.add('menu-open');
+        toggle?.setAttribute('aria-expanded','true');
+      } else {
+        header.classList.remove('menu-open'); toggle?.classList.remove('menu-open');
+        toggle?.setAttribute('aria-expanded','false');
+      }
+    }
+    toggle?.addEventListener('click', () => setExpanded(!header.classList.contains('menu-open')));
+    nav?.addEventListener('click', e => { if(e.target.tagName === 'A') setExpanded(false); });
+  })();
+</script>
+
+</body>
+</html>

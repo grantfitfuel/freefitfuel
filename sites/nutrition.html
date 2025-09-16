@@ -37,6 +37,10 @@
     /* Drawer content for collapsibles (renamed from .panel to avoid conflict) */
     details.collapsible > .drawer { padding:0 16px 16px 16px; }
 
+    /* Start-empty state: hide recipe cards until a filter is chosen */
+    html[data-start-empty] #recipeGrid > * { display:none !important; }
+    html[data-start-empty] #clearFiltersBtn { display:none !important; }
+
     /* Print: expand everything */
     @media print{
       details.collapsible > summary{ display:none; }
@@ -208,7 +212,7 @@
     </div>
 
     <div id="filterChips" role="toolbar" aria-label="Recipe filters">
-      <!-- No default selection now -->
+      <!-- No default selection; ALL is available but not pressed -->
       <button class="chip" data-filter="ALL" aria-pressed="false">ALL</button>
       <!-- JS appends the rest -->
     </div>
@@ -365,38 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <!-- Nutrition JS -->
-<script defer src="assets/js/nutrition.js?v=1304"></script>
-
-<!-- Start-empty override: ensure no filter selected and nothing rendered until first click -->
-<script>
-window.addEventListener('load', () => {
-  const grid     = document.getElementById('recipeGrid');
-  const countEl  = document.getElementById('recipeCount');
-  const clearBtn = document.getElementById('clearFiltersBtn');
-  const chips    = document.querySelectorAll('#filterChips .chip');
-
-  // 1) Deselect all chips visually/semantically
-  chips.forEach(chip => chip.setAttribute('aria-pressed','false'));
-
-  // 2) Clear anything pre-rendered by nutrition.js
-  if (grid) {
-    grid.innerHTML = '';
-    grid.setAttribute('aria-busy','false');
-  }
-  if (countEl) countEl.textContent = 'Choose a filter to begin';
-  if (clearBtn) clearBtn.style.display = 'none';
-
-  // 3) On first chip click, show results as normal (handlers in nutrition.js will run)
-  let first = true;
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      if (!first) return;
-      first = false;
-      if (clearBtn) clearBtn.style.display = '';
-    });
-  });
-});
-</script>
-
+<script src="assets/js/nutrition.js?v=START_EMPTY"></script>
 </body>
 </html>

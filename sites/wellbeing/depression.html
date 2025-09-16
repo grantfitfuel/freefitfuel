@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Depression – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* ---- Page-local (kept tight, overrides site CSS) ---- */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+
+    /* HERO: show full image (no crop) */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;
+      height:auto !important;
+      max-height:460px !important;
+      object-fit:scale-down !important;   /* show full image */
+      object-position:center center !important;
+      display:block; filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
+
+    /* Mini-nav (NON-FLOATING) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a:hover{color:var(--accent)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 10px)}
+    html{scroll-behavior:smooth}
+
+    /* Figures */
+    .figure,.page-hero{margin:.6rem 0}
+    .figure img,.page-hero img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+
+    .back-to-top{margin-top:1rem;font-size:.9rem}
+    .back-to-top a{color:var(--accent);text-decoration:underline}
+  </style>
+</head>
+<body id="top">
+
+<!-- Shared header (same as Anxiety page) -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Depression hero">
+  <figure>
+    <img src="/img/depression-hero.png" alt="Landscape photograph symbolising heaviness and light ahead">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Depression</span></h1>
+    <p class="lead">Depression isn’t just “feeling sad.” It can flatten energy, numb emotions, and distort thinking. Understanding biology, daily impact, and supports can make it less overwhelming — and remind you that you’re not alone.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Mini-nav (non-floating) -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#understanding">Understanding</a>
+    <a href="#biology">Biology</a>
+    <a href="#coping">Day-to-day coping</a>
+    <a href="#support">Support &amp; connection</a>
+    <a href="#hope">Hope &amp; recovery</a>
+    <a href="#self-talk">Self-talk</a>
+    <a href="#reframes">Reframes</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <!-- 1. Understanding -->
+  <section id="understanding" class="section">
+    <h2>1) Understanding Depression</h2>
+    <figure class="figure">
+      <img src="/img/depression-understanding.png" alt="Person at kitchen table with cup of tea, symbolising heaviness">
+      <figcaption class="cap">Depression often shows up in the everyday, not just in dramatic moments.</figcaption>
+    </figure>
+    <p>Depression can look like sadness, but also like flatness, irritability, or exhaustion. It affects body, mind, and behaviour:</p>
+    <ul>
+      <li>Low energy or constant fatigue, even with rest</li>
+      <li>Loss of interest or pleasure in things once enjoyed</li>
+      <li>Sleep changes: difficulty falling asleep, waking early, or oversleeping</li>
+      <li>Appetite changes: eating much less or more</li>
+      <li>Negative self-talk: “I’m useless,” “Nothing will help”</li>
+      <li>Physical symptoms: aches, slower movements, gut issues</li>
+    </ul>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- 2. Biology -->
+  <section id="biology" class="section">
+    <h2>2) Biology / How It Happens</h2>
+    <figure class="figure">
+      <img src="/img/depression-biology.png" alt="Notebook with brain sketch, coffee beside it — learning the biology">
+      <figcaption class="cap">Depression involves changes in brain chemistry, hormones, sleep, and stress systems.</figcaption>
+    </figure>
+    <p>Depression is not a sign of weakness. It reflects changes across several systems in the brain and body.</p>
+
+    <h3>Neurotransmitters</h3>
+    <ul>
+      <li><strong>Serotonin:</strong> mood, sleep, appetite. Low or disrupted signalling links with low mood and poor sleep.</li>
+      <li><strong>Dopamine:</strong> motivation and reward. Reduced dopamine makes activities feel unrewarding (anhedonia).</li>
+      <li><strong>Norepinephrine:</strong> energy and alertness. Low levels can cause fatigue, poor focus, and low drive.</li>
+      <li><strong>GABA:</strong> the brain’s calming chemical. Low GABA links to anxiety and agitation within depression.</li>
+      <li><strong>Cortisol:</strong> in depression, cortisol can stay high, disturbing sleep, memory, and immune function.</li>
+    </ul>
+
+    <h3>Hormones</h3>
+    <ul>
+      <li><strong>Oestrogen &amp; Progesterone:</strong> Cycle/perimenopause/menopause changes can destabilise mood and sleep.</li>
+      <li><strong>Testosterone:</strong> Low levels in men (and women) link to reduced energy, drive, and mood.</li>
+      <li><strong>Thyroid hormones:</strong> An underactive thyroid can mimic depression (fatigue, brain fog, weight changes).</li>
+      <li><strong>Insulin &amp; blood sugar:</strong> Large glucose swings can cause irritability, fatigue, or brain fog. Stable meals steady mood.</li>
+    </ul>
+
+    <p><a href="/pdf/hormones-and-mood.pdf">Download Hormones &amp; Mood Guide (A4 PDF)</a></p>
+
+    <p>Lifestyle factors interact with biology:</p>
+    <ul>
+      <li><strong>Nutrition:</strong> balanced meals with protein, complex carbs, and omega-3 fats can support serotonin and dopamine.</li>
+      <li><strong>Exercise:</strong> even light daily movement raises endorphins and increases dopamine sensitivity.</li>
+      <li><strong>Sleep:</strong> dim light, regular bedtime, and reduced late screens help reset stress systems.</li>
+    </ul>
+    <p class="meta">Treatment often combines talking therapies (e.g. CBT), medication (SSRIs, SNRIs), and lifestyle changes. In Scotland, NHS GPs can guide you to community mental health teams or talking therapy hubs.</p>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- 3. Day-to-day coping -->
+  <section id="coping" class="section">
+    <h2>3) Day-to-day coping</h2>
+    <figure class="figure">
+      <img src="/img/depression-coping.png" alt="Close-up of hands around a warm mug, comfort and grounding">
+      <figcaption class="cap">Tiny rituals — tea, a stretch, a breath — can create anchors of calm.</figcaption>
+    </figure>
+    <ul>
+      <li>Keep a simple routine: meals, getting dressed, light activity</li>
+      <li>Break tasks into tiny steps: “Open laptop” is a task in itself</li>
+      <li>Allow rest without guilt — energy is genuinely reduced</li>
+      <li>Reach out: text one friend, join a peer group, or write in a journal</li>
+    </ul>
+    <p><a href="/pdf/BAP.pdf">Download Behavioural Activation Planner (A4 PDF)</a></p>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- 4. Support & connection -->
+  <section id="support" class="section">
+    <h2>4) Support &amp; Connection</h2>
+    <div class="help-links-mount" data-include="help-links"></div>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- 5. Hope -->
+  <section id="hope" class="section">
+    <h2>5) Hope &amp; Recovery</h2>
+    <figure class="figure">
+      <img src="/img/depression-hope.png" alt="Person walking woodland path with soft light ahead">
+      <figcaption class="cap">Recovery is possible — often step by step, with support.</figcaption>
+    </figure>
+    <p>With the right mix of therapy, support, and sometimes medication, many people recover from depression or learn to manage it so life becomes meaningful again. Small consistent steps matter more than dramatic leaps.</p>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- 6. Self-talk -->
+  <section id="self-talk" class="section">
+    <h2>6) Self-talk Upgrades</h2>
+    <figure class="figure">
+      <img src="/img/depression-self-talk.png" alt="Notebook with pen showing supportive self-talk phrases">
+      <figcaption class="cap">Gentle language nudges the brain’s alarm systems towards calm.</figcaption>
+    </figure>
+    <div class="guides-grid">
+      <div class="tile"><span class="cap"><strong>From:</strong> “I’m useless.”<br><strong>To:</strong> “I’m struggling, but still here.”</span></div>
+      <div class="tile"><span class="cap"><strong>From:</strong> “Nothing will ever help.”<br><strong>To:</strong> “This feels endless, but feelings shift.”</span></div>
+      <div class="tile"><span class="cap"><strong>From:</strong> “I can’t do anything.”<br><strong>To:</strong> “I can do one tiny step.”</span></div>
+    </div>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- 7. Reframes -->
+  <section id="reframes" class="section">
+    <h2>7) Reframes</h2>
+    <figure class="figure">
+      <img src="/img/depression-reframes.png" alt="Infographic with day-to-day reframes">
+      <figcaption class="cap">Accurate, kind re-phrasing can soften depression’s grip.</figcaption>
+    </figure>
+    <div class="guides-grid">
+      <div class="tile"><span class="cap"><strong>“I should be better by now.”</strong><br>→ “Healing is not linear.”</span></div>
+      <div class="tile"><span class="cap"><strong>“I’m a burden.”</strong><br>→ “Needing support is human.”</span></div>
+      <div class="tile"><span class="cap"><strong>“This will never change.”</strong><br>→ “The brain can adapt over time.”</span></div>
+    </div>
+    <div class="back-to-top"><a href="#top">Back to top</a></div>
+  </section>
+
+  <!-- Disclaimer -->
+  <section id="disclaimer" class="section">
+    <h2>Important Note</h2>
+    <p>The information on this page is for <strong>general understanding and support</strong>. It is <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. If you’re outside the UK, contact your local emergency number.</p>
+  </section>
+</main>
+
+<!-- Same footer structure as Anxiety page -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Load shared help links snippet (same pattern as Anxiety) -->
+<script>
+(function(){
+  const candidates=['/sites/snippets/help-links.html','/snippets/help-links.html'];
+  document.querySelectorAll('[data-include="help-links"]').forEach(el=>{
+    let i=0;(function next(){
+      if(i>=candidates.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
+      fetch(candidates[i],{cache:'no-store'})
+        .then(r=>r.ok?r.text():Promise.reject())
+        .then(h=>el.innerHTML=h)
+        .catch(()=>{i++;next();});
+    })();
+  });
+})();
+</script>
+</body>
+</html>

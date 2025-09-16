@@ -119,7 +119,7 @@
 </header>
 
 <main class="wrap">
-  <!-- CALCULATOR -->
+  <!-- CALCULATOR (collapsible) -->
   <details id="macro-calc" class="collapsible" open>
     <summary>Calories & Macros Calculator</summary>
     <div class="drawer">
@@ -175,7 +175,7 @@
     </div>
   </details>
 
-  <!-- WEEK SUMMARY -->
+  <!-- WEEK SUMMARY (collapsible) -->
   <details id="week-plan" class="collapsible">
     <summary>This Week’s Plan</summary>
     <div class="drawer">
@@ -208,18 +208,19 @@
     </div>
 
     <div id="filterChips" role="toolbar" aria-label="Recipe filters">
-      <button class="chip" data-filter="ALL" aria-pressed="true">ALL</button>
+      <!-- No default selection now -->
+      <button class="chip" data-filter="ALL" aria-pressed="false">ALL</button>
       <!-- JS appends the rest -->
     </div>
 
-    <p id="recipeCount" class="meta" aria-live="polite">Showing 0 of 0 recipes</p>
+    <p id="recipeCount" class="meta" aria-live="polite">Choose a filter to begin</p>
     <button id="exportIndexBtn" class="btn">Export Index</button>
     <button id="clearFiltersBtn" class="btn" style="display:none">Clear filters</button>
   </section>
 
   <!-- GRID -->
   <section class="section">
-    <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="true"></div>
+    <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="false"></div>
   </section>
 
   <!-- INFO -->
@@ -365,5 +366,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Nutrition JS -->
 <script defer src="assets/js/nutrition.js?v=1304"></script>
+
+<!-- Start-empty override: ensure no filter selected and nothing rendered until first click -->
+<script>
+window.addEventListener('load', () => {
+  const grid     = document.getElementById('recipeGrid');
+  const countEl  = document.getElementById('recipeCount');
+  const clearBtn = document.getElementById('clearFiltersBtn');
+  const chips    = document.querySelectorAll('#filterChips .chip');
+
+  // 1) Deselect all chips visually/semantically
+  chips.forEach(chip => chip.setAttribute('aria-pressed','false'));
+
+  // 2) Clear anything pre-rendered by nutrition.js
+  if (grid) {
+    grid.innerHTML = '';
+    grid.setAttribute('aria-busy','false');
+  }
+  if (countEl) countEl.textContent = 'Choose a filter to begin';
+  if (clearBtn) clearBtn.style.display = 'none';
+
+  // 3) On first chip click, show results as normal (handlers in nutrition.js will run)
+  let first = true;
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (!first) return;
+      first = false;
+      if (clearBtn) clearBtn.style.display = '';
+    });
+  });
+});
+</script>
+
 </body>
 </html>

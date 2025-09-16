@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Affirmations — FreeFitFuel Wellbeing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Affirmations & Positive Reframing — FreeFitFuel Wellbeing</title>
+  <meta name="description" content="Make affirmations that actually work: believable, specific, and action-coloured. Starter lines, situation-based scripts, and neuroscience stacking tips.">
+  <link rel="stylesheet" href="/style.css?v=45">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <style>
+    /* Page-local layout */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid-2{display:grid;gap:12px}
+    @media (min-width:920px){.grid-2{grid-template-columns:1fr 1fr}}
+    .stack{display:grid;gap:10px}
+    .pill{display:inline-block;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .7rem;margin:.15rem .4rem .15rem 0}
+    .affirm{font-size:1.05rem;line-height:1.7}
+    .mini{font-size:.9rem;color:var(--inkdim)}
+    .callout{background:rgba(98,200,106,.06);border:1px dashed var(--stroke);border-radius:10px;padding:10px;margin-top:8px}
 
-<link rel="stylesheet" href="/style.css?v=44">
-<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+    /* HERO (no crop / no zoom) */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;
+      height:auto !important;
+      max-height:460px !important;
+      object-fit:scale-down !important;
+      object-position:center center !important;
+      display:block; filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
 
-<style>
-  /* Page-local layout */
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-  .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
-  .grid-2{display:grid;gap:12px}
-  @media(min-width:920px){.grid-2{grid-template-columns:1fr 1fr}}
-  .stack{display:grid;gap:10px}
-  .pill{display:inline-block;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.35rem .7rem;margin:.15rem .4rem .15rem 0}
-  .affirm{font-size:1.05rem;line-height:1.7}
-  .mini{font-size:.9rem;color:var(--inkdim)}
-
-  /* HERO (no crop / no zoom) */
-  header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-  header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
-  header.hero-mini figure>img{
-    width:100% !important;
-    height:auto !important;
-    max-height:460px !important;
-    object-fit:scale-down !important;
-    object-position:center center !important;
-    display:block; filter:none !important;
-  }
-  header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
-  header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-  @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
-
-  /* Mini-nav */
-  .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
-  .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
-  .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
-  section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
-  html{scroll-behavior:smooth}
-</style>
+    /* Mini-nav */
+    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
+    html{scroll-behavior:smooth}
+  </style>
 </head>
 <body>
 
@@ -51,15 +51,14 @@
 <!-- HERO -->
 <header class="hero-mini" role="banner" aria-label="Affirmations hero">
   <figure>
-    <!-- Use your existing hero image (single asset for all screens) -->
-    <img src="/img/herbs.png" alt="Sunlit herb pot on a windowsill with notebook">
+    <img src="/img/herbs.png" alt="Sunlit herb pot on a windowsill with a notebook and pen">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content">
     <div class="wrap">
       <span class="eyebrow">Words that help</span>
-      <h1><span class="accent">Affirmations & Positive Reframing</span></h1>
-      <p class="lead">Short statements that nudge attention toward possibility and progress. We keep them grounded, specific, and kind.</p>
+      <h1><span class="accent">Affirmations &amp; Positive Reframing</span></h1>
+      <p class="lead">Short statements that nudge attention toward possibility and progress — grounded, specific, and kind.</p>
     </div>
   </div>
 </header>
@@ -82,16 +81,16 @@
     <div class="grid-2">
       <div>
         <ul>
-          <li><strong>Believable</strong>: 1–2% stretch above your current truth (“I’m learning to…”).</li>
-          <li><strong>Specific</strong>: tie to a cue/time (“With my morning tea, I water the pot”).</li>
-          <li><strong>Action-coloured</strong>: include a small behaviour (“…and take a photo”).</li>
+          <li><strong>Believable:</strong> a 1–2% stretch above your current truth (“I’m learning to…” beats “I’m amazing”).</li>
+          <li><strong>Specific:</strong> attach to a cue/time (“With my morning tea, I review my plan”).</li>
+          <li><strong>Action-coloured:</strong> include a tiny behaviour (“…and send one 2-minute message”).</li>
         </ul>
       </div>
       <div>
         <ul>
-          <li><strong>Sensory</strong>: add a feel/sound (“I feel cool mist on the leaves”).</li>
-          <li><strong>Present-tense</strong>: “Today I…” beats distant future.</li>
-          <li><strong>Track</strong>: one tick per day builds evidence your brain trusts.</li>
+          <li><strong>Sensory:</strong> add feel/sound (“I feel my shoulders drop as I exhale”).</li>
+          <li><strong>Present-tense:</strong> “Today I…” is stickier than “Someday I will…”.</li>
+          <li><strong>Track:</strong> one tick per day builds evidence your brain trusts.</li>
         </ul>
       </div>
     </div>
@@ -99,13 +98,13 @@
 
   <section id="starter" class="section card">
     <h2>Starter set (swap in your words)</h2>
-    <div class="stack affirm">
+    <div class="stack affirm" aria-label="Example affirmations">
       <p>• I can start small and still be proud.</p>
-      <p>• I’m learning what my plants like, one try at a time.</p>
-      <p>• Today I’ll do one tiny thing: water, rotate, or note.</p>
-      <p>• When I feel tense, I breathe out slower and soften my shoulders.</p>
+      <p>• I’m learning one step at a time.</p>
+      <p>• Today I’ll do one tiny thing I’ll thank myself for.</p>
+      <p>• When tension shows up, I breathe out slower and soften my shoulders.</p>
       <p>• I choose kind words to myself — they help me keep going.</p>
-      <p>• Rest is part of progress; I come back tomorrow.</p>
+      <p>• Rest is part of progress; I can return tomorrow.</p>
     </div>
   </section>
 
@@ -114,19 +113,19 @@
     <div class="grid-2">
       <div>
         <h3>Low energy</h3>
-        <p class="affirm">“I’ll touch the soil with my finger; if it’s dry, I’ll water this one pot.”</p>
+        <p class="affirm">“I’ll take one visible action that takes under two minutes.”</p>
         <h3>Overwhelm</h3>
-        <p class="affirm">“Exhale longer than I inhale. One leaf, one step.”</p>
+        <p class="affirm">“Exhale longer than I inhale. One thing, then the next.”</p>
         <h3>Setback</h3>
         <p class="affirm">“This is feedback. I’m learning what to try next.”</p>
       </div>
       <div>
         <h3>New habit</h3>
-        <p class="affirm">“After the kettle clicks, I check my pot.”</p>
+        <p class="affirm">“After the kettle clicks, I do my tiny step.”</p>
         <h3>Confidence</h3>
         <p class="affirm">“I notice two small wins from today.”</p>
         <h3>Sleep-poor day</h3>
-        <p class="affirm">“Lower bar. One visible action is enough.”</p>
+        <p class="affirm">“Lower bar. One simple action is enough.”</p>
       </div>
     </div>
   </section>
@@ -134,12 +133,12 @@
   <section id="build" class="section card">
     <h2>Build your own (mini-workshop)</h2>
     <ol>
-      <li><strong>Pick a cue</strong> (time or place): “after breakfast”, “at the window”.</li>
-      <li><strong>Add a tiny action</strong>: water, rotate, note, photo.</li>
-      <li><strong>Add a feeling word</strong>: steady, curious, gentle.</li>
+      <li><strong>Pick a cue</strong> (time or place): “after breakfast”, “at my desk”.</li>
+      <li><strong>Add a tiny action</strong>: write one line, send one text, stretch, glass of water.</li>
+      <li><strong>Add a feeling word</strong>: steady, curious, gentle, proud.</li>
       <li><strong>Make it present</strong>: Today I… / When I…, I…</li>
     </ol>
-    <div class="callout">
+    <div class="callout" role="note">
       <strong>Template:</strong> “After <em>[cue]</em>, I <em>[tiny action]</em>. I feel <em>[feeling]</em> and I notice one small win.”
     </div>
   </section>
@@ -147,21 +146,21 @@
   <section id="neuro" class="section card">
     <h2>Stack with neuroscience</h2>
     <ul>
-      <li><span class="pill">Dopamine</span> Celebrate micro-milestones (photo, tick). Visible progress fuels motivation.</li>
-      <li><span class="pill">Breath</span> Pair the line with 3 slow breaths. Calmer body = stickier words.</li>
-      <li><span class="pill">Context</span> Say it where you act (near the pot). Brains love context cues.</li>
+      <li><span class="pill">Dopamine</span> Celebrate micro-milestones (photo or tick). Visible progress fuels motivation.</li>
+      <li><span class="pill">Breath</span> Pair your line with 3 slow breaths. Calmer body = stickier words.</li>
+      <li><span class="pill">Context</span> Say it where you act (by your workstation or shoes). Brains love context cues.</li>
     </ul>
   </section>
 
   <section id="kind" class="section card">
-    <h2>Keep it kind & flexible</h2>
+    <h2>Keep it kind &amp; flexible</h2>
     <p>If a line starts to feel untrue, shrink the stretch or change the verb: “I’m exploring…”, “I’m practising…”. The point is permission to continue, not perfection.</p>
   </section>
 
-  <nav id="related" class="mini-nav" aria-label="Related">
-    <a href="/sites/wellbeing/neuroscience.html">Neuroscience</a>
-    <a href="/sites/wellbeing/thought-reframing.html">Thought Reframing</a>
-    <a href="/growing.html">Growing Hub</a>
+  <nav id="related" class="mini-nav" aria-label="Related pages">
+    <a href="/sites/wellbeing/neuroscience.html" target="_self" rel="nofollow">Neuroscience</a>
+    <a href="/sites/wellbeing/thought-reframing.html" target="_self" rel="nofollow">Thought Reframing</a>
+    <a href="/growing.html" target="_self" rel="nofollow">Growing Hub</a>
   </nav>
 
   <!-- Disclaimer -->
@@ -194,14 +193,22 @@
   const navs = document.querySelectorAll('.mini-nav');
   navs.forEach(nav=>{
     const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
-    const targets = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) }))
-                         .filter(x=>x.el);
-    const setActive = id => links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
+    if(!links.length) return;
+    const targets = links
+      .map(a => ({ a, el: document.querySelector(a.getAttribute('href')) }))
+      .filter(x => x.el);
+
+    const setActive = id => links.forEach(l =>
+      l.classList.toggle('is-active', l.getAttribute('href') === '#'+id)
+    );
+
     const io = new IntersectionObserver((entries)=>{
-      const top = entries.filter(e=>e.isIntersecting)
-                         .sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+      const top = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];
       if(top) setActive(top.target.id);
     }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
+
     targets.forEach(t => io.observe(t.el));
   });
 })();

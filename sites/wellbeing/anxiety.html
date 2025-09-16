@@ -4,74 +4,93 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Anxiety – FreeFitFuel</title>
-  <meta name="description" content="Understand how anxiety works and use practical, evidence-informed tools: breathing, grounding, exposure ladders, and thinking skills. UK support links included.">
 
+  <!-- Site stylesheet (unchanged) -->
   <link rel="stylesheet" href="/style.css?v=42">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
-    /* ---- Page-local fixes (wins over site CSS) ---- */
+    /* ========= Page-local CSS (SAFE: does not change global site styles) ========= */
+
+    /* Layout */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .grid{display:grid;gap:12px}
     @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
 
-    /* FINAL HERO: no crop/zoom */
-    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
-    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    /* ---- HERO (NO TEXT OVERLAY) ----
+       - Image shows in full (no crop).
+       - There is NO absolutely-positioned text on top of the image.
+    */
+    header.hero-mini{border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;background:#0b0f14}
     header.hero-mini figure>img{
       width:100% !important;
-      height:auto !important;                 /* natural aspect ratio */
-      max-height:460px !important;            /* cap on desktop */
-      object-fit:scale-down !important;       /* show full image (no crop) */
+      height:auto !important;         /* keep natural ratio */
+      max-height:460px !important;    /* soft cap on desktop */
+      object-fit:scale-down !important; /* do not crop */
       object-position:center center !important;
       display:block; filter:none !important;
     }
-    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
-    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
+    @media (max-width:520px){
+      header.hero-mini figure>img{ max-height:380px !important; }
+    }
 
-    /* Mini-nav (sticky+active) */
-    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
-    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
-    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
-    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
-    html{scroll-behavior:smooth}
+    /* ---- Mini-nav: NON-STICKY (no floating) ---- */
+    .mini-nav{
+      display:flex; flex-wrap:wrap; gap:.6rem;
+      margin:.9rem 0 1.1rem;
+    }
+    .mini-nav a{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      color:var(--ink);
+      padding:.55rem 1rem;
+      border-radius:999px;
+      font-weight:700;
+      white-space:nowrap;
+      text-decoration:none;
+    }
+    /* No .is-active styles needed without scrollspy, but harmless if present */
+    .mini-nav a.is-active{
+      background:linear-gradient(180deg,#62c86a,#3aa64a);
+      color:#0b1710;border-color:rgba(0,0,0,.12)
+    }
 
-    /* Figures in content */
+    /* Figures */
     .figure{margin:.6rem 0}
-    .figure img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
+    .figure img{
+      width:100%;height:auto;border-radius:10px;
+      border:1px solid var(--stroke);background:#0b0f14
+    }
     .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
 
-    /* Small callouts */
-    .do-now{background:var(--glass);border:1px dashed var(--stroke);border-radius:10px;padding:10px;margin-top:8px}
+    html{scroll-behavior:smooth}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 10px)}
   </style>
 </head>
 <body>
 
-<!-- Shared header -->
+<!-- Shared header (unchanged include) -->
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
 
-<!-- HERO -->
+<!-- HERO (image only; NO text overlay) -->
 <header class="hero-mini" role="banner" aria-label="Anxiety hero">
   <figure>
-    <img src="/img/anxiety-hero.png" alt="Soft morning light through a window over a calm, warm-toned scene">
-    <div class="overlay" aria-hidden="true"></div>
+    <img src="/img/anxiety-hero.png" alt="Soft morning light through a window with a warm-toned scene">
   </figure>
-  <div class="content wrap">
-    <h1><span class="accent">Anxiety</span></h1>
-    <p>An alarm system trying to protect you. We can train it to ring less — and ring wiser.</p>
-  </div>
 </header>
 
 <main class="wrap">
+  <!-- Title and intro live BELOW the hero image (no overlay) -->
+  <h1><span class="accent">Anxiety</span></h1>
   <p class="lead">
-    What anxiety is, how it works in the body, and practical tools to steady the system — from breathing and grounding
-    to exposure ladders and reframing. UK support links included.
+    An alarm system trying to protect you. We can train it to ring less — and ring wiser.
+    This page explains what anxiety is, how it works, and practical tools to steady the system.
   </p>
 
-  <!-- Mini-nav -->
+  <!-- Mini-nav (NON-STICKY) -->
   <nav class="mini-nav" aria-label="On this page">
     <a href="#feels">What it feels like</a>
     <a href="#biology">Biology</a>
@@ -87,15 +106,12 @@
   <section id="feels" class="section">
     <div class="grid cols2">
       <article class="card">
-        <h2>1) What anxiety feels like</h2>
-        <p>Racing thoughts, tight chest, stomach upset, sweating, shakiness, restlessness, or feeling detached.
-           It often pops up in ordinary places: mornings, emails, queues, bedtime.</p>
-        <div class="do-now" role="note"><strong>Do now (30s):</strong> Name 1 sensation (e.g., “tight chest”) and 1 place you feel it most.
-          Noting it reduces the “unknown” factor.</div>
+        <h2>1) What Anxiety Feels Like</h2>
+        <p>Anxiety can show up as racing thoughts, tight chest, stomach upset, sweating, shakiness, or feeling detached. It often arrives in ordinary places: mornings, emails, queues, bedtime.</p>
       </article>
       <aside class="card">
         <div class="figure">
-          <img src="/img/anxiety-steps.png" alt="Notebook listing small steadying steps">
+          <img src="/img/anxiety-steps.png" alt="Notebook with small steadying steps listed">
           <p class="cap">Anxiety often shows in everyday moments, not just major crises.</p>
         </div>
       </aside>
@@ -104,17 +120,16 @@
 
   <!-- 2 -->
   <section id="biology" class="section">
-    <h2>2) Biology — how it happens</h2>
+    <h2>2) Biology / How it happens</h2>
     <ul>
-      <li><strong>Sympathetic system:</strong> fight/flight — adrenaline speeds heart/breath to prepare for action.</li>
-      <li><strong>Parasympathetic (vagal) brake:</strong> long exhales, humming, and social safety cues help it engage.</li>
-      <li><strong>Neurochemistry:</strong> serotonin (mood), GABA (calm), noradrenaline (alert), dopamine (drive).</li>
-      <li><strong>Cortisol:</strong> useful in bursts; when stuck “on” it keeps the body keyed up.</li>
-      <li><strong>CO₂ balance:</strong> slow nasal breathing with longer exhales reduces alarm signals.</li>
+      <li><strong>Sympathetic system:</strong> fight/flight, adrenaline.</li>
+      <li><strong>Neurotransmitters:</strong> serotonin (mood), GABA (calm), norepinephrine (alert), dopamine (drive).</li>
+      <li><strong>Cortisol:</strong> helpful in bursts, unhelpful when stuck “on”.</li>
+      <li><strong>Breathing &amp; CO₂:</strong> slow, longer exhale dampens alarms.</li>
     </ul>
     <div class="figure">
-      <img src="/img/ans-three-states.png" alt="Autonomic states diagram showing alert, calm, and shutdown">
-      <p class="cap">The autonomic system shifts between alert, calm, and shutdown. We can nudge it back toward calm.</p>
+      <img src="/img/ans-three-states.png" alt="Autonomic states diagram">
+      <p class="cap">The autonomic system flips between alert, calm, and shutdown states.</p>
     </div>
   </section>
 
@@ -124,13 +139,11 @@
       <article class="card">
         <h2>3) Day-to-day tools</h2>
         <ul>
-          <li><strong>Breathing:</strong> inhale 4, exhale 6–8, through the nose if you can. Soften shoulders and jaw.</li>
-          <li><strong>Grounding 5-4-3-2-1:</strong> 5 see • 4 feel • 3 hear • 2 smell • 1 taste.</li>
-          <li><strong>Movement:</strong> 2–10 minutes of walk, stretch, or shaking out arms to burn adrenaline.</li>
-          <li><strong>Temperature:</strong> cool water on wrists/face for 30–60s; or warmth (blanket, warm mug) for comfort.</li>
-          <li><strong>Light & timing:</strong> morning daylight helps the system settle across the day.</li>
+          <li><strong>Grounding 5-4-3-2-1:</strong> 5 see, 4 feel, 3 hear, 2 smell, 1 taste.</li>
+          <li><strong>Breathing:</strong> inhale 4, exhale 6–8. Softer shoulders, slow nose breath.</li>
+          <li><strong>Movement:</strong> walk, stretch, shake out arms to burn adrenaline.</li>
+          <li><strong>Warmth:</strong> blanket, warm mug, or warm water over hands.</li>
         </ul>
-        <div class="do-now" role="note"><strong>Do now (60s):</strong> 6 slow breaths with a longer out-breath. Notice one area that eases.</div>
       </article>
       <article class="card">
         <div class="figure">
@@ -144,11 +157,11 @@
   <!-- 4 -->
   <section id="exposure" class="section">
     <h2>4) Exposure ladders</h2>
-    <p>Avoidance strengthens fear; gradual approach retrains it. Build a ladder from easy to hard and climb at a doable pace.</p>
+    <p>Avoidance strengthens fear. Ladders mean facing the fear gradually.</p>
     <ol>
-      <li>List 6–8 steps from <em>easy → hard</em> (e.g., “read the email subject” → “reply to the email”).</li>
-      <li>Practise a low step for several reps until anxiety drops by ~30–50%.</li>
-      <li>Climb one rung; step back if needed; repeat. Pair with the breathing above.</li>
+      <li>List steps from easy → hard.</li>
+      <li>Practise the low step until anxiety eases.</li>
+      <li>Climb slowly; repeat steps as needed.</li>
     </ol>
     <div class="figure">
       <img src="/img/anxiety-steps.png" alt="Sketch of an exposure ladder">
@@ -161,17 +174,17 @@
     <h2>5) Thinking tools</h2>
 
     <h3>Supportive self-talk</h3>
-    <p>Swap harsh inner lines for kinder, believable ones. <em>“This is uncomfortable, and I can take one small step.”</em></p>
+    <p>Swap harsh inner lines for kinder, believable ones.</p>
     <div class="figure">
       <img src="/img/anxiety-self-talk-cards.png" alt="Supportive self-talk examples">
       <p class="cap">Kind, specific language supports calming circuits.</p>
     </div>
 
     <h3>Reframes</h3>
-    <p>Keep the facts, add choice and agency. <em>“I don’t need to solve everything tonight; I’ll pick one 5-minute action.”</em></p>
+    <p>Keep the facts, add choice and agency.</p>
     <div class="figure">
       <img src="/img/anxiety-reframing-cards.png" alt="Reframing examples">
-      <p class="cap">Accurate, balanced reframes stop spirals without false positivity.</p>
+      <p class="cap">Accurate, balanced reframes stop the spiral without false positivity.</p>
     </div>
   </section>
 
@@ -193,10 +206,7 @@
   <!-- Disclaimer -->
   <section id="disclaimer" class="section">
     <h2>Important Note</h2>
-    <p>
-      The information here is for general understanding and support and is not a substitute for professional care.
-      If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.
-    </p>
+    <p>The information here is for general understanding and support and is not a substitute for professional care. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.</p>
   </section>
 </main>
 
@@ -208,40 +218,22 @@
   </div>
 </footer>
 
+<!-- Lightweight snippet loader for shared help links (no scrollspy; menu is not sticky) -->
 <script>
-/* mini-nav smooth scroll + scrollspy */
 (function(){
-  const nav = document.querySelector('.mini-nav'); if(!nav) return;
-  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
-  const sections = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) })).filter(x=>x.el);
-
-  const setActive = (id)=>{
-    links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
-  };
-
-  const io = new IntersectionObserver((entries)=>{
-    const top = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
-    if(top) setActive(top.target.id);
-  }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
-
-  sections.forEach(s => io.observe(s.el));
-})();
-</script>
-
-<script>
-/* load shared help links from snippets */
-(function(){
-  const candidates=['/sites/snippets/help-links.html','/snippets/help-links.html'];
-  document.querySelectorAll('[data-include="help-links"]').forEach(el=>{
-    let i=0;(function next(){
-      if(i>=candidates.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
-      fetch(candidates[i],{cache:'no-store'})
+  const mounts=document.querySelectorAll('[data-include="help-links"]');
+  const sources=['/sites/snippets/help-links.html','/snippets/help-links.html'];
+  mounts.forEach(el=>{
+    let i=0; (function next(){
+      if(i>=sources.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
+      fetch(sources[i],{cache:'no-store'})
         .then(r=>r.ok?r.text():Promise.reject())
-        .then(h=>el.innerHTML=h)
+        .then(html=>{el.innerHTML=html;})
         .catch(()=>{i++;next();});
     })();
   });
 })();
 </script>
+
 </body>
 </html>

@@ -120,8 +120,9 @@ details.collapsible .panel{ padding:0 16px 16px 16px; }
 
 <main class="wrap">
   <!-- CALCULATOR -->
-  <section class="section" id="macro-calc">
-    <h2>Calories & Macros Calculator</h2>
+  <details id="macro-calc" class="collapsible" open>
+  <summary>Calories & Macros Calculator</summary>
+  <div class="panel">
 
     <div class="toolbar" aria-label="Goal selector">
       <div class="seg" role="tablist" aria-label="Goal">
@@ -170,20 +171,28 @@ details.collapsible .panel{ padding:0 16px 16px 16px; }
         <div><strong>Fat</strong><br><span id="outFat">—</span> g/day</div>
       </div>
     </div>
-  </section>
+
+  </div>
+</details>
 
   <!-- WEEK SUMMARY -->
-  <section class="section" id="weekSummarySection" aria-label="This Week's Meal Plan">
+  <details id="week-plan" class="collapsible">
+  <summary>This Week’s Plan</summary>
+  <div class="panel">
+
     <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap">
-      <h2 style="margin:0">This Week’s Plan</h2>
+      <h2 style="margin:0;font-size:1.1rem">Planner Summary</h2>
       <div>
         <button id="weekAutoBtn" class="btn">Auto-plan Week (no duplicates)</button>
         <button id="weekClearBtn" class="btn">Clear Week</button>
       </div>
     </div>
+
     <p class="meta" style="margin:.4rem 0">Swap any slot to rotate in a different unique recipe. This summary mirrors the planner panel.</p>
     <div id="weekSummaryGrid" class="grid" style="grid-template-columns:repeat(4,1fr)"></div>
-  </section>
+
+  </div>
+</details>
 
   <!-- TOOLS -->
   <section class="section" aria-label="Recipe tools">

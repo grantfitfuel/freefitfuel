@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics – FreeFitFuel</title>
+
+  <!-- Global site styles (uses your existing CSS if present) -->
+  <link rel="stylesheet" href="style.css?v=28">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <!-- Plausible tracking (counts visits sitewide). 
+       If this page is the only place you add it, only visits to pages
+       that include this tag will be tracked. Ideally, also add this
+       <script> in your <head> of index.html and other pages. -->
+  <script defer data-domain="freefitfuel.com" src="https://plausible.io/js/script.js"></script>
+
+  <style>
+    :root{
+      --accent:#FF6A00;
+      --glass:rgba(255,255,255,.06);
+      --stroke:#26262c;
+      --ink:#e8e8ee;
+      --inkdim:#a9a9b0;
+      --maxw:1100px;
+    }
+    html,body{background:#0f0f14;color:var(--ink);margin:0}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:16px 0;padding:18px}
+    h1{font-size:1.75rem;margin:.2rem 0 1rem;color:var(--accent)}
+    h2{margin:.2rem 0 1rem}
+    .badge{display:inline-block;border:1px solid var(--stroke);padding:.25rem .6rem;border-radius:999px;font-size:.9rem;color:var(--inkdim)}
+    .grid{display:grid;gap:14px}
+    @media(min-width:880px){.grid{grid-template-columns:2fr 1fr}}
+    .note{font-size:.95rem;color:var(--inkdim)}
+    .panel{background:rgba(0,0,0,.25);border:1px solid var(--stroke);border-radius:12px;padding:14px}
+    iframe[plausible-embed]{width:1px;min-width:100%;height:1600px;border:0;border-radius:12px;overflow:hidden;background:#111}
+    footer{border-top:1px solid var(--stroke);margin-top:20px}
+    .small{font-size:.9rem;color:var(--inkdim)}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#1b1b22;border:1px solid #2a2a33;border-radius:6px;padding:.1rem .35rem}
+    .code{white-space:pre-wrap;background:#15151c;border:1px solid #2a2a33;border-radius:8px;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <span class="badge">FreeFitFuel • Privacy-friendly analytics</span>
+    <h1>Analytics Dashboard</h1>
+    <p class="note">Anonymised, cookie-less, GDPR-compliant analytics for <strong>freefitfuel.com</strong> using Plausible.</p>
+  </header>
+
+  <main class="wrap grid">
+    <!-- Left: Live dashboard -->
+    <section class="section">
+      <h2>Live Stats</h2>
+
+      <!-- 🔐 IMPORTANT:
+           Replace AUTH_TOKEN below with your Plausible “Shared link” token.
+           In Plausible: Settings → Visibility → Shared links → + New link → Copy “Embed” URL.
+           The URL looks like:
+           https://plausible.io/share/freefitfuel.com?auth=YOUR_TOKEN&embed=true&theme=dark
+      -->
+      <iframe plausible-embed
+        src="https://plausible.io/share/freefitfuel.com?auth=AUTH_TOKEN&embed=true&theme=dark"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Plausible Analytics Dashboard">
+      </iframe>
+
+      <!-- Required for proper auto-height of the embed -->
+      <script async src="https://plausible.io/js/embed.host.js"></script>
+
+      <noscript>
+        <p class="note">JavaScript is required to view the embedded dashboard. You can also open it directly:
+          <a href="https://plausible.io/freefitfuel.com" target="_blank" rel="noopener">View on Plausible</a>.
+        </p>
+      </noscript>
+    </section>
+
+    <!-- Right: How to use + Status -->
+    <aside class="section panel">
+      <h2>Setup & Usage</h2>
+      <ol>
+        <li>Log in to <a href="https://plausible.io" target="_blank" rel="noopener">Plausible</a> → select <em>freefitfuel.com</em>.</li>
+        <li>Go to <strong>Settings → Visibility → Shared links</strong> → <strong>+ New link</strong>.</li>
+        <li>Copy the <strong>Embed</strong> URL and replace <span class="kbd">AUTH_TOKEN</span> in the iframe above.</li>
+        <li>Commit this file to your repo root as <span class="kbd">analytics.html</span>.</li>
+        <li>Open <span class="kbd">https://freefitfuel.com/analytics.html</span>.</li>
+      </ol>
+
+      <h3>Sitewide tracking (recommended)</h3>
+      <p class="small">Add this snippet inside the <span class="kbd">&lt;head&gt;</span> of your pages (e.g., <span class="kbd">index.html</span>) so all visits are counted:</p>
+      <pre class="code">&lt;script defer data-domain="freefitfuel.com" src="https://plausible.io/js/script.js"&gt;&lt;/script&gt;</pre>
+
+      <h3>Privacy</h3>
+      <p class="small">Plausible is cookie-less and anonymises data. No cross-site tracking. Ideal for UK/EU GDPR compliance.</p>
+    </aside>
+  </main>
+
+  <footer class="wrap">
+    <p class="small">© 2025 FreeFitFuel · Built by Grant Cameron Anthony · <a href="/">Home</a></p>
+  </footer>
+</body>
+</html>

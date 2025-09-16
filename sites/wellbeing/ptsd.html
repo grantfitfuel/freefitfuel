@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PTSD & Trauma – FreeFitFuel</title>
+
+  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* ---- Page-local (kept tight; matches Anxiety pattern) ---- */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media (min-width:950px){.grid{grid-template-columns:repeat(2,1fr)}}
+
+    /* HERO: show full image, no crop */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;height:auto !important;max-height:520px !important;
+      object-fit:scale-down !important;object-position:center center !important;display:block;filter:none !important;
+    }
+    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+
+    /* Mini-nav (NON-FLOATING) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a:hover{color:var(--accent)}
+    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 10px)}
+    html{scroll-behavior:smooth}
+
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+  </style>
+</head>
+<body>
+
+<!-- Shared header (same as Anxiety page) -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="PTSD & Trauma hero">
+  <figure>
+    <img src="/img/ptsd-hero.png" alt="Quiet evening street and window light — steady, grounded, safe">
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">PTSD &amp; Trauma</span></h1>
+    <p class="lead">
+      Post-traumatic stress is the body and brain’s <strong>survival response gone into overdrive</strong>.
+      It’s not weakness. It’s not failure. It is the imprint of overwhelming experiences on a system designed to keep you alive.
+      Recovery means helping that alarm system distinguish between <em>then</em> and <em>now</em>.
+    </p>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Caption for the hero -->
+  <figure class="page-hero page-hero--contain">
+    <figcaption class="cap">Trauma rewires alarms. With practice and support, the nervous system can learn safety again.</figcaption>
+  </figure>
+
+  <!-- Mini nav (non-floating) -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#what">What is PTSD?</a>
+    <a href="#symptoms">Symptoms &amp; cPTSD</a>
+    <a href="#biology">Biology</a>
+    <a href="#window">Window of tolerance</a>
+    <a href="#grounding">Grounding tools</a>
+    <a href="#flashbacks">Flashbacks &amp; nightmares</a>
+    <a href="#memory">Trauma memory</a>
+    <a href="#treatments">Treatments</a>
+    <a href="#responders">For Forces &amp; Responders</a>
+    <a href="#downloads">Printables</a>
+    <a href="#support">Support services</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <!-- 1. WHAT -->
+  <section id="what" class="section">
+    <h2>1) What is PTSD?</h2>
+    <p>
+      PTSD can follow <strong>any event that overwhelms your ability to cope</strong>: accidents, war, assault, abuse,
+      medical trauma, disasters, or repeated exposure through frontline work.
+      It is the nervous system’s attempt to protect you by staying on high alert, but it comes at a cost.
+    </p>
+    <p class="meta">Think of PTSD not as a disorder but as <em>an adaptation that now needs recalibrating</em>.</p>
+  </section>
+
+  <!-- 2. SYMPTOMS -->
+  <section id="symptoms" class="section">
+    <h2>2) Symptoms &amp; cPTSD</h2>
+    <p>Symptoms often cluster in four groups. Many people move between them daily:</p>
+    <div class="grid">
+      <article class="card"><h3>Intrusions</h3><p>Flashbacks, nightmares, intrusive images or sounds. These feel as if the trauma is happening again.</p></article>
+      <article class="card"><h3>Avoidance</h3><p>Dodging places, conversations, or even emotions that might bring the trauma to mind. Relief in the short term, but maintains the cycle long term.</p></article>
+      <article class="card"><h3>Negative beliefs &amp; mood</h3><p>Persistent guilt, shame, “I’m broken” thoughts, disconnection from others, lack of joy.</p></article>
+      <article class="card"><h3>Hyper-arousal</h3><p>Hypervigilance, jumpiness, poor sleep, anger bursts, difficulty concentrating.</p></article>
+    </div>
+    <article class="card" style="grid-column:1/-1">
+      <h3>Complex PTSD (cPTSD)</h3>
+      <p>Arises from long-lasting or repeated trauma (e.g., childhood abuse, coercive control, captivity).
+         Adds difficulties with self-worth, relationships, and emotional regulation.</p>
+    </article>
+  </section>
+
+  <!-- 3. BIOLOGY -->
+  <section id="biology" class="section">
+    <h2>3) Biology — the science of “stuck alarms”</h2>
+    <ul>
+      <li><strong>Amygdala:</strong> the brain’s smoke alarm, on constant alert.</li>
+      <li><strong>Hippocampus:</strong> misfiles trauma memories → the past feels like now.</li>
+      <li><strong>Prefrontal cortex:</strong> the “thinking brain” goes offline when alarms blare.</li>
+      <li><strong>Neurochemicals:</strong>
+        <ul>
+          <li><strong>Cortisol:</strong> often stays high, disturbing sleep, digestion, immunity.</li>
+          <li><strong>Norepinephrine:</strong> heightens attention to danger but keeps you jumpy.</li>
+          <li><strong>Serotonin &amp; dopamine:</strong> disrupted, affecting mood and motivation.</li>
+          <li><strong>GABA:</strong> calming signals often under-active → harder to downshift.</li>
+        </ul>
+      </li>
+    </ul>
+    <p class="meta">Neuroplasticity means these circuits can re-learn safety with therapy, tools, and time.</p>
+  </section>
+
+  <!-- 4. WINDOW -->
+  <section id="window" class="section">
+    <h2>4) Window of Tolerance</h2>
+    <figure>
+      <img src="/img/ptsd-window.png" alt="Quiet room with daylight window — visual anchor for the window of tolerance">
+      <figcaption class="cap">Above the window = panic/anger. Below = numb/shutdown. Middle zone = calm engagement.</figcaption>
+    </figure>
+    <p>
+      The “window” is the emotional bandwidth where you can think, feel, and connect. PTSD shrinks this window.
+      Tools aim to <strong>widen it again</strong>.
+    </p>
+    <ul>
+      <li><strong>For hyper-arousal:</strong> slow breathing, grounding, weighted blanket, soft light.</li>
+      <li><strong>For hypo-arousal:</strong> gentle movement, cool splash of water, upbeat music, connection.</li>
+    </ul>
+    <p class="meta"><a href="/img/ptsd-window.pdf" download>Window of Tolerance Tracker (PDF)</a></p>
+  </section>
+
+  <!-- 5. GROUNDING -->
+  <section id="grounding" class="section">
+    <h2>5) Grounding</h2>
+    <p>Grounding breaks the spell of trauma-time and anchors you in now-time.</p>
+    <div class="grid">
+      <article class="card"><h3>5-4-3-2-1 senses</h3><p>Notice 5 things you see, 4 touch, 3 hear, 2 smell, 1 taste. Name them out loud.</p></article>
+      <article class="card"><h3>Breath</h3><p>In 4, out 6. Say: “Safe enough, here, now.”</p></article>
+      <article class="card"><h3>Safe-place visual</h3><p>Picture a calm space in detail. Pair with breathing.</p></article>
+      <article class="card"><h3>Orientation</h3><p>State: “Today is [date]. I’m in [location]. I am safe enough now.”</p></article>
+    </div>
+    <p class="meta">Download: <a href="/img/ptsd-grounding.pdf" download>Grounding Toolkit (PDF)</a></p>
+  </section>
+
+  <!-- 6. FLASHBACKS -->
+  <section id="flashbacks" class="section">
+    <h2>6) Flashbacks &amp; Nightmares</h2>
+    <p>Flashbacks are trauma memories replaying as if live. Nightmares disturb rest but can be reshaped.</p>
+    <ul>
+      <li><strong>Flashback script:</strong> “This is memory, not the present. Today is [date].”</li>
+      <li><strong>Nightmare rewriting:</strong> Practise an alternative ending while awake; rehearse before bed.</li>
+      <li><strong>Practical:</strong> keep a glass of water, small lamp, grounding card by the bed.</li>
+    </ul>
+    <p class="meta">
+      Tools: <a href="/img/ptsd-nightmare-log.pdf" download>Nightmare Log</a>,
+      <a href="/img/ptsd-reset.pdf" download>Emergency 3-Minute Reset</a>.
+    </p>
+  </section>
+
+  <!-- 7. MEMORY -->
+  <section id="memory" class="section">
+    <h2>7) Trauma Memory</h2>
+    <p>
+      Trauma memory is stored differently: fragments, body sensations, emotions without time-stamp.
+      This is why fireworks can trigger a war veteran or why a smell can transport someone back years.
+    </p>
+    <p><strong>Therapies like EMDR and trauma-focused CBT help “re-file” these memories into the past.</strong></p>
+  </section>
+
+  <!-- 8. TREATMENTS -->
+  <section id="treatments" class="section">
+    <h2>8) Treatments &amp; Recovery</h2>
+    <ul>
+      <li><strong>Therapy:</strong> EMDR, trauma-focused CBT, CPT, NET. For cPTSD: phase model (stabilise → process → reconnect).</li>
+      <li><strong>Medication:</strong> SSRIs/SNRIs (mood/anxiety); prazosin (nightmares); always discuss with GP/psychiatrist.</li>
+      <li><strong>Daily anchors:</strong> steady meals, light movement, recovery time, safe connection.</li>
+    </ul>
+  </section>
+
+  <!-- 9. RESPONDERS -->
+  <section id="responders" class="section">
+    <h2>9) Veterans &amp; Emergency Responders</h2>
+    <p>
+      Military, police, fire, and ambulance staff face repeated trauma and moral injury.
+      Confidential support is available:
+    </p>
+    <ul>
+      <li><a href="https://combatstress.org.uk" target="_blank" rel="noopener">Combat Stress</a> — veterans</li>
+      <li><a href="https://www.nhs.uk/nhs-services/armed-forces-community/mental-health/" target="_blank" rel="noopener">NHS Veterans (Op COURAGE, England)</a></li>
+      <li><a href="https://www.veteransfirstpoint.org.uk/" target="_blank" rel="noopener">Veterans First Point (Scotland)</a></li>
+      <li><a href="https://www.policecare.org.uk/" target="_blank" rel="noopener">Police Care UK</a></li>
+      <li><a href="https://www.firefighterscharity.org.uk/" target="_blank" rel="noopener">The Fire Fighters Charity</a></li>
+      <li><a href="https://www.theasc.org.uk/" target="_blank" rel="noopener">TASC (Ambulance Staff Charity)</a></li>
+    </ul>
+    <p class="meta">Carry the <a href="/img/ptsd-support.pdf" download>Support Quick Card (PDF)</a>.</p>
+  </section>
+
+  <!-- 10. DOWNLOADS -->
+  <section id="downloads" class="section">
+    <h2>10) Printables</h2>
+    <ul>
+      <li><a href="/img/ptsd-grounding.pdf" download>Grounding Toolkit</a></li>
+      <li><a href="/img/ptsd-nightmare-log.pdf" download>Nightmare &amp; Flashback Log</a></li>
+      <li><a href="/img/ptsd-reset.pdf" download>3-Minute Reset</a></li>
+      <li><a href="/img/ptsd-window.pdf" download>Window of Tolerance Tracker</a></li>
+      <li><a href="/img/ptsd-support.pdf" download>Support &amp; Services Quick Card</a></li>
+    </ul>
+  </section>
+
+  <!-- 11. SUPPORT -->
+  <section id="support" class="section">
+    <h2>11) Support &amp; Services</h2>
+    <ul>
+      <li><a href="https://www.samaritans.org" target="_blank" rel="noopener">Samaritans</a> — 116 123, 24/7 listening</li>
+      <li><a href="https://giveusashout.org" target="_blank" rel="noopener">Shout</a> — text SHOUT to 85258 (UK)</li>
+      <li><a href="https://www.mind.org.uk" target="_blank" rel="noopener">Mind</a> — support &amp; resources</li>
+      <li><a href="https://www.nhsinform.scot" target="_blank" rel="noopener">NHS Inform (Scotland)</a></li>
+    </ul>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="disclaimer section" id="disclaimer">
+    <h2>Important Note</h2>
+    <p>
+      The information on this page is for <strong>general understanding and support</strong>. It is
+      <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel
+      unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.
+      If you’re outside the UK, contact your local emergency number.
+    </p>
+    <p>
+      For non-emergency concerns, consider speaking with a qualified health professional or one of the
+      support services listed on our site.
+    </p>
+  </section>
+
+  <p class="meta" style="margin-top:8px">← <a href="/sites/wellbeing.html">Back to Wellbeing</a></p>
+</main>
+
+<!-- Same footer structure as Anxiety page -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+</body>
+</html>

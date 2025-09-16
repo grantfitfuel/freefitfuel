@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Carer Support – FreeFitFuel</title>
+  <meta name="description" content="Practical UK guidance for unpaid carers: wellbeing, money & rights, emergency planning, respite options, printable tools, and trusted support links.">
 
-  <link rel="stylesheet" href="/style.css?v=42">
+  <link rel="stylesheet" href="/style.css?v=46">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
@@ -16,14 +17,14 @@
     @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
     .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
 
-    /* FINAL HERO: no crop/zoom */
+    /* HERO (no crop / no zoom) */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
     header.hero-mini figure>img{
       width:100% !important;
-      height:auto !important;              /* natural aspect ratio */
-      max-height:460px !important;         /* cap on large screens */
-      object-fit:scale-down !important;    /* show full image (no crop) */
+      height:auto !important;
+      max-height:460px !important;
+      object-fit:scale-down !important;
       object-position:center center !important;
       display:block; filter:none !important;
     }
@@ -69,8 +70,8 @@
 
 <main class="wrap">
   <p class="lead">
-    This page gathers simple tools and UK links for **unpaid carers** — whether you look after a partner, child,
-    parent, friend or neighbour. Use the mini-nav to jump to what you need.
+    This page gathers simple tools and UK links for <strong>unpaid carers</strong> — whether you support a partner,
+    child, parent, friend or neighbour. Use the mini-nav to jump to what you need.
   </p>
 
   <!-- Mini-nav -->
@@ -94,12 +95,12 @@
           You are a carer if you provide unpaid help to someone who couldn’t manage without it. That might be
           support with medicines, personal care, mobility, meals, travel, appointments, or keeping the home running.
         </p>
-        <p class="meta">Tip: tell your GP you’re a carer — practices can add this to your record and share local support.</p>
+        <p class="meta">Tell your GP you’re a carer — practices can add this to your record and signpost local support.</p>
       </article>
-      <aside class="card">
+      <aside class="card" aria-label="Illustration">
         <div class="figure">
           <img src="/img/carers-checklist.png" alt="Notebook with carer notes and a mug on a table">
-          <p class="cap">Noticing that you are a carer is the first step to getting support.</p>
+          <p class="cap">Recognising your role is the first step to getting support.</p>
         </div>
       </aside>
     </div>
@@ -112,22 +113,22 @@
         <h2>2) Your wellbeing</h2>
         <ul>
           <li><strong>Micro-rest:</strong> 3–5 short breath/move breaks across the day (set a light reminder).</li>
-          <li><strong>Sleep basics:</strong> aim for a regular wind-down, dim lights, and a quick next-day list so your brain can switch off.</li>
-          <li><strong>Cortisol calm:</strong> slow breathing (in 4, out 6–8), a brief outside walk, and warm hands/drink to soften the stress response.</li>
+          <li><strong>Sleep basics:</strong> regular wind-down, dim lights, and a quick next-day list so your brain can switch off.</li>
+          <li><strong>Cortisol calm:</strong> slow breathing (in 4, out 6–8), brief outside walk, and warm hands/drink to soften the stress response.</li>
           <li><strong>Share the load:</strong> make a simple task list and invite family/friends to take one small thing regularly.</li>
         </ul>
         <details class="details"><summary>Short breathing reset (1–2 minutes)</summary>
-          <p>Inhale softly through the nose for 4, exhale for 6–8. Shoulders stay heavy; jaw unclenched. Repeat ~10–12 cycles.</p>
+          <p>Inhale gently through the nose for 4, exhale for 6–8. Keep shoulders heavy, jaw relaxed. Repeat 10–12 cycles.</p>
         </details>
       </article>
       <article class="card">
         <h3>Quick support at home</h3>
         <ul>
           <li>Keep a <strong>meds list</strong> on the fridge and a photo on your phone.</li>
-          <li>Put key contacts in one place: GP, out-of-hours, pharmacy, social work, trusted neighbour.</li>
-          <li>Use a <strong>spare keys</strong> plan with a neighbour/friend you trust.</li>
+          <li>Store key contacts together: GP, out-of-hours, pharmacy, social work, trusted neighbour.</li>
+          <li>Arrange <strong>spare keys</strong> with a neighbour/friend you trust.</li>
         </ul>
-        <div class="btn-row">
+        <div class="btn-row" role="group" aria-label="Downloads">
           <a class="btn--pill" href="/pdf/wellbeing/meds-list.pdf">Meds List (PDF)</a>
           <a class="btn--pill" href="/tracker.html">Start Tracker</a>
         </div>
@@ -139,10 +140,10 @@
   <section id="money-rights" class="section">
     <h2>3) Money & rights (UK quick guide)</h2>
     <ul>
-      <li><strong>Carer’s Assessment</strong> (via your local council) — looks at your needs as a carer and what support could help.</li>
-      <li><strong>Carer’s Allowance</strong> (if eligible) and related top-ups; other possible benefits include Universal Credit, Pension Credit additions.</li>
-      <li><strong>Young carers</strong> have access to specific support via schools/colleges and local services.</li>
-      <li><strong>Employment</strong> — talk with your employer about flexible working or carer’s leave options.</li>
+      <li><strong>Carer’s Assessment</strong> (via your local council): looks at your needs as a carer and what support could help.</li>
+      <li><strong>Carer’s Allowance</strong> (if eligible) and possible top-ups; other benefits may include Universal Credit or Pension Credit additions.</li>
+      <li><strong>Young carers</strong> can access specific support via schools/colleges and local services.</li>
+      <li><strong>Employment</strong>: discuss flexible working or carer’s leave with your employer.</li>
     </ul>
     <p class="meta">Rules differ across UK nations and can change — check the services below for up-to-date info.</p>
   </section>
@@ -157,12 +158,12 @@
           <li><strong>Back-up contacts:</strong> at least two people who can step in for an hour or a day.</li>
           <li><strong>Grab-bag:</strong> copies of IDs, meds list, spare chargers, small cash, essentials.</li>
         </ul>
-        <div class="btn-row">
+        <div class="btn-row" role="group" aria-label="Emergency downloads">
           <a class="btn--pill" href="/pdf/wellbeing/carer-emergency-plan.pdf">Emergency Plan (PDF)</a>
           <a class="btn--pill" href="/pdf/wellbeing/appointment-notes.pdf">Appointment Notes (PDF)</a>
         </div>
       </article>
-      <article class="card">
+      <article class="card" aria-label="Illustration">
         <div class="figure">
           <img src="/img/carers-emergency.png" alt="Simple emergency plan sheet on a clipboard">
           <p class="cap">A one-page plan helps others help you quickly.</p>
@@ -178,7 +179,7 @@
     <ul>
       <li>Local authority funded short breaks via carer services.</li>
       <li>Voluntary sector respite schemes and sitting services.</li>
-      <li>Family/friends taking a regular slot each week (“every Wed 2–4pm”).</li>
+      <li>Family/friends taking a regular slot each week (e.g., every Wed 2–4pm).</li>
     </ul>
     <p class="meta">Ask your local carer centre about what’s available where you live.</p>
   </section>
@@ -191,9 +192,9 @@
         <ul>
           <li><strong>Symptom tracker:</strong> note flare-ups, meds taken, meals, fluids, sleep, mood.</li>
           <li><strong>Shared task list:</strong> write 6–8 jobs others can choose from (shopping, garden, lifts).</li>
-          <li><strong>Call script:</strong> have key lines ready for GP/social work/111 to reduce stress on the call.</li>
+          <li><strong>Call script:</strong> key lines ready for GP/social work/111 to lower stress on calls.</li>
         </ul>
-        <div class="btn-row">
+        <div class="btn-row" role="group" aria-label="Tool downloads">
           <a class="btn--pill" href="/pdf/wellbeing/shared-task-list.pdf">Shared Task List (PDF)</a>
           <a class="btn--pill" href="/pdf/wellbeing/call-script.pdf">Call Script (PDF)</a>
         </div>
@@ -215,10 +216,10 @@
     <ul>
       <li><a href="https://www.carersuk.org/" target="_blank" rel="noopener">Carers UK</a> — national advice, forums, rights and entitlements.</li>
       <li><a href="https://carers.org/" target="_blank" rel="noopener">Carers Trust</a> — local carer services and young carer support.</li>
-      <li><a href="https://www.nhsinform.scot/care-support-and-rights/carers" target="_blank" rel="noopener">NHS Inform Scotland: Carers</a> — Scottish information and getting help.</li>
-      <li>Your <strong>local council</strong> — Carer’s Assessment and support in your area (search “<em>carer assessment</em>” + your council).</li>
+      <li><a href="https://www.nhsinform.scot/care-support-and-rights/carers" target="_blank" rel="noopener">NHS Inform Scotland: Carers</a> — Scottish information and how to get help.</li>
+      <li>Your <strong>local council</strong> — Carer’s Assessment and support in your area (search “carer assessment” + your council).</li>
       <li><a href="https://www.citizensadvice.org.uk/" target="_blank" rel="noopener">Citizens Advice</a> — benefits and work advice.</li>
-      <li><a href="https://www.mygov.scot/young-carer-grant" target="_blank" rel="noopener">Young Carer Grant (Scotland)</a> — if eligible.</li>
+      <li><a href="https://www.mygov.scot/young-carer-grant" target="_blank" rel="noopener">Young Carer Grant (Scotland)</a> — check eligibility.</li>
     </ul>
   </section>
 

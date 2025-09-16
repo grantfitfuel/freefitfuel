@@ -97,6 +97,26 @@ header.hero .hero-media img.fit-hero{
   filter:none !important;                  /* remove global darkening */
 }
 
+/* --- GLOBAL SAFETY OVERRIDES: prevent hero text overlay, disable sticky mini-nav --- */
+
+/* If any page tries to absolutely position hero content, force it back to flow */
+header.hero-mini .content[style*="position:absolute"],
+header.hero .content[style*="position:absolute"]{
+  position:static !important;
+  inset:auto !important;
+  padding:16px 20px 22px;                 /* match normal spacing */
+  max-width:var(--maxw);
+  margin:0 auto;
+}
+
+/* Disable sticky mini-nav wherever a page attempted it */
+.mini-nav[style*="position:sticky"],
+.mini-nav.sticky{
+  position:static !important;
+  top:auto !important;
+  z-index:auto !important;
+}
+
 /* =========================================
    Components
    ========================================= */
@@ -105,7 +125,7 @@ header.hero .hero-media img.fit-hero{
 .btn--pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:999px;padding:.34rem .65rem;font-size:.9rem;text-decoration:none}
 .btn--pill:hover{color:var(--accent)}
 .btn-row{display:flex;flex-wrap:wrap;gap:.45rem}
-.mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+.mini-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem;position:static} /* ensure non-sticky by default */
 .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);text-decoration:none;padding:.38rem .75rem;border-radius:999px;font-size:.92rem}
 .mini-nav a:hover{color:var(--accent)}
 .grid{display:grid;gap:14px;margin:22px 0}

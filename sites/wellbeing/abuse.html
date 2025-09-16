@@ -2,46 +2,57 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Abuse Support – FreeFitFuel</title>
 
-  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="stylesheet" href="/style.css?v=47">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
-    /* Page-local layout */
+    /* ---------- Page-local layout (self-contained) ---------- */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .grid{display:grid;gap:12px}
     @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
     .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .meta{color:var(--inkdim);font-size:.92rem}
+    .eyebrow{display:inline-block;color:var(--inkdim);font-size:.92rem;margin-bottom:.3rem}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
 
-    /* HERO: no crop/zoom */
+    /* Figures */
+    figure{margin:.6rem 0}
+    figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--stroke);background:#0b0f14}
+
+    /* HERO — show full image (no crop) */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
     header.hero-mini figure>img{
-      width:100% !important;
-      height:auto !important;
-      max-height:460px !important;
-      object-fit:scale-down !important;
-      object-position:center center !important;
-      display:block; filter:none !important;
+      width:100%!important;height:auto!important;max-height:480px!important;
+      object-fit:scale-down!important;object-position:center center!important;display:block;filter:none!important;
     }
     header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
     header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
-    @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
 
-    /* Mini-nav (NON-FLOATING) */
-    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
-    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    /* Mini-nav (non-sticky) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.8rem 0 1.1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;text-decoration:none;white-space:nowrap}
     .mini-nav a:hover{color:var(--accent)}
     section[id]{scroll-margin-top:calc(var(--headerH,72px) + 10px)}
     html{scroll-behavior:smooth}
 
-    /* Figures */
-    .figure{margin:.6rem 0}
-    .figure img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
-    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+    /* Details blocks */
+    .details{background:#0e1217;border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;margin:.55rem 0}
+    .details summary{cursor:pointer;font-weight:600}
+
+    /* Numbered steps */
+    .steps{counter-reset:step}
+    .steps li{list-style:none;position:relative;margin:.45rem 0 .45rem 1.25rem}
+    .steps li:before{counter-increment:step;content:counter(step) ".";position:absolute;left:-1.25rem;color:var(--accent);font-weight:700}
+
+    /* Button pills */
+    .btn-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.4rem}
+    .btn--pill{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);border-radius:999px;padding:.42rem .75rem;font-size:.92rem;text-decoration:none}
   </style>
 </head>
 <body>
@@ -57,132 +68,322 @@
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content wrap">
+    <span class="eyebrow">You deserve safety</span>
     <h1><span class="accent">Abuse Support</span></h1>
-    <p>You are not to blame and you are not alone. There are safe steps and people who can help.</p>
+    <p class="lead">You are not to blame and you are not alone. This page offers practical safety steps, planning tools, and UK/Scotland support links — for people experiencing abuse and for those who want to help.</p>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="lead">This page explains what abuse can look like, why leaving is difficult, steps to build a simple safety plan, and where to find confidential support.</p>
-
-  <!-- Mini-nav (non-floating) -->
+  <!-- Mini-nav -->
   <nav class="mini-nav" aria-label="On this page">
-    <a href="#understanding">Understanding abuse</a>
-    <a href="#leaving">Why leaving is hard</a>
-    <a href="#steps">Steps you can take</a>
+    <a href="#urgent">Urgent help</a>
+    <a href="#understanding">What abuse looks like</a>
+    <a href="#why-hard">Why leaving is hard</a>
+    <a href="#safety-plan">Safety planning</a>
+    <a href="#tech">Technology & stalking</a>
+    <a href="#legal">Legal, housing & money</a>
+    <a href="#children">Children & pets</a>
+    <a href="#specific">Specific groups</a>
+    <a href="#evidence">Keeping evidence</a>
     <a href="#support">Support services</a>
-    <a href="#friends">Friends & family</a>
+    <a href="#friends">For friends & family</a>
     <a href="#disclaimer">Disclaimer</a>
   </nav>
 
-  <!-- 1 -->
+  <!-- 1) Urgent -->
+  <section id="urgent" class="section">
+    <h2>1) If you need urgent help now</h2>
+    <ul>
+      <li>Call <strong>999</strong> (UK). If you can’t speak, press <strong>55</strong> when prompted (the <em>Silent Solution</em>).</li>
+      <li><strong>Samaritans</strong> — 116 123 (free, 24/7). <strong>Shout</strong> — text <strong>SHOUT</strong> to <strong>85258</strong>.</li>
+      <li>Find a <strong>safe place</strong> if you can (neighbour, shop, public place). Avoid rooms with potential weapons.</li>
+    </ul>
+    <p class="meta">Trust your read of danger. Your safety comes first.</p>
+  </section>
+
+  <!-- 2) Understanding -->
   <section id="understanding" class="section">
     <div class="grid cols2">
       <article class="card">
-        <h2>1) Understanding Abuse</h2>
-        <p>Abuse is about power and control. It can happen in relationships, families, or institutions. It may include:</p>
+        <h2>2) What abuse can look like</h2>
+        <p>Abuse is about <strong>power and control</strong>. It may be:</p>
         <ul>
-          <li><strong>Physical:</strong> hitting, pushing, restraining, physical harm.</li>
-          <li><strong>Emotional/Psychological:</strong> insults, threats, humiliation, intimidation, gaslighting.</li>
-          <li><strong>Financial:</strong> controlling money, denying access, forced debt, dependency.</li>
-          <li><strong>Coercive control:</strong> isolation, monitoring, controlling movements and contacts.</li>
-          <li><strong>Sexual:</strong> any non-consensual sexual contact or pressure.</li>
+          <li><strong>Physical:</strong> hitting, choking, restraining, damaging belongings.</li>
+          <li><strong>Emotional:</strong> insults, humiliation, threats, gaslighting, isolation.</li>
+          <li><strong>Coercive control:</strong> monitoring movements/devices; restricting sleep, food or money.</li>
+          <li><strong>Financial:</strong> taking wages/benefits, forced debt, blocking work or education.</li>
+          <li><strong>Sexual:</strong> any non-consensual sexual activity; reproductive coercion.</li>
+          <li><strong>Digital/tech:</strong> spyware, location tracking, account takeovers, revenge porn.</li>
         </ul>
-        <p>Recognising abuse is the first step. It is not your fault.</p>
+        <p>It can happen in any relationship or household. <strong>It’s not your fault.</strong></p>
       </article>
       <aside class="card">
-        <div class="figure">
+        <figure>
           <img src="/img/abuse-support.png" alt="Two hands reaching out in support">
-          <p class="cap">You deserve safety, dignity and peace.</p>
-        </div>
+          <figcaption class="cap">You deserve safety, dignity, and peace.</figcaption>
+        </figure>
       </aside>
     </div>
   </section>
 
-  <!-- 2 -->
-  <section id="leaving" class="section">
-    <h2>2) Why it feels so hard to leave</h2>
-    <p>Feeling stuck is common: fear, finances, social pressure, children, immigration status, disability, or hope that things will improve. Abuse also changes how your brain and body respond to threat — anxiety, depression, trauma responses, or shutdown. None of this means you are weak.</p>
-    <p><strong>If leaving feels impossible now</strong>, there are still steps you can take to increase safety and gather support.</p>
+  <!-- 3) Why leaving is hard -->
+  <section id="why-hard" class="section">
+    <h2>3) Why leaving can feel impossible</h2>
+    <p>Fear, love, finances, children, immigration status, disability, religious/community pressure, or disability-related care can make leaving complex. Abuse also affects the nervous system — anxiety, shutdown, trauma responses — which narrows options. <strong>Difficulty leaving is not weakness.</strong></p>
   </section>
 
-  <!-- 3 -->
-  <section id="steps" class="section">
+  <!-- 4) Safety planning -->
+  <section id="safety-plan" class="section">
     <div class="grid cols2">
       <article class="card">
-        <h2>3) Steps you can take (at your pace)</h2>
-        <ul>
-          <li><strong>Talk to someone you trust</strong> — friend, colleague, neighbour, or a helpline volunteer trained in abuse.</li>
-          <li><strong>Make a simple safety plan</strong> — know a safe place; store key documents (photos/scans) somewhere safe; keep a small essentials bag if possible.</li>
-          <li><strong>Use technology safely</strong> — private device if possible; clear history; review location sharing and “find my” settings.</li>
-          <li><strong>Record incidents if safe</strong> — dates/times, photos of injuries, threatening messages. Only if it doesn’t increase risk.</li>
-        </ul>
-
-        <details class="details"><summary>Build a safety plan</summary>
+        <h2>4) Build a safety plan (at your pace)</h2>
+        <details class="details" open><summary>Core plan</summary>
           <ol class="steps">
-            <li>Identify a <strong>safe room</strong> and a <strong>code word</strong> you can text/say to allies.</li>
-            <li>Gather copies of <strong>ID, passports, meds, bank info</strong>; store with a trusted person or secure cloud.</li>
-            <li>Plan <strong>routes & transport</strong> (spare keys, bus routes, taxi numbers).</li>
-            <li>Teach children simple cues like <strong>“go next door and call 999”</strong> if age-appropriate.</li>
+            <li><strong>Signals & code words:</strong> agree a phrase to alert trusted people; set check-in times.</li>
+            <li><strong>Safe spots:</strong> identify a room to go to (ideally with a door/exit) and public places nearby.</li>
+            <li><strong>Essentials bag:</strong> copies of ID, passports, meds, bank cards, keys, charger, cash — hide with a trusted person if possible.</li>
+            <li><strong>Routes & transport:</strong> spare keys, bus routes, taxi numbers; think through a late-night option.</li>
           </ol>
         </details>
-
-        <details class="details"><summary>Technology safety</summary>
-          <ul class="steps">
-            <li>Check for tracking/spyware; update passwords; enable 2FA on a private email.</li>
-            <li>Turn off or limit location sharing.</li>
-            <li>Use a private browser or safe device at work/library.</li>
+        <details class="details"><summary>Medication & means safety</summary>
+          <ul>
+            <li>Keep only small quantities of medication at home; consider weekly pharmacy pick-up.</li>
+            <li>Store sharp items securely if relevant to your situation.</li>
           </ul>
         </details>
-
-        <div class="btn-row" style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <details class="details"><summary>Phone & documents</summary>
+          <ul>
+            <li>Private email with strong password + 2FA; scan docs to it.</li>
+            <li>Set “emergency contacts” on your phone’s lock screen.</li>
+          </ul>
+        </details>
+        <div class="btn-row">
           <a class="btn--pill" href="/pdf/wellbeing/safety-plan-checklist.pdf">Safety Plan (PDF)</a>
-          <a class="btn--pill" href="/tracker.html">Start Tracker</a>
+          <a class="btn--pill" href="/pdf/wellbeing/appointment-notes.pdf">Appointment Notes (PDF)</a>
         </div>
       </article>
-
       <article class="card">
-        <div class="figure">
-          <img src="/img/abuse-hero.png" alt="Warm, safe, quiet space">
-          <p class="cap">Small, careful steps still count. Quiet help exists.</p>
-        </div>
+        <h3>Stabilise day-to-day</h3>
+        <ul>
+          <li>Keep a simple routine for sleep, food, fluids; tiny movement or outside light daily.</li>
+          <li>Identify two <strong>safe people</strong> for short check-ins.</li>
+          <li>Practice one <strong>grounding</strong> skill: inhale 4, exhale 6–8; 5-4-3-2-1 senses.</li>
+        </ul>
+        <figure>
+          <img src="/img/abuse-quiet.png" alt="Calm corner at home with blanket and warm mug">
+          <figcaption class="cap">Small, steady steps lower risk and build options.</figcaption>
+        </figure>
       </article>
     </div>
   </section>
 
-  <!-- 4 -->
-  <section id="support" class="section">
-    <h2>4) Support services (UK & Scotland)</h2>
-    <p>If you are in immediate danger, call <strong>999</strong> (UK).</p>
+  <!-- 5) Technology & stalking -->
+  <section id="tech" class="section">
+    <h2>5) Technology safety & stalking</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>Quick tech wins</h3>
+        <ul>
+          <li>Change passwords; enable 2FA to a private email/number.</li>
+          <li>Review location sharing (Find My/Google/WhatsApp/Snap map).</li>
+          <li>Check for unknown devices on Wi-Fi; update router password.</li>
+          <li>Consider a <strong>secondary cheap phone</strong> for key contacts.</li>
+          <li>Use library/work devices for sensitive searches if safer.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Stalking/harassment</h3>
+        <ul>
+          <li>Trust patterns: repeated following, messages, turning up, tracking = risk. Report to police (101 / 999 in emergency).</li>
+          <li>Keep evidence (see below). Do not engage if unsafe; block and report.</li>
+          <li>Ask your mobile provider about number change and security notes.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 6) Legal, housing & money -->
+  <section id="legal" class="section">
+    <h2>6) Legal options, housing & money (UK quick guide)</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>Orders & rights</h3>
+        <ul>
+          <li><strong>Non-molestation/occupation orders</strong> (civil protection) — speak to a legal adviser.</li>
+          <li><strong>Clare’s Law</strong> (Right to Ask) — request info about a partner’s history via police.</li>
+          <li><strong>Reporting crimes:</strong> 101 / 999 (emergency). Ask for a <em>domestic abuse specialist</em>.</li>
+        </ul>
+        <p class="meta">This page isn’t legal advice — contact the services below for current guidance.</p>
+      </article>
+      <article class="card">
+        <h3>Housing & money</h3>
+        <ul>
+          <li><strong>Emergency housing:</strong> call your local council housing options team.</li>
+          <li><strong>Benefits & debt:</strong> Citizens Advice; StepChange (if debt has built up).</li>
+          <li>Keep a <strong>financial safety</strong> plan: basic bank account, separate email/phone for banking.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 7) Children & pets -->
+  <section id="children" class="section">
+    <h2>7) Children & pets</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>Children</h3>
+        <ul>
+          <li>Teach an age-appropriate plan: where to go, who to call (999), trusted neighbour.</li>
+          <li>Share the school/GP with key info if safe to do so.</li>
+          <li>Keep copies of birth certificates and health info with your documents.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Pets</h3>
+        <ul>
+          <li>Ask local rescues or vets about temporary fostering if you need to leave quickly.</li>
+          <li>Keep pet ID, medication details and photos in your document pack.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 8) Specific groups -->
+  <section id="specific" class="section">
+    <h2>8) Specific groups & situations</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>LGBTQ+</h3>
+        <ul>
+          <li>Abuse may include outing threats and community isolation. Ask services if they’re LGBT-inclusive; see <em>Galop</em> in links.</li>
+        </ul>
+        <h3>Disabled / long-term illness</h3>
+        <ul>
+          <li>Abuse can involve withholding care/equipment. Record care needs; speak to adult social care.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Forced marriage / “honour”-based abuse</h3>
+        <ul>
+          <li>Specialist help exists (see Forced Marriage Unit). Make a <strong>travel & document</strong> safety plan.</li>
+        </ul>
+        <h3>Immigration / NRPF</h3>
+        <ul>
+          <li>Ask about the <em>Domestic Violence Concession</em> and specialist advice. You still have rights to protection.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 9) Evidence -->
+  <section id="evidence" class="section">
+    <h2>9) Keeping evidence (only if safe)</h2>
     <ul>
-      <li><a href="https://www.nationaldahelpline.org.uk/" target="_blank" rel="noopener">National Domestic Abuse Helpline (0808 2000 247)</a></li>
-      <li><a href="https://www.refuge.org.uk/" target="_blank" rel="noopener">Refuge</a> — support for women and children.</li>
-      <li><a href="https://mensadviceline.org.uk/" target="_blank" rel="noopener">Men’s Advice Line</a> — support for men.</li>
-      <li><a href="https://www.scottishwomensaid.org.uk/" target="_blank" rel="noopener">Scottish Women’s Aid</a></li>
-      <li><a href="https://www.safer.scot/" target="_blank" rel="noopener">Safer.Scot</a></li>
-      <li><a href="https://www.nhsinform.scot/care-support-and-rights/abuse-domestic" target="_blank" rel="noopener">NHS Inform Scotland</a></li>
-      <li><a href="https://www.childline.org.uk/" target="_blank" rel="noopener">Childline (0800 1111)</a></li>
-      <li><a href="https://wearehourglass.org/" target="_blank" rel="noopener">Hourglass</a> — support for older people.</li>
-      <li><a href="https://giveusashout.org/" target="_blank" rel="noopener">Shout (text SHOUT to 85258)</a></li>
+      <li>Save <strong>dates/times</strong>, keep screenshots of messages, call logs, social media handles/URLs.</li>
+      <li>Photograph injuries with a clear date (place an object like that day’s post/phone screen with date).</li>
+      <li>Back up to a safe cloud or trusted device. Consider a hidden email for this purpose.</li>
+      <li>Keep a simple timeline; it helps police, courts and support workers understand the pattern.</li>
     </ul>
   </section>
 
-  <!-- 5 -->
+  <!-- 10) Support services -->
+  <section id="support" class="section">
+    <h2>10) Support services (UK & Scotland)</h2>
+
+    <div class="grid cols2">
+      <article class="card">
+        <h3>24/7 / Crisis</h3>
+        <ul>
+          <li><strong>999</strong> (Silent Solution: press <strong>55</strong> if you can’t speak)</li>
+          <li><strong>Samaritans</strong> — 116 123 (free, 24/7)</li>
+          <li><strong>Shout</strong> — text <strong>SHOUT</strong> to <strong>85258</strong></li>
+        </ul>
+
+        <h3>Domestic abuse (national)</h3>
+        <ul>
+          <li><a href="https://www.nationaldahelpline.org.uk/" target="_blank" rel="noopener">National Domestic Abuse Helpline — 0808 2000 247</a></li>
+          <li><a href="https://www.refuge.org.uk/" target="_blank" rel="noopener">Refuge</a> (women & children)</li>
+          <li><a href="https://mensadviceline.org.uk/" target="_blank" rel="noopener">Men’s Advice Line</a> — support for men</li>
+          <li><a href="https://www.galop.org.uk/" target="_blank" rel="noopener">Galop</a> — LGBT+ abuse & hate crime support</li>
+          <li><a href="https://respectphoneline.org.uk/" target="_blank" rel="noopener">Respect Phoneline</a> — if you’re worried about your own behaviour</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Scotland</h3>
+        <ul>
+          <li><a href="https://safer.scot/" target="_blank" rel="noopener">Safer.Scot</a></li>
+          <li><a href="https://www.scottishwomensaid.org.uk/" target="_blank" rel="noopener">Scottish Women’s Aid</a></li>
+          <li><a href="https://www.nhsinform.scot/care-support-and-rights/abuse-domestic" target="_blank" rel="noopener">NHS Inform Scotland — domestic abuse</a></li>
+          <li><a href="https://breathingspace.scot/" target="_blank" rel="noopener">Breathing Space</a> (listening support)</li>
+        </ul>
+
+        <h3>Children & older adults</h3>
+        <ul>
+          <li><a href="https://www.childline.org.uk/" target="_blank" rel="noopener">Childline — 0800 1111</a></li>
+          <li><a href="https://wearehourglass.org/" target="_blank" rel="noopener">Hourglass</a> — older people</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Stalking / sexual violence</h3>
+        <ul>
+          <li><a href="https://www.suzylamplugh.org/" target="_blank" rel="noopener">Suzy Lamplugh Trust (stalking)</a></li>
+          <li><a href="https://rapecrisis.org.uk/" target="_blank" rel="noopener">Rape Crisis</a> (England & Wales)</li>
+          <li><a href="https://www.rapecrisisscotland.org.uk/" target="_blank" rel="noopener">Rape Crisis Scotland</a></li>
+          <li><a href="https://www.revengepornhelpline.org.uk/" target="_blank" rel="noopener">Revenge Porn Helpline</a></li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Legal & practical</h3>
+        <ul>
+          <li><a href="https://rightsofwomen.org.uk/" target="_blank" rel="noopener">Rights of Women</a> (legal advice)</li>
+          <li><a href="https://ncdv.org.uk/" target="_blank" rel="noopener">National Centre for Domestic Violence (NCDV)</a></li>
+          <li><a href="https://www.citizensadvice.org.uk/" target="_blank" rel="noopener">Citizens Advice</a></li>
+          <li><a href="https://www.stepchange.org/" target="_blank" rel="noopener">StepChange</a> (debt advice)</li>
+          <li><a href="https://www.gov.uk/stop-forced-marriage" target="_blank" rel="noopener">Forced Marriage Unit</a></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- 11) Friends & family -->
   <section id="friends" class="section">
-    <h2>5) For friends & family</h2>
-    <ul>
-      <li>Listen and believe. Avoid “why didn’t you…” questions.</li>
-      <li>Don’t pressure action before they’re ready. Safety planning takes time.</li>
-      <li>Offer specific help: “I can store copies of your documents,” “I can drive on Tuesdays.”</li>
-      <li>Share helplines and check in regularly.</li>
-    </ul>
+    <h2>11) For friends & family</h2>
+    <div class="grid cols2">
+      <article class="card">
+        <h3>What helps</h3>
+        <ul>
+          <li>Believe them. Say: “I’m glad you told me. You’re not to blame.”</li>
+          <li>Ask: “What would help for the next day?” Offer <strong>specific</strong> help (lifts, childcare, store documents).</li>
+          <li>Help with a safety plan and check-ins; keep helplines handy.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>What to avoid</h3>
+        <ul>
+          <li>“Why don’t you just leave?” — it’s often unsafe/complex.</li>
+          <li>Confronting the abuser — can increase risk.</li>
+          <li>Taking over everything — keep the person’s choices central.</li>
+        </ul>
+      </article>
+    </div>
+    <article class="card">
+      <h3>If you’re worried about your own behaviour</h3>
+      <p>Help exists. Call the <a href="https://respectphoneline.org.uk/" target="_blank" rel="noopener">Respect Phoneline</a> for confidential support to change.</p>
+    </article>
   </section>
 
   <!-- Disclaimer -->
   <section id="disclaimer" class="section">
     <h2>Important Note</h2>
-    <p>The information here is for general understanding and support and is not a substitute for professional advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.</p>
+    <p>The information here is for general understanding and support and is not a substitute for professional legal, safeguarding, medical or financial advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. If you’re outside the UK, contact your local emergency number.</p>
+    <p class="meta">If it’s safer to browse privately, use a public device and clear history. Your safety decisions matter most — take this at your pace.</p>
   </section>
+
+  <p class="meta" style="margin-top:8px">← <a href="/sites/wellbeing.html">Back to Wellbeing</a></p>
 </main>
 
 <footer class="site-footer">

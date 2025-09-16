@@ -9,11 +9,14 @@
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
-    /* Page-local (mirrors Anxiety pattern; mini-nav NOT sticky) */
+    /* Page-local (mini-nav NOT sticky) */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
     .grid{display:grid;gap:12px}
     @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .lead{color:var(--inkdim)}
+    .meta{color:var(--inkdim);font-size:.92rem}
 
     /* HERO: show full image, no crop */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
@@ -31,6 +34,9 @@
     section[id]{scroll-margin-top:calc(var(--headerH,72px) + 10px)}
     html{scroll-behavior:smooth}
 
+    /* Figures */
+    .figure{margin:.6rem 0}
+    .figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--stroke);background:#0b0f14}
     .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
   </style>
 </head>
@@ -46,7 +52,7 @@
     <img src="/img/suicide-survivors-hero.png" alt="Person walking forward on a woodland path with soft light ahead">
   </figure>
   <div class="content wrap">
-    <h1><span class="accent">After a Suicide Attempt</span> (Survivors & Supporters)</h1>
+    <h1><span class="accent">After a Suicide Attempt</span> (Survivors &amp; Supporters)</h1>
     <p class="lead">
       Surviving an attempt can bring relief, fear, shame, anger, and confusion — sometimes all in one hour.
       This page offers immediate safety steps, practical routines for the next days and weeks, clear guidance for supporters,
@@ -65,10 +71,10 @@
     <a href="#basics">Stabilise the basics</a>
     <a href="#neurodiversity">Neurodiversity</a>
     <a href="#supporters">Guidance for supporters</a>
-    <a href="#therapy">Therapies & treatments</a>
-    <a href="#work-study">Work & study</a>
+    <a href="#therapy">Therapies &amp; treatments</a>
+    <a href="#work-study">Work &amp; study</a>
     <a href="#relapse">Relapse prevention</a>
-    <a href="#links">UK & Scotland support</a>
+    <a href="#links">UK &amp; Scotland support</a>
     <a href="#disclaimer">Disclaimer</a>
   </nav>
 
@@ -86,22 +92,34 @@
   <!-- 2 -->
   <section id="first-72" class="section">
     <h2>2) The first 72 hours: protective steps</h2>
-    <figure>
+    <figure class="figure">
       <img src="/img/suicide-survivors-grief.png" alt="Person sitting by water on a bench, reflective and calm">
       <figcaption class="cap">Early days are for safety and gentle care — not big life decisions.</figcaption>
     </figure>
     <div class="grid cols2">
-      <article class="card"><h3>Medical follow-up</h3><p>Attend hospital checks and book a GP appointment within a few days. Ask about crisis/home treatment teams and short-term follow-up.</p></article>
-      <article class="card"><h3>Reduce immediate risk</h3><p>Lock away medications; keep only small amounts at home; store sharp items safely if relevant. Share this task with a trusted person.</p></article>
-      <article class="card"><h3>Two safe people</h3><p>Choose 1–2 people who can listen without judgement. Agree simple check-ins (e.g., morning and evening texts or a call).</p></article>
-      <article class="card"><h3>Micro-routine</h3><p>Food, fluids, meds, light movement, outside light. “Good enough” is the target for now.</p></article>
+      <article class="card">
+        <h3>Medical follow-up</h3>
+        <p>Attend hospital checks and book a GP appointment within a few days. Ask about crisis/home treatment teams and short-term follow-up.</p>
+      </article>
+      <article class="card">
+        <h3>Reduce immediate risk</h3>
+        <p>Lock away medications; keep only small amounts at home; store sharp items safely if relevant. Share this task with a trusted person.</p>
+      </article>
+      <article class="card">
+        <h3>Two safe people</h3>
+        <p>Choose 1–2 people who can listen without judgement. Agree simple check-ins (e.g., morning and evening texts or a call).</p>
+      </article>
+      <article class="card">
+        <h3>Micro-routine</h3>
+        <p>Food, fluids, meds, light movement, outside light. “Good enough” is the target for now.</p>
+      </article>
     </div>
   </section>
 
   <!-- 3 -->
   <section id="safety-plan" class="section">
     <h2>3) Make a written safety plan (and share it)</h2>
-    <figure>
+    <figure class="figure">
       <img src="/img/suicide-survivors-coping.png" alt="Hands with a journal and pen beside a cup of tea">
       <figcaption class="cap">A short plan you can grab at 3am beats a perfect plan you never see.</figcaption>
     </figure>
@@ -191,15 +209,35 @@
   <!-- 7 -->
   <section id="supporters" class="section">
     <h2>7) Guidance for supporters</h2>
-    <figure>
+    <figure class="figure">
       <img src="/img/suicide-survivors-support.png" alt="Two friends on a sofa with tea, one listening attentively to the other">
       <figcaption class="cap">Listening + practical help beats lectures every time.</figcaption>
     </figure>
     <div class="grid cols2">
-      <article class="card"><h3>What helps</h3><ul><li>Be calm, consistent, and specific. “Shall I order food and sit with you for 20 minutes?”</li><li>Use the person’s safety plan and check-in times.</li><li>Offer lifts to appointments and help with prescriptions/admin.</li></ul></article>
-      <article class="card"><h3>What to avoid</h3><ul><li>Interrogation, blame, or ultimatums.</li><li>Method details or graphic discussions.</li><li>Doing everything yourself — share care where possible.</li></ul></article>
+      <article class="card">
+        <h3>What helps</h3>
+        <ul>
+          <li>Be calm, consistent, and specific. “Shall I order food and sit with you for 20 minutes?”</li>
+          <li>Use the person’s safety plan and check-in times.</li>
+          <li>Offer lifts to appointments and help with prescriptions/admin.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>What to avoid</h3>
+        <ul>
+          <li>Interrogation, blame, or ultimatums.</li>
+          <li>Method details or graphic discussions.</li>
+          <li>Doing everything yourself — share care where possible.</li>
+        </ul>
+      </article>
     </div>
-    <article class="card"><h3>Your oxygen mask</h3><ul><li>Sleep, food, movement, and a person you can debrief with.</li><li>Know your limits; use crisis lines and GP support for yourself too.</li></ul></article>
+    <article class="card">
+      <h3>Your oxygen mask</h3>
+      <ul>
+        <li>Sleep, food, movement, and a person you can debrief with.</li>
+        <li>Know your limits; use crisis lines and GP support for yourself too.</li>
+      </ul>
+    </article>
   </section>
 
   <!-- 8 -->
@@ -234,7 +272,7 @@
       <li>Track early dips (sleep, appetite, isolating) and act early.</li>
       <li>Build meaning: tiny weekly goals, volunteering, hobbies, nature time.</li>
     </ol>
-    <figure>
+    <figure class="figure">
       <img src="/img/suicide-survivors-hope.png" alt="Sunlit woodland scene, gentle hope">
       <figcaption class="cap">Recovery is rarely linear. Small, honest steps add up.</figcaption>
     </figure>
@@ -244,10 +282,38 @@
   <section id="links" class="section">
     <h2>11) UK &amp; Scotland support</h2>
     <div class="grid cols2">
-      <article class="card"><h3>Crisis &amp; listening (24/7)</h3><ul><li><strong>Samaritans</strong> — 116&nbsp;123</li><li><strong>Shout</strong> — text <strong>SHOUT</strong> to <strong>85258</strong></li><li><strong>PAPYRUS</strong> (under 35) — HOPELINE247 0800&nbsp;068&nbsp;4141; text 07860&nbsp;039&nbsp;967</li></ul></article>
-      <article class="card"><h3>Ongoing support</h3><ul><li><strong>Mind</strong> — information &amp; local services</li><li><strong>Rethink Mental Illness</strong> — advice &amp; groups</li><li><strong>NHS Talking Therapies</strong> (via GP)</li></ul></article>
-      <article class="card"><h3>Scotland</h3><ul><li><strong>Breathing Space</strong> — evenings &amp; weekends</li><li><strong>NHS Inform Scotland</strong> — local services &amp; crisis teams</li></ul></article>
-      <article class="card"><h3>Forces &amp; blue-light</h3><ul><li><strong>Combat Stress</strong> — veterans’ mental health</li><li><strong>NHS Veterans (Op COURAGE)</strong> — England</li><li><strong>Veterans First Point</strong> — Scotland</li><li><strong>Police Care UK</strong> • <strong>Fire Fighters Charity</strong> • <strong>TASC</strong> (Ambulance)</li></ul></article>
+      <article class="card">
+        <h3>Crisis &amp; listening (24/7)</h3>
+        <ul>
+          <li><strong>Samaritans</strong> — 116&nbsp;123</li>
+          <li><strong>Shout</strong> — text <strong>SHOUT</strong> to <strong>85258</strong></li>
+          <li><strong>PAPYRUS</strong> (under 35) — HOPELINE247 0800&nbsp;068&nbsp;4141; text 07860&nbsp;039&nbsp;967</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Ongoing support</h3>
+        <ul>
+          <li><strong>Mind</strong> — information &amp; local services</li>
+          <li><strong>Rethink Mental Illness</strong> — advice &amp; groups</li>
+          <li><strong>NHS Talking Therapies</strong> (via GP)</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Scotland</h3>
+        <ul>
+          <li><strong>Breathing Space</strong> — evenings &amp; weekends</li>
+          <li><strong>NHS Inform Scotland</strong> — local services &amp; crisis teams</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Forces &amp; blue-light</h3>
+        <ul>
+          <li><strong>Combat Stress</strong> — veterans’ mental health</li>
+          <li><strong>NHS Veterans (Op COURAGE)</strong> — England</li>
+          <li><strong>Veterans First Point</strong> — Scotland</li>
+          <li><strong>Police Care UK</strong> • <strong>Fire Fighters Charity</strong> • <strong>TASC</strong> (Ambulance)</li>
+        </ul>
+      </article>
     </div>
   </section>
 

@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bullying & Online Safety – FreeFitFuel</title>
+  <meta name="description" content="Practical steps to deal with bullying and stay safe online: settings to change, how to keep evidence, where to report, and UK/Scotland support.">
 
-  <link rel="stylesheet" href="/style.css?v=43">
+  <link rel="stylesheet" href="/style.css?v=45">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
@@ -17,6 +18,7 @@
     @media(min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
     .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+    .meta{color:var(--inkdim);font-size:.92rem}
 
     /* HERO – non-cropping image, consistent with other FFF wellbeing pages */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
@@ -39,6 +41,10 @@
     .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
     section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
     html{scroll-behavior:smooth}
+
+    /* Quick exit */
+    .quick-exit{position:fixed;right:1rem;bottom:1rem;z-index:6;border:none;border-radius:999px;padding:.55rem .9rem;background:#da3a3a;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+    .quick-exit:focus-visible{outline:2px solid #fff;outline-offset:2px}
   </style>
 </head>
 <body>
@@ -48,9 +54,9 @@
 <script src="/js/header-loader.js"></script>
 
 <!-- HERO -->
-<header class="hero-mini" role="banner" aria-label="Bullying hero">
+<header class="hero-mini" role="banner" aria-label="Bullying & Online Safety hero">
   <figure>
-    <img src="/img/bullying-hero.png" alt="Smartphone privacy and safety settings toggled on">
+    <img src="/img/bullying-hero.png" alt="Phone showing privacy and safety settings toggled on">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content wrap">
@@ -83,13 +89,14 @@
       <li>Impersonation, sharing photos without consent, adding you to hostile servers or groups.</li>
       <li>In-person intimidation, damage to belongings, spreading rumours.</li>
     </ul>
+    <p class="meta">If something repeatedly makes you feel unsafe, small, or afraid — it’s worth taking seriously.</p>
   </section>
 
   <!-- 2 -->
   <section id="safety" class="section">
     <h2>2) Online safety settings (quick wins)</h2>
     <figure>
-      <img src="/img/bullying-online-safety.png" alt="Phone privacy and safety toggles enabled" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+      <img src="/img/bullying-online-safety.png" alt="Phone with privacy and safety toggles enabled" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
       <figcaption class="cap">Privacy, blocking and reporting tools reduce access and visibility.</figcaption>
     </figure>
     <ul>
@@ -170,6 +177,19 @@
   </div>
 </footer>
 
+<!-- Quick Exit (navigates to a neutral site and clears history entry) -->
+<button class="quick-exit" aria-label="Quick exit" title="Quick exit">Exit</button>
+<script>
+  (function(){
+    const btn=document.querySelector('.quick-exit');
+    if(!btn) return;
+    btn.addEventListener('click', ()=>{
+      // Replace current history entry and navigate quickly to a neutral page
+      location.replace('https://www.bbc.co.uk/weather');
+    });
+  })();
+</script>
+
 <!-- Mini-nav scrollspy (same pattern as other FFF wellbeing pages) -->
 <script>
 (function(){
@@ -184,7 +204,6 @@
   };
 
   const io = new IntersectionObserver((entries)=>{
-    // pick closest section to top that is intersecting
     const top = entries
       .filter(e=>e.isIntersecting)
       .sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];

@@ -323,73 +323,107 @@
   }
   function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); renderWeekSummary(); }
 
-  // ---------- Matching ----------
-  function matchesFilters(r){
-    if(FILTERS.search){
-      const hay = `${safeTitle(r)} ${r.mealType} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
-      if(!hay.includes(FILTERS.search)) return false;
-    }
-    if(FILTERS.MealType.size && !FILTERS.MealType.has(r.mealType)) return false;
+// helper: collect ALL tag-like fields as one lowercase set
+function collectTagsLower(r){
+  const arr = []
+    .concat(r.dietary || [])
+    .concat(r.nutritionFocus || [])
+    .concat(r.protocols || [])
+    .concat(r.costPrep || [])
+    .concat(r.costTag ? [r.costTag] : []);
+  return new Set(arr.filter(Boolean).map(s => String(s).trim().toLowerCase()));
+}
 
-    if(FILTERS.Dietary.size){
-      const have = new Set(r.dietary||[]);
-      for(const need of FILTERS.Dietary) if(!have.has(need)) return false;
-    }
+// drop-in replacement
+function matchesFilters(r){
+  const tags = collectTagsLower(r);
 
-    if(FILTERS.Nutrition.size){
-      const wantSpicy = FILTERS.Nutrition.has('Spicy');
-      if(wantSpicy && !(r.spiceLevel && r.spiceLevel>=1)) return false;
-      const need = new Set([...FILTERS.Nutrition].filter(x=>x!=='Spicy'));
-      const have = new Set(r.nutritionFocus||[]);
-      for(const tag of need) if(!have.has(tag)) return false;
-    }
+  // text search
+  if(FILTERS.search){
+    const hay = `${safeTitle(r)} ${r.mealType} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
+    if(!hay.includes(FILTERS.search)) return false;
+  }
 
-    if(FILTERS.KcalBand.size){
-      const band = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal??0);
-      if(!band || !FILTERS.KcalBand.has(band)) return false;
-    }
+  // meal type
+  if(FILTERS.MealType.size && !FILTERS.MealType.has(r.mealType)) return false;
 
-    if (FILTERS.Protocols.size){
-      const have = new Set(r.protocols||[]);
-      for(const need of FILTERS.Protocols) if(!have.has(need)) return false;
+  // dietary (e.g. "Low sodium", "Vegetarian", etc.) — accept if present anywhere in tags
+  if(FILTERS.Dietary.size){
+    for(const need of FILTERS.Dietary){
+      if(!tags.has(String(need).toLowerCase())) return false;
     }
+  }
 
-    if (FILTERS.Time.size) {
-      const ok = [...FILTERS.Time].every(tag => {
-        if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
-        if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
-        if (tag === 'Slow-cook') return r.slowCook === true;
-        if (tag === 'No-cook')  return r.noCook === true;
-        return true;
-      });
-      if (!ok) return false;
+  // nutrition focus — "Spicy" is special (uses spiceLevel); others use tags
+  if(FILTERS.Nutrition.size){
+    const wantSpicy = FILTERS.Nutrition.has('Spicy');
+    if(wantSpicy && !(r.spiceLevel && r.spiceLevel>=1)) return false;
+    for(const t of [...FILTERS.Nutrition]){
+      if(t==='Spicy') continue;
+      if(!tags.has(String(t).toLowerCase())) return false;
     }
+  }
 
-    if(FILTERS.CostPrep.size){
-      const needsBudget = FILTERS.CostPrep.has('Low cost / Budget');
-      if(needsBudget && r.costTag!=='Budget') return false;
-      const other = new Set([...FILTERS.CostPrep].filter(x=>x!=='Low cost / Budget'));
-      const tags  = new Set([...(r.costPrep||[]), r.costTag].filter(Boolean));
-      for(const tag of other) if(!tags.has(tag)) return false;
+  // kcal bands
+  if(FILTERS.KcalBand.size){
+    const band = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal??0);
+    if(!band || !FILTERS.KcalBand.has(band)) return false;
+  }
+
+  // protocols (e.g. "Low sodium") — also satisfied if it appears in ANY tag field
+  if(FILTERS.Protocols.size){
+    for(const p of FILTERS.Protocols){
+      if(!tags.has(String(p).toLowerCase())) return false;
     }
+  }
 
-    // Pantry
-    if(FILTERS.Pantry.active){
-      const keys=new Set((r.pantryKeys||[]).map(norm));
-      const have=new Set(FILTERS.Pantry.keys.map(norm));
-      let matched=0; have.forEach(k=>{ if(keys.has(k)) matched++; });
-      const total=(r.pantryKeys||[]).length;
-      const extrasNeeded=Math.max(0,total-matched);
-      const okBudget=!FILTERS.Pantry.budget || r.costTag==='Budget';
-      const okStrict = !FILTERS.Pantry.strict ? (extrasNeeded<=FILTERS.Pantry.extras) : (extrasNeeded===0);
-      if(!(okBudget && okStrict)) return false;
-      if(FILTERS.Pantry.respectDiet && FILTERS.Dietary.size){
-        const haveDiet=new Set(r.dietary||[]); for(const d of FILTERS.Dietary) if(!haveDiet.has(d)) return false;
+  // time flags
+  if (FILTERS.Time.size) {
+    const ok = [...FILTERS.Time].every(tag => {
+      if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
+      if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
+      if (tag === 'Slow-cook') return r.slowCook === true;
+      if (tag === 'No-cook')  return r.noCook === true;
+      return true;
+    });
+    if (!ok) return false;
+  }
+
+  // cost/prep — unify "Budget" and "Low cost" logic
+  if(FILTERS.CostPrep.size){
+    for(const need of FILTERS.CostPrep){
+      const n = String(need).toLowerCase();
+      if(n === 'low cost / budget'){
+        // pass if either tag is present anywhere
+        if(!(tags.has('budget') || tags.has('low cost') || tags.has('low cost / budget'))) return false;
+      } else if(n === 'budget'){
+        if(!(tags.has('budget'))) return false;
+      } else if(n === 'low cost'){
+        if(!(tags.has('low cost') || tags.has('low cost / budget') || tags.has('budget'))) return false;
+      } else {
+        // e.g. 'Air-fryer', 'One-pan', 'Freezer-friendly'
+        if(!tags.has(n)) return false;
       }
     }
-
-    return true;
   }
+
+  // Pantry logic unchanged (still strict/lenient based on your toggles)
+  if(FILTERS.Pantry.active){
+    const keys=new Set((r.pantryKeys||[]).map(s=>s.toString().trim().toLowerCase()));
+    const have=new Set(FILTERS.Pantry.keys.map(k=>k.toString().trim().toLowerCase()));
+    let matched=0; have.forEach(k=>{ if(keys.has(k)) matched++; });
+    const total=(r.pantryKeys||[]).length;
+    const extrasNeeded=Math.max(0,total-matched);
+    const okBudget = !FILTERS.Pantry.budget || tags.has('budget');
+    const okStrict = !FILTERS.Pantry.strict ? (extrasNeeded<=FILTERS.Pantry.extras) : (extrasNeeded===0);
+    if(!(okBudget && okStrict)) return false;
+    if(FILTERS.Pantry.respectDiet && FILTERS.Dietary.size){
+      for(const d of FILTERS.Dietary) if(!tags.has(String(d).toLowerCase())) return false;
+    }
+  }
+
+  return true;
+}
 
   // ---------- Cards / Modal / Print ----------
   function card(r){

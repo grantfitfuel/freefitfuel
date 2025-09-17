@@ -130,6 +130,21 @@ header.hero .overlay{ background:none !important; }
 .split figure{margin:0;border-radius:16px;border:1px solid var(--stroke);overflow:hidden;background:var(--glass)}
 .split img{width:100%;height:320px;object-fit:cover;object-position:center 45%}
 
+/* ===== Intelligent figure sizing (NEW, small & scoped) ===== */
+.figure{margin:.6rem 0}
+.figure img{
+  width:100%;
+  height:clamp(200px, 42vh, 420px);      /* responsive cap so images don’t dominate */
+  object-fit:contain;                    /* show full image without crop */
+  border-radius:12px;
+  border:1px solid var(--stroke);
+  background:#0b0f14;
+}
+.card .figure img{
+  height:clamp(180px, 38vh, 380px);      /* a touch tighter inside cards */
+}
+.cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+
 /* =========================================
    Footer
    ========================================= */

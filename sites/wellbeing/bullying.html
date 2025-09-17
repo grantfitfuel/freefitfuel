@@ -6,7 +6,7 @@
   <title>Bullying & Online Safety – FreeFitFuel</title>
   <meta name="description" content="Practical steps to deal with bullying and stay safe online: settings to change, how to keep evidence, where to report, and UK/Scotland support.">
 
-  <link rel="stylesheet" href="/style.css?v=45">
+  <link rel="stylesheet" href="/style.css?v=46">
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
@@ -20,30 +20,36 @@
     .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
     .meta{color:var(--inkdim);font-size:.92rem}
 
-    /* HERO – non-cropping image, consistent with other FFF wellbeing pages */
+    /* HERO – image shown, text sits BELOW (no overlay) */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
     header.hero-mini figure>img{
       width:100% !important;
       height:auto !important;
-      max-height:480px !important;     /* keep full image visible */
-      object-fit:scale-down !important; /* no crop */
+      max-height:480px !important;      /* contain – no overpowering */
+      object-fit:contain !important;     /* no crop */
       object-position:center center !important;
-      display:block;
-      filter:none !important;
+      display:block; filter:none !important;
     }
-    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
-    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    header.hero-mini .overlay{position:absolute;inset:0;background:none !important}
+    header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
 
-    /* Mini-nav (sticky + scrollspy) */
-    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
-    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    /* Mini-nav (NON-STICKY) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);
+      padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
     .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
-    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
-    html{scroll-behavior:smooth}
+
+    /* Wellbeing figures – keep images from dominating */
+    .figure img{
+      width:100%;height:auto;max-height:420px;object-fit:contain;margin:0 auto;
+      border:1px solid var(--stroke);border-radius:12px;background:#0b0f14;
+    }
+    @media (min-width:1024px){ .figure img{ max-height:480px } }
 
     /* Quick exit */
-    .quick-exit{position:fixed;right:1rem;bottom:1rem;z-index:6;border:none;border-radius:999px;padding:.55rem .9rem;background:#da3a3a;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+    .quick-exit{position:fixed;right:1rem;bottom:1rem;z-index:6;border:none;border-radius:999px;
+      padding:.55rem .9rem;background:#da3a3a;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
     .quick-exit:focus-visible{outline:2px solid #fff;outline-offset:2px}
   </style>
 </head>
@@ -95,8 +101,8 @@
   <!-- 2 -->
   <section id="safety" class="section">
     <h2>2) Online safety settings (quick wins)</h2>
-    <figure>
-      <img src="/img/bullying-online-safety.png" alt="Phone with privacy and safety toggles enabled" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+    <figure class="figure">
+      <img src="/img/bullying-online-safety.png" alt="Phone with privacy and safety toggles enabled">
       <figcaption class="cap">Privacy, blocking and reporting tools reduce access and visibility.</figcaption>
     </figure>
     <ul>
@@ -111,8 +117,8 @@
   <!-- 3 -->
   <section id="evidence" class="section">
     <h2>3) Keep evidence safely</h2>
-    <figure>
-      <img src="/img/bullying-evidence.png" alt="Notebook with a phone showing saved screenshots and timestamps" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+    <figure class="figure">
+      <img src="/img/bullying-evidence.png" alt="Notebook with a phone showing saved screenshots and timestamps">
       <figcaption class="cap">Dates, times and screenshots help schools, platforms and police act.</figcaption>
     </figure>
     <ul>
@@ -126,8 +132,8 @@
   <!-- 4 -->
   <section id="parents" class="section">
     <h2>4) For parents &amp; carers</h2>
-    <figure>
-      <img src="/img/bullying-parents.png" alt="Parent and young person reviewing a phone together at the table" style="width:100%;height:auto;border:1px solid var(--stroke);border-radius:12px;background:#0b0f14">
+    <figure class="figure">
+      <img src="/img/bullying-parents.png" alt="Parent and young person reviewing a phone together at the table">
       <figcaption class="cap">Stay curious, not accusatory — you’re on the same team.</figcaption>
     </figure>
     <ul>
@@ -177,38 +183,33 @@
   </div>
 </footer>
 
-<!-- Quick Exit (navigates to a neutral site and clears history entry) -->
+<!-- Quick Exit -->
 <button class="quick-exit" aria-label="Quick exit" title="Quick exit">Exit</button>
 <script>
   (function(){
     const btn=document.querySelector('.quick-exit');
     if(!btn) return;
-    btn.addEventListener('click', ()=>{
-      // Replace current history entry and navigate quickly to a neutral page
-      location.replace('https://www.bbc.co.uk/weather');
-    });
+    btn.addEventListener('click',()=>{ location.replace('https://www.bbc.co.uk/weather'); });
   })();
 </script>
 
-<!-- Mini-nav scrollspy (same pattern as other FFF wellbeing pages) -->
+<!-- Mini-nav scrollspy (non-sticky; just highlights) -->
 <script>
 (function(){
   const nav = document.querySelector('.mini-nav'); if(!nav) return;
   const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
-  const sections = links
-    .map(a => ({ a, el: document.querySelector(a.getAttribute('href')) }))
-    .filter(x => x.el);
+  const sections = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) }))
+                        .filter(x => x.el);
 
   const setActive = (id) => {
     links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
   };
 
   const io = new IntersectionObserver((entries)=>{
-    const top = entries
-      .filter(e=>e.isIntersecting)
-      .sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];
+    const top = entries.filter(e=>e.isIntersecting)
+                       .sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];
     if(top) setActive(top.target.id);
-  }, { root: null, rootMargin: '-80px 0px -65% 0px', threshold: [0, 1] });
+  }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
 
   sections.forEach(s => io.observe(s.el));
 })();

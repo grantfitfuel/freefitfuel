@@ -19,7 +19,7 @@
     .mini{font-size:.9rem;color:var(--inkdim)}
     .callout{background:rgba(98,200,106,.06);border:1px dashed var(--stroke);border-radius:10px;padding:10px;margin-top:8px}
 
-    /* HERO (no crop / no zoom) */
+    /* HERO (show full image, text BELOW image; no overlay on photo) */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
     header.hero-mini figure>img{
@@ -31,14 +31,14 @@
       display:block; filter:none !important;
     }
     header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
-    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    /* Key fix: text below the image, not positioned over it */
+    header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
     @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
 
-    /* Mini-nav */
-    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    /* Mini-nav (NON-STICKY — no floating) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
     .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
     .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
-    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
     html{scroll-behavior:smooth}
   </style>
 </head>
@@ -64,7 +64,7 @@
 </header>
 
 <main class="wrap">
-  <!-- Page mini-nav -->
+  <!-- Page mini-nav (non-sticky) -->
   <nav class="mini-nav" aria-label="On this page">
     <a href="#how">How to make them work</a>
     <a href="#starter">Starter set</a>
@@ -187,7 +187,7 @@
   </div>
 </footer>
 
-<!-- mini-nav scroll-spy -->
+<!-- mini-nav scroll-spy (non-sticky; optional highlighting only) -->
 <script>
 (function(){
   const navs = document.querySelectorAll('.mini-nav');

@@ -2,63 +2,248 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Neuroscience — FreeFitFuel</title>
-  <link rel="stylesheet" href="../style.css?v=navfix">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neuroscience – FreeFitFuel</title>
+  <meta name="description" content="Clear, practical neuroscience for everyday life: emotions, habits, memory, reframing, affirmations, plasticity and the autonomic nervous system — with tiny actions you can try now.">
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/style.css?v=46">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page-local layout (matches FFF wellbeing pattern; no overlays, no sticky nav) */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .grid{display:grid;gap:12px}
+    @media(min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
+    .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
+    .meta{color:var(--inkdim);font-size:.92rem}
+
+    /* HERO — text sits below image (no overlay) */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
+    header.hero-mini figure>img{
+      width:100% !important;height:auto !important;max-height:480px !important;
+      object-fit:contain !important;object-position:center center !important;display:block;filter:none !important;
+    }
+    header.hero-mini .overlay{position:absolute;inset:0;background:none !important}
+    header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+
+    /* Mini-nav (non-sticky pills) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
+    .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
+
+    /* Wellbeing figures — keep them from dominating */
+    .figure img{
+      width:100%;height:auto;max-height:440px;object-fit:contain;margin:0 auto;
+      border:1px solid var(--stroke);border-radius:12px;background:#0b0f14;
+    }
+    @media (min-width:1100px){ .figure img{ max-height:500px } }
+
+    /* Helper note if an image is missing (dev only) */
+    .missing-note{display:none;margin:.5rem 0;padding:.6rem .8rem;border:1px solid #b55;border-radius:8px;background:rgba(255,0,0,.07);color:#ffbdbd;font-size:.95rem}
+  </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="brand">
-    <img src="../img/freefitfuel-logo.png" alt="FreeFitFuel logo" class="logo" onerror="this.style.display='none'">
-    <span class="site-title">FreeFitFuel</span>
+
+<!-- Shared header -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<header class="hero-mini" role="banner" aria-label="Neuroscience hero">
+  <figure>
+    <img src="/img/neuroscience-hero.png" alt="Warm, hopeful image representing brain change and gentle routines">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Neuroscience</span> for Everyday Life</h1>
+    <p class="lead">Understand why the brain does what it does — and how to nudge it. Each section pairs a clear visual with tiny, practical actions that stack into real change.</p>
   </div>
-  <nav class="nav" aria-label="Primary">
-    <a href="/">Home</a>
-    <a href="/wellbeing/">Wellbeing</a>
-    <a href="/fitness/">Fitness</a>
-    <a href="/fuel/">Fuel</a>
-  </nav>
 </header>
 
 <main class="wrap">
-  <h1>Neuroscience (practical)</h1>
-  <p class="meta">Simple, evidence-aligned tools to help your nervous system settle, focus, and recover.</p>
+  <!-- Mini-nav -->
+  <nav class="mini-nav" aria-label="On this page">
+    <a href="#emotion">Emotions &amp; regulation</a>
+    <a href="#habits">Habits &amp; loops</a>
+    <a href="#memory">Memory &amp; learning</a>
+    <a href="#reframing">Reframing</a>
+    <a href="#affirmations">Affirmations</a>
+    <a href="#plasticity">Neuroplasticity</a>
+    <a href="#ans">ANS (fight/flight/shutdown)</a>
+    <a href="#printables">Printables</a>
+    <a href="#disclaimer">Disclaimer</a>
+  </nav>
 
-  <section class="grid">
+  <!-- 1 -->
+  <section id="emotion" class="section">
+    <h2>1) Emotions &amp; regulation</h2>
+    <p>Your brain has fast alarm systems (amygdala) and slower regulation systems (prefrontal cortex). Stress feels like the alarm shouting louder than the calm voice. You can train the calm voice.</p>
+    <figure class="figure">
+      <img src="/img/ns-emotion-brain.png"
+           alt="Amygdala (alarm) and prefrontal cortex (regulation)"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ns-emotion-brain.png</code></div>
+      <figcaption class="cap">Label the feeling + use a longer exhale; this helps the “guide” part of your brain re-take the wheel.</figcaption>
+    </figure>
+    <p><strong>Do now (60–90s):</strong> Breathe in 4, out 6. Whisper a label: “anxious”, “irritated”, “flat”. Label = less chaos.</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="habits" class="section">
+    <h2>2) Habits &amp; loops</h2>
+    <p>Habits run on a loop: <strong>cue → routine → reward</strong>. Don’t fight the loop; keep the cue and reward, swap the routine.</p>
+    <figure class="figure">
+      <img src="/img/ns-habit-loop.png"
+           alt="Habit loop — cue, routine, reward"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ns-habit-loop.png</code></div>
+      <figcaption class="cap">Keep the reward, swap the routine. Same loop, kinder outcome.</figcaption>
+    </figure>
+    <p class="meta"><u>Example:</u> Afternoon slump (cue) → scrolling (routine) → stimulation (reward). Swap to a brisk 2-minute walk + water → same reward, less crash.</p>
+  </section>
+
+  <!-- 3 -->
+  <section id="memory" class="section">
+    <h2>3) Memory &amp; learning</h2>
+    <p>Memories build over time. The hippocampus <em>encodes</em> new information; during sleep, memories are <em>consolidated</em> and distributed across the cortex. Emotion, meaning, and repetition make pathways easier to re-activate.</p>
+    <figure class="figure">
+      <img src="/img/ns-memory-systems.png"
+           alt="Hippocampus encodes, cortex stores"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ns-memory-systems.png</code></div>
+      <figcaption class="cap">Encode with focus, stabilise with sleep, strengthen with spaced retrieval.</figcaption>
+    </figure>
+
     <article class="card">
-      <h2>Physiological sigh (1 minute)</h2>
-      <p>Two short inhales through the nose, one long exhale through the mouth. Repeat 3–5 times to lower acute stress.</p>
-    </article>
-    <article class="card">
-      <h2>Box breathing (2–4 minutes)</h2>
-      <p>Inhale 4 — hold 4 — exhale 4 — hold 4. A steady pattern helps shift toward calm and focus.</p>
-    </article>
-    <article class="card">
-      <h2>Grounding scan</h2>
-      <p>Notice 5 things you can see, 4 you can feel, 3 you can hear, 2 you can smell, 1 you can taste. Brings attention to the present.</p>
-    </article>
-    <article class="card">
-      <h2>Light, movement, sleep</h2>
-      <p>Morning daylight, a brief afternoon walk, and a consistent sleep window stabilise mood and energy.</p>
-    </article>
-    <article class="card">
-      <h2>When stress spikes</h2>
-      <p>Stand, shake out limbs for 20–30 seconds, and lengthen your exhale. Then take a slow lap or stretch your calves against a wall.</p>
-    </article>
-    <article class="card">
-      <h2>Notes</h2>
-      <p>These are general strategies. Adapt to your body and speak to a clinician if you have medical concerns.</p>
+      <h3>How to remember more</h3>
+      <div class="grid cols2">
+        <div class="card"><h4>Spaced repetition</h4><p>Review just as you’re about to forget: Day 1 → 3 → 7 → 14 → 30.</p></div>
+        <div class="card"><h4>Retrieval &gt; re-reading</h4><p>Close notes and pull facts from memory — far stickier.</p></div>
+        <div class="card"><h4>Interleaving</h4><p>Mix topics to force discrimination and make it stick.</p></div>
+        <div class="card"><h4>Dual coding</h4><p>Pair words with sketches/diagrams for extra “hooks”.</p></div>
+        <div class="card"><h4>Chunking</h4><p>Group into 3–5 meaningful chunks instead of long lists.</p></div>
+        <div class="card"><h4>Elaboration</h4><p>Explain it in your own words (teach briefly) to cement it.</p></div>
+      </div>
+      <p class="meta">Use 15–20 minute bursts + 2–3 minute breaks.</p>
     </article>
   </section>
 
-  <p><a class="btn ghost" href="/wellbeing/">← Back to Wellbeing</a></p>
+  <!-- 4 -->
+  <section id="reframing" class="section">
+    <h2>4) Thought reframing</h2>
+    <p>Reframing notices an unhelpful thought, checks evidence, and swaps it for a balanced alternative. It’s accuracy, not forced positivity.</p>
+    <figure class="figure">
+      <img src="/img/ns-thought-reframing.png"
+           alt="Identify → Challenge → Re-word → Repeat"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ns-thought-reframing.png</code></div>
+      <figcaption class="cap">Identify → Challenge → Re-word → Repeat. The replacement gets faster with practice.</figcaption>
+    </figure>
+    <div class="grid cols2">
+      <div class="card"><strong>“I’ll never finish.”</strong><br>→ “One chunk at a time.”<br><em>Action:</em> 3-minute starter.</div>
+      <div class="card"><strong>“It must be perfect.”</strong><br>→ “Done beats perfect.”<br><em>Action:</em> ship a rough draft.</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="affirmations" class="section">
+    <h2>5) Affirmations</h2>
+    <p>Affirmations aren’t magic words. They prime attention. Pair the phrase with a 60-second action to create proof and strengthen the circuit.</p>
+    <figure class="figure">
+      <img src="/img/ns-affirmations.png"
+           alt="Affirmations prime attention and behaviour"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ns-affirmations.png</code></div>
+      <figcaption class="cap">Say it, then do a tiny action that makes it “true enough” today.</figcaption>
+    </figure>
+    <article class="card">
+      <h3>Make them work (4 rules)</h3>
+      <ul>
+        <li><strong>Believable now:</strong> try “I’m learning to back myself.”</li>
+        <li><strong>Present &amp; specific:</strong> “I can take one step now.”</li>
+        <li><strong>Pair with action:</strong> send one email, pour water, 2-min tidy.</li>
+        <li><strong>Frequent &amp; short:</strong> small honest repeats beat long scripts.</li>
+      </ul>
+    </article>
+  </section>
+
+  <!-- 6 -->
+  <section id="plasticity" class="section">
+    <h2>6) Neuroplasticity</h2>
+    <p>“What fires together, wires together.” Repetition grows useful pathways and lets unused ones fade. Consistency beats intensity.</p>
+    <figure class="figure">
+      <img src="/img/ns-neuroplasticity.png"
+           alt="Growth and pruning of neural pathways"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ns-neuroplasticity.png</code></div>
+      <figcaption class="cap">Small, repeatable reps build the path you want the brain to take.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 7 -->
+  <section id="ans" class="section">
+    <h2>7) Autonomic Nervous System: fight/flight &amp; shutdown</h2>
+    <p>The ANS regulates arousal. The sympathetic branch handles fight/flight. The parasympathetic handles rest/digest. Under overload we can drop into shutdown (freeze/collapse). Learning to steer state is a core skill.</p>
+    <figure class="figure">
+      <img src="/img/ans-three-states.png"
+           alt="Three-state ANS diagram: rest/digest, fight/flight, shutdown"
+           loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="missing-note">Missing image: <code>/img/ans-three-states.png</code></div>
+      <figcaption class="cap">Use breath, posture, light, and movement to nudge towards your window of tolerance.</figcaption>
+    </figure>
+  </section>
+
+  <!-- Printables -->
+  <section id="printables" class="section">
+    <h2>Printables</h2>
+    <ul>
+      <li><a href="/img/affirmation-cards.pdf" download>Affirmation cards (A4)</a></li>
+      <li><a href="/img/anxiety-reframing-cards.pdf" download>Reframing cards (A4)</a></li>
+    </ul>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="section" id="disclaimer">
+    <h2>Important Note</h2>
+    <p>The information on this page is for <strong>general understanding and support</strong>. It is <strong>not</strong> a substitute for professional medical, psychological, or legal advice. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately. If you’re outside the UK, contact your local emergency number.</p>
+  </section>
+
+  <p class="meta" style="margin-top:8px">← <a href="/sites/wellbeing.html">Back to Wellbeing</a></p>
 </main>
 
-<footer>
-  <div class="wrap footer-inner">
-    <img src="../img/freefitfuel-icon.png" alt="FreeFitFuel icon" class="footer-icon" onerror="this.style.display='none'">
-    <p>© <span>FreeFitFuel</span> | Grant Cameron Anthony</p>
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>© 2025 FreeFitFuel · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
   </div>
 </footer>
+
+<!-- Non-sticky scrollspy (highlights pills only) -->
+<script>
+(function(){
+  const nav=document.querySelector('.mini-nav'); if(!nav) return;
+  const links=[...nav.querySelectorAll('a[href^="#"]')];
+  const sections=links.map(a=>({a,el:document.querySelector(a.getAttribute('href'))})).filter(x=>x.el);
+  const setActive=id=>links.forEach(l=>l.classList.toggle('is-active', l.getAttribute('href')==='#'+id));
+  const io=new IntersectionObserver((entries)=>{
+    const top=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+    if(top) setActive(top.target.id);
+  },{root:null,rootMargin:'-80px 0px -65% 0px',threshold:[0,1]});
+  sections.forEach(s=>io.observe(s.el));
+})();
+</script>
+
 </body>
 </html>

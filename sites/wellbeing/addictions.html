@@ -17,24 +17,24 @@
     .card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
     .meta{color:var(--inkdim);font-size:.92rem}
 
-    /* HERO: show full image, no crop/zoom */
+    /* HERO: show full image, no crop/zoom; TEXT BELOW IMAGE */
     header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
     header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0b0f14}
     header.hero-mini figure>img{
       width:100% !important;height:auto !important;max-height:460px !important;
       object-fit:scale-down !important;object-position:center center !important;display:block;filter:none !important;
     }
-    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.52))}
-    header.hero-mini .content{position:absolute;inset:auto 0 0 0;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    header.hero-mini .overlay{position:absolute;inset:0;background:none !important}
+    header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
     @media (max-width:480px){ header.hero-mini figure>img{ max-height:380px !important } }
 
-    /* Mini-nav (sticky + active) */
-    .mini-nav{position:sticky;top:calc(var(--headerH,72px) + 8px);z-index:5;display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
+    /* Mini-nav (NON-STICKY) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 1rem}
     .mini-nav a{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.55rem 1rem;border-radius:999px;font-weight:700;white-space:nowrap;text-decoration:none}
     .mini-nav a.is-active{background:linear-gradient(180deg,#62c86a,#3aa64a);color:#0b1710;border-color:rgba(0,0,0,.12)}
-    section[id]{scroll-margin-top:calc(var(--headerH,72px) + 18px)}
     html{scroll-behavior:smooth}
 
+    /* Figures */
     .figure{margin:.6rem 0}
     .figure img{width:100%;height:auto;border-radius:10px;border:1px solid var(--stroke);background:#0b0f14}
     .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
@@ -68,7 +68,7 @@
     pressure, and what you can do today.
   </p>
 
-  <!-- Mini-Nav -->
+  <!-- Mini-Nav (non-sticky) -->
   <nav class="mini-nav" aria-label="On this page">
     <a href="#definitions">Definitions</a>
     <a href="#poverty">Why poorer communities are hit harder</a>
@@ -432,20 +432,16 @@
 </footer>
 
 <script>
-/* mini-nav smooth scroll + scrollspy (consistent with other wellbeing pages) */
+/* Non-sticky scrollspy: highlight pills as sections enter view */
 (function(){
   const nav = document.querySelector('.mini-nav'); if(!nav) return;
   const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
-  const targets = links
-    .map(a => ({ a, el: document.querySelector(a.getAttribute('href')) }))
-    .filter(x => x.el);
+  const targets = links.map(a => ({ a, el: document.querySelector(a.getAttribute('href')) })).filter(x => x.el);
 
   const setActive = id => links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#'+id));
 
   const io = new IntersectionObserver((entries)=>{
-    const top = entries
-      .filter(e => e.isIntersecting)
-      .sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];
+    const top = entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top - b.boundingClientRect.top)[0];
     if(top) setActive(top.target.id);
   }, { root:null, rootMargin:'-80px 0px -65% 0px', threshold:[0,1] });
 

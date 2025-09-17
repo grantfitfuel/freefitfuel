@@ -97,6 +97,18 @@ header.hero .hero-media img.fit-hero{
   filter:none !important;                  /* remove global darkening */
 }
 
+/* ===== Global hero text placement fix (no overlay anywhere) ===== */
+header.hero-mini .content,
+header.hero .content{
+  position:static !important;
+  inset:auto !important;
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:16px 20px 22px;
+}
+header.hero-mini .overlay,
+header.hero .overlay{ background:none !important; }
+
 /* =========================================
    Components
    ========================================= */

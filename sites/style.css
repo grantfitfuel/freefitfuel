@@ -6,7 +6,7 @@
 :root{
   --bg:#0e0e12; --ink:#f7f7fb; --muted:#c8c8d2; --inkdim:#9a9aa6;
   --accent:#FF6A00; --accent2:#FF9A3D;
-  --blue:#9bc4f0;               /* header & footer background */
+  --blue:#9bc4f0;
   --glass:rgba(255,255,255,.08);
   --stroke:rgba(255,255,255,.14);
   --maxw:1140px;
@@ -62,17 +62,27 @@ h1{margin:.6rem 0 .5rem;font-weight:800;letter-spacing:.2px;font-size:clamp(2.2r
 }
 
 /* =========================================
-   HERO — shared (overlay removed by default)
+   HERO — shared
    ========================================= */
 header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 header.hero-mini figure{margin:0;position:relative;overflow:hidden;background:#0000}
 header.hero-mini figure>img{
-  width:100% !important;height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
-  min-height:0 !important;max-height:none !important;object-fit:cover !important;object-position:center 12%;
+  width:100% !important;
+  height:clamp(var(--hero-min),var(--hero-ideal),var(--hero-max)) !important;
+  min-height:0 !important;max-height:none !important;
+  object-fit:cover !important;object-position:center 12%;
   display:block;filter:brightness(.88) saturate(1.05)
 }
-header.hero-mini .overlay{position:absolute;inset:0;pointer-events:none;background:none !important}
-header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+/* ensure no overlay + no overlay click blockers */
+header.hero-mini .overlay{position:absolute;inset:0;background:none !important;pointer-events:none}
+
+/* >>> Central fix: keep title/lead BELOW the image on every page */
+header.hero-mini .content{
+  position:static !important;
+  inset:auto !important;
+  padding:16px 20px 22px;
+  max-width:var(--maxw);margin:0 auto;
+}
 header.hero-mini h1{margin:0 0 .35rem}
 header.hero-mini p{max-width:70ch;margin:.2rem 0 .6rem;color:#d0d0da}
 
@@ -149,7 +159,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 }
 
 /* =========================================
-   PAGE-SPECIFIC
+   PAGE-SPECIFIC (kept)
    ========================================= */
 header.hero-mini.yoga-hero figure{background:#000}
 header.hero-mini.yoga-hero figure>img{
@@ -159,30 +169,28 @@ header.hero-mini.yoga-hero figure>img{
   display:block;
   filter:brightness(.96) saturate(1.03)
 }
-header.hero-mini.yoga-hero .content{position:static}
+header.hero-mini.yoga-hero .content{position:static !important}
 
-/* Wellbeing figure images (scoped so they don’t dominate) */
+/* Wellbeing figure images (keep them from dominating) */
 .figure img,
-.card .figure img {
-  max-width: 100%;
-  height: auto;
-  max-height: 420px;        /* stop huge vertical blow-up */
-  object-fit: contain;
-  margin: 0 auto;
-  display: block;
-  border-radius: 10px;
-  border: 1px solid var(--stroke);
-  background: #0b0f14;
+.card .figure img{
+  max-width:100%;
+  height:auto;
+  max-height:420px;
+  object-fit:contain;
+  margin:0 auto;
+  display:block;
+  border-radius:10px;
+  border:1px solid var(--stroke);
+  background:#0b0f14;
 }
-@media (min-width: 1024px) {
+@media (min-width:1024px){
   .figure img,
-  .card .figure img {
-    max-height: 480px;      /* allow slightly bigger on desktop */
-  }
+  .card .figure img{max-height:480px}
 }
 
 /* =========================================
-   HERO MODE — Scoped ONLY to Hero Training + Phases
+   HERO MODE — ONLY on Hero Training + Phases
    ========================================= */
 .hero-mode{
   --cm-ink:#111;
@@ -207,13 +215,12 @@ header.hero-mini.yoga-hero .content{position:static}
 }
 @media (max-width:700px){
   .hero-mode header.hero-mini figure>img,
-  .hero-mode .fit-hero{ object-position:center 28% !important; }
+  .hero-mode .fit-hero{object-position:center 28% !important}
 }
 .hero-mode .pills{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 1.1rem}
 .hero-mode .pill{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .7rem;border-radius:999px;font-weight:800;background:var(--glass);border:1px solid var(--cm-stroke);color:var(--ink)}
 .hero-mode .pill:hover{filter:brightness(1.08)}
 .hero-mode .panel{background:var(--cm-panel);border:1px solid var(--cm-stroke);border-radius:16px;padding:14px}
-.hero-mode .panel h3{margin:.1rem 0 .45rem}
 .hero-mode .grid-panels{display:grid;gap:14px}
 @media(min-width:900px){.hero-mode .grid-panels{grid-template-columns:repeat(3,1fr)}}
 .hero-mode .badge-row{display:flex;flex-wrap:wrap;gap:.5rem}

@@ -215,14 +215,27 @@
   </section>
 
   <!-- Support -->
-<!-- Support placeholder (will be replaced) -->
-<section id="support"
-         class="section"
-         data-src="/partials/support-uk.html"
-         data-v="5">
+<!-- Support placeholder -->
+<section id="support" class="section">
   <h2>Support</h2>
   <p class="meta">Loading…</p>
 </section>
+
+<!-- Inline loader, guaranteed to work -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var mount = document.getElementById('support');
+  if(!mount) return;
+
+  fetch('/partials/support-uk.html?v=7', {cache:'no-store'})
+    .then(function(r){ return r.text(); })
+    .then(function(html){ mount.outerHTML = html; })
+    .catch(function(err){
+      console.error('Support include failed', err);
+      mount.innerHTML = '<h2>Support</h2><p class="meta">Could not load support links. Quick refs: Samaritans 116 123 · Shout text SHOUT to 85258.</p>';
+    });
+});
+</script>
 
 <!-- loader (the v3 one I gave you) -->
 <script src="/js/support-loader.js" defer></script>

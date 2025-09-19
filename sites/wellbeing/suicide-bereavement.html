@@ -230,22 +230,6 @@ document.addEventListener('DOMContentLoaded', function(){
     </ul>
   </section>
 
-  <!-- 8. SUPPORT -->
-  <script>
-(function(){
-  const candidates=['/partials/support-uk.html','/sites/partials/support-uk.html'];
-  document.querySelectorAll('[data-include="help-links"]').forEach(el=>{
-    let i=0;(function next(){
-      if(i>=candidates.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
-      fetch(candidates[i],{cache:'no-store'})
-        .then(r=>r.ok?r.text():Promise.reject())
-        .then(h=>el.outerHTML=h) /* replaces the placeholder */
-        .catch(()=>{i++;next();});
-    })();
-  });
-})();
-</script>
-
   <!-- 9. PRINTABLES -->
   <section id="printables" class="section">
     <h2>9) Printables</h2>

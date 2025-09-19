@@ -205,28 +205,20 @@
   </section>
 
   <!-- 8. SUPPORT -->
-  <section id="support" class="section">
-    <h2>8) Support services (UK &amp; Scotland)</h2>
-    <div class="grid cols2">
-      <article class="card">
-        <h3>UK-wide</h3>
-        <ul>
-          <li><strong>Samaritans</strong> — 116&nbsp;123 (24/7 listening)</li>
-          <li><strong>Survivors of Bereavement by Suicide (SoBS)</strong> — peer groups &amp; helpline</li>
-          <li><strong>Cruse Bereavement Support</strong> — helpline &amp; counselling</li>
-          <li><strong>Mind</strong> — information &amp; guides</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Scotland</h3>
-        <ul>
-          <li><strong>Support After Suicide Scotland</strong> — local peer groups &amp; resources</li>
-          <li><strong>Breathing Space Scotland</strong> — 0800&nbsp;83&nbsp;85&nbsp;87 (evenings &amp; weekends)</li>
-          <li><strong>NHS Inform Scotland</strong> — bereavement &amp; mental health services</li>
-        </ul>
-      </article>
-    </div>
-  </section>
+  <script>
+(function(){
+  const candidates=['/partials/support-uk.html','/sites/partials/support-uk.html'];
+  document.querySelectorAll('[data-include="help-links"]').forEach(el=>{
+    let i=0;(function next(){
+      if(i>=candidates.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
+      fetch(candidates[i],{cache:'no-store'})
+        .then(r=>r.ok?r.text():Promise.reject())
+        .then(h=>el.outerHTML=h) /* replaces the placeholder */
+        .catch(()=>{i++;next();});
+    })();
+  });
+})();
+</script>
 
   <!-- 9. PRINTABLES -->
   <section id="printables" class="section">

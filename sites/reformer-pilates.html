@@ -3,31 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reformer Pilates – FreeFitFuel™</title>
+
+  <title>Reformer Pilates — FreeFitFuel™</title>
   <meta name="description" content="Reformer Pilates with difficulty selector, equipment filter (reformer / minimal kit / no equipment), regimes, exercise alternatives, monthly rotations, and YouTube form lookups.">
-  <link rel="stylesheet" href="../style.css?v=53">
-  <link rel="icon" type="image/svg+xml" href="../img/freefitfuel-logo.svg">
+
+  <link rel="stylesheet" href="/style.css?v=24">
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+  <!-- Page-only additions (keeps your global style.css intact) -->
   <style>
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
+
+    /* HERO (same pattern as workouts) */
+    header.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+    header.hero-mini figure{margin:0;position:relative}
+    header.hero-mini img{width:100%;height:46vh;min-height:320px;object-fit:cover;display:block;filter:brightness(.9) saturate(1.05)}
+    header.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.6))}
+    header.hero-mini .content{position:static;inset:auto;padding:16px 20px 22px;max-width:var(--maxw);margin:0 auto}
+    header.hero-mini h1{margin:0 0 .35rem}
+    header.hero-mini p{max-width:70ch;margin:.2rem 0 0;color:#d0d0da}
+
+    /* Sections & UI */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:16px}
+    .chips{display:flex;flex-wrap:wrap;gap:.6rem}
+    .chip{border:1px solid var(--stroke);background:var(--glass);border-radius:999px;padding:.45rem .85rem;cursor:pointer}
+    .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+
     .grid{display:grid;gap:14px}
     @media(min-width:900px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
-    .hero-wrap{position:relative;border-radius:14px;overflow:hidden;margin:0 0 18px}
-    .hero-wrap img{width:100%;height:auto;display:block;object-fit:cover}
 
-    .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.4rem .8rem;cursor:pointer}
-    .chip[aria-pressed="true"]{outline:2px solid var(--accent);background:rgba(255,255,255,.12)}
-
-    .exercise-card{background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+    .exercise-card{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
     .exercise-card h3{margin:0}
     .meta{font-size:.95rem;color:var(--inkdim)}
-    .alts{font-size:.95rem}
-    .alts span{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.2rem .6rem;margin:.15rem .25rem 0 0}
     .badge{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;margin-left:.35rem;font-size:.8rem;color:var(--inkdim)}
     a.lookup{text-decoration:underline;text-decoration-thickness:.12em;text-underline-offset:.18em}
 
+    /* Regime table */
     .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--stroke);background:var(--glass)}
     .regime{border-collapse:separate;border-spacing:0;min-width:640px;width:100%}
     .regime th,.regime td{padding:10px 12px;border:1px solid var(--stroke)}
@@ -46,53 +58,66 @@
       .regime td::before{content:attr(data-col);flex:0 0 42%;color:var(--inkdim);font-weight:600}
     }
 
+    /* Rotations & PDF */
     .rotor{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .rotor select{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:8px;padding:.45rem .6rem}
+    .rotor select{border:1px solid var(--stroke);background:var(--glass);border-radius:8px;padding:.45rem .6rem}
     .rows{display:flex;flex-direction:column;gap:8px}
-    .note{font-size:.9rem;color:var(--inkdim)}
-
-    .pdf-btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;padding:.6rem 1.2rem;border-radius:8px;text-decoration:none}
-    .pdf-btn:hover{background:#e35c00}
+    .pdf-btn{display:inline-block;background:var(--accent);color:#111;font-weight:800;padding:.6rem 1.2rem;border-radius:8px;text-decoration:none}
+    .pdf-btn:hover{filter:brightness(1.05)}
   </style>
-</head>
 
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Reformer Pilates — FreeFitFuel™">
+  <meta property="og:description" content="Equipment-flexible Pilates: reformer, minimal kit, or no equipment.">
+  <meta property="og:image" content="https://www.freefitfuel.com/img/reformer-pilates-hero.png">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.freefitfuel.com/sites/reformer-pilates.html">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Reformer Pilates — FreeFitFuel™">
+  <meta name="twitter:description" content="Mat- and band-friendly Reformer Pilates guide with tailored regimes and alternatives.">
+  <meta name="twitter:image" content="https://www.freefitfuel.com/img/reformer-pilates-hero.png">
+</head>
 <body>
-  <!--#include virtual="/partials/header.html" -->
+  <!-- Shared header -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js" defer></script>
+
+  <!-- HERO -->
+  <header class="hero-mini" role="banner" aria-label="Reformer Pilates hero">
+    <figure>
+      <img src="/img/reformer-pilates-hero.png" alt="Mat-based Pilates stretch in a calm studio">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1><span class="accent">Reformer Pilates</span></h1>
+      <p class="lead">Core control, postural strength and mobility — with <strong>reformer</strong>, <strong>minimal kit</strong>, or <strong>no-equipment</strong> swaps.</p>
+    </div>
+  </header>
 
   <main class="wrap">
-    <header class="hero-wrap">
-      <img src="../img/reformer-pilates-hero.png" alt="Person performing Reformer Pilates in a calm studio">
-    </header>
-
-    <h1>Reformer Pilates</h1>
-    <p class="lead">Build <strong>core control</strong>, <strong>postural strength</strong>, and <strong>mobility</strong> with progressive reformer work. Choose your difficulty and equipment to see tailored regimes and swaps. Each exercise links to a <strong>YouTube lookup</strong> for form.</p>
-
-    <p class="note" style="margin-bottom:18px">
-      Independent educational content. “Pilates” and “Reformer Pilates” are used as generic exercise terms. Not affiliated with or endorsed by any Pilates equipment or training brand.
+    <p class="lead">Choose your <strong>difficulty</strong> and <strong>equipment</strong>. Click any exercise name for a YouTube form search. Logs are not collected on this page.</p>
+    <p class="meta" style="margin-top:.25rem">
+      Independent educational content. “Pilates” and “Reformer Pilates” are used as generic exercise terms. Not affiliated with or endorsed by any Pilates brand.
     </p>
 
-    <!-- Difficulty Selector -->
-    <section class="section" aria-labelledby="diffTitle">
-      <h2 id="diffTitle">Difficulty</h2>
-      <div class="chips" role="tablist" aria-label="Difficulty selector">
+    <!-- ===== Controls ===== -->
+    <section class="section" aria-labelledby="controls">
+      <h2 id="controls">Controls</h2>
+      <div class="chips" role="tablist" aria-label="Difficulty">
         <button class="chip" role="tab" aria-selected="true" aria-pressed="true" data-level="beginner">Beginner</button>
         <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-level="intermediate">Intermediate</button>
         <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-level="advanced">Advanced</button>
       </div>
-    </section>
-
-    <!-- Equipment Filter -->
-    <section class="section" aria-labelledby="equipTitle">
-      <h2 id="equipTitle">Equipment</h2>
-      <div class="chips" role="tablist" aria-label="Equipment selector">
+      <div class="chips" role="tablist" aria-label="Equipment" style="margin-top:.6rem">
         <button class="chip" role="tab" aria-selected="true" aria-pressed="true" data-equip="reformer">Reformer</button>
-        <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-equip="minimal">Minimal kit (towel/band/box)</button>
+        <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-equip="minimal">Minimal kit (band/towel/box)</button>
         <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-equip="none">No equipment (mat only)</button>
       </div>
-      <p class="note" style="margin-top:8px">Switching to minimal/no-equipment shows **mat-based swaps** with matched targets and cues.</p>
     </section>
 
-    <!-- Regime -->
+    <!-- ===== Regime ===== -->
     <section class="section" aria-labelledby="regimeTitle">
       <h2 id="regimeTitle">Your Regime</h2>
       <div class="table-wrap">
@@ -103,16 +128,16 @@
           <tbody></tbody>
         </table>
       </div>
-      <p class="note">*Example guidance only; adjust based on machine and instructor advice.</p>
+      <p class="meta">* Example guidance; adjust for your machine and instructor advice.</p>
     </section>
 
-    <!-- Exercises -->
+    <!-- ===== Exercises ===== -->
     <section class="section" aria-labelledby="exTitle">
       <h2 id="exTitle">Exercises</h2>
       <div id="exerciseGrid" class="grid cols2"></div>
     </section>
 
-    <!-- Monthly Rotational Swaps -->
+    <!-- ===== Monthly Rotations ===== -->
     <section class="section" aria-labelledby="rotTitle">
       <h2 id="rotTitle">Monthly Rotational Swaps</h2>
       <div class="rotor">
@@ -125,28 +150,33 @@
         </select>
       </div>
       <div id="rotationPlan" class="rows" style="margin-top:10px"></div>
-      <p class="note">When Equipment ≠ Reformer, rotations display the **mat/minimal swaps** for each move.</p>
+      <p class="meta">When Equipment ≠ Reformer, rotations display the <strong>mat/minimal swaps</strong> for each move.</p>
     </section>
 
-    <!-- PDF Download -->
+    <!-- ===== PDF ===== -->
     <section class="section">
       <h2>Printable Pack</h2>
       <p>Download the A4 <em>Reformer Pilates Pack</em> with regimes, full exercise set, and monthly rotations (no branding/name):</p>
-      <p><a class="pdf-btn" href="../pdf/reformer-pilates-pack.pdf" target="_blank" rel="noopener">Download PDF</a></p>
+      <p><a class="pdf-btn" href="/pdf/reformer-pilates-pack.pdf" target="_blank" rel="noopener">Download PDF</a></p>
     </section>
 
-    <p class="note" style="margin-top:18px">
-      Disclaimer: If you have an existing health condition, speak to your GP before starting new exercise. This content is educational and not a substitute for professional instruction.
+    <p class="meta" style="margin-top:18px">
+      Disclaimer: General fitness education only and not a substitute for professional advice. Consult a qualified professional if you have health conditions or injuries.
     </p>
   </main>
 
-  <footer style="margin-top:28px;text-align:center;color:var(--inkdim);font-size:0.9rem">
-    © FreeFitFuel™
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
   </footer>
 
+  <!-- ===== PAGE SCRIPT ===== -->
   <script>
   (function(){
-    // ----- Config -----
     const YT_SUFFIX = ' reformer pilates form';
     const chipsLevel = Array.from(document.querySelectorAll('[data-level]'));
     const chipsEquip = Array.from(document.querySelectorAll('[data-equip]'));
@@ -158,7 +188,7 @@
     let currentLevel = 'beginner';
     let currentEquip = 'reformer'; // 'reformer' | 'minimal' | 'none'
 
-    // ----- Regimes by level -----
+    /* ===== Regimes by level ===== */
     const regimeByLevel = {
       beginner:[
         {focus:'Core + Breath',springs:'Light–Medium',reps:'6–8',tempo:'2–1–2',rest:'45–60s',session:'30–40 min'},
@@ -177,8 +207,7 @@
       ]
     };
 
-    // ----- Exercise dataset with equipment-aware swaps -----
-    // For each exercise, provide mat-only and minimal-kit alternatives with cues + lookup.
+    /* ===== Exercise dataset with equipment-aware swaps ===== */
     const exercises = [
       {
         name:'Footwork (Heels / Arches / Toes)',
@@ -336,6 +365,7 @@
       }
     ];
 
+    /* ===== Rotations ===== */
     const rotations = {
       A: ['footwork','hundred','leg-circles-frogs','mermaid'],
       B: ['footwork','kneeling-arm-series','elephant','short-spine'],
@@ -343,7 +373,7 @@
       D: ['long-stretch','snake-twist','star','control-balance']
     };
 
-    // ----- Helpers -----
+    /* ===== Helpers ===== */
     function youtubeLink(q){ return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' ' + YT_SUFFIX); }
     function labelRegimeCells(){
       const table=document.getElementById('regimeTable');
@@ -357,7 +387,7 @@
       el.setAttribute('aria-selected','true'); el.setAttribute('aria-pressed','true');
     }
 
-    // ----- Renderers -----
+    /* ===== Renderers ===== */
     function renderRegime(){
       regimeBody.innerHTML='';
       (regimeByLevel[currentLevel]||[]).forEach(r=>{
@@ -369,63 +399,55 @@
     }
 
     function cardForExercise(ex){
-      // Decide whether we show reformer or a swap based on equipment mode
-      let title = ex.name, cues = ex.cues, reps = ex.reps, springs = ex.springs, lookup = ex.lookup, modeBadge = '';
+      let title = ex.name, cues = ex.cues, reps = ex.reps, spec = ex.springs, lookup = ex.lookup, modeBadge = 'Reformer';
       if(currentEquip !== 'reformer'){
         const key = currentEquip === 'none' ? 'none' : 'minimal';
         if(ex.swap && ex.swap[key]){
           title = ex.swap[key].name + ' (swap for ' + ex.name + ')';
           cues = ex.swap[key].cues;
-          reps = ex.reps; // keep suggested reps range
-          springs = currentEquip === 'none' ? '—' : 'Band/Towel/Box';
+          spec = currentEquip === 'none' ? '—' : 'Band/Towel/Box';
           lookup = ex.swap[key].lookup;
           modeBadge = currentEquip === 'none' ? 'Mat only' : 'Minimal kit';
         } else {
-          // if no valid swap, hide this card under current equipment
           return null;
         }
-      } else {
-        modeBadge = 'Reformer';
       }
-
       const card=document.createElement('article');
       card.className='exercise-card';
-      const altChips = (ex.alts||[]).map(a=>`<span title="${a.reason}">${a.label}</span>`).join(' ');
-      const badgeHTML = `<span class="badge">${modeBadge}</span><span class="badge">${currentLevel[0].toUpperCase()+currentLevel.slice(1)}</span>`;
+      const lvlBadge = currentLevel[0].toUpperCase()+currentLevel.slice(1);
       card.innerHTML = `
-        <h3><a class="lookup" href="${youtubeLink(lookup)}" target="_blank" rel="noopener">${title}</a> ${badgeHTML}</h3>
+        <h3>
+          <a class="lookup" href="${youtubeLink(lookup)}" target="_blank" rel="noopener">${title}</a>
+          <span class="badge">${modeBadge}</span>
+          <span class="badge">${lvlBadge}</span>
+        </h3>
         <p class="meta"><strong>Target:</strong> ${ex.target}</p>
-        <p class="meta"><strong>${currentEquip==='reformer'?'Springs':'Equipment'}:</strong> ${springs} &nbsp;&middot;&nbsp; <strong>Reps:</strong> ${reps}</p>
+        <p class="meta"><strong>${currentEquip==='reformer'?'Springs':'Equipment'}:</strong> ${spec} &nbsp;&middot;&nbsp; <strong>Reps:</strong> ${reps}</p>
         <p><strong>Coaching cues:</strong> ${cues}</p>
-        ${currentEquip==='reformer' && altChips ? `<div class="alts"><strong>Alternatives:</strong> ${altChips}</div>` : ''}
       `;
       return card;
     }
 
     function renderExercises(){
       grid.innerHTML='';
-      exercises
-        .filter(ex => ex.level.includes(currentLevel))
-        .forEach(ex=>{
-          const card = cardForExercise(ex);
-          if(card) grid.appendChild(card);
-        });
+      exercises.filter(ex => ex.level.includes(currentLevel)).forEach(ex=>{
+        const card = cardForExercise(ex);
+        if(card) grid.appendChild(card);
+      });
     }
 
     function renderRotation(){
       const key = rotationSel.value;
       const list = rotations[key] || [];
       rotationPlan.innerHTML = '';
-
       list.forEach(slug=>{
         const ex = exercises.find(e=>e.slug===slug);
         if(!ex) return;
-        // Choose lookup/title per equipment
         let title = ex.name, lk = ex.lookup, badge = 'Reformer';
         if(currentEquip!=='reformer' && ex.swap){
           const k = currentEquip==='none' ? 'none' : 'minimal';
           if(ex.swap[k]){ title = ex.swap[k].name + ' (swap for ' + ex.name + ')'; lk = ex.swap[k].lookup; badge = currentEquip==='none'?'Mat only':'Minimal kit'; }
-          else { return; } // skip if no swap for this mode
+          else { return; }
         }
         const item=document.createElement('div');
         item.className='exercise-card';
@@ -440,31 +462,19 @@
       });
     }
 
-    // ----- Events -----
+    /* ===== Events ===== */
     chipsLevel.forEach(btn=>{
-      btn.addEventListener('click',()=>{ setPressed(chipsLevel, btn); currentLevel = btn.dataset.level; renderRegime(); renderExercises(); renderRotation(); });
+      btn.addEventListener('click',()=>{ setPressed(chipsLevel, btn); currentLevel=btn.dataset.level; renderRegime(); renderExercises(); renderRotation(); });
       btn.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){e.preventDefault();btn.click();} });
     });
     chipsEquip.forEach(btn=>{
-      btn.addEventListener('click',()=>{ setPressed(chipsEquip, btn); currentEquip = btn.dataset.equip; renderExercises(); renderRotation(); });
+      btn.addEventListener('click',()=>{ setPressed(chipsEquip, btn); currentEquip=btn.dataset.equip; renderExercises(); renderRotation(); });
       btn.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){e.preventDefault();btn.click();} });
     });
     rotationSel.addEventListener('change', renderRotation);
 
-    // ----- Init -----
-    (function initRegime(){
-      regimeBody.innerHTML='';
-      regimeByLevel[currentLevel].forEach(r=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${r.focus}</td><td>${r.springs}</td><td>${r.reps}</td><td>${r.tempo}</td><td>${r.rest}</td><td>${r.session}</td>`;
-        regimeBody.appendChild(tr);
-      });
-      // add mobile data-col labels
-      const heads=Array.from(document.querySelectorAll('#regimeTable thead th')).map(th=>th.textContent.trim());
-      document.querySelectorAll('#regimeTable tbody tr').forEach(tr=>{
-        Array.from(tr.children).forEach((td,i)=>td.setAttribute('data-col', heads[i]||''));
-      });
-    })();
+    /* ===== Init ===== */
+    renderRegime();
     renderExercises();
     renderRotation();
   })();

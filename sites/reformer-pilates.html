@@ -4,12 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reformer Pilates – FreeFitFuel™</title>
-  <meta name="description" content="Reformer Pilates with difficulty selector, regimes, exercise alternatives, monthly rotations, and YouTube lookups for form. Beginner, intermediate, and advanced options.">
-  <link rel="stylesheet" href="../style.css?v=52">
+  <meta name="description" content="Reformer Pilates with difficulty selector, equipment filter (reformer / minimal kit / no equipment), regimes, exercise alternatives, monthly rotations, and YouTube form lookups.">
+  <link rel="stylesheet" href="../style.css?v=53">
   <link rel="icon" type="image/svg+xml" href="../img/freefitfuel-logo.svg">
-
   <style>
-    /* Local, page-only helpers (uses your global CSS variables) */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     .lead{color:var(--inkdim)}
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:16px}
@@ -18,12 +16,10 @@
     .hero-wrap{position:relative;border-radius:14px;overflow:hidden;margin:0 0 18px}
     .hero-wrap img{width:100%;height:auto;display:block;object-fit:cover}
 
-    /* Difficulty chips */
     .chips{display:flex;flex-wrap:wrap;gap:8px}
     .chip{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:999px;padding:.4rem .8rem;cursor:pointer}
     .chip[aria-pressed="true"]{outline:2px solid var(--accent);background:rgba(255,255,255,.12)}
 
-    /* Exercise cards */
     .exercise-card{background:rgba(255,255,255,.06);border:1px solid var(--stroke);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
     .exercise-card h3{margin:0}
     .meta{font-size:.95rem;color:var(--inkdim)}
@@ -32,7 +28,6 @@
     .badge{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;margin-left:.35rem;font-size:.8rem;color:var(--inkdim)}
     a.lookup{text-decoration:underline;text-decoration-thickness:.12em;text-underline-offset:.18em}
 
-    /* Regime table polish */
     .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--stroke);background:var(--glass)}
     .regime{border-collapse:separate;border-spacing:0;min-width:640px;width:100%}
     .regime th,.regime td{padding:10px 12px;border:1px solid var(--stroke)}
@@ -43,8 +38,6 @@
     .regime thead th:last-child{border-top-right-radius:12px}
     .regime tbody tr:last-child td:first-child{border-bottom-left-radius:12px}
     .regime tbody tr:last-child td:last-child{border-bottom-right-radius:12px}
-
-    /* Mobile: table -> stacked cards */
     @media(max-width:640px){
       .regime{min-width:0;border-spacing:0}
       .regime thead{display:none}
@@ -53,13 +46,11 @@
       .regime td::before{content:attr(data-col);flex:0 0 42%;color:var(--inkdim);font-weight:600}
     }
 
-    /* Rotations */
     .rotor{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     .rotor select{border:1px solid var(--stroke);background:rgba(255,255,255,.06);border-radius:8px;padding:.45rem .6rem}
     .rows{display:flex;flex-direction:column;gap:8px}
     .note{font-size:.9rem;color:var(--inkdim)}
 
-    /* PDF button */
     .pdf-btn{display:inline-block;background:var(--accent);color:#fff;font-weight:600;padding:.6rem 1.2rem;border-radius:8px;text-decoration:none}
     .pdf-btn:hover{background:#e35c00}
   </style>
@@ -74,10 +65,10 @@
     </header>
 
     <h1>Reformer Pilates</h1>
-    <p class="lead">Build <strong>core control</strong>, <strong>postural strength</strong>, and <strong>mobility</strong> with progressive reformer work. Choose your difficulty to see tailored regimes. Each exercise links to a <strong>YouTube lookup</strong> for form.</p>
+    <p class="lead">Build <strong>core control</strong>, <strong>postural strength</strong>, and <strong>mobility</strong> with progressive reformer work. Choose your difficulty and equipment to see tailored regimes and swaps. Each exercise links to a <strong>YouTube lookup</strong> for form.</p>
 
     <p class="note" style="margin-bottom:18px">
-      Independent educational content. “Pilates” and “Reformer Pilates” are used here as generic exercise terms. Not affiliated with or endorsed by any Pilates equipment or training brand.
+      Independent educational content. “Pilates” and “Reformer Pilates” are used as generic exercise terms. Not affiliated with or endorsed by any Pilates equipment or training brand.
     </p>
 
     <!-- Difficulty Selector -->
@@ -88,6 +79,17 @@
         <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-level="intermediate">Intermediate</button>
         <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-level="advanced">Advanced</button>
       </div>
+    </section>
+
+    <!-- Equipment Filter -->
+    <section class="section" aria-labelledby="equipTitle">
+      <h2 id="equipTitle">Equipment</h2>
+      <div class="chips" role="tablist" aria-label="Equipment selector">
+        <button class="chip" role="tab" aria-selected="true" aria-pressed="true" data-equip="reformer">Reformer</button>
+        <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-equip="minimal">Minimal kit (towel/band/box)</button>
+        <button class="chip" role="tab" aria-selected="false" aria-pressed="false" data-equip="none">No equipment (mat only)</button>
+      </div>
+      <p class="note" style="margin-top:8px">Switching to minimal/no-equipment shows **mat-based swaps** with matched targets and cues.</p>
     </section>
 
     <!-- Regime -->
@@ -123,13 +125,13 @@
         </select>
       </div>
       <div id="rotationPlan" class="rows" style="margin-top:10px"></div>
-      <p class="note">Run each rotation 2–3× per week alongside walking or strength. After 4–6 weeks, switch to the next rotation.</p>
+      <p class="note">When Equipment ≠ Reformer, rotations display the **mat/minimal swaps** for each move.</p>
     </section>
 
     <!-- PDF Download -->
     <section class="section">
       <h2>Printable Pack</h2>
-      <p>Download the A4 <em>Reformer Pilates Pack</em> with regimes, exercises, and monthly rotations (no branding/name):</p>
+      <p>Download the A4 <em>Reformer Pilates Pack</em> with regimes, full exercise set, and monthly rotations (no branding/name):</p>
       <p><a class="pdf-btn" href="../pdf/reformer-pilates-pack-noname.pdf" target="_blank" rel="noopener">Download PDF</a></p>
     </section>
 
@@ -144,9 +146,19 @@
 
   <script>
   (function(){
-    // ---------- Data ----------
+    // ----- Config -----
     const YT_SUFFIX = ' reformer pilates form';
+    const chipsLevel = Array.from(document.querySelectorAll('[data-level]'));
+    const chipsEquip = Array.from(document.querySelectorAll('[data-equip]'));
+    const regimeBody = document.querySelector('#regimeTable tbody');
+    const grid = document.getElementById('exerciseGrid');
+    const rotationSel = document.getElementById('rotationSel');
+    const rotationPlan = document.getElementById('rotationPlan');
 
+    let currentLevel = 'beginner';
+    let currentEquip = 'reformer'; // 'reformer' | 'minimal' | 'none'
+
+    // ----- Regimes by level -----
     const regimeByLevel = {
       beginner:[
         {focus:'Core + Breath',springs:'Light–Medium',reps:'6–8',tempo:'2–1–2',rest:'45–60s',session:'30–40 min'},
@@ -165,7 +177,8 @@
       ]
     };
 
-    // Full exercise set (Beginner → Advanced)
+    // ----- Exercise dataset with equipment-aware swaps -----
+    // For each exercise, provide mat-only and minimal-kit alternatives with cues + lookup.
     const exercises = [
       {
         name:'Footwork (Heels / Arches / Toes)',
@@ -175,11 +188,11 @@
         cues:'Neutral spine; press evenly through feet; ribs heavy.',
         springs:'Light–Medium (brand dependent)',
         reps:'6–12',
-        alts:[
-          {label:'Wall Footwork (no machine)', reason:'No reformer access'},
-          {label:'Parallel only stance', reason:'Knee discomfort'}
-        ],
-        lookup:'Pilates Reformer Footwork'
+        lookup:'Pilates Reformer Footwork',
+        swap: {
+          none: { name:'Wall Footwork (mat/wall)', cues:'Feet hip-width; slow press + return; keep ribs heavy; tiny range is fine.', lookup:'Pilates wall footwork mat' },
+          minimal: { name:'Heels-toe presses with towel (seated)', cues:'Press towel under feet; drive through heels then toes; maintain tall posture.', lookup:'seated calf raises towel pilates' }
+        }
       },
       {
         name:'Hundred (with Straps)',
@@ -189,11 +202,11 @@
         cues:'Curl from ribs; arms pump from shoulder; maintain imprint as needed.',
         springs:'Light',
         reps:'50–100 pumps',
-        alts:[
-          {label:'Tabletop legs', reason:'Low-back sensitivity'},
-          {label:'Head down', reason:'Neck sensitivity'}
-        ],
-        lookup:'Reformer Hundred'
+        lookup:'Reformer Hundred',
+        swap: {
+          none: { name:'Mat Hundred (tabletop legs)', cues:'Curl up; pump arms 5 inhales/5 exhales; regress with head down if needed.', lookup:'Pilates hundred mat' },
+          minimal: { name:'Mat Hundred with band', cues:'Light band tension in hands; same breathing and arm pump pattern.', lookup:'Pilates hundred band' }
+        }
       },
       {
         name:'Leg Circles & Frogs (Feet in Straps)',
@@ -203,11 +216,11 @@
         cues:'Control circle size; pelvis steady; no rib flare.',
         springs:'Light–Medium',
         reps:'6–10 each way',
-        alts:[
-          {label:'Smaller circles', reason:'Hip pinch'},
-          {label:'Tabletop circles (no straps)', reason:'Early stage'}
-        ],
-        lookup:'Reformer Leg Circles feet in straps'
+        lookup:'Reformer Leg Circles feet in straps',
+        swap: {
+          none: { name:'Mat Leg Circles (tabletop)', cues:'Single-leg circles; pelvis steady; draw small smooth circles.', lookup:'Pilates leg circles mat' },
+          minimal: { name:'Frog with mini-band', cues:'Band above knees; draw knees in/out keeping pelvis stable.', lookup:'Pilates frog miniband' }
+        }
       },
       {
         name:'Short Spine Massage',
@@ -217,11 +230,11 @@
         cues:'Articulate up and down; keep carriage still as you roll.',
         springs:'Light–Medium',
         reps:'4–6',
-        alts:[
-          {label:'Hip lifts (no inversion)', reason:'High BP / glaucoma / not cleared for inversion'},
-          {label:'Pelvic curl', reason:'Early stage'}
-        ],
-        lookup:'Reformer Short Spine Massage'
+        lookup:'Reformer Short Spine Massage',
+        swap: {
+          none: { name:'Pelvic Curl (mat)', cues:'Peel spine off mat one vertebra at a time; exhale to roll down.', lookup:'Pilates pelvic curl' },
+          minimal: { name:'Hip Lifts feet on box', cues:'Feet elevated; drive through heels; articulate through spine.', lookup:'hip bridge feet elevated' }
+        }
       },
       {
         name:'Kneeling Arm Series (Rows / Chest Expansion / Circles)',
@@ -231,11 +244,11 @@
         cues:'Tall kneel; ribs stacked; scapulae glide.',
         springs:'Light',
         reps:'8–10 each',
-        alts:[
-          {label:'Seated arm work', reason:'Knee discomfort'},
-          {label:'Half-kneel pad', reason:'Balance / pressure'}
-        ],
-        lookup:'Reformer Kneeling Arm Series'
+        lookup:'Reformer Kneeling Arm Series',
+        swap: {
+          none: { name:'Prone W/T lifts (mat)', cues:'Squeeze shoulder blades; keep ribs heavy; neck long.', lookup:'Pilates prone W T' },
+          minimal: { name:'Seated row with band', cues:'Band anchored; ribs stacked; row elbows by sides.', lookup:'seated row resistance band pilates' }
+        }
       },
       {
         name:'Elephant',
@@ -245,11 +258,11 @@
         cues:'Hips high; sternum to thighs; heels heavy as carriage glides.',
         springs:'Light–Medium',
         reps:'6–10',
-        alts:[
-          {label:'Flat-back Elephant', reason:'Neck sensitivity'},
-          {label:'Short box hamstring work', reason:'Tight hamstrings'}
-        ],
-        lookup:'Reformer Elephant exercise'
+        lookup:'Reformer Elephant exercise',
+        swap: {
+          none: { name:'Downward Dog hamstring pedals', cues:'Hips high; gently pedal heels; keep ribs moving toward thighs.', lookup:'downward dog hamstring pedal' },
+          minimal: { name:'Box pike stretch', cues:'Hands on box; walk hips back; gently pulse heels.', lookup:'pike stretch box' }
+        }
       },
       {
         name:'Long Stretch (Plank Series)',
@@ -259,11 +272,11 @@
         cues:'Strong plank; move from shoulders/hips as one piece.',
         springs:'Light–Medium',
         reps:'6–10',
-        alts:[
-          {label:'Knee-down plank push', reason:'Load management'},
-          {label:'Front support on box', reason:'Wrist load'}
-        ],
-        lookup:'Reformer Long Stretch'
+        lookup:'Reformer Long Stretch',
+        swap: {
+          none: { name:'High Plank rock fwd/back', cues:'Rock body over wrists then back; ribs stacked; glutes engaged.', lookup:'plank rock forward back pilates' },
+          minimal: { name:'Plank on sliders/towel', cues:'Feet on sliders; small controlled glides.', lookup:'slider plank forward back' }
+        }
       },
       {
         name:'Mermaid',
@@ -273,11 +286,11 @@
         cues:'Sit tall; reach long; keep opposite hip grounded.',
         springs:'Light',
         reps:'6–8 each side',
-        alts:[
-          {label:'Side bend on box', reason:'Hip restriction'},
-          {label:'Mat mermaid', reason:'No machine'}
-        ],
-        lookup:'Reformer Mermaid stretch'
+        lookup:'Reformer Mermaid stretch',
+        swap: {
+          none: { name:'Mat Mermaid', cues:'Shin box or cross-leg; reach/side bend with long breath.', lookup:'Pilates mermaid mat' },
+          minimal: { name:'Side bend on box', cues:'Support hand on box; arc over with long exhale.', lookup:'pilates mermaid box' }
+        }
       },
       {
         name:'Snake & Twist',
@@ -287,11 +300,11 @@
         cues:'Set shoulders; undulate with control; avoid dumping into wrists.',
         springs:'Light',
         reps:'3–5 each',
-        alts:[
-          {label:'Side plank carriage in/out', reason:'Skill bridge'},
-          {label:'Long stretch with rotation', reason:'Progression path'}
-        ],
-        lookup:'Reformer Snake and Twist'
+        lookup:'Reformer Snake and Twist',
+        swap: {
+          none: { name:'Side plank thread-the-needle', cues:'Hips stacked; rotate under then open; slow and controlled.', lookup:'side plank thread the needle pilates' },
+          minimal: { name:'Side plank on box', cues:'Forearm on box; small range thread/open.', lookup:'side plank box pilates' }
+        }
       },
       {
         name:'Star',
@@ -301,11 +314,11 @@
         cues:'Stacked side plank; small clean carriage travel.',
         springs:'Light–Medium',
         reps:'3–6 each side',
-        alts:[
-          {label:'Side support (knees)', reason:'Load reduction'},
-          {label:'Side plank on box', reason:'Wrist/shoulder load'}
-        ],
-        lookup:'Reformer Star exercise'
+        lookup:'Reformer Star exercise',
+        swap: {
+          none: { name:'Side plank Star (mat)', cues:'Top leg/arm lift; ribs stacked; short holds.', lookup:'side plank star pilates' },
+          minimal: { name:'Side support (knees) + band', cues:'Band pull-aparts; keep hips high.', lookup:'kneeling side plank band' }
+        }
       },
       {
         name:'Control Balance (on Reformer)',
@@ -315,15 +328,14 @@
         cues:'Inversion control; reach and switch legs with steady carriage.',
         springs:'Light',
         reps:'3–5 each',
-        alts:[
-          {label:'Short spine no leg switch', reason:'Early stage'},
-          {label:'Mat control balance', reason:'No machine'}
-        ],
-        lookup:'Reformer Control Balance'
+        lookup:'Reformer Control Balance',
+        swap: {
+          none: { name:'Shoulder Bridge with marches', cues:'Lift through glutes; alternate knee lifts; pelvis steady.', lookup:'Pilates shoulder bridge marching' },
+          minimal: { name:'Bridge with feet on box', cues:'Feet elevated; steady pelvis; slow marches.', lookup:'bridge feet elevated box pilates' }
+        }
       }
     ];
 
-    // Monthly Rotations (A–D)
     const rotations = {
       A: ['footwork','hundred','leg-circles-frogs','mermaid'],
       B: ['footwork','kneeling-arm-series','elephant','short-spine'],
@@ -331,59 +343,72 @@
       D: ['long-stretch','snake-twist','star','control-balance']
     };
 
-    // ---------- DOM ----------
-    const grid = document.getElementById('exerciseGrid');
-    const regimeBody = document.querySelector('#regimeTable tbody');
-    const chips = Array.from(document.querySelectorAll('.chip[role="tab"]'));
-    const rotationSel = document.getElementById('rotationSel');
-    const rotationPlan = document.getElementById('rotationPlan');
-
-    let currentLevel = 'beginner';
-
-    // ---------- Helpers ----------
-    function youtubeLink(q){
-      return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + YT_SUFFIX);
-    }
+    // ----- Helpers -----
+    function youtubeLink(q){ return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q + ' ' + YT_SUFFIX); }
     function labelRegimeCells(){
-      const table = document.getElementById('regimeTable');
-      const heads = Array.from(table.querySelectorAll('thead th')).map(th=>th.textContent.trim());
+      const table=document.getElementById('regimeTable');
+      const heads=Array.from(table.querySelectorAll('thead th')).map(th=>th.textContent.trim());
       table.querySelectorAll('tbody tr').forEach(tr=>{
         Array.from(tr.children).forEach((td,i)=>td.setAttribute('data-col', heads[i]||''));
       });
     }
+    function setPressed(group, el){
+      group.forEach(b=>{b.setAttribute('aria-selected','false');b.setAttribute('aria-pressed','false');});
+      el.setAttribute('aria-selected','true'); el.setAttribute('aria-pressed','true');
+    }
 
-    // ---------- Renderers ----------
+    // ----- Renderers -----
     function renderRegime(){
-      regimeBody.innerHTML = '';
+      regimeBody.innerHTML='';
       (regimeByLevel[currentLevel]||[]).forEach(r=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${r.focus}</td><td>${r.springs}</td><td>${r.reps}</td><td>${r.tempo}</td><td>${r.rest}</td><td>${r.session}</td>`;
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${r.focus}</td><td>${r.springs}</td><td>${r.reps}</td><td>${r.tempo}</td><td>${r.rest}</td><td>${r.session}</td>`;
         regimeBody.appendChild(tr);
       });
       labelRegimeCells();
     }
 
+    function cardForExercise(ex){
+      // Decide whether we show reformer or a swap based on equipment mode
+      let title = ex.name, cues = ex.cues, reps = ex.reps, springs = ex.springs, lookup = ex.lookup, modeBadge = '';
+      if(currentEquip !== 'reformer'){
+        const key = currentEquip === 'none' ? 'none' : 'minimal';
+        if(ex.swap && ex.swap[key]){
+          title = ex.swap[key].name + ' (swap for ' + ex.name + ')';
+          cues = ex.swap[key].cues;
+          reps = ex.reps; // keep suggested reps range
+          springs = currentEquip === 'none' ? '—' : 'Band/Towel/Box';
+          lookup = ex.swap[key].lookup;
+          modeBadge = currentEquip === 'none' ? 'Mat only' : 'Minimal kit';
+        } else {
+          // if no valid swap, hide this card under current equipment
+          return null;
+        }
+      } else {
+        modeBadge = 'Reformer';
+      }
+
+      const card=document.createElement('article');
+      card.className='exercise-card';
+      const altChips = (ex.alts||[]).map(a=>`<span title="${a.reason}">${a.label}</span>`).join(' ');
+      const badgeHTML = `<span class="badge">${modeBadge}</span><span class="badge">${currentLevel[0].toUpperCase()+currentLevel.slice(1)}</span>`;
+      card.innerHTML = `
+        <h3><a class="lookup" href="${youtubeLink(lookup)}" target="_blank" rel="noopener">${title}</a> ${badgeHTML}</h3>
+        <p class="meta"><strong>Target:</strong> ${ex.target}</p>
+        <p class="meta"><strong>${currentEquip==='reformer'?'Springs':'Equipment'}:</strong> ${springs} &nbsp;&middot;&nbsp; <strong>Reps:</strong> ${reps}</p>
+        <p><strong>Coaching cues:</strong> ${cues}</p>
+        ${currentEquip==='reformer' && altChips ? `<div class="alts"><strong>Alternatives:</strong> ${altChips}</div>` : ''}
+      `;
+      return card;
+    }
+
     function renderExercises(){
-      grid.innerHTML = '';
+      grid.innerHTML='';
       exercises
         .filter(ex => ex.level.includes(currentLevel))
         .forEach(ex=>{
-          const card = document.createElement('article');
-          card.className = 'exercise-card';
-          const yt = youtubeLink(ex.lookup);
-          const altChips = ex.alts.map(a=>`<span title="${a.reason}">${a.label}</span>`).join(' ');
-          const levelBadge = currentLevel.charAt(0).toUpperCase()+currentLevel.slice(1);
-          card.innerHTML = `
-            <h3>
-              <a class="lookup" href="${yt}" target="_blank" rel="noopener">${ex.name}</a>
-              <span class="badge">${levelBadge}</span>
-            </h3>
-            <p class="meta"><strong>Target:</strong> ${ex.target}</p>
-            <p class="meta"><strong>Springs:</strong> ${ex.springs} &nbsp;&middot;&nbsp; <strong>Reps:</strong> ${ex.reps}</p>
-            <p><strong>Coaching cues:</strong> ${ex.cues}</p>
-            <div class="alts"><strong>Alternatives:</strong> ${altChips}</div>
-          `;
-          grid.appendChild(card);
+          const card = cardForExercise(ex);
+          if(card) grid.appendChild(card);
         });
     }
 
@@ -392,59 +417,54 @@
       const list = rotations[key] || [];
       rotationPlan.innerHTML = '';
 
-      const goodSwap = {
-        'footwork':'other leg press patterns',
-        'hundred':'mat hundred / dead bug strap work',
-        'leg-circles-frogs':'hip mobility drills',
-        'mermaid':'lateral flexion / QL stretch',
-        'kneeling-arm-series':'seated strap rows / chest expansion',
-        'elephant':'hamstring sliders / pike prep',
-        'short-spine':'pelvic curl / hip lifts (no inversion)',
-        'long-stretch':'plank variations',
-        'snake-twist':'oblique sequences',
-        'star':'side support progressions',
-        'control-balance':'inversion progressions'
-      };
-
       list.forEach(slug=>{
         const ex = exercises.find(e=>e.slug===slug);
         if(!ex) return;
-        const yt = youtubeLink(ex.lookup);
-        const item = document.createElement('div');
-        item.className = 'exercise-card';
+        // Choose lookup/title per equipment
+        let title = ex.name, lk = ex.lookup, badge = 'Reformer';
+        if(currentEquip!=='reformer' && ex.swap){
+          const k = currentEquip==='none' ? 'none' : 'minimal';
+          if(ex.swap[k]){ title = ex.swap[k].name + ' (swap for ' + ex.name + ')'; lk = ex.swap[k].lookup; badge = currentEquip==='none'?'Mat only':'Minimal kit'; }
+          else { return; } // skip if no swap for this mode
+        }
+        const item=document.createElement('div');
+        item.className='exercise-card';
         item.innerHTML = `
-          <h3>
-            <a class="lookup" href="${yt}" target="_blank" rel="noopener">${ex.name}</a>
+          <h3><a class="lookup" href="${youtubeLink(lk)}" target="_blank" rel="noopener">${title}</a>
             <span class="badge">Rotation ${key}</span>
+            <span class="badge">${badge}</span>
           </h3>
           <p class="meta"><strong>Best levels:</strong> ${ex.level.map(s=>s[0].toUpperCase()+s.slice(1)).join(', ')}</p>
-          <p class="meta"><strong>Good swap for:</strong> ${goodSwap[slug]||'—'}</p>
         `;
         rotationPlan.appendChild(item);
       });
     }
 
-    // ---------- Events ----------
-    chips.forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        chips.forEach(b=>{
-          b.setAttribute('aria-selected','false');
-          b.setAttribute('aria-pressed','false');
-        });
-        btn.setAttribute('aria-selected','true');
-        btn.setAttribute('aria-pressed','true');
-        currentLevel = btn.dataset.level;
-        renderRegime();
-        renderExercises();
-      });
-      btn.addEventListener('keydown', (e)=>{
-        if(e.key===' '||e.key==='Enter'){ e.preventDefault(); btn.click(); }
-      });
+    // ----- Events -----
+    chipsLevel.forEach(btn=>{
+      btn.addEventListener('click',()=>{ setPressed(chipsLevel, btn); currentLevel = btn.dataset.level; renderRegime(); renderExercises(); renderRotation(); });
+      btn.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){e.preventDefault();btn.click();} });
+    });
+    chipsEquip.forEach(btn=>{
+      btn.addEventListener('click',()=>{ setPressed(chipsEquip, btn); currentEquip = btn.dataset.equip; renderExercises(); renderRotation(); });
+      btn.addEventListener('keydown',e=>{ if(e.key===' '||e.key==='Enter'){e.preventDefault();btn.click();} });
     });
     rotationSel.addEventListener('change', renderRotation);
 
-    // ---------- Init ----------
-    renderRegime();
+    // ----- Init -----
+    (function initRegime(){
+      regimeBody.innerHTML='';
+      regimeByLevel[currentLevel].forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${r.focus}</td><td>${r.springs}</td><td>${r.reps}</td><td>${r.tempo}</td><td>${r.rest}</td><td>${r.session}</td>`;
+        regimeBody.appendChild(tr);
+      });
+      // add mobile data-col labels
+      const heads=Array.from(document.querySelectorAll('#regimeTable thead th')).map(th=>th.textContent.trim());
+      document.querySelectorAll('#regimeTable tbody tr').forEach(tr=>{
+        Array.from(tr.children).forEach((td,i)=>td.setAttribute('data-col', heads[i]||''));
+      });
+    })();
     renderExercises();
     renderRotation();
   })();

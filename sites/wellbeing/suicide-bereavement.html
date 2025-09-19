@@ -34,6 +34,32 @@
     .cap{color:var(--inkdim);font-size:.92rem;margin:.35rem 0 0}
   </style>
 </head>
+  <script>
+document.addEventListener('DOMContentLoaded', function(){
+  const sources = [
+    '/partials/support-uk.html?v=13',
+    '/sites/partials/support-uk.html?v=13'
+  ];
+
+  document.querySelectorAll('[data-include="help-links"]').forEach(function(node){
+    var wrapper = node.closest('section.section') || node;
+
+    (function load(i){
+      if(i >= sources.length){
+        wrapper.innerHTML = '<p>Help links could not be loaded.</p>';
+        return;
+      }
+      fetch(sources[i], { cache: 'no-store' })
+        .then(r => { if(!r.ok) throw new Error(r.status); return r.text(); })
+        .then(html => {
+          wrapper.insertAdjacentHTML('beforebegin', html); // insert fetched Support block
+          wrapper.remove();                                // delete placeholder
+        })
+        .catch(() => load(i + 1));
+    })(0);
+  });
+});
+</script>
 <body>
 
 <!-- Shared header -->
@@ -233,6 +259,10 @@
     </div>
   </section>
 
+<section class="section">
+  <div class="help-links-mount" data-include="help-links"></div>
+</section>
+  
   <!-- DISCLAIMER -->
   <section id="disclaimer" class="disclaimer section">
     <h2>Important Note</h2>

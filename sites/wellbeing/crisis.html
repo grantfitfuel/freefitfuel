@@ -22,7 +22,7 @@
       width:100% !important;
       height:auto !important;
       max-height:460px !important;
-      object-fit:scale-down !important;   /* show full image */
+      object-fit:scale-down !important;
       object-position:center center !important;
       display:block; filter:none !important;
     }
@@ -131,6 +131,7 @@
     </div>
   </section>
 
+  <!-- Placeholder for shared Support partial -->
   <section class="section">
     <div class="help-links-mount" data-include="help-links"></div>
   </section>
@@ -151,20 +152,23 @@
   </div>
 </footer>
 
-<!-- Load shared help links snippet (same pattern as Anxiety) -->
+<!-- Load shared Support partial: replace whole wrapper, public path -->
 <script>
-(function(){
-  const candidates=['/partials/support-uk.html','/sites/partials/support-uk.html'];
-  document.querySelectorAll('[data-include="help-links"]').forEach(el=>{
-    let i=0;(function next(){
-      if(i>=candidates.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
-      fetch(candidates[i],{cache:'no-store'})
-        .then(r=>r.ok?r.text():Promise.reject())
-        .then(h=>el.outerHTML=h) /* replaces the placeholder */
-        .catch(()=>{i++;next();});
-    })();
+document.addEventListener('DOMContentLoaded', function(){
+  var url = '/partials/support-uk.html?v=15';
+  document.querySelectorAll('[data-include="help-links"]').forEach(function(node){
+    var wrapper = node.closest('section.section') || node;
+    fetch(url, { cache: 'no-store' })
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+      .then(function(html){
+        wrapper.insertAdjacentHTML('beforebegin', html); // insert real Support block
+        wrapper.remove();                                // remove placeholder section
+      })
+      .catch(function(){
+        wrapper.innerHTML = '<p>Help links could not be loaded.</p>';
+      });
   });
-})();
+});
 </script>
 </body>
 </html>

@@ -10,7 +10,7 @@
   <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
   <style>
-    /* ========= Page-local CSS (SAFE: does not change global site styles) ========= */
+    /* ========= Page-local CSS (keeps global styles intact) ========= */
 
     /* Layout */
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
@@ -18,17 +18,14 @@
     .grid{display:grid;gap:12px}
     @media (min-width:950px){.grid.cols2{grid-template-columns:repeat(2,1fr)}}
 
-    /* ---- HERO (NO TEXT OVERLAY) ----
-       - Image shows in full (no crop).
-       - There is NO absolutely-positioned text on top of the image.
-    */
+    /* HERO (image only; no text overlay; no crop) */
     header.hero-mini{border-bottom:1px solid #1b1b22}
     header.hero-mini figure{margin:0;background:#0b0f14}
     header.hero-mini figure>img{
       width:100% !important;
-      height:auto !important;         /* keep natural ratio */
-      max-height:460px !important;    /* soft cap on desktop */
-      object-fit:scale-down !important; /* do not crop */
+      height:auto !important;
+      max-height:460px !important;
+      object-fit:scale-down !important;
       object-position:center center !important;
       display:block; filter:none !important;
     }
@@ -36,11 +33,8 @@
       header.hero-mini figure>img{ max-height:380px !important; }
     }
 
-    /* ---- Mini-nav: NON-STICKY (no floating) ---- */
-    .mini-nav{
-      display:flex; flex-wrap:wrap; gap:.6rem;
-      margin:.9rem 0 1.1rem;
-    }
+    /* Mini-nav (NON-STICKY) */
+    .mini-nav{display:flex;flex-wrap:wrap;gap:.6rem;margin:.9rem 0 1.1rem}
     .mini-nav a{
       border:1px solid var(--stroke);
       background:var(--glass);
@@ -51,7 +45,6 @@
       white-space:nowrap;
       text-decoration:none;
     }
-    /* No .is-active styles needed without scrollspy, but harmless if present */
     .mini-nav a.is-active{
       background:linear-gradient(180deg,#62c86a,#3aa64a);
       color:#0b1710;border-color:rgba(0,0,0,.12)
@@ -71,11 +64,11 @@
 </head>
 <body>
 
-<!-- Shared header (unchanged include) -->
+<!-- Shared header -->
 <div id="site-header"></div>
 <script src="/js/header-loader.js"></script>
 
-<!-- HERO (image only; NO text overlay) -->
+<!-- HERO (image only) -->
 <header class="hero-mini" role="banner" aria-label="Anxiety hero">
   <figure>
     <img src="/img/anxiety-hero.png" alt="Soft morning light through a window with a warm-toned scene">
@@ -83,14 +76,14 @@
 </header>
 
 <main class="wrap">
-  <!-- Title and intro live BELOW the hero image (no overlay) -->
+  <!-- Title & intro below the hero -->
   <h1><span class="accent">Anxiety</span></h1>
   <p class="lead">
     An alarm system trying to protect you. We can train it to ring less — and ring wiser.
     This page explains what anxiety is, how it works, and practical tools to steady the system.
   </p>
 
-  <!-- Mini-nav (NON-STICKY) -->
+  <!-- Mini-nav -->
   <nav class="mini-nav" aria-label="On this page">
     <a href="#feels">What it feels like</a>
     <a href="#biology">Biology</a>
@@ -102,7 +95,7 @@
     <a href="#disclaimer">Disclaimer</a>
   </nav>
 
-  <!-- 1 -->
+  <!-- 1) What it feels like -->
   <section id="feels" class="section">
     <div class="grid cols2">
       <article class="card">
@@ -118,7 +111,7 @@
     </div>
   </section>
 
-  <!-- 2 -->
+  <!-- 2) Biology -->
   <section id="biology" class="section">
     <h2>2) Biology / How it happens</h2>
     <ul>
@@ -133,7 +126,7 @@
     </div>
   </section>
 
-  <!-- 3 -->
+  <!-- 3) Day-to-day tools -->
   <section id="day" class="section">
     <div class="grid cols2">
       <article class="card">
@@ -154,7 +147,7 @@
     </div>
   </section>
 
-  <!-- 4 -->
+  <!-- 4) Exposure ladders -->
   <section id="exposure" class="section">
     <h2>4) Exposure ladders</h2>
     <p>Avoidance strengthens fear. Ladders mean facing the fear gradually.</p>
@@ -169,7 +162,7 @@
     </div>
   </section>
 
-  <!-- 5 -->
+  <!-- 5) Thinking tools -->
   <section id="thinking" class="section">
     <h2>5) Thinking tools</h2>
 
@@ -188,7 +181,7 @@
     </div>
   </section>
 
-  <!-- 6 -->
+  <!-- 6) Printables -->
   <section id="printables" class="section">
     <h2>6) Printables</h2>
     <ul>
@@ -197,16 +190,15 @@
     </ul>
   </section>
 
-  <!-- 7 -->
-  <section id="support" class="section">
-    <h2>7) Support links</h2>
+  <!-- 7) Support (shared partial placeholder; real block is injected below) -->
+  <section class="section">
     <div class="help-links-mount" data-include="help-links"></div>
   </section>
 
   <!-- Disclaimer -->
   <section id="disclaimer" class="section">
     <h2>Important Note</h2>
-    <p>The information here is for general understanding and support and is not a substitute for professional care. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.</p>
+    <p>The information here is for <strong>general understanding and support</strong> and is not a substitute for professional care. If you feel unable to keep yourself safe or someone else is at risk, call <strong>999</strong> (UK) immediately.</p>
   </section>
 </main>
 
@@ -218,21 +210,23 @@
   </div>
 </footer>
 
-<!-- Lightweight snippet loader for shared help links (no scrollspy; menu is not sticky) -->
+<!-- Loader for shared Support partial (replaces whole wrapper; public path) -->
 <script>
-(function(){
-  const mounts=document.querySelectorAll('[data-include="help-links"]');
-  const sources=['/sites/snippets/help-links.html','/snippets/help-links.html'];
-  mounts.forEach(el=>{
-    let i=0; (function next(){
-      if(i>=sources.length){el.innerHTML='<p>Help links could not be loaded.</p>';return;}
-      fetch(sources[i],{cache:'no-store'})
-        .then(r=>r.ok?r.text():Promise.reject())
-        .then(html=>{el.innerHTML=html;})
-        .catch(()=>{i++;next();});
-    })();
+document.addEventListener('DOMContentLoaded', function(){
+  var url = '/partials/support-uk.html?v=18'; // bump this to bust cache when you update the partial
+  document.querySelectorAll('[data-include="help-links"]').forEach(function(node){
+    var wrapper = node.closest('section.section') || node;
+    fetch(url, { cache: 'no-store' })
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+      .then(function(html){
+        wrapper.insertAdjacentHTML('beforebegin', html); // insert the real Support block (has id="support")
+        wrapper.remove();                                // remove the placeholder wrapper
+      })
+      .catch(function(){
+        wrapper.innerHTML = '<p>Help links could not be loaded.</p>';
+      });
   });
-})();
+});
 </script>
 
 </body>

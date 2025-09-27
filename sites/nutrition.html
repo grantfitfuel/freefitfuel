@@ -87,6 +87,15 @@
     @media (max-width:700px){ .recipe-modal .cols{grid-template-columns:1fr} }
     .recipe-modal ul{margin:.4rem 0 .6rem .9rem}
     .recipe-modal .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+
+    /* PDF download button (single shared style) */
+    .pdf-download { margin: 20px 0; text-align: center; }
+    .pdf-download a {
+      display: inline-block; padding: 12px 20px; background-color: #FF6A00;
+      color: #fff; text-decoration: none; font-weight: bold; border-radius: 6px;
+      transition: background 0.2s ease-in-out;
+    }
+    .pdf-download a:hover { background-color: #e55e00; }
   </style>
 
   <title>FreeFitFuel Nutrition — Recipes, Macros & Hydration</title>
@@ -159,6 +168,17 @@
             <option value="1.9">Athlete (x1.9)</option>
           </select>
         </label>
+
+        <!-- NEW: Katch–McArdle toggle + input -->
+        <label style="grid-column:1 / -1; display:flex; align-items:center; gap:.5rem;">
+          <input type="checkbox" id="useBodyFat"> I know my body fat %
+        </label>
+
+        <label id="bfWrap" style="grid-column:1 / -1; display:none;">
+          Body Fat % 
+          <input id="bodyFat" class="input" type="number" min="1" max="70" step="0.1" style="max-width:140px; margin-left:.5rem">
+        </label>
+
         <div style="display:flex;align-items:flex-end;gap:.6rem">
           <button id="calcNow" class="btn">Calculate</button>
           <button id="calcCopy" class="btn">Copy</button>
@@ -177,57 +197,13 @@
       </div>
 
       <div class="pdf-download">
-  <a href="/pdf/weight-loss-explained.pdf" target="_blank">
-    📄 Download: How Weight Loss Works (PDF)
-  </a>
-</div>
+        <a href="/pdf/weight-loss-explained.pdf" target="_blank">📄 Download: How Weight Loss Works (PDF)</a>
+      </div>
 
+      <div class="pdf-download">
+        <a href="/pdf/bulk-cut-maintain-recomp.pdf" target="_blank">📄 Download: Bulk, Cut, Maintain and Recomposition Explained (PDF)</a>
+      </div>
 
-      
-<style>
-  .pdf-download {
-    margin: 20px 0;
-    text-align: center;
-  }
-  .pdf-download a {
-    display: inline-block;
-    padding: 10px 18px;
-    background-color: #FF6A00; /* FreeFitFuel orange */
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background 0.2s;
-  }
-  .pdf-download a:hover {
-    background-color: #e55e00;
-  }
-</style>
-<div class="pdf-download">
-  <a href="/pdf/bulk-cut-maintain-recomp.pdf" target="_blank">
-    📄 Download: Bulk, Cut, Maintain and Recomposition Explained (PDF)
-  </a>
-</div>
-
-<style>
-  .pdf-download {
-    margin: 20px 0;
-    text-align: center;
-  }
-  .pdf-download a {
-    display: inline-block;
-    padding: 12px 20px;
-    background-color: #FF6A00; /* FreeFitFuel orange */
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: background 0.2s ease-in-out;
-  }
-  .pdf-download a:hover {
-    background-color: #e55e00;
-  }
-</style>
     </div>
   </details>
 
@@ -338,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Macros calculator (Mifflin–St Jeor) =====
+  // ===== Macros calculator (Mifflin–St Jeor by default; auto-switch to Katch–McArdle if BF% provided) =====
   const goalChips=[...document.querySelectorAll('.goal-chip')];
   let GOAL='Maintain';
   goalChips.forEach(b=>b.addEventListener('click', ()=>{
@@ -350,7 +326,10 @@ document.addEventListener('DOMContentLoaded', () => {
         age=document.getElementById('bmrAge'),
         ht =document.getElementById('bmrHeight'),
         wt =document.getElementById('bmrWeight'),
-        act=document.getElementById('bmrActivity');
+        act=document.getElementById('bmrActivity'),
+        useBodyFat=document.getElementById('useBodyFat'),
+        bodyFat=document.getElementById('bodyFat'),
+        bfWrap=document.getElementById('bfWrap');
 
   const outK=document.getElementById('outKcal'),
         outP=document.getElementById('outProtein'),
@@ -358,10 +337,28 @@ document.addEventListener('DOMContentLoaded', () => {
         outF=document.getElementById('outFat'),
         goalLine=document.getElementById('goalLine');
 
+  if (useBodyFat) {
+    useBodyFat.addEventListener('change', () => {
+      bfWrap.style.display = useBodyFat.checked ? 'block' : 'none';
+      update();
+    });
+    if (bodyFat) bodyFat.addEventListener('input', update);
+  }
+
   function calcBMR(s,kg,cm,yrs){
+    // If user ticked body fat and entered a valid % -> Katch–McArdle
+    if (useBodyFat && useBodyFat.checked) {
+      const bf = parseFloat(bodyFat?.value || 0);
+      if (bf > 0 && bf < 70 && kg > 0) {
+        const lbm = kg * (1 - bf/100);   // Lean Body Mass (kg)
+        return 370 + (21.6 * lbm);       // Katch–McArdle BMR
+      }
+    }
+    // Default: Mifflin–St Jeor
     return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5
                       : 10*kg + 6.25*cm - 5*yrs - 161;
   }
+
   function targetsFromTDEE(tdee, goal){
     let kcal=tdee;
     if(goal==='Cut') kcal = tdee*0.82;
@@ -385,6 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     return { kcal: Math.round(kcal), protein_g, carbs_g, fat_g };
   }
+
   function update(){
     const bmr = calcBMR(sex.value, parseFloat(wt.value||0), parseFloat(ht.value||0), parseFloat(age.value||0));
     const tdee = bmr * parseFloat(act.value||1);
@@ -394,8 +392,13 @@ document.addEventListener('DOMContentLoaded', () => {
     outP.textContent = t.protein_g + ' g';
     outC.textContent = t.carbs_g + ' g';
     outF.textContent = t.fat_g + ' g';
-    goalLine.innerHTML = `Goal: <strong>${GOAL}</strong> — based on Mifflin–St Jeor + activity`;
+
+    const methodUsed = (useBodyFat && useBodyFat.checked && parseFloat(bodyFat?.value||0) > 0)
+      ? 'Katch–McArdle (uses body fat %)'
+      : 'Mifflin–St Jeor';
+    goalLine.innerHTML = `Goal: <strong>${GOAL}</strong> — based on ${methodUsed} + activity`;
   }
+
   document.getElementById('calcNow').addEventListener('click', update);
   document.getElementById('calcCopy').addEventListener('click', ()=>{
     const txt = `Goal: ${GOAL}\nCalories: ${outK.textContent} kcal\nProtein: ${outP.textContent}\nCarbs: ${outC.textContent}\nFat: ${outF.textContent}`;

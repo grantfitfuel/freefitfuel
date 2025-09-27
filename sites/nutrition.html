@@ -182,10 +182,17 @@
           <input id="bodyFat" class="input" type="number" min="1" max="70" step="0.1" style="max-width:140px; margin-left:.5rem">
         </label>
 
+        <!-- NEW: Target Body Fat % (optional) -->
+        <label id="targetBfWrap" style="grid-column:1 / -1;">
+          Target Body Fat %
+          <input id="targetBodyFat" class="input" type="number" min="6" max="40" step="0.5" value="10" style="max-width:140px; margin-left:.5rem">
+          <span class="meta" style="margin-left:.5rem">Optional — used for phase planning & the PDF</span>
+        </label>
+
         <div style="display:flex;align-items:flex-end;gap:.6rem">
           <button id="calcNow" class="btn">Calculate</button>
           <button id="calcCopy" class="btn">Copy</button>
-          <!-- NEW: PDF generator button -->
+          <!-- PDF generator button -->
           <button id="generatePDF" class="btn">Generate My Roadmap (PDF)</button>
         </div>
       </div>
@@ -334,7 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
         act=document.getElementById('bmrActivity'),
         useBodyFat=document.getElementById('useBodyFat'),
         bodyFat=document.getElementById('bodyFat'),
-        bfWrap=document.getElementById('bfWrap');
+        bfWrap=document.getElementById('bfWrap'),
+        targetBFInput=document.getElementById('targetBodyFat');
 
   const outK=document.getElementById('outKcal'),
         outP=document.getElementById('outProtein'),
@@ -349,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (bodyFat) bodyFat.addEventListener('input', update);
   }
+  if (targetBFInput) targetBFInput.addEventListener('input', () => {/* target affects PDF phases; UI stays same */});
 
   function calcBMR(s,kg,cm,yrs){
     // If user ticked body fat and entered a valid % -> Katch–McArdle
@@ -426,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if(hydrW)   hydrW.addEventListener('input', calcHydr);
   calcHydr();
 
-  // ===== PDF GENERATOR (robust loader + generator) =====
+  // ===== PDF GENERATOR (robust loader + target-aware phases) =====
   const genBtn = document.getElementById('generatePDF');
 
   // Ensure jsPDF is present; try CDN then local fallback
@@ -457,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const { jsPDF } = window.jspdf;
 
-        // ==== Create PDF (uses your current inputs/calcs) ====
+        // ==== Create PDF (uses current inputs/calcs) ====
         const doc = new jsPDF({ unit: 'pt', format: 'a4' });
         const marginX = 56, line = y => { doc.setDrawColor(255,106,0); doc.setLineWidth(1); doc.line(marginX, y, 539, y); };
         const R = n => Math.round(n);
@@ -468,50 +477,129 @@ document.addEventListener('DOMContentLoaded', () => {
         const yrs = parseFloat(age.value||0);
         const sx  = sex.value;
         const actMult = parseFloat(act.value||1);
-        const bfPct = (useBodyFat && useBodyFat.checked && parseFloat(bodyFat?.value||0) > 0) ? parseFloat(bodyFat.value) : null;
+        const currentBF = (useBodyFat && useBodyFat.checked && parseFloat(bodyFat?.value||0) > 0) ? parseFloat(bodyFat.value) : null;
+        const targetBF = parseFloat(targetBFInput?.value || '');
 
         // Calcs
         const bmr = calcBMR(sx, kg, cm, yrs);
         const tdee = bmr * actMult;
-        const lbm = (bfPct !== null) ? (kg * (1 - bfPct/100)) : null;
+        const lbm = (currentBF !== null && !isNaN(currentBF)) ? (kg * (1 - currentBF/100)) : null;
 
-        // Title
+        // Title + subtitle
         doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,106,0);
-        doc.text('Your Roadmap to 10% Body Fat + More Muscle', marginX, 72);
-        line(86);
+        doc.text('Personalised Body Recomposition Roadmap', marginX, 72);
+        doc.setTextColor(60); doc.setFontSize(12); doc.setFont('helvetica','normal');
+        const subtitle = !isNaN(targetBF) ? `Target: ~${targetBF}% body fat` : `Goal: ${GOAL}`;
+        doc.text(subtitle, marginX, 90);
+        line(100);
 
         // Baseline
         doc.setTextColor(0); doc.setFontSize(13); doc.setFont('helvetica','bold');
-        doc.text('Baseline (Your Starting Point)', marginX, 116);
+        doc.text('Baseline (Your Starting Point)', marginX, 126);
         doc.setFont('helvetica','normal'); doc.setFontSize(11);
         const baseline = [
           `Weight: ${kg || '—'} kg`,
           `Height: ${cm || '—'} cm`,
           `Age: ${yrs || '—'} years`,
           `Sex: ${sx === 'male' ? 'Male' : 'Female'}`,
-          `Body fat: ${bfPct !== null ? bfPct + '%' : '—'}`,
+          `Body fat: ${currentBF !== null ? currentBF + '%' : '—'}`,
+          `Target Body Fat: ${!isNaN(targetBF) ? targetBF + '%' : '—'}`,
           `Lean Body Mass: ${lbm !== null ? Math.round(lbm*10)/10 + ' kg' : '—'}`,
           `BMR: ~${R(bmr)} kcal/day`,
           `Estimated TDEE (activity x${actMult}): ~${R(tdee)} kcal/day`,
-          `Current Goal: ${GOAL}`
+          `Current Goal chip: ${GOAL}`
         ];
-        let y = 140; baseline.forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
+        let y = 150; baseline.forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
 
-        // Phases
-        const phaseBlocks = [
-          { title:'Phase 1 – Cutting (now → ~15% body fat)', kcal:R(tdee*0.82), protein: lbm ? Math.max(120, R(lbm*2.0)) : 130, carbs:'150–180 g/day', fat:'55–65 g/day',
-            notes:['Strength train 4x/week; cardio 3x/week (mix steady-state & HIIT).','Aim 0.5–0.8 kg loss/week; review every 4 weeks.'] },
-          { title:'Phase 2 – Recomposition (15% → 12%)', kcal:R(tdee-300), protein: lbm ? Math.max(130, R(lbm*2.0)) : 130, carbs:'≈200 g/day', fat:'≈60 g/day',
-            notes:['Push progressive overload; cardio 2x/week.','Expect slow fat loss + gradual strength gains.'] },
-          { title:'Phase 3 – Lean Bulk (12% → 10%)', kcal:R(tdee+250), protein: lbm ? Math.max(130, R(lbm*2.0)) : 135, carbs:'230–250 g/day', fat:'65–70 g/day',
-            notes:['Strength train 5x/week; minimal cardio.','Aim ≈0.2–0.3 kg/week gain; prioritise muscle.'] }
-        ];
+        // Helper kcal and protein baseline
+        const cutKcal    = Math.round(tdee * 0.82);
+        const recompKcal = Math.round(tdee - 300);
+        const bulkKcal   = Math.round(tdee + 250);
+        const proteinFor = (baseline) => lbm ? Math.max(baseline, Math.round(lbm * 2.0)) : baseline;
+
+        function plannedPhases(currentBF, targetBF) {
+          // No target given: follow selected goal logic
+          if (isNaN(targetBF)) {
+            if (GOAL === 'Cut') return [
+              { title:'Cutting', kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
+                notes:['Strength train 4x/week; cardio 3x/week.','Aim 0.5–0.8 kg/wk; review every 4 weeks.'] },
+              { title:'Maintenance (hold)', kcal:Math.round(tdee), protein:proteinFor(130), carbs:'Moderate', fat:'Moderate',
+                notes:['Hold 2–4 weeks to consolidate.'] }
+            ];
+            if (GOAL === 'Build/Bulk') return [
+              { title:'Lean Bulk', kcal:bulkKcal, protein:proteinFor(135), carbs:'230–260 g/day', fat:'65–70 g/day',
+                notes:['5x/wk lifting; minimal cardio.','Aim 0.2–0.3 kg/wk gain.'] }
+            ];
+            // Maintain / Transform fallback
+            return [
+              { title:GOAL, kcal:GOAL==='Transform'?recompKcal:Math.round(tdee), protein:proteinFor(130),
+                carbs:GOAL==='Transform'?'≈200 g/day':'Balanced', fat:GOAL==='Transform'?'≈60 g/day':'Balanced',
+                notes:[GOAL==='Transform'?'Small deficit + progressive overload.':'Hold steady; train hard.'] }
+            ];
+          }
+
+          // If current BF unknown, approximate by goal and target
+          if (currentBF === null || isNaN(currentBF)) {
+            return [
+              { title:`Phase to ~${targetBF}% (goal-guided)`, kcal: (targetBF < 15 ? cutKcal : recompKcal),
+                protein:proteinFor(130), carbs: targetBF < 15 ? '150–180 g/day' : '≈200 g/day',
+                fat: targetBF < 15 ? '55–65 g/day' : '≈60 g/day',
+                notes:['Progress via strength + adherence.'] },
+              { title:'Then hold/adjust', kcal:Math.round(tdee), protein:proteinFor(130),
+                carbs:'Balanced', fat:'Balanced', notes:['Reassess monthly.'] }
+            ];
+          }
+
+          // Current BF known: branch relative to target
+          if (targetBF < currentBF) {
+            // Need to get leaner
+            if (targetBF >= 15) {
+              return [
+                { title:`Cut to ~${targetBF}%`, kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
+                  notes:['0.5–0.8 kg/wk; review 4-weekly.'] },
+                { title:'Maintenance (hold)', kcal:Math.round(tdee), protein:proteinFor(130), carbs:'Moderate', fat:'Moderate',
+                  notes:['Hold 2–4 weeks to solidify.'] }
+              ];
+            } else {
+              // Aggressive goal (<15%)
+              return [
+                { title:`Cut to ~${Math.max(targetBF+2, 12)}%`, kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
+                  notes:['Protect strength; keep protein high.'] },
+                { title:`Recomposition to ~${targetBF}%`, kcal:recompKcal, protein:proteinFor(130), carbs:'≈200 g/day', fat:'≈60 g/day',
+                  notes:['Small deficit + progressive overload.'] }
+              ];
+            }
+          } else if (targetBF > currentBF) {
+            // More BF than now (uncommon): interpret as mass-first
+            return [
+              { title:'Lean Bulk (muscle-focused)', kcal:bulkKcal, protein:proteinFor(135), carbs:'230–260 g/day', fat:'65–70 g/day',
+                notes:['Aim 0.2–0.3 kg/wk; minimise fat gain.'] },
+              { title:`Mini-cut to ~${targetBF}% (if needed)`, kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
+                notes:['Short (3–6 wk) trim if fluff accrues.'] }
+            ];
+          } else {
+            // Already at target
+            return [
+              { title:'Maintain & Build Strength', kcal:Math.round(tdee), protein:proteinFor(130),
+                carbs:'Balanced', fat:'Balanced', notes:['Focus on PRs and sleep.'] }
+            ];
+          }
+        }
+
+        const phaseBlocks = plannedPhases(currentBF, targetBF);
+
         y += 10;
         phaseBlocks.forEach(block => {
           doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text(block.title, marginX, y); y += 16;
           doc.setFont('helvetica','normal'); doc.setFontSize(11);
-          [`Calories: ~${block.kcal} kcal/day`,`Protein: ${block.protein} g/day`,`Carbs: ${block.carbs}`,`Fat: ${block.fat}`].forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
-          block.notes.forEach(t => { doc.text('• ' + t, marginX, y); y += 18; }); y += 6;
+          [
+            `Calories: ~${block.kcal} kcal/day`,
+            `Protein: ${block.protein} g/day`,
+            `Carbs: ${block.carbs}`,
+            `Fat: ${block.fat}`
+          ].forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
+          (block.notes||[]).forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
+          y += 6;
           if (y > 730) { doc.addPage(); y = 72; }
         });
 
@@ -557,10 +645,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (y > 660) { doc.addPage(); y = 72; }
         doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Timeline (Realistic)', marginX, y); y += 16;
         [
-          'Cutting: ~4–5 months (down to ~15%).',
-          'Recomp: ~2–3 months (down to ~12%).',
-          'Lean bulk: ~3–4 months (to reach ~10%).',
-          'Total: ~9–12 months for transformation.'
+          'Cutting phase length depends on deficit and adherence.',
+          'Recomp/hold phases stabilise progress and support strength.',
+          'Lean bulk is optional if targeting muscle-first outcomes.',
+          'Reassess every 4 weeks and adjust calories ±100–200 if needed.'
         ].forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
 
         // Footer branding

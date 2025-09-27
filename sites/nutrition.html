@@ -99,6 +99,55 @@
       transition: background 0.2s ease-in-out;
     }
     .pdf-download a:hover { background-color: #e55e00; }
+  /* --- Mobile tidy-up just for the calculator --- */
+@media (max-width: 600px){
+  /* tighter card */
+  #macro-calc .drawer{ padding:12px 12px 16px; }
+  #macro-calc .section{ padding:12px; }
+
+  /* goal chips wrap neatly */
+  #macro-calc .seg{ display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
+  #macro-calc .goal-chip{ margin:0; }
+
+  /* form grid becomes 2 columns, tighter gaps */
+  #macro-calc .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  /* labels + inputs slightly smaller */
+  #macro-calc label{ font-size:.95rem; }
+  #macro-calc .input, #macro-calc select{
+    font-size:.95rem;
+    height:38px;
+    padding:8px 10px;
+  }
+
+  /* body-fat + target rows still span full width */
+  #macro-calc #bfWrap,
+  #macro-calc #targetBfWrap{ grid-column:1 / -1; }
+
+  /* buttons row: grid so they sit closer together */
+  #macro-calc .btns-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  /* make the PDF button full-width on its own row */
+  #macro-calc .btns-row #generatePDF{
+    grid-column:1 / -1;
+  }
+
+  /* buttons a touch shorter */
+  #macro-calc .btn{ padding:.55rem .8rem; font-size:.95rem; }
+}
+
+/* Extra small screens */
+@media (max-width: 360px){
+  #macro-calc .grid{ grid-template-columns:1fr; }
+  #macro-calc .btns-row{ grid-template-columns:1fr; }
+}
   </style>
 
   <title>FreeFitFuel Nutrition — Recipes, Macros & Hydration</title>
@@ -189,12 +238,11 @@
           <span class="meta" style="margin-left:.5rem">Optional — used for phase planning & the PDF</span>
         </label>
 
-        <div style="display:flex;align-items:flex-end;gap:.6rem">
-          <button id="calcNow" class="btn">Calculate</button>
-          <button id="calcCopy" class="btn">Copy</button>
-          <!-- PDF generator button -->
-          <button id="generatePDF" class="btn">Generate My Roadmap (PDF)</button>
-        </div>
+        <div class="btns-row" style="display:flex;align-items:flex-end;gap:.6rem">
+  <button id="calcNow" class="btn">Calculate</button>
+  <button id="calcCopy" class="btn">Copy</button>
+  <button id="generatePDF" class="btn">Generate My Roadmap (PDF)</button>
+</div>
       </div>
 
       <div class="section" style="margin-top:.8rem">

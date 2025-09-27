@@ -92,13 +92,15 @@
     .recipe-modal .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
 
     /* PDF download button (single shared style) */
-    .pdf-download { margin: 20px 0; text-align: center; }
-    .pdf-download a {
-      display: inline-block; padding: 12px 20px; background-color: #FF6A00;
-      color: #fff; text-decoration: none; font-weight: bold; border-radius: 6px;
-      transition: background 0.2s ease-in-out;
-    }
-    .pdf-download a:hover { background-color: #/* --- Mobile tidy-up just for the calculator (overrides inline styles) --- */
+.pdf-download { margin: 20px 0; text-align: center; }
+.pdf-download a {
+  display: inline-block; padding: 12px 20px; background-color: #FF6A00;
+  color: #fff; text-decoration: none; font-weight: bold; border-radius: 6px;
+  transition: background 0.2s ease-in-out;
+}
+.pdf-download a:hover { background-color: #e55e00; }
+
+/* --- Mobile tidy-up just for the calculator (overrides inline styles) --- */
 @media (max-width: 600px){
   #macro-calc .drawer{ padding:12px 12px 16px; }
   #macro-calc .section{ padding:12px; }
@@ -107,7 +109,7 @@
   #macro-calc .seg{ display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
   #macro-calc .goal-chip{ margin:0; }
 
-  /* force the form grid to 2 columns on mobile (overrides inline grid style) */
+  /* force 2-col form (override inline grid style) */
   #macro-calc .grid{
     display:grid !important;
     grid-template-columns:1fr 1fr !important;
@@ -117,9 +119,7 @@
   /* smaller controls */
   #macro-calc label{ font-size:.95rem; }
   #macro-calc .input, #macro-calc select{
-    font-size:.95rem;
-    height:38px;
-    padding:8px 10px;
+    font-size:.95rem; height:38px; padding:8px 10px;
   }
 
   /* full-width rows */
@@ -133,16 +133,14 @@
     gap:10px !important;
     align-items:stretch !important;
   }
-  /* make the PDF button full-width on its own row */
-  #macro-calc .btns-row #generatePDF{
-    grid-column:1 / -1;
-  }
+  /* PDF button full width */
+  #macro-calc .btns-row #generatePDF{ grid-column:1 / -1; }
 
   /* slightly shorter buttons */
   #macro-calc .btn{ padding:.55rem .8rem; font-size:.95rem; }
 }
 
-/* Extra small screens: single column everything */
+/* Extra small screens */
 @media (max-width: 360px){
   #macro-calc .grid{ grid-template-columns:1fr !important; }
   #macro-calc .btns-row{ grid-template-columns:1fr; }

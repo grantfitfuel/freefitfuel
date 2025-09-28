@@ -287,6 +287,7 @@
   function spiceIcons(n){ n=+n||0; return n? '🌶️'.repeat(Math.max(1,Math.min(3,n))) : ''; }
   function kcalBand(k){ if(k<=400)return '≤400'; if(k<=600)return '≤600'; if(k<=800)return '≤800'; return null; }
 
+  // Enforce meal-type per slot
   function mealTypeForSlot(slot){ return ({breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner',snack:'Snack'})[slot]||''; }
   function candidatesFor(slot){
     const type = mealTypeForSlot(slot);
@@ -307,7 +308,7 @@
     for(let d=0; d<DAYS.length; d++){
       for(const sl of SLOTS){
         if(!PLAN_WEEK[d][sl]){
-          const p = pickUnique(sl, used);
+          const p = pickUnique(sl, used); // meal-type aware
           if(p){ PLAN_WEEK[d][sl]=p; used.add(p.slug); }
         }
       }
@@ -317,7 +318,7 @@
   function swapSlot(dayIndex, slot){
     const used = currentUsedSlugs();
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
-    const next = pickUnique(slot, used);
+    const next = pickUnique(slot, used); // meal-type aware
     if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); renderWeekSummary(); }
     else alert('No alternative recipes available for this slot under current filters. Try clearing filters or adding more recipes.');
   }

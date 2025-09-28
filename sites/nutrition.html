@@ -91,60 +91,33 @@
     .recipe-modal ul{margin:.4rem 0 .6rem .9rem}
     .recipe-modal .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
 
-    /* PDF download button (single shared style) */
-.pdf-download { margin: 20px 0; text-align: center; }
-.pdf-download a {
-  display: inline-block; padding: 12px 20px; background-color: #FF6A00;
-  color: #fff; text-decoration: none; font-weight: bold; border-radius: 6px;
-  transition: background 0.2s ease-in-out;
-}
-.pdf-download a:hover { background-color: #e55e00; }
+    /* PDF download button */
+    .pdf-download { margin: 20px 0; text-align: center; }
+    .pdf-download a {
+      display: inline-block; padding: 12px 20px; background-color: #FF6A00;
+      color: #fff; text-decoration: none; font-weight: bold; border-radius: 6px;
+      transition: background 0.2s ease-in-out;
+    }
+    .pdf-download a:hover { background-color: #e55e00; }
 
-/* --- Mobile tidy-up just for the calculator (overrides inline styles) --- */
-@media (max-width: 600px){
-  #macro-calc .drawer{ padding:12px 12px 16px; }
-  #macro-calc .section{ padding:12px; }
-
-  /* chips wrap neatly */
-  #macro-calc .seg{ display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
-  #macro-calc .goal-chip{ margin:0; }
-
-  /* force 2-col form (override inline grid style) */
-  #macro-calc .grid{
-    display:grid !important;
-    grid-template-columns:1fr 1fr !important;
-    gap:10px !important;
-  }
-
-  /* smaller controls */
-  #macro-calc label{ font-size:.95rem; }
-  #macro-calc .input, #macro-calc select{
-    font-size:.95rem; height:38px; padding:8px 10px;
-  }
-
-  /* full-width rows */
-  #macro-calc #bfWrap,
-  #macro-calc #targetBfWrap{ grid-column:1 / -1; }
-
-  /* buttons: grid layout, override inline flex */
-  #macro-calc .btns-row{
-    display:grid !important;
-    grid-template-columns:1fr 1fr;
-    gap:10px !important;
-    align-items:stretch !important;
-  }
-  /* PDF button full width */
-  #macro-calc .btns-row #generatePDF{ grid-column:1 / -1; }
-
-  /* slightly shorter buttons */
-  #macro-calc .btn{ padding:.55rem .8rem; font-size:.95rem; }
-}
-
-/* Extra small screens */
-@media (max-width: 360px){
-  #macro-calc .grid{ grid-template-columns:1fr !important; }
-  #macro-calc .btns-row{ grid-template-columns:1fr; }
-}
+    /* --- Mobile tidy-up just for the calculator (overrides inline styles) --- */
+    @media (max-width: 600px){
+      #macro-calc .drawer{ padding:12px 12px 16px; }
+      #macro-calc .section{ padding:12px; }
+      #macro-calc .seg{ display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
+      #macro-calc .goal-chip{ margin:0; }
+      #macro-calc .grid{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      #macro-calc label{ font-size:.95rem; }
+      #macro-calc .input, #macro-calc select{ font-size:.95rem; height:38px; padding:8px 10px; }
+      #macro-calc #bfWrap, #macro-calc #targetBfWrap{ grid-column:1 / -1; }
+      #macro-calc .btns-row{ display:grid !important; grid-template-columns:1fr 1fr; gap:10px !important; align-items:stretch !important; }
+      #macro-calc .btns-row #generatePDF{ grid-column:1 / -1; }
+      #macro-calc .btn{ padding:.55rem .8rem; font-size:.95rem; }
+    }
+    @media (max-width: 360px){
+      #macro-calc .grid{ grid-template-columns:1fr !important; }
+      #macro-calc .btns-row{ grid-template-columns:1fr; }
+    }
   </style>
 
   <title>FreeFitFuel Nutrition — Recipes, Macros & Hydration</title>
@@ -228,7 +201,7 @@
           <input id="bodyFat" class="input" type="number" min="1" max="70" step="0.1" style="max-width:140px; margin-left:.5rem">
         </label>
 
-        <!-- NEW: Target Body Fat % (optional) -->
+        <!-- Target Body Fat % (optional) -->
         <label id="targetBfWrap" style="grid-column:1 / -1;">
           Target Body Fat %
           <input id="targetBodyFat" class="input" type="number" min="6" max="40" step="0.5" value="10" style="max-width:140px; margin-left:.5rem">
@@ -236,10 +209,10 @@
         </label>
 
         <div class="btns-row">
-  <button id="calcNow" class="btn">Calculate</button>
-  <button id="calcCopy" class="btn">Copy</button>
-  <button id="generatePDF" class="btn">Generate My Roadmap (PDF)</button>
-</div>
+          <button id="calcNow" class="btn">Calculate</button>
+          <button id="calcCopy" class="btn">Copy</button>
+          <button id="generatePDF" class="btn">Generate My Roadmap (PDF)</button>
+        </div>
       </div>
 
       <div class="section" style="margin-top:.8rem">
@@ -405,15 +378,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (targetBFInput) targetBFInput.addEventListener('input', () => {/* target affects PDF phases; UI stays same */});
 
   function calcBMR(s,kg,cm,yrs){
-    // If user ticked body fat and entered a valid % -> Katch–McArdle
     if (useBodyFat && useBodyFat.checked) {
       const bf = parseFloat(bodyFat?.value || 0);
       if (bf > 0 && bf < 70 && kg > 0) {
-        const lbm = kg * (1 - bf/100);   // Lean Body Mass (kg)
-        return 370 + (21.6 * lbm);       // Katch–McArdle BMR
+        const lbm = kg * (1 - bf/100);
+        return 370 + (21.6 * lbm);
       }
     }
-    // Default: Mifflin–St Jeor
     return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5
                       : 10*kg + 6.25*cm - 5*yrs - 161;
   }
@@ -483,7 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== PDF GENERATOR (robust loader + target-aware phases) =====
   const genBtn = document.getElementById('generatePDF');
 
-  // Ensure jsPDF is present; try CDN then local fallback
   function ensureJsPDF() {
     return new Promise((resolve, reject) => {
       if (window.jspdf && window.jspdf.jsPDF) return resolve(true);
@@ -492,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
       s.onload = () => resolve(!!(window.jspdf && window.jspdf.jsPDF));
       s.onerror = () => {
         const l = document.createElement('script');
-        l.src = '/assets/js/jspdf.umd.min.js'; // host this file locally as a fallback
+        l.src = '/assets/js/jspdf.umd.min.js';
         l.onload = () => resolve(!!(window.jspdf && window.jspdf.jsPDF));
         l.onerror = () => reject(new Error('jsPDF failed to load from CDN and local'));
         document.head.appendChild(l);
@@ -505,13 +475,9 @@ document.addEventListener('DOMContentLoaded', () => {
     genBtn.addEventListener('click', async () => {
       try {
         const ok = await ensureJsPDF();
-        if (!ok) {
-          alert('PDF library could not be loaded. Please refresh and try again.');
-          return;
-        }
+        if (!ok) { alert('PDF library could not be loaded. Please refresh and try again.'); return; }
         const { jsPDF } = window.jspdf;
 
-        // ==== Create PDF (uses current inputs/calcs) ====
         const doc = new jsPDF({ unit: 'pt', format: 'a4' });
         const marginX = 56, line = y => { doc.setDrawColor(255,106,0); doc.setLineWidth(1); doc.line(marginX, y, 539, y); };
         const R = n => Math.round(n);
@@ -563,7 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const proteinFor = (baseline) => lbm ? Math.max(baseline, Math.round(lbm * 2.0)) : baseline;
 
         function plannedPhases(currentBF, targetBF) {
-          // No target given: follow selected goal logic
           if (isNaN(targetBF)) {
             if (GOAL === 'Cut') return [
               { title:'Cutting', kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
@@ -575,7 +540,6 @@ document.addEventListener('DOMContentLoaded', () => {
               { title:'Lean Bulk', kcal:bulkKcal, protein:proteinFor(135), carbs:'230–260 g/day', fat:'65–70 g/day',
                 notes:['5x/wk lifting; minimal cardio.','Aim 0.2–0.3 kg/wk gain.'] }
             ];
-            // Maintain / Transform fallback
             return [
               { title:GOAL, kcal:GOAL==='Transform'?recompKcal:Math.round(tdee), protein:proteinFor(130),
                 carbs:GOAL==='Transform'?'≈200 g/day':'Balanced', fat:GOAL==='Transform'?'≈60 g/day':'Balanced',
@@ -583,7 +547,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
           }
 
-          // If current BF unknown, approximate by goal and target
           if (currentBF === null || isNaN(currentBF)) {
             return [
               { title:`Phase to ~${targetBF}% (goal-guided)`, kcal: (targetBF < 15 ? cutKcal : recompKcal),
@@ -595,9 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
           }
 
-          // Current BF known: branch relative to target
           if (targetBF < currentBF) {
-            // Need to get leaner
             if (targetBF >= 15) {
               return [
                 { title:`Cut to ~${targetBF}%`, kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
@@ -606,7 +567,6 @@ document.addEventListener('DOMContentLoaded', () => {
                   notes:['Hold 2–4 weeks to solidify.'] }
               ];
             } else {
-              // Aggressive goal (<15%)
               return [
                 { title:`Cut to ~${Math.max(targetBF+2, 12)}%`, kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
                   notes:['Protect strength; keep protein high.'] },
@@ -615,7 +575,6 @@ document.addEventListener('DOMContentLoaded', () => {
               ];
             }
           } else if (targetBF > currentBF) {
-            // More BF than now (uncommon): interpret as mass-first
             return [
               { title:'Lean Bulk (muscle-focused)', kcal:bulkKcal, protein:proteinFor(135), carbs:'230–260 g/day', fat:'65–70 g/day',
                 notes:['Aim 0.2–0.3 kg/wk; minimise fat gain.'] },
@@ -623,7 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 notes:['Short (3–6 wk) trim if fluff accrues.'] }
             ];
           } else {
-            // Already at target
             return [
               { title:'Maintain & Build Strength', kcal:Math.round(tdee), protein:proteinFor(130),
                 carbs:'Balanced', fat:'Balanced', notes:['Focus on PRs and sleep.'] }
@@ -648,22 +606,67 @@ document.addEventListener('DOMContentLoaded', () => {
           if (y > 730) { doc.addPage(); y = 72; }
         });
 
-        // Training Blueprint
+        // ===== Training Blueprint (dynamic) =====
+        function dynamicTrainingBlueprint(goal, actMult){
+          let split;
+          if (actMult < 1.4) {
+            split = [
+              'Mon: Full body A',
+              'Wed: Full body B',
+              'Fri: Full body A (alternate A/B weekly)',
+              'Optional: 1–2 easy cardio sessions 20–30 min'
+            ];
+          } else if (actMult < 1.7) {
+            split = ['Mon: Upper','Tue: Lower','Thu: Upper','Fri: Lower','Optional: 1–2 easy cardio sessions 20–30 min'];
+          } else {
+            split = [
+              'Mon: Push (chest, shoulders, triceps)',
+              'Tue: Pull (back, biceps)',
+              'Wed: Legs',
+              'Thu: Upper (strength focus/weak points)',
+              goal === 'Build/Bulk' ? 'Fri: Arms/Delts (specialisation)' : 'Fri: Cardio + core / accessories'
+            ];
+          }
+          let guidance = [], sets = '';
+          if (goal === 'Cut') {
+            sets = '≈10–12 hard sets per big muscle/week';
+            guidance = [
+              'Reduce volume ~10–20% vs bulk.',
+              'Keep 1–2 reps further from failure.',
+              'Add 2–4× LISS 20–30 min; optional 1 HIIT.',
+              'Prioritise strength maintenance on compounds.'
+            ];
+          } else if (goal === 'Build/Bulk') {
+            sets = '≈14–20 hard sets per priority muscle/week';
+            guidance = [
+              'Add 2–4 hard sets to weak areas; progress load/reps weekly.',
+              'Limit cardio to 0–2 short LISS sessions.',
+              'Aim regular small PRs.'
+            ];
+          } else {
+            sets = '≈12–14 hard sets per muscle/week';
+            guidance = [
+              'Small progression focus; manage fatigue.',
+              '1–3× easy LISS 20–30 min.',
+              'Stay 0–2 reps from failure on most sets.'
+            ];
+          }
+          const core = [
+            'Core lifts: squat, hinge (deadlift/RDL), horizontal & vertical push, horizontal & vertical pull, single-leg, core.',
+            `Recommended volume: ${sets}`
+          ];
+          return { split, core, guidance };
+        }
+
         if (y > 660) { doc.addPage(); y = 72; }
-        doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Training Blueprint', marginX, y); y += 16;
+        doc.setFont('helvetica','bold'); doc.setFontSize(13);
+        doc.text('Training Blueprint', marginX, y); y += 16;
+
+        const bp = dynamicTrainingBlueprint(GOAL, actMult);
         doc.setFont('helvetica','normal'); doc.setFontSize(11);
-        [
-          'Core lifts: Squat, deadlift, bench press, overhead press, rows, pull-ups.',
-          'Accessories: biceps, triceps, calves, abs.',
-          'Weekly split:',
-          '  – Mon: Push (chest, shoulders, triceps)',
-          '  – Tue: Pull (back, biceps)',
-          '  – Wed: Rest/cardio',
-          '  – Thu: Legs',
-          '  – Fri: Upper body mix (weak points)',
-          '  – Sat: Cardio + core',
-          '  – Sun: Rest'
-        ].forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
+        [...bp.core, 'Weekly split:'].forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
+        bp.split.forEach(t => { doc.text('   – ' + t, marginX, y); y += 18; });
+        bp.guidance.forEach(t => { doc.text('• ' + t, marginX, y); y += 18; });
 
         // Nutrition Tips
         if (y > 660) { doc.addPage(); y = 72; }

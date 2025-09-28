@@ -1,13 +1,16 @@
-/* FreeFitFuel — Nutrition App (FULL, SLOT-STRICT)
+/* FreeFitFuel — Nutrition App (FULL, fixed)
    - Multi-file recipe loader (recipes-01..99.json + legacy recipes.json) with ../ fallback
    - Safe JSON parse, de-dup + normalise, enrich (noCook / slowCook, dietary autofill)
-   - Robust MealType normaliser + heuristics to fix mislabelled recipes
-   - Recipe cards: chilli icons 🌶️, View/Print Recipe Card, Add to Planner
-   - Modal uses existing CSS (.recipe-modal .modal-header/.modal-body/.cols)
-   - Today planner + Week planner (Mon–Sun), swap/remove, NO DUPLICATES
-   - *** STRICT slot matching ***: Breakfast→Breakfast, Lunch→Lunch, Dinner→Dinner, Snack→Snack
-   - Week summary mirrors planner panel
+   - Recipe cards: chilli icons 🌶️, View Recipe Card (modal), Print Recipe Card, Add to Planner
+   - Modal structure matches CSS (.recipe-modal .modal-header/.modal-body/.cols)
+   - Today planner + Week planner (Mon–Sun), swap/remove, no duplicates
+   - Week summary on main page mirrors planner panel
+   - Start-empty: NO default filter selected; grid empty until user chooses a filter or ALL
    - Pantry mode with tokens and options
+   - FIXES:
+     * Do NOT discard recipes with missing/unknown mealType (prevents blank grid)
+     * Main-page week summary click handlers bound to #weekSummaryGrid (existing element)
+     * Slot-STRICT auto-plan: Breakfast→Breakfast, Lunch→Lunch, Dinner→Dinner, Snack→Snack
 */
 
 (function () {
@@ -33,7 +36,6 @@
   const openPlannerBtn = qs('#openPlannerBtn');
 
   // Main-page week summary
-  const weekSummarySection = qs('#weekSummarySection');
   const weekSummaryGrid    = qs('#weekSummaryGrid');
   const weekAutoBtn        = qs('#weekAutoBtn');
   const weekClearBtn       = qs('#weekClearBtn');
@@ -288,51 +290,12 @@
   function spiceIcons(n){ n=+n||0; return n? '🌶️'.repeat(Math.max(1,Math.min(3,n))) : ''; }
   function kcalBand(k){ if(k<=400)return '≤400'; if(k<=600)return '≤600'; if(k<=800)return '≤800'; return null; }
 
-  // ===== MealType normaliser + heuristics (fix mislabels) =====
-  const KW = {
-    breakfast: [
-      'oat','oats','overnight oat','porridge','granola','yogurt','yoghurt','chia','smoothie','pancake','waffle','omelette','scramble','frittata','toast','bagel','muesli','bircher','breakfast'
-    ],
-    snack: [
-      'bar','bars','bite','bites','bliss ball','protein ball','trail mix','cookie','cookies','brownie','popcorn','muffin','snack','energy ball','energy bite','cup','cups'
-    ],
-    dinnerHints: [
-      'curry','stew','roast','traybake','bake','casserole','slow cook','chilli','chili','lasagne','spaghetti','bolognese','shepherd','pie','meatballs'
-    ],
-    lunchHints: [
-      'wrap','sandwich','salad','bowl','buddha','pita','baguette','roll','soup','noodle salad','pasta salad','rice bowl'
-    ]
-  };
-
-  function inferMealTypeFromText(text){
-    const t = text.toLowerCase();
-    const hit = (arr)=>arr.some(w => t.includes(w));
-    if (hit(KW.breakfast)) return 'Breakfast';
-    if (hit(KW.snack))     return 'Snack';
-    if (hit(KW.lunchHints))return 'Lunch';
-    if (hit(KW.dinnerHints))return 'Dinner';
-    return '';
-  }
-
-  function normalizeMealType(raw, title, ingredients){
-    const map = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack:'Snack' };
-    const clean = (raw||'').toString().trim().toLowerCase();
-    if (map[clean]) return map[clean];
-
-    // Heuristic rescue
-    const ingText = (ingredients||[]).map(i => (i && (i.item||i.pantryKey)||'')).join(' ');
-    const guess = inferMealTypeFromText(`${title||''} ${ingText}`);
-    return map[guess.toLowerCase()] || '';
-  }
-
   function mealTypeForSlot(slot){ return ({breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner',snack:'Snack'})[slot]||''; }
-
-  // Strict candidate picker for a slot
   function candidatesFor(slot){
-    const want = mealTypeForSlot(slot);
-    return RECIPES.filter(r => r.__ok && r.mealType === want && matchesFilters(r));
+    const type = mealTypeForSlot(slot);
+    // STRICT: only recipes whose mealType matches the slot
+    return RECIPES.filter(r => r.__ok && type && r.mealType === type && matchesFilters(r));
   }
-
   function toPlanItem(r){ return { slug:r.slug, title:safeTitle(r), macros:r.nutritionPerServing||{} }; }
   function currentUsedSlugs(){
     const used=new Set(); PLAN_WEEK.forEach(day=>SLOTS.forEach(sl=>{ if(day[sl]) used.add(day[sl].slug); })); return used;
@@ -343,31 +306,24 @@
     const i = Math.floor(Math.random()*pool.length);
     return toPlanItem(pool[i]);
   }
-
   function autoPlanWeek(){
     const used = currentUsedSlugs();
-    const missing = [];
     for(let d=0; d<DAYS.length; d++){
       for(const sl of SLOTS){
         if(!PLAN_WEEK[d][sl]){
           const p = pickUnique(sl, used);
           if(p){ PLAN_WEEK[d][sl]=p; used.add(p.slug); }
-          else { missing.push(`${DAYS[d]} ${sl}`); }
         }
       }
     }
     saveWeek(); buildWeekGrid(); renderWeekSummary();
-    if (missing.length){
-      alert(`No matching recipes found for:\n• ${missing.join('\n• ')}\n\nTip: add more recipes or clear filters to widen the pool.`);
-    }
   }
-
   function swapSlot(dayIndex, slot){
     const used = currentUsedSlugs();
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
     const next = pickUnique(slot, used);
     if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); renderWeekSummary(); }
-    else alert(`No alternative ${slot} recipes available under current filters.`);
+    else alert('No alternative recipes available for this slot under current filters. Try clearing filters or adding more recipes.');
   }
   function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); renderWeekSummary(); }
 
@@ -392,17 +348,17 @@
       if(!hay.includes(FILTERS.search)) return false;
     }
 
-    // meal type (use corrected value)
+    // meal type
     if(FILTERS.MealType.size && !FILTERS.MealType.has(r.mealType)) return false;
 
-    // dietary
+    // dietary (e.g. "Low sodium", "Vegetarian", etc.) — accept if present anywhere in tags
     if(FILTERS.Dietary.size){
       for(const need of FILTERS.Dietary){
         if(!tags.has(String(need).toLowerCase())) return false;
       }
     }
 
-    // nutrition focus — "Spicy" uses spiceLevel
+    // nutrition focus — "Spicy" is special (uses spiceLevel); others use tags
     if(FILTERS.Nutrition.size){
       const wantSpicy = FILTERS.Nutrition.has('Spicy');
       if(wantSpicy && !(r.spiceLevel && r.spiceLevel>=1)) return false;
@@ -418,7 +374,7 @@
       if(!band || !FILTERS.KcalBand.has(band)) return false;
     }
 
-    // protocols
+    // protocols (e.g. "Low sodium") — also satisfied if it appears in ANY tag field
     if(FILTERS.Protocols.size){
       for(const p of FILTERS.Protocols){
         if(!tags.has(String(p).toLowerCase())) return false;
@@ -442,18 +398,20 @@
       for(const need of FILTERS.CostPrep){
         const n = String(need).toLowerCase();
         if(n === 'low cost / budget'){
+          // pass if either tag is present anywhere
           if(!(tags.has('budget') || tags.has('low cost') || tags.has('low cost / budget'))) return false;
         } else if(n === 'budget'){
           if(!(tags.has('budget'))) return false;
         } else if(n === 'low cost'){
           if(!(tags.has('low cost') || tags.has('low cost / budget') || tags.has('budget'))) return false;
         } else {
+          // e.g. 'Air-fryer', 'One-pan', 'Freezer-friendly'
           if(!tags.has(n)) return false;
         }
       }
     }
 
-    // Pantry logic
+    // Pantry logic unchanged (still strict/lenient based on your toggles)
     if(FILTERS.Pantry.active){
       const keys=new Set((r.pantryKeys||[]).map(s=>s.toString().trim().toLowerCase()));
       const have=new Set(FILTERS.Pantry.keys.map(k=>k.toString().trim().toLowerCase()));
@@ -495,6 +453,7 @@
     return el;
   }
 
+  // RESTORED modal structure that matches your CSS classes
   function ensureModalTemplate(){
     if(!modal || modal.dataset.wired) return;
     modal.innerHTML = `
@@ -506,6 +465,7 @@
         <p class="meta" id="recipeMeta"></p>
 
         <div class="cols">
+          <!-- LEFT: Ingredients + Macros -->
           <div>
             <h3>Ingredients</h3>
             <ul id="recipeIngredients"></ul>
@@ -515,6 +475,7 @@
             <p class="meta" id="recipeAllergens"></p>
           </div>
 
+          <!-- RIGHT: Method + Swaps + Hydration -->
           <div>
             <h3>Method</h3>
             <ol id="recipeMethod"></ol>
@@ -545,6 +506,7 @@
 
     const get = (sel) => modal.querySelector(sel);
 
+    // Title + meta line
     const title = get('#recipeTitle');
     if (title) title.textContent = safeTitle(r);
 
@@ -561,17 +523,20 @@
       meta.textContent = parts.join(' • ');
     }
 
+    // Ingredients
     const ing = get('#recipeIngredients');
     if (ing) {
       ing.innerHTML = (r.ingredients || [])
         .map(i => `<li>${i.qty ? `${i.qty} ` : ''}${i.item}</li>`).join('');
     }
 
+    // Method
     const method = get('#recipeMethod');
     if (method) {
       method.innerHTML = (r.method || []).map(step => `<li>${step}</li>`).join('');
     }
 
+    // Macros
     const n = r.nutritionPerServing || {};
     const macros = get('#recipeMacros');
     if (macros) {
@@ -586,6 +551,7 @@
       `;
     }
 
+    // Allergens / swaps / hydration
     const al = get('#recipeAllergens');
     if (al) al.textContent = (r.allergensPresent && r.allergensPresent.length)
       ? `Allergens: ${r.allergensPresent.join(', ')}`
@@ -597,11 +563,13 @@
     const hyd = get('#recipeHydration');
     if (hyd) hyd.textContent = r.hydrationTip || '';
 
+    // Actions
     const addBtn   = get('#modalAddToPlanner');
     const printBtn = get('#modalPrint');
     if (addBtn)   addBtn.onclick   = () => addToPlannerPrompt(r);
     if (printBtn) printBtn.onclick = () => printRecipe(r);
 
+    // Open dialog with fallback
     try { modal.showModal(); }
     catch { modal.classList.add('fallback-open'); }
   }
@@ -628,12 +596,6 @@
   function addToPlannerPrompt(r){
     const slot=(prompt('Add to which meal? (breakfast, lunch, dinner, snack)')||'').trim().toLowerCase();
     if(!['breakfast','lunch','dinner','snack'].includes(slot)) return;
-    // Enforce strict slot-type even when manually adding
-    const want = mealTypeForSlot(slot);
-    if (r.mealType !== want){
-      alert(`That recipe is tagged as ${r.mealType || 'Unspecified'}, not ${want}.`);
-      return;
-    }
     PLAN[slot].push({slug:r.slug,title:safeTitle(r),macros:r.nutritionPerServing||{}}); renderPlan(); saveToday();
     alert(`Added "${safeTitle(r)}" to ${slot}.`);
   }
@@ -694,23 +656,28 @@
   }
 
   // ---------- Normalisers / guards ----------
+  function normalizeMealType(s){
+    const t = (s||'').toString().trim().toLowerCase();
+    if(t==='breakfast') return 'Breakfast';
+    if(t==='lunch')     return 'Lunch';
+    if(t==='dinner')    return 'Dinner';
+    if(t==='snack')     return 'Snack';
+    return ''; // keep recipe even if '' (grid shows; planner strict matching will ignore)
+  }
   function safeTitle(r){
     const t = (r && r.title!=null) ? String(r.title).trim() : '';
     if(t) return t;
     if(r && r.slug) return String(r.slug).replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
     return 'Untitled';
   }
-
   function sanitizeRecipe(raw){
     if(!raw || typeof raw!=='object') return null;
     const r = {...raw};
 
     r.title = safeTitle(r);
-
-    // Correct/normalise meal type (keeps valid value, repairs bad/missing)
-    const inferred = normalizeMealType(r.mealType, r.title, r.ingredients);
-    r.mealType = inferred;  // overwrite with corrected type
-    if(!r.mealType) return null; // we require a resolvable meal type for strict slotting
+    r.mealType = normalizeMealType(r.mealType);
+    // IMPORTANT: do NOT drop recipes with unknown mealType; keep them in grid
+    // (planner candidate selection is strict and will naturally skip them)
 
     if(!r.slug || !String(r.slug).trim()){
       r.slug = r.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -779,6 +746,7 @@
 
     if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
 
+    // Merge arrays or {recipes:[…]} and de-dup + sanitize
     const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
     const seen = new Set();
     RECIPES = mergedRaw
@@ -809,6 +777,7 @@
       const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
       const hasAny = (set, arr) => arr.some(w => set.has(w));
 
+      // Dietary autofill (safe-only)
       if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) && !hasAny(allergens, ['milk']))
         add(r.dietary, 'Dairy-free');
 
@@ -853,6 +822,7 @@
 
     if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
       FIRST_SUCCESSFUL_LOAD = true;
+      // keep start-empty stance; do NOT press ALL
       ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
       FILTERS.search = '';
       FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
@@ -867,10 +837,13 @@
 
       const cp = new Set(r.costPrep.map(s => String(s).trim()));
 
+      // Alias: if data says "Low cost", make sure the chip "Low cost / Budget" also matches
       if (cp.has('Low cost') && !cp.has('Low cost / Budget')) cp.add('Low cost / Budget');
 
+      // Surface "Budget" as a selectable prep tag if costTag already says Budget
       if (r.costTag === 'Budget') cp.add('Budget');
 
+      // Mirror "Low sodium" across dietary <-> protocols so either chip group matches
       const hasLowNa = r.dietary.includes('Low sodium') || r.protocols.includes('Low sodium');
       if (hasLowNa) {
         if (!r.dietary.includes('Low sodium'))   r.dietary.push('Low sodium');
@@ -879,8 +852,9 @@
 
       r.costPrep = [...cp];
     }
-    /* --- END COMPAT --- */
+    /* --- END COMPAT NORMALISER --- */
 
+    // Feedback
     if (countEl) {
       const from = ok.map(o => o.url);
       countEl.innerHTML = RECIPES.length
@@ -907,6 +881,7 @@
 
   // ---------- Wiring (bind once) ----------
   function wire(){
+    // Top buttons
     pantryOpenBtn && (pantryOpenBtn.onclick=()=>openPanel(pantryPanel));
     openPlannerBtn && (openPlannerBtn.onclick=()=>{ openPanel(plannerPanel); renderPlan(); buildWeekGrid(); });
 
@@ -958,7 +933,7 @@
       if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
     });
 
-    // Week planner (panel)
+    // Week planner (panel) — delegated
     if (plannerPanel) {
       plannerPanel.addEventListener('click', (e) => {
         const swapBtn   = e.target.closest('[data-swap]');
@@ -983,9 +958,9 @@
       });
     }
 
-    // Week summary (main page)
-    if (weekSummarySection) {
-      weekSummarySection.addEventListener('click', (e) => {
+    // Week summary (main page) — delegate on the actual grid element (FIX)
+    if (weekSummaryGrid) {
+      weekSummaryGrid.addEventListener('click', (e) => {
         const swapBtn   = e.target.closest('[data-swap-main]');
         const removeBtn = e.target.closest('[data-wremove-main]');
         const pickBtn   = e.target.closest('[data-pick-main]');
@@ -1052,10 +1027,6 @@
 
     // bind UI
     wire();
-
-    // optional export button if present
-    const exportBtn = qs('#exportIndexBtn');
-    exportBtn && exportBtn.addEventListener('click', exportIndex);
 
     // starter message; keep grid empty until first real choice
     if (countEl) countEl.textContent = 'Choose a filter to begin';

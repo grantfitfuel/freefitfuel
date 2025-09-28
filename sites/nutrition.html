@@ -583,12 +583,111 @@ document.addEventListener('DOMContentLoaded', () => {
         await sectionBreak();
       }
 
-      // ---- Training Blueprint (insert improved day-by-day logic here if desired) ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Training Blueprint', marginX, y); y += 16;
-      doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      addWrapped('• Core lifts: squat, hinge (deadlift/RDL), horizontal & vertical push, horizontal & vertical pull, single-leg, core.');
-      addWrapped('• Recommended volume: varies with goal (≈10–20 hard sets per muscle/week).');
-      addWrapped('• Weekly split adapts by activity level and goal.');
+// ---- Training Blueprint (Daily Breakdown) ----
+function buildProgram(goal, actMult){
+  const rules = {
+    Cut:         { mainSets:'3–4', accSets:'2–3', mainReps:'5–8',  accReps:'8–12', mainRIR:'2–3 RIR', accRIR:'2–3 RIR', cardio:'2–4× LISS 20–30 min + 0–1× short HIIT' },
+    'Build/Bulk':{ mainSets:'3–5', accSets:'3–4', mainReps:'5–10', accReps:'8–15', mainRIR:'0–2 RIR (last set 0–1)', accRIR:'1–2 RIR', cardio:'0–2× easy LISS 20–25 min' },
+    Transform:   { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'1–3× LISS 20–30 min' },
+    Maintain:    { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'1–2× LISS 20–25 min' },
+  };
+  const r = rules[goal] || rules.Transform;
+  const ex = (name, type='main') => {
+    const sets = type==='main' ? r.mainSets : r.accSets;
+    const reps = type==='main' ? r.mainReps : r.accReps;
+    const rir  = type==='main' ? r.mainRIR  : r.accRIR;
+    return `${name} — ${sets}×${reps}, ${rir}`;
+  };
+
+  if (actMult < 1.4){
+    // 3-day Full Body (A/B)
+    return [
+      { day:'Mon — Full Body A', items:[ ex('Back squat'), ex('Bench press'), ex('Bent-over row'),
+        ex('Romanian deadlift','acc'), ex('DB incline press','acc'), ex('Face pull / cable row','acc'),
+        'Core: plank or dead bug — 3×30–45s, 2–3 RIR' ]},
+      { day:'Wed — Full Body B', items:[ ex('Deadlift or RDL'), ex('Overhead press'), ex('Pull-ups / Lat pulldown'),
+        ex('Bulgarian split squat','acc'), ex('Hamstring curl','acc'), ex('Lateral raise','acc'),
+        'Arms: curls + press-down — 2–3×10–15 each, 1–2 RIR' ]},
+      { day:'Fri — Full Body A (alternate A/B weekly)', items:[ ex('Front squat or leg press'), ex('Bench press (pause last set)'), ex('Chest-supported row'),
+        ex('Hip thrust / glute bridge','acc'), ex('Rear-delt fly','acc'), 'Calves — 3×10–15, 1–2 RIR' ]},
+      { day:'Cardio', items:[ r.cardio ]},
+      { day:'Progression', items:[
+        'When top reps are hit on all sets, add 2.5–5 kg next time.',
+        'If progress stalls 2 weeks, add 1 set OR reduce RIR by 1.',
+        'Deload every 6–8 weeks: cut volume ~40%, keep RIR ≥3.' ]}
+    ];
+  }
+
+  if (actMult < 1.7){
+    // 4-day Upper/Lower
+    return [
+      { day:'Mon — Upper', items:[ ex('Bench press'), ex('Chest-supported or barbell row'),
+        ex('Incline DB press','acc'), ex('Lat pulldown / Pull-ups','acc'),
+        ex('Overhead press','acc'), 'Rear-delt fly — 2–3×12–15, 1–2 RIR',
+        'Arms: curls + press-down — 2–3×10–15 each, 1–2 RIR' ]},
+      { day:'Tue — Lower', items:[ ex('Back squat'), ex('Romanian deadlift'),
+        ex('Leg press','acc'), ex('Leg curl','acc'), 'Calves — 3×10–15, 1–2 RIR',
+        'Core: hanging knee raise or cable crunch — 3×10–15, 2 RIR' ]},
+      { day:'Thu — Upper (hypertrophy)', items:[ ex('DB bench or machine press'), ex('One-arm/seated row'),
+        ex('Incline fly / pec-deck','acc'), ex('Straight-arm pulldown / pullover','acc'),
+        'Lateral raise — 3–4×12–20, 1–2 RIR', 'Arms: 3×10–15 each, 0–2 RIR' ]},
+      { day:'Fri — Lower (posterior bias)', items:[ ex('Front squat or hack squat'), ex('Hip thrust / glute bridge'),
+        ex('RDL or back extension','acc'), ex('Seated hamstring curl','acc'),
+        'Calves — 3×10–15, 1–2 RIR', 'Core: side plank — 3×30–45s/side' ]},
+      { day:'Cardio', items:[ r.cardio ]},
+      { day:'Progression', items:[
+        'Add load when top reps reached at prescribed RIR; otherwise add 1 rep per set.',
+        'If performance dips ≥2 sessions, drop one set on that lift.' ]}
+    ];
+  }
+
+  // 5-day PPL + Upper + Arms/Conditioning
+  return [
+    { day:'Mon — Push', items:[ ex('Bench or machine press'), ex('Incline DB press'),
+      'Weighted dip or cable press — 3–4×8–12, 1–2 RIR',
+      'Lateral raise — 3–4×12–20, 1–2 RIR',
+      'Triceps press-down/overhead ext — 3–4×10–15, 0–2 RIR' ]},
+    { day:'Tue — Pull', items:[ ex('Weighted pull-ups / Lat pulldown'), ex('Barbell or chest-supported row'),
+      'Single-arm row — 3×8–12, 1–2 RIR', 'Rear-delt fly — 3×12–20, 1–2 RIR',
+      'Barbell/cable curl — 3–4×8–12, 0–2 RIR' ]},
+    { day:'Wed — Legs', items:[ ex('Back squat or hack squat'), ex('Romanian deadlift'),
+      'Leg press — 3–4×10–15, 1–2 RIR', 'Leg curl — 3×10–15, 1–2 RIR',
+      'Calves — 3×10–15, 1–2 RIR', 'Core: ab-wheel 3×6–12, 1–2 RIR' ]},
+    { day:'Thu — Upper (strength/weak points)', items:[ ex('Bench press (heavier)'), ex('Row (heavier)'),
+      'Overhead press — 3–4×6–10, 1–2 RIR', 'Choose 2 weak-point accessories — 3×8–12, 1–2 RIR' ]},
+    { day:(goal==='Build/Bulk' ? 'Fri — Arms/Delts (specialisation)' : 'Fri — Conditioning + Core'),
+      items: goal==='Build/Bulk'
+        ? ['Curls — 4×8–12, 0–2 RIR','Triceps — 4×8–12, 0–2 RIR','Lateral raises — 4×12–20, 1–2 RIR','Rear-delts — 3×12–20, 1–2 RIR']
+        : [rules[goal].cardio, 'Core circuit 10–15 min (easy effort)'] },
+    { day:'Progression', items:[
+      'Progress load or reps weekly while staying at listed RIR.',
+      'If all sets hit top reps 2 weeks in a row, add a small load next week.',
+      'Every 6–8 weeks: deload (halve volume, keep RIR ≥3).' ]}
+  ];
+}
+
+// Heading
+doc.setFont('helvetica','bold'); doc.setFontSize(13);
+doc.text('Training Blueprint (Daily Breakdown)', marginX, y); y += 16;
+
+// Render
+const program = buildProgram(GOAL, actMult);
+doc.setFont('helvetica','normal'); doc.setFontSize(11);
+for (const day of program){
+  // Day header
+  doc.setFont('helvetica','bold');
+  let lines = doc.splitTextToSize(day.day, wrapW);
+  for (const ln of lines){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
+  doc.setFont('helvetica','normal');
+
+  // Items
+  for (const item of day.items){
+    lines = doc.splitTextToSize('• ' + item, wrapW);
+    for (const ln of lines){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
+  }
+  y += 6;
+  if (y > 770){ doc.addPage(); y=72; }
+}
       await sectionBreak();
 
       // ---- Nutrition Tips ----

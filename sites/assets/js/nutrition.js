@@ -32,10 +32,9 @@
   const openPlannerBtn = qs('#openPlannerBtn');
 
   // Main-page week summary
-  const weekSummarySection = qs('#weekSummarySection');
-  const weekSummaryGrid    = qs('#weekSummaryGrid');
-  const weekAutoBtn        = qs('#weekAutoBtn');
-  const weekClearBtn       = qs('#weekClearBtn');
+  const weekSummaryGrid = qs('#weekSummaryGrid');
+  const weekAutoBtn     = qs('#weekAutoBtn');
+  const weekClearBtn    = qs('#weekClearBtn');
 
   // ---------- State ----------
   let RECIPES = [];
@@ -287,26 +286,100 @@
   function spiceIcons(n){ n=+n||0; return n? '🌶️'.repeat(Math.max(1,Math.min(3,n))) : ''; }
   function kcalBand(k){ if(k<=400)return '≤400'; if(k<=600)return '≤600'; if(k<=800)return '≤800'; return null; }
 
-  // === STRICT meal-type mapping for planner ===
+  // === STRICT meal-type mapping for planner and ignore global MealType filter ===
   function mealTypeForSlot(slot){
     const map = {breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', snack:'Snack'};
     return map[slot] || '';
   }
+
+  // A copy of matchesFilters that ignores FILTERS.MealType
+  function matchesFiltersExceptMealType(r){
+    const tags = collectTagsLower(r);
+
+    // text search
+    if(FILTERS.search){
+      const hay = `${safeTitle(r)} ${r.mealType} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
+      if(!hay.includes(FILTERS.search)) return false;
+    }
+
+    // (Intentionally skip MealType filter here)
+
+    // dietary
+    if(FILTERS.Dietary.size){
+      for(const need of FILTERS.Dietary){
+        if(!tags.has(String(need).toLowerCase())) return false;
+      }
+    }
+
+    // nutrition focus
+    if(FILTERS.Nutrition.size){
+      const wantSpicy = FILTERS.Nutrition.has('Spicy');
+      if(wantSpicy && !(r.spiceLevel && r.spiceLevel>=1)) return false;
+      for(const t of [...FILTERS.Nutrition]){
+        if(t==='Spicy') continue;
+        if(!tags.has(String(t).toLowerCase())) return false;
+      }
+    }
+
+    // kcal bands
+    if(FILTERS.KcalBand.size){
+      const band = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal??0);
+      if(!band || !FILTERS.KcalBand.has(band)) return false;
+    }
+
+    // protocols
+    if(FILTERS.Protocols.size){
+      for(const p of FILTERS.Protocols){
+        if(!tags.has(String(p).toLowerCase())) return false;
+      }
+    }
+
+    // time flags
+    if (FILTERS.Time.size) {
+      const ok = [...FILTERS.Time].every(tag => {
+        if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
+        if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
+        if (tag === 'Slow-cook') return r.slowCook === true;
+        if (tag === 'No-cook')  return r.noCook === true;
+        return true;
+      });
+      if (!ok) return false;
+    }
+
+    // Pantry
+    if(FILTERS.Pantry.active){
+      const keys=new Set((r.pantryKeys||[]).map(s=>s.toString().trim().toLowerCase()));
+      const have=new Set(FILTERS.Pantry.keys.map(k=>k.toString().trim().toLowerCase()));
+      let matched=0; have.forEach(k=>{ if(keys.has(k)) matched++; });
+      const total=(r.pantryKeys||[]).length;
+      const extrasNeeded=Math.max(0,total-matched);
+      const tagsLower = tags;
+      const okBudget = !FILTERS.Pantry.budget || tagsLower.has('budget');
+      const okStrict = !FILTERS.Pantry.strict ? (extrasNeeded<=FILTERS.Pantry.extras) : (extrasNeeded===0);
+      if(!(okBudget && okStrict)) return false;
+      if(FILTERS.Pantry.respectDiet && FILTERS.Dietary.size){
+        for(const d of FILTERS.Dietary) if(!tagsLower.has(String(d).toLowerCase())) return false;
+      }
+    }
+
+    return true;
+  }
+
   function candidatesFor(slot){
     const type = mealTypeForSlot(slot);
     return RECIPES.filter(r =>
       r.__ok &&
       type &&
       (r.mealType || '').toString().toLowerCase() === type.toLowerCase() &&
-      matchesFilters(r)
+      matchesFiltersExceptMealType(r) // ← ignore global MealType chip when planning
     );
   }
+
   function toPlanItem(r){ return { slug:r.slug, title:safeTitle(r), macros:r.nutritionPerServing||{} }; }
   function currentUsedSlugs(){
     const used=new Set(); PLAN_WEEK.forEach(day=>SLOTS.forEach(sl=>{ if(day[sl]) used.add(day[sl].slug); })); return used;
   }
   function pickUnique(slot, avoid){
-    // Enforce mealType match even if filters are incompatible
     const pool = candidatesFor(slot).filter(r=>!avoid.has(r.slug));
     if(!pool.length) return null;
     const i = Math.floor(Math.random()*pool.length);
@@ -327,7 +400,7 @@
   function swapSlot(dayIndex, slot){
     const used = currentUsedSlugs();
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
-    const next = pickUnique(slot, used); // stays mealType-true
+    const next = pickUnique(slot, used);
     if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); renderWeekSummary(); }
     else alert('No alternative recipes available for this slot under current filters. Try clearing filters or adding more recipes.');
   }
@@ -344,7 +417,7 @@
     return new Set(arr.filter(Boolean).map(s => String(s).trim().toLowerCase()));
   }
 
-  // drop-in replacement
+  // drop-in filter for grid (unchanged)
   function matchesFilters(r){
     const tags = collectTagsLower(r);
 
@@ -357,14 +430,14 @@
     // meal type
     if(FILTERS.MealType.size && !FILTERS.MealType.has(r.mealType)) return false;
 
-    // dietary (e.g. "Low sodium", "Vegetarian", etc.) — accept if present anywhere in tags
+    // dietary
     if(FILTERS.Dietary.size){
       for(const need of FILTERS.Dietary){
         if(!tags.has(String(need).toLowerCase())) return false;
       }
     }
 
-    // nutrition focus — "Spicy" is special (uses spiceLevel); others use tags
+    // nutrition focus
     if(FILTERS.Nutrition.size){
       const wantSpicy = FILTERS.Nutrition.has('Spicy');
       if(wantSpicy && !(r.spiceLevel && r.spiceLevel>=1)) return false;
@@ -380,7 +453,7 @@
       if(!band || !FILTERS.KcalBand.has(band)) return false;
     }
 
-    // protocols (e.g. "Low sodium") — also satisfied if it appears in ANY tag field
+    // protocols
     if(FILTERS.Protocols.size){
       for(const p of FILTERS.Protocols){
         if(!tags.has(String(p).toLowerCase())) return false;
@@ -399,25 +472,23 @@
       if (!ok) return false;
     }
 
-    // cost/prep — unify "Budget" and "Low cost" logic
+    // cost/prep
     if(FILTERS.CostPrep.size){
       for(const need of FILTERS.CostPrep){
         const n = String(need).toLowerCase();
         if(n === 'low cost / budget'){
-          // pass if either tag is present anywhere
           if(!(tags.has('budget') || tags.has('low cost') || tags.has('low cost / budget'))) return false;
         } else if(n === 'budget'){
           if(!(tags.has('budget'))) return false;
         } else if(n === 'low cost'){
           if(!(tags.has('low cost') || tags.has('low cost / budget') || tags.has('budget'))) return false;
         } else {
-          // e.g. 'Air-fryer', 'One-pan', 'Freezer-friendly'
           if(!tags.has(n)) return false;
         }
       }
     }
 
-    // Pantry logic unchanged (still strict/lenient based on your toggles)
+    // Pantry
     if(FILTERS.Pantry.active){
       const keys=new Set((r.pantryKeys||[]).map(s=>s.toString().trim().toLowerCase()));
       const have=new Set(FILTERS.Pantry.keys.map(k=>k.toString().trim().toLowerCase()));
@@ -459,7 +530,6 @@
     return el;
   }
 
-  // RESTORED modal structure that matches your CSS classes
   function ensureModalTemplate(){
     if(!modal || modal.dataset.wired) return;
     modal.innerHTML = `
@@ -471,7 +541,6 @@
         <p class="meta" id="recipeMeta"></p>
 
         <div class="cols">
-          <!-- LEFT: Ingredients + Macros -->
           <div>
             <h3>Ingredients</h3>
             <ul id="recipeIngredients"></ul>
@@ -481,7 +550,6 @@
             <p class="meta" id="recipeAllergens"></p>
           </div>
 
-          <!-- RIGHT: Method + Swaps + Hydration -->
           <div>
             <h3>Method</h3>
             <ol id="recipeMethod"></ol>
@@ -747,7 +815,7 @@
     );
 
     const ok  = results.filter(r => r.status === 'fulfilled').map(r => r.value);
-    const bad = results.filter(r => r.status === 'rejected');
+       const bad = results.filter(r => r.status === 'rejected');
 
     if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
 
@@ -842,13 +910,9 @@
 
       const cp = new Set(r.costPrep.map(s => String(s).trim()));
 
-      // Alias: if data says "Low cost", make sure the chip "Low cost / Budget" also matches
       if (cp.has('Low cost') && !cp.has('Low cost / Budget')) cp.add('Low cost / Budget');
-
-      // Surface "Budget" as a selectable prep tag if costTag already says Budget
       if (r.costTag === 'Budget') cp.add('Budget');
 
-      // Mirror "Low sodium" across dietary <-> protocols so either chip group matches
       const hasLowNa = r.dietary.includes('Low sodium') || r.protocols.includes('Low sodium');
       if (hasLowNa) {
         if (!r.dietary.includes('Low sodium'))   r.dietary.push('Low sodium');
@@ -963,9 +1027,9 @@
       });
     }
 
-    // Week summary (main page) — delegated
-    if (weekSummarySection) {
-      weekSummarySection.addEventListener('click', (e) => {
+    // Week summary (main page) — delegated to #weekSummaryGrid (fixed)
+    if (weekSummaryGrid) {
+      weekSummaryGrid.addEventListener('click', (e) => {
         const swapBtn   = e.target.closest('[data-swap-main]');
         const removeBtn = e.target.closest('[data-wremove-main]');
         const pickBtn   = e.target.closest('[data-pick-main]');

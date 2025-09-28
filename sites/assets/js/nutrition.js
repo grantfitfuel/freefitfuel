@@ -1,4 +1,4 @@
-/* FreeFitFuel — Nutrition App (FULL, slot-safe)
+/* FreeFitFuel — Nutrition App (FULL)
    - Multi-file recipe loader (recipes-01..99.json + legacy recipes.json) with ../ fallback
    - Safe JSON parse, de-dup + normalise, enrich (noCook / slowCook, dietary autofill)
    - Recipe cards: chilli icons 🌶️, View Recipe Card (modal), Print Recipe Card, Add to Planner
@@ -7,11 +7,6 @@
    - Week summary on main page mirrors planner panel
    - Start-empty: NO default filter selected; grid empty until user chooses a filter or ALL
    - Pantry mode with tokens and options
-
-   SLOT-SAFE CHANGES:
-   - mealTypeDeclared: taken ONLY from JSON fields; no guessing.
-   - Planner (auto-plan/swap/pick) uses ONLY mealTypeDeclared.
-   - Filters accept declared OR inferred type so UI remains friendly.
 */
 
 (function () {
@@ -37,10 +32,9 @@
   const openPlannerBtn = qs('#openPlannerBtn');
 
   // Main-page week summary
-  const weekSummarySection = qs('#weekSummarySection');
-  const weekSummaryGrid    = qs('#weekSummaryGrid');
-  const weekAutoBtn        = qs('#weekAutoBtn');
-  const weekClearBtn       = qs('#weekClearBtn');
+  const weekSummaryGrid = qs('#weekSummaryGrid');
+  const weekAutoBtn     = qs('#weekAutoBtn');
+  const weekClearBtn    = qs('#weekClearBtn');
 
   // ---------- State ----------
   let RECIPES = [];
@@ -272,8 +266,31 @@
   }
 
   function wireWeekSummaryControls(){
-    if(weekAutoBtn) weekAutoBtn.onclick = autoPlanWeek;
+    if(weekAutoBtn) weekAutoBtn.onclick = () => autoPlanWeek(true); // force rebuild
     if(weekClearBtn) weekClearBtn.onclick = clearWeek;
+    if (weekSummaryGrid) {
+      weekSummaryGrid.addEventListener('click', (e) => {
+        const swapBtn   = e.target.closest('[data-swap-main]');
+        const removeBtn = e.target.closest('[data-wremove-main]');
+        const pickBtn   = e.target.closest('[data-pick-main]');
+        if (swapBtn) {
+          const [di, sl] = swapBtn.dataset.swapMain.split(':');
+          swapSlot(+di, sl);
+          return;
+        }
+        if (removeBtn) {
+          const [di, sl] = removeBtn.dataset.wremoveMain.split(':');
+          PLAN_WEEK[+di][sl] = null;
+          saveWeek(); buildWeekGrid(); renderWeekSummary();
+          return;
+        }
+        if (pickBtn) {
+          const [di, sl] = pickBtn.dataset.pickMain.split(':');
+          swapSlot(+di, sl);
+          return;
+        }
+      });
+    }
   }
 
   function saveToday(){ localStorage.setItem('fff_mealplan_today_v1', JSON.stringify(PLAN)); }
@@ -292,19 +309,27 @@
   function spiceIcons(n){ n=+n||0; return n? '🌶️'.repeat(Math.max(1,Math.min(3,n))) : ''; }
   function kcalBand(k){ if(k<=400)return '≤400'; if(k<=600)return '≤600'; if(k<=800)return '≤800'; return null; }
 
+  // Normalise & match meal types (HARD ENFORCEMENT)
+  function normalizeMealType(s){
+    const t = (s||'').toString().trim().toLowerCase();
+    if(t==='breakfast') return 'Breakfast';
+    if(t==='lunch')     return 'Lunch';
+    if(t==='dinner')    return 'Dinner';
+    if(t==='snack')     return 'Snack';
+    return '';
+  }
   function mealTypeForSlot(slot){ return ({breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner',snack:'Snack'})[slot]||''; }
-
-  // SLOT-SAFE: Planner candidates must match declared type only
-  function candidatesFor(slot){
-    const type = mealTypeForSlot(slot);
-    return RECIPES.filter(r =>
-      r.__ok &&
-      r.mealTypeDeclared === type &&
-      matchesFilters(r)
-    );
+  function isMealMatch(slot, rOrItem){
+    const need = mealTypeForSlot(slot);
+    const have = normalizeMealType(rOrItem && (rOrItem.mealType || (rOrItem.meta && rOrItem.meta.mealType)));
+    return need && have && need === have;
   }
 
-  function toPlanItem(r){ return { slug:r.slug, title:safeTitle(r), macros:r.nutritionPerServing||{} }; }
+  function candidatesFor(slot){
+    const need = mealTypeForSlot(slot);
+    return RECIPES.filter(r => r.__ok && normalizeMealType(r.mealType) === need && matchesFilters(r));
+  }
+  function toPlanItem(r){ return { slug:r.slug, title:safeTitle(r), mealType: normalizeMealType(r.mealType), macros:r.nutritionPerServing||{} }; }
   function currentUsedSlugs(){
     const used=new Set(); PLAN_WEEK.forEach(day=>SLOTS.forEach(sl=>{ if(day[sl]) used.add(day[sl].slug); })); return used;
   }
@@ -314,18 +339,30 @@
     const i = Math.floor(Math.random()*pool.length);
     return toPlanItem(pool[i]);
   }
-  function autoPlanWeek(){
-    const used = currentUsedSlugs();
+
+  function autoPlanWeek(replaceAll = true){
+    const used = new Set();
     for(let d=0; d<DAYS.length; d++){
       for(const sl of SLOTS){
+        if (replaceAll) PLAN_WEEK[d][sl] = null; // rebuild from scratch
         if(!PLAN_WEEK[d][sl]){
           const p = pickUnique(sl, used);
           if(p){ PLAN_WEEK[d][sl]=p; used.add(p.slug); }
+        } else {
+          // keep only if still a correct match
+          if (!isMealMatch(sl, PLAN_WEEK[d][sl])) {
+            const p = pickUnique(sl, used);
+            PLAN_WEEK[d][sl] = p || null;
+            if (p) used.add(p.slug);
+          } else {
+            used.add(PLAN_WEEK[d][sl].slug);
+          }
         }
       }
     }
     saveWeek(); buildWeekGrid(); renderWeekSummary();
   }
+
   function swapSlot(dayIndex, slot){
     const used = currentUsedSlugs();
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
@@ -334,6 +371,16 @@
     else alert('No alternative recipes available for this slot under current filters. Try clearing filters or adding more recipes.');
   }
   function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); renderWeekSummary(); }
+
+  // Purge any mismatches from previously-saved weeks
+  function purgeInvalidWeekAssignments(){
+    for (let d=0; d<PLAN_WEEK.length; d++){
+      for (const sl of SLOTS){
+        const it = PLAN_WEEK[d][sl];
+        if (it && !isMealMatch(sl, it)) PLAN_WEEK[d][sl] = null;
+      }
+    }
+  }
 
   // helper: collect ALL tag-like fields as one lowercase set
   function collectTagsLower(r){
@@ -346,53 +393,20 @@
     return new Set(arr.filter(Boolean).map(s => String(s).trim().toLowerCase()));
   }
 
-  // ------- Inference helper (display convenience only, never used by planner) -------
-  function inferMealTypeFromAny(r){
-    // Use explicit fields first
-    const declared =
-      normalizeMealType(r.mealType) ||
-      normalizeMealType(r.meal_type) ||
-      normalizeMealType(r.type) ||
-      normalizeMealType(r.category) ||
-      '';
-    if (declared) return declared;
-
-    const title = (r.title||'').toLowerCase();
-    const tags  = [
-      ...(r.tags||[]),
-      ...(r.dietary||[]),
-      ...(r.nutritionFocus||[]),
-      r.costTag||'',
-      r.time_label||''
-    ].join(' ').toLowerCase();
-
-    // Very light heuristics for display convenience
-    const looksBreakfast = /\b(oats?|porridge|granola|yogurt|yoghurt|scramble|omelette|egg|pancake|toast|overnight|smoothie|breakfast)\b/.test(title);
-    const looksSnack     = /\b(snack|balls?|bars?|muffins?|wrap|toast|dip|hummus|shake)\b/.test(title);
-    if (looksBreakfast) return 'Breakfast';
-    if (looksSnack) return 'Snack';
-    // If kcal is very low & serves 1 => maybe snack; but keep conservative
-    return ''; // unknown → display layer can still show blank
-  }
-
-  // drop-in replacement: full filter logic
+  // drop-in replacement (filters preserved)
   function matchesFilters(r){
     const tags = collectTagsLower(r);
 
     // text search
     if(FILTERS.search){
-      const hay = `${safeTitle(r)} ${r.mealType || ''} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
+      const hay = `${safeTitle(r)} ${r.mealType} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
       if(!hay.includes(FILTERS.search)) return false;
     }
 
-    // meal type — accept if declared OR display type matches (planner uses declared only)
-    if (FILTERS.MealType.size) {
-      const mtDecl = r.mealTypeDeclared || '';
-      const mtShow = r.mealType || '';
-      if (!(FILTERS.MealType.has(mtDecl) || FILTERS.MealType.has(mtShow))) return false;
-    }
+    // meal type
+    if(FILTERS.MealType.size && !FILTERS.MealType.has(normalizeMealType(r.mealType))) return false;
 
-    // dietary (accept if present anywhere in tags)
+    // dietary (e.g. "Low sodium", "Vegetarian", etc.) — accept if present anywhere in tags
     if(FILTERS.Dietary.size){
       for(const need of FILTERS.Dietary){
         if(!tags.has(String(need).toLowerCase())) return false;
@@ -415,7 +429,7 @@
       if(!band || !FILTERS.KcalBand.has(band)) return false;
     }
 
-    // protocols (e.g. "Low sodium") — also satisfied if it appears in ANY tag field
+    // protocols (e.g. "Low sodium")
     if(FILTERS.Protocols.size){
       for(const p of FILTERS.Protocols){
         if(!tags.has(String(p).toLowerCase())) return false;
@@ -450,7 +464,7 @@
       }
     }
 
-    // Pantry logic unchanged (still strict/lenient based on your toggles)
+    // Pantry logic
     if(FILTERS.Pantry.active){
       const keys=new Set((r.pantryKeys||[]).map(s=>s.toString().trim().toLowerCase()));
       const have=new Set(FILTERS.Pantry.keys.map(k=>k.toString().trim().toLowerCase()));
@@ -474,7 +488,7 @@
     el.className='card';
     el.innerHTML=`
       <h3 style="margin:.2rem 0 .25rem">${safeTitle(r)}</h3>
-      <p class="meta">⏱️ ${r.time_mins||0} min • 🍽️ ${r.mealType||r.mealTypeDeclared||''} ${r.nutritionPerServing?.kcal?`• 🔥 ${r.nutritionPerServing.kcal} kcal`:''} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
+      <p class="meta">⏱️ ${r.time_mins||0} min • 🍽️ ${normalizeMealType(r.mealType)||''} ${r.nutritionPerServing?.kcal?`• 🔥 ${r.nutritionPerServing.kcal} kcal`:''} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
       <div class="mini-nav" style="gap:.3rem;margin:.25rem 0 .5rem">
         ${r.costTag?`<span class="chip" aria-pressed="false">${r.costTag}</span>`:''}
         ${(r.dietary||[]).map(t=>`<span class="chip" aria-pressed="false">${t}</span>`).join('')}
@@ -492,7 +506,7 @@
     return el;
   }
 
-  // RESTORED modal structure that matches your CSS classes
+  // RESTORED modal structure
   function ensureModalTemplate(){
     if(!modal || modal.dataset.wired) return;
     modal.innerHTML = `
@@ -504,7 +518,6 @@
         <p class="meta" id="recipeMeta"></p>
 
         <div class="cols">
-          <!-- LEFT: Ingredients + Macros -->
           <div>
             <h3>Ingredients</h3>
             <ul id="recipeIngredients"></ul>
@@ -514,7 +527,6 @@
             <p class="meta" id="recipeAllergens"></p>
           </div>
 
-          <!-- RIGHT: Method + Swaps + Hydration -->
           <div>
             <h3>Method</h3>
             <ol id="recipeMethod"></ol>
@@ -554,7 +566,7 @@
       const parts = [];
       parts.push(`${r.time_mins || 0} min`);
       parts.push(`Serves ${r.serves || 1}`);
-      if (r.mealTypeDeclared || r.mealType) parts.push(r.mealTypeDeclared || r.mealType);
+      if (r.mealType) parts.push(normalizeMealType(r.mealType));
       if (r.spiceLevel) {
         const levelText = ['','Mild','Medium','Hot'][r.spiceLevel] || 'Spicy';
         parts.push(`${spiceIcons(r.spiceLevel)} (${levelText})`);
@@ -619,7 +631,7 @@
     printArea.innerHTML=`
       <article>
         <h1>${safeTitle(r)}</h1>
-        <p>${r.mealTypeDeclared || r.mealType || ''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
+        <p>${normalizeMealType(r.mealType)||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
         <h2>Ingredients</h2><ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
         <h2>Method</h2><ol>${(r.method||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
         <h2>Macros (per serving)</h2>
@@ -635,7 +647,12 @@
   function addToPlannerPrompt(r){
     const slot=(prompt('Add to which meal? (breakfast, lunch, dinner, snack)')||'').trim().toLowerCase();
     if(!['breakfast','lunch','dinner','snack'].includes(slot)) return;
-    PLAN[slot].push({slug:r.slug,title:safeTitle(r),macros:r.nutritionPerServing||{}}); renderPlan(); saveToday();
+    // warn if mismatch
+    if (!isMealMatch(slot, r)) {
+      if (!confirm(`"${safeTitle(r)}" is tagged as ${normalizeMealType(r.mealType)}.\nAdd it to ${slot} anyway?`)) return;
+    }
+    PLAN[slot].push({slug:r.slug,title:safeTitle(r),mealType:normalizeMealType(r.mealType),macros:r.nutritionPerServing||{}});
+    renderPlan(); saveToday();
     alert(`Added "${safeTitle(r)}" to ${slot}.`);
   }
 
@@ -673,12 +690,11 @@
     }
   }
 
-  // ---------- Export Index (optional helper) ----------
+  // ---------- Export Index ----------
   function exportIndex(){
     const index = RECIPES.map(r => ({
       title: r.title,
-      mealTypeDeclared: r.mealTypeDeclared || '',
-      mealTypeDisplay: r.mealType || '',
+      mealType: normalizeMealType(r.mealType),
       dietary: r.dietary || [],
       nutritionFocus: r.nutritionFocus || [],
       protocols: r.protocols || [],
@@ -696,38 +712,19 @@
   }
 
   // ---------- Normalisers / guards ----------
-  function normalizeMealType(s){
-    const t = (s||'').toString().trim().toLowerCase();
-    if(t==='breakfast') return 'Breakfast';
-    if(t==='lunch')     return 'Lunch';
-    if(t==='dinner')    return 'Dinner';
-    if(t==='snack')     return 'Snack';
-    return '';
-  }
   function safeTitle(r){
     const t = (r && r.title!=null) ? String(r.title).trim() : '';
     if(t) return t;
     if(r && r.slug) return String(r.slug).replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
     return 'Untitled';
   }
-
-  // SLOT-SAFE sanitize: keeps declared & inferred separately
   function sanitizeRecipe(raw){
     if(!raw || typeof raw!=='object') return null;
     const r = {...raw};
 
     r.title = safeTitle(r);
-
-    // DECLARED ONLY (from data)
-    const declared =
-      normalizeMealType(r.mealType) ||
-      normalizeMealType(r.meal_type) ||
-      normalizeMealType(r.type) ||
-      normalizeMealType(r.category) ||
-      '';
-
-    r.mealTypeDeclared = declared;          // planner uses this
-    r.mealType = declared || inferMealTypeFromAny(r); // display fallback
+    r.mealType = normalizeMealType(r.mealType);
+    if(!r.mealType) return null;
 
     if(!r.slug || !String(r.slug).trim()){
       r.slug = r.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -879,7 +876,7 @@
       updateChipStates();
     }
 
-    /* --- CHIP/DATA COMPAT NORMALISER --- */
+    /* --- CHIP/DATA COMPAT NORMALISER (fixes "only 6 results") --- */
     for (const r of RECIPES) {
       r.costPrep  = Array.isArray(r.costPrep) ? r.costPrep : [];
       r.dietary   = Array.isArray(r.dietary)  ? r.dietary  : [];
@@ -957,7 +954,7 @@
     qs('#pantryPlanWeekBtn',pantryPanel) && (qs('#pantryPlanWeekBtn',pantryPanel).onclick=()=>{
       FILTERS.Pantry.active=true; FILTERS.Pantry.keys=[...pantry.set];
       FILTERS.Pantry.strict=false; FILTERS.Pantry.extras=2; FILTERS.Pantry.budget=true;
-      autoPlanWeek(); closePanel(pantryPanel); openPanel(plannerPanel); updateChipStates();
+      autoPlanWeek(true); closePanel(pantryPanel); openPanel(plannerPanel); updateChipStates();
     });
     qs('#pantryResetBtn',pantryPanel) && (qs('#pantryResetBtn',pantryPanel).onclick=()=>{
       pantry.set.clear(); renderPantryTokens();
@@ -1008,32 +1005,7 @@
       });
     }
 
-    // Week summary (main page) — delegated
-    if (weekSummarySection) {
-      weekSummarySection.addEventListener('click', (e) => {
-        const swapBtn   = e.target.closest('[data-swap-main]');
-        const removeBtn = e.target.closest('[data-wremove-main]');
-        const pickBtn   = e.target.closest('[data-pick-main]');
-        if (swapBtn) {
-          const [di, sl] = swapBtn.dataset.swapMain.split(':');
-          swapSlot(+di, sl);
-          return;
-        }
-        if (removeBtn) {
-          const [di, sl] = removeBtn.dataset.wremoveMain.split(':');
-          PLAN_WEEK[+di][sl] = null;
-          saveWeek(); buildWeekGrid(); renderWeekSummary();
-          return;
-        }
-        if (pickBtn) {
-          const [di, sl] = pickBtn.dataset.pickMain.split(':');
-          swapSlot(+di, sl);
-          return;
-        }
-      });
-    }
-
-    // Week summary controls
+    // Week summary controls & actions
     wireWeekSummaryControls();
 
     // Filters
@@ -1072,7 +1044,10 @@
 
     // restore plans
     loadToday(); renderPlan();
-    loadWeek();  buildWeekGrid(); renderWeekSummary();
+    loadWeek();
+    purgeInvalidWeekAssignments(); // <-- clear old mismatches
+    saveWeek();
+    buildWeekGrid(); renderWeekSummary();
     wireWeekSummaryControls();
 
     // bind UI

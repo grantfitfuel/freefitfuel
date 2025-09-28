@@ -1,4 +1,4 @@
-/* FreeFitFuel — Nutrition App (FULL, STRICT meal-type planner)
+/* FreeFitFuel — Nutrition App (FULL, with meal-intent heuristics)
    - Multi-file recipe loader (recipes-01..99.json + legacy recipes.json) with ../ fallback
    - Safe JSON parse, de-dup + normalise, enrich (noCook / slowCook, dietary autofill)
    - Recipe cards: chilli icons 🌶️, View Recipe Card (modal), Print Recipe Card, Add to Planner
@@ -7,7 +7,8 @@
    - Week summary on main page mirrors planner panel
    - Start-empty: NO default filter selected; grid empty until user chooses a filter or ALL
    - Pantry mode with tokens and options
-   - **Strict planner:** Breakfast slot pulls recipes whose *primary* mealType is Breakfast
+   - NEW: Slot-aware meal heuristics so Breakfast/Lunch/Dinner/Snack select sensible dishes,
+          even if JSON mealType is wrong.
 */
 
 (function () {
@@ -43,7 +44,7 @@
   let FIRST_SUCCESSFUL_LOAD = false;
 
   const FILTERS = {
-    ALL: false,
+    ALL: false, // start empty — show nothing until the user selects a filter or presses ALL
     search: '',
     MealType: new Set(),
     Dietary: new Set(),
@@ -71,7 +72,7 @@
     {id:'Nutrition',label:'Nutrition Focus',chips:['High protein','High carb / Endurance','Low carb','High fibre','Spicy']},
     {id:'KcalBand',label:'Low calorie',chips:['≤400','≤600','≤800']},
     {id:'Protocols',label:'Protocols',chips:['Low FODMAP','Low sodium']},
-    {id:'Time',label:'Time',chips:['≤15 min','≤30 min','Slow-cook','No-cook']},
+    {id:'Time',label:'Time',chips:['≤15 min','≤30 min','Slow-ccook','No-cook']}, // (typo-safe)
     {id:'CostPrep',label:'Cost/Prep',chips:['Low cost / Budget','Batch-cook','Freezer-friendly','One-pan','Air-fryer']}
   ];
 
@@ -80,7 +81,7 @@
     filterBar.innerHTML = '';
     const all = document.createElement('button');
     all.className = 'chip'; all.dataset.filter='ALL';
-    all.setAttribute('aria-pressed','false');
+    all.setAttribute('aria-pressed','false'); // not pressed by default (start-empty)
     all.textContent='ALL';
     filterBar.appendChild(all);
 
@@ -108,7 +109,9 @@
       const g=b.dataset.group, v=b.dataset.value;
       b.setAttribute('aria-pressed', FILTERS[g].has(v)?'true':'false');
     });
-    if (clearBtn) clearBtn.style.display = hasActiveFilters() ? 'inline-flex' : 'none';
+    if (clearBtn) {
+      clearBtn.style.display = hasActiveFilters() ? 'inline-flex' : 'none';
+    }
   }
 
   // ---------- Pantry UI ----------
@@ -286,43 +289,57 @@
   function spiceIcons(n){ n=+n||0; return n? '🌶️'.repeat(Math.max(1,Math.min(3,n))) : ''; }
   function kcalBand(k){ if(k<=400)return '≤400'; if(k<=600)return '≤600'; if(k<=800)return '≤800'; return null; }
 
-  // STRICT meal-type system
-  const MEAL_TYPES = ['Breakfast','Lunch','Dinner','Snack'];
-  function normaliseMealWord(s){
-    s = (s||'').toString().trim();
-    const t = s.toLowerCase();
-    if(/breakfast/.test(t)) return 'Breakfast';
-    if(/lunch/.test(t))     return 'Lunch';
-    if(/dinner|supper|main/.test(t)) return 'Dinner';
-    if(/snack/.test(t))     return 'Snack';
-    return '';
+  // --- NEW: “meal intent” heuristics (slot-aware) ---
+  const K = {
+    breakfastPos: ['egg','eggs','omelette','scramble','scrambled','frittata','poached','shakshuka','porridge','oats','oat','oatmeal','overnight oats','granola','yogurt','yoghurt','greek yogurt','smoothie','toast','bagel','pancake','waffle','chia','bircher','hash','breakfast'],
+    breakfastNeg: ['prawn','prawns','tuna','salmon','cod','haddock','mackerel','shrimp','beef','steak','curry','korma','masala','stir-fry','stir fry','noodles','pho','ramen'],
+    snackPos: ['snack','shake','smoothie','bar','bites','balls','energy ball','trail mix','yogurt','yoghurt','granola','toast','rice cake','hummus','dip','popcorn','fruit','nuts','protein'],
+    lunchPos: ['salad','wrap','sandwich','bowl','soup','pita','pitta','quesadilla','burrito','traybake','tray bake','rice bowl','pasta salad'],
+    dinnerPos:['curry','stir-fry','stir fry','bake','roast','grill','chili','stew','pasta','noodles','pizza','casserole','korma','masala','bolognese','lasagna','fajitas','skillet','traybake','sheet pan','risotto']
+  };
+  function textBlob(r){
+    const title = (r.title||'').toLowerCase();
+    const ing = (r.ingredients||[]).map(i=>i && i.item || '').join(' ').toLowerCase();
+    const method = (r.method||[]).join(' ').toLowerCase();
+    return `${title} ${ing} ${method}`;
   }
-  function splitPossibleList(x){
-    if (Array.isArray(x)) return x;
-    if (typeof x === 'string') return x.split(/[,&/|]+/);
-    return [];
+  function hits(text, words){
+    let n=0; for(const w of words){ if(!w) continue; if(text.includes(w)) n++; } return n;
   }
+  function looksLike(slot, r){
+    const t = textBlob(r);
+    if (slot==='breakfast'){
+      return hits(t,K.breakfastPos) >= 1 && hits(t,K.breakfastNeg) === 0;
+    }
+    if (slot==='snack'){
+      return hits(t,K.snackPos) >= 1;
+    }
+    if (slot==='lunch'){
+      const good = hits(t,K.lunchPos) >= 1 || (hits(t,K.dinnerPos)===0 && hits(t,K.breakfastPos)===0 && (t.includes('bowl')||t.includes('salad')));
+      return good && hits(t,K.breakfastPos)===0;
+    }
+    // dinner
+    const good = hits(t,K.dinnerPos) >= 1 || (hits(t,K.lunchPos)===0 && hits(t,K.breakfastPos)===0);
+    return good && hits(t,K.breakfastPos)===0;
+  }
+
   function mealTypeForSlot(slot){ return ({breakfast:'Breakfast',lunch:'Lunch',dinner:'Dinner',snack:'Snack'})[slot]||''; }
 
-  // ----- STRICT candidates (primary-first) -----
-  function isStrictPrimary(r, type){
-    return r.__primaryMealType === type || (r.__mealTypes.length === 1 && r.__mealTypes[0] === type);
-  }
-  // pool for a slot:
-  // 1) strict-primary matches; if none →
-  // 2) any recipe that includes the type (so we never fail completely)
+  // Strict candidates: require filters + (correct mealType OR heuristic match for slot)
   function candidatesFor(slot){
     const type = mealTypeForSlot(slot);
-    const base = RECIPES.filter(r => r.__ok && matchesFiltersExceptMealType(r));
-    const strict = base.filter(r => r.__mealTypes.includes(type) && isStrictPrimary(r, type));
+    const base = RECIPES.filter(r => r.__ok && matchesFilters(r));
+    const strict = base.filter(r => (r.mealType === type) || looksLike(slot, r));
     if (strict.length) return strict;
-    return base.filter(r => r.__mealTypes.includes(type));
+    // Fallback: ignore mealType, keep heuristics only (prevents prawns at breakfast)
+    const heuristicOnly = RECIPES.filter(r => r.__ok && matchesFilters(r)).filter(r => looksLike(slot,r));
+    return heuristicOnly;
   }
 
   function toPlanItem(r){ return { slug:r.slug, title:safeTitle(r), macros:r.nutritionPerServing||{} }; }
   function currentUsedSlugs(){
     const used=new Set(); PLAN_WEEK.forEach(day=>SLOTS.forEach(sl=>{ if(day[sl]) used.add(day[sl].slug); })); return used;
-    }
+  }
   function pickUnique(slot, avoid){
     const pool = candidatesFor(slot).filter(r=>!avoid.has(r.slug));
     if(!pool.length) return null;
@@ -346,7 +363,7 @@
     if(PLAN_WEEK[dayIndex][slot]) used.delete(PLAN_WEEK[dayIndex][slot].slug);
     const next = pickUnique(slot, used);
     if(next){ PLAN_WEEK[dayIndex][slot]=next; saveWeek(); buildWeekGrid(); renderWeekSummary(); }
-    else alert('No alternative recipes available for this slot under current filters. Try clearing filters or adding more recipes.');
+    else alert(`No suitable ${slot} recipes available under current filters. Try clearing filters or adding more recipes.`);
   }
   function clearWeek(){ for(let i=0;i<PLAN_WEEK.length;i++) SLOTS.forEach(sl=>PLAN_WEEK[i][sl]=null); saveWeek(); buildWeekGrid(); renderWeekSummary(); }
 
@@ -361,27 +378,27 @@
     return new Set(arr.filter(Boolean).map(s => String(s).trim().toLowerCase()));
   }
 
-  // ---------- Filter checks ----------
+  // drop-in replacement
   function matchesFilters(r){
     const tags = collectTagsLower(r);
 
+    // text search
     if(FILTERS.search){
-      const hay = `${safeTitle(r)} ${(r.__mealTypes||[]).join(' ')} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
+      const hay = `${safeTitle(r)} ${r.mealType} ${(r.dietary||[]).join(' ')} ${(r.nutritionFocus||[]).join(' ')} ${(r.protocols||[]).join(' ')} ${(r.ingredients||[]).map(i=>i.item).join(' ')}`.toLowerCase();
       if(!hay.includes(FILTERS.search)) return false;
     }
 
-    if (FILTERS.MealType.size){
-      const wants = new Set([...FILTERS.MealType].map(String));
-      const hit = (r.__mealTypes || []).some(mt => wants.has(mt));
-      if(!hit) return false;
-    }
+    // meal type
+    if(FILTERS.MealType.size && !FILTERS.MealType.has(r.mealType)) return false;
 
+    // dietary — accept if present anywhere in tags
     if(FILTERS.Dietary.size){
       for(const need of FILTERS.Dietary){
         if(!tags.has(String(need).toLowerCase())) return false;
       }
     }
 
+    // nutrition focus — "Spicy" is special (uses spiceLevel); others use tags
     if(FILTERS.Nutrition.size){
       const wantSpicy = FILTERS.Nutrition.has('Spicy');
       if(wantSpicy && !(r.spiceLevel && r.spiceLevel>=1)) return false;
@@ -391,28 +408,32 @@
       }
     }
 
+    // kcal bands
     if(FILTERS.KcalBand.size){
       const band = r.kcalBand || kcalBand(r?.nutritionPerServing?.kcal??0);
       if(!band || !FILTERS.KcalBand.has(band)) return false;
     }
 
+    // protocols
     if(FILTERS.Protocols.size){
       for(const p of FILTERS.Protocols){
         if(!tags.has(String(p).toLowerCase())) return false;
       }
     }
 
+    // time flags
     if (FILTERS.Time.size) {
       const ok = [...FILTERS.Time].every(tag => {
         if (tag === '≤15 min') return (r.time_mins || 0) <= 15;
         if (tag === '≤30 min') return (r.time_mins || 0) <= 30;
-        if (tag === 'Slow-cook') return r.slowCook === true;
+        if (tag.toLowerCase().includes('slow')) return r.slowCook === true;
         if (tag === 'No-cook')  return r.noCook === true;
         return true;
       });
       if (!ok) return false;
     }
 
+    // cost/prep — unify "Budget" and "Low cost" logic
     if(FILTERS.CostPrep.size){
       for(const need of FILTERS.CostPrep){
         const n = String(need).toLowerCase();
@@ -428,6 +449,7 @@
       }
     }
 
+    // Pantry logic unchanged
     if(FILTERS.Pantry.active){
       const keys=new Set((r.pantryKeys||[]).map(s=>s.toString().trim().toLowerCase()));
       const have=new Set(FILTERS.Pantry.keys.map(k=>k.toString().trim().toLowerCase()));
@@ -445,21 +467,13 @@
     return true;
   }
 
-  function matchesFiltersExceptMealType(r){
-    const save = FILTERS.MealType;
-    FILTERS.MealType = new Set();
-    const ok = matchesFilters(r);
-    FILTERS.MealType = save;
-    return ok;
-  }
-
   // ---------- Cards / Modal / Print ----------
   function card(r){
     const el=document.createElement('article');
     el.className='card';
     el.innerHTML=`
       <h3 style="margin:.2rem 0 .25rem">${safeTitle(r)}</h3>
-      <p class="meta">⏱️ ${r.time_mins||0} min • 🍽️ ${(r.__mealTypes||[]).join(', ')} ${r.nutritionPerServing?.kcal?`• 🔥 ${r.nutritionPerServing.kcal} kcal`:''} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
+      <p class="meta">⏱️ ${r.time_mins||0} min • 🍽️ ${r.mealType||''} ${r.nutritionPerServing?.kcal?`• 🔥 ${r.nutritionPerServing.kcal} kcal`:''} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
       <div class="mini-nav" style="gap:.3rem;margin:.25rem 0 .5rem">
         ${r.costTag?`<span class="chip" aria-pressed="false">${r.costTag}</span>`:''}
         ${(r.dietary||[]).map(t=>`<span class="chip" aria-pressed="false">${t}</span>`).join('')}
@@ -477,6 +491,7 @@
     return el;
   }
 
+  // RESTORED modal structure that matches your CSS classes
   function ensureModalTemplate(){
     if(!modal || modal.dataset.wired) return;
     modal.innerHTML = `
@@ -488,6 +503,7 @@
         <p class="meta" id="recipeMeta"></p>
 
         <div class="cols">
+          <!-- LEFT: Ingredients + Macros -->
           <div>
             <h3>Ingredients</h3>
             <ul id="recipeIngredients"></ul>
@@ -497,6 +513,7 @@
             <p class="meta" id="recipeAllergens"></p>
           </div>
 
+          <!-- RIGHT: Method + Swaps + Hydration -->
           <div>
             <h3>Method</h3>
             <ol id="recipeMethod"></ol>
@@ -524,16 +541,19 @@
   function openModal(r){
     if(!modal) return;
     ensureModalTemplate();
+
     const get = (sel) => modal.querySelector(sel);
 
-    const title = get('#recipeTitle'); if (title) title.textContent = safeTitle(r);
+    // Title + meta line
+    const title = get('#recipeTitle');
+    if (title) title.textContent = safeTitle(r);
 
     const meta = get('#recipeMeta');
     if (meta) {
       const parts = [];
       parts.push(`${r.time_mins || 0} min`);
       parts.push(`Serves ${r.serves || 1}`);
-      if (r.__mealTypes && r.__mealTypes.length) parts.push(r.__mealTypes.join(', '));
+      if (r.mealType) parts.push(r.mealType);
       if (r.spiceLevel) {
         const levelText = ['','Mild','Medium','Hot'][r.spiceLevel] || 'Spicy';
         parts.push(`${spiceIcons(r.spiceLevel)} (${levelText})`);
@@ -541,17 +561,20 @@
       meta.textContent = parts.join(' • ');
     }
 
+    // Ingredients
     const ing = get('#recipeIngredients');
     if (ing) {
       ing.innerHTML = (r.ingredients || [])
         .map(i => `<li>${i.qty ? `${i.qty} ` : ''}${i.item}</li>`).join('');
     }
 
+    // Method
     const method = get('#recipeMethod');
     if (method) {
       method.innerHTML = (r.method || []).map(step => `<li>${step}</li>`).join('');
     }
 
+    // Macros
     const n = r.nutritionPerServing || {};
     const macros = get('#recipeMacros');
     if (macros) {
@@ -566,6 +589,7 @@
       `;
     }
 
+    // Allergens / swaps / hydration
     const al = get('#recipeAllergens');
     if (al) al.textContent = (r.allergensPresent && r.allergensPresent.length)
       ? `Allergens: ${r.allergensPresent.join(', ')}`
@@ -577,11 +601,13 @@
     const hyd = get('#recipeHydration');
     if (hyd) hyd.textContent = r.hydrationTip || '';
 
+    // Actions
     const addBtn   = get('#modalAddToPlanner');
     const printBtn = get('#modalPrint');
     if (addBtn)   addBtn.onclick   = () => addToPlannerPrompt(r);
     if (printBtn) printBtn.onclick = () => printRecipe(r);
 
+    // Open dialog with fallback
     try { modal.showModal(); }
     catch { modal.classList.add('fallback-open'); }
   }
@@ -592,7 +618,7 @@
     printArea.innerHTML=`
       <article>
         <h1>${safeTitle(r)}</h1>
-        <p>${(r.__mealTypes||[]).join(', ')} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
+        <p>${r.mealType||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
         <h2>Ingredients</h2><ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
         <h2>Method</h2><ol>${(r.method||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
         <h2>Macros (per serving)</h2>
@@ -650,7 +676,7 @@
   function exportIndex(){
     const index = RECIPES.map(r => ({
       title: r.title,
-      mealType: r.__mealTypes || [],
+      mealType: r.mealType,
       dietary: r.dietary || [],
       nutritionFocus: r.nutritionFocus || [],
       protocols: r.protocols || [],
@@ -668,31 +694,27 @@
   }
 
   // ---------- Normalisers / guards ----------
+  function normalizeMealType(s){
+    const t = (s||'').toString().trim().toLowerCase();
+    if(t==='breakfast') return 'Breakfast';
+    if(t==='lunch')     return 'Lunch';
+    if(t==='dinner')    return 'Dinner';
+    if(t==='snack')     return 'Snack';
+    return '';
+  }
   function safeTitle(r){
     const t = (r && r.title!=null) ? String(r.title).trim() : '';
     if(t) return t;
     if(r && r.slug) return String(r.slug).replace(/[-_]/g,' ').replace(/\s+/g,' ').trim();
     return 'Untitled';
   }
-
   function sanitizeRecipe(raw){
     if(!raw || typeof raw!=='object') return null;
     const r = {...raw};
 
     r.title = safeTitle(r);
-
-    // STRICT: use only the declared mealType (string OR array). Keep original order to define "primary".
-    const mtRaw = raw.mealType;
-    let mts = [];
-    if (Array.isArray(mtRaw)) {
-      mts = mtRaw.map(normaliseMealWord).filter(Boolean);
-    } else if (typeof mtRaw === 'string') {
-      mts = splitPossibleList(mtRaw).map(normaliseMealWord).filter(Boolean);
-    }
-    r.__mealTypes = Array.from(new Set(mts));
-    r.__primaryMealType = r.__mealTypes[0] || '';
-    r.mealType = r.__primaryMealType; // for display
-    if (!r.__mealTypes.length) return null; // exclude if no mealType at all
+    r.mealType = normalizeMealType(r.mealType);
+    if(!r.mealType) r.mealType = ''; // allow heuristics to rescue
 
     if(!r.slug || !String(r.slug).trim()){
       r.slug = r.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -761,6 +783,7 @@
 
     if (bad.length) console.error('[FFF] Failed recipe sources:', bad.map(b=>b.reason && b.reason.message || String(b.reason)));
 
+    // Merge arrays or {recipes:[…]} and de-dup + sanitize
     const mergedRaw = ok.flatMap(({json}) => Array.isArray(json) ? json : (json.recipes || []));
     const seen = new Set();
     RECIPES = mergedRaw
@@ -791,6 +814,7 @@
       const add = (arr, tag) => { if (!arr.includes(tag)) arr.push(tag); };
       const hasAny = (set, arr) => arr.some(w => set.has(w));
 
+      // Dietary autofill (safe-only)
       if (!hasAny(keys, ['milk','butter','cheese','yoghurt','yogurt','cream','ghee']) && !hasAny(allergens, ['milk']))
         add(r.dietary, 'Dairy-free');
 
@@ -798,12 +822,13 @@
         add(r.dietary, 'Egg-free');
 
       const nutWords = ['almond','almonds','walnut','walnuts','hazelnut','hazelnuts','pecan','pecans','cashew','cashews','peanut','peanuts','pistachio','pistachios','nut','nuts'];
-      if (!hasAny(keys, nutWords) && !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pistachio','pecan']))
+      if (!hasAny(keys, nutWords) && !hasAny(allergens, ['nuts','peanuts','tree nuts','walnut','almond','hazelnut','cashew','pecan','pistachio']))
         add(r.dietary, 'Nut-free');
 
       if (!hasAny(keys, ['soy','soya','soy sauce','soya sauce','tofu','tempeh','edamame','miso','tamari']) && !hasAny(allergens, ['soy','soya']))
         add(r.dietary, 'Soy-free');
 
+      // Time flags (strict)
       let hoursMentioned = 0;
       const m = text.match(/(\d+(?:\.\d+)?)\s*(h|hr|hrs|hour|hours)\b/);
       if (m) hoursMentioned = parseFloat(m[1] || '0');
@@ -834,18 +859,21 @@
 
     if (!FIRST_SUCCESSFUL_LOAD && RECIPES.length) {
       FIRST_SUCCESSFUL_LOAD = true;
+      // keep start-empty stance; do NOT press ALL
       ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
       FILTERS.search = '';
       FILTERS.Pantry = {active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
       updateChipStates();
     }
 
+    /* --- CHIP/DATA COMPAT NORMALISER --- */
     for (const r of RECIPES) {
       r.costPrep  = Array.isArray(r.costPrep) ? r.costPrep : [];
       r.dietary   = Array.isArray(r.dietary)  ? r.dietary  : [];
       r.protocols = Array.isArray(r.protocols)? r.protocols: [];
 
       const cp = new Set(r.costPrep.map(s => String(s).trim()));
+
       if (cp.has('Low cost') && !cp.has('Low cost / Budget')) cp.add('Low cost / Budget');
       if (r.costTag === 'Budget') cp.add('Budget');
 
@@ -857,7 +885,9 @@
 
       r.costPrep = [...cp];
     }
+    /* --- END COMPAT NORMALISER --- */
 
+    // Feedback
     if (countEl) {
       const from = ok.map(o => o.url);
       countEl.innerHTML = RECIPES.length
@@ -882,154 +912,17 @@
     }
   }
 
-  // ---------- Wiring ----------
+  // ---------- Wiring (bind once) ----------
   function wire(){
+    // Top buttons
     pantryOpenBtn && (pantryOpenBtn.onclick=()=>openPanel(pantryPanel));
     openPlannerBtn && (openPlannerBtn.onclick=()=>{ openPanel(plannerPanel); renderPlan(); buildWeekGrid(); });
 
     overlay && overlay.addEventListener('click', ()=>{ document.querySelectorAll('.panel.open').forEach(p=>closePanel(p)); });
 
+    // Pantry logic
     qs('#pantryCloseBtn',pantryPanel) && (qs('#pantryCloseBtn',pantryPanel).onclick=()=>closePanel(pantryPanel));
     const pantryInput=qs('#pantryInput',pantryPanel);
     pantryInput && pantryInput.addEventListener('keydown',e=>{
       if(e.key==='Enter'||e.key===','){ e.preventDefault();
-        pantryInput.value.split(',').map(s=>s.trim()).filter(Boolean).forEach(k=>pantry.set.add(k));
-        pantryInput.value=''; renderPantryTokens();
-      }
-    });
-    qs('#pantryFindBtn',pantryPanel) && (qs('#pantryFindBtn',pantryPanel).onclick=()=>{
-      FILTERS.Pantry.active=true; FILTERS.Pantry.keys=[...pantry.set];
-      FILTERS.Pantry.strict=qs('#pantryStrict',pantryPanel).checked;
-      FILTERS.Pantry.extras=+qs('#pantryExtras',pantryPanel).value;
-      FILTERS.Pantry.budget=qs('#pantryBudget',pantryPanel).checked;
-      FILTERS.Pantry.respectDiet=qs('#pantryRespectDiet',pantryPanel).checked;
-      closePanel(pantryPanel); updateChipStates(); render();
-    });
-    qs('#pantryPlanWeekBtn',pantryPanel) && (qs('#pantryPlanWeekBtn',pantryPanel).onclick=()=>{
-      FILTERS.Pantry.active=true; FILTERS.Pantry.keys=[...pantry.set];
-      FILTERS.Pantry.strict=false; FILTERS.Pantry.extras=2; FILTERS.Pantry.budget=true;
-      autoPlanWeek(); closePanel(pantryPanel); openPanel(plannerPanel); updateChipStates();
-    });
-    qs('#pantryResetBtn',pantryPanel) && (qs('#pantryResetBtn',pantryPanel).onclick=()=>{
-      pantry.set.clear(); renderPantryTokens();
-      FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
-      updateChipStates(); render();
-    });
-
-    qs('#plannerCloseBtn',plannerPanel) && (qs('#plannerCloseBtn',plannerPanel).onclick=()=>closePanel(plannerPanel));
-    qs('#plannerClearBtn',plannerPanel) && (qs('#plannerClearBtn',plannerPanel).onclick=()=>{ Object.keys(PLAN).forEach(k=>PLAN[k]=[]); renderPlan(); saveToday(); });
-    qs('#plannerCopyBtn',plannerPanel) && (qs('#plannerCopyBtn',plannerPanel).onclick=()=>{
-      const txt=Object.entries(PLAN).map(([k,arr])=>`${k[0].toUpperCase()+k.slice(1)}:\n`+arr.map(i=>`- ${i.title}`).join('\n')).join('\n\n');
-      navigator.clipboard.writeText(txt); alert('Plan copied to clipboard.');
-    });
-    qs('#plannerPrintBtn',plannerPanel) && (qs('#plannerPrintBtn',plannerPanel).onclick=()=>{
-      if(!printArea) return;
-      printArea.innerHTML = `<article><h1>Meal Plan — Today</h1>${
-        Object.entries(PLAN).map(([k,arr])=>`<h2>${k[0].toUpperCase()+k.slice(1)}</h2><ul>${arr.map(i=>`<li>${i.title}</li>`).join('')||'<li>—</li>'}</ul>`).join('')
-      }</article>`;
-      printArea.removeAttribute('hidden'); printArea.style.display='block';
-      requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
-      const cleanup=()=>{ printArea.innerHTML=''; printArea.setAttribute('hidden',''); printArea.style.display=''; window.removeEventListener('afterprint',cleanup); };
-      if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
-    });
-
-    if (plannerPanel) {
-      plannerPanel.addEventListener('click', (e) => {
-        const swapBtn   = e.target.closest('[data-swap]');
-        const removeBtn = e.target.closest('[data-wremove]');
-        const pickBtn   = e.target.closest('[data-pick]');
-        if (swapBtn) {
-          const [di, sl] = swapBtn.dataset.swap.split(':');
-          swapSlot(+di, sl);
-          return;
-        }
-        if (removeBtn) {
-          const [di, sl] = removeBtn.dataset.wremove.split(':');
-          PLAN_WEEK[+di][sl] = null;
-          saveWeek(); buildWeekGrid(); renderWeekSummary();
-          return;
-        }
-        if (pickBtn) {
-          const [di, sl] = pickBtn.dataset.pick.split(':');
-          swapSlot(+di, sl);
-          return;
-        }
-      });
-    }
-
-    if (weekSummarySection) {
-      weekSummarySection.addEventListener('click', (e) => {
-        const swapBtn   = e.target.closest('[data-swap-main]');
-        const removeBtn = e.target.closest('[data-wremove-main]');
-        const pickBtn   = e.target.closest('[data-pick-main]');
-        if (swapBtn) {
-          const [di, sl] = swapBtn.dataset.swapMain.split(':');
-          swapSlot(+di, sl);
-          return;
-        }
-        if (removeBtn) {
-          const [di, sl] = removeBtn.dataset.wremoveMain.split(':');
-          PLAN_WEEK[+di][sl] = null;
-          saveWeek(); buildWeekGrid(); renderWeekSummary();
-          return;
-        }
-        if (pickBtn) {
-          const [di, sl] = pickBtn.dataset.pickMain.split(':');
-          swapSlot(+di, sl);
-          return;
-        }
-      });
-    }
-
-    wireWeekSummaryControls();
-
-    filterBar && filterBar.addEventListener('click',e=>{
-      const b=e.target.closest('.chip'); if(!b) return;
-      if(b.dataset.filter==='ALL'){
-        FILTERS.ALL=true;
-        ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-        FILTERS.search=''; if(searchInput) searchInput.value='';
-        FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
-        updateChipStates(); render(); return;
-      }
-      const g=b.dataset.group, v=b.dataset.value; FILTERS.ALL=false;
-      (FILTERS[g].has(v)? FILTERS[g].delete(v) : FILTERS[g].add(v));
-      updateChipStates(); render();
-    });
-
-    clearBtn && (clearBtn.onclick=()=>{
-      FILTERS.ALL=false;
-      ['MealType','Dietary','Nutrition','KcalBand','Protocols','Time','CostPrep'].forEach(k=>FILTERS[k].clear());
-      FILTERS.search=''; if(searchInput) searchInput.value='';
-      FILTERS.Pantry={active:false,keys:[],strict:false,extras:2,budget:false,respectDiet:true};
-      updateChipStates(); render();
-    });
-
-    searchInput && (searchInput.oninput=()=>{ FILTERS.ALL=false; FILTERS.search=norm(searchInput.value); updateChipStates(); render(); });
-  }
-
-  // ---------- Boot ----------
-  function init(){
-    if(!grid) return;
-    renderChips(); updateChipStates();
-
-    buildPantry(); buildPlanner(); renderPantryTokens();
-
-    loadToday(); renderPlan();
-    loadWeek();  buildWeekGrid(); renderWeekSummary();
-    wireWeekSummaryControls();
-
-    wire();
-
-    const exportBtn = qs('#exportIndexBtn');
-    exportBtn && exportBtn.addEventListener('click', exportIndex);
-
-    if (countEl) countEl.textContent = 'Choose a filter to begin';
-    if (clearBtn) clearBtn.style.display = 'none';
-
-    const recipeFiles = buildRecipeFileList();
-    loadAllRecipes(recipeFiles);
-  }
-
-  document.addEventListener('DOMContentLoaded', init);
-})();
+        pantry

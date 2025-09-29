@@ -480,7 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
     genBtn.disabled = true;
 
     const yieldUI = () => new Promise(r => requestAnimationFrame(r));
-    const sleep   = (ms=0) => new Promise(r => setTimeout(r, ms));
 
     try {
       const ok = (window.jspdf && window.jspdf.jsPDF) ? true : await ensureJsPDF();
@@ -586,10 +585,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // ---- Training Blueprint (Daily Breakdown with inline alternatives) ----
       function buildProgram(goal, actMult){
         const rules = {
-          Cut:         { mainSets:'3–4', accSets:'2–3', mainReps:'5–8',  accReps:'8–12', mainRIR:'2–3 RIR', accRIR:'2–3 RIR', cardio:'2–4× LISS 20–30 min + 0–1× short HIIT' },
-          'Build/Bulk':{ mainSets:'3–5', accSets:'3–4', mainReps:'5–10', accReps:'8–15', mainRIR:'0–2 RIR (last set 0–1)', accRIR:'1–2 RIR', cardio:'0–2× easy LISS 20–25 min' },
-          Transform:   { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'1–3× LISS 20–30 min' },
-          Maintain:    { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'1–2× LISS 20–25 min' },
+          Cut:         { mainSets:'3–4', accSets:'2–3', mainReps:'5–8',  accReps:'8–12', mainRIR:'2–3 RIR', accRIR:'2–3 RIR', cardio:'LISS 20–30 min (x2–4/wk) or 10–15 min jog' },
+          'Build/Bulk':{ mainSets:'3–5', accSets:'3–4', mainReps:'5–10', accReps:'8–15', mainRIR:'0–2 RIR (last set 0–1)', accRIR:'1–2 RIR', cardio:'LISS 0–2× 20–25 min (easy)' },
+          Transform:   { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'LISS 1–3× 20–30 min' },
+          Maintain:    { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'LISS 1–2× 20–25 min' },
         };
         const r = rules[goal] || rules.Transform;
         const ex = (name, alt, type='main') => {
@@ -599,132 +598,84 @@ document.addEventListener('DOMContentLoaded', () => {
           return `${name} — ${sets}×${reps}, ${rir}${alt ? ` (alt: ${alt})` : ''}`;
         };
 
-        if (actMult < 1.4){
-          // 3-day Full Body (A/B)
-          return [
-            { day:'Mon — Full Body A', items:[
-              ex('Back squat','goblet squat / split squat'),
-              ex('Bench press','push-ups / DB bench'),
-              ex('Bent-over row','one-arm DB row'),
-              ex('Romanian deadlift','DB RDL / hip thrust','acc'),
-              ex('DB incline press','push-ups (feet elevated)','acc'),
-              ex('Face pull / cable row','band face pull','acc'),
-              'Core: plank or dead bug — 3×30–45s, 2–3 RIR'
-            ]},
-            { day:'Wed — Full Body B', items:[
-              ex('Deadlift or RDL','kettlebell swings / hip hinge pattern'),
-              ex('Overhead press','DB shoulder press'),
-              ex('Pull-ups / Lat pulldown','inverted rows / band-assisted pulls'),
-              ex('Bulgarian split squat','goblet reverse lunge','acc'),
-              ex('Hamstring curl','stability-ball curl / slider curl','acc'),
-              ex('Lateral raise','band lateral raise','acc'),
-              'Arms: curls + press-down — 2–3×10–15 each, 1–2 RIR'
-            ]},
-            { day:'Fri — Full Body A (alternate A/B weekly)', items:[
-              ex('Front squat or leg press','goblet squat / wall-sit + DB'),
-              ex('Bench press (pause last set)','DB bench / push-ups'),
-              ex('Chest-supported row','one-arm DB row'),
-              ex('Hip thrust / glute bridge','single-leg bridge','acc'),
-              ex('Rear-delt fly','band fly','acc'),
-              'Calves — 3×10–15, 1–2 RIR'
-            ]},
-            { day:'Cardio', items:[ r.cardio ]},
-            { day:'Progression', items:[
-              'When top reps are hit on all sets, add 2.5–5 kg (or a heavier DB) next time.',
-              'If progress stalls 2 weeks, add 1 set OR reduce RIR by 1.',
-              'Deload every 6–8 weeks: cut volume ~40%, keep RIR ≥3.'
-            ]}
-          ];
-        }
-
-        if (actMult < 1.7){
-          // 4-day Upper/Lower
-          return [
-            { day:'Mon — Upper', items:[
-              ex('Bench press','DB bench / push-ups'),
-              ex('Chest-supported or barbell row','one-arm DB row'),
-              ex('Incline DB press','feet-elevated push-ups','acc'),
-              ex('Lat pulldown / Pull-ups','inverted rows / band-assist','acc'),
-              ex('Overhead press','DB shoulder press','acc'),
-              'Rear-delt fly — 2–3×12–15, 1–2 RIR (alt: band face pull)',
-              'Arms: curls + press-down — 2–3×10–15 each, 1–2 RIR (alt: band curls / OH triceps)'
-            ]},
-            { day:'Tue — Lower', items:[
-              ex('Back squat','goblet squat / split squat'),
-              ex('Romanian deadlift','DB RDL'),
-              ex('Leg press','goblet squat cluster','acc'),
-              ex('Leg curl','slider/stability-ball curl','acc'),
-              'Calves — 3×10–15, 1–2 RIR (alt: single-leg calf raise on step)',
-              'Core: hanging knee raise or cable crunch — 3×10–15, 2 RIR (alt: dead bug)'
-            ]},
-            { day:'Thu — Upper (hypertrophy)', items:[
-              ex('DB bench or machine press','push-ups'),
-              ex('One-arm/seated row','band row'),
-              ex('Incline fly / pec-deck','DB squeeze press','acc'),
-              ex('Straight-arm pulldown / pullover','DB pullover / band pullover','acc'),
-              'Lateral raise — 3–4×12–20, 1–2 RIR (alt: band lateral raise)',
-              'Arms: 3×10–15 each, 0–2 RIR (alts: band curl / band OH triceps)'
-            ]},
-            { day:'Fri — Lower (posterior bias)', items:[
-              ex('Front squat or hack squat','goblet squat / split squat'),
-              ex('Hip thrust / glute bridge','single-leg bridge'),
-              ex('RDL or back extension','DB RDL / hip hinge','acc'),
-              ex('Seated hamstring curl','slider curl','acc'),
-              'Calves — 3×10–15, 1–2 RIR',
-              'Core: side plank — 3×30–45s/side'
-            ]},
-            { day:'Cardio', items:[ r.cardio ]},
-            { day:'Progression', items:[
-              'Add load when top reps reached at prescribed RIR; otherwise add 1 rep per set.',
-              'If performance dips ≥2 sessions, drop one set on that lift.'
-            ]}
-          ];
-        }
-
-        // 5-day PPL + Upper + Arms/Conditioning
+        // Fixed weekly cadence: 5 lift days + Wed Rest/Optional LISS + Sun Full Rest
         return [
-          { day:'Mon — Push', items:[
-            ex('Bench or machine press','DB bench / push-ups'),
-            ex('Incline DB press','feet-elevated push-ups'),
-            'Weighted dip or cable press — 3–4×8–12, 1–2 RIR (alt: bench dip / band press)',
-            'Lateral raise — 3–4×12–20, 1–2 RIR (alt: band lateral raise)',
-            'Triceps press-down/overhead ext — 3–4×10–15, 0–2 RIR (alt: band OH triceps)'
-          ]},
-          { day:'Tue — Pull', items:[
-            ex('Weighted pull-ups / Lat pulldown','inverted rows / band-assist'),
-            ex('Barbell or chest-supported row','one-arm DB row'),
-            'Single-arm row — 3×8–12, 1–2 RIR (alt: band row)',
-            'Rear-delt fly — 3×12–20, 1–2 RIR (alt: band face pull)',
-            'Barbell/cable curl — 3–4×8–12, 0–2 RIR (alt: DB/band curl)'
-          ]},
-          { day:'Wed — Legs', items:[
-            ex('Back squat or hack squat','goblet squat / split squat'),
-            ex('Romanian deadlift','DB RDL'),
-            'Leg press — 3–4×10–15, 1–2 RIR (alt: goblet squat cluster)',
-            'Leg curl — 3×10–15, 1–2 RIR (alt: slider/ball curl)',
-            'Calves — 3×10–15, 1–2 RIR (alt: single-leg calf raise)',
-            'Core: ab-wheel 3×6–12, 1–2 RIR (alt: plank 3×30–45s)'
-          ]},
-          { day:'Thu — Upper (strength/weak points)', items:[
-            ex('Bench press (heavier)','DB bench / push-ups'),
-            ex('Row (heavier)','one-arm DB row / band row'),
-            'Overhead press — 3–4×6–10, 1–2 RIR (alt: DB shoulder press)',
-            'Choose 2 weak-point accessories — 3×8–12, 1–2 RIR'
-          ]},
-          { day:(goal==='Build/Bulk' ? 'Fri — Arms/Delts (specialisation)' : 'Fri — Conditioning + Core'),
-            items: goal==='Build/Bulk'
-              ? [
-                  'Curls — 4×8–12, 0–2 RIR (alt: band curls)',
-                  'Triceps — 4×8–12, 0–2 RIR (alt: band OH triceps)',
-                  'Lateral raises — 4×12–20, 1–2 RIR (alt: band lateral raise)',
-                  'Rear-delts — 3×12–20, 1–2 RIR (alt: band face pull)'
-                ]
-              : [rules[goal].cardio, 'Core circuit 10–15 min (easy effort)'] },
-          { day:'Progression', items:[
-            'Progress load or reps weekly while staying at listed RIR.',
-            'If all sets hit top reps 2 weeks in a row, add a small load next week.',
-            'Every 6–8 weeks: deload (halve volume, keep RIR ≥3).'
-          ]}
+          {
+            day:'Mon — Lower (Strength)',
+            items:[
+              ex('Back Squat','Goblet/Bodyweight Squat'),
+              ex('Romanian Deadlift','DB RDL / Hip Hinge'),
+              ex('Walking Lunge','Split Squat / Step-up','acc'),
+              ex('Glute Bridge / Hip Thrust','Single-leg Bridge','acc'),
+              'Core: Plank 3×30–60s, 2–3 RIR',
+              'Movement: 6–8k steps or 20 min bike or 10–15 min jog'
+            ]
+          },
+          {
+            day:'Tue — Upper (Push/Pull)',
+            items:[
+              ex('Bench Press','Push-up / DB Bench'),
+              ex('Chest-supported or Barbell Row','Inverted Row / Band Row'),
+              ex('Incline DB Press','Feet-elevated Push-up','acc'),
+              ex('Lat Pulldown / Pull-up','Band Pulldown / Inverted Row','acc'),
+              'Shoulders: Lateral Raise 3–4×12–20, 1–2 RIR (Band alt OK)',
+              'Arms: Curl + Press-down 2–3×10–15, 1–2 RIR (Bands OK)',
+              'Movement: 6–8k steps or 20–25 min easy bike'
+            ]
+          },
+          {
+            day:'Wed — Rest / Optional Cardio (LISS)',
+            items:[
+              'Optional: LISS 20–30 min (walk, easy bike, swim) — conversational pace',
+              'Mobility: 10–15 min (hips, T-spine, ankles, shoulders)',
+              'Movement: 6–10k steps or 25–30 min easy bike'
+            ]
+          },
+          {
+            day:'Thu — Lower (Posterior Focus)',
+            items:[
+              ex('Deadlift or RDL','Hip Hinge (no weight) / Back Extension'),
+              ex('Front Squat or Hack Squat','Goblet / Tempo BW Squat'),
+              ex('Leg Curl','Slider/Swiss-ball Curl','acc'),
+              'Calves: 3×10–15, 1–2 RIR (Single-leg on a step)',
+              'Core: Side Plank 3×30–45s/side',
+              'Movement: 6–8k steps or 20 min bike'
+            ]
+          },
+          {
+            day:'Fri — Upper (Strength / Weak Points)',
+            items:[
+              ex('Bench Press (heavier)','Weighted/Tempo Push-up'),
+              ex('Row (heavier)','Feet-elevated Inverted Row / Band Row'),
+              ex('Overhead Press','DB Shoulder Press','acc'),
+              'Choose 2 weak points — 3×8–12 (rear delts / triceps / biceps / upper back)',
+              'Movement: 6–8k steps or 20–25 min easy bike'
+            ]
+          },
+          {
+            day:'Sat — Conditioning + Core',
+            items:[
+              r.cardio,
+              'Core circuit 10–15 min (Dead Bug, Hollow Hold, Side Plank)',
+              'Optional accessories 2–3×12–15 (glutes / upper back)',
+              'Movement: 8–10k steps or 30–40 min easy bike'
+            ]
+          },
+          {
+            day:'Sun — Full Rest',
+            items:[
+              'Rest & recovery: sleep, mobility, light walk as feels good',
+              'Optional: 10–15 min very easy spin for blood flow'
+            ]
+          },
+          {
+            day:'Progression & Deload',
+            items:[
+              'Progress when top reps are hit at listed RIR — add 2.5–5 kg or +1 rep next time.',
+              'If you stall 2 weeks: add 1 set OR reduce RIR by 1 on last set.',
+              'Deload every 6–8 weeks: cut volume ~40–50%, keep RIR ≥3, keep patterns.'
+            ]
+          }
         ];
       }
 
@@ -751,6 +702,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (y > 770){ doc.addPage(); y=72; }
       }
       await sectionBreak();
+
+      // ---- Glossary (Quick) ----
+      doc.setFont('helvetica','bold'); doc.setFontSize(13);
+      doc.text('Glossary (Quick)', marginX, y); y += 16;
+      doc.setFont('helvetica','normal'); doc.setFontSize(11);
+      [
+        'RIR (Reps in Reserve): how many reps left before true failure. 2 RIR ≈ 2 reps left.',
+        'LISS: Low-Intensity Steady-State cardio (easy pace you can talk at).',
+        'NEAT: Non-Exercise Activity Thermogenesis — movement outside workouts (steps, chores, stairs).'
+      ].forEach(t=>{
+        const lns = doc.splitTextToSize('• ' + t, wrapW);
+        for (const ln of lns){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
+      });
+      y += 6;
+      if (y > 770){ doc.addPage(); y=72; }
+
+      // ---- Movement = Calories Out (Pick Your Mode) ----
+      doc.setFont('helvetica','bold'); doc.setFontSize(13);
+      doc.text('Movement = Calories Out (Pick Your Mode)', marginX, y); y += 16;
+      doc.setFont('helvetica','normal'); doc.setFontSize(11);
+      [
+        'Most days pick ONE (or mix): 6–10k steps, OR 20–30 min easy cycling, OR 10–15 min relaxed jog.',
+        'If sedentary, start with 4–6k steps or 15–20 min easy bike; add ~1–2k steps or +5 min each 1–2 weeks.',
+        'Low-impact options: brisk walk, easy bike, gentle swim/elliptical — consistency beats intensity.',
+        'On lift days keep cardio easy; on Wed you can do longer easy LISS if you like.'
+      ].forEach(t=>{
+        const lns = doc.splitTextToSize('• ' + t, wrapW);
+        for (const ln of lns){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
+      });
+      y += 6;
+      if (y > 770){ doc.addPage(); y=72; }
 
       // ---- Nutrition Tips ----
       doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Nutrition Tips', marginX, y); y += 16;

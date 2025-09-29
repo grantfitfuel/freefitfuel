@@ -334,9 +334,12 @@
 <!-- Inline scripts (burger + calculators) -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  /* ===========================
+     Header burger (mobile nav)
+  ============================*/
   const btn = document.querySelector('.hamburger');
   const nav = document.querySelector('.main-nav');
-  if(btn && nav){
+  if (btn && nav) {
     btn.addEventListener('click', () => {
       const open = btn.classList.toggle('active');
       nav.classList.toggle('open', open);
@@ -344,29 +347,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Macros calculator (Mifflin–St Jeor by default; auto-switch to Katch–McArdle if BF% provided) =====
-  const goalChips=[...document.querySelectorAll('.goal-chip')];
-  let GOAL='Maintain';
-  goalChips.forEach(b=>b.addEventListener('click', ()=>{
-    goalChips.forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true'); GOAL=b.dataset.goal; update();
+  /* ===============================================
+     Macros Calculator (Mifflin–St Jeor / Katch–McA)
+  ================================================*/
+  const goalChips = [...document.querySelectorAll('.goal-chip')];
+  let GOAL = 'Maintain';
+  goalChips.forEach(b => b.addEventListener('click', () => {
+    goalChips.forEach(x => x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    GOAL = b.dataset.goal;
+    update();
   }));
 
-  const sex=document.getElementById('bmrSex'),
-        age=document.getElementById('bmrAge'),
-        ht =document.getElementById('bmrHeight'),
-        wt =document.getElementById('bmrWeight'),
-        act=document.getElementById('bmrActivity'),
-        useBodyFat=document.getElementById('useBodyFat'),
-        bodyFat=document.getElementById('bodyFat'),
-        bfWrap=document.getElementById('bfWrap'),
-        targetBFInput=document.getElementById('targetBodyFat');
+  const sex  = document.getElementById('bmrSex');
+  const age  = document.getElementById('bmrAge');
+  const ht   = document.getElementById('bmrHeight');
+  const wt   = document.getElementById('bmrWeight');
+  const act  = document.getElementById('bmrActivity');
+  const useBodyFat = document.getElementById('useBodyFat');
+  const bodyFat    = document.getElementById('bodyFat');
+  const bfWrap     = document.getElementById('bfWrap');
+  const targetBFInput = document.getElementById('targetBodyFat');
 
-  const outK=document.getElementById('outKcal'),
-        outP=document.getElementById('outProtein'),
-        outC=document.getElementById('outCarbs'),
-        outF=document.getElementById('outFat'),
-        goalLine=document.getElementById('goalLine');
+  const outK = document.getElementById('outKcal');
+  const outP = document.getElementById('outProtein');
+  const outC = document.getElementById('outCarbs');
+  const outF = document.getElementById('outFat');
+  const goalLine = document.getElementById('goalLine');
 
   if (useBodyFat) {
     useBodyFat.addEventListener('change', () => {
@@ -375,16 +382,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (bodyFat) bodyFat.addEventListener('input', update);
   }
-  if (targetBFInput) targetBFInput.addEventListener('input', () => {/* target affects PDF phases; UI stays same */});
+  if (targetBFInput) targetBFInput.addEventListener('input', () => { /* affects PDF only */ });
 
-  function calcBMR(s,kg,cm,yrs){
+  function calcBMR(s, kg, cm, yrs){
     if (useBodyFat && useBodyFat.checked) {
       const bf = parseFloat(bodyFat?.value || 0);
       if (bf > 0 && bf < 70 && kg > 0) {
         const lbm = kg * (1 - bf/100);
-        return 370 + (21.6 * lbm);
+        return 370 + (21.6 * lbm); // Katch–McArdle
       }
     }
+    // Mifflin–St Jeor
     return s==='male' ? 10*kg + 6.25*cm - 5*yrs + 5
                       : 10*kg + 6.25*cm - 5*yrs - 161;
   }
@@ -414,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function update(){
-    const bmr = calcBMR(sex.value, parseFloat(wt.value||0), parseFloat(ht.value||0), parseFloat(age.value||0));
+    const bmr  = calcBMR(sex.value, parseFloat(wt.value||0), parseFloat(ht.value||0), parseFloat(age.value||0));
     const tdee = bmr * parseFloat(act.value||1);
     const t = targetsFromTDEE(tdee, GOAL);
 
@@ -437,7 +445,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   update();
 
-  // ===== Hydration =====
+  /* ==================
+     Hydration helper
+  ===================*/
   const hydrBtn = document.getElementById('hydrCalc');
   const hydrOut = document.getElementById('hydrOut');
   const hydrW   = document.getElementById('hydrWeight');
@@ -451,9 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if(hydrW)   hydrW.addEventListener('input', calcHydr);
   calcHydr();
 
-  // ===== PDF GENERATOR (robust loader + target-aware phases) =====
-  const genBtn = document.getElementById('generatePDF');
-
+  /* =========================
+     PDF generator dependency
+  ==========================*/
   function ensureJsPDF() {
     return new Promise((resolve, reject) => {
       if (window.jspdf && window.jspdf.jsPDF) return resolve(true);
@@ -471,320 +481,432 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ================================
+     PDF: staged plan + user override
+  =================================*/
+  const genBtn = document.getElementById('generatePDF');
+
   if (genBtn) {
-  genBtn.addEventListener('click', async () => {
-    if (genBtn.dataset.busy === '1') return;   // prevent double-click
-    genBtn.dataset.busy = '1';
-    const oldText = genBtn.textContent;
-    genBtn.textContent = 'Generating…';
-    genBtn.disabled = true;
+    genBtn.addEventListener('click', async () => {
+      if (genBtn.dataset.busy === '1') return;
+      genBtn.dataset.busy = '1';
+      const oldText = genBtn.textContent;
+      genBtn.textContent = 'Generating…';
+      genBtn.disabled = true;
 
-    const yieldUI = () => new Promise(r => requestAnimationFrame(r));
+      const yieldUI = () => new Promise(r => requestAnimationFrame(r));
 
-    try {
-      const ok = (window.jspdf && window.jspdf.jsPDF) ? true : await ensureJsPDF();
-      if (!ok) { alert('PDF library could not be loaded. Please refresh and try again.'); return; }
-      const { jsPDF } = window.jspdf;
+      try {
+        const ok = (window.jspdf && window.jspdf.jsPDF) ? true : await ensureJsPDF();
+        if (!ok) { alert('PDF library could not be loaded. Please refresh and try again.'); return; }
+        const { jsPDF } = window.jspdf;
 
-      const doc = new jsPDF({ unit:'pt', format:'a4', compress:true });
-      const marginX = 56;
-      let y = 72;
-      const R = n => Math.round(n);
-      const wrapW = 460;
+        const doc = new jsPDF({ unit:'pt', format:'a4', compress:true });
+        const marginX = 56;
+        let y = 72;
+        const R = n => Math.round(n);
+        const wrapW = 460;
 
-      const line = (yy) => {
-        doc.setDrawColor(255,106,0);
-        doc.setLineWidth(1);
-        doc.line(marginX, yy, 539, yy);
-      };
-      function addWrapped(text, step=16){
-        const lines = doc.splitTextToSize(text, wrapW);
-        for (const t of lines){
-          if (y > 770) { doc.addPage(); y = 72; }
-          doc.text(t, marginX, y); y += step;
-        }
-      }
-      async function sectionBreak(){ y += 6; if (y > 730) { doc.addPage(); y = 72; } await yieldUI(); }
-
-      // ---- Grab inputs ----
-      const kg  = parseFloat(wt.value||0);
-      const cm  = parseFloat(ht.value||0);
-      const yrs = parseFloat(age.value||0);
-      const sx  = sex.value;
-      const actMult = parseFloat(act.value||1);
-      const currentBF = (useBodyFat && useBodyFat.checked && parseFloat(bodyFat?.value||0) > 0) ? parseFloat(bodyFat.value) : null;
-      const targetBF  = parseFloat(targetBFInput?.value || '');
-      const bmr  = calcBMR(sx, kg, cm, yrs);
-      const tdee = bmr * actMult;
-      const lbm  = (currentBF !== null && !isNaN(currentBF)) ? (kg * (1 - currentBF/100)) : null;
-
-      // ---- Title ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,106,0);
-      doc.text('Personalised Body Recomposition Roadmap', marginX, y); y += 18;
-      doc.setTextColor(60); doc.setFontSize(12); doc.setFont('helvetica','normal');
-      doc.text(!isNaN(targetBF) ? `Target: ~${targetBF}% body fat` : `Goal: ${GOAL}`, marginX, y);
-      y += 12; line(y+8); y += 24;
-      await sectionBreak();
-
-      // ---- Baseline ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(0);
-      doc.text('Baseline (Your Starting Point)', marginX, y); y += 16;
-      doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      [
-        `Weight: ${kg || '—'} kg`,
-        `Height: ${cm || '—'} cm`,
-        `Age: ${yrs || '—'} years`,
-        `Sex: ${sx==='male'?'Male':'Female'}`,
-        `Body fat: ${currentBF !== null ? currentBF+'%' : '—'}`,
-        `Target Body Fat: ${!isNaN(targetBF)?targetBF+'%':'—'}`,
-        `Lean Body Mass: ${lbm!==null?Math.round(lbm*10)/10+' kg':'—'}`,
-        `BMR: ~${R(bmr)} kcal/day`,
-        `Estimated TDEE (activity x${actMult}): ~${R(tdee)} kcal/day`,
-        `Current Goal chip: ${GOAL}`
-      ].forEach(t => addWrapped('• '+t));
-      await sectionBreak();
-
-      // ---- Phase planning ----
-      const cutKcal    = Math.round(tdee * 0.82);
-      const recompKcal = Math.round(tdee - 300);
-      const bulkKcal   = Math.round(tdee + 250);
-      const proteinFor = base => lbm ? Math.max(base, Math.round(lbm*2.0)) : base;
-
-      function plannedPhases(curBF, tgtBF){
-        if (isNaN(tgtBF)){
-          if (GOAL==='Cut') return [
-            {title:'Cutting', kcal:cutKcal, protein:proteinFor(130), carbs:'150–180 g/day', fat:'55–65 g/day',
-             notes:['Strength train 4x/wk; cardio 3x/wk.','Aim 0.5–0.8 kg/wk; review 4-weekly.']},
-            {title:'Maintenance (hold)', kcal:Math.round(tdee), protein:proteinFor(130), carbs:'Moderate', fat:'Moderate',
-             notes:['Hold 2–4 weeks to consolidate.']}
-          ];
-          if (GOAL==='Build/Bulk') return [
-            {title:'Lean Bulk', kcal:bulkKcal, protein:proteinFor(135), carbs:'230–260 g/day', fat:'65–70 g/day',
-             notes:['5x/wk lifting; minimal cardio.','Aim 0.2–0.3 kg/wk gain.']}
-          ];
-          return [
-            {title:GOAL, kcal:GOAL==='Transform'?recompKcal:Math.round(tdee), protein:proteinFor(130),
-             carbs:GOAL==='Transform'?'≈200 g/day':'Balanced', fat:GOAL==='Transform'?'≈60 g/day':'Balanced',
-             notes:[GOAL==='Transform'?'Small deficit + progressive overload.':'Hold steady; train hard.']}
-          ];
-        }
-        // (Your existing targetBF vs currentBF branches can stay here as before)
-        return [];
-      }
-
-      const phases = plannedPhases(currentBF, targetBF);
-      for (const block of phases){
-        doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text(block.title, marginX, y); y += 16;
-        doc.setFont('helvetica','normal'); doc.setFontSize(11);
-        [`Calories: ~${block.kcal} kcal/day`,`Protein: ${block.protein} g/day`,
-         `Carbs: ${block.carbs}`,`Fat: ${block.fat}`].forEach(t=>addWrapped('• '+t));
-        (block.notes||[]).forEach(t=>addWrapped('• '+t));
-        await sectionBreak();
-      }
-
-      // ---- Training Blueprint (Daily Breakdown with inline alternatives) ----
-      function buildProgram(goal, actMult){
-        const rules = {
-          Cut:         { mainSets:'3–4', accSets:'2–3', mainReps:'5–8',  accReps:'8–12', mainRIR:'2–3 RIR', accRIR:'2–3 RIR', cardio:'LISS 20–30 min (x2–4/wk) or 10–15 min jog' },
-          'Build/Bulk':{ mainSets:'3–5', accSets:'3–4', mainReps:'5–10', accReps:'8–15', mainRIR:'0–2 RIR (last set 0–1)', accRIR:'1–2 RIR', cardio:'LISS 0–2× 20–25 min (easy)' },
-          Transform:   { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'LISS 1–3× 20–30 min' },
-          Maintain:    { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'LISS 1–2× 20–25 min' },
+        const line = (yy) => {
+          doc.setDrawColor(255,106,0);
+          doc.setLineWidth(1);
+          doc.line(marginX, yy, 539, yy);
         };
-        const r = rules[goal] || rules.Transform;
-        const ex = (name, alt, type='main') => {
-          const sets = type==='main' ? r.mainSets : r.accSets;
-          const reps = type==='main' ? r.mainReps : r.accReps;
-          const rir  = type==='main' ? r.mainRIR  : r.accRIR;
-          return `${name} — ${sets}×${reps}, ${rir}${alt ? ` (alt: ${alt})` : ''}`;
-        };
-
-        // Fixed weekly cadence: 5 lift days + Wed Rest/Optional LISS + Sun Full Rest
-        return [
-          {
-            day:'Mon — Lower (Strength)',
-            items:[
-              ex('Back Squat','Goblet/Bodyweight Squat'),
-              ex('Romanian Deadlift','DB RDL / Hip Hinge'),
-              ex('Walking Lunge','Split Squat / Step-up','acc'),
-              ex('Glute Bridge / Hip Thrust','Single-leg Bridge','acc'),
-              'Core: Plank 3×30–60s, 2–3 RIR',
-              'Movement: 6–8k steps or 20 min bike or 10–15 min jog'
-            ]
-          },
-          {
-            day:'Tue — Upper (Push/Pull)',
-            items:[
-              ex('Bench Press','Push-up / DB Bench'),
-              ex('Chest-supported or Barbell Row','Inverted Row / Band Row'),
-              ex('Incline DB Press','Feet-elevated Push-up','acc'),
-              ex('Lat Pulldown / Pull-up','Band Pulldown / Inverted Row','acc'),
-              'Shoulders: Lateral Raise 3–4×12–20, 1–2 RIR (Band alt OK)',
-              'Arms: Curl + Press-down 2–3×10–15, 1–2 RIR (Bands OK)',
-              'Movement: 6–8k steps or 20–25 min easy bike'
-            ]
-          },
-          {
-            day:'Wed — Rest / Optional Cardio (LISS)',
-            items:[
-              'Optional: LISS 20–30 min (walk, easy bike, swim) — conversational pace',
-              'Mobility: 10–15 min (hips, T-spine, ankles, shoulders)',
-              'Movement: 6–10k steps or 25–30 min easy bike'
-            ]
-          },
-          {
-            day:'Thu — Lower (Posterior Focus)',
-            items:[
-              ex('Deadlift or RDL','Hip Hinge (no weight) / Back Extension'),
-              ex('Front Squat or Hack Squat','Goblet / Tempo BW Squat'),
-              ex('Leg Curl','Slider/Swiss-ball Curl','acc'),
-              'Calves: 3×10–15, 1–2 RIR (Single-leg on a step)',
-              'Core: Side Plank 3×30–45s/side',
-              'Movement: 6–8k steps or 20 min bike'
-            ]
-          },
-          {
-            day:'Fri — Upper (Strength / Weak Points)',
-            items:[
-              ex('Bench Press (heavier)','Weighted/Tempo Push-up'),
-              ex('Row (heavier)','Feet-elevated Inverted Row / Band Row'),
-              ex('Overhead Press','DB Shoulder Press','acc'),
-              'Choose 2 weak points — 3×8–12 (rear delts / triceps / biceps / upper back)',
-              'Movement: 6–8k steps or 20–25 min easy bike'
-            ]
-          },
-          {
-            day:'Sat — Conditioning + Core',
-            items:[
-              r.cardio,
-              'Core circuit 10–15 min (Dead Bug, Hollow Hold, Side Plank)',
-              'Optional accessories 2–3×12–15 (glutes / upper back)',
-              'Movement: 8–10k steps or 30–40 min easy bike'
-            ]
-          },
-          {
-            day:'Sun — Full Rest',
-            items:[
-              'Rest & recovery: sleep, mobility, light walk as feels good',
-              'Optional: 10–15 min very easy spin for blood flow'
-            ]
-          },
-          {
-            day:'Progression & Deload',
-            items:[
-              'Progress when top reps are hit at listed RIR — add 2.5–5 kg or +1 rep next time.',
-              'If you stall 2 weeks: add 1 set OR reduce RIR by 1 on last set.',
-              'Deload every 6–8 weeks: cut volume ~40–50%, keep RIR ≥3, keep patterns.'
-            ]
+        function addWrapped(text, step=16){
+          const lines = doc.splitTextToSize(text, wrapW);
+          for (const t of lines){
+            if (y > 770) { doc.addPage(); y = 72; }
+            doc.text(t, marginX, y); y += step;
           }
-        ];
-      }
-
-      // Heading
-      doc.setFont('helvetica','bold'); doc.setFontSize(13);
-      doc.text('Training Blueprint (Daily Breakdown)', marginX, y); y += 16;
-
-      // Render
-      const program = buildProgram(GOAL, actMult);
-      doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      for (const day of program){
-        // Day header
-        doc.setFont('helvetica','bold');
-        let lines = doc.splitTextToSize(day.day, wrapW);
-        for (const ln of lines){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
-        doc.setFont('helvetica','normal');
-
-        // Items
-        for (const item of day.items){
-          lines = doc.splitTextToSize('• ' + item, wrapW);
-          for (const ln of lines){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
         }
-        y += 6;
-        if (y > 770){ doc.addPage(); y=72; }
+        async function sectionBreak(){ y += 6; if (y > 730) { doc.addPage(); y = 72; } await yieldUI(); }
+
+        // Inputs
+        const kg  = parseFloat(wt.value||0);
+        const cm  = parseFloat(ht.value||0);
+        const yrs = parseFloat(age.value||0);
+        const sx  = sex.value;
+        const actMult = parseFloat(act.value||1);
+        const currentBF = (useBodyFat && useBodyFat.checked && parseFloat(bodyFat?.value||0) > 0) ? parseFloat(bodyFat.value) : NaN;
+        const targetBF  = parseFloat(targetBFInput?.value || '');
+
+        const bmr  = (function(){
+          if (useBodyFat && useBodyFat.checked) {
+            const bf = parseFloat(bodyFat?.value || 0);
+            if (bf > 0 && bf < 70 && kg > 0) {
+              const lbm = kg * (1 - bf/100);
+              return 370 + (21.6 * lbm);
+            }
+          }
+          return sx==='male' ? 10*kg + 6.25*cm - 5*yrs + 5 : 10*kg + 6.25*cm - 5*yrs - 161;
+        })();
+        const tdee = bmr * actMult;
+        const lbm  = (!isNaN(currentBF)) ? (kg * (1 - currentBF/100)) : null;
+
+        // Macros helpers
+        const kcalFor = {
+          Cut:       Math.round(tdee * 0.82),
+          Transform: Math.round(tdee - 300),
+          Maintain:  Math.round(tdee),
+          Bulk:      Math.round(tdee + 250)
+        };
+        const proteinFor = base => lbm ? Math.max(base, Math.round(lbm*2.0)) : base;
+
+        // BF% → staged plan
+        function recommendStages(bf, selectedGoal){
+          const stages = [];
+          if (!isNaN(bf)) {
+            if (bf >= 30) {
+              stages.push('Cut','Transform','Maintain');
+            } else if (bf >= 20) {
+              stages.push('Cut','Transform','Maintain');
+            } else if (bf >= 15) {
+              stages.push('Transform','Maintain');
+            } else {
+              if (selectedGoal === 'Build/Bulk') stages.push('Build/Bulk','Maintain');
+              else stages.push('Maintain');
+            }
+          } else {
+            // No BF% entered → mirror selected goal
+            if (selectedGoal === 'Transform') stages.push('Transform','Maintain');
+            else if (selectedGoal === 'Build/Bulk') stages.push('Build/Bulk','Maintain');
+            else if (selectedGoal === 'Cut') stages.push('Cut','Maintain');
+            else stages.push('Maintain');
+          }
+          return stages.filter((s,i,a)=>a.indexOf(s)===i);
+        }
+
+        // Override prompt: single vs staged
+        if (!isNaN(currentBF) && currentBF >= 30 && GOAL !== 'Transform') {
+          console.info('[FFF] High BF% detected; staged plan will begin with a Cut.');
+        }
+        const singlePhaseChoice = confirm(
+          `Create PDF for ONLY your selected goal (“${GOAL}”)?\n\n` +
+          `OK = Single-phase (${GOAL})\n` +
+          `Cancel = Recommended staged plan based on your body fat %`
+        );
+
+        const phases = singlePhaseChoice ? [GOAL] : recommendStages(currentBF, GOAL);
+
+        // Title
+        doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,106,0);
+        doc.text('Personalised Body Recomposition Roadmap', marginX, y); y += 18;
+        doc.setTextColor(60); doc.setFontSize(12); doc.setFont('helvetica','normal');
+        const topLine = !isNaN(targetBF) ? `Target: ~${targetBF}% body fat` : `Selected goal: ${GOAL}`;
+        doc.text(topLine, marginX, y); y += 12;
+        line(y+8); y += 24;
+        await sectionBreak();
+
+        // Baseline
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(0);
+        doc.text('Baseline (Your Starting Point)', marginX, y); y += 16;
+        doc.setFont('helvetica','normal'); doc.setFontSize(11);
+        [
+          `Weight: ${kg || '—'} kg`,
+          `Height: ${cm || '—'} cm`,
+          `Age: ${yrs || '—'} years`,
+          `Sex: ${sx==='male'?'Male':'Female'}`,
+          `Body fat: ${!isNaN(currentBF) ? currentBF+'%' : '—'}`,
+          `Target Body Fat: ${!isNaN(targetBF)?targetBF+'%':'—'}`,
+          `Lean Body Mass: ${lbm!==null?Math.round(lbm*10)/10+' kg':'—'}`,
+          `BMR: ~${R(bmr)} kcal/day`,
+          `Estimated TDEE (activity x${actMult}): ~${R(tdee)} kcal/day`,
+          `Plan mode: ${singlePhaseChoice ? 'Single-phase' : 'Staged journey'}`
+        ].forEach(t => addWrapped('• '+t));
+        await sectionBreak();
+
+        // Per-phase nutrition config
+        function nutritionForPhase(phase){
+          if (phase === 'Cut') {
+            return {
+              kcal: kcalFor.Cut,
+              protein: proteinFor(130),
+              carbs: '40–45% of kcal',
+              fat:   '25–30% of kcal',
+              notes: [
+                'Aim 0.5–0.8 kg/week loss; reassess every 2–4 weeks.',
+                'Keep protein high; add 1–3 LISS sessions + optional short HIIT.'
+              ]
+            };
+          }
+          if (phase === 'Transform') {
+            return {
+              kcal: kcalFor.Transform,
+              protein: proteinFor(135),
+              carbs: '≈45–50% of kcal',
+              fat:   '≈25–30% of kcal',
+              notes: ['Small deficit with progressive overload; measure monthly visuals/waist.']
+            };
+          }
+          if (phase === 'Build/Bulk') {
+            return {
+              kcal: kcalFor.Bulk,
+              protein: proteinFor(135),
+              carbs: '50–55% of kcal',
+              fat:   '20–25% of kcal',
+              notes: ['Aim 0.2–0.3 kg/week gain; keep cardio easy 0–2×/wk.']
+            };
+          }
+          return {
+            kcal: kcalFor.Maintain,
+            protein: proteinFor(130),
+            carbs: 'Balanced',
+            fat:   'Balanced',
+            notes: ['Hold for 2–4 weeks to consolidate before the next phase.']
+          };
+        }
+
+        // Training blueprint (goal-aware, equipment-friendly alts)
+        function buildProgram(goal, actMult){
+          const rules = {
+            Cut:         { mainSets:'3–4', accSets:'2–3', mainReps:'5–8',  accReps:'8–12', mainRIR:'2–3 RIR', accRIR:'2–3 RIR', cardio:'2–4× LISS 20–30 min + 0–1× short HIIT' },
+            'Build/Bulk':{ mainSets:'3–5', accSets:'3–4', mainReps:'5–10', accReps:'8–15', mainRIR:'0–2 RIR (last set 0–1)', accRIR:'1–2 RIR', cardio:'0–2× easy LISS 20–25 min' },
+            Transform:   { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'1–3× LISS 20–30 min' },
+            Maintain:    { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12', mainRIR:'1–2 RIR', accRIR:'1–2 RIR', cardio:'1–2× LISS 20–25 min' },
+          };
+          const r = rules[goal] || rules.Transform;
+          const ex = (name, alt, type='main') => {
+            const sets = type==='main' ? r.mainSets : r.accSets;
+            const reps = type==='main' ? r.mainReps : r.accReps;
+            const rir  = type==='main' ? r.mainRIR  : r.accRIR;
+            return `${name} — ${sets}×${reps}, ${rir}${alt ? ` (alt: ${alt})` : ''}`;
+          };
+
+          if (actMult < 1.4){
+            // 3-day Full Body (A/B)
+            return [
+              { day:'Mon — Full Body A', items:[
+                ex('Back squat','goblet squat / split squat'),
+                ex('Bench press','push-ups / DB bench'),
+                ex('Bent-over row','one-arm DB row'),
+                ex('Romanian deadlift','DB RDL / hip thrust','acc'),
+                ex('DB incline press','push-ups (feet elevated)','acc'),
+                ex('Face pull / cable row','band face pull','acc'),
+                'Core: plank or dead bug — 3×30–45s, 2–3 RIR'
+              ]},
+              { day:'Wed — Full Body B', items:[
+                ex('Deadlift or RDL','kettlebell swings / hip hinge pattern'),
+                ex('Overhead press','DB shoulder press'),
+                ex('Pull-ups / Lat pulldown','inverted rows / band-assisted pulls'),
+                ex('Bulgarian split squat','goblet reverse lunge','acc'),
+                ex('Hamstring curl','stability-ball curl / slider curl','acc'),
+                ex('Lateral raise','band lateral raise','acc'),
+                'Arms: curls + press-down — 2–3×10–15 each, 1–2 RIR'
+              ]},
+              { day:'Fri — Full Body A (alt. week)', items:[
+                ex('Front squat or leg press','goblet squat / wall-sit + DB'),
+                ex('Bench press (pause last set)','DB bench / push-ups'),
+                ex('Chest-supported row','one-arm DB row'),
+                ex('Hip thrust / glute bridge','single-leg bridge','acc'),
+                ex('Rear-delt fly','band fly','acc'),
+                'Calves — 3×10–15, 1–2 RIR'
+              ]},
+              { day:'Cardio', items:[ r.cardio ]},
+              { day:'Progression', items:[
+                'When top reps are hit on all sets, add 2.5–5 kg (or a heavier DB) next time.',
+                'If progress stalls 2 weeks, add 1 set OR reduce RIR by 1.',
+                'Deload every 6–8 weeks: cut volume ~40%, keep RIR ≥3.'
+              ]}
+            ];
+          }
+
+          if (actMult < 1.7){
+            // 4-day Upper/Lower
+            return [
+              { day:'Mon — Upper', items:[
+                ex('Bench press','DB bench / push-ups'),
+                ex('Chest-supported or barbell row','one-arm DB row'),
+                ex('Incline DB press','feet-elevated push-ups','acc'),
+                ex('Lat pulldown / Pull-ups','inverted rows / band-assist','acc'),
+                ex('Overhead press','DB shoulder press','acc'),
+                'Rear-delt fly — 2–3×12–15, 1–2 RIR (alt: band face pull)',
+                'Arms: curls + press-down — 2–3×10–15 each, 1–2 RIR (alt: band curls / OH triceps)'
+              ]},
+              { day:'Tue — Lower', items:[
+                ex('Back squat','goblet squat / split squat'),
+                ex('Romanian deadlift','DB RDL'),
+                ex('Leg press','goblet squat cluster','acc'),
+                ex('Leg curl','slider/stability-ball curl','acc'),
+                'Calves — 3×10–15, 1–2 RIR (alt: single-leg calf raise on step)',
+                'Core: hanging knee raise or cable crunch — 3×10–15, 2 RIR (alt: dead bug)'
+              ]},
+              { day:'Thu — Upper (hypertrophy)', items:[
+                ex('DB bench or machine press','push-ups'),
+                ex('One-arm/seated row','band row'),
+                ex('Incline fly / pec-deck','DB squeeze press','acc'),
+                ex('Straight-arm pulldown / pullover','DB/band pullover','acc'),
+                'Lateral raise — 3–4×12–20, 1–2 RIR (alt: band lateral raise)',
+                'Arms: 3×10–15 each, 0–2 RIR (alts: band curl / band OH triceps)'
+              ]},
+              { day:'Fri — Lower (posterior bias)', items:[
+                ex('Front squat or hack squat','goblet squat / split squat'),
+                ex('Hip thrust / glute bridge','single-leg bridge'),
+                ex('RDL or back extension','DB RDL / hip hinge','acc'),
+                ex('Seated hamstring curl','slider curl','acc'),
+                'Calves — 3×10–15, 1–2 RIR',
+                'Core: side plank — 3×30–45s/side'
+              ]},
+              { day:'Cardio', items:[ r.cardio ]},
+              { day:'Progression', items:[
+                'Add load when top reps reached at prescribed RIR; otherwise add 1 rep per set.',
+                'If performance dips ≥2 sessions, drop one set on that lift.'
+              ]}
+            ];
+          }
+
+          // 5-day split
+          return [
+            { day:'Mon — Push', items:[
+              ex('Bench or machine press','DB bench / push-ups'),
+              ex('Incline DB press','feet-elevated push-ups'),
+              'Weighted dip or cable press — 3–4×8–12, 1–2 RIR (alt: bench dip / band press)',
+              'Lateral raise — 3–4×12–20, 1–2 RIR (alt: band lateral raise)',
+              'Triceps press-down/overhead ext — 3–4×10–15, 0–2 RIR (alt: band OH triceps)'
+            ]},
+            { day:'Tue — Pull', items:[
+              ex('Weighted pull-ups / Lat pulldown','inverted rows / band-assist'),
+              ex('Barbell or chest-supported row','one-arm DB row'),
+              'Single-arm row — 3×8–12, 1–2 RIR (alt: band row)',
+              'Rear-delt fly — 3×12–20, 1–2 RIR (alt: band face pull)',
+              'Barbell/cable curl — 3–4×8–12, 0–2 RIR (alt: DB/band curl)'
+            ]},
+            { day:'Wed — Legs', items:[
+              ex('Back squat or hack squat','goblet squat / split squat'),
+              ex('Romanian deadlift','DB RDL'),
+              'Leg press — 3–4×10–15, 1–2 RIR (alt: goblet squat cluster)',
+              'Leg curl — 3×10–15, 1–2 RIR (alt: slider/ball curl)',
+              'Calves — 3×10–15, 1–2 RIR (alt: single-leg calf raise)',
+              'Core: ab-wheel 3×6–12, 1–2 RIR (alt: plank 3×30–45s)'
+            ]},
+            { day:'Thu — Upper (strength/weak points)', items:[
+              ex('Bench press (heavier)','DB bench / push-ups'),
+              ex('Row (heavier)','one-arm DB row / band row'),
+              'Overhead press — 3–4×6–10, 1–2 RIR (alt: DB shoulder press)',
+              'Choose 2 weak-point accessories — 3×8–12, 1–2 RIR'
+            ]},
+            { day:(goal==='Build/Bulk' ? 'Fri — Arms/Delts (specialisation)' : 'Fri — Conditioning + Core'),
+              items: goal==='Build/Bulk'
+                ? ['Curls — 4×8–12, 0–2 RIR (alt: band curls)',
+                   'Triceps — 4×8–12, 0–2 RIR (alt: band OH triceps)',
+                   'Lateral raises — 4×12–20, 1–2 RIR (alt: band lateral raise)',
+                   'Rear-delts — 3×12–20, 1–2 RIR (alt: band face pull)']
+                : [rules[goal].cardio, 'Core circuit 10–15 min (easy effort)'] },
+            { day:'Progression', items:[
+              'Progress load or reps weekly while staying at listed RIR.',
+              'If all sets hit top reps 2 weeks in a row, add a small load next week.',
+              'Every 6–8 weeks: deload (halve volume, keep RIR ≥3).'
+            ]}
+          ];
+        }
+
+        // Render phase block
+        function renderPhase(phaseTitle){
+          // Header
+          doc.setFont('helvetica','bold'); doc.setFontSize(14);
+          addWrapped(phaseTitle);
+          y += 4; line(y+6); y += 18;
+
+          // Nutrition
+          const n = nutritionForPhase(phaseTitle==='Build/Bulk'?'Build/Bulk':phaseTitle);
+          doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Nutrition Targets');
+          doc.setFont('helvetica','normal'); doc.setFontSize(11);
+          addWrapped(`• Calories: ~${n.kcal} kcal/day`);
+          addWrapped(`• Protein: ${n.protein} g/day`);
+          addWrapped(`• Carbs: ${n.carbs}`);
+          addWrapped(`• Fat: ${n.fat}`);
+          (n.notes||[]).forEach(t=>addWrapped('• '+t));
+          y += 4;
+
+          // Training
+          doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Training Blueprint (Daily Breakdown)');
+          const program = buildProgram((phaseTitle==='Build/Bulk'?'Build/Bulk':phaseTitle), actMult);
+          doc.setFont('helvetica','normal'); doc.setFontSize(11);
+          for (const day of program){
+            doc.setFont('helvetica','bold');
+            let lines = doc.splitTextToSize(day.day, wrapW);
+            for (const ln of lines){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
+            doc.setFont('helvetica','normal');
+            for (const item of day.items){
+              lines = doc.splitTextToSize('• ' + item, wrapW);
+              for (const ln of lines){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
+            }
+            y += 6;
+            if (y > 770){ doc.addPage(); y=72; }
+          }
+          y += 6;
+        }
+
+        // Render all phases
+        for (const ph of phases){
+          renderPhase(ph);
+          await sectionBreak();
+        }
+
+        // Movement / NEAT (steps OR bike/run)
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Daily Movement (NEAT / Cardio)');
+        doc.setFont('helvetica','normal'); doc.setFontSize(11);
+        addWrapped('• Start point: 6–8k steps/day (or bike 20–30 min easy, or run 10–20 min easy).');
+        addWrapped('• Build toward: 8–12k steps/day (or bike 30–45 min easy, or run 20–30 min easy).');
+        addWrapped('• Two rest days suggested: Wed and Sun — optional easy LISS only.');
+        await sectionBreak();
+
+        // Nutrition tips
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Nutrition Tips');
+        [
+          'Spread protein across 4–5 meals/snacks.',
+          'High-protein staples: chicken, turkey, fish, eggs, Greek yogurt, whey, beans, lentils.',
+          'Whole-food carbs: oats, rice, potatoes, fruit, veg.',
+          'Healthy fats: olive oil, nuts, avocado, oily fish.',
+          'Limit alcohol – slows fat loss and recovery.'
+        ].forEach(t=>addWrapped('• '+t));
+        await sectionBreak();
+
+        // Recovery
+        doc.addPage(); y = 72;
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Recovery');
+        [
+          'Sleep: 7–9 hours per night.',
+          'Hydration: 30–35 ml/kg/day (extra around training).',
+          'Stress: manage with walking, stretching, meditation, hobbies.'
+        ].forEach(t=>addWrapped('• '+t));
+        await sectionBreak();
+
+        // Glossary
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Glossary');
+        doc.setFont('helvetica','normal'); doc.setFontSize(11);
+        addWrapped('• RIR (Reps In Reserve): how many reps you could still do at the end of a set. 2 RIR = you could have done ~2 more.');
+        addWrapped('• LISS (Low-Intensity Steady State): easy cardio at conversational pace (e.g., brisk walk, easy bike).');
+        addWrapped('• HIIT (High-Intensity Interval Training): short, hard efforts with full/long rests.');
+        await sectionBreak();
+
+        // Timeline
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); addWrapped('Timeline (Realistic)');
+        [
+          'Cut: typically 4–16 weeks depending on deficit and start point.',
+          'Transform: ongoing; review visuals/strength monthly.',
+          'Maintain/Bulk: optional; reassess every 4 weeks and adjust ±100–200 kcal as needed.'
+        ].forEach(t=>addWrapped('• '+t));
+        await sectionBreak();
+
+        // Footer
+        line(770);
+        doc.setFont('helvetica','normal'); doc.setTextColor(120); doc.setFontSize(10);
+        doc.text('© 2025 FreeFitFuel™ · All rights reserved. Created by Grant Cameron Anthony.', marginX, 790);
+
+        doc.save('freefitfuel-roadmap.pdf');
+      } catch (e) {
+        console.error(e);
+        alert('Error generating PDF. Please try again.');
+      } finally {
+        genBtn.dataset.busy = '0';
+        genBtn.textContent = oldText;
+        genBtn.disabled = false;
       }
-      await sectionBreak();
-
-      // ---- Glossary (Quick) ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(13);
-      doc.text('Glossary (Quick)', marginX, y); y += 16;
-      doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      [
-        'RIR (Reps in Reserve): how many reps left before true failure. 2 RIR ≈ 2 reps left.',
-        'LISS: Low-Intensity Steady-State cardio (easy pace you can talk at).',
-        'NEAT: Non-Exercise Activity Thermogenesis — movement outside workouts (steps, chores, stairs).'
-      ].forEach(t=>{
-        const lns = doc.splitTextToSize('• ' + t, wrapW);
-        for (const ln of lns){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
-      });
-      y += 6;
-      if (y > 770){ doc.addPage(); y=72; }
-
-      // ---- Movement = Calories Out (Pick Your Mode) ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(13);
-      doc.text('Movement = Calories Out (Pick Your Mode)', marginX, y); y += 16;
-      doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      [
-        'Most days pick ONE (or mix): 6–10k steps, OR 20–30 min easy cycling, OR 10–15 min relaxed jog.',
-        'If sedentary, start with 4–6k steps or 15–20 min easy bike; add ~1–2k steps or +5 min each 1–2 weeks.',
-        'Low-impact options: brisk walk, easy bike, gentle swim/elliptical — consistency beats intensity.',
-        'On lift days keep cardio easy; on Wed you can do longer easy LISS if you like.'
-      ].forEach(t=>{
-        const lns = doc.splitTextToSize('• ' + t, wrapW);
-        for (const ln of lns){ if (y > 770){ doc.addPage(); y=72; } doc.text(ln, marginX, y); y += 16; }
-      });
-      y += 6;
-      if (y > 770){ doc.addPage(); y=72; }
-
-      // ---- Nutrition Tips ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Nutrition Tips', marginX, y); y += 16;
-      [
-        'Spread protein across 4–5 meals/snacks.',
-        'High-protein staples: chicken, turkey, fish, eggs, Greek yogurt, whey, beans, lentils.',
-        'Whole-food carbs: oats, rice, potatoes, fruit, veg.',
-        'Healthy fats: olive oil, nuts, avocado, oily fish.',
-        'Limit alcohol – slows fat loss and recovery.'
-      ].forEach(t=>addWrapped('• '+t));
-      await sectionBreak();
-
-      // ---- Recovery ----
-      doc.addPage(); y = 72;
-      doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Recovery', marginX, y); y += 16;
-      [
-        'Sleep: 7–9 hours per night.',
-        'Hydration: 30–35 ml/kg/day (extra around training).',
-        'Stress: manage with walking, stretching, meditation, hobbies.'
-      ].forEach(t=>addWrapped('• '+t));
-      await sectionBreak();
-
-      // ---- Timeline ----
-      doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.text('Timeline (Realistic)', marginX, y); y += 16;
-      [
-        'Cutting phase length depends on deficit and adherence.',
-        'Recomp/hold phases stabilise strength and physique.',
-        'Lean bulk optional if targeting muscle-first outcomes.',
-        'Reassess every 4 weeks; adjust calories ±100–200 if needed.'
-      ].forEach(t=>addWrapped('• '+t));
-      await sectionBreak();
-
-      // ---- Footer ----
-      line(770);
-      doc.setFont('helvetica','normal'); doc.setTextColor(120); doc.setFontSize(10);
-      doc.text('© 2025 FreeFitFuel™ · All rights reserved. Created by Grant Cameron Anthony.', marginX, 790);
-
-      doc.save('freefitfuel-roadmap.pdf');
-    } catch (e) {
-      console.error(e);
-      alert('Error generating PDF. Please try again.');
-    } finally {
-      genBtn.dataset.busy = '0';
-      genBtn.textContent = oldText;
-      genBtn.disabled = false;
-    }
-  });
-}
+    });
+  }
 });
 </script>
 
-<!-- Nutrition JS -->
 <!-- Nutrition JS -->
 <script src="assets/js/nutrition.js?v=20250928b"></script>
 </body>

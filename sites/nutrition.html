@@ -844,8 +844,7 @@ Fat: ${outF.textContent}`;
     };
 
     // Persist for the workout-plan page (GDPR-friendly, client-only)
-    localStorage.setItem('fff_roadmap_v1', JSON.stringify(roadmap));
-
+localStorage.setItem('fff.roadmap.plan.v1', JSON.stringify(roadmap));
     /* -------- PDF CONTENT -------- */
     // Title
     doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255,106,0);

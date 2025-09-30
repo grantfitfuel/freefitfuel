@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreeFitFuel — Personalised Workout Plan</title>
+<style>
+  :root{
+    --bg:#0b0f14; --card:#111722; --ink:#eaf2ff; --inkdim:#a8b3c7; --stroke:#2a3443; --accent:#ff6a00;
+    --good:#3ddc97; --warn:#ffd166; --bad:#ef476f;
+    --maxw:1100px;
+  }
+  html,body{background:var(--bg);color:var(--ink);font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;margin:0}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+  h1,h2,h3{margin:.2rem 0 .6rem}
+  .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+  .btn{background:var(--card);border:1px solid var(--stroke);color:var(--ink);padding:.55rem .8rem;border-radius:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#111;border-color:#000}
+  .btn.ghost{background:transparent}
+  .chip{background:var(--card);border:1px solid var(--stroke);padding:.35rem .6rem;border-radius:999px}
+  .meta{color:var(--inkdim);font-size:.93rem}
+  .card{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:12px}
+  .grid{display:grid;gap:12px}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:800px){ .grid.cols-2,.grid.cols-3{grid-template-columns:1fr} }
+
+  /* Stage tabs */
+  .tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0 .75rem}
+  .tab{padding:.5rem .8rem;border-radius:10px;border:1px solid var(--stroke);background:#0f1520;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--accent);color:#111;border-color:#000;font-weight:800}
+
+  /* Day selector */
+  .days{display:flex;gap:.4rem;flex-wrap:wrap}
+  .daybtn{padding:.4rem .7rem;border:1px solid var(--stroke);border-radius:8px;cursor:pointer;background:#0f1520}
+  .daybtn[aria-pressed="true"]{background:#1a2230;border-color:var(--accent)}
+
+  /* Exercises */
+  .ex{display:grid;grid-template-columns:1fr auto;gap:.5rem .75rem;border:1px solid var(--stroke);border-radius:10px;padding:10px}
+  .ex h4{margin:.1rem 0}
+  .ex .meta{margin:.05rem 0}
+  .ex .act{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+  .ex .swap{font-size:.85rem}
+  .badge{display:inline-block;border:1px solid var(--stroke);border-radius:7px;padding:.2rem .45rem}
+  .rest{display:flex;gap:.3rem;align-items:center;flex-wrap:wrap}
+  .rest .timer{min-width:3.5ch;text-align:right;font-variant-numeric:tabular-nums}
+  .rest .preset button{border:1px solid var(--stroke);background:#0f1520;border-radius:6px;padding:.2rem .45rem;cursor:pointer}
+  .rest .preset button.active{border-color:var(--accent)}
+
+  /* Set checkboxes */
+  .sets{display:flex;gap:.35rem;flex-wrap:wrap}
+  .sets input{transform:scale(1.2)}
+  .note{width:100%;min-height:84px;background:#0f1520;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:8px}
+
+  /* Header strip */
+  .header{background:linear-gradient(90deg, rgba(255,106,0,.2), transparent);border-bottom:1px solid var(--stroke)}
+  .footer{border-top:1px solid var(--stroke);color:var(--inkdim);padding:18px 0;margin-top:8px}
+  .pill{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .5rem;background:#0f1520}
+
+  /* Print */
+  @media print{
+    .noprint{display:none !important}
+    .wrap{padding:10px 14px}
+    body{background:#fff;color:#000}
+    .card{border-color:#ddd}
+    .tab[aria-selected="true"]{background:#eee}
+  }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="wrap row" style="justify-content:space-between">
+    <div>
+      <h1 style="margin:0">Your Personalised Workout Plan</h1>
+      <p class="meta" id="hdrGoal">Goal: —</p>
+    </div>
+    <div class="row noprint">
+      <button id="btnPrint" class="btn">Print / Save PDF</button>
+      <button id="btnExport" class="btn">Export JSON</button>
+      <button id="btnReset" class="btn ghost">Reset Progress</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Import -->
+  <section class="card noprint">
+    <h2>Load your roadmap</h2>
+    <p class="meta">This page never sends data anywhere. It looks in <span class="pill">localStorage: fff_roadmap_v2</span> first, or paste below.</p>
+    <div class="row">
+      <button id="btnLoadLocal" class="btn">Load from localStorage</button>
+      <button id="btnSample" class="btn ghost">Load sample</button>
+    </div>
+    <textarea id="paste" class="note" placeholder="Paste roadmap JSON here…"></textarea>
+    <div class="row" style="margin-top:.5rem">
+      <button id="btnLoadPaste" class="btn primary">Load</button>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section id="overview" class="card" hidden>
+    <h2>Plan Overview</h2>
+    <div id="stageTabs" class="tabs"></div>
+    <div id="stageMeta" class="meta"></div>
+    <div class="grid cols-3" style="margin-top:.6rem">
+      <div class="card">
+        <strong>Current Stage</strong>
+        <div id="curStageLabel" class="meta">—</div>
+      </div>
+      <div class="card">
+        <strong>Stage BF Target</strong>
+        <div id="curStageTarget" class="meta">—</div>
+      </div>
+      <div class="card">
+        <strong>Estimated Duration</strong>
+        <div id="curStageTime" class="meta">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Week / Day -->
+  <section id="planner" class="card" hidden>
+    <div class="row" style="justify-content:space-between">
+      <div class="row">
+        <button id="weekPrev" class="btn">◀ Prev</button>
+        <div class="chip" id="weekLabel">Week 1</div>
+        <button id="weekNext" class="btn">Next ▶</button>
+      </div>
+      <div class="row">
+        <span class="meta">Mark adherence:</span>
+        <label class="chip"><input type="checkbox" id="chkAdhere" style="transform:translateY(2px)"> hit calories/macros</label>
+        <label class="chip"><input type="checkbox" id="chkTrain"  style="transform:translateY(2px)"> hit all training</label>
+      </div>
+    </div>
+
+    <div id="dayButtons" class="days" style="margin:.6rem 0"></div>
+
+    <div id="dayBody" class="grid"></div>
+
+    <div class="grid" style="margin-top:.8rem">
+      <div class="card">
+        <h3>Notes (this day)</h3>
+        <textarea id="dayNote" class="note" placeholder="Write anything to remember here…"></textarea>
+      </div>
+      <div class="card">
+        <h3>Weekly Summary</h3>
+        <p class="meta" id="weekSummary">—</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer wrap">
+  <div>© 2025 FreeFitFuel™ · Client-side only · No tracking · Data saved locally in your browser.</div>
+</footer>
+
+<script>
+(() => {
+  // ---------- Utilities ----------
+  const qs = (s,e=document)=>e.querySelector(s);
+  const qsa = (s,e=document)=>Array.from(e.querySelectorAll(s));
+  const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+  const fmtMins = m => m>=60 ? `${Math.floor(m/60)}h ${m%60}m` : `${m} min`;
+
+  // ---------- State ----------
+  let ROADMAP = null;      // the imported roadmap JSON (stages, program, meta)
+  let currentStageId = null;
+  let weekIndex = 0;       // 0-based
+  let dayIndex = 0;        // 0..6
+  const PROGRESS_KEY = 'fff_workout_progress_v1';
+
+  // Progress: per-stage -> per-week -> per-day -> {setsChecked: {}, notes, adhere, train}
+  let PROGRESS = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+
+  // ---------- Sample (safe) ----------
+  const SAMPLE = {
+    goal: "Transform",
+    startBF: 32,
+    endBF: 15,
+    stages: [
+      { id:"cut", name:"Cutting", bf_target:"~28%", weeks_min:6, weeks_max:12,
+        blurb:"Calorie deficit, protein priority, progressive overload. LISS 2–4×/week.",
+        split:["Mon Push","Tue Pull","Wed Rest / Easy Cardio","Thu Legs","Fri Core & Conditioning","Sat Optional LISS","Sun Rest"],
+        programByDay:{
+          0:[ // Mon Push
+            { name:"Push-up (hands elevated if needed)", type:"compound", sets:4, reps:"8–12", rir:"2–3", rest:60, alts:["DB Floor Press","Band Press","Kneeling Push-up"] },
+            { name:"Pike Push-up", type:"compound", sets:3, reps:"6–10", rir:"2–3", rest:90, alts:["DB Shoulder Press","Wall Handstand Hold (accum.)"] },
+            { name:"Dip (bench/box)", type:"accessory", sets:3, reps:"8–12", rir:"1–2", rest:60, alts:["Band Overhead Triceps","Close-Grip Push-up"] },
+            { name:"Lateral Raise (band/DB)", type:"accessory", sets:3, reps:"12–20", rir:"1–2", rest:45, alts:["Y-Raise (floor)","Wall Slides"] }
+          ],
+          1:[ // Tue Pull
+            { name:"Inverted Row (table/TRX)", type:"compound", sets:4, reps:"6–12", rir:"2–3", rest:90, alts:["One-Arm DB Row","Band Row"] },
+            { name:"Chin-up / Band-assist", type:"compound", sets:3, reps:"5–8", rir:"2–3", rest:90, alts:["Lat Pulldown (band)","Negative Chin-ups"] },
+            { name:"Rear-Delt Fly (band/DB)", type:"accessory", sets:3, reps:"12–20", rir:"1–2", rest:45, alts:["Face Pull (band)"] },
+            { name:"Curl (DB/band)", type:"accessory", sets:3, reps:"8–12", rir:"0–2", rest:60, alts:["Hammer Curl","Zottman Curl"] }
+          ],
+          2:[ // Wed Rest / Easy Cardio
+            { name:"LISS (walk, easy bike/row)", type:"cardio", duration_min:25, cue:"Conversational pace" }
+          ],
+          3:[ // Thu Legs
+            { name:"Goblet Squat", type:"compound", sets:4, reps:"6–10", rir:"1–2", rest:90, alts:["Split Squat","Bodyweight Squat (slow ecc.)"] },
+            { name:"Romanian Deadlift (DB)", type:"compound", sets:3, reps:"8–12", rir:"1–2", rest:90, alts:["Hip Hinge (band)","Good Morning (band)"] },
+            { name:"Reverse Lunge", type:"accessory", sets:3, reps:"8–12/leg", rir:"1–2", rest:60, alts:["Step-back Lunge","Split Squat"] },
+            { name:"Calf Raise (single-leg)", type:"accessory", sets:3, reps:"10–15", rir:"1–2", rest:45, alts:["Seated Calf Raise (DB on knee)"] }
+          ],
+          4:[ // Fri Core & Conditioning
+            { name:"Ab-Wheel / Walk-outs", type:"accessory", sets:3, reps:"6–12", rir:"1–2", rest:60, alts:["Plank 3×30–45s","Dead Bug"] },
+            { name:"Carry (farmer/one-side)", type:"accessory", sets:4, reps:"20–40m", rir:"—", rest:60, alts:["Suitcase Hold 20–40s/side"] },
+            { name:"Intervals (bike/run/row)", type:"cardio", work_s:30, rest_s:60, rounds:8, cue:"Easy-moderate; leave 2–3 RIR" }
+          ],
+          5:[ // Sat Optional LISS
+            { name:"LISS (walk, easy bike/row)", type:"cardio", duration_min:30, cue:"Nasal breathing" }
+          ],
+          6:[ // Sun Rest
+          ]
+        }
+      },
+      { id:"transform", name:"Transform (Recomp)", bf_target:"~22%", weeks_min:8, weeks_max:16,
+        blurb:"Small deficit, keep lifts progressing. Add steps or easy cycling.",
+        split:["Mon Push","Tue Pull","Wed Rest / Easy Cardio","Thu Legs","Fri Core & Conditioning","Sat Optional LISS","Sun Rest"],
+        programByDay:{ /* (keep same structure; could vary exercises slightly) */ }
+      },
+      { id:"maintain", name:"Maintenance (Hold)", bf_target:"Hold current", weeks_min:2, weeks_max:4,
+        blurb:"Calories at TDEE; maintain strength; low-stress conditioning.",
+        split:["Mon Push","Tue Pull","Wed Rest","Thu Legs","Fri Core","Sat Optional LISS","Sun Rest"],
+        programByDay:{}
+      },
+      { id:"bulk", name:"Lean Bulk", bf_target:"+1–2% from end", weeks_min:8, weeks_max:16,
+        blurb:"Slight surplus. Prioritize progressive overload; minimal HIIT.",
+        split:["Mon Push","Tue Pull","Wed Legs","Thu Push (strength)","Fri Pull (strength)","Sat Optional Arms/Core","Sun Rest"],
+        programByDay:{}
+      }
+    ],
+    meta:{
+      youtubeTip:"For exercise form, search YouTube: exercise name + “form”.",
+      restPresets:[10,30,45,60,90]
+    }
+  };
+
+  // ---------- DOM ----------
+  const hdrGoal      = qs('#hdrGoal');
+  const stageTabs    = qs('#stageTabs');
+  const stageMeta    = qs('#stageMeta');
+  const curStageLabel= qs('#curStageLabel');
+  const curStageTarget=qs('#curStageTarget');
+  const curStageTime = qs('#curStageTime');
+  const overview     = qs('#overview');
+  const planner      = qs('#planner');
+
+  const weekPrev  = qs('#weekPrev');
+  const weekNext  = qs('#weekNext');
+  const weekLabel = qs('#weekLabel');
+
+  const dayButtons= qs('#dayButtons');
+  const dayBody   = qs('#dayBody');
+  const dayNote   = qs('#dayNote');
+  const weekSummary = qs('#weekSummary');
+  const chkAdhere = qs('#chkAdhere');
+  const chkTrain  = qs('#chkTrain');
+
+  const btnLoadLocal = qs('#btnLoadLocal');
+  const btnLoadPaste = qs('#btnLoadPaste');
+  const btnSample    = qs('#btnSample');
+  const pasteArea    = qs('#paste');
+  const btnPrint     = qs('#btnPrint');
+  const btnExport    = qs('#btnExport');
+  const btnReset     = qs('#btnReset');
+
+  // ---------- Load / Save ----------
+  function loadFromLocal(){
+    try{
+      const raw = localStorage.getItem('fff_roadmap_v2');
+      if(!raw) return alert('No roadmap in localStorage (fff_roadmap_v2). Generate on nutrition page first or paste JSON below.');
+      ROADMAP = JSON.parse(raw);
+      afterLoad();
+    }catch(e){ console.error(e); alert('Could not parse roadmap from localStorage.'); }
+  }
+  function loadFromPaste(){
+    try{
+      const raw = pasteArea.value.trim();
+      if(!raw) return alert('Paste the JSON first.');
+      ROADMAP = JSON.parse(raw);
+      localStorage.setItem('fff_roadmap_v2', raw); // cache for next time
+      afterLoad();
+    }catch(e){ console.error(e); alert('Invalid JSON.'); }
+  }
+  function loadSample(){ ROADMAP = SAMPLE; afterLoad(); }
+
+  function afterLoad(){
+    // Sensible defaults if keys missing
+    ROADMAP.goal ||= 'Transform';
+    ROADMAP.stages ||= [];
+    const firstStage = ROADMAP.stages[0] || null;
+    currentStageId = (firstStage && firstStage.id) || 'cut';
+
+    hdrGoal.textContent = `Goal: ${ROADMAP.goal}`;
+    buildStageTabs();
+    selectStage(currentStageId);
+    overview.hidden = false;
+    planner.hidden  = false;
+    renderWeek();
+    renderDaysBar();
+    renderDay();
+  }
+
+  // ---------- Stages ----------
+  function buildStageTabs(){
+    stageTabs.innerHTML = '';
+    ROADMAP.stages.forEach(s=>{
+      const b=document.createElement('button');
+      b.className='tab';
+      b.setAttribute('role','tab');
+      b.setAttribute('aria-selected', s.id===currentStageId?'true':'false');
+      b.textContent = s.name;
+      b.onclick=()=>selectStage(s.id);
+      stageTabs.appendChild(b);
+    });
+  }
+  function getStage(id){ return ROADMAP.stages.find(s=>s.id===id); }
+  function selectStage(id){
+    currentStageId=id;
+    qsa('.tab',stageTabs).forEach(t=>t.setAttribute('aria-selected', t.textContent===getStage(id).name ? 'true':'false'));
+    const s = getStage(id);
+    stageMeta.textContent = s.blurb || '';
+    curStageLabel.textContent = s.name;
+    curStageTarget.textContent= s.bf_target || '—';
+    curStageTime.textContent  = s.weeks_min && s.weeks_max ? `${s.weeks_min}–${s.weeks_max} weeks` : '—';
+    weekIndex = 0;
+    dayIndex = 0;
+    renderWeek();
+    renderDaysBar();
+    renderDay();
+  }
+
+  // ---------- Week/Day ----------
+  function renderWeek(){
+    const s = getStage(currentStageId);
+    weekLabel.textContent = `Week ${weekIndex+1} — ${s.name}`;
+    const keyS = keyStage();
+    const w = getWeekProgress(keyS);
+    chkAdhere.checked = !!w.adhere;
+    chkTrain.checked  = !!w.train;
+    updateWeekSummary();
+  }
+  function renderDaysBar(){
+    const s = getStage(currentStageId);
+    const split = s.split && s.split.length ? s.split : ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    dayButtons.innerHTML='';
+    split.forEach((lab,i)=>{
+      const b=document.createElement('button');
+      b.className='daybtn';
+      b.setAttribute('aria-pressed', i===dayIndex?'true':'false');
+      b.textContent = lab;
+      b.onclick=()=>{ dayIndex=i; renderDaysBar(); renderDay(); };
+      dayButtons.appendChild(b);
+    });
+  }
+
+  function renderDay(){
+    dayBody.innerHTML='';
+    const s = getStage(currentStageId);
+    const prog = s.programByDay && s.programByDay[dayIndex] ? s.programByDay[dayIndex] : [];
+    const yTip = (ROADMAP.meta && ROADMAP.meta.youtubeTip) || 'For exercise form, search YouTube: exercise name + “form”.';
+
+    // day note
+    const dkey = keyDay();
+    dayNote.value = (PROGRESS[dkey] && PROGRESS[dkey].note) || '';
+    dayNote.oninput = ()=>{ ensure(PROGRESS, dkey); PROGRESS[dkey].note = dayNote.value; persist(); };
+
+    // Form tip
+    const tip = document.createElement('p');
+    tip.className='meta';
+    tip.textContent = yTip;
+    dayBody.appendChild(tip);
+
+    if (!prog.length){
+      const p=document.createElement('p');
+      p.className='meta';
+      p.textContent='Rest / No structured work today.';
+      dayBody.appendChild(p);
+      return;
+    }
+
+    // Build exercise cards
+    prog.forEach((ex, idx)=>{
+      const card=document.createElement('div');
+      card.className='ex';
+
+      const title=document.createElement('div');
+      title.innerHTML = `
+        <h4>${ex.name}</h4>
+        <p class="meta">
+          ${ex.type ? `<span class="badge">${ex.type}</span> `:''}
+          ${ex.sets?`${ex.sets}×${ex.reps} • `:''}${ex.rir?`RIR ${ex.rir} • `:''}${ex.rest?`${ex.rest}s rest`:''}
+          ${ex.duration_min?`Duration ${ex.duration_min} min`:''}
+          ${ex.work_s?`Intervals ${ex.rounds||''}×${ex.work_s}s/${ex.rest_s||''}s`:''}
+        </p>
+      `;
+
+      const right=document.createElement('div');
+      right.className='act';
+      // swap
+      if (ex.alts && ex.alts.length){
+        const swap=document.createElement('button');
+        swap.className='btn swap';
+        swap.textContent='Swap';
+        swap.onclick=()=>{ cycleAlt(ex, idx); renderDay(); };
+        right.appendChild(swap);
+      }
+
+      // rest timer
+      const rest=document.createElement('div');
+      rest.className='rest';
+      rest.innerHTML=`
+        <span class="meta">Rest</span>
+        <span class="timer" id="tmr-${idx}">00</span>s
+        <button class="btn" id="start-${idx}">Start</button>
+        <div class="preset" id="preset-${idx}"></div>
+      `;
+      right.appendChild(rest);
+
+      // assemble header row
+      card.appendChild(title);
+      card.appendChild(right);
+
+      // sets checkboxes
+      const setsWrap=document.createElement('div');
+      setsWrap.className='sets';
+      const setCount = Number(ex.sets||0);
+      for(let i=0;i<setCount;i++){
+        const id = `${dkey}::${idx}::${i}`;
+        const cb=document.createElement('input');
+        cb.type='checkbox';
+        cb.checked = !!(PROGRESS[id] && PROGRESS[id].done);
+        cb.onchange = ()=>{ ensure(PROGRESS, id); PROGRESS[id].done = cb.checked; persist(); };
+        setsWrap.appendChild(cb);
+      }
+      if (setCount>0) card.appendChild(setsWrap);
+
+      dayBody.appendChild(card);
+
+      // wire timer presets
+      wireTimer(idx, ex.rest);
+    });
+  }
+
+  // ---------- Timer ----------
+  function wireTimer(idx, defaultRest=60){
+    const tmr = qs(`#tmr-${idx}`); const start = qs(`#start-${idx}`); const preset = qs(`#preset-${idx}`);
+    if(!tmr || !start || !preset) return;
+    const presets = (ROADMAP.meta && ROADMAP.meta.restPresets) || [10,30,45,60,90];
+    preset.innerHTML='';
+    let sel = defaultRest || presets[0];
+    let intv = null, remain = sel;
+
+    presets.forEach(v=>{
+      const b=document.createElement('button'); b.textContent=`${v}s`;
+      if(v===sel) b.classList.add('active');
+      b.onclick=()=>{ sel=v; remain=v; qsa('button',preset).forEach(x=>x.classList.remove('active')); b.classList.add('active'); tmr.textContent=String(remain).padStart(2,'0'); };
+      preset.appendChild(b);
+    });
+
+    tmr.textContent=String(remain).padStart(2,'0');
+
+    start.onclick=()=>{
+      if(intv){ clearInterval(intv); intv=null; start.textContent='Start'; return; }
+      start.textContent='Stop';
+      remain = sel;
+      tmr.textContent=String(remain).padStart(2,'0');
+      intv = setInterval(()=>{
+        remain--;
+        tmr.textContent=String(Math.max(0,remain)).padStart(2,'0');
+        if(remain<=0){ clearInterval(intv); intv=null; start.textContent='Start'; }
+      },1000);
+    };
+  }
+
+  // ---------- Swap alternative ----------
+  function cycleAlt(ex, idx){
+    if(!ex.alts || !ex.alts.length) return;
+    const key = `${keyDay()}::alt::${idx}`;
+    const cur = PROGRESS[key]?.i || 0;
+    const next = (cur+1) % (ex.alts.length+1); // +1 to include original
+    ensure(PROGRESS, key); PROGRESS[key].i = next; persist();
+
+    if(next===0){
+      // back to original
+      // no change to ex.name in model; we simply show base again on render
+    }else{
+      // temporarily show alternative as the chosen “name”
+      const chosen = ex.alts[next-1];
+      ex._chosen = chosen;
+    }
+  }
+
+  // ---------- Week summary ----------
+  function updateWeekSummary(){
+    const keyS = keyStage();
+    const s = getStage(currentStageId);
+    const w = getWeekProgress(keyS);
+    const adher = w.adhere ? '✅ calories/macros hit' : '—';
+    const trn   = w.train ? '✅ all sessions done' : '—';
+    weekSummary.textContent = `${s.name} — ${adher}; ${trn}`;
+  }
+
+  chkAdhere.onchange = ()=>{ const k=keyStage(); const w=getWeekProgress(k); w.adhere=chkAdhere.checked; saveWeekProgress(k,w); updateWeekSummary(); };
+  chkTrain.onchange  = ()=>{ const k=keyStage(); const w=getWeekProgress(k); w.train=chkTrain.checked; saveWeekProgress(k,w); updateWeekSummary(); };
+
+  // ---------- Keys / Progress helpers ----------
+  const keyStage = ()=> `S:${currentStageId}:W${weekIndex}`;
+  const keyDay   = ()=> `${keyStage()}:D${dayIndex}`;
+  function ensure(obj, key){ if(!obj[key]) obj[key]={}; return obj[key]; }
+  function getWeekProgress(k){ return ensure(PROGRESS, k); }
+  function saveWeekProgress(k, val){ PROGRESS[k]=val; persist(); }
+  function persist(){ localStorage.setItem(PROGRESS_KEY, JSON.stringify(PROGRESS)); }
+
+  // ---------- Export / Print / Reset ----------
+  btnExport.onclick = ()=>{
+    if(!ROADMAP) return alert('Nothing loaded.');
+    const pack = { roadmap: ROADMAP, progress: PROGRESS, when: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(pack,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='fff-workout-plan.json'; a.click();
+    URL.revokeObjectURL(url);
+  };
+  btnPrint.onclick = ()=>window.print();
+  btnReset.onclick = ()=>{
+    if(confirm('Reset all progress (checkboxes, notes, adherence)?')){ PROGRESS={}; persist(); renderDay(); renderWeek(); updateWeekSummary(); }
+  };
+
+  // ---------- Week arrows ----------
+  weekPrev.onclick = ()=>{ weekIndex = Math.max(0, weekIndex-1); renderWeek(); renderDay(); };
+  weekNext.onclick = ()=>{ weekIndex = Math.min(51, weekIndex+1); renderWeek(); renderDay(); };
+
+  // ---------- Buttons ----------
+  btnLoadLocal.onclick = loadFromLocal;
+  btnLoadPaste.onclick = loadFromPaste;
+  btnSample.onclick    = loadSample;
+
+  // Try auto-load on open
+  try{ const raw = localStorage.getItem('fff_roadmap_v2'); if(raw){ ROADMAP = JSON.parse(raw); afterLoad(); } }catch{}
+
+})();
+</script>
+</body>
+</html>

@@ -973,6 +973,13 @@ Fat: ${outF.textContent}`;
         genBtn.disabled = false;
       }
     });
+    // ===== Open Workout Plan redirect =====
+const openBtn = document.getElementById('openWorkoutPlan');
+if (openBtn) {
+  openBtn.addEventListener('click', () => {
+    window.location.href = 'workout-plan.html';
+  });
+}
   }
 });
 </script>

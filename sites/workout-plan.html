@@ -1,334 +1,369 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>FreeFitFuel — My Weekly Workout Plan</title>
-<link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg" />
-<link rel="stylesheet" href="style.css?v=26" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Workout Plan — FreeFitFuel</title>
 
-<style>
-  :root{ --card:#111418; --br:12px; }
-  body{ background:#0b0f14; color:var(--ink); }
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:18px 20px; }
-  .lead{ color:var(--inkdim); }
-  .controls{ display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin:.6rem 0 1rem; }
-  .btn, .btn-sm{ background:var(--glass); border:1px solid var(--stroke); color:var(--ink); border-radius:8px; padding:.5rem .8rem; cursor:pointer; }
-  .btn-sm{ padding:.35rem .6rem; }
-  .grid{ display:grid; gap:12px; }
-  @media(min-width:820px){ .grid{ grid-template-columns:repeat(2,1fr); } }
-  .day{ background:var(--card); border:1px solid var(--stroke); border-radius:var(--br); overflow:hidden; }
-  .day header{ display:flex; justify-content:space-between; align-items:center; gap:.6rem; padding:10px 12px; border-bottom:1px solid var(--stroke); }
-  .meta{ color:var(--inkdim); }
-  .flags{ display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; }
-  .flag{ display:inline-flex; gap:.35rem; align-items:center; background:var(--glass); border:1px solid var(--stroke); border-radius:999px; padding:.25rem .55rem; font-size:.92rem; }
-  .flag input{ accent-color:var(--accent); }
-  .block{ padding:10px 12px; }
-  .mov{ border:1px dashed var(--stroke); border-radius:10px; padding:.55rem .6rem; margin:.45rem 0; }
-  .mov-head{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-  .mov-title a{ color:var(--ink); text-decoration:underline dotted; }
-  .mov-title a:hover{ color:var(--accent); }
-  .rx{ opacity:.9; }
-  .log-grid{ display:grid; gap:.35rem; margin-top:.35rem; }
-  .log-row{ display:grid; grid-template-columns:78px 1fr 1fr 1fr auto; gap:.35rem; align-items:center; }
-  .log-row input{ background:#0b0f14; border:1px solid var(--stroke); border-radius:8px; color:var(--ink); padding:.35rem .45rem; }
-  .meta-row{ display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin-top:.35rem; }
-  .pb{ color:#90ee90; }
-  .badge{ border:1px solid var(--stroke); border-radius:999px; padding:.2rem .5rem; background:rgba(255,255,255,.06); }
-  .quote{ font-size:.92rem; color:var(--inkdim); margin-top:.25rem; }
-  .tools{ display:flex; gap:.5rem; flex-wrap:wrap; }
-</style>
+  <!-- Optional: reuse your global styles -->
+  <link rel="stylesheet" href="style.css?v=27">
+
+  <style>
+    :root{
+      --bg:#0b0f14; --ink:#e6e6ea; --inkdim:#b7b7c2;
+      --glass:#0f131a; --stroke:#1f2630; --accent:#ff6a00;
+      --maxw:1100px;
+    }
+    body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    h1{margin:.2rem 0 0.6rem;font-size:1.8rem;color:var(--ink)}
+    .lead{color:var(--inkdim)}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
+    h2{margin:.1rem 0 .6rem;font-size:1.2rem;color:var(--accent)}
+    h3{margin:.4rem 0 .4rem;font-size:1.05rem;color:var(--ink)}
+    .meta{color:var(--inkdim)}
+    .btn-sm{border:1px solid var(--stroke);background:#121821;color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+    .grid{display:grid;gap:.6rem}
+    .log-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem}
+    label{display:flex;align-items:center;gap:.5rem}
+    input[type="checkbox"]{accent-color:var(--accent)}
+    input[type="number"], input[type="text"]{
+      background:#0c1118;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);
+      padding:.4rem .5rem; width:100%;
+    }
+    .stage{border:1px solid var(--stroke);border-radius:12px;padding:12px;margin:.8rem 0}
+    .stage>header{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap}
+    .days{display:grid;gap:10px}
+    @media(min-width:820px){ .days{grid-template-columns:repeat(2,1fr)} }
+    .day{border:1px dashed var(--stroke);border-radius:10px;padding:10px}
+    .day h4{margin:.1rem 0 .4rem;font-size:1rem;color:var(--ink)}
+    .exercise{border:1px solid var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.5rem 0}
+    .ex-head{display:flex;justify-content:space-between;gap:.6rem;align-items:center;flex-wrap:wrap}
+    .ex-name{font-weight:600}
+    .ex-presc{color:var(--inkdim)}
+    .pb{display:grid;grid-template-columns:repeat(3,100px) auto;gap:.4rem;align-items:center;margin-top:.35rem}
+    .pb small{color:var(--inkdim)}
+    .restbar{display:flex;align-items:center;gap:.4rem;margin:.35rem 0;flex-wrap:wrap}
+    .restbar input{width:80px}
+    .restbar .left{opacity:.9;min-width:44px}
+    .tip{font-size:.9rem;color:var(--inkdim);margin-top:.3rem}
+    .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.5rem .6rem;border-radius:8px;margin:.5rem 0}
+    .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.5rem .6rem;border-radius:8px;margin:.5rem 0}
+  </style>
 </head>
 <body>
-  <div id="site-header"></div>
-  <script src="/js/header-loader.js" defer></script>
+  <div class="wrap">
+    <h1>My Workout Plan</h1>
+    <p class="lead">Fully client-side. Your data stays in this browser. </p>
 
-  <main class="wrap">
-    <h1><span class="accent">My Weekly Workout Plan</span></h1>
-    <p class="lead">
-      Click an exercise title to open a YouTube form search. Log sets below; PBs are tracked automatically (best weight×reps).
-      Check off <strong>Hydration</strong> and <strong>Sleep</strong> when you hit your daily targets.
-      All data is stored locally on this device.
-    </p>
+    <!-- Wellness checks -->
+    <section class="section">
+      <h2>Daily Wellness Check</h2>
+      <div class="log-grid">
+        <label><input type="checkbox" id="hydrDone"> Hydration hit</label>
+        <label><input type="checkbox" id="sleepDone"> Sleep goal met</label>
+        <label><input type="checkbox" id="macroDone"> Macros on target</label>
+        <label><input type="checkbox" id="activityWalk"> Walk</label>
+        <label><input type="checkbox" id="activityRun"> Run</label>
+        <label><input type="checkbox" id="activityBike"> Bike</label>
+      </div>
+      <p class="tip">Tip: these checkboxes auto-save. Refresh and they’ll still be set.</p>
+    </section>
 
-    <div class="controls" aria-label="Plan tools">
-      <button id="btnExport" class="btn-sm">Export logs (.json)</button>
-      <label class="btn-sm" for="importFile" style="cursor:pointer">Import logs</label>
-      <input id="importFile" type="file" accept="application/json" style="display:none" />
-      <button id="btnResetAll" class="btn-sm" title="Delete all saved logs & flags">Reset all</button>
-      <span class="meta">Tip: export occasionally to protect against browser cleanup.</span>
-    </div>
+    <!-- Plan container -->
+    <section id="planSection" class="section">
+      <h2>Your Personalised Plan</h2>
+      <div id="plan"></div>
+      <div id="planMsg" class="meta"></div>
+    </section>
 
-    <section id="plan" class="grid" aria-label="Weekly plan"></section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64" />
-      <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
-    </div>
-  </footer>
+    <!-- Backup -->
+    <section class="section">
+      <h2>Backup / Reset</h2>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+        <button class="btn-sm" id="btnExport">Export all workout data (.json)</button>
+        <label class="btn-sm" for="importFile" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center">Import data</label>
+        <input id="importFile" type="file" accept="application/json" style="display:none">
+        <button class="btn-sm" id="btnReset">Reset (PBs + wellness only)</button>
+      </div>
+      <p class="tip">Roadmap stays stored at <code>localStorage["fff.roadmap.plan.v1"]</code>. PBs/toggles use separate keys.</p>
+    </section>
+  </div>
 
 <script>
-/* ================== STORAGE / NAMESPACE ================== */
-const NS = 'fff.workoutplan.v1.';           // this page’s own data (logs, flags, prefs)
-const IMPORT_KEYS_PREFIX = 'fff.';           // allow importing other FFF keys too
-const ROADMAP_KEY = 'fff.roadmap.plan.v1';   // if your nutrition page saved a structured plan, read it here
+/* =========================
+   Config / Keys
+   ========================= */
+const ROADMAP_KEY = 'fff.roadmap.plan.v1'; // <- as requested (unchanged)
+const PB_PREFIX   = 'fff_pb_';             // per-exercise PBs
+const TOGGLE_PREFIX = 'fff_check_';        // wellness toggles
 
-/* ================== HELPERS ================== */
-const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q+' form'); }
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-function bestScore(obj){
-  let best=0;
-  for(let i=1;i<=5;i++){
-    const w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0;
-    best = Math.max(best, w*r);
-  }
-  return best;
-}
-function milestoneText(count){
-  const n = typeof count==='number' ? count : parseInt(localStorage.getItem(NS+'saves')||'0',10);
-  if(n>=200) return 'Milestone: 200 logs 🔥';
-  if(n>=100) return 'Milestone: 100 logs 🎉';
-  if(n>=50)  return 'Milestone: 50 logs 💪';
-  if(n>=25)  return 'Milestone: 25 logs 🙌';
-  if(n>=10)  return 'Milestone: 10 logs ✅';
-  if(n>=5)   return 'Milestone: 5 logs ✨';
-  return '';
-}
-
-/* ================== DEFAULT PLAN (fallback) ==================
-   If nothing is saved by the roadmap generator, we build a reasonable
-   Push/Pull/Legs/Core + Full-body split and spread it Mon→Sun.        */
-const DEFAULT_EXES = {
-  push: [
-    {name:'Push-up',               rx:'3×8–12', yt:'push up'},
-    {name:'DB Overhead Press',     rx:'3×6–10', yt:'dumbbell overhead press'},
-    {name:'Lateral Raise',         rx:'3×12–15', yt:'lateral raise'}
-  ],
-  pull: [
-    {name:'Bodyweight Row (table/door)', rx:'3×8–12', yt:'bodyweight row table'}
-  , {name:'Band Lat Pulldown',           rx:'3×10–12', yt:'band lat pulldown'}
-  ],
-  legs: [
-    {name:'Step-up',         rx:'3×8–12/leg', yt:'step up exercise'},
-    {name:'DB Romanian Deadlift', rx:'3×8–12', yt:'dumbbell romanian deadlift'},
-    {name:'Side Plank',      rx:'3×30–45s/side', yt:'side plank'}
-  ],
-  full: [
-    {name:'DB Bench or Push-ups', rx:'4×6–12', yt:'dumbbell bench press'},
-    {name:'DB Row / Chest-supported Row', rx:'4×8–12', yt:'dumbbell row'},
-    {name:'DB RDL', rx:'4×8–12', yt:'dumbbell romanian deadlift'}
-  ],
-  core: [
-    {name:'Plank or Dead Bug', rx:'3×30–45s', yt:'plank exercise'}
-  ],
-  conditioning: [
-    {name:'LISS: easy jog / cycle', rx:'20–30 min', yt:'how to easy run'},
-    {name:'Optional: Jump Rope practice', rx:'5–10 min', yt:'jump rope basics'}
-  ]
-};
-function buildDefaultWeek(){
-  return [
-    {day:'Mon', blocks:[{title:'Push', items:DEFAULT_EXES.push},{title:'Core', items:DEFAULT_EXES.core}]},
-    {day:'Tue', blocks:[{title:'Pull', items:DEFAULT_EXES.pull},{title:'Conditioning', items:DEFAULT_EXES.conditioning}]},
-    {day:'Wed', blocks:[{title:'Legs', items:DEFAULT_EXES.legs} ,{title:'Core', items:DEFAULT_EXES.core}]},
-    {day:'Thu', blocks:[{title:'Push', items:DEFAULT_EXES.push}]},
-    {day:'Fri', blocks:[{title:'Pull', items:DEFAULT_EXES.pull}]},
-    {day:'Sat', blocks:[{title:'Full-body', items:DEFAULT_EXES.full},{title:'Conditioning (optional)', items:DEFAULT_EXES.conditioning}]},
-    {day:'Sun', blocks:[{title:'Mobility / Walk', items:[{name:'20–40 min walk + stretch', rx:'easy pace', yt:'beginner mobility routine'}]}]}
-  ];
-}
-
-/* ================== LOAD PLAN (from roadmap or default) ================== */
-function loadPlanFromRoadmap(){
+/* =========================
+   Audio beeps for timers
+   ========================= */
+function playBeep(freq=880, ms=160, gain=0.028){
   try{
-    const raw = localStorage.getItem(ROADMAP_KEY);
-    if(!raw) return null;
-    const obj = JSON.parse(raw);
-    // Expecting: [{day:'Mon', blocks:[{title:'Push', items:[{name, rx, yt?}, ...]}]}...]
-    if(Array.isArray(obj) && obj.length===7) return obj;
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new Ctx();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type='sine'; o.frequency.value=freq; g.gain.value=gain;
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); setTimeout(()=>{ o.stop(); ctx.close(); }, ms);
   }catch{}
-  return null;
 }
-const PLAN = loadPlanFromRoadmap() || buildDefaultWeek();
+function tripleLeadIn(next){
+  let i=0; const seq=[600,700,800];
+  const t=setInterval(()=>{ playBeep(seq[i],120,0.03); i++; if(i>=3){ clearInterval(t); setTimeout(()=>next&&next(),140); } }, 280);
+}
+function tripleFinish(){ [900,700,500].forEach((f,idx)=>setTimeout(()=>playBeep(f,140,0.035), idx*220)); }
 
-/* ================== RENDER ================== */
-const planEl = document.getElementById('plan');
+/* =========================
+   Wellness toggles
+   ========================= */
+['hydrDone','sleepDone','macroDone','activityWalk','activityRun','activityBike'].forEach(id=>{
+  const el=document.getElementById(id);
+  const k=TOGGLE_PREFIX+id;
+  try{ if(localStorage.getItem(k)==='1') el.checked=true; }catch{}
+  el?.addEventListener('change',()=>{ try{ localStorage.setItem(k, el.checked?'1':'0'); }catch{} });
+});
 
-function hydrationKey(day){ return NS+'hydr.'+day; }
-function sleepKey(day){ return NS+'sleep.'+day; }
-function exKey(day, title){ return NS+'ex.'+day+'.'+title.replace(/[^a-z0-9]+/gi,'-').toLowerCase(); }
+/* =========================
+   PB helpers
+   ========================= */
+function pbKey(key){ return PB_PREFIX + key; }
+function loadPB(key){ try{ return JSON.parse(localStorage.getItem(pbKey(key))||'{}'); }catch{ return {}; } }
+function savePB(key, obj){ try{ localStorage.setItem(pbKey(key), JSON.stringify(obj)); }catch{} }
 
-function render(){
-  planEl.innerHTML = '';
-  PLAN.forEach(dayObj=>{
-    const d = dayObj.day; const idDay = d.toLowerCase();
+/* =========================
+   Rest timer UI + wiring
+   ========================= */
+function restControlsHTML(uniqueKey){
+  return `
+    <div class="restbar" data-rest="${uniqueKey}" data-bound="0">
+      <span>⏱ Rest:</span>
+      <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
+      <button class="btn-sm" data-act="rest-start" title="3-beep lead-in then countdown">Start</button>
+      <button class="btn-sm" data-act="rest-stop">Stop</button>
+      <span class="left" aria-live="polite">90s</span>
+    </div>
+  `;
+}
+function hookRestTimers(scope){
+  scope.querySelectorAll('.restbar').forEach(bar=>{
+    if(bar.dataset.bound==='1') return;
+    bar.dataset.bound='1';
+    const input = bar.querySelector('input[type="number"]');
+    const left  = bar.querySelector('.left');
+    const start = bar.querySelector('[data-act="rest-start"]');
+    const stop  = bar.querySelector('[data-act="rest-stop"]');
+    let timer=null;
 
-    const day = document.createElement('article');
-    day.className='day';
+    const fmt=(sec)=>{ sec=Math.max(0,Math.floor(Number(sec)||0)); const m=Math.floor(sec/60), s=sec%60; return m ? `${m}:${String(s).padStart(2,'0')}` : `${s}s`; };
+    const show=(v)=>{ left.textContent = fmt(v); };
+    show(parseInt(input?.value||'0',10));
 
-    // Header with daily flags (Hydration/Sleep)
-    const hydHit = localStorage.getItem(hydrationKey(d)) === '1';
-    const slpHit = localStorage.getItem(sleepKey(d)) === '1';
-
-    day.innerHTML = `
-      <header>
-        <h3 style="margin:0">${d}</h3>
-        <div class="flags">
-          <label class="flag"><input type="checkbox" data-flag="hydr" ${hydHit?'checked':''}/> Hydration hit</label>
-          <label class="flag"><input type="checkbox" data-flag="sleep" ${slpHit?'checked':''}/> Sleep goal hit</label>
-        </div>
-      </header>
-      <div class="block" data-body></div>
-    `;
-
-    const body = day.querySelector('[data-body]');
-
-    dayObj.blocks.forEach(block=>{
-      const wrap = document.createElement('div');
-      wrap.className='mov';
-      const title = block.title || 'Session';
-
-      // Exercises list
-      const listHTML = (block.items||[]).map((it,idx)=>{
-        const name = it.name || 'Exercise';
-        const rx   = it.rx || '';
-        const q    = it.yt || name;
-        const key  = exKey(d, title+'-'+name);
-        const saved = JSON.parse(localStorage.getItem(key) || '{}');
-        const bestWas = parseFloat(localStorage.getItem(key+'.best')||'0')||0;
-
-        return `
-          <div class="mov" style="margin:.35rem 0">
-            <div class="mov-head">
-              <div class="mov-title"><a href="${yt(q)}" target="_blank" rel="noopener">${name}</a></div>
-              <div class="rx">${rx}</div>
-              <div class="tools">
-                <button class="btn-sm" data-clear="${key}" title="Clear saved sets">Clear</button>
-              </div>
-            </div>
-            <div class="log-grid" data-log="${key}">
-              ${[1,2,3,4,5].map(i=>`
-                <div class="log-row">
-                  <strong>Set ${i}</strong>
-                  <input inputmode="decimal" placeholder="kg"   data-field="w${i}" value="${saved['w'+i]||''}">
-                  <input inputmode="numeric" placeholder="reps" data-field="r${i}" value="${saved['r'+i]||''}">
-                  <input placeholder="notes" data-field="n${i}" value="${saved['n'+i]||''}">
-                  <button class="btn-sm" data-save="${key}">Save</button>
-                </div>
-              `).join('')}
-            </div>
-            <div class="meta-row">
-              <span class="pb" id="${key}-pb">${bestWas>0?`PB: ${bestWas.toFixed(1)} (w×r best set)`:''}</span>
-              <span class="badge" id="${key}-badge">${milestoneText()}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      wrap.innerHTML = `
-        <div class="mov-head" style="margin-bottom:.25rem">
-          <div class="mov-title"><strong>${title}</strong></div>
-          <div class="meta">Tip: type exercise name + “form” on YouTube for quick refresh.</div>
-        </div>
-        ${listHTML || '<p class="meta">No items.</p>'}
-      `;
-
-      body.appendChild(wrap);
-    });
-
-    // Wire hydration/sleep flags
-    day.querySelector('[data-flag="hydr"]')?.addEventListener('change', (e)=>{
-      localStorage.setItem(hydrationKey(d), e.target.checked ? '1' : '0');
-    });
-    day.querySelector('[data-flag="sleep"]')?.addEventListener('change', (e)=>{
-      localStorage.setItem(sleepKey(d), e.target.checked ? '1' : '0');
-    });
-
-    // Wire saving / clearing for each exercise block
-    day.querySelectorAll('[data-save]').forEach(btn=>{
-      const key = btn.getAttribute('data-save');
-      const grid = day.querySelector(`[data-log="${key}"]`);
-      const pbEl = day.querySelector('#'+CSS.escape(key)+'-pb');
-      const badgeEl = day.querySelector('#'+CSS.escape(key)+'-badge');
-
-      btn.addEventListener('click', ()=>{
-        const obj = {};
-        grid.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field] = inp.value.trim(); });
-        localStorage.setItem(key, JSON.stringify(obj));
-        const now = bestScore(obj);
-        const was = parseFloat(localStorage.getItem(key+'.best')||'0')||0;
-        if(now>was){ localStorage.setItem(key+'.best', now); if(pbEl) pbEl.textContent = `New PB! ${now.toFixed(1)} (best w×r)`; }
-        else{ if(pbEl) pbEl.textContent = was>0 ? `PB: ${was.toFixed(1)} (w×r)` : 'Saved.'; }
-        const total=(parseInt(localStorage.getItem(NS+'saves')||'0',10)+1);
-        localStorage.setItem(NS+'saves', total);
-        if(badgeEl) badgeEl.textContent = milestoneText(total);
+    start?.addEventListener('click', ()=>{
+      let total = Math.max(5, parseInt(input?.value||'0',10) || 0);
+      clearInterval(timer);
+      tripleLeadIn(()=>{
+        let remain = total; show(remain);
+        timer = setInterval(()=>{
+          remain -= 1; show(remain);
+          if(remain<=0){
+            clearInterval(timer);
+            left.textContent='Go!';
+            bar.animate([{opacity:1},{opacity:.35},{opacity:1}],{duration:600,iterations:2});
+            tripleFinish();
+          }
+        },1000);
       });
     });
-
-    day.querySelectorAll('[data-clear]').forEach(btn=>{
-      const key = btn.getAttribute('data-clear');
-      btn.addEventListener('click', ()=>{
-        localStorage.removeItem(key);
-        localStorage.removeItem(key+'.best');
-        render(); // simplest refresh
-      });
-    });
-
-    planEl.appendChild(day);
+    stop?.addEventListener('click', ()=>{ clearInterval(timer); show(parseInt(input?.value||'0',10)); });
+    input?.addEventListener('keydown', e=>{ if(e.key==='Enter'){ start?.click(); } });
   });
 }
 
-/* ================== EXPORT / IMPORT / RESET ================== */
-document.getElementById('btnExport')?.addEventListener('click', ()=>{
-  // export all keys that belong to workout plan + the roadmap plan key if present
+/* =========================
+   Render plan from roadmap
+   ========================= */
+function renderPlan(){
+  const planEl = document.getElementById('plan');
+  const msgEl  = document.getElementById('planMsg');
+
+  let roadmapRaw = null;
+  try{ roadmapRaw = localStorage.getItem(ROADMAP_KEY); }catch{}
+
+  if(!roadmapRaw){
+    planEl.innerHTML = `
+      <div class="warn">No roadmap found.
+        Generate one in <a href="nutrition.html" style="color:#ffd4bf;text-decoration:underline">Nutrition</a>
+        (Create Plan → staged or single-phase). This page will auto-load it here.
+      </div>`;
+    msgEl.textContent = '';
+    return;
+  }
+
+  let data = null;
+  try{ data = JSON.parse(roadmapRaw); }catch(e){
+    planEl.innerHTML = `<div class="warn">Saved roadmap is unreadable. Please re-generate from Nutrition.</div>`;
+    msgEl.textContent = '';
+    return;
+  }
+
+  const stages = Array.isArray(data.stages) ? data.stages : [];
+  if(!stages.length){
+    planEl.innerHTML = `<div class="warn">Roadmap has no stages. Re-generate from Nutrition.</div>`;
+    msgEl.textContent = '';
+    return;
+  }
+
+  const ytTip = (data.meta && data.meta.youtubeTip) || 'Form tip: search YouTube — exercise name + “form”.';
+  let html = `<p class="ok">${ytTip}</p>`;
+
+  stages.forEach((stage, si)=>{
+    const name = stage.name || `Stage ${si+1}`;
+    const weeks = (stage.weeks_min && stage.weeks_max) ? `${stage.weeks_min}–${stage.weeks_max} weeks` : '';
+    const bfT = stage.bf_target ? `BF target: ${stage.bf_target}` : '';
+    const blurb = stage.blurb || '';
+    const split = stage.split || ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    html += `
+      <div class="stage">
+        <header>
+          <h3>${name}</h3>
+          <div class="meta">${[bfT, weeks].filter(Boolean).join(' · ')}</div>
+        </header>
+        ${blurb ? `<p class="meta" style="margin:.2rem 0 .5rem">${blurb}</p>` : ''}
+        <div class="days">
+    `;
+
+    for(let di=0; di<7; di++){
+      const dayLabel = split[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di] || `Day ${di+1}`;
+      const items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
+      html += `<div class="day"><h4>${dayLabel}</h4>`;
+
+      if(!items.length){
+        html += `<p class="meta">Rest / No structured training</p></div>`;
+        continue;
+      }
+
+      items.forEach((it, ei)=>{
+        // Key for PB storage per exercise instance
+        const key = `s${si}d${di}e${ei}`;
+        const pb = loadPB(key);
+
+        // Build prescription string
+        let presc = '';
+        if(it.type === 'cardio'){
+          const parts = [];
+          if(it.duration_min) parts.push(`${it.duration_min} min`);
+          if(it.work_s) parts.push(`work ${it.work_s}s`);
+          if(it.rest_s) parts.push(`rest ${it.rest_s}s`);
+          if(it.rounds) parts.push(`${it.rounds} rounds`);
+          presc = parts.join(' · ');
+        }else{
+          const sets = it.sets ?? '—';
+          const reps = it.reps ?? '—';
+          const rir  = (it.rir ?? '—') + ' RIR';
+          const rest = (it.rest ?? 60) + 's rest';
+          presc = `${sets}×${reps} · ${rir} · ${rest}`;
+        }
+
+        html += `
+          <div class="exercise">
+            <div class="ex-head">
+              <div class="ex-name">${it.name || 'Exercise'}</div>
+              <div class="ex-presc meta">${presc}</div>
+            </div>
+
+            <!-- PB row -->
+            <div class="pb">
+              <small>PB log:</small>
+              <input type="number" placeholder="sets" value="${pb.sets ?? ''}" class="pb-sets" data-key="${key}">
+              <input type="number" placeholder="reps" value="${pb.reps ?? ''}" class="pb-reps" data-key="${key}">
+              <input type="number" placeholder="kg"   value="${pb.wt   ?? ''}" class="pb-wt"   data-key="${key}">
+              <button class="btn-sm" data-savepb="${key}">Save PB</button>
+            </div>
+
+            <!-- Per-exercise rest timer -->
+            ${it.type === 'cardio' ? '' : restControlsHTML(key)}
+            ${it.cue ? `<p class="tip">${it.cue}</p>` : ''}
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+    }
+
+    html += `</div></div>`;
+  });
+
+  planEl.innerHTML = html;
+  msgEl.textContent = `Loaded ${stages.length} stage${stages.length>1?'s':''} from local plan.`;
+
+  // Hook PB save buttons
+  document.querySelectorAll('[data-savepb]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.getAttribute('data-savepb');
+      const sets = document.querySelector(`.pb-sets[data-key="${key}"]`)?.value || '';
+      const reps = document.querySelector(`.pb-reps[data-key="${key}"]`)?.value || '';
+      const wt   = document.querySelector(`.pb-wt[data-key="${key}"]`)?.value || '';
+      savePB(key, {sets, reps, wt});
+      btn.textContent = 'Saved ✓';
+      setTimeout(()=>btn.textContent='Save PB', 1200);
+    });
+  });
+
+  // Hook per-exercise timers
+  hookRestTimers(planEl);
+}
+
+/* =========================
+   Export / Import / Reset
+   ========================= */
+function exportAll(){
   const dump = {};
   for(let i=0;i<localStorage.length;i++){
     const k = localStorage.key(i);
     if(!k) continue;
-    if(k.startsWith(NS) || k === ROADMAP_KEY) dump[k] = localStorage.getItem(k);
+    if(k.startsWith(PB_PREFIX) || k.startsWith(TOGGLE_PREFIX) || k===ROADMAP_KEY){
+      dump[k] = localStorage.getItem(k);
+    }
   }
-  const blob = new Blob([JSON.stringify(dump,null,2)], {type:'application/json'});
+  const blob = new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'freefitfuel-workout-plan-backup.json';
+  const a = document.createElement('a'); a.href=url; a.download='freefitfuel-workout-plan-backup.json';
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-});
-
-document.getElementById('importFile')?.addEventListener('change', (e)=>{
-  const file = e.target.files?.[0]; if(!file) return;
-  const r = new FileReader();
-  r.onload = ()=>{
+}
+function importAll(file){
+  const reader = new FileReader();
+  reader.onload = () => {
     try{
-      const obj = JSON.parse(String(r.result||'{}'));
-      Object.keys(obj).forEach(k=>{
-        // only accept our namespace or the roadmap plan key
-        if(k.startsWith(IMPORT_KEYS_PREFIX) || k===ROADMAP_KEY){
-          localStorage.setItem(k, obj[k]);
-        }
-      });
-      alert('Imported ✅'); location.reload();
-    }catch{ alert('Import failed — invalid file.'); }
+      const obj = JSON.parse(String(reader.result||'{}'));
+      Object.keys(obj).forEach(k=>{ localStorage.setItem(k, obj[k]); });
+      alert('Import complete. Reloading plan.'); renderPlan();
+    }catch{ alert('Import failed: invalid file.'); }
   };
-  r.readAsText(file);
-});
-
-document.getElementById('btnResetAll')?.addEventListener('click', ()=>{
-  if(!confirm('Delete ALL workout plan logs, flags and saved plan on this device?')) return;
-  const keys = [];
+  reader.readAsText(file);
+}
+function resetPBsAndWellness(){
+  const toDelete=[];
   for(let i=0;i<localStorage.length;i++){
-    const k = localStorage.key(i);
-    if(k && (k.startsWith(NS) || k===ROADMAP_KEY)) keys.push(k);
+    const k=localStorage.key(i); if(!k) continue;
+    if(k.startsWith(PB_PREFIX) || k.startsWith(TOGGLE_PREFIX)) toDelete.push(k);
   }
-  keys.forEach(k=>localStorage.removeItem(k));
-  location.reload();
+  toDelete.forEach(k=>localStorage.removeItem(k));
+  alert('Cleared PBs & wellness toggles. Roadmap left intact.'); location.reload();
+}
+document.getElementById('btnExport')?.addEventListener('click', exportAll);
+document.getElementById('importFile')?.addEventListener('change', e=>{
+  const f=e.target.files?.[0]; if(f) importAll(f);
 });
+document.getElementById('btnReset')?.addEventListener('click', resetPBsAndWellness);
 
-/* ================== GO ================== */
-render();
+/* =========================
+   Boot
+   ========================= */
+renderPlan();
 </script>
 </body>
 </html>

@@ -43,9 +43,38 @@
     .ex-presc{color:var(--inkdim)}
     .pb{display:grid;grid-template-columns:repeat(3,100px) auto;gap:.4rem;align-items:center;margin-top:.35rem}
     .pb small{color:var(--inkdim)}
-    .restbar{display:flex;align-items:center;gap:.4rem;margin:.35rem 0;flex-wrap:wrap}
-    .restbar input{width:80px}
-    .restbar .left{opacity:.9;min-width:44px}
+
+    /* Rest timer base */
+    .restbar{
+      display:flex;
+      align-items:center;
+      gap:.4rem;
+      margin:.35rem 0;
+      flex-wrap:wrap;           /* allow wrapping on phones */
+    }
+    .restbar input{
+      width:80px;               /* base */
+      flex:1 1 60px;            /* grow/shrink sensibly */
+      max-width:100px;
+    }
+    .restbar .left{
+      opacity:.9;
+      min-width:44px;
+      flex-shrink:0;            /* don't let countdown get squashed */
+    }
+
+    /* Very small screens: stack neatly */
+    @media (max-width: 500px){
+      .restbar{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .restbar button,
+      .restbar input{
+        width:100%;
+      }
+    }
+
     .tip{font-size:.9rem;color:var(--inkdim);margin-top:.3rem}
     .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.5rem .6rem;border-radius:8px;margin:.5rem 0}
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.5rem .6rem;border-radius:8px;margin:.5rem 0}
@@ -94,9 +123,9 @@
 /* =========================
    Config / Keys
    ========================= */
-const ROADMAP_KEY = 'fff.roadmap.plan.v1'; // <- as requested (unchanged)
-const PB_PREFIX   = 'fff_pb_';             // per-exercise PBs
-const TOGGLE_PREFIX = 'fff_check_';        // wellness toggles
+const ROADMAP_KEY   = 'fff.roadmap.plan.v1'; // <- as requested (unchanged)
+const PB_PREFIX     = 'fff_pb_';             // per-exercise PBs
+const TOGGLE_PREFIX = 'fff_check_';          // wellness toggles
 
 /* =========================
    Audio beeps for timers

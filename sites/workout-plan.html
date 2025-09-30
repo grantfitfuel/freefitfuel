@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Workout Plan — FreeFitFuel</title>
+  <title>My Personalised Workout Plan — FreeFitFuel</title
 
-  <!-- Optional: reuse your global styles -->
-  <link rel="stylesheet" href="style.css?v=27">
+  <!-- (optional) reuse your global theme -->
+  <link rel="stylesheet" href="style.css?v=28">
 
   <style>
     :root{
@@ -16,79 +16,71 @@
     }
     body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif}
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-    h1{margin:.2rem 0 0.6rem;font-size:1.8rem;color:var(--ink)}
+    h1{margin:.2rem 0 .6rem;font-size:1.8rem}
     .lead{color:var(--inkdim)}
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
-    h2{margin:.1rem 0 .6rem;font-size:1.2rem;color:var(--accent)}
-    h3{margin:.4rem 0 .4rem;font-size:1.05rem;color:var(--ink)}
-    .meta{color:var(--inkdim)}
-    .btn-sm{border:1px solid var(--stroke);background:#121821;color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+
+    /* Sections + cards (match workouts.html vibe) */
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:14px}
+    .section>h2{margin:.15rem 0 .6rem;font-size:1.2rem;color:var(--accent)}
+    .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px;margin:.7rem 0}
+    .block h3{margin:.15rem 0 .45rem;font-size:1.05rem}
+
+    /* Day grid like workouts.html “plan” area */
+    .days{display:grid;gap:12px}
+    @media (min-width:780px){ .days{grid-template-columns:repeat(2,1fr)} }
+
+    /* Movement rows + drawer (copied feel from workouts.html) */
+    .mov{border:1px dashed var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.45rem 0}
+    .mov-head{display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .mov-title a{color:var(--ink);text-decoration:underline dotted}
+    .mov-title a:hover{color:var(--accent)}
+    .rx{opacity:.9}
+    .mov-tools{display:flex;gap:.4rem;align-items:center}
+    .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
+
+    .drawer{display:none;margin:.45rem 0 0}
+    .drawer.open{display:block}
+    .log-grid{display:grid;gap:.35rem}
+    .log-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr auto;gap:.35rem;align-items:center}
+    .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.38rem .45rem}
+    .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
+    .pb{color:#90ee90}
+    .badge{border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;background:rgba(255,255,255,.06)}
+    .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
+
+    /* Per-exercise rest timer (same style as workouts.html) */
+    .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
+    .restbar .left{opacity:.9;min-width:44px}
+    .restbar input[type="number"]{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.34rem .45rem}
+
+    /* PB strip on small screens — stack so “kg” doesn’t clip */
+    @media (max-width:520px){
+      .log-row{grid-template-columns:60px 1fr 1fr; grid-auto-rows:auto}
+      .log-row input[placeholder="kg"]{grid-column:1 / span 1}
+      .log-row input[placeholder="reps"]{grid-column:2 / span 1}
+      .log-row input[placeholder="notes"]{grid-column:1 / span 2}
+    }
+    /* Wellness + utilities */
     .grid{display:grid;gap:.6rem}
-    .log-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem}
+    .log-grid-compact{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem}
     label{display:flex;align-items:center;gap:.5rem}
     input[type="checkbox"]{accent-color:var(--accent)}
     input[type="number"], input[type="text"]{
-      background:#0c1118;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);
-      padding:.4rem .5rem; width:100%;
+      background:#0c1118;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.4rem .5rem;width:100%;
     }
-    .stage{border:1px solid var(--stroke);border-radius:12px;padding:12px;margin:.8rem 0}
-    .stage>header{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap}
-    .days{display:grid;gap:10px}
-    @media(min-width:820px){ .days{grid-template-columns:repeat(2,1fr)} }
-    .day{border:1px dashed var(--stroke);border-radius:10px;padding:10px}
-    .day h4{margin:.1rem 0 .4rem;font-size:1rem;color:var(--ink)}
-    .exercise{border:1px solid var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.5rem 0}
-    .ex-head{display:flex;justify-content:space-between;gap:.6rem;align-items:center;flex-wrap:wrap}
-    .ex-name{font-weight:600}
-    .ex-presc{color:var(--inkdim)}
-    .pb{display:grid;grid-template-columns:repeat(3,100px) auto;gap:.4rem;align-items:center;margin-top:.35rem}
-    .pb small{color:var(--inkdim)}
-
-    /* Rest timer base */
-    .restbar{
-      display:flex;
-      align-items:center;
-      gap:.4rem;
-      margin:.35rem 0;
-      flex-wrap:wrap;           /* allow wrapping on phones */
-    }
-    .restbar input{
-      width:80px;               /* base */
-      flex:1 1 60px;            /* grow/shrink sensibly */
-      max-width:100px;
-    }
-    .restbar .left{
-      opacity:.9;
-      min-width:44px;
-      flex-shrink:0;            /* don't let countdown get squashed */
-    }
-
-    /* Very small screens: stack neatly */
-    @media (max-width: 500px){
-      .restbar{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .restbar button,
-      .restbar input{
-        width:100%;
-      }
-    }
-
-    .tip{font-size:.9rem;color:var(--inkdim);margin-top:.3rem}
-    .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.5rem .6rem;border-radius:8px;margin:.5rem 0}
-    .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.5rem .6rem;border-radius:8px;margin:.5rem 0}
+    .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.55rem .6rem;border-radius:8px}
+    .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>My Workout Plan</h1>
-    <p class="lead">Fully client-side. Your data stays in this browser. </p>
+    <p class="lead">Client-side only. Your plan, logs, PBs and checks stay in this browser.</p>
 
-    <!-- Wellness checks -->
+    <!-- Daily checks -->
     <section class="section">
       <h2>Daily Wellness Check</h2>
-      <div class="log-grid">
+      <div class="log-grid-compact">
         <label><input type="checkbox" id="hydrDone"> Hydration hit</label>
         <label><input type="checkbox" id="sleepDone"> Sleep goal met</label>
         <label><input type="checkbox" id="macroDone"> Macros on target</label>
@@ -96,14 +88,14 @@
         <label><input type="checkbox" id="activityRun"> Run</label>
         <label><input type="checkbox" id="activityBike"> Bike</label>
       </div>
-      <p class="tip">Tip: these checkboxes auto-save. Refresh and they’ll still be set.</p>
+      <p class="quote">Consistency across training, nutrition, sleep & stress = success.</p>
     </section>
 
-    <!-- Plan container -->
-    <section id="planSection" class="section">
+    <!-- Plan -->
+    <section class="section">
       <h2>Your Personalised Plan</h2>
       <div id="plan"></div>
-      <div id="planMsg" class="meta"></div>
+      <p id="planMsg" class="meta"></p>
     </section>
 
     <!-- Backup -->
@@ -115,283 +107,264 @@
         <input id="importFile" type="file" accept="application/json" style="display:none">
         <button class="btn-sm" id="btnReset">Reset (PBs + wellness only)</button>
       </div>
-      <p class="tip">Roadmap stays stored at <code>localStorage["fff.roadmap.plan.v1"]</code>. PBs/toggles use separate keys.</p>
+      <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
     </section>
   </div>
 
 <script>
-/* =========================
-   Config / Keys
-   ========================= */
-const ROADMAP_KEY   = 'fff.roadmap.plan.v1'; // <- as requested (unchanged)
-const PB_PREFIX     = 'fff_pb_';             // per-exercise PBs
-const TOGGLE_PREFIX = 'fff_check_';          // wellness toggles
+/* ===== Keys / constants ===== */
+const ROADMAP_KEY   = 'fff.roadmap.plan.v1';   // ✔ as requested
+const NS_PB         = 'fff.workoutplan.pb.';   // per-exercise PB
+const NS_CHECK      = 'fff.workoutplan.check.';// wellness toggles
 
-/* =========================
-   Audio beeps for timers
-   ========================= */
-function playBeep(freq=880, ms=160, gain=0.028){
-  try{
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    const ctx = new Ctx();
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type='sine'; o.frequency.value=freq; g.gain.value=gain;
-    o.connect(g); g.connect(ctx.destination);
-    o.start(); setTimeout(()=>{ o.stop(); ctx.close(); }, ms);
-  }catch{}
-}
-function tripleLeadIn(next){
-  let i=0; const seq=[600,700,800];
-  const t=setInterval(()=>{ playBeep(seq[i],120,0.03); i++; if(i>=3){ clearInterval(t); setTimeout(()=>next&&next(),140); } }, 280);
-}
-function tripleFinish(){ [900,700,500].forEach((f,idx)=>setTimeout(()=>playBeep(f,140,0.035), idx*220)); }
+/* ===== Audio beeps (lead-in & finish) ===== */
+function beep(f=880, ms=160, g=0.028){ try{
+  const C=window.AudioContext||window.webkitAudioContext; const ctx=new C();
+  const o=ctx.createOscillator(), v=ctx.createGain(); o.type='sine'; o.frequency.value=f; v.gain.value=g;
+  o.connect(v); v.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop();ctx.close();},ms);
+}catch{}}
+function leadIn(next){ let i=0, seq=[600,700,800]; const t=setInterval(()=>{beep(seq[i],120,0.03); i++; if(i>=3){clearInterval(t); setTimeout(()=>next&&next(),140);} },280); }
+function finish(){ [900,700,500].forEach((f,i)=>setTimeout(()=>beep(f,140,0.035), i*220)); }
 
-/* =========================
-   Wellness toggles
-   ========================= */
+/* ===== Wellness toggles ===== */
 ['hydrDone','sleepDone','macroDone','activityWalk','activityRun','activityBike'].forEach(id=>{
-  const el=document.getElementById(id);
-  const k=TOGGLE_PREFIX+id;
+  const el = document.getElementById(id); const k = NS_CHECK+id;
   try{ if(localStorage.getItem(k)==='1') el.checked=true; }catch{}
   el?.addEventListener('change',()=>{ try{ localStorage.setItem(k, el.checked?'1':'0'); }catch{} });
 });
 
-/* =========================
-   PB helpers
-   ========================= */
-function pbKey(key){ return PB_PREFIX + key; }
-function loadPB(key){ try{ return JSON.parse(localStorage.getItem(pbKey(key))||'{}'); }catch{ return {}; } }
-function savePB(key, obj){ try{ localStorage.setItem(pbKey(key), JSON.stringify(obj)); }catch{} }
+/* ===== Utilities ===== */
+function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q+' form'); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+const QUOTES=[
+  "Small wins compound. Log the set, own the day.",
+  "Perfect form, steady breath, then add a little.",
+  "Consistency beats intensity when intensity is inconsistent.",
+  "One clean rep beats five messy ones.",
+  "Show up. Scale smart. Keep going."
+];
 
-/* =========================
-   Rest timer UI + wiring
-   ========================= */
-function restControlsHTML(uniqueKey){
+/* ===== Timers (attach inside a scope element) ===== */
+function restControlsHTML(id){
   return `
-    <div class="restbar" data-rest="${uniqueKey}" data-bound="0">
+    <div class="restbar" data-rest="${id}" data-bound="0">
       <span>⏱ Rest:</span>
       <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
       <button class="btn-sm" data-act="rest-start" title="3-beep lead-in then countdown">Start</button>
       <button class="btn-sm" data-act="rest-stop">Stop</button>
       <span class="left" aria-live="polite">90s</span>
-    </div>
-  `;
+    </div>`;
 }
 function hookRestTimers(scope){
   scope.querySelectorAll('.restbar').forEach(bar=>{
-    if(bar.dataset.bound==='1') return;
-    bar.dataset.bound='1';
-    const input = bar.querySelector('input[type="number"]');
-    const left  = bar.querySelector('.left');
-    const start = bar.querySelector('[data-act="rest-start"]');
-    const stop  = bar.querySelector('[data-act="rest-stop"]');
-    let timer=null;
-
-    const fmt=(sec)=>{ sec=Math.max(0,Math.floor(Number(sec)||0)); const m=Math.floor(sec/60), s=sec%60; return m ? `${m}:${String(s).padStart(2,'0')}` : `${s}s`; };
-    const show=(v)=>{ left.textContent = fmt(v); };
+    if(bar.dataset.bound==='1') return; bar.dataset.bound='1';
+    const input=bar.querySelector('input[type="number"]');
+    const left =bar.querySelector('.left');
+    const start=bar.querySelector('[data-act="rest-start"]');
+    const stop =bar.querySelector('[data-act="rest-stop"]');
+    let t=null;
+    const fmt=s=>{ s=Math.max(0,Math.floor(Number(s)||0)); const m=Math.floor(s/60), r=s%60; return m?`${m}:${String(r).padStart(2,'0')}`:`${r}s`; };
+    const show=s=>left.textContent=fmt(s);
     show(parseInt(input?.value||'0',10));
-
     start?.addEventListener('click', ()=>{
-      let total = Math.max(5, parseInt(input?.value||'0',10) || 0);
-      clearInterval(timer);
-      tripleLeadIn(()=>{
-        let remain = total; show(remain);
-        timer = setInterval(()=>{
-          remain -= 1; show(remain);
-          if(remain<=0){
-            clearInterval(timer);
-            left.textContent='Go!';
-            bar.animate([{opacity:1},{opacity:.35},{opacity:1}],{duration:600,iterations:2});
-            tripleFinish();
-          }
+      let total=Math.max(5,parseInt(input?.value||'0',10)||0);
+      clearInterval(t); leadIn(()=>{ let remain=total; show(remain);
+        t=setInterval(()=>{ remain-=1; show(remain);
+          if(remain<=0){ clearInterval(t); left.textContent='Go!'; bar.animate([{opacity:1},{opacity:.35},{opacity:1}],{duration:600,iterations:2}); finish(); }
         },1000);
       });
     });
-    stop?.addEventListener('click', ()=>{ clearInterval(timer); show(parseInt(input?.value||'0',10)); });
+    stop?.addEventListener('click', ()=>{ clearInterval(t); show(parseInt(input?.value||'0',10)); });
     input?.addEventListener('keydown', e=>{ if(e.key==='Enter'){ start?.click(); } });
   });
 }
 
-/* =========================
-   Render plan from roadmap
-   ========================= */
+/* ===== Render from roadmap ===== */
 function renderPlan(){
-  const planEl = document.getElementById('plan');
-  const msgEl  = document.getElementById('planMsg');
+  const wrap = document.getElementById('plan');
+  const msg  = document.getElementById('planMsg');
 
-  let roadmapRaw = null;
-  try{ roadmapRaw = localStorage.getItem(ROADMAP_KEY); }catch{}
-
-  if(!roadmapRaw){
-    planEl.innerHTML = `
-      <div class="warn">No roadmap found.
-        Generate one in <a href="nutrition.html" style="color:#ffd4bf;text-decoration:underline">Nutrition</a>
-        (Create Plan → staged or single-phase). This page will auto-load it here.
-      </div>`;
-    msgEl.textContent = '';
-    return;
+  let raw=null; try{ raw=localStorage.getItem(ROADMAP_KEY); }catch{}
+  if(!raw){
+    wrap.innerHTML = `<div class="warn">No roadmap found. Create it on <a href="nutrition.html" style="color:#ffd4bf;text-decoration:underline">Nutrition</a> (Generate → OK for single-phase or Cancel for staged).</div>`;
+    msg.textContent=''; return;
   }
-
-  let data = null;
-  try{ data = JSON.parse(roadmapRaw); }catch(e){
-    planEl.innerHTML = `<div class="warn">Saved roadmap is unreadable. Please re-generate from Nutrition.</div>`;
-    msgEl.textContent = '';
-    return;
+  let data=null; try{ data=JSON.parse(raw); }catch{
+    wrap.innerHTML=`<div class="warn">Saved roadmap unreadable. Re-generate from Nutrition.</div>`; msg.textContent=''; return;
   }
+  const stages=Array.isArray(data.stages)?data.stages:[];
+  if(!stages.length){ wrap.innerHTML=`<div class="warn">Roadmap has no stages. Re-generate from Nutrition.</div>`; msg.textContent=''; return; }
 
-  const stages = Array.isArray(data.stages) ? data.stages : [];
-  if(!stages.length){
-    planEl.innerHTML = `<div class="warn">Roadmap has no stages. Re-generate from Nutrition.</div>`;
-    msgEl.textContent = '';
-    return;
-  }
-
-  const ytTip = (data.meta && data.meta.youtubeTip) || 'Form tip: search YouTube — exercise name + “form”.';
-  let html = `<p class="ok">${ytTip}</p>`;
-
-  stages.forEach((stage, si)=>{
+  let html='';
+  stages.forEach((stage,si)=>{
     const name = stage.name || `Stage ${si+1}`;
-    const weeks = (stage.weeks_min && stage.weeks_max) ? `${stage.weeks_min}–${stage.weeks_max} weeks` : '';
-    const bfT = stage.bf_target ? `BF target: ${stage.bf_target}` : '';
-    const blurb = stage.blurb || '';
-    const split = stage.split || ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-    html += `
-      <div class="stage">
-        <header>
-          <h3>${name}</h3>
-          <div class="meta">${[bfT, weeks].filter(Boolean).join(' · ')}</div>
-        </header>
-        ${blurb ? `<p class="meta" style="margin:.2rem 0 .5rem">${blurb}</p>` : ''}
-        <div class="days">
-    `;
+    const bf   = stage.bf_target ? ` · BF target: ${stage.bf_target}` : '';
+    const weeks= (stage.weeks_min&&stage.weeks_max)?` · ${stage.weeks_min}–${stage.weeks_max} weeks`:'';
+    html += `<div class="block">
+      <h3>${name}</h3>
+      ${stage.blurb?`<p class="meta" style="margin:.2rem 0 .5rem">${stage.blurb}</p>`:''}
+      <p class="meta">Plan${bf}${weeks}</p>
+      <div class="days">`;
 
+    const days = stage.split || ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
     for(let di=0; di<7; di++){
-      const dayLabel = split[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di] || `Day ${di+1}`;
+      const label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
       const items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
-      html += `<div class="day"><h4>${dayLabel}</h4>`;
+      html += `<div class="mov"><div class="mov-head">
+        <div class="mov-title"><strong>${label}</strong></div>
+        <div class="rx">${items.length? '':'Rest'}</div>
+      </div>`;
 
-      if(!items.length){
-        html += `<p class="meta">Rest / No structured training</p></div>`;
-        continue;
-      }
+      if(!items.length){ html += `</div>`; continue; }
 
-      items.forEach((it, ei)=>{
-        // Key for PB storage per exercise instance
-        const key = `s${si}d${di}e${ei}`;
-        const pb = loadPB(key);
-
-        // Build prescription string
-        let presc = '';
-        if(it.type === 'cardio'){
-          const parts = [];
-          if(it.duration_min) parts.push(`${it.duration_min} min`);
-          if(it.work_s) parts.push(`work ${it.work_s}s`);
-          if(it.rest_s) parts.push(`rest ${it.rest_s}s`);
-          if(it.rounds) parts.push(`${it.rounds} rounds`);
-          presc = parts.join(' · ');
-        }else{
-          const sets = it.sets ?? '—';
-          const reps = it.reps ?? '—';
-          const rir  = (it.rir ?? '—') + ' RIR';
-          const rest = (it.rest ?? 60) + 's rest';
-          presc = `${sets}×${reps} · ${rir} · ${rest}`;
-        }
+      // Render each exercise row like workouts.html
+      items.forEach((it,ei)=>{
+        const key=`s${si}d${di}e${ei}`;
+        const presc = (it.type==='cardio')
+          ? [it.duration_min?`${it.duration_min} min`:null, it.work_s?`work ${it.work_s}s`:null, it.rest_s?`rest ${it.rest_s}s`:null, it.rounds?`${it.rounds} rounds`:null].filter(Boolean).join(' · ')
+          : `${it.sets||'—'}×${it.reps||'—'} · ${it.rir||'—'} RIR · ${it.rest||60}s rest`;
 
         html += `
-          <div class="exercise">
-            <div class="ex-head">
-              <div class="ex-name">${it.name || 'Exercise'}</div>
-              <div class="ex-presc meta">${presc}</div>
+          <div class="mov" style="margin:.5rem 0 0">
+            <div class="mov-head">
+              <div class="mov-title">
+                <a href="${yt((it.name||'exercise'))}" target="_blank" rel="noopener" title="YouTube form search">
+                  ${it.name || 'Exercise'}
+                </a>
+              </div>
+              <div class="rx">${presc}</div>
+              <div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>
             </div>
-
-            <!-- PB row -->
-            <div class="pb">
-              <small>PB log:</small>
-              <input type="number" placeholder="sets" value="${pb.sets ?? ''}" class="pb-sets" data-key="${key}">
-              <input type="number" placeholder="reps" value="${pb.reps ?? ''}" class="pb-reps" data-key="${key}">
-              <input type="number" placeholder="kg"   value="${pb.wt   ?? ''}" class="pb-wt"   data-key="${key}">
-              <button class="btn-sm" data-savepb="${key}">Save PB</button>
+            ${it.cue?`<p class="meta" style="margin:.3rem 0 0">${it.cue}</p>`:''}
+            <div class="drawer" data-drawer>
+              <div class="log-grid" data-log>
+                ${[1,2,3,4,5].map(i=>`
+                  <div class="log-row">
+                    <strong>Set ${i}</strong>
+                    <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
+                    <input inputmode="numeric" placeholder="reps" data-field="r${i}">
+                    <input placeholder="notes" data-field="n${i}">
+                    <button class="btn-sm" data-save>Save</button>
+                  </div>
+                  ${it.type==='cardio' ? '' : restControlsHTML(key+'.s'+i)}
+                `).join('')}
+              </div>
+              <div class="meta-row">
+                <span class="pb" data-pb></span>
+                <span class="badge" data-badge></span>
+              </div>
+              <div class="quote" data-quote></div>
             </div>
-
-            <!-- Per-exercise rest timer -->
-            ${it.type === 'cardio' ? '' : restControlsHTML(key)}
-            ${it.cue ? `<p class="tip">${it.cue}</p>` : ''}
-          </div>
-        `;
+          </div>`;
       });
 
-      html += `</div>`;
+      html += `</div>`; // end day box
     }
 
-    html += `</div></div>`;
+    html += `</div></div>`; // end days + block
   });
 
-  planEl.innerHTML = html;
-  msgEl.textContent = `Loaded ${stages.length} stage${stages.length>1?'s':''} from local plan.`;
+  wrap.innerHTML = html;
+  msg.textContent = `Loaded ${stages.length} stage${stages.length>1?'s':''} from local plan.`;
 
-  // Hook PB save buttons
-  document.querySelectorAll('[data-savepb]').forEach(btn=>{
+  // Wire drawers, saving, PB label, timers
+  wrap.querySelectorAll('.mov .btn-sm[data-open]').forEach(btn=>{
+    const drawer = btn.closest('.mov')?.querySelector('[data-drawer]');
     btn.addEventListener('click', ()=>{
-      const key = btn.getAttribute('data-savepb');
-      const sets = document.querySelector(`.pb-sets[data-key="${key}"]`)?.value || '';
-      const reps = document.querySelector(`.pb-reps[data-key="${key}"]`)?.value || '';
-      const wt   = document.querySelector(`.pb-wt[data-key="${key}"]`)?.value || '';
-      savePB(key, {sets, reps, wt});
-      btn.textContent = 'Saved ✓';
-      setTimeout(()=>btn.textContent='Save PB', 1200);
+      drawer?.classList.toggle('open');
+      if(drawer?.classList.contains('open')) hookRestTimers(drawer);
     });
   });
 
-  // Hook per-exercise timers
-  hookRestTimers(planEl);
+  wrap.querySelectorAll('[data-drawer]').forEach(drawer=>{
+    const logArea = drawer.querySelector('[data-log]');
+    const pbEl    = drawer.querySelector('[data-pb]');
+    const badgeEl = drawer.querySelector('[data-badge]');
+    const quoteEl = drawer.querySelector('[data-quote]');
+
+    function bestScore(obj){
+      let best=0; for(let i=1;i<=5;i++){
+        const w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0;
+        best=Math.max(best, w*r);
+      } return best;
+    }
+    function milestoneText(n){
+      if(n>=200) return 'Milestone: 200 logs saved 🔥';
+      if(n>=100) return 'Milestone: 100 logs saved 🎉';
+      if(n>=50)  return 'Milestone: 50 logs saved 💪';
+      if(n>=25)  return 'Milestone: 25 logs saved 🙌';
+      if(n>=10)  return 'Milestone: 10 logs saved ✅';
+      if(n>=5)   return 'Milestone: 5 logs saved ✨';
+      return '';
+    }
+
+    // local key derived from first input’s data-rest parent
+    const anyRest = drawer.querySelector('[data-rest]');
+    const baseKey = anyRest ? anyRest.dataset.rest.split('.s')[0] : Math.random().toString(36).slice(2);
+
+    function populateFromStore(){
+      const saved = JSON.parse(localStorage.getItem(NS_PB+baseKey)||'{}');
+      logArea.querySelectorAll('[data-field]').forEach(inp=>{
+        const id=inp.dataset.field; if(saved[id]) inp.value=saved[id];
+      });
+      const bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
+      pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+      const total=parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10);
+      badgeEl.textContent = milestoneText(total);
+    }
+    populateFromStore();
+
+    logArea.querySelectorAll('[data-save]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const obj={}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
+        localStorage.setItem(NS_PB+baseKey, JSON.stringify(obj));
+        const bestNow=bestScore(obj), bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
+        if(bestNow>bestWas){ localStorage.setItem(NS_PB+baseKey+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
+        else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
+        const total=(parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10)+1);
+        localStorage.setItem('fff.workoutplan.saves', total);
+        badgeEl.textContent = (total%5===0)?'Progress logged ✅': '';
+        quoteEl.textContent = pick(QUOTES);
+      });
+    });
+  });
 }
 
-/* =========================
-   Export / Import / Reset
-   ========================= */
+/* ===== Export / Import / Reset ===== */
 function exportAll(){
-  const dump = {};
-  for(let i=0;i<localStorage.length;i++){
-    const k = localStorage.key(i);
-    if(!k) continue;
-    if(k.startsWith(PB_PREFIX) || k.startsWith(TOGGLE_PREFIX) || k===ROADMAP_KEY){
-      dump[k] = localStorage.getItem(k);
-    }
-  }
-  const blob = new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='freefitfuel-workout-plan-backup.json';
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-function importAll(file){
-  const reader = new FileReader();
-  reader.onload = () => {
-    try{
-      const obj = JSON.parse(String(reader.result||'{}'));
-      Object.keys(obj).forEach(k=>{ localStorage.setItem(k, obj[k]); });
-      alert('Import complete. Reloading plan.'); renderPlan();
-    }catch{ alert('Import failed: invalid file.'); }
-  };
-  reader.readAsText(file);
-}
-function resetPBsAndWellness(){
-  const toDelete=[];
+  const dump={};
   for(let i=0;i<localStorage.length;i++){
     const k=localStorage.key(i); if(!k) continue;
-    if(k.startsWith(PB_PREFIX) || k.startsWith(TOGGLE_PREFIX)) toDelete.push(k);
+    if(k.startsWith(NS_PB) || k.startsWith(NS_CHECK) || k===ROADMAP_KEY){
+      dump[k]=localStorage.getItem(k);
+    }
   }
-  toDelete.forEach(k=>localStorage.removeItem(k));
+  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download='freefitfuel-workout-plan-backup.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+function importAll(file){
+  const r=new FileReader();
+  r.onload=()=>{ try{
+      const obj=JSON.parse(String(r.result||'{}'));
+      Object.keys(obj).forEach(k=>localStorage.setItem(k,obj[k]));
+      alert('Import complete. Reloading plan.'); renderPlan();
+    }catch{ alert('Import failed — invalid file.'); } };
+  r.readAsText(file);
+}
+function resetPBsAndWellness(){
+  const del=[]; for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i); if(!k) continue;
+    if(k.startsWith(NS_PB) || k.startsWith(NS_CHECK)) del.push(k);
+  }
+  del.forEach(k=>localStorage.removeItem(k));
   alert('Cleared PBs & wellness toggles. Roadmap left intact.'); location.reload();
 }
 document.getElementById('btnExport')?.addEventListener('click', exportAll);
-document.getElementById('importFile')?.addEventListener('change', e=>{
-  const f=e.target.files?.[0]; if(f) importAll(f);
-});
+document.getElementById('importFile')?.addEventListener('change', e=>{ const f=e.target.files?.[0]; if(f) importAll(f); });
 document.getElementById('btnReset')?.addEventListener('click', resetPBsAndWellness);
 
-/* =========================
-   Boot
-   ========================= */
+/* ===== Boot ===== */
 renderPlan();
 </script>
 </body>

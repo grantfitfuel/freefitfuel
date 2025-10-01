@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <!-- (optional) reuse your global theme -->
   <link rel="stylesheet" href="style.css?v=28">
 
   <style>
@@ -19,17 +18,13 @@
     h1{margin:.2rem 0 .6rem;font-size:1.8rem}
     .lead{color:var(--inkdim)}
 
-    /* Sections + cards (match workouts.html vibe) */
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:14px}
     .section>h2{margin:.15rem 0 .6rem;font-size:1.2rem;color:var(--accent)}
     .block{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px;margin:.7rem 0}
-    .block h3{margin:.15rem 0 .45rem;font-size:1.05rem}
 
-    /* Day grid like workouts.html “plan” area */
     .days{display:grid;gap:12px}
     @media (min-width:780px){ .days{grid-template-columns:repeat(2,1fr)} }
 
-    /* Movement rows + drawer (copied feel from workouts.html) */
     .mov{border:1px dashed var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.45rem 0}
     .mov-head{display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .mov-title a{color:var(--ink);text-decoration:underline dotted}
@@ -45,15 +40,20 @@
     .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.38rem .45rem}
     .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
     .pb{color:#90ee90}
-    .badge{border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;background:rgba(255,255,255,.06)}
+    .badge{border:1px solid var(--accent);
+      border-radius:999px;
+      padding:.15rem .55rem;
+      background:rgba(255,106,0,.15);
+      color:var(--accent);
+      font-size:.8rem;
+      font-weight:600;
+      margin-left:.4rem;}
     .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
 
-    /* Per-exercise rest timer (same style as workouts.html) */
     .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
     .restbar .left{opacity:.9;min-width:44px}
     .restbar input[type="number"]{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.34rem .45rem}
 
-    /* PB strip on small screens — stack so “kg” doesn’t clip */
     @media (max-width:520px){
       .log-row{grid-template-columns:60px 1fr 1fr; grid-auto-rows:auto}
       .log-row input[placeholder="kg"]{grid-column:1 / span 1}
@@ -61,7 +61,6 @@
       .log-row input[placeholder="notes"]{grid-column:1 / span 2}
     }
 
-    /* Wellness + utilities */
     .grid{display:grid;gap:.6rem}
     .log-grid-compact{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem}
     label{display:flex;align-items:center;gap:.5rem}
@@ -72,39 +71,27 @@
     .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.55rem .6rem;border-radius:8px}
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
 
-    /* --- Alternatives chips --- */
-    .alts{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 0}
-    .chip{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:rgba(255,255,255,.06);padding:.25rem .55rem;border-radius:999px;font-size:.9rem;text-decoration:none;color:var(--ink)}
-    .chip:hover{border-color:var(--accent); color:var(--accent)}
-    .alts-lead{font-size:.9rem;opacity:.85;margin-right:.2rem}
-
-    /* --- Accordion (phases) --- */
-    .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px}
-    .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem}
-    .acc-toggle{all:unset; cursor:pointer; color:var(--accent); font-size:1.05rem; padding:.2rem 0}
-    .accordion:not(.open) .acc-toggle::after{content:"▸"; margin-left:.45rem; opacity:.8}
+    /* Accordion */
+    .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px; margin-bottom:1rem}
+    .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem; cursor:pointer}
+    .acc-toggle{all:unset; cursor:pointer; color:var(--accent); font-size:1.05rem}
+    .accordion .acc-toggle::after{content:"▸"; margin-left:.45rem; opacity:.8}
     .accordion.open .acc-toggle::after{content:"▾"; margin-left:.45rem; opacity:.8}
     .acc-body{margin-top:.5rem}
     [hidden]{display:none !important;}
 
-    /* Visually hidden helper (for a11y hints if needed) */
-    .visually-hidden {
-      position:absolute !important;
-      height:1px; width:1px;
-      overflow:hidden; clip:rect(1px,1px,1px,1px);
-      white-space:nowrap; border:0; padding:0; margin:-1px;
-    }
+    .alt-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.25rem}
+    .alt-chip{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;
+      background:rgba(255,255,255,.06);font-size:.85rem}
   </style>
 </head>
 <body>
-  <!-- Shared header -->
   <div id="site-header"></div>
   <script src="/js/header-loader.js" defer></script>
   <div class="wrap">
     <h1>My Workout Plan</h1>
     <p class="lead">Client-side only. Your plan, logs, PBs and checks stay in this browser.</p>
 
-    <!-- Daily checks -->
     <section class="section">
       <h2>Daily Wellness Check</h2>
       <div class="log-grid-compact">
@@ -112,22 +99,19 @@
         <label><input type="checkbox" id="sleepDone"> Sleep goal met</label>
         <label><input type="checkbox" id="macroDone"> Macros on target</label>
         <label>
-          <input type="checkbox" id="activityCardio" aria-describedby="cardio-hint">
+          <input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?">
           Walk / Bike / Run
         </label>
-        <span id="cardio-hint" class="visually-hidden">Tick this if you did any one of these today.</span>
       </div>
       <p class="quote">Consistency across training, nutrition, sleep & stress = success.</p>
     </section>
 
-    <!-- Plan -->
     <section class="section">
       <h2>Your Personalised Plan</h2>
       <div id="plan"></div>
       <p id="planMsg" class="meta"></p>
     </section>
 
-    <!-- Backup -->
     <section class="section">
       <h2>Backup / Reset</h2>
       <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
@@ -139,7 +123,6 @@
       <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
     </section>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
       <div class="container">
         <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
@@ -150,330 +133,93 @@
   </div>
 
 <script>
-/* ===== Keys / constants ===== */
-const ROADMAP_KEY   = 'fff.roadmap.plan.v1';   // ✔ as requested
-const NS_PB         = 'fff.workoutplan.pb.';   // per-exercise PB
-const NS_CHECK      = 'fff.workoutplan.check.';// wellness toggles
+const ROADMAP_KEY   = 'fff.roadmap.plan.v1';
+const NS_PB         = 'fff.workoutplan.pb.';
+const NS_CHECK      = 'fff.workoutplan.check.';
 
-/* ===== Audio beeps (lead-in & finish) ===== */
-function beep(f=880, ms=160, g=0.028){ try{
-  const C=window.AudioContext||window.webkitAudioContext; const ctx=new C();
-  const o=ctx.createOscillator(), v=ctx.createGain(); o.type='sine'; o.frequency.value=f; v.gain.value=g;
-  o.connect(v); v.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop();ctx.close();},ms);
-}catch{}}
-function leadIn(next){ let i=0, seq=[600,700,800]; const t=setInterval(()=>{beep(seq[i],120,0.03); i++; if(i>=3){clearInterval(t); setTimeout(()=>next&&next(),140);} },280); }
-function finish(){ [900,700,500].forEach((f,i)=>setTimeout(()=>beep(f,140,0.035), i*220)); }
-
-/* ===== Wellness toggles ===== */
-// Migrate old separate cardio toggles to the new single 'activityCardio'
-(function migrateOldCardio(){
-  const oldKeys = ['activityWalk','activityRun','activityBike'].map(k => NS_CHECK + k);
-  const newKey  = NS_CHECK + 'activityCardio';
-  try {
-    const anyOldOn = oldKeys.some(k => localStorage.getItem(k) === '1');
-    if (anyOldOn && localStorage.getItem(newKey) !== '1') {
-      localStorage.setItem(newKey, '1');
-    }
-    // Optional: clean up the old keys so they stop lingering
-    oldKeys.forEach(k => localStorage.removeItem(k));
-  } catch {}
-})();
-
-['hydrDone','sleepDone','macroDone','activityCardio'].forEach(id=>{
-  const el = document.getElementById(id); const k = NS_CHECK+id;
-  try{ if(localStorage.getItem(k)==='1') el.checked=true; }catch{}
-  el?.addEventListener('change',()=>{ try{ localStorage.setItem(k, el.checked?'1':'0'); }catch{} });
-});
-
-/* ===== Utilities ===== */
-function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q+' form'); }
-function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-const QUOTES=[
-  "Small wins compound. Log the set, own the day.",
-  "Perfect form, steady breath, then add a little.",
-  "Consistency beats intensity when intensity is inconsistent.",
-  "One clean rep beats five messy ones.",
-  "Show up. Scale smart. Keep going."
-];
-
-// Turn whatever a plan gives us into an array of strings
-function toAltArray(it){
-  const fields = ['alts','alternatives','alternates','options','subs','substitutions'];
-  let out = [];
-  for(const f of fields){
-    if(Array.isArray(it?.[f])) out = out.concat(it[f]);
-    else if(typeof it?.[f] === 'string' && it[f].trim()) out.push(it[f].trim());
-  }
-  if(typeof it?.alt === 'string' && it.alt.trim()) out.push(it.alt.trim());
-  // de-dup / tidy
-  return Array.from(new Set(out.map(s => String(s).trim()).filter(Boolean)));
+/* Accordion all closed */
+function setupAccordions(){
+  document.querySelectorAll('.accordion').forEach(acc=>{
+    const btn=acc.querySelector('.acc-toggle');
+    const body=acc.querySelector('.acc-body');
+    acc.classList.remove('open');btn.setAttribute('aria-expanded','false');body.hidden=true;
+    btn.addEventListener('click',()=>{
+      const isOpen=acc.classList.contains('open');
+      acc.classList.toggle('open',!isOpen);
+      btn.setAttribute('aria-expanded',!isOpen?'true':'false');
+      body.hidden=isOpen;
+    });
+  });
 }
 
-/* ===== Timers (attach inside a scope element) ===== */
+function yt(q){return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q+' form');}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+const QUOTES=["Small wins compound. Log the set, own the day.","Perfect form, steady breath, then add a little.","Consistency beats intensity when intensity is inconsistent.","One clean rep beats five messy ones.","Show up. Scale smart. Keep going."];
+
 function restControlsHTML(id){
-  return `
-    <div class="restbar" data-rest="${id}" data-bound="0">
-      <span>⏱ Rest:</span>
-      <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
-      <button class="btn-sm" data-act="rest-start" title="3-beep lead-in then countdown">Start</button>
-      <button class="btn-sm" data-act="rest-stop">Stop</button>
-      <span class="left" aria-live="polite">90s</span>
-    </div>`;
+  return `<div class="restbar" data-rest="${id}" data-bound="0">
+    <span>⏱ Rest:</span>
+    <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
+    <button class="btn-sm" data-act="rest-start">Start</button>
+    <button class="btn-sm" data-act="rest-stop">Stop</button>
+    <span class="left" aria-live="polite">90s</span>
+  </div>`;
 }
+
 function hookRestTimers(scope){
   scope.querySelectorAll('.restbar').forEach(bar=>{
-    if(bar.dataset.bound==='1') return; bar.dataset.bound='1';
+    if(bar.dataset.bound==='1')return;bar.dataset.bound='1';
     const input=bar.querySelector('input[type="number"]');
-    const left =bar.querySelector('.left');
+    const left=bar.querySelector('.left');
     const start=bar.querySelector('[data-act="rest-start"]');
-    const stop =bar.querySelector('[data-act="rest-stop"]');
+    const stop=bar.querySelector('[data-act="rest-stop"]');
     let t=null;
-    const fmt=s=>{ s=Math.max(0,Math.floor(Number(s)||0)); const m=Math.floor(s/60), r=s%60; return m?`${m}:${String(r).padStart(2,'0')}`:`${r}s`; };
+    const fmt=s=>{s=Math.max(0,Math.floor(Number(s)||0));const m=Math.floor(s/60),r=s%60;return m?`${m}:${String(r).padStart(2,'0')}`:`${r}s`;};
     const show=s=>left.textContent=fmt(s);
     show(parseInt(input?.value||'0',10));
-    start?.addEventListener('click', ()=>{
+    start?.addEventListener('click',()=>{
       let total=Math.max(5,parseInt(input?.value||'0',10)||0);
-      clearInterval(t); leadIn(()=>{ let remain=total; show(remain);
-        t=setInterval(()=>{ remain-=1; show(remain);
-          if(remain<=0){ clearInterval(t); left.textContent='Go!'; bar.animate([{opacity:1},{opacity:.35},{opacity:1}],{duration:600,iterations:2}); finish(); }
-        },1000);
-      });
+      clearInterval(t);let remain=total;show(remain);
+      t=setInterval(()=>{remain--;show(remain);if(remain<=0){clearInterval(t);left.textContent='Go!';}},1000);
     });
-    stop?.addEventListener('click', ()=>{ clearInterval(t); show(parseInt(input?.value||'0',10)); });
-    input?.addEventListener('keydown', e=>{ if(e.key==='Enter'){ start?.click(); } });
+    stop?.addEventListener('click',()=>{clearInterval(t);show(parseInt(input?.value||'0',10));});
   });
 }
 
-/* ===== Accordion setup (one open at a time) ===== */
-function setupAccordions(){
-  const accs = Array.from(document.querySelectorAll('.accordion'));
-  accs.forEach(acc=>{
-    const btn  = acc.querySelector('.acc-toggle');
-    const body = acc.querySelector('.acc-body');
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    acc.classList.toggle('open', open);
-    body.hidden = !open;
-
-    btn.addEventListener('click', ()=>{
-      // Close all others, open this one
-      accs.forEach(a=>{
-        const b = a.querySelector('.acc-toggle');
-        const c = a.querySelector('.acc-body');
-        const isThis = a === acc;
-        a.classList.toggle('open', isThis);
-        b.setAttribute('aria-expanded', isThis ? 'true' : 'false');
-        c.hidden = !isThis;
-      });
-    });
-  });
-}
-
-/* ===== Render from roadmap ===== */
+/* Render Plan */
 function renderPlan(){
-  const wrap = document.getElementById('plan');
-  const msg  = document.getElementById('planMsg');
+  const wrap=document.getElementById('plan');const msg=document.getElementById('planMsg');
+  let raw=localStorage.getItem(ROADMAP_KEY);if(!raw){wrap.innerHTML=`<div class="warn">No roadmap found.</div>`;return;}
+  let data;try{data=JSON.parse(raw);}catch{wrap.innerHTML=`<div class="warn">Unreadable roadmap.</div>`;return;}
+  const stages=data.stages||[];if(!stages.length){wrap.innerHTML=`<div class="warn">Empty roadmap.</div>`;return;}
 
-  let raw=null; try{ raw=localStorage.getItem(ROADMAP_KEY); }catch{}
-  if(!raw){
-    wrap.innerHTML = `<div class="warn">No roadmap found. Create it on <a href="nutrition.html" style="color:#ffd4bf;text-decoration:underline">Nutrition</a> (Generate → OK for single-phase or Cancel for staged).</div>`;
-    msg.textContent=''; return;
-  }
-  let data=null; try{ data=JSON.parse(raw); }catch{
-    wrap.innerHTML=`<div class="warn">Saved roadmap unreadable. Re-generate from Nutrition.</div>`; msg.textContent=''; return;
-  }
-  const stages=Array.isArray(data.stages)?data.stages:[];
-  if(!stages.length){ wrap.innerHTML=`<div class="warn">Roadmap has no stages. Re-generate from Nutrition.</div>`; msg.textContent=''; return; }
-
-  let html='';
-  stages.forEach((stage,si)=>{
-    const name  = stage.name || `Stage ${si+1}`;
-    const bf    = stage.bf_target ? ` · BF target: ${stage.bf_target}` : '';
-    const weeks = (stage.weeks_min&&stage.weeks_max)?` · ${stage.weeks_min}–${stage.weeks_max} weeks`:'';
-    const sid   = `acc-s${si}`;
-
-    html += `<div class="block accordion ${si===0?'open':''}" data-acc>
-      <div class="acc-head">
-        <button class="acc-toggle" aria-expanded="${si===0?'true':'false'}" aria-controls="${sid}">
-          ${name}
-        </button>
-        <span class="meta" style="opacity:.85">${bf}${weeks}</span>
-      </div>
-      ${stage.blurb?`<p class="meta" style="margin:.2rem 0 .5rem">${stage.blurb}</p>`:''}
-      <div id="${sid}" class="acc-body" ${si===0?'':'hidden'}>
-        <p class="meta">Plan${bf}${weeks}</p>
-        <div class="days">`;
-
-    const days = stage.split || ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-    for(let di=0; di<7; di++){
-      const label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
-      const items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
-      html += `<div class="mov"><div class="mov-head">
-        <div class="mov-title"><strong>${label}</strong></div>
-        <div class="rx">${items.length? '':'Rest'}</div>
-      </div>`;
-
-      if(!items.length){ html += `</div>`; continue; }
-
-      // Render each exercise row like workouts.html
-      items.forEach((it,ei)=>{
-        const key=`s${si}d${di}e${ei}`;
-        const presc = (it.type==='cardio')
-          ? [it.duration_min?`${it.duration_min} min`:null, it.work_s?`work ${it.work_s}s`:null, it.rest_s?`rest ${it.rest_s}s`:null, it.rounds?`${it.rounds} rounds`:null].filter(Boolean).join(' · ')
+  let html='';stages.forEach((stage,si)=>{
+    html+=`<div class="accordion"><div class="acc-head"><button class="acc-toggle" aria-expanded="false">${stage.name||`Stage ${si+1}`}</button></div><div class="acc-body" hidden>`;
+    html+=`<div class="days">`;
+    (stage.programByDay||[]).forEach((day,di)=>{
+      const label=(stage.split||['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])[di];
+      html+=`<div class="mov"><div class="mov-head"><div class="mov-title"><strong>${label}</strong></div></div>`;
+      (day||[]).forEach((it,ei)=>{
+        const presc=(it.type==='cardio')
+          ? [it.duration_min?`${it.duration_min} min`:null,it.work_s?`work ${it.work_s}s`:null,it.rest_s?`rest ${it.rest_s}s`:null,it.rounds?`${it.rounds} rounds`:null].filter(Boolean).join(' · ')
           : `${it.sets||'—'}×${it.reps||'—'} · ${it.rir||'—'} RIR · ${it.rest||60}s rest`;
-
-        const alts = toAltArray(it);
-
-        html += `
-          <div class="mov" style="margin:.5rem 0 0">
-            <div class="mov-head">
-              <div class="mov-title">
-                <a href="${yt((it.name||'exercise'))}" target="_blank" rel="noopener" title="YouTube form search">
-                  ${it.name || 'Exercise'}
-                </a>
-              </div>
-              <div class="rx">${presc}</div>
-              <div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>
-            </div>
-            ${it.cue?`<p class="meta" style="margin:.3rem 0 0">${it.cue}</p>`:''}
-            ${alts.length ? `
-              <div class="alts" aria-label="Alternative exercises">
-                <span class="alts-lead">Alternatives:</span>
-                ${alts.map(a => `<a class="chip" href="${yt(a)}" target="_blank" rel="noopener" title="Form: ${a}">${a}</a>`).join('')}
-              </div>
-            ` : '' }
-            <div class="drawer" data-drawer>
-              <div class="log-grid" data-log>
-                ${[1,2,3,4,5].map(i=>`
-                  <div class="log-row">
-                    <strong>Set ${i}</strong>
-                    <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
-                    <input inputmode="numeric" placeholder="reps" data-field="r${i}">
-                    <input placeholder="notes" data-field="n${i}">
-                    <button class="btn-sm" data-save>Save</button>
-                  </div>
-                  ${it.type==='cardio' ? '' : restControlsHTML(key+'.s'+i)}
-                `).join('')}
-              </div>
-              <div class="meta-row">
-                <span class="pb" data-pb></span>
-                <span class="badge" data-badge></span>
-              </div>
-              <div class="quote" data-quote></div>
-            </div>
-          </div>`;
+        html+=`<div class="mov"><div class="mov-head"><div class="mov-title">
+          <a href="${yt(it.name)}" target="_blank">${it.name}</a>
+          ${it.type && it.type!=='cardio' ? `<span class="badge">${it.type}</span>`:''}
+        </div><div class="rx">${presc}</div><div class="mov-tools"><button class="btn-sm" data-open>Log</button></div></div>`;
+        if(it.cue)html+=`<p class="meta">${it.cue}</p>`;
+        if(it.alts)html+=`<div class="alt-chips">${it.alts.map(alt=>`<a class="alt-chip" href="${yt(alt)}" target="_blank">${alt}</a>`).join('')}</div>`;
+        html+=`<div class="drawer" data-drawer><div class="log-grid">${[1,2,3,4,5].map(i=>
+          `<div class="log-row"><strong>Set ${i}</strong><input placeholder="kg" data-field="w${i}"><input placeholder="reps" data-field="r${i}"><input placeholder="notes" data-field="n${i}"><button class="btn-sm" data-save>Save</button></div>${it.type==='cardio'?'':restControlsHTML('s'+si+'d'+di+'e'+ei+'.s'+i)}`).join('')}</div>
+          <div class="meta-row"><span class="pb" data-pb></span><span class="badge" data-badge></span></div><div class="quote" data-quote></div></div></div>`;
       });
-
-      html += `</div>`; // end day box
-    }
-
-    html += `</div></div>`; // end .days + .acc-body
-    html += `</div>`;       // end .accordion
-  });
-
-  wrap.innerHTML = html;
-  msg.textContent = `Loaded ${stages.length} stage${stages.length>1?'s':''} from local plan.`;
-
-  // Init accordion behaviour
-  setupAccordions();
-
-  // Wire drawers, saving, PB label, timers
-  wrap.querySelectorAll('.mov .btn-sm[data-open]').forEach(btn=>{
-    const drawer = btn.closest('.mov')?.querySelector('[data-drawer]');
-    btn.addEventListener('click', ()=>{
-      drawer?.classList.toggle('open');
-      if(drawer?.classList.contains('open')) hookRestTimers(drawer);
+      html+=`</div>`;
     });
+    html+=`</div></div></div>`;
   });
-
-  wrap.querySelectorAll('[data-drawer]').forEach(drawer=>{
-    const logArea = drawer.querySelector('[data-log]');
-    const pbEl    = drawer.querySelector('[data-pb]');
-    const badgeEl = drawer.querySelector('[data-badge]');
-    const quoteEl = drawer.querySelector('[data-quote]');
-
-    function bestScore(obj){
-      let best=0; for(let i=1;i<=5;i++){
-        const w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0;
-        best=Math.max(best, w*r);
-      } return best;
-    }
-    function milestoneText(n){
-      if(n>=200) return 'Milestone: 200 logs saved 🔥';
-      if(n>=100) return 'Milestone: 100 logs saved 🎉';
-      if(n>=50)  return 'Milestone: 50 logs saved 💪';
-      if(n>=25)  return 'Milestone: 25 logs saved 🙌';
-      if(n>=10)  return 'Milestone: 10 logs saved ✅';
-      if(n>=5)   return 'Milestone: 5 logs saved ✨';
-      return '';
-    }
-
-    // local key derived from first input’s data-rest parent
-    const anyRest = drawer.querySelector('[data-rest]');
-    const baseKey = anyRest ? anyRest.dataset.rest.split('.s')[0] : Math.random().toString(36).slice(2);
-
-    function populateFromStore(){
-      const saved = JSON.parse(localStorage.getItem(NS_PB+baseKey)||'{}');
-      logArea.querySelectorAll('[data-field]').forEach(inp=>{
-        const id=inp.dataset.field; if(saved[id]) inp.value=saved[id];
-      });
-      const bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-      pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
-      const total=parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10);
-      badgeEl.textContent = milestoneText(total);
-    }
-    populateFromStore();
-
-    logArea.querySelectorAll('[data-save]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const obj={}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
-        localStorage.setItem(NS_PB+baseKey, JSON.stringify(obj));
-        const bestNow=bestScore(obj), bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-        if(bestNow>bestWas){ localStorage.setItem(NS_PB+baseKey+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
-        else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
-        const total=(parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10)+1);
-        localStorage.setItem('fff.workoutplan.saves', total);
-        badgeEl.textContent = (total%5===0)?'Progress logged ✅': '';
-        quoteEl.textContent = pick(QUOTES);
-      });
-    });
-  });
+  wrap.innerHTML=html;setupAccordions();
 }
 
-/* ===== Export / Import / Reset ===== */
-function exportAll(){
-  const dump={};
-  for(let i=0;i<localStorage.length;i++){
-    const k=localStorage.key(i); if(!k) continue;
-    if(k.startsWith(NS_PB) || k.startsWith(NS_CHECK) || k===ROADMAP_KEY){
-      dump[k]=localStorage.getItem(k);
-    }
-  }
-  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a');
-  a.href=url; a.download='freefitfuel-workout-plan-backup.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}
-function importAll(file){
-  const r=new FileReader();
-  r.onload=()=>{ try{
-      const obj=JSON.parse(String(r.result||'{}'));
-      Object.keys(obj).forEach(k=>localStorage.setItem(k,obj[k]));
-      alert('Import complete. Reloading plan.'); renderPlan();
-    }catch{ alert('Import failed — invalid file.'); } };
-  r.readAsText(file);
-}
-function resetPBsAndWellness(){
-  const del=[]; for(let i=0;i<localStorage.length;i++){
-    const k=localStorage.key(i); if(!k) continue;
-    if(k.startsWith(NS_PB) || k.startsWith(NS_CHECK)) del.push(k);
-  }
-  del.forEach(k=>localStorage.removeItem(k));
-  alert('Cleared PBs & wellness toggles. Roadmap left intact.'); location.reload();
-}
-document.getElementById('btnExport')?.addEventListener('click', exportAll);
-document.getElementById('importFile')?.addEventListener('change', e=>{ const f=e.target.files?.[0]; if(f) importAll(f); });
-document.getElementById('btnReset')?.addEventListener('click', resetPBsAndWellness);
-
-/* ===== Boot ===== */
 renderPlan();
 </script>
 </body>

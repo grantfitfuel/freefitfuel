@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=31">
+  <link rel="stylesheet" href="style.css?v=32">
 
   <style>
     :root{
@@ -40,14 +40,16 @@
     .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.38rem .45rem}
     .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
     .pb{color:#90ee90}
-    .badge{border:1px solid var(--accent);
+    .badge{
+      border:1px solid var(--accent);
       border-radius:999px;
       padding:.15rem .55rem;
       background:rgba(255,106,0,.15);
       color:var(--accent);
       font-size:.8rem;
       font-weight:600;
-      margin-left:.4rem;}
+      margin-left:.4rem;
+    }
     .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
 
     .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
@@ -81,8 +83,7 @@
     [hidden]{display:none !important;}
 
     .alt-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.25rem}
-    .alt-chip{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;
-      background:rgba(255,255,255,.06);font-size:.85rem}
+    .alt-chip{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;background:rgba(255,255,255,.06);font-size:.85rem}
 
     /* Legend (only shown if any terms detected) */
     .legend{background:#0f131a;border:1px solid var(--stroke);border-radius:12px;padding:10px;margin:.6rem 0}
@@ -146,61 +147,86 @@
   </div>
 
 <script>
-const ROADMAP_KEY   = 'fff.roadmap.plan.v1';
-const NS_PB         = 'fff.workoutplan.pb.';
-const NS_CHECK      = 'fff.workoutplan.check.';
+/* ===== Keys / constants ===== */
+var ROADMAP_KEY = 'fff.roadmap.plan.v1';
+var NS_PB = 'fff.workoutplan.pb.';    // per-exercise PB
+var NS_CHECK = 'fff.workoutplan.check.'; // wellness toggles
 
-/* Accordion all closed */
-function setupAccordions(){
-  document.querySelectorAll('.accordion').forEach(acc=>{
-    const btn=acc.querySelector('.acc-toggle');
-    const body=acc.querySelector('.acc-body');
-    acc.classList.remove('open');btn.setAttribute('aria-expanded','false');body.hidden=true;
-    btn.addEventListener('click',()=>{
-      const isOpen=acc.classList.contains('open');
-      acc.classList.toggle('open',!isOpen);
-      btn.setAttribute('aria-expanded',!isOpen?'true':'false');
-      body.hidden=isOpen;
+/* ===== Wellness toggle persistence + migration ===== */
+(function initWellness(){
+  // migrate old separate cardio toggles
+  try{
+    var oldKeys = [NS_CHECK+'activityWalk', NS_CHECK+'activityRun', NS_CHECK+'activityBike'];
+    var newKey  = NS_CHECK+'activityCardio';
+    var anyOld = false;
+    for(var i=0;i<oldKeys.length;i++){
+      if(localStorage.getItem(oldKeys[i]) === '1'){ anyOld = true; break; }
+    }
+    if(anyOld && localStorage.getItem(newKey)!=='1'){ localStorage.setItem(newKey,'1'); }
+    // clean up old
+    for(var j=0;j<oldKeys.length;j++){ localStorage.removeItem(oldKeys[j]); }
+  }catch(e){}
+
+  ['hydrDone','sleepDone','macroDone','activityCardio'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var k = NS_CHECK+id;
+    try{ if(localStorage.getItem(k)==='1') el.checked=true; }catch(e){}
+    el.addEventListener('change', function(){
+      try{ localStorage.setItem(k, el.checked?'1':'0'); }catch(e){}
     });
   });
-}
+})();
 
-function yt(q){return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q+' form');}
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
-const QUOTES=["Small wins compound. Log the set, own the day.","Perfect form, steady breath, then add a little.","Consistency beats intensity when intensity is inconsistent.","One clean rep beats five messy ones.","Show up. Scale smart. Keep going."];
+/* ===== Small utils ===== */
+function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(String(q||'exercise')+' form'); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+var QUOTES=[
+  "Small wins compound. Log the set, own the day.",
+  "Perfect form, steady breath, then add a little.",
+  "Consistency beats intensity when intensity is inconsistent.",
+  "One clean rep beats five messy ones.",
+  "Show up. Scale smart. Keep going."
+];
 
+/* ===== Rest timer ===== */
 function restControlsHTML(id){
-  return `<div class="restbar" data-rest="${id}" data-bound="0">
-    <span>⏱ Rest:</span>
-    <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
-    <button class="btn-sm" data-act="rest-start">Start</button>
-    <button class="btn-sm" data-act="rest-stop">Stop</button>
-    <span class="left" aria-live="polite">90s</span>
-  </div>`;
+  return ''+
+  '<div class="restbar" data-rest="'+id+'" data-bound="0">'+
+    '<span>⏱ Rest:</span>'+
+    '<input type="number" min="5" step="5" value="90" aria-label="Rest seconds">'+
+    '<button class="btn-sm" data-act="rest-start">Start</button>'+
+    '<button class="btn-sm" data-act="rest-stop">Stop</button>'+
+    '<span class="left" aria-live="polite">90s</span>'+
+  '</div>';
 }
-
 function hookRestTimers(scope){
-  scope.querySelectorAll('.restbar').forEach(bar=>{
-    if(bar.dataset.bound==='1')return;bar.dataset.bound='1';
-    const input=bar.querySelector('input[type="number"]');
-    const left=bar.querySelector('.left');
-    const start=bar.querySelector('[data-act="rest-start"]');
-    const stop=bar.querySelector('[data-act="rest-stop"]');
-    let t=null;
-    const fmt=s=>{s=Math.max(0,Math.floor(Number(s)||0));const m=Math.floor(s/60),r=s%60;return m?`${m}:${String(r).padStart(2,'0')}`:`${r}s`;};
-    const show=s=>left.textContent=fmt(s);
-    show(parseInt(input?.value||'0',10));
-    start?.addEventListener('click',()=>{
-      let total=Math.max(5,parseInt(input?.value||'0',10)||0);
-      clearInterval(t);let remain=total;show(remain);
-      t=setInterval(()=>{remain--;show(remain);if(remain<=0){clearInterval(t);left.textContent='Go!';}},1000);
+  var bars = scope.querySelectorAll('.restbar');
+  for(var b=0;b<bars.length;b++){
+    var bar=bars[b]; if(bar.getAttribute('data-bound')==='1') continue; bar.setAttribute('data-bound','1');
+    var input=bar.querySelector('input[type="number"]');
+    var left =bar.querySelector('.left');
+    var start=bar.querySelector('[data-act="rest-start"]');
+    var stop =bar.querySelector('[data-act="rest-stop"]');
+    var t=null;
+    function fmt(s){
+      s=Math.max(0,Math.floor(Number(s)||0));
+      var m=Math.floor(s/60), r=s%60;
+      return m? (m+':'+String(r).padStart(2,'0')) : (r+'s');
+    }
+    function show(s){ left.textContent=fmt(s); }
+    show(parseInt((input && input.value) || '0',10));
+    if(start) start.addEventListener('click', function(){
+      var total=Math.max(5, parseInt((input && input.value) || '0',10) || 0);
+      clearInterval(t); var remain=total; show(remain);
+      t=setInterval(function(){ remain--; show(remain); if(remain<=0){ clearInterval(t); left.textContent='Go!'; } },1000);
     });
-    stop?.addEventListener('click',()=>{clearInterval(t);show(parseInt(input?.value||'0',10));});
-  });
+    if(stop) stop.addEventListener('click', function(){ clearInterval(t); show(parseInt((input && input.value) || '0',10)); });
+  }
 }
 
 /* ===== Dynamic Legend ===== */
-const LEGEND_DEFS = {
+var LEGEND_DEFS = {
   "Compound": "Big multi-joint lifts. Shown as an orange badge next to the exercise name.",
   "Accessory": "Support/isolation work to build weak links or volume.",
   "RIR": "Reps In Reserve — how many reps you could still do at the end of a set (e.g., 2 RIR = stop two shy of failure).",
@@ -214,228 +240,272 @@ const LEGEND_DEFS = {
   "SS": "Superset — perform two exercises back-to-back with minimal rest.",
   "Tempo": "Numbers like 3-1-3 indicate eccentric–pause–concentric seconds for each rep."
 };
-
 function detectLegendTerms(data){
-  const found = new Set();
-  const pushIf = (term, cond)=>{ if(cond) found.add(term); };
+  var found = {};
+  function pushTerm(t){ found[t]=true; }
+  var stages = (data && data.stages) ? data.stages : [];
+  for(var si=0; si<stages.length; si++){
+    var prog = stages[si].programByDay || [];
+    for(var di=0; di<prog.length; di++){
+      var day = prog[di] || [];
+      for(var ei=0; ei<day.length; ei++){
+        var it = day[ei] || {};
+        var name = String(it.name || '');
+        var cue  = String(it.cue  || '');
+        var extras = (name + ' ' + cue).toUpperCase();
 
-  (data.stages||[]).forEach(stage=>{
-    (stage.programByDay||[]).forEach(day=>{
-      (day||[]).forEach(it=>{
-        const name = String(it?.name||'');
-        const cue  = String(it?.cue||'');
-        const extras = [name, cue].join(' ').toUpperCase();
+        if (it.type && String(it.type).toLowerCase()==='compound') pushTerm('Compound');
+        if (it.type && String(it.type).toLowerCase()==='accessory') pushTerm('Accessory');
 
-        // Badges (compound/accessory) — only if present in any exercise
-        if (it.type && it.type.toLowerCase() === 'compound') pushIf('Compound', true);
-        if (it.type && it.type.toLowerCase() === 'accessory') pushIf('Accessory', true);
+        var ABBR=['LISS','MISS','HIIT','AMRAP','EMOM','RPE','ROM','SS'];
+        for(var a=0;a<ABBR.length;a++){ if(extras.indexOf(ABBR[a])>-1) pushTerm(ABBR[a]); }
 
-        // Common abbreviations
-        ['LISS','MISS','HIIT','AMRAP','EMOM','RPE','ROM','SS'].forEach(t=>{
-          if (extras.includes(t)) pushIf(t, true);
-        });
+        if (it.rir !== undefined && String(it.rir).trim()!=='') pushTerm('RIR');
 
-        // RIR is in prescription for resistance
-        if (it.rir != null && String(it.rir).trim() !== '') pushIf('RIR', true);
-
-        // Tempo patterns like 3-1-3 / 4-0-1
-        if (/\b\d-\d-\d\b/.test(name) || /\b\d-\d-\d\b/.test(cue)) pushIf('Tempo', true);
-      });
-    });
-  });
-
-  return Array.from(found);
+        var tempoPattern=/\b\d-\d-\d\b/;
+        if (tempoPattern.test(name) || tempoPattern.test(cue)) pushTerm('Tempo');
+      }
+    }
+  }
+  return Object.keys(found);
+}
+function renderLegend(terms){
+  var mount = document.getElementById('legendMount');
+  if(!mount) return;
+  if(!terms.length){ mount.innerHTML=''; return; }
+  var rows='';
+  for(var i=0;i<terms.length;i++){
+    var t=terms[i], def=LEGEND_DEFS[t]||'';
+    rows += '<div class="row"><div class="term">'+t+'</div><div class="def">'+def+'</div></div>';
+  }
+  mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>'+rows+'</details>';
 }
 
-function renderLegend(terms){
-  const mount = document.getElementById('legendMount');
-  if (!terms.length) { mount.innerHTML=''; return; }
-  const rows = terms.map(t=>`
-    <div class="row">
-      <div class="term">${t}</div>
-      <div class="def">${LEGEND_DEFS[t]}</div>
-    </div>`).join('');
-  mount.innerHTML = `
-    <details class="legend" open>
-      <summary>Legend & abbreviations</summary>
-      ${rows}
-    </details>`;
+/* ===== Accordion ===== */
+function setupAccordions(){
+  var accs = document.querySelectorAll('.accordion');
+  for(var i=0;i<accs.length;i++){
+    (function(acc){
+      var btn = acc.querySelector('.acc-toggle');
+      var body= acc.querySelector('.acc-body');
+      if(!btn||!body) return;
+      acc.classList.remove('open'); btn.setAttribute('aria-expanded','false'); body.hidden=true;
+      btn.addEventListener('click', function(){
+        var isOpen = acc.classList.contains('open');
+        acc.classList.toggle('open', !isOpen);
+        btn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+        body.hidden = isOpen;
+      });
+    })(accs[i]);
+  }
 }
 
 /* ===== Render Plan ===== */
 function renderPlan(){
-  const wrap=document.getElementById('plan');const msg=document.getElementById('planMsg');
-  let raw=localStorage.getItem(ROADMAP_KEY);if(!raw){wrap.innerHTML=`<div class="warn">No roadmap found.</div>`;renderLegend([]);return;}
-  let data;try{data=JSON.parse(raw);}catch{wrap.innerHTML=`<div class="warn">Unreadable roadmap.</div>`;renderLegend([]);return;}
-  const stages=Array.isArray(data.stages)?data.stages:[]; if(!stages.length){wrap.innerHTML=`<div class="warn">Empty roadmap.</div>`;renderLegend([]);return;}
+  var wrap=document.getElementById('plan');
+  var msg =document.getElementById('planMsg');
+  if(!wrap){ return; }
 
-  // Build dynamic legend first
-  const terms = detectLegendTerms(data);
-  renderLegend(terms);
+  try{
+    var raw=null;
+    try{ raw=localStorage.getItem(ROADMAP_KEY); }catch(e){}
+    if(!raw){ wrap.innerHTML='<div class="warn">No roadmap found.</div>'; renderLegend([]); return; }
 
-  let html='';stages.forEach((stage,si)=>{
-    html+=`<div class="accordion">
-      <div class="acc-head"><button class="acc-toggle" aria-expanded="false">${stage.name||`Stage ${si+1}`}</button></div>
-      <div class="acc-body" hidden>
-        ${stage.blurb?`<p class="meta">${stage.blurb}</p>`:''}
-        <div class="days">`;
+    var data=null;
+    try{ data=JSON.parse(raw); }catch(e){ wrap.innerHTML='<div class="warn">Saved roadmap unreadable.</div>'; renderLegend([]); return; }
 
-    const days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    for(let di=0; di<7; di++){
-      const label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
-      const items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
-      html+=`<div class="mov"><div class="mov-head"><div class="mov-title"><strong>${label}</strong></div></div>`;
+    var stages = Array.isArray(data.stages) ? data.stages : [];
+    if(!stages.length){ wrap.innerHTML='<div class="warn">Roadmap has no stages.</div>'; renderLegend([]); return; }
 
-      (items||[]).forEach((it,ei)=>{
-        const presc=(it.type==='cardio')
-          ? [it.duration_min?`${it.duration_min} min`:null,it.work_s?`work ${it.work_s}s`:null,it.rest_s?`rest ${it.rest_s}s`:null,it.rounds?`${it.rounds} rounds`:null].filter(Boolean).join(' · ')
-          : `${it.sets||'—'}×${it.reps||'—'} · ${it.rir||'—'} RIR · ${it.rest||60}s rest`;
+    // Legend
+    var terms = detectLegendTerms(data);
+    renderLegend(terms);
 
-        html+=`<div class="mov" style="margin:.5rem 0 0">
-          <div class="mov-head">
-            <div class="mov-title">
-              <a href="${yt(it.name||'exercise')}" target="_blank" rel="noopener">${it.name||'Exercise'}</a>
-              ${it.type && it.type!=='cardio' ? `<span class="badge">${it.type}</span>`:''}
-            </div>
-            <div class="rx">${presc}</div>
-            <div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>
-          </div>
-          ${it.cue?`<p class="meta" style="margin:.3rem 0 0">${it.cue}</p>`:''}
-          ${Array.isArray(it.alts)&&it.alts.length?`<div class="alt-chips">${it.alts.map(alt=>`<a class="alt-chip" href="${yt(alt)}" target="_blank" rel="noopener">${alt}</a>`).join('')}</div>`:''}
-          <div class="drawer" data-drawer>
-            <div class="log-grid" data-log>
-              ${[1,2,3,4,5].map(i=>`
-                <div class="log-row">
-                  <strong>Set ${i}</strong>
-                  <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
-                  <input inputmode="numeric" placeholder="reps" data-field="r${i}">
-                  <input placeholder="notes" data-field="n${i}">
-                  <button class="btn-sm" data-save>Save</button>
-                </div>
-                ${it.type==='cardio' ? '' : restControlsHTML('s'+si+'d'+di+'e'+ei+'.s'+i)}
-              `).join('')}
-            </div>
-            <div class="meta-row">
-              <span class="pb" data-pb></span>
-              <span class="badge" data-badge></span>
-            </div>
-            <div class="quote" data-quote></div>
-          </div>
-        </div>`;
-      });
+    // Build HTML
+    var html='';
+    for(var si=0; si<stages.length; si++){
+      var stage = stages[si] || {};
+      html += '<div class="accordion">'+
+                '<div class="acc-head"><button class="acc-toggle" aria-expanded="false">'+(stage.name||('Stage '+(si+1)))+'</button></div>'+
+                '<div class="acc-body" hidden>'+
+                  (stage.blurb?('<p class="meta">'+stage.blurb+'</p>'):'')+
+                  '<div class="days">';
 
-      html+=`</div>`; // end day box
+      var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      for(var di=0; di<7; di++){
+        var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
+        var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
+        html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>'+label+'</strong></div></div>';
+
+        for(var ei=0; ei<items.length; ei++){
+          var it = items[ei] || {};
+          var presc = (it.type==='cardio')
+            ? [it.duration_min? (it.duration_min+' min'):null, it.work_s?('work '+it.work_s+'s'):null, it.rest_s?('rest '+it.rest_s+'s'):null, it.rounds? (it.rounds+' rounds'):null].filter(Boolean).join(' · ')
+            : ( (it.sets||'—')+'×'+(it.reps||'—')+' · '+(it.rir||'—')+' RIR · '+(it.rest||60)+'s rest' );
+
+          html += '<div class="mov" style="margin:.5rem 0 0">'+
+                    '<div class="mov-head">'+
+                      '<div class="mov-title">'+
+                        '<a href="'+yt(it.name||'exercise')+'" target="_blank" rel="noopener">'+(it.name||'Exercise')+'</a>'+
+                        ((it.type && it.type!=='cardio') ? (' <span class="badge">'+it.type+'</span>') : '')+
+                      '</div>'+
+                      '<div class="rx">'+presc+'</div>'+
+                      '<div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>'+
+                    '</div>'+
+                    (it.cue?('<p class="meta" style="margin:.3rem 0 0">'+it.cue+'</p>'):'')+
+                    ((it.alts && it.alts.length)?('<div class="alt-chips">'+it.alts.map(function(alt){ return '<a class="alt-chip" href="'+yt(alt)+'" target="_blank" rel="noopener">'+alt+'</a>'; }).join('')+'</div>'):'')+
+                    '<div class="drawer" data-drawer>'+
+                      '<div class="log-grid" data-log>'+
+                        [1,2,3,4,5].map(function(i){
+                          return ''+
+                          '<div class="log-row">'+
+                            '<strong>Set '+i+'</strong>'+
+                            '<input inputmode="decimal" placeholder="kg"   data-field="w'+i+'">'+
+                            '<input inputmode="numeric" placeholder="reps" data-field="r'+i+'">'+
+                            '<input placeholder="notes" data-field="n'+i+'">'+
+                            '<button class="btn-sm" data-save>Save</button>'+
+                          '</div>'+
+                          (it.type==='cardio' ? '' : restControlsHTML('s'+si+'d'+di+'e'+ei+'.s'+i));
+                        }).join('')+
+                      '</div>'+
+                      '<div class="meta-row">'+
+                        '<span class="pb" data-pb></span>'+
+                        '<span class="badge" data-badge></span>'+
+                      '</div>'+
+                      '<div class="quote" data-quote></div>'+
+                    '</div>'+
+                  '</div>';
+        }
+        html += '</div>'; // end day
+      }
+
+      html += '</div></div></div>'; // end days + body + accordion
     }
 
-    html+=`</div></div></div>`; // end days + acc-body + accordion
-  });
+    wrap.innerHTML = html;
+    if(msg) msg.textContent = 'Loaded '+stages.length+' stage'+(stages.length>1?'s':'')+' from local plan.';
+    setupAccordions();
 
-  wrap.innerHTML=html;
-  msg.textContent = `Loaded ${stages.length} stage${stages.length>1?'s':''} from local plan.`;
-
-  setupAccordions();
-
-  // Wire drawers + timers + PB save logic
-  wrap.querySelectorAll('.mov .btn-sm[data-open]').forEach(btn=>{
-    const drawer = btn.closest('.mov')?.querySelector('[data-drawer]');
-    btn.addEventListener('click', ()=>{
-      drawer?.classList.toggle('open');
-      if(drawer?.classList.contains('open')) hookRestTimers(drawer);
-    });
-  });
-
-  wrap.querySelectorAll('[data-drawer]').forEach(drawer=>{
-    const logArea = drawer.querySelector('[data-log]');
-    const pbEl    = drawer.querySelector('[data-pb]');
-    const badgeEl = drawer.querySelector('[data-badge]');
-    const quoteEl = drawer.querySelector('[data-quote]');
-
-    function bestScore(obj){
-      let best=0; for(let i=1;i<=5;i++){
-        const w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0;
-        best=Math.max(best, w*r);
-      } return best;
-    }
-    function milestoneText(n){
-      if(n>=200) return 'Milestone: 200 logs saved 🔥';
-      if(n>=100) return 'Milestone: 100 logs saved 🎉';
-      if(n>=50)  return 'Milestone: 50 logs saved 💪';
-      if(n>=25)  return 'Milestone: 25 logs saved 🙌';
-      if(n>=10)  return 'Milestone: 10 logs saved ✅';
-      if(n>=5)   return 'Milestone: 5 logs saved ✨';
-      return '';
+    // Wire drawers + timers + PB save logic
+    var openBtns = wrap.querySelectorAll('.mov .btn-sm[data-open]');
+    for(var ob=0; ob<openBtns.length; ob++){
+      (function(btn){
+        btn.addEventListener('click', function(){
+          var drawer = btn.closest('.mov').querySelector('[data-drawer]');
+          if(!drawer) return;
+          drawer.classList.toggle('open');
+          if(drawer.classList.contains('open')) hookRestTimers(drawer);
+        });
+      })(openBtns[ob]);
     }
 
-    // derive key from first restbar in this drawer
-    const anyRest = drawer.querySelector('[data-rest]');
-    const baseKey = anyRest ? anyRest.dataset.rest.split('.s')[0] : Math.random().toString(36).slice(2);
+    var drawers = wrap.querySelectorAll('[data-drawer]');
+    for(var d=0; d<drawers.length; d++){
+      (function(drawer){
+        var logArea = drawer.querySelector('[data-log]');
+        var pbEl    = drawer.querySelector('[data-pb]');
+        var badgeEl = drawer.querySelector('[data-badge]');
+        var quoteEl = drawer.querySelector('[data-quote]');
 
-    // populate existing
-    (function populate(){
-      const saved = JSON.parse(localStorage.getItem(NS_PB+baseKey)||'{}');
-      logArea.querySelectorAll('[data-field]').forEach(inp=>{
-        const id=inp.dataset.field; if(saved[id]) inp.value=saved[id];
-      });
-      const bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-      pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
-      const total=parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10);
-      badgeEl.textContent = milestoneText(total);
-    })();
+        function bestScore(obj){
+          var best=0; for(var i=1;i<=5;i++){
+            var w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0;
+            best=Math.max(best, w*r);
+          } return best;
+        }
+        function milestoneText(n){
+          if(n>=200) return 'Milestone: 200 logs saved 🔥';
+          if(n>=100) return 'Milestone: 100 logs saved 🎉';
+          if(n>=50)  return 'Milestone: 50 logs saved 💪';
+          if(n>=25)  return 'Milestone: 25 logs saved 🙌';
+          if(n>=10)  return 'Milestone: 10 logs saved ✅';
+          if(n>=5)   return 'Milestone: 5 logs saved ✨';
+          return '';
+        }
 
-    // save handler
-    logArea.querySelectorAll('[data-save]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const obj={}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
-        localStorage.setItem(NS_PB+baseKey, JSON.stringify(obj));
-        const bestNow=bestScore(obj), bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-        if(bestNow>bestWas){ localStorage.setItem(NS_PB+baseKey+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
-        else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
-        const total=(parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10)+1);
-        localStorage.setItem('fff.workoutplan.saves', total);
-        badgeEl.textContent = (total%5===0)?'Progress logged ✅': '';
-        quoteEl.textContent = pick(QUOTES);
-      });
-    });
-  });
+        // derive PB key (fallback safe)
+        var anyRest = drawer.querySelector('[data-rest]');
+        var baseKey = anyRest ? anyRest.getAttribute('data-rest').split('.s')[0] : Math.random().toString(36).slice(2);
+
+        // populate existing
+        try{
+          var saved = JSON.parse(localStorage.getItem(NS_PB+baseKey) || '{}');
+          var inputs = logArea.querySelectorAll('[data-field]');
+          for(var i=0;i<inputs.length;i++){
+            var id=inputs[i].getAttribute('data-field');
+            if(saved[id]) inputs[i].value = saved[id];
+          }
+          var bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
+          if(pbEl) pbEl.textContent = bestWas>0 ? ('PB score: '+bestWas.toFixed(1)+' (w×r best set)') : '';
+          var total=parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10);
+          if(badgeEl) badgeEl.textContent = milestoneText(total);
+        }catch(e){}
+
+        var saveBtns = logArea.querySelectorAll('[data-save]');
+        for(var s=0;s<saveBtns.length;s++){
+          saveBtns[s].addEventListener('click', function(){
+            var obj={}, inputs=logArea.querySelectorAll('[data-field]');
+            for(var i=0;i<inputs.length;i++){ obj[inputs[i].getAttribute('data-field')] = (inputs[i].value||'').trim(); }
+            localStorage.setItem(NS_PB+baseKey, JSON.stringify(obj));
+            var bestNow=bestScore(obj), bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
+            if(bestNow>bestWas){ localStorage.setItem(NS_PB+baseKey+'.best', bestNow); if(pbEl) pbEl.textContent='New PB! '+bestNow.toFixed(1)+' (best w×r)'; }
+            else{ if(pbEl) pbEl.textContent = bestWas>0 ? ('PB score: '+bestWas.toFixed(1)+' (w×r best set)') : 'Saved.'; }
+            var total=(parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10)+1);
+            localStorage.setItem('fff.workoutplan.saves', total);
+            if(badgeEl) badgeEl.textContent = (total%5===0)?'Progress logged ✅':'';
+            if(quoteEl) quoteEl.textContent = pick(QUOTES);
+          });
+        }
+      })(drawers[d]);
+    }
+
+  }catch(err){
+    wrap.innerHTML = '<div class="warn">An error occurred while rendering the plan.</div>';
+    if(msg) msg.textContent = 'Error: '+(err && err.message ? err.message : String(err));
+  }
 }
 
-/* Export / Import / Reset */
+/* ===== Export / Import / Reset ===== */
 function exportAll(){
-  const dump={};
-  for(let i=0;i<localStorage.length;i++){
-    const k=localStorage.key(i); if(!k) continue;
-    if(k.startsWith(NS_PB)||k.startsWith(NS_CHECK)||k===ROADMAP_KEY){
+  var dump={};
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i); if(!k) continue;
+    if(k.indexOf(NS_PB)===0 || k.indexOf(NS_CHECK)===0 || k===ROADMAP_KEY){
       dump[k]=localStorage.getItem(k);
     }
   }
-  const blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  var blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob); var a=document.createElement('a');
   a.href=url; a.download='freefitfuel-workout-plan-backup.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
 function importAll(file){
-  const r=new FileReader();
-  r.onload=()=>{ 
-    try {
-      const obj=JSON.parse(String(r.result||'{}'));
-      Object.keys(obj).forEach(k=>localStorage.setItem(k,obj[k]));
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var obj=JSON.parse(String(r.result||'{}'));
+      for(var k in obj){ if(Object.prototype.hasOwnProperty.call(obj,k)){ localStorage.setItem(k, obj[k]); } }
       alert('Import complete. Reloading plan.');
-      location.reload(); // ensure roadmap picked up
-    } catch { alert('Import failed — invalid file.'); } 
+      location.reload();
+    }catch(e){
+      alert('Import failed — invalid file.');
+    }
   };
   r.readAsText(file);
 }
 function resetPBsAndWellness(){
-  const del=[]; for(let i=0;i<localStorage.length;i++){
-    const k=localStorage.key(i); if(!k) continue;
-    if(k.startsWith(NS_PB)||k.startsWith(NS_CHECK)) del.push(k);
+  var del=[]; for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i); if(!k) continue;
+    if(k.indexOf(NS_PB)===0 || k.indexOf(NS_CHECK)===0) del.push(k);
   }
-  del.forEach(k=>localStorage.removeItem(k));
-  alert('Cleared PBs & wellness toggles. Roadmap left intact.'); location.reload();
+  for(var j=0;j<del.length;j++){ localStorage.removeItem(del[j]); }
+  alert('Cleared PBs & wellness toggles. Roadmap left intact.');
+  location.reload();
 }
-document.getElementById('btnExport')?.addEventListener('click', exportAll);
-document.getElementById('importFile')?.addEventListener('change', e=>{const f=e.target.files?.[0];if(f) importAll(f);});
-document.getElementById('btnReset')?.addEventListener('click', resetPBsAndWellness);
+document.getElementById('btnExport').addEventListener('click', exportAll);
+document.getElementById('importFile').addEventListener('change', function(e){ var f=(e.target && e.target.files && e.target.files[0])||null; if(f) importAll(f); });
+document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
 
+/* ===== Boot ===== */
 renderPlan();
 </script>
 </body>

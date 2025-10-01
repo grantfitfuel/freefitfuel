@@ -136,7 +136,21 @@ function leadIn(next){ let i=0, seq=[600,700,800]; const t=setInterval(()=>{beep
 function finish(){ [900,700,500].forEach((f,i)=>setTimeout(()=>beep(f,140,0.035), i*220)); }
 
 /* ===== Wellness toggles ===== */
-['hydrDone','sleepDone','macroDone','activityWalk','activityRun','activityBike'].forEach(id=>{
+// Migrate old separate cardio toggles to the new single 'activityCardio'
+(function migrateOldCardio(){
+  const oldKeys = ['activityWalk','activityRun','activityBike'].map(k => NS_CHECK + k);
+  const newKey  = NS_CHECK + 'activityCardio';
+  try {
+    const anyOldOn = oldKeys.some(k => localStorage.getItem(k) === '1');
+    if (anyOldOn && localStorage.getItem(newKey) !== '1') {
+      localStorage.setItem(newKey, '1');
+    }
+    // Optional: clean up the old keys so they stop lingering
+    oldKeys.forEach(k => localStorage.removeItem(k));
+  } catch {}
+})();
+
+['hydrDone','sleepDone','macroDone','activityCardio'].forEach(id=>{
   const el = document.getElementById(id); const k = NS_CHECK+id;
   try{ if(localStorage.getItem(k)==='1') el.checked=true; }catch{}
   el?.addEventListener('change',()=>{ try{ localStorage.setItem(k, el.checked?'1':'0'); }catch{} });

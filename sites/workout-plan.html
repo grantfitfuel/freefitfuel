@@ -72,6 +72,12 @@
     .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.55rem .6rem;border-radius:8px}
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
 
+    /* --- Alternatives chips --- */
+    .alts{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 0}
+    .chip{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--stroke);background:rgba(255,255,255,.06);padding:.25rem .55rem;border-radius:999px;font-size:.9rem;text-decoration:none;color:var(--ink)}
+    .chip:hover{border-color:var(--accent); color:var(--accent)}
+    .alts-lead{font-size:.9rem;opacity:.85;margin-right:.2rem}
+
     /* --- Accordion (phases) --- */
     .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px}
     .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem}
@@ -190,6 +196,19 @@ const QUOTES=[
   "Show up. Scale smart. Keep going."
 ];
 
+// Turn whatever a plan gives us into an array of strings
+function toAltArray(it){
+  const fields = ['alts','alternatives','alternates','options','subs','substitutions'];
+  let out = [];
+  for(const f of fields){
+    if(Array.isArray(it?.[f])) out = out.concat(it[f]);
+    else if(typeof it?.[f] === 'string' && it[f].trim()) out.push(it[f].trim());
+  }
+  if(typeof it?.alt === 'string' && it.alt.trim()) out.push(it.alt.trim());
+  // de-dup / tidy
+  return Array.from(new Set(out.map(s => String(s).trim()).filter(Boolean)));
+}
+
 /* ===== Timers (attach inside a scope element) ===== */
 function restControlsHTML(id){
   return `
@@ -302,6 +321,8 @@ function renderPlan(){
           ? [it.duration_min?`${it.duration_min} min`:null, it.work_s?`work ${it.work_s}s`:null, it.rest_s?`rest ${it.rest_s}s`:null, it.rounds?`${it.rounds} rounds`:null].filter(Boolean).join(' · ')
           : `${it.sets||'—'}×${it.reps||'—'} · ${it.rir||'—'} RIR · ${it.rest||60}s rest`;
 
+        const alts = toAltArray(it);
+
         html += `
           <div class="mov" style="margin:.5rem 0 0">
             <div class="mov-head">
@@ -314,6 +335,12 @@ function renderPlan(){
               <div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>
             </div>
             ${it.cue?`<p class="meta" style="margin:.3rem 0 0">${it.cue}</p>`:''}
+            ${alts.length ? `
+              <div class="alts" aria-label="Alternative exercises">
+                <span class="alts-lead">Alternatives:</span>
+                ${alts.map(a => `<a class="chip" href="${yt(a)}" target="_blank" rel="noopener" title="Form: ${a}">${a}</a>`).join('')}
+              </div>
+            ` : '' }
             <div class="drawer" data-drawer>
               <div class="log-grid" data-log>
                 ${[1,2,3,4,5].map(i=>`

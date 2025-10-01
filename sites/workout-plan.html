@@ -60,6 +60,7 @@
       .log-row input[placeholder="reps"]{grid-column:2 / span 1}
       .log-row input[placeholder="notes"]{grid-column:1 / span 2}
     }
+
     /* Wellness + utilities */
     .grid{display:grid;gap:.6rem}
     .log-grid-compact{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem}
@@ -70,6 +71,23 @@
     }
     .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.55rem .6rem;border-radius:8px}
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
+
+    /* --- Accordion (phases) --- */
+    .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px}
+    .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem}
+    .acc-toggle{all:unset; cursor:pointer; color:var(--accent); font-size:1.05rem; padding:.2rem 0}
+    .accordion:not(.open) .acc-toggle::after{content:"▸"; margin-left:.45rem; opacity:.8}
+    .accordion.open .acc-toggle::after{content:"▾"; margin-left:.45rem; opacity:.8}
+    .acc-body{margin-top:.5rem}
+    [hidden]{display:none !important;}
+
+    /* Visually hidden helper (for a11y hints if needed) */
+    .visually-hidden {
+      position:absolute !important;
+      height:1px; width:1px;
+      overflow:hidden; clip:rect(1px,1px,1px,1px);
+      white-space:nowrap; border:0; padding:0; margin:-1px;
+    }
   </style>
 </head>
 <body>
@@ -88,9 +106,10 @@
         <label><input type="checkbox" id="sleepDone"> Sleep goal met</label>
         <label><input type="checkbox" id="macroDone"> Macros on target</label>
         <label>
-  <input type="checkbox" id="activityCardio" aria-label="Did you do any walk, bike or run today?">
-  Walk / Bike / Run
-</label>
+          <input type="checkbox" id="activityCardio" aria-describedby="cardio-hint">
+          Walk / Bike / Run
+        </label>
+        <span id="cardio-hint" class="visually-hidden">Tick this if you did any one of these today.</span>
       </div>
       <p class="quote">Consistency across training, nutrition, sleep & stress = success.</p>
     </section>
@@ -113,14 +132,15 @@
       </div>
       <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
     </section>
+
     <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container">
-      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-      <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
-      <p class="credit">Created by Grant Cameron Anthony</p>
-    </div>
-  </footer>
+    <footer class="site-footer">
+      <div class="container">
+        <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+        <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+        <p class="credit">Created by Grant Cameron Anthony</p>
+      </div>
+    </footer>
   </div>
 
 <script>
@@ -205,6 +225,30 @@ function hookRestTimers(scope){
   });
 }
 
+/* ===== Accordion setup (one open at a time) ===== */
+function setupAccordions(){
+  const accs = Array.from(document.querySelectorAll('.accordion'));
+  accs.forEach(acc=>{
+    const btn  = acc.querySelector('.acc-toggle');
+    const body = acc.querySelector('.acc-body');
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    acc.classList.toggle('open', open);
+    body.hidden = !open;
+
+    btn.addEventListener('click', ()=>{
+      // Close all others, open this one
+      accs.forEach(a=>{
+        const b = a.querySelector('.acc-toggle');
+        const c = a.querySelector('.acc-body');
+        const isThis = a === acc;
+        a.classList.toggle('open', isThis);
+        b.setAttribute('aria-expanded', isThis ? 'true' : 'false');
+        c.hidden = !isThis;
+      });
+    });
+  });
+}
+
 /* ===== Render from roadmap ===== */
 function renderPlan(){
   const wrap = document.getElementById('plan');
@@ -223,14 +267,22 @@ function renderPlan(){
 
   let html='';
   stages.forEach((stage,si)=>{
-    const name = stage.name || `Stage ${si+1}`;
-    const bf   = stage.bf_target ? ` · BF target: ${stage.bf_target}` : '';
-    const weeks= (stage.weeks_min&&stage.weeks_max)?` · ${stage.weeks_min}–${stage.weeks_max} weeks`:'';
-    html += `<div class="block">
-      <h3>${name}</h3>
+    const name  = stage.name || `Stage ${si+1}`;
+    const bf    = stage.bf_target ? ` · BF target: ${stage.bf_target}` : '';
+    const weeks = (stage.weeks_min&&stage.weeks_max)?` · ${stage.weeks_min}–${stage.weeks_max} weeks`:'';
+    const sid   = `acc-s${si}`;
+
+    html += `<div class="block accordion ${si===0?'open':''}" data-acc>
+      <div class="acc-head">
+        <button class="acc-toggle" aria-expanded="${si===0?'true':'false'}" aria-controls="${sid}">
+          ${name}
+        </button>
+        <span class="meta" style="opacity:.85">${bf}${weeks}</span>
+      </div>
       ${stage.blurb?`<p class="meta" style="margin:.2rem 0 .5rem">${stage.blurb}</p>`:''}
-      <p class="meta">Plan${bf}${weeks}</p>
-      <div class="days">`;
+      <div id="${sid}" class="acc-body" ${si===0?'':'hidden'}>
+        <p class="meta">Plan${bf}${weeks}</p>
+        <div class="days">`;
 
     const days = stage.split || ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
     for(let di=0; di<7; di++){
@@ -287,11 +339,15 @@ function renderPlan(){
       html += `</div>`; // end day box
     }
 
-    html += `</div></div>`; // end days + block
+    html += `</div></div>`; // end .days + .acc-body
+    html += `</div>`;       // end .accordion
   });
 
   wrap.innerHTML = html;
   msg.textContent = `Loaded ${stages.length} stage${stages.length>1?'s':''} from local plan.`;
+
+  // Init accordion behaviour
+  setupAccordions();
 
   // Wire drawers, saving, PB label, timers
   wrap.querySelectorAll('.mov .btn-sm[data-open]').forEach(btn=>{
@@ -392,7 +448,6 @@ document.getElementById('btnReset')?.addEventListener('click', resetPBsAndWellne
 
 /* ===== Boot ===== */
 renderPlan();
-  
 </script>
 </body>
 </html>

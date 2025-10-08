@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreeFitFuel Physio — Recovery & Return to Training</title>
+
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+  <link rel="stylesheet" href="style.css?v=27">
+
+  <style>
+    :root{
+      --bg:#0b0f14; --ink:#e6e6ea; --inkdim:#b7b7c2;
+      --glass:#0f131a; --stroke:#1f2630; --accent:#ff6a00;
+      --maxw:1100px;
+    }
+    body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .hero-mini figure{margin:0;position:relative}
+    .hero-mini img{width:100%;height:40vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.85) saturate(1.05)}
+    .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.66))}
+    .hero-mini .content{position:static;padding:16px 20px 20px;max-width:var(--maxw);margin:0 auto}
+    .hero-mini h1{margin:.2rem 0 .4rem}
+    .lead{color:var(--inkdim)}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .section h2{margin:.15rem 0 .45rem;font-size:1.2rem}
+    .grid{display:grid;gap:10px}
+    @media(min-width:860px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
+    details.collapsible{border:1px solid var(--stroke);border-radius:12px;padding:0;background:rgba(255,255,255,0.02);overflow:hidden}
+    details.collapsible+details.collapsible{margin-top:10px}
+    details.collapsible>summary{cursor:pointer;padding:14px 16px;font-weight:700;list-style:none}
+    details.collapsible>summary::-webkit-details-marker{display:none}
+    details.collapsible>summary::after{content:"▸";float:right;transition:transform .2s ease}
+    details.collapsible[open]>summary::after{transform:rotate(90deg)}
+    details.collapsible .drawer{padding:0 16px 14px 16px}
+    .badge{display:inline-block;border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;background:rgba(255,255,255,.06);font-size:.82rem;margin-left:.4rem}
+    .callout{border:1px solid #3a2a14;background:#1b140a;color:#ffdcb3;border-radius:10px;padding:.6rem .7rem}
+    .ok{border:1px solid #203a23;background:#132317;color:#b8ffbf;border-radius:10px;padding:.6rem .7rem}
+    ul{margin:.2rem 0 .6rem .95rem}
+    .meta{color:var(--inkdim)}
+    .credit{opacity:.7}
+    .btn{display:inline-block;border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.5rem .9rem;border-radius:8px;text-decoration:none}
+    .btn:hover{border-color:#2b3340}
+    .cta-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.4rem}
+  </style>
+</head>
+<body>
+
+<!-- Shared header (optional) -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js" defer></script>
+
+<header class="hero-mini" role="banner" aria-label="Physio hero">
+  <figure>
+    <img src="img/physio-hero.jpg" alt="Stretching and recovery tools lay on a mat">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Recovery that respects the body</span></h1>
+    <p class="lead">Simple, evidence-aware progressions to get you back to pain-free training.</p>
+    <div class="cta-row">
+      <a class="btn" href="workouts.html">Back to Workouts</a>
+      <a class="btn" href="nutrition.html">Nutrition & Hydration</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section">
+    <h2>Safety First</h2>
+    <p class="callout"><strong>Educational only.</strong> This page is not medical diagnosis or treatment. Red flags (night pain, fever, loss of strength/sensation, visible deformity, inability to bear weight, severe swelling, suspected fracture, head injury) → seek care urgently.</p>
+    <p class="meta">Progress when pain is tolerable (&le; 3/10 during/after), swelling is minimal, and function improves week-to-week. Back off if pain spikes for &gt;24–48 hrs.</p>
+  </section>
+
+  <section class="section">
+    <h2>How to Use</h2>
+    <div class="grid cols-2">
+      <div>
+        <p class="ok"><strong>Phases:</strong> Acute (calm it down) → Rebuild (load tolerance) → Return (capacity + sport-specific).</p>
+        <ul>
+          <li><strong>Acute:</strong> relative rest, gentle mobility, pain-free isometrics.</li>
+          <li><strong>Rebuild:</strong> progressive resistance (tempo, range, volume).</li>
+          <li><strong>Return:</strong> graded exposure to impact/speed/volume.</li>
+        </ul>
+      </div>
+      <div>
+        <p class="ok"><strong>Scale by symptoms:</strong> Keep 1–2 Reps-in-Reserve; avoid sharp pain; use slower eccentrics early.</p>
+        <ul>
+          <li><strong>Warm up:</strong> 5–8 min easy cardio + joint prep of region.</li>
+          <li><strong>Cool down:</strong> slow breathing + gentle mobility of area.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMON INJURIES -->
+  <section class="section">
+    <h2>Common Injuries — Self-Care Progressions</h2>
+
+    <!-- Plantar Fasciitis -->
+    <details class="collapsible">
+      <summary>Plantar Fasciitis <span class="badge">heel/arch pain</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Relative rest from impact; swap to cycling/rower if needed.</li>
+          <li>Foot mobility: toe spreads, towel scrunches, gentle arch rolling (ball) 1–2 min.</li>
+          <li>Supportive shoes/orthotics temporarily if helpful.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li><strong>Calf complex loading</strong> (see soleus/gastroc in Calf Strain below): 3×12–15 daily → 3×8–12 heavier.</li>
+          <li>Short-foot drill: maintain a subtle arch while standing/mini-squat.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Walk-jog progression on flat, add volume before speed/hills.</li>
+        </ul>
+        <p class="meta"><strong>Avoid:</strong> barefoot hard surfaces early; sharp morning pain running.</p>
+      </div>
+    </details>
+
+    <!-- Achilles Tendinopathy -->
+    <details class="collapsible">
+      <summary>Achilles Tendinopathy <span class="badge">mid-portion/insert</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Reduce plyometrics/sprinting temporarily; pain-free cycling okay.</li>
+          <li>Isometric calf holds: 3–5×30–45s (double-leg), 1–2×/day.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Eccentric or heavy-slow calf raises: knee straight (gastroc) & knee bent (soleus), 3–4×8–12, 3x/week.</li>
+          <li>Progress range (step), load (DB/backpack), then speed.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Walk-jog → strides → controlled hops. Keep 24-hr pain check.</li>
+        </ul>
+        <p class="meta"><strong>Avoid:</strong> sudden spikes in hill sprints/volume.</p>
+      </div>
+    </details>
+
+    <!-- Patellofemoral Pain -->
+    <details class="collapsible">
+      <summary>Patellofemoral Pain <span class="badge">front of knee</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Reduce deep knee flexion & stairs if flared; cadence-up cycling can be comfortable.</li>
+          <li>Isometrics: wall sit holds 4×30–45s (comfortable depth).</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Quad: step-ups, Spanish squat, tempo split squats 3–4×8–12.</li>
+          <li>Hip: side-lying abduction/clam, band walk 3×12–15.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Gradual run volume; keep form tall, avoid over-striding.</li>
+        </ul>
+        <p class="meta"><strong>Avoid:</strong> sudden downhill running; deep, painful squats early.</p>
+      </div>
+    </details>
+
+    <!-- ITB Syndrome -->
+    <details class="collapsible">
+      <summary>Iliotibial Band Syndrome <span class="badge">outer knee/hip</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Reduce long runs/cambered surfaces; bike with light resistance.</li>
+          <li>Glute activation: bridges 3×12–15.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Hip abductors: side plank, banded step-downs, lateral lunges 3–4×8–12.</li>
+          <li>Stride drills: increase cadence ~5–7%.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Re-introduce hills late; monitor 24-hr symptom response.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Hamstring Strain -->
+    <details class="collapsible">
+      <summary>Hamstring Strain <span class="badge">posterior thigh</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Walk pain-free; avoid sprinting/fast eccentrics early.</li>
+          <li>Isometrics: prone heel press into box/towel 4×30–45s.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Hip-hinge: RDL, bridge/hip thrust, slide-leg curls 3–4×8–12 (slow eccentrics).</li>
+          <li>Nordic regressions if tolerated (partial range).</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Drills → strides → controlled sprints; keep 1–2 hamstring strength sessions/week.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Calf Muscle Strain -->
+    <details class="collapsible">
+      <summary>Calf Muscle Strain <span class="badge">gastrocnemius / soleus</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Relative rest 1–2 weeks from sprinting/jumping; normal walking as pain allows.</li>
+          <li>Ankle pumps & gentle calf stretching (no sharp pain).</li>
+          <li>Compression sleeve and short bouts of elevation can reduce swelling.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li><strong>Seated calf raises</strong> (soleus bias): 3×12–15 → 3×8–12 heavier.</li>
+          <li><strong>Standing calf raises</strong> (gastroc bias): double-leg → single-leg; include 3–4s eccentrics.</li>
+          <li>Progress to step deficits and loaded carries as symptoms settle.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Walk-jog → strides → hops/skips/low-amplitude pogos before full sprints.</li>
+          <li>Maintain 1–2 calf strength sessions weekly to reduce re-injury risk.</li>
+        </ul>
+        <p class="meta"><strong>Avoid:</strong> explosive push-offs too early; large dorsiflexion stretches if they provoke pain.</p>
+      </div>
+    </details>
+
+    <!-- Rotator Cuff -->
+    <details class="collapsible">
+      <summary>Rotator Cuff Irritation <span class="badge">shoulder</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Avoid painful overhead pressing temporarily; keep arm below pain threshold.</li>
+          <li>Isometric external rotation (band) 4×20–30s.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Scapular work: Y-T-W raises, prone row to external rotation 3×10–15.</li>
+          <li>Pressing: incline DB press, landmine/half-kneeling press 3×8–12.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Reintroduce overhead press/pull gradually; keep last reps smooth.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Tennis/Golfer’s Elbow -->
+    <details class="collapsible">
+      <summary>Tennis / Golfer’s Elbow <span class="badge">lateral/medial epicondyle</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Unload aggravating grips; neutral-grip pulling is often friendlier.</li>
+          <li>Isometrics: wrist extension/flexion holds 4×30–45s light load.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Eccentric wrist curls (ext/flex) 3–4×12–15; pronation/supination with hammer 3×10–12.</li>
+          <li>Grip variety; thumbless or straps as a bridge if needed.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Re-load pull-ups/rows and pressing; add sport-specific hitting gradually.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- De Quervain’s -->
+    <details class="collapsible">
+      <summary>De Quervain’s (Thumb Tendons) <span class="badge">APL/EPB</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Reduce repetitive thumb abduction/extension; consider brief thumb spica support.</li>
+          <li>Pain-free isometrics into the strap/band 4×20–30s.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Thumb abduction/extension eccentrics 3×12–15, light tubing.</li>
+          <li>Forearm conditioning (radial/ulnar deviation) 3×10–12.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Hip Flexor -->
+    <details class="collapsible">
+      <summary>Hip Flexor Strain <span class="badge">iliopsoas/rectus femoris</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Cut sprinting/high-knee drills; gentle hip mobility within comfort.</li>
+          <li>Isometric hip flexion: knee-to-hand press 4×20–30s.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Marches with band, Copenhagen plank regression, split squats 3×8–12.</li>
+          <li>Glute strength (hinge/bridge) to balance anterior load.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Strides then speed; avoid sudden volume spikes.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Low Back (non-specific) -->
+    <details class="collapsible">
+      <summary>Low Back (Non-specific) <span class="badge">stiff/sore</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Keep moving within comfort; avoid long static sitting.</li>
+          <li>Spine-friendly core: dead bug, bird-dog, side plank 3×8–12 or 20–40s.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Hinge pattern: hip-dominant RDLs, glute bridge 3–4×8–12 (neutral spine, tempo).</li>
+          <li>Gradually reintroduce squats/deadlifts with submax loads.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Normal training with sensible load progressions; avoid “maxing out” for several weeks.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Ankle Sprain -->
+    <details class="collapsible">
+      <summary>Ankle Sprain <span class="badge">lateral most common</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>POLICE approach: Protection, Optimal Loading, Ice, Compression, Elevation.</li>
+          <li>Pain-free range circles/ABC, weight-bear as tolerated.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Balance: single-leg stand → eyes closed → unstable surface.</li>
+          <li>Strength: calf raises (both variations), band inversion/eversion 3×12–15.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Hops, change-of-direction drills, then sport drills.</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Shin Splints -->
+    <details class="collapsible">
+      <summary>Shin Splints (MTSS) <span class="badge">tibial border</span></summary>
+      <div class="drawer">
+        <h3>Acute</h3>
+        <ul>
+          <li>Reduce impact; check footwear; avoid back-to-back hard runs.</li>
+        </ul>
+        <h3>Rebuild</h3>
+        <ul>
+          <li>Soleus/gastroc loading as above + anterior tib raises 3×12–15.</li>
+          <li>Step rate ↑ 5–7% to reduce tibial load while running.</li>
+        </ul>
+        <h3>Return</h3>
+        <ul>
+          <li>Volume first, then speed/hills. Respect 24-hr pain response.</li>
+        </ul>
+      </div>
+    </details>
+
+  </section>
+
+  <!-- Warm-up / Cool-down templates -->
+  <section class="section">
+    <h2>Warm-Up & Cool-Down (Templates)</h2>
+    <div class="grid cols-2">
+      <div>
+        <h3>Warm-Up (5–8 min)</h3>
+        <ul>
+          <li>2–3 min easy cardio (walk/cycle/row).</li>
+          <li>Region-prep (choose 3–4): joint circles, band pull-aparts, cat-camel, hip airplanes, ankle rocks.</li>
+          <li>2 ramp-up sets of first lift (lighter, crisp technique).</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Cool-Down (3–6 min)</h3>
+        <ul>
+          <li>Slow breathing 2–3 min (4s in / 6s out).</li>
+          <li>Gentle mobility for trained area (no painful end-range forcing).</li>
+          <li>Rehydrate and refuel protein + carbs within 1–2 hrs.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>When to Get a Professional Review</h2>
+    <ul>
+      <li>Pain not improving after 2–3 weeks of load management and basic rehab.</li>
+      <li>Recurrent injuries to the same area; significant weakness or giving-way.</li>
+      <li>Numbness/tingling, night pain, red/hot swollen joints, or systemic symptoms.</li>
+    </ul>
+    <p class="credit">© 2025 FreeFitFuel™ · This page is for general fitness education only.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+</body>
+</html>

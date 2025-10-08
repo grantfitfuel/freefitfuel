@@ -4,62 +4,86 @@
   <meta charset="utf-8" />
   <title>Flexibility & Stretching (Over-40s) • FreeFitFuel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
   <style>
     :root{
-      --maxw: 880px; --fg:#1e1f24; --muted:#656b73; --line:#e8eaee; --accent:#0b776b;
-      --bg:#ffffff; --chipbg:#eef7f6; --chipbd:#d9efec;
+      /* FreeFitFuel Dark Theme */
+      --bg:#0b0f14;         /* page background */
+      --ink:#e6e6ea;        /* main text */
+      --inkdim:#b8bec7;     /* muted text */
+      --accent:#ff6a00;     /* bright orange */
+      --line:#1a222c;       /* subtle dividers */
+      --glass:#0f141c;      /* card bg */
+      --stroke:#1e2733;     /* card border */
+      --maxw: 920px;
     }
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
       font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:24px;}
-    h1,h2,h3{line-height:1.25;margin:26px 0 12px}
-    h1{font-size:1.95rem} h2{font-size:1.35rem} h3{font-size:1.08rem}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:24px}
+    h1,h2,h3{line-height:1.2;margin:26px 0 12px}
+    h1{font-size:2rem} h2{font-size:1.35rem} h3{font-size:1.08rem}
     p{margin:10px 0 12px}
-    .muted{color:var(--muted)}
-    .tag{display:inline-block;font-size:.82rem;padding:2px 8px;border-radius:999px;
-      background:var(--chipbg);border:1px solid var(--chipbd);color:var(--accent);margin-left:6px}
-    .nav{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:14px 0 22px}
-    .nav a{color:var(--accent);text-decoration:none}
-    .notice{background:#fafbfc;border:1px solid var(--line);padding:12px 14px;border-radius:10px}
-    hr{border:0;border-top:1px solid var(--line);margin:26px 0}
-    .grid{display:grid;gap:16px}
-    .two{grid-template-columns:1fr} @media(min-width:760px){.two{grid-template-columns:1fr 1fr}}
     ul,ol{margin:0 0 16px 22px}
+    hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+    .muted{color:var(--inkdim)}
+    .tag{display:inline-block;font-size:.82rem;padding:3px 9px;border-radius:999px;
+      color:#fff;background:linear-gradient(90deg,#ff7a1f,#ff6a00);}
+    .nav{border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;margin:14px 0 22px;background:var(--glass)}
+    .nav a{margin-right:12px}
+    .notice{background:var(--glass);border:1px solid var(--stroke);padding:12px 14px;border-radius:12px}
+    .grid{display:grid;gap:16px}
+    .two{grid-template-columns:1fr}
+    @media(min-width:760px){.two{grid-template-columns:1fr 1fr}}
     .checklist li{margin-bottom:8px}
     .small{font-size:.92rem}
-    .tip{border-left:4px solid var(--accent);padding:8px 12px;background:#f6fbfa;border-radius:6px}
-    .exercise{margin:12px 0 18px}
-    .exercise b{display:block}
-    table.plan{border-collapse:collapse;width:100%;font-size:.95rem}
-    .plan th,.plan td{border:1px solid var(--line);padding:8px;vertical-align:top}
-    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.9em}
-    @media print{ .nav,.muted{display:none!important} .wrap{padding:0} a{color:black;text-decoration:none}}
+    .tip{border-left:4px solid var(--accent);padding:8px 12px;background:rgba(255,106,0,.07);border-radius:6px}
+    .exercise{display:flex;align-items:flex-start;gap:10px;margin:14px 0 18px;padding:10px 12px;border:1px solid var(--stroke);border-radius:12px;background:var(--glass)}
+    .exercise svg{flex:0 0 26px;margin-top:2px;color:var(--accent)}
+    .exercise b{display:block;margin-bottom:4px}
+    table.plan{border-collapse:collapse;width:100%;font-size:.95rem;background:var(--glass);border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+    .plan th,.plan td{border:1px solid var(--stroke);padding:10px;vertical-align:top}
+    .plan thead th{background:#121823}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+    /* Print */
+    @media print{
+      .nav,.muted{display:none!important}
+      .wrap{padding:0}
+      a{color:#000;text-decoration:none}
+      body{background:#fff;color:#000}
+      .exercise, .notice {border-color:#ccc;background:#fff}
+      .plan{border-color:#000}
+      .plan th,.plan td{border-color:#000}
+    }
   </style>
 </head>
+
 <body>
 <header class="wrap">
   <h1>Flexibility &amp; Stretching <span class="tag">Over-40s</span></h1>
-  <p class="muted">Joint-friendly routines to open hips, ease the spine, free neck &amp; shoulders, and keep ankles supple.</p>
+  <p class="muted">Joint-friendly routines to open hips, release spinal tension, ease the neck &amp; shoulders, and keep ankles supple.</p>
 
   <nav class="nav" aria-label="In-page">
     <strong>Jump to:</strong>
-    <a href="#why">Why it matters</a> ·
-    <a href="#safety">Safety & setup</a> ·
-    <a href="#warmup">5-min warm-up</a> ·
-    <a href="#routines">10/20/30-min routines</a> ·
-    <a href="#areas">By body area</a> ·
-    <a href="#chair">Chair options</a> ·
-    <a href="#weekly">Weekly plan</a> ·
+    <a href="#why">Why it matters</a>
+    <a href="#safety">Safety & setup</a>
+    <a href="#warmup">5-min warm-up</a>
+    <a href="#routines">10/20/30-min routines</a>
+    <a href="#areas">By body area</a>
+    <a href="#chair">Chair options</a>
+    <a href="#weekly">Weekly plan</a>
     <a href="#faq">FAQ</a>
   </nav>
 
   <div class="notice small" role="note">
     <strong>General guidance:</strong> Move gently. Aim for a mild stretch (3–4/10), not pain.
-    Hold most stretches 20–40 seconds, repeat 1–2 times. Breathe: <em>inhale 4s</em>, <em>exhale 6s</em>.
+    Hold most stretches 20–40 seconds, repeat 1–2 rounds. Breathe: <em>inhale 4s</em>, <em>exhale 6s</em>.
   </div>
 </header>
 
 <main class="wrap">
+  <!-- WHY -->
   <section id="why">
     <h2>Why flexibility matters more after 40</h2>
     <ul>
@@ -70,6 +94,7 @@
     </ul>
   </section>
 
+  <!-- SAFETY -->
   <section id="safety">
     <h2>Safety & setup</h2>
     <div class="grid two">
@@ -93,18 +118,20 @@
     </div>
   </section>
 
+  <!-- WARM-UP -->
   <section id="warmup">
     <h2>5-minute warm-up (gentle mobility)</h2>
     <ol>
       <li><b>Neck nods & turns</b> — tiny range; 3 breaths each direction.</li>
       <li><b>Shoulder rolls</b> — 8–10 forward/back.</li>
-      <li><b>Cat–cow standing</b> — hands on thighs; slow arch/round × 6–8.</li>
+      <li><b>Cat–Cow (standing)</b> — hands on thighs; slow arch/round × 6–8.</li>
       <li><b>Hip circles</b> — small then medium; 6 each way.</li>
       <li><b>Ankle rocks</b> — hold chair; heel-to-toe rocks × 10.</li>
     </ol>
     <p class="muted">Tip: Exhale on the “soften” part of each move.</p>
   </section>
 
+  <!-- ROUTINES -->
   <section id="routines">
     <h2>Pick your routine</h2>
 
@@ -114,7 +141,7 @@
       <li><b>Seated Spinal Twist</b> (R/L) — 1 min total</li>
       <li><b>Hip Flexor Lunge (supported)</b> (R/L) — 2 min</li>
       <li><b>Figure-4 Hip Stretch (chair)</b> (R/L) — 2 min</li>
-      <li><b>Chest Opener at Doorframe</b> — 1 min</li>
+      <li><b>Doorframe Chest Opener</b> — 1 min</li>
       <li><b>Hamstring Strap Stretch</b> — 1 min</li>
       <li><b>Calf Wall Stretch</b> — 1 min</li>
       <li><b>Neck Side Release</b> — 1 min</li>
@@ -129,7 +156,7 @@
       <li><b>Hamstring Strap</b> — 30s × 2 each</li>
       <li><b>Soleus (bent-knee calf)</b> — 30s × 2 each</li>
       <li><b>Ankle Alphabet</b> (seated) — A–Z each ankle</li>
-      <li><b>Neck Chin-Tucks</b> (gentle) — 8–10 reps</li>
+      <li><b>Neck Chin-Tucks</b> — 8–10 reps</li>
     </ul>
 
     <h3>30-minute Deep Release</h3>
@@ -146,68 +173,133 @@
     </ul>
   </section>
 
+  <!-- AREAS WITH ICONS -->
   <section id="areas">
     <h2>Stretches by area (with breathing & modifications)</h2>
 
+    <!-- Hips – Figure-4 -->
     <div class="exercise">
-      <b>Hips — Figure-4 Stretch (chair or lying)</b>
-      <p><em>How:</em> Cross right ankle over left thigh (above knee). Sit tall; hinge forward slightly until you feel a glute/hip stretch. Switch sides.</p>
-      <p><em>Breathe:</em> Inhale length; <b>exhale</b> to soften hips. 20–40s, 1–2 rounds.</p>
-      <p><em>Modify:</em> Support the lifted knee with a cushion; reduce hinge.</p>
+      <!-- hips icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><line x1="50" y1="30" x2="50" y2="60"/><line x1="50" y1="45" x2="30" y2="60"/><line x1="50" y1="60" x2="70" y2="80"/>
+      </svg>
+      <div>
+        <b>Hips — Figure-4 Stretch (chair or lying)</b>
+        <p><em>How:</em> Cross right ankle over left thigh (above knee). Sit tall; hinge forward slightly until you feel a glute/hip stretch. Switch sides.</p>
+        <p><em>Breathe:</em> Inhale length; <b>exhale</b> to soften hips. 20–40s, 1–2 rounds.</p>
+        <p><em>Modify:</em> Support the lifted knee with a cushion; reduce hinge.</p>
+      </div>
     </div>
 
+    <!-- Hips – Hip Flexor -->
     <div class="exercise">
-      <b>Hips — Hip Flexor Lunge (supported)</b>
-      <p><em>How:</em> Split stance, back heel lifted, hands on chair/wall. Tuck pelvis slightly, shift forwards until front of back-hip stretches.</p>
-      <p><em>Breathe:</em> Easy nasal breaths; <b>exhale</b> to relax. 20–30s, 2 rounds each.</p>
-      <p><em>Modify:</em> Pad the back knee if kneeling; keep torso tall.</p>
+      <!-- hips icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><line x1="50" y1="30" x2="50" y2="60"/><line x1="50" y1="45" x2="30" y2="60"/><line x1="50" y1="60" x2="70" y2="80"/>
+      </svg>
+      <div>
+        <b>Hips — Hip Flexor Lunge (supported)</b>
+        <p><em>How:</em> Split stance, back heel lifted, hands on chair/wall. Tuck pelvis slightly, shift forwards until the front of the back-hip stretches.</p>
+        <p><em>Breathe:</em> Easy nasal breaths; <b>exhale</b> to relax. 20–30s, 2 rounds each.</p>
+        <p><em>Modify:</em> Pad the back knee if kneeling; keep torso tall.</p>
+      </div>
     </div>
 
+    <!-- Spine – Cat-Cow -->
     <div class="exercise">
-      <b>Spine — Cat–Cow (standing or on all fours)</b>
-      <p><em>How:</em> Hands on thighs (standing) or under shoulders (quadruped). Inhale to gently arch; <b>exhale</b> to round. 6–10 slow reps.</p>
-      <p><em>Tip:</em> Move through a <em>comfortable</em> range only.</p>
+      <!-- spine icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><path d="M50 30 C40 50, 60 70, 50 90"/>
+      </svg>
+      <div>
+        <b>Spine — Cat–Cow (standing or on all fours)</b>
+        <p><em>How:</em> Hands on thighs (standing) or under shoulders (quadruped). Inhale to gently arch; <b>exhale</b> to round. 6–10 slow reps.</p>
+        <p><em>Tip:</em> Move through a <em>comfortable</em> range only.</p>
+      </div>
     </div>
 
+    <!-- Spine – Seated Twist -->
     <div class="exercise">
-      <b>Spine — Seated Spinal Twist</b>
-      <p><em>How:</em> Sit tall, feet flat. Inhale length; <b>exhale</b> twist gently from mid-back. Hold 20–30s, change sides.</p>
-      <p><em>Modify:</em> Hug the chair back lightly; keep chin level.</p>
+      <!-- spine icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><path d="M50 30 C40 50, 60 70, 50 90"/>
+      </svg>
+      <div>
+        <b>Spine — Seated Spinal Twist</b>
+        <p><em>How:</em> Sit tall, feet flat. Inhale length; <b>exhale</b> twist gently from mid-back. Hold 20–30s, change sides.</p>
+        <p><em>Modify:</em> Hug the chair back lightly; keep chin level.</p>
+      </div>
     </div>
 
+    <!-- Chest/Shoulders -->
     <div class="exercise">
-      <b>Shoulders/Chest — Doorframe Chest Opener</b>
-      <p><em>How:</em> Forearm on frame, elbow at shoulder height. Step through until chest/shoulder stretches. 20–30s each, 1–2 rounds.</p>
-      <p><em>Breathe:</em> Inhale to lengthen; <b>exhale</b> to soften the pecs.</p>
+      <!-- shoulders icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><line x1="50" y1="30" x2="30" y2="60"/><line x1="50" y1="30" x2="70" y2="60"/>
+      </svg>
+      <div>
+        <b>Shoulders/Chest — Doorframe Opener</b>
+        <p><em>How:</em> Forearm on frame, elbow at shoulder height. Step through until chest/shoulder stretches. 20–30s each, 1–2 rounds.</p>
+        <p><em>Breathe:</em> Inhale to lengthen; <b>exhale</b> to soften the pecs.</p>
+      </div>
     </div>
 
+    <!-- Hamstrings -->
     <div class="exercise">
-      <b>Hamstrings — Seated Strap/Towel Stretch</b>
-      <p><em>How:</em> Sit tall, loop strap under mid-foot, knee softly bent. Hinge at hips to feel a gentle back-thigh stretch. 20–30s each.</p>
-      <p><em>Modify:</em> Bend knee more to avoid back strain.</p>
+      <!-- hamstring icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="40" cy="20" r="10"/><line x1="40" y1="30" x2="40" y2="70"/><line x1="40" y1="70" x2="70" y2="40"/>
+      </svg>
+      <div>
+        <b>Hamstrings — Seated Strap/Towel Stretch</b>
+        <p><em>How:</em> Sit tall, loop strap under mid-foot, knee softly bent. Hinge at hips to feel a gentle back-thigh stretch. 20–30s each.</p>
+        <p><em>Modify:</em> Bend knee more to avoid back strain.</p>
+      </div>
     </div>
 
+    <!-- Calves/Ankles -->
     <div class="exercise">
-      <b>Calves — Wall Calf + Bent-Knee Soleus</b>
-      <p><em>How:</em> Hands on wall. For calf (gastroc): back knee straight, heel down. For soleus: bring back foot closer, bend both knees. 20–30s each.</p>
+      <!-- calf/ankle icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><line x1="50" y1="30" x2="50" y2="80"/><line x1="50" y1="80" x2="70" y2="80"/>
+      </svg>
+      <div>
+        <b>Calves — Wall Calf + Bent-Knee Soleus</b>
+        <p><em>How:</em> Hands on wall. For calf (gastroc): back knee straight, heel down. For soleus: bring back foot closer, bend both knees. 20–30s each.</p>
+      </div>
     </div>
 
+    <!-- Neck -->
     <div class="exercise">
-      <b>Neck — Side Release + Chin-Tucks</b>
-      <p><em>Side Release:</em> Sit/stand tall. Gently tilt ear to shoulder (keep shoulders down). Option: light hand over opposite ear — <b>no pulling</b>. 20–30s each.</p>
-      <p><em>Chin-Tucks:</em> Draw chin straight back (make a “double-chin”), hold 3s, relax. 8–10 reps.</p>
-      <p><em>Breathe:</em> Slow; exhale to release jaw/shoulders.</p>
+      <!-- neck icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="30" r="10"/><line x1="50" y1="40" x2="50" y2="80"/>
+      </svg>
+      <div>
+        <b>Neck — Side Release + Chin-Tucks</b>
+        <p><em>Side Release:</em> Sit/stand tall. Gently tilt ear to shoulder (keep shoulders down). Option: light hand over opposite ear — <b>no pulling</b>. 20–30s each.</p>
+        <p><em>Chin-Tucks:</em> Draw chin straight back (make a “double-chin”), hold 3s, relax. 8–10 reps.</p>
+        <p><em>Breathe:</em> Slow; exhale to release jaw/shoulders.</p>
+      </div>
     </div>
 
+    <!-- Ankles -->
     <div class="exercise">
-      <b>Ankles — Circles, Alphabet & Rock-Backs</b>
-      <p><em>Circles:</em> Seated/standing, draw slow circles (both directions) × 8–10.</p>
-      <p><em>Alphabet:</em> “Write” A–Z with the foot (small, smooth moves).</p>
-      <p><em>Rock-Backs:</em> Hold chair, rock from heels to toes × 10–15.</p>
-      <p><em>Tip:</em> Keep knees soft; don’t force end-range.</p>
+      <!-- ankle icon -->
+      <svg width="26" height="26" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" aria-hidden="true">
+        <circle cx="50" cy="20" r="10"/><line x1="50" y1="30" x2="50" y2="80"/><line x1="50" y1="80" x2="70" y2="80"/>
+      </svg>
+      <div>
+        <b>Ankles — Circles, Alphabet & Rock-Backs</b>
+        <p><em>Circles:</em> Seated/standing, draw slow circles (both directions) × 8–10.</p>
+        <p><em>Alphabet:</em> “Write” A–Z with the foot (small, smooth moves).</p>
+        <p><em>Rock-Backs:</em> Hold chair, rock from heels to toes × 10–15.</p>
+        <p class="muted"><em>Tip:</em> Keep knees soft; don’t force end-range.</p>
+      </div>
     </div>
   </section>
 
+  <!-- CHAIR -->
   <section id="chair">
     <h2>Chair-based options</h2>
     <p class="tip small">
@@ -216,6 +308,7 @@
     </p>
   </section>
 
+  <!-- WEEKLY PLAN -->
   <section id="weekly">
     <h2>Simple weekly plan</h2>
     <table class="plan">
@@ -232,6 +325,7 @@
     </table>
   </section>
 
+  <!-- FAQ -->
   <section id="faq">
     <h2>FAQ</h2>
     <h3>How hard should a stretch feel?</h3>

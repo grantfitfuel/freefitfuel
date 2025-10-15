@@ -633,25 +633,22 @@ function printRecipe(r){
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Print Recipe — ${r.title ? String(r.title).trim() : 'Untitled'}</title>
+<title>Print Recipe — ${safeTitle(r)}</title>
 <style>
   @page { margin: 12mm; }
-  html,body { background:#fff; color:#000; font-family: Arial, sans-serif;
-              -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  img { max-width:100%; height:auto; }
-  * { box-shadow:none !important; text-shadow:none !important; }
-  h1 { margin:0 0 .25rem 0; font-size:1.4rem; }
-  h2 { margin:.8rem 0 .3rem; font-size:1.1rem; }
-  ul,ol { margin:.3rem 0 .6rem .9rem; }
-  p { margin:.25rem 0; }
-  /* Hide any buttons/links inside the recipe HTML just in case */
-  .btn, button, a[href*="javascript:"] { display:none !important; }
+  html,body{background:#fff;color:#000;font-family:Arial, sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  img{max-width:100%;height:auto}
+  *{box-shadow:none!important;text-shadow:none!important}
+  h1{margin:0 0 .25rem 0;font-size:1.4rem}
+  h2{margin:.8rem 0 .3rem;font-size:1.1rem}
+  ul,ol{margin:.3rem 0 .6rem .9rem}
+  p{margin:.25rem 0}
 </style>
 </head>
 <body>
   <article>
-    <h1>${r.title ? String(r.title).trim() : 'Untitled'}</h1>
-    <p>${(r.mealType||'').toString().trim().replace(/^\w/,c=>c.toUpperCase()) || ''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel ? `• ${'🌶️'.repeat(Math.max(1, Math.min(3, r.spiceLevel)))}` : ''}</p>
+    <h1>${safeTitle(r)}</h1>
+    <p>${normalizeMealType(r.mealType)||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel ? `• ${'🌶️'.repeat(Math.max(1, Math.min(3, r.spiceLevel)))}` : ''}</p>
 
     <h2>Ingredients</h2>
     <ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
@@ -669,27 +666,41 @@ function printRecipe(r){
 </body>
 </html>`;
 
-  // Create a hidden iframe and print *its* document (iOS-safe)
+  // build a (nearly) hidden iframe; iOS needs a real layout size
   const iframe = document.createElement('iframe');
   iframe.style.position = 'fixed';
-  iframe.style.width = '0';
-  iframe.style.height = '0';
-  iframe.style.border = '0';
-  // Use srcdoc so iOS fires onload reliably
-  iframe.srcdoc = html;
+  iframe.style.right = '0';
+  iframe.style.bottom = '0';
+  iframe.style.width = '8.5in';
+  iframe.style.height = '11in';
+  iframe.style.opacity = '0.01';
+  iframe.style.pointerEvents = 'none';
+  iframe.setAttribute('aria-hidden','true');
+  document.body.appendChild(iframe);
 
-  iframe.onload = function(){
-    try {
-      const w = iframe.contentWindow;
-      w.focus();
-      w.print();
-    } finally {
-      // Give Safari a moment to open the print UI, then remove
-      setTimeout(() => iframe.remove(), 2000);
-    }
+  const cleanup = () => {
+    try { document.body.removeChild(iframe); } catch {}
   };
 
-  document.body.appendChild(iframe);
+  iframe.onload = () => {
+    // give WebKit a tick to layout before printing
+    setTimeout(() => {
+      try { (iframe.contentWindow || iframe).focus(); } catch {}
+      try { (iframe.contentWindow || iframe).print(); } catch {}
+      // remove when printing finishes (or after a fallback timeout)
+      const win = iframe.contentWindow || iframe;
+      const mql = win.matchMedia && win.matchMedia('print');
+      if (mql && mql.addListener) {
+        const handler = e => { if (!e.matches) { mql.removeListener(handler); cleanup(); } };
+        mql.addListener(handler);
+      }
+      win.addEventListener && win.addEventListener('afterprint', cleanup);
+      setTimeout(cleanup, 4000);
+    }, 50);
+  };
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(html); doc.close();
 }
 
   // ---------- Add to Today ----------

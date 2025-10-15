@@ -1053,5 +1053,20 @@ if (openBtn) {
 
 <!-- Nutrition JS -->
 <script src="assets/js/nutrition.js?v=20250928b"></script>
+<script>
+  // Make sure nothing blocks print (iOS Safari is strict)
+  window.addEventListener('beforeprint', () => {
+    // Open all collapsibles
+    document.querySelectorAll('details.collapsible').forEach(d => d.open = true);
+    // Remove start-empty so cards show
+    document.documentElement.removeAttribute('data-start-empty');
+    // Close/disable panels & modals and overlays
+    document.querySelectorAll('.panel, dialog').forEach(el => {
+      el.classList?.remove('open'); el.removeAttribute('open');
+      el.style.display = 'none';
+    });
+    const ov = document.querySelector('.overlay'); if (ov) { ov.classList.remove('show'); ov.style.display = 'none'; }
+  });
+</script>
 </body>
 </html>

@@ -626,22 +626,65 @@
   }
 
   function printRecipe(r){
-    if(!printArea) return;
-    const n=r.nutritionPerServing||{};
-    printArea.innerHTML=`
-      <article>
-        <h1>${safeTitle(r)}</h1>
-        <p>${normalizeMealType(r.mealType)||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel?`• ${spiceIcons(r.spiceLevel)}`:''}</p>
-        <h2>Ingredients</h2><ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
-        <h2>Method</h2><ol>${(r.method||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
-        <h2>Macros (per serving)</h2>
-        <p>${n.kcal??'—'} kcal • P ${n.protein_g??'—'} g • C ${n.carbs_g??'—'} g • F ${n.fat_g??'—'} g${n.fibre_g!=null?` • Fibre ${n.fibre_g} g`:''}${n.sugar_g!=null?` • Sugar ${n.sugar_g} g`:''}${n.salt_g!=null?` • Salt ${n.salt_g} g`:''}</p>
-      </article>`;
-    printArea.removeAttribute('hidden'); printArea.style.display='block';
-    requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
-    const cleanup=()=>{ printArea.innerHTML=''; printArea.setAttribute('hidden',''); printArea.style.display=''; window.removeEventListener('afterprint',cleanup); };
-    if('onafterprint' in window) window.addEventListener('afterprint',cleanup); else setTimeout(cleanup,500);
-  }
+  const n = r.nutritionPerServing || {};
+  const html = `<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Print Recipe — ${safeTitle(r)}</title>
+<style>
+  @page { margin: 12mm; }
+  html,body { background:#fff; color:#000; font-family: Arial, sans-serif;
+              -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  img { max-width:100%; height:auto; }
+  * { box-shadow:none !important; text-shadow:none !important; }
+  h1 { margin:0 0 .25rem 0; font-size:1.4rem; }
+  h2 { margin:.8rem 0 .3rem; font-size:1.1rem; }
+  ul,ol { margin:.3rem 0 .6rem .9rem; }
+  p { margin:.25rem 0; }
+</style>
+</head>
+<body>
+  <article>
+    <h1>${safeTitle(r)}</h1>
+    <p>${normalizeMealType(r.mealType)||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel ? `• ${'🌶️'.repeat(Math.max(1, Math.min(3, r.spiceLevel)))}` : ''}</p>
+
+    <h2>Ingredients</h2>
+    <ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
+
+    <h2>Method</h2>
+    <ol>${(r.method||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
+
+    <h2>Macros (per serving)</h2>
+    <p>${n.kcal??'—'} kcal • P ${n.protein_g??'—'} g • C ${n.carbs_g??'—'} g • F ${n.fat_g??'—'} g
+       ${n.fibre_g!=null?` • Fibre ${n.fibre_g} g`:''}
+       ${n.sugar_g!=null?` • Sugar ${n.sugar_g} g`:''}
+       ${n.salt_g!=null?` • Salt ${n.salt_g} g`:''}
+    </p>
+  </article>
+</body>
+</html>`;
+
+  // Hidden iframe (reliable on iPad/iPhone)
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.right = '0';
+  iframe.style.bottom = '0';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open(); doc.write(html); doc.close();
+
+  setTimeout(() => {
+    try { (iframe.contentWindow || iframe).focus(); } catch(e){}
+    try { (iframe.contentWindow || iframe).print(); } catch(e){}
+    setTimeout(() => { document.body.removeChild(iframe); }, 1500);
+  }, 100);
+}
 
   // ---------- Add to Today ----------
   function addToPlannerPrompt(r){

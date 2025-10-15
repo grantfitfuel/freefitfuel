@@ -1080,6 +1080,47 @@ if (openBtn) {
 
 <!-- Nutrition JS -->
 <script src="assets/js/nutrition.js?v=20250928b"></script>
-
+<script>
+(function(){
+  function prepForPrint(){
+    // Show all recipe cards
+    document.documentElement.removeAttribute('data-start-empty');
+    // Open collapsibles
+    document.querySelectorAll('details.collapsible').forEach(d => d.open = true);
+    // Hide panels/overlays
+    document.querySelectorAll('.panel, .overlay, [style*="position:fixed"]').forEach(el => {
+      el.dataset.prevDisplay = el.style.display || '';
+      el.style.display = 'none';
+    });
+    // Make recipe modal printable if open
+    const modal = document.getElementById('recipeModal');
+    if (modal && (modal.open || modal.classList.contains('fallback-open'))) {
+      modal.dataset.prevPos = modal.style.position || '';
+      modal.dataset.prevDisp = modal.style.display || '';
+      modal.style.position = 'static';
+      modal.style.display = 'block';
+    }
+  }
+  function restoreAfterPrint(){
+    document.querySelectorAll('[data-prev-display]').forEach(el => {
+      el.style.display = el.dataset.prevDisplay;
+      el.removeAttribute('data-prev-display');
+    });
+    const modal = document.getElementById('recipeModal');
+    if (modal) {
+      if (modal.dataset.prevPos !== undefined) modal.style.position = modal.dataset.prevPos;
+      if (modal.dataset.prevDisp !== undefined) modal.style.display  = modal.dataset.prevDisp;
+      modal.removeAttribute('data-prev-pos');
+      modal.removeAttribute('data-prev-disp');
+    }
+  }
+  window.addEventListener('beforeprint', prepForPrint);
+  window.addEventListener('afterprint', restoreAfterPrint);
+})();
+</script>
 </body>
 </html>
+
+
+
+

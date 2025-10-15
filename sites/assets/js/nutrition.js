@@ -625,14 +625,15 @@
     catch { modal.classList.add('fallback-open'); }
   }
 
-  function printRecipe(r){
+  // --- REPLACE your existing printRecipe(r) with this ---
+function printRecipe(r){
   const n = r.nutritionPerServing || {};
   const html = `<!doctype html>
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Print Recipe — ${safeTitle(r)}</title>
+<title>Print Recipe — ${r.title ? String(r.title).trim() : 'Untitled'}</title>
 <style>
   @page { margin: 12mm; }
   html,body { background:#fff; color:#000; font-family: Arial, sans-serif;
@@ -643,12 +644,14 @@
   h2 { margin:.8rem 0 .3rem; font-size:1.1rem; }
   ul,ol { margin:.3rem 0 .6rem .9rem; }
   p { margin:.25rem 0; }
+  /* Hide any buttons/links inside the recipe HTML just in case */
+  .btn, button, a[href*="javascript:"] { display:none !important; }
 </style>
 </head>
 <body>
   <article>
-    <h1>${safeTitle(r)}</h1>
-    <p>${normalizeMealType(r.mealType)||''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel ? `• ${'🌶️'.repeat(Math.max(1, Math.min(3, r.spiceLevel)))}` : ''}</p>
+    <h1>${r.title ? String(r.title).trim() : 'Untitled'}</h1>
+    <p>${(r.mealType||'').toString().trim().replace(/^\w/,c=>c.toUpperCase()) || ''} • ${r.time_mins||0} min • Serves ${r.serves||1} ${r.spiceLevel ? `• ${'🌶️'.repeat(Math.max(1, Math.min(3, r.spiceLevel)))}` : ''}</p>
 
     <h2>Ingredients</h2>
     <ul>${(r.ingredients||[]).map(i=>`<li>${i.qty?`${i.qty} `:''}${i.item}</li>`).join('')}</ul>
@@ -666,24 +669,27 @@
 </body>
 </html>`;
 
-  // Hidden iframe (reliable on iPad/iPhone)
+  // Create a hidden iframe and print *its* document (iOS-safe)
   const iframe = document.createElement('iframe');
   iframe.style.position = 'fixed';
-  iframe.style.right = '0';
-  iframe.style.bottom = '0';
   iframe.style.width = '0';
   iframe.style.height = '0';
   iframe.style.border = '0';
+  // Use srcdoc so iOS fires onload reliably
+  iframe.srcdoc = html;
+
+  iframe.onload = function(){
+    try {
+      const w = iframe.contentWindow;
+      w.focus();
+      w.print();
+    } finally {
+      // Give Safari a moment to open the print UI, then remove
+      setTimeout(() => iframe.remove(), 2000);
+    }
+  };
+
   document.body.appendChild(iframe);
-
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.open(); doc.write(html); doc.close();
-
-  setTimeout(() => {
-    try { (iframe.contentWindow || iframe).focus(); } catch(e){}
-    try { (iframe.contentWindow || iframe).print(); } catch(e){}
-    setTimeout(() => { document.body.removeChild(iframe); }, 1500);
-  }, 100);
 }
 
   // ---------- Add to Today ----------

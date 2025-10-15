@@ -119,7 +119,34 @@
       #macro-calc .btns-row{ grid-template-columns:1fr; }
     }
   </style>
+<style>
+@media print {
+  html, body {
+    background:#fff !important;
+    color:#000 !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  #site-header, .hero, .hero-mini, .overlay, nav, footer,
+  .cta-row, .cookie-banner { display:none !important; }
 
+  main, .wrap, .section, .card, .drawer {
+    background:#fff !important;
+    color:#000 !important;
+    position:static !important;
+    box-shadow:none !important;
+    border-color:#000 !important;
+  }
+
+  details.collapsible > summary { display:none !important; }
+  details.collapsible .drawer { display:block !important; }
+
+  html[data-start-empty] #recipeGrid > * {
+    display:block !important;
+  }
+}
+</style>
+  
   <title>FreeFitFuel Nutrition — Recipes, Macros & Hydration</title>
   <meta name="description" content="Free healthy recipes, macro breakdowns, hydration trackers and meal ideas. Balanced nutrition to fuel strength, weight loss and wellbeing.">
   <meta property="og:title" content="FreeFitFuel Nutrition — Recipes, Macros & Hydration">

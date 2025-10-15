@@ -1169,25 +1169,14 @@ if (openBtn) {
     win.addEventListener('load', () => { win.focus(); win.print(); });
   }
 
-  // Intercept existing print buttons on iOS only
-  document.addEventListener('click', function (e) {
-    const el = e.target.closest('button, a');
-    if (!el) return;
-
-    // Detect your existing print button heuristically
-    const isPrintBtn =
-      el.matches('[data-print], [data-action="print"], #print, #printRecipe, .btn-print') ||
-      /print/i.test(el.textContent || '');
-
-    if (!isPrintBtn) return;
-
-    // Optional: allow specifying a selector in the HTML, e.g. data-print-target="#recipeModal .modal-body"
-    const targetSel = el.getAttribute('data-print-target');
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    cleanPrint(targetSel);
-  }, true); // capture phase ensures we override any other click handlers
+  // Only act when an element *explicitly* opts in via data-print-target
+document.addEventListener('click', function (e) {
+  const el = e.target.closest('[data-print-target]');
+  if (!el) return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  cleanPrint(el.getAttribute('data-print-target'));
+}, true);
 })();
 </script>
 </body>

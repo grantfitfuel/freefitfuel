@@ -1118,5 +1118,77 @@ if (openBtn) {
   window.addEventListener('afterprint', restoreAfterPrint);
 })();
 </script>
+  <script>
+/* iOS Safari clean-print interceptor — safe for live site */
+(function () {
+  // Detect iOS / iPadOS Safari (WebKit)
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (!isIOS) return; // desktop/Android unaffected
+
+  // Clean print function — extracts content and prints in a blank window
+  function cleanPrint(selector) {
+    // If a specific selector is provided, use that; else pick the open modal or a recipe card
+    const src =
+      (selector && document.querySelector(selector)) ||
+      document.querySelector('#recipeModal[open] .modal-body') ||
+      document.querySelector('#recipeModal.fallback-open .modal-body') ||
+      document.querySelector('.card.recipe.open, .card.recipe.selected') ||
+      document.querySelector('main');
+
+    if (!src) { alert('Recipe content not found.'); return; }
+
+    const win = window.open('', '_blank'); // must be user-initiated click on iOS
+    const html = `<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Print Recipe</title>
+<style>
+  @page { margin: 12mm; }
+  html, body {
+    background: #fff;
+    color: #000;
+    font-family: Inter, Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    -webkit-text-size-adjust: 100%;
+  }
+  img { max-width: 100%; height: auto; }
+  nav, header, footer, .overlay, .cta, .btn { display: none !important; }
+  * { box-shadow: none !important; text-shadow: none !important; }
+</style>
+</head>
+<body>${src.outerHTML}</body>
+</html>`;
+
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+    win.addEventListener('load', () => { win.focus(); win.print(); });
+  }
+
+  // Intercept existing print buttons on iOS only
+  document.addEventListener('click', function (e) {
+    const el = e.target.closest('button, a');
+    if (!el) return;
+
+    // Detect your existing print button heuristically
+    const isPrintBtn =
+      el.matches('[data-print], [data-action="print"], #print, #printRecipe, .btn-print') ||
+      /print/i.test(el.textContent || '');
+
+    if (!isPrintBtn) return;
+
+    // Optional: allow specifying a selector in the HTML, e.g. data-print-target="#recipeModal .modal-body"
+    const targetSel = el.getAttribute('data-print-target');
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    cleanPrint(targetSel);
+  }, true); // capture phase ensures we override any other click handlers
+})();
+</script>
 </body>
 </html>

@@ -16,6 +16,46 @@
   <link rel="icon" type="image/png" sizes="512x512" href="/img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
   <meta name="description" content="Accessible guide to hormone regulation and vagus nerve stimulation for stress reduction, better sleep, stable energy, improved mood, and long-term health.">
+
+  <!-- Scoped page styles (safe, won’t clash) -->
+  <style>
+    :root{
+      --bg:#0b0f14; --ink:#e6e6ea; --inkdim:#b7b7c2;
+      --glass:#0f131a; --stroke:#1f2630; --accent:#ff6a00;
+      --maxw:1100px;
+    }
+    body{background:var(--bg);color:var(--ink)}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+
+    /* HERO */
+    .hero{position:relative}
+    .hero figure{margin:0;position:relative;height:46vh;min-height:360px;max-height:520px;overflow:hidden}
+    .hero img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;display:block}
+    .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));}
+    .hero .content{position:absolute;inset:0;display:flex;align-items:flex-end}
+    .hero .content h1{font-size:clamp(1.6rem, 3.6vw, 2.4rem);margin:0 0 .3rem}
+    .hero .content .lead{max-width:900px;color:var(--inkdim);margin:0 0 1rem}
+
+    /* Content rhythm */
+    main.wellbeing-content{padding-bottom:28px}
+    main.wellbeing-content section{background:var(--glass);border:1px solid var(--stroke);border-radius:12px;padding:18px 18px;margin:16px 0}
+    h2{font-size:1.35rem;margin:.2rem 0 .6rem}
+    h3{font-size:1.05rem;margin:.2rem 0 .4rem;color:var(--ink)}
+    p{line-height:1.6}
+    ul{margin:.5rem 0 .4rem 1.2rem}
+    li{margin:.25rem 0}
+
+    /* CTA */
+    .cta-button{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
+      padding:.7rem 1rem;border-radius:10px;font-weight:700;border:0;box-shadow:0 0 0 1px rgba(255,255,255,.04) inset}
+    .cta-button:hover{filter:brightness(1.05)}
+    .download-wrap{margin:18px 0}
+
+    /* Footer tweak */
+    footer.site-footer{border-top:1px solid var(--stroke);margin-top:24px}
+    footer .container{max-width:var(--maxw);margin:0 auto;padding:18px 20px;text-align:center}
+    footer .credit{color:var(--inkdim);margin:.2rem 0 0}
+  </style>
 </head>
 <body>
 
@@ -26,12 +66,15 @@
 <!-- HERO -->
 <section class="hero" role="banner" aria-label="Hormone Regulation hero">
   <figure>
-    <img src="/img/hormone-hero.png" alt="Illustration of a balanced hormonal network with calm nervous system overlay">
+    <!-- Replace with your uploaded image path below -->
+    <img src="/img/hormones-hero.png" alt="Abstract neural network with calm blue nodes and orange arcs on a dark gradient">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
   <div class="content wrap">
-    <h1><span class="accent">Hormone Regulation</span> &amp; Vagus Nerve Stimulation</h1>
-    <p class="lead">Your hormones shape energy, mood, sleep, appetite, resilience and emotional regulation. This guide explores how to support them naturally — with breathing, rhythm, nutrition and daily habits.</p>
+    <div>
+      <h1><span class="accent">Hormone Regulation</span> &amp; Vagus Nerve Stimulation</h1>
+      <p class="lead">Your hormones shape energy, mood, sleep, appetite, resilience and emotional regulation. This guide explores how to support them naturally — with breathing, rhythm, nutrition and daily habits.</p>
+    </div>
   </div>
 </section>
 
@@ -90,7 +133,7 @@
     <h2>Dopamine, Serotonin, Oxytocin &amp; GABA — The Mood Network</h2>
     <ul>
       <li><strong>Dopamine</strong>: motivation, focus, reward — too low = flat, unmotivated; too high = overstimulation.</li>
-      <li><strong>Serotonin</strong>: mood, calm, gut-brain communication. 90% is made in the gut.</li>
+      <li><strong>Serotonin</strong>: mood, calm, gut–brain communication. 90% is made in the gut.</li>
       <li><strong>Oxytocin</strong>: the “connection hormone” — boosted by touch, trust, kindness, and community.</li>
       <li><strong>GABA</strong>: a calming neurotransmitter that quietens the nervous system, aiding sleep and focus.</li>
     </ul>
@@ -125,11 +168,11 @@
   </section>
 
   <!-- DOWNLOAD BUTTON -->
-  <p>
-    <a href="/pdf/hormone-guide-expanded.pdf" class="cta-button download-button" download>
+  <div class="download-wrap">
+    <a href="/pdf/hormone-guide-expanded.pdf" class="cta-button" download>
       ⬇️ Download Detailed Hormone &amp; Vagus Nerve PDF
     </a>
-  </p>
+  </div>
 
 </main>
 
@@ -141,7 +184,7 @@
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="container">
-    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
     <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
     <p class="credit">Created by Grant Cameron Anthony</p>
   </div>

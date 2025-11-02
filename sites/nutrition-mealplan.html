@@ -149,156 +149,143 @@
     <p><strong>Note:</strong> These adjustments are nutritional guidelines, not medical treatment. If you have a diagnosed condition or ongoing fatigue, consult your GP or specialist.</p>
   </div>
 </main>
+<!-- jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
-/* ----------  GLOBAL STATE  ---------- */
-let currentDay = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const { jsPDF } = window.jspdf;
+  let currentDay = 0;
 
-/* ----------  7–DAY ROTATION DATA  ---------- */
-const dayPlans = [
-  {
-    breakfast: {
-      title:"Protein Oats",
-      items:["40 g oats","1 scoop protein powder","200 ml milk","50 g berries"],
-      prep:"Mix oats, milk and protein powder. Microwave 90 seconds, stir, then another 30 seconds until thick. Add berries and rest 1 minute."
+  /* ----------  7–DAY ROTATION DATA  ---------- */
+  const dayPlans = [
+    {
+      breakfast:{title:"Protein Oats",items:["40 g oats","1 scoop protein powder","200 ml milk","50 g berries"],prep:"Mix oats, milk and protein powder. Microwave 90 seconds, stir, then another 30 seconds until thick. Add berries and rest 1 minute."},
+      lunch:{title:"Chicken, Rice & Greens",items:["150 g chicken breast","100 g cooked rice","150 g mixed veg","1 tsp olive oil"],prep:"Grill chicken until cooked. Steam vegetables. Drizzle with olive oil and serve with rice."},
+      snack:{title:"Greek Yoghurt & Nuts",items:["150 g Greek yoghurt","50 g berries","15 g nuts"],prep:"Top yoghurt with berries and nuts."},
+      dinner:{title:"Salmon, Sweet Potato & Greens",items:["120 g salmon","100 g sweet potato","150 g green veg","1 tsp olive oil"],prep:"Bake salmon 15–20 min @ 180 °C. Boil sweet potato until soft, steam greens."},
+      post:{title:"Shake",items:["1 scoop whey protein","1 medium banana","250 ml water or milk"],prep:"Blend until smooth. Drink within 30 min after training."}
     },
-    lunch:{
-      title:"Chicken, Rice & Greens",
-      items:["150 g chicken breast","100 g cooked rice","150 g mixed veg","1 tsp olive oil"],
-      prep:"Grill chicken until cooked. Steam vegetables. Drizzle with olive oil and serve with rice."
+    {
+      breakfast:{title:"Scrambled Eggs & Toast",items:["2 eggs","1 slice whole-grain toast","½ avocado"],prep:"Whisk eggs, cook gently. Serve on toast with avocado."},
+      lunch:{title:"Tuna Pasta Salad",items:["100 g tuna","75 g pasta","mixed veg","1 tsp olive oil"],prep:"Cook pasta, drain, mix with tuna, veg and oil."},
+      snack:{title:"Apple & Peanut Butter",items:["1 apple","1 tbsp natural PB"],prep:"Slice apple, spread PB thinly on slices."},
+      dinner:{title:"Turkey Stir-Fry & Rice",items:["150 g turkey","100 g rice","mixed veg","soy sauce"],prep:"Stir-fry turkey and veg, add rice and soy sauce."},
+      post:{title:"Chocolate Protein Shake",items:["1 scoop protein","250 ml milk"],prep:"Shake well and drink after training."}
     },
-    snack:{
-      title:"Greek Yoghurt & Nuts",
-      items:["150 g Greek yoghurt","50 g berries","15 g nuts"],
-      prep:"Top yoghurt with berries and nuts."
+    {
+      breakfast:{title:"Overnight Oats & Chia",items:["40 g oats","1 tsp chia seeds","150 ml milk","fruit to top"],prep:"Mix and leave overnight in fridge."},
+      lunch:{title:"Beef Chilli & Quinoa",items:["150 g lean beef","100 g quinoa","beans","tomato sauce"],prep:"Simmer beef with beans and sauce 15 min. Serve over quinoa."},
+      snack:{title:"Protein Bar",items:["1 bar (≈200 kcal)"],prep:"Keep on hand for convenience."},
+      dinner:{title:"Baked Cod & Potatoes",items:["120 g cod","100 g potatoes","veg"],prep:"Bake cod 15 min. Boil potatoes and steam veg."},
+      post:{title:"Shake + Banana",items:["1 scoop protein","1 banana"],prep:"Blend and serve."}
     },
-    dinner:{
-      title:"Salmon, Sweet Potato & Greens",
-      items:["120 g salmon","100 g sweet potato","150 g green veg","1 tsp olive oil"],
-      prep:"Bake salmon 15–20 min @ 180 °C. Boil sweet potato until soft, steam greens."
+    {
+      breakfast:{title:"Smoothie Bowl",items:["1 banana","1 scoop protein","1 tsp PB","100 ml milk","fruit toppings"],prep:"Blend banana, protein, PB and milk. Top with fruit."},
+      lunch:{title:"Tofu Bowl & Brown Rice",items:["120 g tofu","100 g brown rice","veg","1 tsp oil"],prep:"Pan-fry tofu and veg. Serve over rice."},
+      snack:{title:"Cottage Cheese & Fruit",items:["100 g cottage cheese","fruit of choice"],prep:"Combine and eat cold."},
+      dinner:{title:"Chicken Fajita Wrap",items:["120 g chicken","wrap","peppers & onion","salsa"],prep:"Stir-fry chicken and veg. Assemble wrap with salsa."},
+      post:{title:"Whey Shake",items:["1 scoop protein","200 ml water"],prep:"Shake and drink after training."}
     },
-    post:{
-      title:"Shake",
-      items:["1 scoop whey protein","1 medium banana","250 ml water or milk"],
-      prep:"Blend until smooth. Drink within 30 min after training."
+    {
+      breakfast:{title:"Greek Yoghurt & Granola",items:["150 g Greek yoghurt","30 g granola","berries"],prep:"Layer in bowl and serve."},
+      lunch:{title:"Tuna Jacket Potato",items:["1 baked potato","100 g tuna","1 tbsp light mayo"],prep:"Bake potato, top with tuna mix."},
+      snack:{title:"Nuts & Fruit",items:["15 g mixed nuts","1 fruit piece"],prep:"Snack as needed."},
+      dinner:{title:"Lamb Stew & Veg",items:["150 g lamb","carrots & potatoes","stock"],prep:"Simmer lamb and veg in stock ≈ 45 min."},
+      post:{title:"Shake + Oats",items:["1 scoop protein","20 g oats","250 ml milk"],prep:"Blend all ingredients and serve."}
+    },
+    {
+      breakfast:{title:"Omelette & Spinach",items:["2 eggs","handful spinach","1 slice toast"],prep:"Beat eggs and cook with spinach. Serve with toast."},
+      lunch:{title:"Chickpea Curry & Rice",items:["150 g chickpeas","100 g rice","curry sauce"],prep:"Simmer chickpeas in sauce, serve over rice."},
+      snack:{title:"Oat Cakes & PB",items:["2 oat cakes","1 tsp PB"],prep:"Spread PB thinly and eat before workout."},
+      dinner:{title:"Baked Salmon & Veg",items:["120 g salmon","150 g veg"],prep:"Bake salmon and steam veg."},
+      post:{title:"Shake",items:["1 scoop protein","250 ml water"],prep:"Shake and drink after training."}
+    },
+    {
+      breakfast:{title:"Pancakes & Berries",items:["2 protein pancakes","fruit topping","1 tsp PB"],prep:"Cook pancakes, top with fruit and PB."},
+      lunch:{title:"Chicken Wrap & Salad",items:["1 wrap","120 g chicken","salad mix"],prep:"Assemble wrap and serve cold or grilled."},
+      snack:{title:"Hummus & Veg Sticks",items:["2 tbsp hummus","carrot and pepper sticks"],prep:"Dip and enjoy."},
+      dinner:{title:"Prawn Stir-Fry & Rice Noodles",items:["150 g prawns","veg","80 g rice noodles","soy sauce"],prep:"Stir-fry prawns and veg. Add noodles and soy sauce."},
+      post:{title:"Shake",items:["1 scoop protein","250 ml milk"],prep:"Blend and serve."}
     }
-  },
-  {
-    breakfast:{title:"Scrambled Eggs & Toast",items:["2 eggs","1 slice whole-grain toast","½ avocado"],prep:"Whisk eggs, cook gently. Serve on toast with avocado."},
-    lunch:{title:"Tuna Pasta Salad",items:["100 g tuna","75 g pasta","mixed veg","1 tsp olive oil"],prep:"Cook pasta, drain, mix with tuna, veg and oil."},
-    snack:{title:"Apple & Peanut Butter",items:["1 apple","1 tbsp natural PB"],prep:"Slice apple, spread PB thinly on slices."},
-    dinner:{title:"Turkey Stir-Fry & Rice",items:["150 g turkey","100 g rice","mixed veg","soy sauce"],prep:"Stir-fry turkey and veg, add rice and soy sauce."},
-    post:{title:"Chocolate Protein Shake",items:["1 scoop protein","250 ml milk"],prep:"Shake well and drink after training."}
-  },
-  {
-    breakfast:{title:"Overnight Oats & Chia",items:["40 g oats","1 tsp chia seeds","150 ml milk","fruit to top"],prep:"Mix and leave overnight in fridge."},
-    lunch:{title:"Beef Chilli & Quinoa",items:["150 g lean beef","100 g quinoa","beans","tomato sauce"],prep:"Simmer beef with beans and sauce 15 min. Serve over quinoa."},
-    snack:{title:"Protein Bar",items:["1 bar (≈200 kcal)"],prep:"Keep on hand for convenience."},
-    dinner:{title:"Baked Cod & Potatoes",items:["120 g cod","100 g potatoes","veg"],prep:"Bake cod 15 min. Boil potatoes and steam veg."},
-    post:{title:"Shake + Banana",items:["1 scoop protein","1 banana"],prep:"Blend and serve."}
-  },
-  {
-    breakfast:{title:"Smoothie Bowl",items:["1 banana","1 scoop protein","1 tsp PB","100 ml milk","fruit toppings"],prep:"Blend banana, protein, PB and milk. Top with fruit."},
-    lunch:{title:"Tofu Bowl & Brown Rice",items:["120 g tofu","100 g brown rice","veg","1 tsp oil"],prep:"Pan-fry tofu and veg. Serve over rice."},
-    snack:{title:"Cottage Cheese & Fruit",items:["100 g cottage cheese","fruit of choice"],prep:"Combine and eat cold."},
-    dinner:{title:"Chicken Fajita Wrap",items:["120 g chicken","wrap","peppers & onion","salsa"],prep:"Stir-fry chicken and veg. Assemble wrap with salsa."},
-    post:{title:"Whey Shake",items:["1 scoop protein","200 ml water"],prep:"Shake and drink after training."}
-  },
-  {
-    breakfast:{title:"Greek Yoghurt & Granola",items:["150 g Greek yoghurt","30 g granola","berries"],prep:"Layer in bowl and serve."},
-    lunch:{title:"Tuna Jacket Potato",items:["1 baked potato","100 g tuna","1 tbsp light mayo"],prep:"Bake potato, top with tuna mix."},
-    snack:{title:"Nuts & Fruit",items:["15 g mixed nuts","1 fruit piece"],prep:"Snack as needed."},
-    dinner:{title:"Lamb Stew & Veg",items:["150 g lamb","carrots & potatoes","stock"],prep:"Simmer lamb and veg in stock ≈ 45 min."},
-    post:{title:"Shake + Oats",items:["1 scoop protein","20 g oats","250 ml milk"],prep:"Blend all ingredients and serve."}
-  },
-  {
-    breakfast:{title:"Omelette & Spinach",items:["2 eggs","handful spinach","1 slice toast"],prep:"Beat eggs and cook with spinach. Serve with toast."},
-    lunch:{title:"Chickpea Curry & Rice",items:["150 g chickpeas","100 g rice","curry sauce"],prep:"Simmer chickpeas in sauce, serve over rice."},
-    snack:{title:"Oat Cakes & PB",items:["2 oat cakes","1 tsp PB"],prep:"Spread PB thinly and eat before workout."},
-    dinner:{title:"Baked Salmon & Veg",items:["120 g salmon","150 g veg"],prep:"Bake salmon and steam veg."},
-    post:{title:"Shake",items:["1 scoop protein","250 ml water"],prep:"Shake and drink after training."}
-  },
-  {
-    breakfast:{title:"Pancakes & Berries",items:["2 protein pancakes","fruit topping","1 tsp PB"],prep:"Cook pancakes, top with fruit and PB."},
-    lunch:{title:"Chicken Wrap & Salad",items:["1 wrap","120 g chicken","salad mix"],prep:"Assemble wrap and serve cold or grilled."},
-    snack:{title:"Hummus & Veg Sticks",items:["2 tbsp hummus","carrot and pepper sticks"],prep:"Dip and enjoy."},
-    dinner:{title:"Prawn Stir-Fry & Rice Noodles",items:["150 g prawns","veg","80 g rice noodles","soy sauce"],prep:"Stir-fry prawns and veg. Add noodles and soy sauce."},
-    post:{title:"Shake",items:["1 scoop protein","250 ml milk"],prep:"Blend and serve."}
-  }
-];
+  ];
 
-/* ----------  LOAD MEAL PLAN INTO DOM  ---------- */
-function loadPlan(idx){
-  const meals=document.querySelectorAll('.meal');
-  const labels=['breakfast','lunch','snack','dinner','post'];
-  labels.forEach((k,i)=>{
-    const m=dayPlans[idx][k];
-    const s=meals[i];
-    s.querySelector('h3').textContent=`${m.title}`;
-    const ul=s.querySelector('ul');ul.innerHTML='';
-    m.items.forEach(it=>ul.innerHTML+=`<li>${it}</li>`);
-    s.querySelector('.prep').textContent=m.prep;
-  });
-}
-loadPlan(currentDay);
-
-/* ----------  NEXT-DAY BUTTON  ---------- */
-document.getElementById('nextDayBtn').addEventListener('click',()=>{
-  currentDay=(currentDay+1)%dayPlans.length;
-  loadPlan(currentDay);
-  window.scrollTo({top:0,behavior:'smooth'});
-});
-
-/* ----------  TOGGLE INFO TEXT  ---------- */
-document.querySelectorAll('#health-panel input[type=checkbox]').forEach(cb=>{
-  cb.addEventListener('change',()=>{
-    const info=document.getElementById(cb.id+'Info');
-    if(info)info.style.display=cb.checked?'block':'none';
-    document.getElementById('healthDisclaimer').hidden=
-      !document.querySelectorAll('#health-panel input:checked').length;
-  });
-});
-
-/* ----------  MACRO CALC (very light demo logic)  ---------- */
-function updateMacros(){
-  const goal=document.getElementById('goal').value;
-  let c=2500,p=180,car=250,f=70;
-  if(goal==='cut'){c-=500;p+=10;}
-  if(goal==='bulk'){c+=400;car+=50;}
-  if(goal==='transform'){p+=20;car-=20;}
-  document.getElementById('calVal').textContent=c+' kcal';
-  document.getElementById('proVal').textContent=p+' g';
-  document.getElementById('carbVal').textContent=car+' g';
-  document.getElementById('fatVal').textContent=f+' g';
-}
-document.getElementById('goal').onchange=updateMacros;
-updateMacros();
-
-/* ----------  PDF EXPORT (mobile-optimised A5)  ---------- */
-document.getElementById('pdfBtn').addEventListener('click',()=>{
-  import('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
-  .then(js=>{
-    const {jsPDF}=js.jspdf;
-    const doc=new jsPDF({orientation:'portrait',format:'a5',unit:'pt'});
-// Light printable theme
-doc.setFillColor(255,255,255);
-doc.rect(0,0,420,595,'F');        // white background
-doc.setTextColor(20,20,20);       // dark text
-doc.setFontSize(14);
-doc.text(`FreeFitFuel — Day ${currentDay+1} Plan`,20,40);
-    let y=70;
-    document.querySelectorAll('.meal').forEach(m=>{
-      doc.setFontSize(12);
-      doc.text(m.querySelector('h3').textContent,20,y);y+=14;
-      m.querySelectorAll('ul li').forEach(li=>{
-        doc.setFontSize(10);
-        doc.text('• '+li.textContent,26,y);y+=12;
-      });
-      doc.setFontSize(10);
-      doc.text('Prep: '+m.querySelector('.prep').textContent,20,y);
-      y+=24;
+  /* ----------  LOAD MEAL PLAN INTO DOM  ---------- */
+  function loadPlan(idx) {
+    const meals = document.querySelectorAll(".meal");
+    const labels = ["breakfast","lunch","snack","dinner","post"];
+    labels.forEach((k,i)=>{
+      const m = dayPlans[idx][k];
+      const s = meals[i];
+      s.querySelector("h3").textContent = m.title;
+      const ul = s.querySelector("ul");
+      ul.innerHTML = "";
+      m.items.forEach(it => ul.innerHTML += `<li>${it}</li>`);
+      s.querySelector(".prep").textContent = m.prep;
     });
-    doc.save(`freefitfuel-day${currentDay+1}.pdf`);
+  }
+  loadPlan(currentDay);
+
+  /* ----------  NEXT-DAY BUTTON  ---------- */
+  const nextBtn = document.getElementById("nextDayBtn");
+  if(nextBtn){
+    nextBtn.addEventListener("click", ()=>{
+      currentDay = (currentDay + 1) % dayPlans.length;
+      loadPlan(currentDay);
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+  }
+
+  /* ----------  TOGGLE INFO TEXT  ---------- */
+  document.querySelectorAll("#health-panel input[type=checkbox]").forEach(cb=>{
+    cb.addEventListener("change",()=>{
+      const info = document.getElementById(cb.id+"Info");
+      if(info) info.style.display = cb.checked ? "block" : "none";
+      document.getElementById("healthDisclaimer").hidden =
+        !document.querySelectorAll("#health-panel input:checked").length;
+    });
   });
+
+  /* ----------  MACRO CALC (simple)  ---------- */
+  function updateMacros(){
+    const goal = document.getElementById("goal").value;
+    let c=2500,p=180,car=250,f=70;
+    if(goal==="cut"){c-=500;p+=10;}
+    if(goal==="bulk"){c+=400;car+=50;}
+    if(goal==="transform"){p+=20;car-=20;}
+    document.getElementById("calVal").textContent=c+" kcal";
+    document.getElementById("proVal").textContent=p+" g";
+    document.getElementById("carbVal").textContent=car+" g";
+    document.getElementById("fatVal").textContent=f+" g";
+  }
+  document.getElementById("goal").onchange=updateMacros;
+  updateMacros();
+
+  /* ----------  PDF EXPORT (Light Theme, A5)  ---------- */
+  const pdfBtn = document.getElementById("pdfBtn");
+  if(pdfBtn){
+    pdfBtn.addEventListener("click", ()=>{
+      const doc = new jsPDF({orientation:"portrait",format:"a5",unit:"pt"});
+      doc.setFillColor(255,255,255);
+      doc.rect(0,0,420,595,"F"); // white background
+      doc.setTextColor(20,20,20);
+      doc.setFontSize(14);
+      doc.text(`FreeFitFuel — Day ${currentDay+1} Plan`,20,40);
+      let y = 70;
+      document.querySelectorAll(".meal").forEach(m=>{
+        doc.setFontSize(12);
+        doc.text(m.querySelector("h3").textContent,20,y); y+=14;
+        m.querySelectorAll("ul li").forEach(li=>{
+          doc.setFontSize(10);
+          doc.text("• "+li.textContent,26,y); y+=12;
+        });
+        doc.setFontSize(10);
+        doc.text("Prep: "+m.querySelector(".prep").textContent,20,y);
+        y+=24;
+      });
+      doc.save(`freefitfuel-day${currentDay+1}.pdf`);
+    });
+  }
 });
 </script>
 

@@ -270,8 +270,12 @@ document.getElementById('pdfBtn').addEventListener('click',()=>{
   .then(js=>{
     const {jsPDF}=js.jspdf;
     const doc=new jsPDF({orientation:'portrait',format:'a5',unit:'pt'});
-    doc.setFontSize(14);
-    doc.text(`FreeFitFuel — Day ${currentDay+1} Plan`,20,40);
+// Light printable theme
+doc.setFillColor(255,255,255);
+doc.rect(0,0,420,595,'F');        // white background
+doc.setTextColor(20,20,20);       // dark text
+doc.setFontSize(14);
+doc.text(`FreeFitFuel — Day ${currentDay+1} Plan`,20,40);
     let y=70;
     document.querySelectorAll('.meal').forEach(m=>{
       doc.setFontSize(12);

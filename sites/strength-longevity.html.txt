@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strength &amp; Longevity (40+) — FreeFitFuel</title>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/style.css?v=wb6">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/img/freefitfuel-logo-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/freefitfuel-logo-180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/img/freefitfuel-logo-512.png">
+  <meta name="theme-color" content="#FF6A00">
+
+  <meta name="description" content="Strength and longevity guidance for people over 40 and over 50. Practical adjustments for recovery, rest periods, mobility, balance, bone density, tendon health, grip strength, and age aware nutrition." />
+
+  <style>
+    .wrap{max-width:980px;margin:0 auto;padding:16px 20px}
+    .page-intro{margin:10px 0 0}
+    .meta{color:var(--inkdim, #cfcfcf)}
+    .mini-nav{
+      display:flex;flex-wrap:wrap;gap:.5rem;margin:14px 0 8px;
+      padding:0;list-style:none
+    }
+    .mini-nav a{
+      display:inline-block;text-decoration:none;
+      background:rgba(255,106,0,.12);
+      border:1px solid rgba(255,106,0,.35);
+      color:#fff;
+      padding:.45rem .75rem;border-radius:999px;
+      font-weight:600;font-size:.92rem
+    }
+    .mini-nav a:hover{background:rgba(255,106,0,.2)}
+    .card{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:16px;
+      margin:14px 0;
+    }
+    .card h2{margin:0 0 8px;color:var(--accent, #FF6A00)}
+    .card h3{margin:14px 0 8px;color:#fff}
+    .callout{
+      background:rgba(255,255,255,.04);
+      border-left:4px solid rgba(255,106,0,.8);
+      padding:12px 14px;border-radius:10px;
+      margin:12px 0;
+      color:#f2f2f2;
+    }
+    .grid{
+      display:grid;gap:12px;
+      grid-template-columns:repeat(12,1fr);
+      align-items:stretch;
+    }
+    .col-6{grid-column:span 6}
+    .col-12{grid-column:span 12}
+    @media (max-width:900px){
+      .col-6{grid-column:span 12}
+    }
+    .list-tight{margin:8px 0 0;padding-left:18px}
+    .list-tight li{margin:6px 0}
+    .tag{
+      display:inline-block;
+      font-size:.85rem;
+      padding:.25rem .55rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.25);
+      margin:0 .35rem .35rem 0;
+      color:#eaeaea;
+    }
+    .btn-row{
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin:14px 0 0;
+    }
+    .btn{
+      display:inline-block;
+      background:var(--accent, #FF6A00);
+      color:#fff;text-decoration:none;
+      padding:10px 14px;border-radius:10px;
+      font-weight:700;
+      border:0;
+    }
+    .btn.secondary{
+      background:#2b2b2b;
+      border:1px solid rgba(255,255,255,.14);
+      font-weight:650;
+    }
+    .disclaimer{
+      background:rgba(255,255,255,.03);
+      border-left:4px solid rgba(255,255,255,.25);
+      padding:12px 14px;border-radius:10px;
+      margin:18px 0 10px;
+      color:#e8e8e8;
+      font-size:.95rem;
+    }
+    .anchor{scroll-margin-top:90px}
+  </style>
+</head>
+
+<body>
+
+<!-- Shared header mount -->
+<div id="site-header"></div>
+<script src="/js/header-loader.js"></script>
+
+<!-- HERO -->
+<section class="hero" role="banner" aria-label="Strength and Longevity hero">
+  <figure>
+    <!-- Optional: swap to a real image later if you want -->
+    <img src="/img/strength-longevity-hero.png" alt="Abstract strength and longevity graphic with warm orange accent" onerror="this.style.display='none'">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Strength</span> &amp; Longevity</h1>
+    <p class="lead page-intro">
+      Training well after 40 and 50 is not about doing less. It is about doing the right work, recovering properly, and fuelling your body so strength stays with you for decades.
+    </p>
+  </div>
+</section>
+
+<main class="wrap wellbeing-content">
+
+  <ul class="mini-nav" aria-label="Page sections">
+    <li><a href="#what-changes">What changes</a></li>
+    <li><a href="#strength">Strength training</a></li>
+    <li><a href="#recovery">Recovery and rest</a></li>
+    <li><a href="#mobility">Mobility and flexibility</a></li>
+    <li><a href="#bone">Bone density</a></li>
+    <li><a href="#tendons">Tendons</a></li>
+    <li><a href="#balance">Balance and unilateral work</a></li>
+    <li><a href="#grip">Grip strength</a></li>
+    <li><a href="#protein">Protein and macros</a></li>
+    <li><a href="#practical">Practical weekly template</a></li>
+  </ul>
+
+  <p class="meta">
+    This page is designed for anyone over 40, over 50, returning after time off, or simply training for long term health and capability.
+  </p>
+
+  <section class="card anchor" id="what-changes">
+    <h2>What changes after 40 and 50</h2>
+    <p>
+      Your body is not broken. Strength training still works extremely well. What changes most is the recovery cost of hard training and how quickly connective tissue settles after heavy or high volume sessions.
+      When you respect recovery, you can train hard and make steady progress.
+    </p>
+    <div class="callout">
+      <strong>Simple rule:</strong> reduce junk volume, increase quality. Train with intent, recover with intent.
+    </div>
+    <div>
+      <span class="tag">Quality reps</span>
+      <span class="tag">Longer rest</span>
+      <span class="tag">Joint care</span>
+      <span class="tag">Protein spread</span>
+      <span class="tag">Consistency</span>
+    </div>
+  </section>
+
+  <section class="card anchor" id="strength">
+    <h2>Strength training for longevity</h2>
+
+    <div class="grid">
+      <div class="col-6">
+        <h3>Keep these foundations</h3>
+        <ul class="list-tight">
+          <li>Train the main patterns: squat, hinge, push, pull, carry.</li>
+          <li>Progressive overload, but slower and steadier.</li>
+          <li>Good technique, consistent range of motion, controlled tempo.</li>
+          <li>Work sets that feel challenging, not chaotic.</li>
+        </ul>
+      </div>
+
+      <div class="col-6">
+        <h3>Adjust the dials</h3>
+        <ul class="list-tight">
+          <li>Use slightly lower weekly volume, with better effort per set.</li>
+          <li>Keep most sets 1 to 3 reps in reserve, save failure for occasional work.</li>
+          <li>Choose joint friendly variations when needed, for example split squats, trap bar hinge, dumbbell pressing.</li>
+          <li>Deload regularly, or use easier weeks when life stress is high.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Long term strength is a skill.</strong> Training hard is useful. Training sustainably is the win.
+    </div>
+  </section>
+
+  <section class="card anchor" id="recovery">
+    <h2>Recovery and rest periods</h2>
+    <p>
+      Longer rest is not a concession. It is what allows you to produce higher quality reps, maintain good form, and reduce joint irritation.
+    </p>
+
+    <div class="grid">
+      <div class="col-6">
+        <h3>Rest period guidance</h3>
+        <ul class="list-tight">
+          <li>Big lifts and heavy sets: 90 to 150 seconds.</li>
+          <li>Moderate accessory work: 60 to 120 seconds.</li>
+          <li>Conditioning blocks: keep it manageable and repeatable.</li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h3>Recovery pillars</h3>
+        <ul class="list-tight">
+          <li>Sleep quality matters more than chasing perfection.</li>
+          <li>Hydration, especially when training early or using caffeine.</li>
+          <li>Walking and low intensity movement for circulation and mood.</li>
+          <li>Plan recovery when stress is high, not after you crash.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Useful mindset:</strong> if you want strength that lasts, recovery becomes part of the programme, not a bonus.
+    </div>
+  </section>
+
+  <section class="card anchor" id="mobility">
+    <h2>Mobility and flexibility</h2>
+    <p>
+      Mobility here is not about being bendy. It is about keeping joints moving well, reducing compensations, and making strength usable in daily life.
+    </p>
+
+    <div class="grid">
+      <div class="col-6">
+        <h3>Daily 5 to 10 minute mobility</h3>
+        <ul class="list-tight">
+          <li>Hips: controlled hip circles, glute activation, gentle deep squat holds.</li>
+          <li>Ankles: knee to wall rocks, calf raises through full range.</li>
+          <li>Thoracic spine: open books, reach and rotate.</li>
+          <li>Shoulders: wall slides, band pull aparts, scapular control.</li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h3>Post session flexibility</h3>
+        <ul class="list-tight">
+          <li>2 to 5 minutes per area, gentle stretch, no forcing.</li>
+          <li>Focus on hips, calves, chest and lats if you sit a lot.</li>
+          <li>Breathe slowly to downshift the nervous system.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn secondary" href="stretching.html">Open Flexibility and Stretching</a>
+      <a class="btn secondary" href="wellbeing.html">Back to Wellbeing</a>
+    </div>
+  </section>
+
+  <section class="card anchor" id="bone">
+    <h2>Bone density and skeletal strength</h2>
+    <p>
+      Strength training is one of the best tools for maintaining bone density. Muscles pull on bone, and that loading signal helps bones stay strong.
+      This matters for everyone, and becomes especially important post menopause and over 50.
+    </p>
+    <ul class="list-tight">
+      <li>Use progressive loading on legs and hips, such as squat patterns, hinges, step ups and carries.</li>
+      <li>If impact is appropriate for you, use brisk walking, stairs, or short hill walks.</li>
+      <li>Support with protein, calcium rich foods, and vitamin D where needed.</li>
+    </ul>
+    <div class="callout">
+      If you have osteoporosis, a history of fractures, or balance concerns, seek individual advice before adding impact or heavier loading.
+    </div>
+  </section>
+
+  <section class="card anchor" id="tendons">
+    <h2>Tendons and connective tissue</h2>
+    <p>
+      Tendons adapt more slowly than muscle, and they like consistent, gradual loading. Sudden spikes in volume are a common reason people pick up tendon pain.
+    </p>
+    <div class="grid">
+      <div class="col-6">
+        <h3>How to protect tendons</h3>
+        <ul class="list-tight">
+          <li>Increase sets and load gradually, not all at once.</li>
+          <li>Use controlled lowering phases on key lifts.</li>
+          <li>Keep hard sessions separated by enough recovery.</li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h3>If niggles appear</h3>
+        <ul class="list-tight">
+          <li>Reduce volume first, not movement.</li>
+          <li>Keep pain low and manageable, not ignored.</li>
+          <li>Use isometric holds or slow tempo work temporarily.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a class="btn secondary" href="physio.html">Open Physio and Recovery</a>
+    </div>
+  </section>
+
+  <section class="card anchor" id="balance">
+    <h2>Balance and unilateral work</h2>
+    <p>
+      Balance improves through controlled strength, not gimmicks. Unilateral work helps hip stability, knee control, posture, and confidence on stairs and uneven ground.
+    </p>
+    <ul class="list-tight">
+      <li>Split squats, step ups, single leg hinges, and lunges done with control.</li>
+      <li>Carry variations that challenge posture and trunk stability.</li>
+      <li>Slow tempo reps for coordination and joint control.</li>
+    </ul>
+    <div class="callout">
+      A little unilateral work every week goes a long way for longevity.
+    </div>
+  </section>
+
+  <section class="card anchor" id="grip">
+    <h2>Grip strength</h2>
+    <p>
+      Grip strength is a useful marker of overall strength and functional capacity. It is also easy to train without adding much time.
+    </p>
+    <ul class="list-tight">
+      <li>Farmer carries, suitcase carries, deadlifts, rows, and pull variations.</li>
+      <li>Use thicker grips or towels occasionally if it feels comfortable.</li>
+      <li>Stop short of elbow irritation. Consistency beats max effort.</li>
+    </ul>
+  </section>
+
+  <section class="card anchor" id="protein">
+    <h2>Protein and macros after 40 and 50</h2>
+    <p>
+      With age, muscle can become less sensitive to the protein signal that drives repair and growth. This is often called anabolic resistance.
+      The practical response is simple: slightly higher protein targets and better distribution across the day.
+    </p>
+
+    <div class="grid">
+      <div class="col-6">
+        <h3>Protein targets</h3>
+        <ul class="list-tight">
+          <li>40 to 50: aim roughly 1.8 to 2.2 g per kg of bodyweight.</li>
+          <li>50 plus: aim roughly 2.0 to 2.4 g per kg of bodyweight.</li>
+          <li>Spread across meals, aiming 30 to 40 g per main meal where practical.</li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h3>Carbs and fats</h3>
+        <ul class="list-tight">
+          <li>Carbs support training and mood. Focus them around workouts where you can.</li>
+          <li>Fats support hormones and satiety. Use olive oil, nuts, seeds, oily fish.</li>
+          <li>Fibre helps appetite and gut health, and can help blood sugar stability.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      If fat loss is the goal, the deficit should be sensible. A small consistent deficit tends to preserve strength and adherence better than extremes.
+    </div>
+
+    <div class="btn-row">
+      <a class="btn" href="nutrition.html">Go to Nutrition</a>
+      <a class="btn secondary" href="nutrition-mealplan.html">Open Adaptive Meal Plan</a>
+    </div>
+  </section>
+
+  <section class="card anchor" id="practical">
+    <h2>Practical weekly template</h2>
+    <p>
+      This is a simple, repeatable structure that suits many people over 40 and 50. It is designed for strength, joint care, and long term consistency.
+    </p>
+
+    <div class="grid">
+      <div class="col-6">
+        <h3>Week structure</h3>
+        <ul class="list-tight">
+          <li>2 to 4 strength sessions per week, depending on recovery.</li>
+          <li>2 to 5 walking sessions, including brisk walking if comfortable.</li>
+          <li>Daily mobility 5 to 10 minutes, especially hips, ankles, thoracic spine, shoulders.</li>
+          <li>One longer flexibility session per week if it helps you feel better.</li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <h3>Session structure</h3>
+        <ul class="list-tight">
+          <li>Warm up: 6 to 10 minutes, joint prep and activation.</li>
+          <li>Main strength: 2 to 3 big patterns, 3 to 5 work sets each.</li>
+          <li>Accessory: 2 to 3 exercises for balance, trunk, and weak points.</li>
+          <li>Finish: 5 minutes mobility and breathing to downshift.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      If you train consistently for 12 weeks with sensible recovery, the results are usually obvious: better posture, stronger legs, better energy, and more confidence in daily movement.
+    </div>
+  </section>
+
+  <section class="disclaimer">
+    <p><strong>Disclaimer:</strong> This content is for general information only and is not a substitute for medical advice, diagnosis, or treatment. If you have chest pain, fainting, new neurological symptoms, severe breathlessness, or significant unexplained pain, seek urgent medical care. If you have a long term condition, recent surgery, osteoporosis, uncontrolled blood sugar issues, or concerns about exercise safety, speak with your GP or a qualified clinician before starting a new programme.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>&copy; 2025 FreeFitFuel™ · Mind &amp; Body in Balance</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+</body>
+</html>

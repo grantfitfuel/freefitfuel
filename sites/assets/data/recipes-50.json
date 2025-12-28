@@ -1,18 +1,21 @@
 [
   {
-    "title": "Pan-Roasted Sea Trout, Pickled Cucumber, Dill & Lemon Whey — Foodie Fuel",
+    "title": "Pan-Roasted Sea Trout, Pickled Cucumber, Dill & Lemon Whey \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 35,
     "cook_temp_c": 200,
     "spiceLevel": 0,
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein",
-      "High fibre"
+    "dietary": [
+      "Egg-free",
+      "Nut-free",
+      "Soy-free",
+      "Vegetarian"
     ],
-    "protocols": [],
-    "costPrep": [],
+    "nutritionFocus": [
+      "High fibre",
+      "High protein"
+    ],
     "costTag": "Standard",
     "ingredients": [
       {
@@ -21,7 +24,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "extra virgin olive oil"
       },
       {
         "qty": "1 tbsp",
@@ -61,11 +64,11 @@
       }
     ],
     "method": [
-      "Heat oven to 200°C (fan 180°C). Bring a small pan of salted water to the boil for the broccoli.",
+      "Heat oven to 200\u00b0C (fan 180\u00b0C). Bring a small pan of salted water to the boil for the broccoli.",
       "Make quick pickle: shave cucumber into ribbons. Warm vinegar, sugar and a pinch of salt until dissolved, then pour over cucumber. Chill 10 minutes.",
       "Make lemon whey: whisk buttermilk with lemon zest and 1 tsp lemon juice, then strain through a clean cloth or fine sieve for 5 minutes. Stir in chopped dill.",
-      "Season trout. Heat a non‑stick pan on medium‑high, add rapeseed oil, place trout skin-side down and press for 20 seconds. Cook 4 minutes until skin crisp.",
-      "Flip trout, add capers to the pan, then transfer pan to oven for 4–5 minutes until just opaque.",
+      "Season trout. Heat a non\u2011stick pan on medium\u2011high, add rapeseed oil, place trout skin-side down and press for 20 seconds. Cook 4 minutes until skin crisp.",
+      "Flip trout, add capers to the pan, then transfer pan to oven for 4\u20135 minutes until just opaque.",
       "Blanch broccoli 2 minutes, drain, and toss with a squeeze of lemon and a pinch of salt."
     ],
     "plating": [
@@ -94,24 +97,35 @@
       "Milk"
     ],
     "slug": "pan-roasted-sea-trout-pickled-cucumber-dill-lemon-whey-foodie-fuel",
-    "kcalBand": "≤600"
+    "kcalBand": "\u2264600",
+    "diabetesUK": {
+      "df_eligible": false,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": [],
+    "costPrep": [
+      "One-pan"
+    ]
   },
   {
-    "title": "Hebridean Scallops, Cauliflower Purée, Pea Shoots & Caper Brown Butter — Foodie Fuel",
+    "title": "Hebridean Scallops, Cauliflower Pur\u00e9e, Pea Shoots & Caper Brown Butter \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 30,
     "cook_temp_c": 210,
     "spiceLevel": 0,
     "dietary": [
-      "Gluten-free"
+      "Egg-free",
+      "Gluten-free",
+      "Nut-free",
+      "Soy-free",
+      "Vegetarian"
     ],
     "nutritionFocus": [
-      "High protein",
-      "High fibre"
+      "High fibre",
+      "High protein"
     ],
-    "protocols": [],
-    "costPrep": [],
     "costTag": "Standard",
     "ingredients": [
       {
@@ -120,7 +134,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "extra virgin olive oil"
       },
       {
         "qty": "30 g",
@@ -156,14 +170,14 @@
       }
     ],
     "method": [
-      "Heat oven to 210°C (fan 190°C).",
-      "Simmer cauliflower with garlic in milk and 100 ml water for 10–12 minutes until tender; blend smooth, season.",
+      "Heat oven to 210\u00b0C (fan 190\u00b0C).",
+      "Simmer cauliflower with garlic in milk and 100 ml water for 10\u201312 minutes until tender; blend smooth, season.",
       "Cook peas in boiling water for 2 minutes, drain and lightly crush with lemon zest and a pinch of salt.",
-      "Pat scallops dry and season. Heat a pan on high, add rapeseed oil, sear scallops 60–75 seconds per side until caramelised.",
+      "Pat scallops dry and season. Heat a pan on high, add rapeseed oil, sear scallops 60\u201375 seconds per side until caramelised.",
       "Add butter and capers, cook 30 seconds until nutty and foaming; finish with 1 tsp lemon juice."
     ],
     "plating": [
-      "Spoon cauliflower purée into the centre of warm plates.",
+      "Spoon cauliflower pur\u00e9e into the centre of warm plates.",
       "Arrange scallops on top; spoon brown butter and capers over.",
       "Add crushed peas and pea shoots to one side; finish with lemon zest."
     ],
@@ -188,25 +202,35 @@
       "Milk"
     ],
     "slug": "hebridean-scallops-cauliflower-pur-e-pea-shoots-caper-brown-butter-foodie-fuel",
-    "kcalBand": "≤600"
+    "kcalBand": "\u2264600",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": [],
+    "costPrep": [
+      "One-pan"
+    ]
   },
   {
-    "title": "Venison Loin, Roasted Celeriac, Blackcurrant & Juniper — Foodie Fuel",
+    "title": "Venison Loin, Roasted Celeriac, Blackcurrant & Juniper \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 45,
     "cook_temp_c": 200,
     "spiceLevel": 0,
     "dietary": [
-      "Gluten-free"
+      "Egg-free",
+      "Gluten-free",
+      "Nut-free",
+      "Soy-free"
     ],
     "nutritionFocus": [
-      "High protein",
       "High fibre",
+      "High protein",
       "Low carb"
     ],
-    "protocols": [],
-    "costPrep": [],
     "costTag": "Standard",
     "ingredients": [
       {
@@ -215,7 +239,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "avocado oil"
       },
       {
         "qty": "15 g",
@@ -251,8 +275,8 @@
       }
     ],
     "method": [
-      "Heat oven to 200°C (fan 180°C). Peel celeriac, cut into 2 cm cubes. Toss with oil, juniper and salt; roast 30–35 minutes, turning once.",
-      "Warm stock with blackcurrant jam, vinegar and mustard; simmer 6–8 minutes to a glossy sauce.",
+      "Heat oven to 200\u00b0C (fan 180\u00b0C). Peel celeriac, cut into 2 cm cubes. Toss with oil, juniper and salt; roast 30\u201335 minutes, turning once.",
+      "Warm stock with blackcurrant jam, vinegar and mustard; simmer 6\u20138 minutes to a glossy sauce.",
       "Blanch kale 2 minutes, drain well, and season with a pinch of salt and a teaspoon of sauce.",
       "Season venison. Sear in a hot pan with oil for 2 minutes per side. Add butter, baste 30 seconds.",
       "Rest venison 5 minutes, then slice."
@@ -283,21 +307,35 @@
       "Milk"
     ],
     "slug": "venison-loin-roasted-celeriac-blackcurrant-juniper-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": false,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": [],
+    "costPrep": [
+      "One-pan"
+    ]
   },
   {
-    "title": "Slow-Braised Beef Cheek, Pearl Barley & Burnt Onion Jus — Foodie Fuel",
+    "title": "Slow-Braised Beef Cheek, Pearl Barley & Burnt Onion Jus \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 180,
     "cook_temp_c": 150,
     "spiceLevel": 0,
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein",
-      "High fibre"
+    "dietary": [
+      "Dairy-free",
+      "Egg-free",
+      "Nut-free",
+      "Soy-free"
     ],
-    "protocols": [],
+    "nutritionFocus": [
+      "High carb / Endurance",
+      "High fibre",
+      "High protein"
+    ],
     "costPrep": [
       "Batch-cook",
       "Freezer-friendly"
@@ -310,7 +348,7 @@
       },
       {
         "qty": "1 tbsp",
-        "item": "Rapeseed oil"
+        "item": "coconut oil"
       },
       {
         "qty": "1",
@@ -330,7 +368,7 @@
       },
       {
         "qty": "1 tbsp",
-        "item": "Tomato purée"
+        "item": "Tomato pur\u00e9e"
       },
       {
         "qty": "250 ml",
@@ -358,12 +396,12 @@
       }
     ],
     "method": [
-      "Heat oven to 150°C (fan 130°C).",
-      "Season cheeks. Brown in a casserole with oil, 3–4 minutes per side; remove.",
+      "Heat oven to 150\u00b0C (fan 130\u00b0C).",
+      "Season cheeks. Brown in a casserole with oil, 3\u20134 minutes per side; remove.",
       "Char the cut side of onion in the pot until very dark. Add carrots, celery, garlic; cook 6 minutes.",
-      "Stir in tomato purée, then add stock and wine. Return cheeks, cover and braise 2½ hours until spoon-tender.",
-      "Rinse barley. Simmer with water and a pinch of salt for 25–30 minutes until tender; fold through mushrooms and thyme for the last 5 minutes.",
-      "Reduce braising liquid on the hob for 8–10 minutes to a glossy jus; strain if you want a fine finish."
+      "Stir in tomato pur\u00e9e, then add stock and wine. Return cheeks, cover and braise 2\u00bd hours until spoon-tender.",
+      "Rinse barley. Simmer with water and a pinch of salt for 25\u201330 minutes until tender; fold through mushrooms and thyme for the last 5 minutes.",
+      "Reduce braising liquid on the hob for 8\u201310 minutes to a glossy jus; strain if you want a fine finish."
     ],
     "plating": [
       "Spoon barley and mushrooms into the centre.",
@@ -373,9 +411,6 @@
     "optional_finishes": [
       "Pickled shallots",
       "A squeeze of lemon to brighten the jus"
-    ],
-    "swaps": [
-      "Swap barley for spelt if you prefer (contains gluten)."
     ],
     "hydrationTip": "Still water with lemon helps cut the richness.",
     "nutritionPerServing": {
@@ -390,25 +425,33 @@
       "Celery"
     ],
     "slug": "slow-braised-beef-cheek-pearl-barley-burnt-onion-jus-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": []
   },
   {
-    "title": "Roast Monkfish, Smoked Mussel Broth, Leeks & Parsley Oil — Foodie Fuel",
+    "title": "Roast Monkfish, Smoked Mussel Broth, Leeks & Parsley Oil \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 55,
     "cook_temp_c": 200,
     "spiceLevel": 0,
     "dietary": [
-      "Gluten-free"
+      "Dairy-free",
+      "Egg-free",
+      "Gluten-free",
+      "Nut-free",
+      "Soy-free"
     ],
     "nutritionFocus": [
-      "High protein",
       "High fibre",
+      "High protein",
       "Low carb"
     ],
-    "protocols": [],
-    "costPrep": [],
     "costTag": "Standard",
     "ingredients": [
       {
@@ -417,7 +460,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "extra virgin olive oil"
       },
       {
         "qty": "300 g",
@@ -457,10 +500,10 @@
       }
     ],
     "method": [
-      "Heat oven to 200°C (fan 180°C). Season monkfish; rub with rapeseed oil.",
-      "Roast monkfish on a tray for 18–22 minutes until just firm; rest 5 minutes.",
+      "Heat oven to 200\u00b0C (fan 180\u00b0C). Season monkfish; rub with rapeseed oil.",
+      "Roast monkfish on a tray for 18\u201322 minutes until just firm; rest 5 minutes.",
       "Meanwhile, sweat leek, fennel and garlic in a pan with 1 tsp oil for 8 minutes.",
-      "Add mussels and wine, cover and steam 4–5 minutes until opened. Discard any that stay closed.",
+      "Add mussels and wine, cover and steam 4\u20135 minutes until opened. Discard any that stay closed.",
       "Add fish stock and simmer 6 minutes. Blend parsley with olive oil and 1 tbsp broth to make a green oil.",
       "Simmer cavolo nero in the broth for 3 minutes until tender."
     ],
@@ -490,22 +533,35 @@
       "Molluscs"
     ],
     "slug": "roast-monkfish-smoked-mussel-broth-leeks-parsley-oil-foodie-fuel",
-    "kcalBand": "≤600"
+    "kcalBand": "\u2264600",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": [],
+    "costPrep": [
+      "One-pan"
+    ]
   },
   {
-    "title": "Lamb Rump, Charred Brassicas, Anchovy-Mustard Dressing — Foodie Fuel",
+    "title": "Lamb Rump, Charred Brassicas, Anchovy-Mustard Dressing \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 45,
     "cook_temp_c": 210,
     "spiceLevel": 0,
-    "dietary": [],
+    "dietary": [
+      "Dairy-free",
+      "Egg-free",
+      "Nut-free",
+      "Soy-free"
+    ],
     "nutritionFocus": [
-      "High protein",
       "High fibre",
+      "High protein",
       "Low carb"
     ],
-    "protocols": [],
     "costPrep": [
       "One-pan"
     ],
@@ -517,7 +573,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "coconut oil"
       },
       {
         "qty": "300 g",
@@ -549,10 +605,10 @@
       }
     ],
     "method": [
-      "Heat oven to 210°C (fan 190°C).",
+      "Heat oven to 210\u00b0C (fan 190\u00b0C).",
       "Season lamb. Sear in a hot ovenproof pan with rapeseed oil, fat-side down 3 minutes, then 2 minutes the other side.",
-      "Transfer to oven and roast 10–12 minutes for pink (58–60°C internal), or 14 minutes for medium. Rest 8 minutes.",
-      "Blanch broccoli 2 minutes. Toss sprouts and broccoli with a pinch of salt and char in the same pan over high heat 4–5 minutes.",
+      "Transfer to oven and roast 10\u201312 minutes for pink (58\u201360\u00b0C internal), or 14 minutes for medium. Rest 8 minutes.",
+      "Blanch broccoli 2 minutes. Toss sprouts and broccoli with a pinch of salt and char in the same pan over high heat 4\u20135 minutes.",
       "Blend anchovy, mustard, olive oil, lemon juice and garlic into a dressing."
     ],
     "plating": [
@@ -563,9 +619,6 @@
     "optional_finishes": [
       "Pickled shallot rings",
       "A few parsley leaves"
-    ],
-    "swaps": [
-      "Use chicken thighs (roasted) if you prefer a lighter protein."
     ],
     "hydrationTip": "Still water with lemon balances the salty dressing.",
     "nutritionPerServing": {
@@ -581,21 +634,30 @@
       "Mustard"
     ],
     "slug": "lamb-rump-charred-brassicas-anchovy-mustard-dressing-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": []
   },
   {
-    "title": "Roast Chicken, Light Bread Sauce, Kale & Apple — Foodie Fuel",
+    "title": "Roast Chicken, Light Bread Sauce, Kale & Apple \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 70,
     "cook_temp_c": 190,
     "spiceLevel": 0,
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein",
-      "High fibre"
+    "dietary": [
+      "Egg-free",
+      "Nut-free",
+      "Soy-free"
     ],
-    "protocols": [],
+    "nutritionFocus": [
+      "High fibre",
+      "High protein"
+    ],
     "costPrep": [
       "Batch-cook"
     ],
@@ -607,7 +669,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "avocado oil"
       },
       {
         "qty": "1",
@@ -643,9 +705,9 @@
       }
     ],
     "method": [
-      "Heat oven to 190°C (fan 170°C). Season chicken; rub with oil.",
-      "Roast chicken on a tray for 22–26 minutes until 74°C internal; rest 6 minutes.",
-      "For light bread sauce: simmer onion, bay and peppercorns in milk 10 minutes; strain. Whisk in breadcrumbs and simmer 2–3 minutes to thicken.",
+      "Heat oven to 190\u00b0C (fan 170\u00b0C). Season chicken; rub with oil.",
+      "Roast chicken on a tray for 22\u201326 minutes until 74\u00b0C internal; rest 6 minutes.",
+      "For light bread sauce: simmer onion, bay and peppercorns in milk 10 minutes; strain. Whisk in breadcrumbs and simmer 2\u20133 minutes to thicken.",
       "Cook kale in boiling water 2 minutes, drain well.",
       "Warm apple slices in a pan with vinegar and a pinch of salt for 2 minutes."
     ],
@@ -675,21 +737,30 @@
       "Gluten"
     ],
     "slug": "roast-chicken-light-bread-sauce-kale-apple-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": []
   },
   {
-    "title": "Smoked Haddock & Leek Chowder (Lightened) with Oat Crunch — Foodie Fuel",
+    "title": "Smoked Haddock & Leek Chowder (Lightened) with Oat Crunch \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 45,
     "cook_temp_c": 0,
     "spiceLevel": 0,
-    "dietary": [],
-    "nutritionFocus": [
-      "High protein",
-      "High fibre"
+    "dietary": [
+      "Egg-free",
+      "Nut-free",
+      "Soy-free"
     ],
-    "protocols": [],
+    "nutritionFocus": [
+      "High fibre",
+      "High protein"
+    ],
     "costPrep": [
       "Batch-cook",
       "Freezer-friendly"
@@ -738,9 +809,9 @@
       }
     ],
     "method": [
-      "Sweat leek and celery in a lidded pan with 2 tbsp water for 6–8 minutes until soft.",
-      "Add potato and fish stock; simmer 12–15 minutes until potato is tender.",
-      "Add haddock and milk; poach gently for 6–8 minutes until flakes.",
+      "Sweat leek and celery in a lidded pan with 2 tbsp water for 6\u20138 minutes until soft.",
+      "Add potato and fish stock; simmer 12\u201315 minutes until potato is tender.",
+      "Add haddock and milk; poach gently for 6\u20138 minutes until flakes.",
       "Remove fish, flake into chunks. Blend half the soup briefly for body (optional), return fish.",
       "Stir in oat bran and simmer 2 minutes. Finish with chives and lemon juice."
     ],
@@ -753,7 +824,7 @@
       "A few capers"
     ],
     "swaps": [
-      "Use smoked mackerel for a stronger flavour (reduce poach to 4–5 minutes)."
+      "Use smoked mackerel for a stronger flavour (reduce poach to 4\u20135 minutes)."
     ],
     "hydrationTip": "Sparkling water with lemon keeps it fresh.",
     "nutritionPerServing": {
@@ -771,22 +842,31 @@
       "Gluten"
     ],
     "slug": "smoked-haddock-leek-chowder-lightened-with-oat-crunch-foodie-fuel",
-    "kcalBand": "≤600"
+    "kcalBand": "\u2264600",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": []
   },
   {
-    "title": "Mushroom & Barley ‘Risotto’, Roast Garlic & Watercress — Foodie Fuel",
+    "title": "Mushroom & Barley \u2018Risotto\u2019, Roast Garlic & Watercress \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 50,
     "cook_temp_c": 200,
     "spiceLevel": 0,
     "dietary": [
+      "Egg-free",
+      "Nut-free",
+      "Soy-free",
       "Vegetarian"
     ],
     "nutritionFocus": [
+      "High carb / Endurance",
       "High fibre"
     ],
-    "protocols": [],
     "costPrep": [
       "Batch-cook"
     ],
@@ -830,14 +910,14 @@
       }
     ],
     "method": [
-      "Heat oven to 200°C (fan 180°C). Wrap whole garlic cloves in foil and roast 20 minutes until soft.",
-      "Sauté onion in olive oil 6 minutes. Add mushrooms and cook 8 minutes until browned.",
-      "Stir in barley. Add stock in ladles, simmering and stirring for 30–35 minutes until barley is tender and glossy.",
+      "Heat oven to 200\u00b0C (fan 180\u00b0C). Wrap whole garlic cloves in foil and roast 20 minutes until soft.",
+      "Saut\u00e9 onion in olive oil 6 minutes. Add mushrooms and cook 8 minutes until browned.",
+      "Stir in barley. Add stock in ladles, simmering and stirring for 30\u201335 minutes until barley is tender and glossy.",
       "Stir in parmesan and squeeze in roasted garlic. Finish with lemon juice and season.",
       "Toss watercress with a pinch of salt and a few drops of olive oil."
     ],
     "plating": [
-      "Spoon barley ‘risotto’ into bowls and tap to level.",
+      "Spoon barley \u2018risotto\u2019 into bowls and tap to level.",
       "Top with watercress and a light dusting of parmesan."
     ],
     "optional_finishes": [
@@ -860,22 +940,29 @@
       "Milk"
     ],
     "slug": "mushroom-barley-risotto-roast-garlic-watercress-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": false,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": []
   },
   {
-    "title": "Roast Beetroot, Crowdie-Style Whipped Cottage Cheese & Walnut-Oat Crumb — Foodie Fuel",
+    "title": "Roast Beetroot, Crowdie-Style Whipped Cottage Cheese & Walnut-Oat Crumb \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 60,
     "cook_temp_c": 200,
     "spiceLevel": 0,
     "dietary": [
+      "Egg-free",
+      "Soy-free",
       "Vegetarian"
     ],
     "nutritionFocus": [
       "High fibre"
     ],
-    "protocols": [],
     "costPrep": [
       "One-pan"
     ],
@@ -887,7 +974,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "coconut oil"
       },
       {
         "qty": "1 tbsp",
@@ -919,7 +1006,7 @@
       }
     ],
     "method": [
-      "Heat oven to 200°C (fan 180°C). Wrap beetroot in foil and roast 45–55 minutes until a knife slides in easily.",
+      "Heat oven to 200\u00b0C (fan 180\u00b0C). Wrap beetroot in foil and roast 45\u201355 minutes until a knife slides in easily.",
       "Cool slightly, peel, then cut into wedges. Toss with vinegar, oil and a pinch of salt.",
       "Whip cottage cheese with yoghurt and honey until smooth; season lightly.",
       "Mix walnuts and oats; toast in a dry pan 2 minutes until fragrant."
@@ -950,23 +1037,33 @@
       "Nuts"
     ],
     "slug": "roast-beetroot-crowdie-style-whipped-cottage-cheese-walnut-oat-crumb-foodie-fuel",
-    "kcalBand": "≤600"
+    "kcalBand": "\u2264600",
+    "diabetesUK": {
+      "df_eligible": false,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": [
+      "Low sodium"
+    ]
   },
   {
-    "title": "Charred Cabbage Steaks, Lentil-Walnut Ragù & Mustard Herb Oil — Foodie Fuel",
+    "title": "Charred Cabbage Steaks, Lentil-Walnut Rag\u00f9 & Mustard Herb Oil \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 55,
     "cook_temp_c": 210,
     "spiceLevel": 0,
     "dietary": [
+      "Dairy-free",
+      "Egg-free",
+      "Soy-free",
       "Vegan",
       "Vegetarian"
     ],
     "nutritionFocus": [
       "High fibre"
     ],
-    "protocols": [],
     "costPrep": [
       "Batch-cook",
       "Freezer-friendly",
@@ -980,7 +1077,7 @@
       },
       {
         "qty": "1 tbsp",
-        "item": "Rapeseed oil"
+        "item": "avocado oil"
       },
       {
         "qty": "150 g",
@@ -1000,7 +1097,7 @@
       },
       {
         "qty": "1 tbsp",
-        "item": "Tomato purée"
+        "item": "Tomato pur\u00e9e"
       },
       {
         "qty": "250 ml",
@@ -1024,14 +1121,14 @@
       }
     ],
     "method": [
-      "Heat oven to 210°C (fan 190°C). Slice cabbage into 2 thick steaks, keeping the core intact.",
-      "Brush steaks with rapeseed oil, season, and roast 25 minutes. Finish under the grill 2–3 minutes for charred edges.",
-      "Make ragù: sauté onion and garlic 6 minutes. Stir in tomato purée, lentils, walnuts and stock; simmer 12 minutes until thick.",
+      "Heat oven to 210\u00b0C (fan 190\u00b0C). Slice cabbage into 2 thick steaks, keeping the core intact.",
+      "Brush steaks with rapeseed oil, season, and roast 25 minutes. Finish under the grill 2\u20133 minutes for charred edges.",
+      "Make rag\u00f9: saut\u00e9 onion and garlic 6 minutes. Stir in tomato pur\u00e9e, lentils, walnuts and stock; simmer 12 minutes until thick.",
       "Blend herbs with olive oil, mustard and vinegar to make a sharp herb oil."
     ],
     "plating": [
       "Place a cabbage steak on each plate.",
-      "Spoon lentil-walnut ragù over the centre only, leaving the charred edges visible.",
+      "Spoon lentil-walnut rag\u00f9 over the centre only, leaving the charred edges visible.",
       "Drizzle mustard herb oil around the plate and finish with herbs."
     ],
     "optional_finishes": [
@@ -1055,22 +1152,34 @@
       "Mustard"
     ],
     "slug": "charred-cabbage-steaks-lentil-walnut-rag-mustard-herb-oil-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": true,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": [
+      "Low sodium"
+    ]
   },
   {
-    "title": "Stuffed Delicata Squash, Herby Pearl Couscous & Pomegranate — Foodie Fuel",
+    "title": "Stuffed Delicata Squash, Herby Pearl Couscous & Pomegranate \u2014 Foodie Fuel",
     "mealType": "Dinner",
     "serves": 2,
     "time_mins": 60,
     "cook_temp_c": 200,
     "spiceLevel": 1,
     "dietary": [
+      "Egg-free",
+      "Nut-free",
+      "Soy-free",
       "Vegetarian"
     ],
     "nutritionFocus": [
-      "High fibre"
+      "High carb / Endurance",
+      "High fibre",
+      "Spicy"
     ],
-    "protocols": [],
     "costPrep": [
       "One-pan"
     ],
@@ -1082,7 +1191,7 @@
       },
       {
         "qty": "1 tsp",
-        "item": "Rapeseed oil"
+        "item": "extra virgin olive oil"
       },
       {
         "qty": "120 g",
@@ -1105,7 +1214,7 @@
         "item": "Ground cumin"
       },
       {
-        "qty": "½ tsp",
+        "qty": "\u00bd tsp",
         "item": "Smoked paprika"
       },
       {
@@ -1126,8 +1235,8 @@
       }
     ],
     "method": [
-      "Heat oven to 200°C (fan 180°C). Halve squash lengthways and scoop seeds. Brush with oil and roast cut-side down 25 minutes.",
-      "Simmer pearl couscous in stock 10–12 minutes until tender; stir through pepper, chickpeas, cumin and paprika for the last 3 minutes.",
+      "Heat oven to 200\u00b0C (fan 180\u00b0C). Halve squash lengthways and scoop seeds. Brush with oil and roast cut-side down 25 minutes.",
+      "Simmer pearl couscous in stock 10\u201312 minutes until tender; stir through pepper, chickpeas, cumin and paprika for the last 3 minutes.",
       "Flip squash and roast 8 minutes more to caramelise edges.",
       "Stir mint and lemon juice through couscous; season.",
       "Fill squash cavities with the couscous mix, top with feta and return to oven 5 minutes to warm through."
@@ -1158,6 +1267,12 @@
       "Gluten"
     ],
     "slug": "stuffed-delicata-squash-herby-pearl-couscous-pomegranate-foodie-fuel",
-    "kcalBand": "≤800"
+    "kcalBand": "\u2264800",
+    "diabetesUK": {
+      "df_eligible": false,
+      "basis": "Heuristic screen for higher fibre, no added sugars, and moderated carbs; portion guidance still applies."
+    },
+    "notes": " Uses olive, coconut, or avocado oil only. No seed oils.",
+    "protocols": []
   }
 ]

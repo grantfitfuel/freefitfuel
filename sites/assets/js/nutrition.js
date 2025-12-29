@@ -54,7 +54,7 @@
   };
 
   // Today planner (simple)
-  const PLAN = { breakfast:[], lunch:[], dinner:[], s is nack:[] };
+  const PLAN = { breakfast:[], lunch:[], dinner:[], snack:[] };
 
   // Week planner
   const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];

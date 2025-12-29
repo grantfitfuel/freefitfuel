@@ -54,7 +54,7 @@
   };
 
   // Today planner (simple)
-  const PLAN = { breakfast:[], lunch:[], dinner:[], snack:[] };
+  const PLAN = { breakfast:[], lunch:[], dinner:[], s is nack:[] };
 
   // Week planner
   const DAYS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -66,7 +66,7 @@
     {id:'ALL',label:'ALL',type:'solo'},
     {id:'MealType',label:'Meal Type',chips:['Breakfast','Lunch','Dinner','Snack']},
     {id:'Dietary',label:'Dietary',chips:['Diabetes-friendly','Vegetarian','Vegan','Vegetarian','Vegan','Gluten-free','Dairy-free','Nut-free','Egg-free','Soy-free']},
-    {id:'Nutrition',label:'Nutrition Focus',chips:['High protein','High carb / Endurance','Low carb','High fibre','Spicy']},
+    {id:'Nutrition',label:'Nutrition Focus',chips:["Gutâbrain support",'High protein','High carb / Endurance','Low carb','High fibre','Spicy']},
     {id:'KcalBand',label:'Low calorie',chips:['≤400','≤600','≤800']},
     {id:'Protocols',label:'Protocols',chips:['Low FODMAP','Low sodium']},
     {id:'Time',label:'Time',chips:['≤15 min','≤30 min','Slow-cook','No-cook']},

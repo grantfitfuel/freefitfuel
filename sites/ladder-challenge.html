@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <style>
+    /* Page-only additions */
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .lead{color:var(--inkdim)}
+
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+    .section > h2{margin:.15rem 0 .5rem;font-size:1.2rem}
+
+    .grid-local{display:grid;gap:12px}
+    @media (min-width:780px){.grid-local.cols-2{grid-template-columns:repeat(2,1fr)}}
+    @media (min-width:960px){.grid-local.cols-3{grid-template-columns:repeat(3,1fr)}}
+
+    .card-local{background:#111418;border:1px solid var(--stroke);border-radius:12px;padding:12px}
+    .card-local h3{margin:.1rem 0 .35rem;font-size:1.05rem}
+    .card-local p{margin:.35rem 0}
+    .card-local ul{margin:.45rem 0 .1rem 1.1rem;padding:0}
+    .card-local li{margin:.22rem 0}
+
+    .tag-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.5rem 0 .75rem}
+    .tag{
+      display:inline-flex;align-items:center;gap:.35rem;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.28rem .55rem;
+      font-size:.9rem
+    }
+
+    .mini-nav-local{display:flex;flex-wrap:wrap;gap:.5rem;margin:.2rem 0 1rem}
+    .mini-nav-local a{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      color:var(--ink);
+      text-decoration:none;
+      padding:.38rem .75rem;
+      border-radius:999px;
+      font-size:.92rem
+    }
+    .mini-nav-local a:hover{color:var(--accent)}
+
+    .callout{
+      border-left:4px solid var(--accent);
+      padding:.8rem .9rem;
+      background:rgba(255,106,0,.08);
+      border-radius:10px;
+      margin:.75rem 0
+    }
+
+    .level-tag{
+      display:inline-block;
+      background:var(--accent);
+      color:#111;
+      font-weight:800;
+      border-radius:999px;
+      padding:.22rem .55rem;
+      margin-bottom:.45rem
+    }
+
+    .ladder-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:.65rem;
+      font-size:.96rem
+    }
+    .ladder-table th,
+    .ladder-table td{
+      border:1px solid var(--stroke);
+      padding:.55rem .6rem;
+      text-align:left;
+      vertical-align:top
+    }
+    .ladder-table th{background:rgba(255,255,255,.06)}
+
+    .steps{display:grid;gap:10px}
+    .step{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:12px
+    }
+    .step strong{display:block;margin-bottom:.25rem}
+
+    .faq details{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:.8rem .9rem
+    }
+    .faq details + details{margin-top:.65rem}
+    .faq summary{cursor:pointer;font-weight:700}
+    .faq p{margin:.6rem 0 0}
+
+    .btn-row{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.85rem}
+    .btn-lite{
+      display:inline-flex;align-items:center;gap:.55rem;
+      padding:.85rem 1.05rem;
+      border-radius:12px;
+      font-weight:700;
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      color:var(--ink)
+    }
+    .btn-lite:hover{color:var(--accent);text-decoration:none}
+
+    .quote{font-size:.94rem;color:var(--inkdim)}
+
+    @media print{
+      #site-header,.mini-nav-local,.btn-row{display:none !important}
+      .section,.card-local,.step,.faq details{break-inside:avoid}
+    }
+  </style>
+
+  <title>FreeFitFuel Ladder Challenge — Benchmark Workout</title>
+  <meta name="description" content="A scalable FreeFitFuel ladder challenge with foundation, progression and hero levels, plus warm-up, scaling, partner format and a 4-week build-up.">
+
+  <meta property="og:title" content="FreeFitFuel Ladder Challenge — Benchmark Workout">
+  <meta property="og:description" content="Build towards a scalable benchmark challenge with clean progressions, smart scaling and strong pacing.">
+  <meta property="og:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.freefitfuel.com/ladder-challenge.html">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FreeFitFuel Ladder Challenge — Benchmark Workout">
+  <meta name="twitter:description" content="A structured ladder benchmark session with scaling options and a 4-week build-up.">
+  <meta name="twitter:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
+</head>
+<body>
+  <!-- Shared header -->
+  <div id="site-header"></div>
+  <script src="/js/header-loader.js" defer></script>
+
+  <!-- HERO -->
+  <header class="hero-mini" role="banner" aria-label="Ladder challenge hero">
+    <figure>
+      <img src="img/curl.jpg" alt="Home training setup for a ladder challenge workout">
+      <div class="overlay" aria-hidden="true"></div>
+    </figure>
+    <div class="content wrap">
+      <h1><span class="accent">The FreeFitFuel Ladder Challenge</span></h1>
+      <p class="lead">A benchmark workout you build towards, not a random punishment session. Scale it to your level, keep your form clean, and use it to measure real progress over time.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="lead">
+      This is a <strong>milestone challenge</strong>, not your first workout. The aim is simple:
+      build up the ladder, come back down, and finish with control rather than chaos.
+    </p>
+
+    <nav class="mini-nav-local" aria-label="Page sections">
+      <a href="#overview">Overview</a>
+      <a href="#levels">Levels</a>
+      <a href="#movements">Movements</a>
+      <a href="#warmup">Warm-up</a>
+      <a href="#partner">Partner format</a>
+      <a href="#builder">4-week build</a>
+      <a href="#tracking">Tracking</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <section class="section" id="overview">
+      <h2>What it is</h2>
+      <p>
+        The Ladder Challenge is a climbing and descending rep workout. You start with a small amount of work,
+        build to a chosen peak, then work your way back down. It tests muscular endurance, pacing,
+        focus and movement quality under fatigue.
+      </p>
+
+      <div class="tag-row" aria-label="Challenge tags">
+        <span class="tag">Benchmark session</span>
+        <span class="tag">Scalable</span>
+        <span class="tag">Bodyweight-friendly</span>
+        <span class="tag">Partner-ready</span>
+        <span class="tag">Advanced option included</span>
+      </div>
+
+      <div class="callout">
+        <strong>Important:</strong> this challenge works best after a few weeks of steady training.
+        It is not meant to replace your usual FreeFitFuel workouts.
+      </div>
+
+      <p>Each round follows the same structure:</p>
+      <ul>
+        <li><strong>Pull</strong> x 1</li>
+        <li><strong>Press</strong> x 2</li>
+        <li><strong>Push</strong> x 3</li>
+        <li><strong>Core</strong> x 4</li>
+        <li><strong>Legs</strong> x 5</li>
+      </ul>
+      <p>
+        Then you move up to your chosen peak before coming all the way back down again.
+      </p>
+    </section>
+
+    <section class="section" id="levels">
+      <h2>Challenge levels</h2>
+      <p class="lead">
+        Choose the level that fits your current ability. The goal is to finish strong with good form,
+        not to force your way through a version you are not ready for.
+      </p>
+
+      <div class="grid-local cols-3">
+        <article class="card-local">
+          <span class="level-tag">Foundation</span>
+          <h3>1 → 5 → 1</h3>
+          <p><strong>Total reps:</strong> 375</p>
+          <ul>
+            <li>Best for beginners and returners</li>
+            <li>Good choice if using regressions</li>
+            <li>Strong first benchmark</li>
+          </ul>
+        </article>
+
+        <article class="card-local">
+          <span class="level-tag">Progression</span>
+          <h3>1 → 7 → 1</h3>
+          <p><strong>Total reps:</strong> 735</p>
+          <ul>
+            <li>Best for solid intermediates</li>
+            <li>Builds serious work capacity</li>
+            <li>Challenging but still realistic</li>
+          </ul>
+        </article>
+
+        <article class="card-local">
+          <span class="level-tag">Hero</span>
+          <h3>1 → 10 → 1</h3>
+          <p><strong>Total reps:</strong> 1,500</p>
+          <ul>
+            <li>Advanced benchmark only</li>
+            <li>Needs good joint tolerance</li>
+            <li>Not standard weekly programming</li>
+          </ul>
+        </article>
+      </div>
+
+      <table class="ladder-table" aria-label="Hero ladder totals by movement">
+        <thead>
+          <tr>
+            <th>Movement</th>
+            <th>Pattern</th>
+            <th>Total reps</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pull-ups</td>
+            <td>1 → 10 → 1</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>Dips</td>
+            <td>2 → 20 → 2</td>
+            <td>200</td>
+          </tr>
+          <tr>
+            <td>Push-ups</td>
+            <td>3 → 30 → 3</td>
+            <td>300</td>
+          </tr>
+          <tr>
+            <td>Sit-ups</td>
+            <td>4 → 40 → 4</td>
+            <td>400</td>
+          </tr>
+          <tr>
+            <td>Air squats</td>
+            <td>5 → 50 → 5</td>
+            <td>500</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" id="movements">
+      <h2>Movements and scaling</h2>
+      <div class="grid-local cols-2">
+        <article class="card-local">
+          <h3>Pull</h3>
+          <p><strong>Main option:</strong> Pull-ups</p>
+          <p><strong>Scale with:</strong> band-assisted pull-ups, negative pull-ups, inverted rows, door rows, band rows</p>
+        </article>
+
+        <article class="card-local">
+          <h3>Press</h3>
+          <p><strong>Main option:</strong> Dips</p>
+          <p><strong>Scale with:</strong> bench dips, supported dips, close-grip push-ups, dumbbell floor press</p>
+        </article>
+
+        <article class="card-local">
+          <h3>Push</h3>
+          <p><strong>Main option:</strong> Push-ups</p>
+          <p><strong>Scale with:</strong> incline push-ups, knee push-ups, hands-on-bench push-ups</p>
+        </article>
+
+        <article class="card-local">
+          <h3>Core</h3>
+          <p><strong>Main option:</strong> Sit-ups</p>
+          <p><strong>Scale with:</strong> crunches, dead bugs, marching core drills, controlled leg raises</p>
+        </article>
+
+        <article class="card-local">
+          <h3>Legs</h3>
+          <p><strong>Main option:</strong> Air squats</p>
+          <p><strong>Scale with:</strong> chair squats, box squats, sit-to-stands, goblet squats if appropriate</p>
+        </article>
+
+        <article class="card-local">
+          <h3>FreeFitFuel rule</h3>
+          <p>
+            Scale early, not late. If one movement is clearly going to turn messy, switch before the
+            whole session starts breaking down.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="warmup">
+      <h2>Warm-up and rules</h2>
+      <div class="grid-local cols-2">
+        <article class="card-local">
+          <h3>Warm-up</h3>
+          <ul>
+            <li>Arm circles x 20 each way</li>
+            <li>Band pull-aparts x 15</li>
+            <li>Bodyweight squats x 10</li>
+            <li>Hip hinges x 10</li>
+            <li>Incline push-ups x 8</li>
+            <li>Dead bugs x 8 each side</li>
+            <li>Scapular hangs or retractions x 5 to 8</li>
+          </ul>
+        </article>
+
+        <article class="card-local">
+          <h3>Session rules</h3>
+          <ul>
+            <li>Stop 1 to 2 reps before form breaks down</li>
+            <li>Rest 30 to 60 seconds when needed</li>
+            <li>Keep early rounds steady, not frantic</li>
+            <li>Sharp pain, dizziness or chest pain means stop</li>
+            <li>The advanced version is earned, not assumed</li>
+          </ul>
+        </article>
+      </div>
+
+      <p class="quote">Fast enough to challenge you. Controlled enough to respect your joints.</p>
+    </section>
+
+    <section class="section" id="partner">
+      <h2>Partner format</h2>
+      <p class="lead">
+        This challenge works brilliantly with a training partner because it adds accountability,
+        pacing and a bit of healthy pressure without needing loads of kit.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <strong>You go, I go</strong>
+          <p>
+            One person completes the full round while the other rests. Then swap. This keeps effort high
+            while making the total session more manageable.
+          </p>
+        </div>
+
+        <div class="step">
+          <strong>Shared rounds</strong>
+          <p>
+            More advanced pairs can split reps inside a round, but only if both partners still move well
+            and keep standards high.
+          </p>
+        </div>
+
+        <div class="step">
+          <strong>Coach each other</strong>
+          <p>
+            Watch squat depth, shoulder position on pressing, and obvious compensation once fatigue creeps in.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="builder">
+      <h2>4-week build to the ladder</h2>
+      <p class="lead">
+        This is the smarter FreeFitFuel way to use the challenge. Build up to it, then use your chosen level
+        as a benchmark.
+      </p>
+
+      <div class="grid-local cols-2">
+        <article class="card-local">
+          <h3>Week 1 — Foundation</h3>
+          <p>
+            Mini ladder up to 5. Learn your scaling options, keep everything tidy, and finish feeling like
+            you still had something left.
+          </p>
+        </article>
+
+        <article class="card-local">
+          <h3>Week 2 — Build</h3>
+          <p>
+            Extend the ladder to 6 and back down. Improve pacing and reduce unnecessary rest.
+          </p>
+        </article>
+
+        <article class="card-local">
+          <h3>Week 3 — Progression</h3>
+          <p>
+            Run the 1 → 7 → 1 version. This is where weak points usually show themselves.
+            Adjust before they become injuries.
+          </p>
+        </article>
+
+        <article class="card-local">
+          <h3>Week 4 — Benchmark</h3>
+          <p>
+            Choose Foundation, Progression or Hero based on how Week 3 felt. The goal is strong execution,
+            not ego.
+          </p>
+        </article>
+      </div>
+
+      <div class="btn-row">
+        <a class="btn" href="workouts.html">Back to Workouts</a>
+        <a class="btn-lite" href="strength-longevity.html">Strength &amp; Longevity (40+)</a>
+      </div>
+    </section>
+
+    <section class="section" id="tracking">
+      <h2>What to track</h2>
+      <div class="grid-local cols-2">
+        <article class="card-local">
+          <h3>Log these</h3>
+          <ul>
+            <li>Challenge level attempted</li>
+            <li>Substitutions used</li>
+            <li>Time taken</li>
+            <li>Highest rung completed cleanly</li>
+            <li>RPE out of 10</li>
+            <li>How you felt the next day</li>
+          </ul>
+        </article>
+
+        <article class="card-local">
+          <h3>Good reflection prompts</h3>
+          <ul>
+            <li>Did I finish strong, or just finish?</li>
+            <li>Where did my form start to slip?</li>
+            <li>What should I scale better next time?</li>
+            <li>What felt easier than last month?</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section faq" id="faq">
+      <h2>FAQ</h2>
+
+      <details>
+        <summary>Is this a beginner workout?</summary>
+        <p>
+          Not really. The Foundation level is the most approachable version, but it still works best after
+          a few weeks of regular training and movement practice.
+        </p>
+      </details>
+
+      <details>
+        <summary>Can I swap out pull-ups and dips?</summary>
+        <p>
+          Yes. In fact, many people should. The structure matters more than forcing advanced movements
+          your body is not ready for.
+        </p>
+      </details>
+
+      <details>
+        <summary>How often should I do it?</summary>
+        <p>
+          Most people will get more from using it every 4 to 8 weeks as a benchmark than trying to hammer it weekly.
+        </p>
+      </details>
+
+      <details>
+        <summary>Can this support healthy ageing training?</summary>
+        <p>
+          Yes, in scaled form. Older or returning trainees should keep it controlled, use regressions early,
+          and prioritise clean movement over total reps.
+        </p>
+      </details>
+    </section>
+
+    <section class="section">
+      <h2>Important Note</h2>
+      <p>
+        The content on FreeFitFuel™ is for general fitness education only and isn’t a substitute for personalised
+        medical advice. Consult a qualified professional before starting a new programme, especially if you have
+        any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or
+        unusual shortness of breath.
+      </p>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+      <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+      <p class="credit">Created by Grant Cameron Anthony</p>
+    </div>
+  </footer>
+</body>
+</html>

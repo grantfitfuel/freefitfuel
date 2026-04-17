@@ -98,6 +98,7 @@
 <body>
   <div id="site-header"></div>
   <script src="/js/header-loader.js" defer></script>
+
   <div class="wrap">
     <h1>My Workout Plan</h1>
     <p class="lead">Client-side only. Your plan, logs, PBs and checks stay in this browser.</p>
@@ -119,30 +120,8 @@
     <section class="section">
       <h2>Your Personalised Plan</h2>
 
-    <section class="section">
-  <h2>Your Personalised Plan</h2>
+      <div id="progressGuide"></div>
 
-  <p class="lead">
-    Your plan follows a phased approach rather than a fixed timeline. Stay in each stage until the goal of that phase is being met consistently, then move forward.
-  </p>
-
-  <div class="block">
-    <p class="quote" style="margin-top:0">
-      <strong>How to progress:</strong><br>
-      <strong>Cut</strong> → when fat loss is steady and sustainable<br>
-      <strong>Transform</strong> → when strength, fitness and consistency are improving<br>
-      <strong>Maintain</strong> → when weight and routine feel stable<br>
-      <strong>Lean Bulk</strong> → when calories can increase without excessive fat gain
-    </p>
-  </div>
-
-  <div id="legendMount"></div>
-
-  <div id="plan"></div>
-  <p id="planMsg" class="meta"></p>
-</section>
-      
-      <!-- Dynamic legend mounts here if any terms are detected -->
       <div id="legendMount"></div>
 
       <div id="plan"></div>
@@ -160,25 +139,24 @@
       <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
     </section>
 
-    <!-- PHYSIO PANEL LINK -->
-<section class="section">
-  <h2>Injury Recovery & Physio</h2>
-  <p class="lead">Supporting your training doesn’t just mean sets and reps — it also means guidance for when things go wrong.</p>
-  <div class="grid cols-2">
-    <div>
-      <p>
-        Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail your progress.  
-        Our <strong>Physio & Recovery</strong> page gives you safe, practical progressions: 
-        <em>Acute → Rebuild → Return</em>.
-      </p>
-      <p class="meta">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
-      <a class="btn" href="physio.html">Open Physio & Recovery</a>
-    </div>
-    <div>
-      <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px">
-    </div>
-  </div>
-</section>
+    <section class="section">
+      <h2>Injury Recovery & Physio</h2>
+      <p class="lead">Supporting your training doesn’t just mean sets and reps — it also means guidance for when things go wrong.</p>
+      <div class="grid cols-2">
+        <div>
+          <p>
+            Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail your progress.
+            Our <strong>Physio & Recovery</strong> page gives you safe, practical progressions:
+            <em>Acute → Rebuild → Return</em>.
+          </p>
+          <p class="meta">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
+          <a class="btn" href="physio.html">Open Physio & Recovery</a>
+        </div>
+        <div>
+          <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px">
+        </div>
+      </div>
+    </section>
 
     <footer class="site-footer">
       <div class="container">
@@ -192,12 +170,11 @@
 <script>
 /* ===== Keys / constants ===== */
 var ROADMAP_KEY = 'fff.roadmap.plan.v1';
-var NS_PB = 'fff.workoutplan.pb.';    // per-exercise PB
-var NS_CHECK = 'fff.workoutplan.check.'; // wellness toggles
+var NS_PB = 'fff.workoutplan.pb.';
+var NS_CHECK = 'fff.workoutplan.check.';
 
 /* ===== Wellness toggle persistence + migration ===== */
 (function initWellness(){
-  // migrate old separate cardio toggles
   try{
     var oldKeys = [NS_CHECK+'activityWalk', NS_CHECK+'activityRun', NS_CHECK+'activityBike'];
     var newKey  = NS_CHECK+'activityCardio';
@@ -206,7 +183,6 @@ var NS_CHECK = 'fff.workoutplan.check.'; // wellness toggles
       if(localStorage.getItem(oldKeys[i]) === '1'){ anyOld = true; break; }
     }
     if(anyOld && localStorage.getItem(newKey)!=='1'){ localStorage.setItem(newKey,'1'); }
-    // clean up old
     for(var j=0;j<oldKeys.length;j++){ localStorage.removeItem(oldKeys[j]); }
   }catch(e){}
 
@@ -224,6 +200,14 @@ var NS_CHECK = 'fff.workoutplan.check.'; // wellness toggles
 /* ===== Small utils ===== */
 function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(String(q||'exercise')+' form'); }
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function escapeHtml(str){
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 var QUOTES=[
   "Small wins compound. Log the set, own the day.",
   "Perfect form, steady breath, then add a little.",
@@ -246,26 +230,128 @@ function restControlsHTML(id){
 function hookRestTimers(scope){
   var bars = scope.querySelectorAll('.restbar');
   for(var b=0;b<bars.length;b++){
-    var bar=bars[b]; if(bar.getAttribute('data-bound')==='1') continue; bar.setAttribute('data-bound','1');
+    var bar=bars[b];
+    if(bar.getAttribute('data-bound')==='1') continue;
+    bar.setAttribute('data-bound','1');
     var input=bar.querySelector('input[type="number"]');
     var left =bar.querySelector('.left');
     var start=bar.querySelector('[data-act="rest-start"]');
     var stop =bar.querySelector('[data-act="rest-stop"]');
     var t=null;
+
     function fmt(s){
       s=Math.max(0,Math.floor(Number(s)||0));
       var m=Math.floor(s/60), r=s%60;
-      return m? (m+':'+String(r).padStart(2,'0')) : (r+'s');
+      return m ? (m+':'+String(r).padStart(2,'0')) : (r+'s');
     }
     function show(s){ left.textContent=fmt(s); }
+
     show(parseInt((input && input.value) || '0',10));
+
     if(start) start.addEventListener('click', function(){
       var total=Math.max(5, parseInt((input && input.value) || '0',10) || 0);
-      clearInterval(t); var remain=total; show(remain);
-      t=setInterval(function(){ remain--; show(remain); if(remain<=0){ clearInterval(t); left.textContent='Go!'; } },1000);
+      clearInterval(t);
+      var remain=total;
+      show(remain);
+      t=setInterval(function(){
+        remain--;
+        show(remain);
+        if(remain<=0){
+          clearInterval(t);
+          left.textContent='Go!';
+        }
+      },1000);
     });
-    if(stop) stop.addEventListener('click', function(){ clearInterval(t); show(parseInt((input && input.value) || '0',10)); });
+
+    if(stop) stop.addEventListener('click', function(){
+      clearInterval(t);
+      show(parseInt((input && input.value) || '0',10));
+    });
   }
+}
+
+/* ===== Adaptive Progress Guide ===== */
+function normaliseStageName(name){
+  return String(name || '').trim().toLowerCase();
+}
+function stageGuidanceText(stageName, blurb){
+  var n = normaliseStageName(stageName);
+  var b = String(blurb || '').toLowerCase();
+
+  if(n.indexOf('cut') > -1 || b.indexOf('fat loss') > -1 || b.indexOf('cut') > -1){
+    return 'Stay here while fat loss is steady, sustainable, and recovery still feels manageable.';
+  }
+  if(n.indexOf('transform') > -1 || b.indexOf('transform') > -1){
+    return 'Stay here while strength, fitness, and consistency are clearly improving.';
+  }
+  if(n.indexOf('maintain') > -1 || b.indexOf('maintenance') > -1){
+    return 'Stay here while body weight, energy, and routine feel stable and repeatable.';
+  }
+  if(n.indexOf('bulk') > -1 || b.indexOf('bulk') > -1 || b.indexOf('muscle gain') > -1){
+    return 'Stay here while calories are increasing in a controlled way without excessive fat gain.';
+  }
+  if(n.indexOf('build') > -1 || b.indexOf('strength') > -1){
+    return 'Stay here while strength, exercise quality, and recovery are progressing well.';
+  }
+  if(n.indexOf('rebuild') > -1 || b.indexOf('rebuild') > -1){
+    return 'Stay here while movement quality, confidence, and training tolerance are improving consistently.';
+  }
+  if(n.indexOf('foundation') > -1){
+    return 'Stay here while technique, routine, and recovery are becoming consistent and reliable.';
+  }
+
+  return 'Stay here until the goal of this stage feels established and repeatable before moving on.';
+}
+function renderProgressGuide(stages){
+  var mount = document.getElementById('progressGuide');
+  if(!mount) return;
+
+  if(!Array.isArray(stages) || !stages.length){
+    mount.innerHTML = '';
+    return;
+  }
+
+  var html = '';
+
+  if(stages.length === 1){
+    var only = stages[0] || {};
+    var onlyName = escapeHtml(only.name || 'Current Stage');
+
+    html += ''
+      + '<p class="lead">'
+      + 'This personalised plan currently has one stage. Stay with it until training feels controlled, recovery is manageable, and progress is steady.'
+      + '</p>'
+      + '<div class="block">'
+      +   '<p class="quote" style="margin-top:0">'
+      +     '<strong>This plan has one stage:</strong> ' + onlyName + '<br>'
+      +     + stageGuidanceText(only.name, only.blurb)
+      +   '</p>'
+      +   '<p class="meta" style="margin:.55rem 0 0">'
+      +     'If progress stalls, recovery worsens, or the plan starts to feel too easy, update your roadmap and generate the next stage rather than forcing this one indefinitely.'
+      +   '</p>'
+      + '</div>';
+  } else {
+    html += ''
+      + '<p class="lead">'
+      + 'This personalised plan uses a phased structure rather than a fixed timeline. Stay in each stage until its goal is being met consistently, then move forward.'
+      + '</p>'
+      + '<div class="block">'
+      +   '<p class="quote" style="margin-top:0"><strong>How to progress through this plan:</strong></p>';
+
+    for(var i = 0; i < stages.length; i++){
+      var stage = stages[i] || {};
+      var stageName = escapeHtml(stage.name || ('Stage ' + (i + 1)));
+      html += '<p class="meta" style="margin:.35rem 0"><strong>' + stageName + '</strong> → ' + stageGuidanceText(stage.name, stage.blurb) + '</p>';
+    }
+
+    html += ''
+      +   '<p class="meta" style="margin:.7rem 0 0">'
+      +     'There is no single fixed number of weeks that suits everyone. Move on when progress is established, not simply because time has passed.'
+      +   '</p>'
+      + '</div>';
+  }
+
+  mount.innerHTML = html;
 }
 
 /* ===== Dynamic Legend ===== */
@@ -301,7 +387,9 @@ function detectLegendTerms(data){
         if (it.type && String(it.type).toLowerCase()==='accessory') pushTerm('Accessory');
 
         var ABBR=['LISS','MISS','HIIT','AMRAP','EMOM','RPE','ROM','SS'];
-        for(var a=0;a<ABBR.length;a++){ if(extras.indexOf(ABBR[a])>-1) pushTerm(ABBR[a]); }
+        for(var a=0;a<ABBR.length;a++){
+          if(extras.indexOf(ABBR[a])>-1) pushTerm(ABBR[a]);
+        }
 
         if (it.rir !== undefined && String(it.rir).trim()!=='') pushTerm('RIR');
 
@@ -315,7 +403,10 @@ function detectLegendTerms(data){
 function renderLegend(terms){
   var mount = document.getElementById('legendMount');
   if(!mount) return;
-  if(!terms.length){ mount.innerHTML=''; return; }
+  if(!terms.length){
+    mount.innerHTML='';
+    return;
+  }
   var rows='';
   for(var i=0;i<terms.length;i++){
     var t=terms[i], def=LEGEND_DEFS[t]||'';
@@ -332,7 +423,9 @@ function setupAccordions(){
       var btn = acc.querySelector('.acc-toggle');
       var body= acc.querySelector('.acc-body');
       if(!btn||!body) return;
-      acc.classList.remove('open'); btn.setAttribute('aria-expanded','false'); body.hidden=true;
+      acc.classList.remove('open');
+      btn.setAttribute('aria-expanded','false');
+      body.hidden=true;
       btn.addEventListener('click', function(){
         var isOpen = acc.classList.contains('open');
         acc.classList.toggle('open', !isOpen);
@@ -347,63 +440,80 @@ function setupAccordions(){
 function renderPlan(){
   var wrap=document.getElementById('plan');
   var msg =document.getElementById('planMsg');
-  if(!wrap){ return; }
+  if(!wrap) return;
 
   try{
     var raw=null;
     try{ raw=localStorage.getItem(ROADMAP_KEY); }catch(e){}
-    if(!raw){ wrap.innerHTML='<div class="warn">No roadmap found.</div>'; renderLegend([]); return; }
+
+    if(!raw){
+      wrap.innerHTML='<div class="warn">No roadmap found.</div>';
+      renderLegend([]);
+      renderProgressGuide([]);
+      return;
+    }
 
     var data=null;
-    try{ data=JSON.parse(raw); }catch(e){ wrap.innerHTML='<div class="warn">Saved roadmap unreadable.</div>'; renderLegend([]); return; }
+    try{
+      data=JSON.parse(raw);
+    }catch(e){
+      wrap.innerHTML='<div class="warn">Saved roadmap unreadable.</div>';
+      renderLegend([]);
+      renderProgressGuide([]);
+      return;
+    }
 
     var stages = Array.isArray(data.stages) ? data.stages : [];
-    if(!stages.length){ wrap.innerHTML='<div class="warn">Roadmap has no stages.</div>'; renderLegend([]); return; }
+    if(!stages.length){
+      wrap.innerHTML='<div class="warn">Roadmap has no stages.</div>';
+      renderLegend([]);
+      renderProgressGuide([]);
+      return;
+    }
 
-    // Legend
     var terms = detectLegendTerms(data);
     renderLegend(terms);
+    renderProgressGuide(stages);
 
-    // Build HTML
     var html='';
     for(var si=0; si<stages.length; si++){
       var stage = stages[si] || {};
       html += '<div class="accordion">'+
-                '<div class="acc-head"><button class="acc-toggle" aria-expanded="false">'+(stage.name||('Stage '+(si+1)))+'</button></div>'+
+                '<div class="acc-head"><button class="acc-toggle" aria-expanded="false">'+escapeHtml(stage.name||('Stage '+(si+1)))+'</button></div>'+
                 '<div class="acc-body" hidden>'+
-                  (stage.blurb?('<p class="meta">'+stage.blurb+'</p>'):'')+
+                  (stage.blurb?('<p class="meta">'+escapeHtml(stage.blurb)+'</p>'):'')+
                   '<div class="days">';
 
       var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
       for(var di=0; di<7; di++){
         var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
         var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
-        html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>'+label+'</strong></div></div>';
+        html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>'+escapeHtml(label)+'</strong></div></div>';
 
         for(var ei=0; ei<items.length; ei++){
           var it = items[ei] || {};
           var presc = (it.type==='cardio')
             ? [it.duration_min? (it.duration_min+' min'):null, it.work_s?('work '+it.work_s+'s'):null, it.rest_s?('rest '+it.rest_s+'s'):null, it.rounds? (it.rounds+' rounds'):null].filter(Boolean).join(' · ')
-            : ( (it.sets||'—')+'×'+(it.reps||'—')+' · '+(it.rir||'—')+' RIR · '+(it.rest||60)+'s rest' );
+            : ((it.sets||'—')+'×'+(it.reps||'—')+' · '+(it.rir||'—')+' RIR · '+(it.rest||60)+'s rest');
 
           html += '<div class="mov" style="margin:.5rem 0 0">'+
                     '<div class="mov-head">'+
                       '<div class="mov-title">'+
-                        '<a href="'+yt(it.name||'exercise')+'" target="_blank" rel="noopener">'+(it.name||'Exercise')+'</a>'+
-                        ((it.type && it.type!=='cardio') ? (' <span class="badge">'+it.type+'</span>') : '')+
+                        '<a href="'+yt(it.name||'exercise')+'" target="_blank" rel="noopener">'+escapeHtml(it.name||'Exercise')+'</a>'+
+                        ((it.type && it.type!=='cardio') ? (' <span class="badge">'+escapeHtml(it.type)+'</span>') : '')+
                       '</div>'+
-                      '<div class="rx">'+presc+'</div>'+
+                      '<div class="rx">'+escapeHtml(presc)+'</div>'+
                       '<div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>'+
                     '</div>'+
-                    (it.cue?('<p class="meta" style="margin:.3rem 0 0">'+it.cue+'</p>'):'')+
-                    ((it.alts && it.alts.length)?('<div class="alt-chips">'+it.alts.map(function(alt){ return '<a class="alt-chip" href="'+yt(alt)+'" target="_blank" rel="noopener">'+alt+'</a>'; }).join('')+'</div>'):'')+
+                    (it.cue?('<p class="meta" style="margin:.3rem 0 0">'+escapeHtml(it.cue)+'</p>'):'')+
+                    ((it.alts && it.alts.length)?('<div class="alt-chips">'+it.alts.map(function(alt){ return '<a class="alt-chip" href="'+yt(alt)+'" target="_blank" rel="noopener">'+escapeHtml(alt)+'</a>'; }).join('')+'</div>'):'')+
                     '<div class="drawer" data-drawer>'+
                       '<div class="log-grid" data-log>'+
                         [1,2,3,4,5].map(function(i){
                           return ''+
                           '<div class="log-row">'+
                             '<strong>Set '+i+'</strong>'+
-                            '<input inputmode="decimal" placeholder="kg"   data-field="w'+i+'">'+
+                            '<input inputmode="decimal" placeholder="kg" data-field="w'+i+'">'+
                             '<input inputmode="numeric" placeholder="reps" data-field="r'+i+'">'+
                             '<input placeholder="notes" data-field="n'+i+'">'+
                             '<button class="btn-sm" data-save>Save</button>'+
@@ -419,17 +529,16 @@ function renderPlan(){
                     '</div>'+
                   '</div>';
         }
-        html += '</div>'; // end day
+        html += '</div>';
       }
 
-      html += '</div></div></div>'; // end days + body + accordion
+      html += '</div></div></div>';
     }
 
     wrap.innerHTML = html;
     if(msg) msg.textContent = 'Loaded '+stages.length+' stage'+(stages.length>1?'s':'')+' from local plan.';
     setupAccordions();
 
-    // Wire drawers + timers + PB save logic
     var openBtns = wrap.querySelectorAll('.mov .btn-sm[data-open]');
     for(var ob=0; ob<openBtns.length; ob++){
       (function(btn){
@@ -451,10 +560,13 @@ function renderPlan(){
         var quoteEl = drawer.querySelector('[data-quote]');
 
         function bestScore(obj){
-          var best=0; for(var i=1;i<=5;i++){
-            var w=parseFloat(obj['w'+i]||'0')||0, r=parseFloat(obj['r'+i]||'0')||0;
+          var best=0;
+          for(var i=1;i<=5;i++){
+            var w=parseFloat(obj['w'+i]||'0')||0;
+            var r=parseFloat(obj['r'+i]||'0')||0;
             best=Math.max(best, w*r);
-          } return best;
+          }
+          return best;
         }
         function milestoneText(n){
           if(n>=200) return 'Milestone: 200 logs saved 🔥';
@@ -466,11 +578,9 @@ function renderPlan(){
           return '';
         }
 
-        // derive PB key (fallback safe)
         var anyRest = drawer.querySelector('[data-rest]');
         var baseKey = anyRest ? anyRest.getAttribute('data-rest').split('.s')[0] : Math.random().toString(36).slice(2);
 
-        // populate existing
         try{
           var saved = JSON.parse(localStorage.getItem(NS_PB+baseKey) || '{}');
           var inputs = logArea.querySelectorAll('[data-field]');
@@ -488,11 +598,17 @@ function renderPlan(){
         for(var s=0;s<saveBtns.length;s++){
           saveBtns[s].addEventListener('click', function(){
             var obj={}, inputs=logArea.querySelectorAll('[data-field]');
-            for(var i=0;i<inputs.length;i++){ obj[inputs[i].getAttribute('data-field')] = (inputs[i].value||'').trim(); }
+            for(var i=0;i<inputs.length;i++){
+              obj[inputs[i].getAttribute('data-field')] = (inputs[i].value||'').trim();
+            }
             localStorage.setItem(NS_PB+baseKey, JSON.stringify(obj));
             var bestNow=bestScore(obj), bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-            if(bestNow>bestWas){ localStorage.setItem(NS_PB+baseKey+'.best', bestNow); if(pbEl) pbEl.textContent='New PB! '+bestNow.toFixed(1)+' (best w×r)'; }
-            else{ if(pbEl) pbEl.textContent = bestWas>0 ? ('PB score: '+bestWas.toFixed(1)+' (w×r best set)') : 'Saved.'; }
+            if(bestNow>bestWas){
+              localStorage.setItem(NS_PB+baseKey+'.best', bestNow);
+              if(pbEl) pbEl.textContent='New PB! '+bestNow.toFixed(1)+' (best w×r)';
+            } else {
+              if(pbEl) pbEl.textContent = bestWas>0 ? ('PB score: '+bestWas.toFixed(1)+' (w×r best set)') : 'Saved.';
+            }
             var total=(parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10)+1);
             localStorage.setItem('fff.workoutplan.saves', total);
             if(badgeEl) badgeEl.textContent = (total%5===0)?'Progress logged ✅':'';
@@ -504,6 +620,8 @@ function renderPlan(){
 
   }catch(err){
     wrap.innerHTML = '<div class="warn">An error occurred while rendering the plan.</div>';
+    renderLegend([]);
+    renderProgressGuide([]);
     if(msg) msg.textContent = 'Error: '+(err && err.message ? err.message : String(err));
   }
 }
@@ -512,21 +630,32 @@ function renderPlan(){
 function exportAll(){
   var dump={};
   for(var i=0;i<localStorage.length;i++){
-    var k=localStorage.key(i); if(!k) continue;
+    var k=localStorage.key(i);
+    if(!k) continue;
     if(k.indexOf(NS_PB)===0 || k.indexOf(NS_CHECK)===0 || k===ROADMAP_KEY){
       dump[k]=localStorage.getItem(k);
     }
   }
   var blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
-  var url=URL.createObjectURL(blob); var a=document.createElement('a');
-  a.href=url; a.download='freefitfuel-workout-plan-backup.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='freefitfuel-workout-plan-backup.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 function importAll(file){
   var r=new FileReader();
   r.onload=function(){
     try{
       var obj=JSON.parse(String(r.result||'{}'));
-      for(var k in obj){ if(Object.prototype.hasOwnProperty.call(obj,k)){ localStorage.setItem(k, obj[k]); } }
+      for(var k in obj){
+        if(Object.prototype.hasOwnProperty.call(obj,k)){
+          localStorage.setItem(k, obj[k]);
+        }
+      }
       alert('Import complete. Reloading plan.');
       location.reload();
     }catch(e){
@@ -536,16 +665,22 @@ function importAll(file){
   r.readAsText(file);
 }
 function resetPBsAndWellness(){
-  var del=[]; for(var i=0;i<localStorage.length;i++){
-    var k=localStorage.key(i); if(!k) continue;
+  var del=[];
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(!k) continue;
     if(k.indexOf(NS_PB)===0 || k.indexOf(NS_CHECK)===0) del.push(k);
   }
   for(var j=0;j<del.length;j++){ localStorage.removeItem(del[j]); }
   alert('Cleared PBs & wellness toggles. Roadmap left intact.');
   location.reload();
 }
+
 document.getElementById('btnExport').addEventListener('click', exportAll);
-document.getElementById('importFile').addEventListener('change', function(e){ var f=(e.target && e.target.files && e.target.files[0])||null; if(f) importAll(f); });
+document.getElementById('importFile').addEventListener('change', function(e){
+  var f=(e.target && e.target.files && e.target.files[0])||null;
+  if(f) importAll(f);
+});
 document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
 
 /* ===== Boot ===== */

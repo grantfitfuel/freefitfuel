@@ -228,46 +228,93 @@ function restControlsHTML(id){
   '</div>';
 }
 function hookRestTimers(scope){
+
   var bars = scope.querySelectorAll('.restbar');
-  for(var b=0;b<bars.length;b++){
-    var bar=bars[b];
-    if(bar.getAttribute('data-bound')==='1') continue;
-    bar.setAttribute('data-bound','1');
-    var input=bar.querySelector('input[type="number"]');
-    var left =bar.querySelector('.left');
-    var start=bar.querySelector('[data-act="rest-start"]');
-    var stop =bar.querySelector('[data-act="rest-stop"]');
-    var t=null;
 
-    function fmt(s){
-      s=Math.max(0,Math.floor(Number(s)||0));
-      var m=Math.floor(s/60), r=s%60;
-      return m ? (m+':'+String(r).padStart(2,'0')) : (r+'s');
-    }
-    function show(s){ left.textContent=fmt(s); }
+  for(var b = 0; b < bars.length; b++){
 
-    show(parseInt((input && input.value) || '0',10));
+    (function(bar){
 
-    if(start) start.addEventListener('click', function(){
-      var total=Math.max(5, parseInt((input && input.value) || '0',10) || 0);
-      clearInterval(t);
-      var remain=total;
-      show(remain);
-      t=setInterval(function(){
-        remain--;
-        show(remain);
-        if(remain<=0){
+      if(bar.getAttribute('data-bound') === '1') return;
+
+      bar.setAttribute('data-bound', '1');
+
+      var input = bar.querySelector('input[type="number"]');
+
+      var left  = bar.querySelector('.left');
+
+      var start = bar.querySelector('[data-act="rest-start"]');
+
+      var stop  = bar.querySelector('[data-act="rest-stop"]');
+
+      var t = null;
+
+      function fmt(s){
+
+        s = Math.max(0, Math.floor(Number(s) || 0));
+
+        var m = Math.floor(s / 60), r = s % 60;
+
+        return m ? (m + ':' + String(r).padStart(2, '0')) : (r + 's');
+
+      }
+
+      function show(s){
+
+        left.textContent = fmt(s);
+
+      }
+
+      show(parseInt((input && input.value) || '0', 10));
+
+      if(start){
+
+        start.addEventListener('click', function(){
+
+          var total = Math.max(5, parseInt((input && input.value) || '0', 10) || 0);
+
           clearInterval(t);
-          left.textContent='Go!';
-        }
-      },1000);
-    });
 
-    if(stop) stop.addEventListener('click', function(){
-      clearInterval(t);
-      show(parseInt((input && input.value) || '0',10));
-    });
+          var remain = total;
+
+          show(remain);
+
+          t = setInterval(function(){
+
+            remain--;
+
+            show(remain);
+
+            if(remain <= 0){
+
+              clearInterval(t);
+
+              left.textContent = 'Go!';
+
+            }
+
+          }, 1000);
+
+        });
+
+      }
+
+      if(stop){
+
+        stop.addEventListener('click', function(){
+
+          clearInterval(t);
+
+          show(parseInt((input && input.value) || '0', 10));
+
+        });
+
+      }
+
+    })(bars[b]);
+
   }
+
 }
 
 /* ===== Adaptive Progress Guide ===== */

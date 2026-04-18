@@ -5,6 +5,7 @@ window.FFF = (function () {
 
   function ensureDeps() {
     const missing = [];
+
     if (!window.FFFState) missing.push('FFFState');
     if (!window.FFFExerciseDB) missing.push('FFFExerciseDB');
     if (!window.FFFRecovery) missing.push('FFFRecovery');
@@ -24,19 +25,45 @@ window.FFF = (function () {
     return true;
   }
 
+  function toNumber(v) {
+    const n = Number(v);
+    return isNaN(n) ? 0 : n;
+  }
+
   function score(weight, reps) {
-    return (Number(weight) || 0) * (Number(reps) || 0);
+    return toNumber(weight) * toNumber(reps);
+  }
+
+  function getRoadmapRaw() {
+    ready();
+
+    if (typeof window.FFFState.getRoadmap === 'function') {
+      return window.FFFState.getRoadmap() || null;
+    }
+
+    try {
+      const raw = localStorage.getItem('fff.roadmap.plan.v1');
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getRoadmapSummary() {
+    ready();
+    return window.FFFRoadmap.summarise(getRoadmapRaw());
   }
 
   function setPB(exercise, weight, reps) {
     ready();
+
     const current = window.FFFState.getPB(exercise);
     const nextScore = score(weight, reps);
 
-    if (!current || nextScore > (current.score || 0)) {
+    if (!current || nextScore > toNumber(current.score)) {
       window.FFFState.setPB(exercise, {
-        weight: Number(weight) || 0,
-        reps: Number(reps) || 0,
+        weight: toNumber(weight),
+        reps: toNumber(reps),
         score: nextScore,
         date: window.FFFState.nowISO()
       });
@@ -48,16 +75,16 @@ window.FFF = (function () {
 
   function getPB(exercise) {
     ready();
-    return window.FFFState.getPB(exercise);
+    return window.FFFState.getPB(exercise) || null;
   }
 
   function logSet(exercise, weight, reps, notes) {
     ready();
 
     const entry = {
-      weight: Number(weight) || 0,
-      reps: Number(reps) || 0,
-      notes: notes || '',
+      weight: toNumber(weight),
+      reps: toNumber(reps),
+      notes: String(notes || ''),
       date: window.FFFState.nowISO()
     };
 
@@ -72,7 +99,7 @@ window.FFF = (function () {
 
   function getLogs(exercise) {
     ready();
-    return window.FFFState.getLogs(exercise);
+    return window.FFFState.getLogs(exercise) || [];
   }
 
   function getLatestLog(exercise) {
@@ -82,22 +109,27 @@ window.FFF = (function () {
 
   function setCheck(name, value) {
     ready();
-    return window.FFFState.setCheck(name, value);
+    return window.FFFState.setCheck(name, !!value);
   }
 
   function getCheck(name) {
     ready();
-    return window.FFFState.getCheck(name);
+    return !!window.FFFState.getCheck(name);
   }
 
   function getAllChecks() {
     ready();
-    return window.FFFState.getChecks();
+    return window.FFFState.getChecks() || {};
   }
 
   function clearChecks() {
     ready();
-    window.FFFState.clearChecks();
+    if (typeof window.FFFState.clearChecks === 'function') {
+      window.FFFState.clearChecks();
+    } else {
+      localStorage.removeItem('fff.checks.v1');
+      window.FFFState.load();
+    }
   }
 
   function getCheckScore() {
@@ -118,13 +150,23 @@ window.FFF = (function () {
   function analyseExercise(exercise) {
     ready();
 
-    const logs = window.FFFState.getLogs(exercise);
-    const checks = window.FFFState.getChecks();
-    const allLogs = window.FFFState.getAllLogs();
+    const logs = window.FFFState.getLogs(exercise) || [];
+    const checks = window.FFFState.getChecks() || {};
+    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    const roadmapSummary = getRoadmapSummary();
+
     const recovery = window.FFFRecovery.analyse(checks, allLogs);
     const mind = window.FFFMind.analyse(allLogs, checks);
     const profile = window.FFFExerciseDB.getExerciseProfile(exercise);
-    const decision = window.FFFTraining.decideExercise(profile, logs, recovery, mind);
+
+    const decision = window.FFFTraining.decideExercise(
+      profile,
+      logs,
+      recovery,
+      mind,
+      roadmapSummary
+    );
+
     const message = window.FFFMessaging.exerciseMessage(decision);
 
     return {
@@ -132,29 +174,41 @@ window.FFF = (function () {
       profile: profile,
       logs: logs,
       latest: logs.length ? logs[logs.length - 1] : null,
-      pb: window.FFFState.getPB(exercise),
-      trend: decision.trend,
+      pb: window.FFFState.getPB(exercise) || null,
+      trend: decision && decision.trend ? decision.trend : window.FFFTraining.getTrend(logs),
+      longTrend: decision && decision.longTrend ? decision.longTrend : 'unknown',
       recovery: recovery,
       mind: mind,
+      roadmap: roadmapSummary,
       decision: decision,
       headline: message.headline,
       message: message.message,
-      status: decision.action
+      status: decision && decision.action ? decision.action : 'unknown'
     };
   }
 
   function getGlobalCoachingSummary() {
     ready();
 
-    const checks = window.FFFState.getChecks();
-    const allLogs = window.FFFState.getAllLogs();
-    const roadmap = window.FFFState.getRoadmap();
+    const checks = window.FFFState.getChecks() || {};
+    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    const roadmapSummary = getRoadmapSummary();
     const recovery = window.FFFRecovery.analyse(checks, allLogs);
     const mind = window.FFFMind.analyse(allLogs, checks);
-    const roadmapSummary = window.FFFRoadmap.summarise(roadmap);
     const totalLogs = window.FFFState.getTotalLogCount();
-    const globalDecision = window.FFFTraining.decideGlobal(recovery, mind, roadmapSummary, totalLogs);
-    const message = window.FFFMessaging.globalMessage(globalDecision, recovery, mind);
+
+    const globalDecision = window.FFFTraining.decideGlobal(
+      recovery,
+      mind,
+      roadmapSummary,
+      totalLogs
+    );
+
+    const message = window.FFFMessaging.globalMessage(
+      globalDecision,
+      recovery,
+      mind
+    );
 
     return {
       headline: message.headline,
@@ -163,65 +217,101 @@ window.FFF = (function () {
       mind: mind,
       roadmap: roadmapSummary,
       totalLogs: totalLogs,
-      mode: globalDecision.mode
+      mode: globalDecision && globalDecision.mode ? globalDecision.mode : 'unknown',
+      tone: globalDecision && globalDecision.tone ? globalDecision.tone : 'grounded',
+      reason: globalDecision && globalDecision.reason ? globalDecision.reason : []
     };
+  }
+
+  function clearPBsOnly() {
+    ready();
+
+    if (typeof window.FFFState.clearPBs === 'function') {
+      window.FFFState.clearPBs();
+    } else {
+      localStorage.removeItem('fff.pb.v1');
+      window.FFFState.load();
+    }
+  }
+
+  function clearLogsOnly() {
+    ready();
+
+    if (typeof window.FFFState.clearLogs === 'function') {
+      window.FFFState.clearLogs();
+    } else {
+      localStorage.removeItem('fff.logs.v1');
+      window.FFFState.load();
+    }
+  }
+
+  function clearCoachingOnly() {
+    ready();
+
+    if (typeof window.FFFState.clearCoaching === 'function') {
+      window.FFFState.clearCoaching();
+    } else {
+      localStorage.removeItem('fff.coaching.v1');
+      window.FFFState.load();
+    }
   }
 
   function resetWellnessAndLogs() {
     ready();
 
-    // Clear PBs only
-    if (typeof window.FFFState.clearPBs === 'function') {
-      window.FFFState.clearPBs();
-    } else {
-      localStorage.removeItem('fff.pb.v1');
+    let roadmapBackup = null;
+
+    try {
+      roadmapBackup = localStorage.getItem('fff.roadmap.plan.v1');
+    } catch (e) {
+      roadmapBackup = null;
     }
 
-    // Clear logs only
-    if (typeof window.FFFState.clearLogs === 'function') {
-      window.FFFState.clearLogs();
-    } else {
-      localStorage.removeItem('fff.logs.v1');
-    }
+    clearPBsOnly();
+    clearLogsOnly();
+    clearChecks();
+    clearCoachingOnly();
 
-    // Clear wellness checks only
-    if (typeof window.FFFState.clearChecks === 'function') {
-      window.FFFState.clearChecks();
-    } else {
-      localStorage.removeItem('fff.checks.v1');
-    }
-
-    // Clear coaching cache only
-    if (typeof window.FFFState.clearCoaching === 'function') {
-      window.FFFState.clearCoaching();
-    } else {
-      localStorage.removeItem('fff.coaching.v1');
-    }
-
-    // Explicitly do NOT touch the roadmap
-    // fff.roadmap.plan.v1 must remain intact
+    try {
+      const stillThere = localStorage.getItem('fff.roadmap.plan.v1');
+      if (!stillThere && roadmapBackup) {
+        localStorage.setItem('fff.roadmap.plan.v1', roadmapBackup);
+      }
+    } catch (e) {}
 
     window.FFFState.load();
     return true;
   }
 
   return {
-    version: '4.1',
+    version: '5.0',
     ready: ready,
+
     setPB: setPB,
     getPB: getPB,
+
     logSet: logSet,
     getLogs: getLogs,
     getLatestLog: getLatestLog,
+
     setCheck: setCheck,
     getCheck: getCheck,
     getAllChecks: getAllChecks,
     clearChecks: clearChecks,
     getCheckScore: getCheckScore,
+
     getTotalLogCount: getTotalLogCount,
     getExerciseTrend: getExerciseTrend,
+
     analyseExercise: analyseExercise,
     getGlobalCoachingSummary: getGlobalCoachingSummary,
+
+    getRoadmapRaw: getRoadmapRaw,
+    getRoadmapSummary: getRoadmapSummary,
+
+    clearPBsOnly: clearPBsOnly,
+    clearLogsOnly: clearLogsOnly,
+    clearCoachingOnly: clearCoachingOnly,
     resetWellnessAndLogs: resetWellnessAndLogs
   };
 })();

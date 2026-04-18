@@ -1,4 +1,5 @@
-// FreeFitFuel Engine — Training Intelligence (Pattern-Level Decision Layer)
+// FreeFitFuel Engine — Training Intelligence
+// Pattern-level, family-level, weekly summary, adherence, and swap logic
 
 window.FFFTraining = (function () {
   'use strict';
@@ -7,8 +8,48 @@ window.FFFTraining = (function () {
     return Array.isArray(v) ? v : [];
   }
 
+  function safeObj(v) {
+    return v && typeof v === 'object' ? v : {};
+  }
+
   function score(log) {
     return (Number(log && log.weight) || 0) * (Number(log && log.reps) || 0);
+  }
+
+  function dayKey(dateStr) {
+    if (!dateStr) return '';
+    return String(dateStr).slice(0, 10);
+  }
+
+  function flattenLogs(allLogs) {
+    allLogs = safeObj(allLogs);
+    const out = [];
+
+    Object.keys(allLogs).forEach(function (exercise) {
+      safeArray(allLogs[exercise]).forEach(function (entry) {
+        out.push({
+          exercise: exercise,
+          weight: Number(entry.weight) || 0,
+          reps: Number(entry.reps) || 0,
+          notes: String(entry.notes || ''),
+          date: entry.date || null
+        });
+      });
+    });
+
+    out.sort(function (a, b) {
+      return new Date(a.date || 0).getTime() - new Date(b.date || 0).getTime();
+    });
+
+    return out;
+  }
+
+  function lastNDaysLogs(allLogs, days) {
+    const flat = flattenLogs(allLogs);
+    const cutoff = Date.now() - (days * 86400000);
+    return flat.filter(function (entry) {
+      return new Date(entry.date || 0).getTime() >= cutoff;
+    });
   }
 
   function getTrend(logs) {
@@ -59,6 +100,21 @@ window.FFFTraining = (function () {
     return flags.some(function (f) { return notes.indexOf(f) > -1; });
   }
 
+  function phaseLens(roadmapSummary) {
+    const current = roadmapSummary || {};
+    return {
+      stage: current.currentStageType || 'unknown',
+      bias: current.currentBias || 'unknown',
+      progressionExpectation: current.progressionExpectation || 'unknown',
+      flatOk: !!(window.FFFRoadmap && typeof window.FFFRoadmap.isFlatPerformanceAcceptable === 'function'
+        ? window.FFFRoadmap.isFlatPerformanceAcceptable(current)
+        : false),
+      seekProgress: !!(window.FFFRoadmap && typeof window.FFFRoadmap.shouldSeekProgress === 'function'
+        ? window.FFFRoadmap.shouldSeekProgress(current)
+        : false)
+    };
+  }
+
   function familySignal(profile, logs, recovery) {
     const trend = getTrend(logs);
     const longer = getLongerTrend(logs);
@@ -87,19 +143,259 @@ window.FFFTraining = (function () {
     };
   }
 
-  function phaseLens(roadmapSummary) {
-    const current = roadmapSummary || {};
-    return {
-      stage: current.currentStageType || 'unknown',
-      bias: current.currentBias || 'unknown',
-      progressionExpectation: current.progressionExpectation || 'unknown',
-      flatOk: !!(window.FFFRoadmap && typeof window.FFFRoadmap.isFlatPerformanceAcceptable === 'function'
-        ? window.FFFRoadmap.isFlatPerformanceAcceptable(current)
-        : false),
-      seekProgress: !!(window.FFFRoadmap && typeof window.FFFRoadmap.shouldSeekProgress === 'function'
-        ? window.FFFRoadmap.shouldSeekProgress(current)
-        : false)
+  function classifyFamily(profile) {
+    return profile && profile.family ? profile.family : 'general';
+  }
+
+  function familyLabel(family) {
+    const map = {
+      'horizontal-push': 'pressing',
+      'vertical-push': 'pressing',
+      'horizontal-pull': 'pulling',
+      'vertical-pull': 'pulling',
+      'squat': 'lower-body',
+      'hinge': 'posterior-chain',
+      'core-anti-extension': 'core',
+      'core-rotation-lateral': 'core',
+      'calf-foot': 'foot-calf',
+      'cardio-z2': 'easy-cardio',
+      'cardio-threshold': 'quality-cardio',
+      'general': 'general'
     };
+    return map[family] || family || 'general';
+  }
+
+  function analyseFamilies(allLogs) {
+    allLogs = safeObj(allLogs);
+    const families = {};
+
+    Object.keys(allLogs).forEach(function (exercise) {
+      const profile = window.FFFExerciseDB && typeof window.FFFExerciseDB.getExerciseProfile === 'function'
+        ? window.FFFExerciseDB.getExerciseProfile(exercise)
+        : { family: 'general' };
+
+      const family = classifyFamily(profile);
+      if (!families[family]) families[family] = [];
+      families[family].push({
+        exercise: exercise,
+        profile: profile,
+        logs: safeArray(allLogs[exercise])
+      });
+    });
+
+    return families;
+  }
+
+  function aggregateFamilySignals(familyEntries, recovery) {
+    familyEntries = safeArray(familyEntries);
+
+    if (!familyEntries.length) {
+      return {
+        state: 'unknown',
+        concern: 0,
+        exerciseCount: 0,
+        upCount: 0,
+        downCount: 0,
+        flatCount: 0,
+        painCount: 0,
+        longestPattern: 'unknown'
+      };
+    }
+
+    let concern = 0;
+    let upCount = 0;
+    let downCount = 0;
+    let flatCount = 0;
+    let painCount = 0;
+    let buildingCount = 0;
+    let slidingCount = 0;
+    let plateauCount = 0;
+
+    familyEntries.forEach(function (item) {
+      const logs = safeArray(item.logs);
+      const shortTrend = getTrend(logs);
+      const longerTrend = getLongerTrend(logs);
+      const pain = detectPain(logs);
+
+      if (shortTrend.trend === 'up') upCount++;
+      if (shortTrend.trend === 'down') downCount++;
+      if (shortTrend.trend === 'flat') flatCount++;
+
+      if (longerTrend === 'building') buildingCount++;
+      if (longerTrend === 'sliding') slidingCount++;
+      if (longerTrend === 'plateau') plateauCount++;
+
+      if (pain) painCount++;
+
+      if (shortTrend.trend === 'down') concern += 18;
+      if (longerTrend === 'sliding') concern += 20;
+      if (longerTrend === 'plateau') concern += 10;
+      if (pain) concern += 25;
+    });
+
+    if (recovery && recovery.underRecoveryRisk >= 45) concern += 15;
+    if (recovery && recovery.fatigue >= 60) concern += 15;
+
+    let state = 'neutral';
+    if (painCount >= 1 || concern >= 55) state = 'fatigued';
+    else if (downCount >= 1 || slidingCount >= 1 || plateauCount >= 2) state = 'watch';
+    else if (upCount >= 1 || buildingCount >= 1) state = 'progressing';
+
+    let longestPattern = 'mixed';
+    if (buildingCount > slidingCount && buildingCount >= plateauCount) longestPattern = 'building';
+    else if (slidingCount > buildingCount && slidingCount >= plateauCount) longestPattern = 'sliding';
+    else if (plateauCount > 0 && plateauCount >= buildingCount && plateauCount >= slidingCount) longestPattern = 'plateau';
+
+    return {
+      state: state,
+      concern: concern,
+      exerciseCount: familyEntries.length,
+      upCount: upCount,
+      downCount: downCount,
+      flatCount: flatCount,
+      painCount: painCount,
+      longestPattern: longestPattern
+    };
+  }
+
+  function summariseFamilies(allLogs, recovery) {
+    const groups = analyseFamilies(allLogs);
+    const out = {};
+
+    Object.keys(groups).forEach(function (family) {
+      out[family] = aggregateFamilySignals(groups[family], recovery);
+    });
+
+    return out;
+  }
+
+  function strongestFamily(familySummary) {
+    familySummary = safeObj(familySummary);
+    let best = null;
+    let bestScore = -Infinity;
+
+    Object.keys(familySummary).forEach(function (family) {
+      const s = familySummary[family];
+      let value = 0;
+      if (s.state === 'progressing') value += 30;
+      value += (s.upCount || 0) * 10;
+      if (s.longestPattern === 'building') value += 15;
+      value -= (s.painCount || 0) * 20;
+      if (value > bestScore) {
+        bestScore = value;
+        best = family;
+      }
+    });
+
+    return best;
+  }
+
+  function weakestFamily(familySummary) {
+    familySummary = safeObj(familySummary);
+    let worst = null;
+    let worstScore = -Infinity;
+
+    Object.keys(familySummary).forEach(function (family) {
+      const s = familySummary[family];
+      let value = 0;
+      if (s.state === 'fatigued') value += 40;
+      if (s.state === 'watch') value += 20;
+      value += (s.downCount || 0) * 10;
+      value += (s.painCount || 0) * 20;
+      if (s.longestPattern === 'sliding') value += 15;
+      if (value > worstScore) {
+        worstScore = value;
+        worst = family;
+      }
+    });
+
+    return worst;
+  }
+
+  function recommendedSwapForFamily(family) {
+    const map = {
+      'horizontal-push': ['floor press', 'incline push-up', 'light dumbbell bench'],
+      'vertical-push': ['landmine press', 'half-kneeling press', 'seated dumbbell press'],
+      'horizontal-pull': ['chest-supported row', 'band row', 'light seated row'],
+      'vertical-pull': ['lat pulldown', 'band-assisted pull-up', 'ring row'],
+      'squat': ['box squat', 'chair squat', 'split squat to reduced depth'],
+      'hinge': ['glute bridge', 'hip thrust', 'reduced-range RDL'],
+      'core-anti-extension': ['dead bug', 'short plank', 'bear hold'],
+      'core-rotation-lateral': ['side plank from knees', 'light suitcase carry', 'short pallof press'],
+      'calf-foot': ['supported calf raise', 'double-leg heel raise', 'small-range tib raise'],
+      'cardio-threshold': ['shorter tempo block', 'fewer intervals', 'easier steady run'],
+      'cardio-z2': ['walk', 'easy bike', 'shorter Z2 session']
+    };
+    return map[family] || [];
+  }
+
+  function weeklySummary(allLogs, recovery, roadmapSummary) {
+    const last7 = lastNDaysLogs(allLogs, 7);
+    const uniqueDays = {};
+    const exerciseSet = {};
+    let painMentions = 0;
+    let totalScore = 0;
+
+    last7.forEach(function (entry) {
+      const dk = dayKey(entry.date);
+      if (dk) uniqueDays[dk] = true;
+      exerciseSet[entry.exercise] = true;
+      totalScore += score(entry);
+
+      const txt = String(entry.notes || '').toLowerCase();
+      ['pain','sharp','flare','aggravated','injury','strain','twinge','niggle','sore'].forEach(function (w) {
+        if (txt.indexOf(w) > -1) painMentions++;
+      });
+    });
+
+    const familySummary = summariseFamilies(
+      groupLogs(last7),
+      recovery
+    );
+
+    const strongest = strongestFamily(familySummary);
+    const weakest = weakestFamily(familySummary);
+    const phase = phaseLens(roadmapSummary);
+
+    let adherence = 0;
+    adherence += Math.min(Object.keys(uniqueDays).length, 5) * 15;
+    if (recovery && typeof recovery.checkScore === 'number') adherence += recovery.checkScore * 5;
+    adherence = Math.max(0, Math.min(100, adherence));
+
+    let quality = 50;
+    if (painMentions > 0) quality -= Math.min(25, painMentions * 5);
+    if (weakest && familySummary[weakest] && familySummary[weakest].state === 'fatigued') quality -= 15;
+    if (strongest && familySummary[strongest] && familySummary[strongest].state === 'progressing') quality += 10;
+    quality = Math.max(0, Math.min(100, quality));
+
+    let weeklyMode = 'steady';
+    if (adherence < 35) weeklyMode = 'rebuild-habit';
+    else if (quality < 40) weeklyMode = 'reduce-strain';
+    else if (phase.seekProgress && adherence >= 60 && quality >= 55) weeklyMode = 'progress-week';
+    else if (phase.flatOk) weeklyMode = 'patient-week';
+
+    return {
+      sessionsLogged: Object.keys(uniqueDays).length,
+      exercisesTouched: Object.keys(exerciseSet).length,
+      painMentions: painMentions,
+      weeklyLoadProxy: totalScore,
+      adherence: adherence,
+      quality: quality,
+      strongestFamily: strongest,
+      weakestFamily: weakest,
+      familySummary: familySummary,
+      weeklyMode: weeklyMode,
+      swapSuggestions: weakest ? recommendedSwapForFamily(weakest) : []
+    };
+  }
+
+  function groupLogs(flatLogs) {
+    const out = {};
+    safeArray(flatLogs).forEach(function (entry) {
+      if (!out[entry.exercise]) out[entry.exercise] = [];
+      out[entry.exercise].push(entry);
+    });
+    return out;
   }
 
   function decideExercise(profile, logs, recovery, mind, roadmapSummary) {
@@ -144,7 +440,7 @@ window.FFFTraining = (function () {
       tone = 'protective';
       confidenceBand = 'high';
       reason.push('Pain or symptom language appears in the latest note');
-      if (profile && profile.family) reason.push('This movement sits in the ' + profile.family + ' family');
+      if (profile && profile.family) reason.push('This movement sits in the ' + familyLabel(profile.family) + ' pattern');
       return {
         action, reason, tone, confidenceBand, trend: shortTrend, longTrend, patternState, phase, profile,
         nextStep: 'Reduce load or range, or swap to a friendlier variation.'
@@ -267,7 +563,7 @@ window.FFFTraining = (function () {
     };
   }
 
-  function decideGlobal(recovery, mind, roadmapSummary, totalLogs) {
+  function decideGlobal(recovery, mind, roadmapSummary, totalLogs, allLogs) {
     const readiness = recovery && typeof recovery.readiness === 'number' ? recovery.readiness : 50;
     const fatigue = recovery && typeof recovery.fatigue === 'number' ? recovery.fatigue : 20;
     const underRecoveryRisk = recovery && typeof recovery.underRecoveryRisk === 'number' ? recovery.underRecoveryRisk : 0;
@@ -277,18 +573,26 @@ window.FFFTraining = (function () {
     const confidence = mind && typeof mind.confidence === 'number' ? mind.confidence : 50;
     const phase = phaseLens(roadmapSummary);
 
+    const familySummary = summariseFamilies(allLogs || {}, recovery);
+    const strongest = strongestFamily(familySummary);
+    const weakest = weakestFamily(familySummary);
+    const week = weeklySummary(allLogs || {}, recovery, roadmapSummary);
+
     let mode = 'build';
     let reason = [];
     let tone = 'grounded';
 
-    // Make wellness visibly matter even before logs exist
     if (!totalLogs) {
       if (checkScore === 4) {
         return {
           mode: 'ready',
           tone: 'confident',
           reason: ['All core recovery markers are in place even though training history is still limited'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
 
@@ -297,7 +601,11 @@ window.FFFTraining = (function () {
           mode: 'good-foundations',
           tone: 'grounded',
           reason: ['Recovery basics look mostly strong and the system is ready for consistent training'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
 
@@ -306,7 +614,11 @@ window.FFFTraining = (function () {
           mode: 'mixed-foundations',
           tone: 'grounded',
           reason: ['Some recovery basics are in place, but there is room to tighten the foundation'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
 
@@ -315,9 +627,26 @@ window.FFFTraining = (function () {
           mode: 'poor-foundations',
           tone: 'supportive',
           reason: ['Very few recovery basics are currently in place, so expectations should stay realistic'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
+    }
+
+    if (week.weeklyMode === 'rebuild-habit') {
+      return {
+        mode: 'habit-priority',
+        tone: 'supportive',
+        reason: ['Weekly adherence is too low to make fine-grained performance calls matter yet'],
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
+      };
     }
 
     if (underRecoveryRisk >= 65 || fatigue >= 75) {
@@ -325,7 +654,11 @@ window.FFFTraining = (function () {
         mode: 'protect',
         tone: 'protective',
         reason: ['Global recovery picture is poor enough to prioritise recovery and sustainability'],
-        phase: phase
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
@@ -334,7 +667,37 @@ window.FFFTraining = (function () {
         mode: 'steady',
         tone: 'steadying',
         reason: ['Mental pressure is high enough that the global ask should come down'],
-        phase: phase
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
+      };
+    }
+
+    if (week.weeklyMode === 'reduce-strain') {
+      return {
+        mode: 'reduce-strain',
+        tone: 'grounded',
+        reason: ['The weekly picture suggests too much strain relative to the quality of recent training'],
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
+      };
+    }
+
+    if (weakest && familySummary[weakest] && familySummary[weakest].state === 'fatigued') {
+      return {
+        mode: 'family-fatigue',
+        tone: 'grounded',
+        reason: ['One movement family looks broadly fatigued rather than this being a one-exercise issue'],
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
@@ -343,7 +706,11 @@ window.FFFTraining = (function () {
         mode: 'protect',
         tone: 'protective',
         reason: ['Rebuild phase: movement quality and confidence matter more than forcing numbers'],
-        phase: phase
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
@@ -353,14 +720,22 @@ window.FFFTraining = (function () {
           mode: 'preserve',
           tone: 'grounded',
           reason: ['Cut phase: the job is to preserve strength and keep recovery honest'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
       return {
         mode: 'recover',
         tone: 'supportive',
         reason: ['Cut phase plus lower readiness: hold expectations steady and protect recovery'],
-        phase: phase
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
@@ -369,24 +744,36 @@ window.FFFTraining = (function () {
         mode: 'steady',
         tone: 'grounded',
         reason: ['Maintenance phase: consistency matters more than constant escalation'],
-        phase: phase
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
     if (phase.stage === 'build' || phase.stage === 'bulk') {
-      if (readiness >= 65 && mentalRisk !== 'high') {
+      if (week.weeklyMode === 'progress-week' && readiness >= 65 && mentalRisk !== 'high') {
         return {
           mode: 'push',
           tone: 'confident',
-          reason: ['Growth-oriented phase with enough readiness to support progression'],
-          phase: phase
+          reason: ['Growth-oriented phase with enough readiness and weekly support to justify progression'],
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
       return {
         mode: 'hold',
         tone: 'grounded',
-        reason: ['Growth-oriented phase, but recovery is not strong enough for aggressive pushing'],
-        phase: phase
+        reason: ['Growth-oriented phase, but the wider weekly picture is not strong enough for aggressive pushing'],
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
@@ -396,7 +783,11 @@ window.FFFTraining = (function () {
           mode: 'build',
           tone: 'confident',
           reason: ['Recovery basics are strong and this phase rewards patient, steady progress'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
 
@@ -405,7 +796,11 @@ window.FFFTraining = (function () {
           mode: 'stabilise',
           tone: 'supportive',
           reason: ['This phase needs consistency, and the recovery basics are too weak to ignore'],
-          phase: phase
+          phase: phase,
+          familySummary: familySummary,
+          strongestFamily: strongest,
+          weakestFamily: weakest,
+          weekly: week
         };
       }
 
@@ -413,7 +808,11 @@ window.FFFTraining = (function () {
         mode: 'build',
         tone: 'grounded',
         reason: ['This phase rewards patience, clean trendlines, and repeated good decisions'],
-        phase: phase
+        phase: phase,
+        familySummary: familySummary,
+        strongestFamily: strongest,
+        weakestFamily: weakest,
+        weekly: week
       };
     }
 
@@ -421,13 +820,23 @@ window.FFFTraining = (function () {
       mode: 'build',
       tone: 'grounded',
       reason: ['The broader picture supports steady accumulation rather than a dramatic shift'],
-      phase: phase
+      phase: phase,
+      familySummary: familySummary,
+      strongestFamily: strongest,
+      weakestFamily: weakest,
+      weekly: week
     };
   }
 
   return {
     getTrend: getTrend,
     decideExercise: decideExercise,
-    decideGlobal: decideGlobal
+    decideGlobal: decideGlobal,
+    summariseFamilies: summariseFamilies,
+    strongestFamily: strongestFamily,
+    weakestFamily: weakestFamily,
+    weeklySummary: weeklySummary,
+    familyLabel: familyLabel,
+    recommendedSwapForFamily: recommendedSwapForFamily
   };
 })();

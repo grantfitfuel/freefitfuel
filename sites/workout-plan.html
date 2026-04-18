@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=33">
+  <link rel="stylesheet" href="style.css?v=34">
 
   <style>
     :root{
@@ -107,6 +107,48 @@
       .legend .row{grid-template-columns:1fr}
       .legend .term{opacity:.9}
     }
+
+    .weekly-grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      margin-top:10px;
+    }
+    .weekly-box{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:12px;
+    }
+    .weekly-box h3{
+      margin:.1rem 0 .35rem;
+      font-size:.95rem;
+      color:var(--inkdim);
+      font-weight:600;
+    }
+    .weekly-value{
+      font-size:1.4rem;
+      font-weight:800;
+      line-height:1.1;
+    }
+    .weekly-sub{
+      margin-top:.35rem;
+      color:var(--inkdim);
+      font-size:.88rem;
+    }
+    .swap-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.4rem;
+      margin-top:.5rem;
+    }
+    .swap-chip{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.2rem .55rem;
+      background:rgba(255,255,255,.06);
+      font-size:.85rem;
+    }
   </style>
 </head>
 <body>
@@ -132,9 +174,52 @@
     </section>
 
     <section class="section">
-      <h2>Your Personalised Plan</h2>
-
+      <h2>Coach Summary</h2>
       <div id="coachSummary" class="ok" style="margin-bottom:12px;"></div>
+
+      <div id="weeklySnapshot" class="block">
+        <h3 style="margin:.1rem 0 .5rem">Weekly Coaching Snapshot</h3>
+        <div class="weekly-grid">
+          <div class="weekly-box">
+            <h3>Sessions Logged</h3>
+            <div class="weekly-value" id="weekSessions">—</div>
+            <div class="weekly-sub">Distinct training days in the last 7 days</div>
+          </div>
+          <div class="weekly-box">
+            <h3>Adherence</h3>
+            <div class="weekly-value" id="weekAdherence">—</div>
+            <div class="weekly-sub">Consistency score for the week</div>
+          </div>
+          <div class="weekly-box">
+            <h3>Training Quality</h3>
+            <div class="weekly-value" id="weekQuality">—</div>
+            <div class="weekly-sub">Quality signal after pain / strain penalties</div>
+          </div>
+          <div class="weekly-box">
+            <h3>Strongest Pattern</h3>
+            <div class="weekly-value" id="weekStrongest" style="font-size:1.05rem">—</div>
+            <div class="weekly-sub">Area showing the best recent signal</div>
+          </div>
+          <div class="weekly-box">
+            <h3>Weakest Pattern</h3>
+            <div class="weekly-value" id="weekWeakest" style="font-size:1.05rem">—</div>
+            <div class="weekly-sub">Area most likely to need caution or refinement</div>
+          </div>
+          <div class="weekly-box">
+            <h3>Weekly Mode</h3>
+            <div class="weekly-value" id="weekMode" style="font-size:1.05rem">—</div>
+            <div class="weekly-sub">The current weekly coaching stance</div>
+          </div>
+        </div>
+        <div id="weekSwapsWrap" style="margin-top:10px">
+          <div class="meta" style="margin-bottom:6px">Safer swap ideas for the weakest pattern</div>
+          <div class="swap-list" id="weekSwaps"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Your Personalised Plan</h2>
       <div id="progressGuide"></div>
       <div id="legendMount"></div>
       <div id="plan"></div>
@@ -180,15 +265,14 @@
     </footer>
   </div>
 
-  <!-- Engine files -->
   <script src="/js/engine/fff-state.js?v=1"></script>
-  <script src="/js/engine/fff-exercise-db.js?v=1"></script>
-  <script src="/js/engine/fff-recovery.js?v=1"></script>
-  <script src="/js/engine/fff-mind.js?v=1"></script>
-  <script src="/js/engine/fff-roadmap.js?v=1"></script>
-  <script src="/js/engine/fff-training.js?v=1"></script>
-  <script src="/js/engine/fff-messaging.js?v=1"></script>
-  <script src="/js/engine/fff-core.js?v=7"></script>
+  <script src="/js/engine/fff-exercise-db.js?v=2"></script>
+  <script src="/js/engine/fff-recovery.js?v=2"></script>
+  <script src="/js/engine/fff-mind.js?v=2"></script>
+  <script src="/js/engine/fff-roadmap.js?v=2"></script>
+  <script src="/js/engine/fff-training.js?v=6"></script>
+  <script src="/js/engine/fff-messaging.js?v=6"></script>
+  <script src="/js/engine/fff-core.js?v=12"></script>
 
   <script>
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
@@ -208,6 +292,14 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function titleCase(str){
+      str = String(str || '').replace(/-/g, ' ').trim();
+      if(!str) return '—';
+      return str.split(' ').map(function(part){
+        return part ? part.charAt(0).toUpperCase() + part.slice(1) : '';
+      }).join(' ');
     }
 
     var QUOTES = [
@@ -656,6 +748,7 @@
 
         renderPlan();
         renderCoachSummary();
+        renderWeeklySnapshot();
         wireWorkoutPlanLogsToEngine();
 
         alert('Cleared workout logs, PBs and wellness checks. Roadmap left intact.');
@@ -681,6 +774,65 @@
       }catch(err){
         el.className = 'warn';
         el.innerHTML = '<strong>Coach unavailable</strong><br>' + escapeHtml(err && err.message ? err.message : 'Engine could not produce a coaching summary.');
+      }
+    }
+
+    function renderWeeklySnapshot(){
+      var sessionsEl = document.getElementById('weekSessions');
+      var adherenceEl = document.getElementById('weekAdherence');
+      var qualityEl = document.getElementById('weekQuality');
+      var strongestEl = document.getElementById('weekStrongest');
+      var weakestEl = document.getElementById('weekWeakest');
+      var modeEl = document.getElementById('weekMode');
+      var swapsWrap = document.getElementById('weekSwapsWrap');
+      var swapsEl = document.getElementById('weekSwaps');
+
+      if(!sessionsEl || !window.FFF) return;
+
+      try{
+        var weekly = window.FFF.getWeeklySummary ? window.FFF.getWeeklySummary() : null;
+
+        if(!weekly){
+          sessionsEl.textContent = '—';
+          adherenceEl.textContent = '—';
+          qualityEl.textContent = '—';
+          strongestEl.textContent = '—';
+          weakestEl.textContent = '—';
+          modeEl.textContent = '—';
+          if(swapsEl) swapsEl.innerHTML = '';
+          return;
+        }
+
+        sessionsEl.textContent = String(weekly.sessionsLogged != null ? weekly.sessionsLogged : 0);
+        adherenceEl.textContent = String(weekly.adherence != null ? weekly.adherence : 0) + '/100';
+        qualityEl.textContent = String(weekly.quality != null ? weekly.quality : 0) + '/100';
+        strongestEl.textContent = titleCase(
+          window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
+            ? window.FFFTraining.familyLabel(weekly.strongestFamily || '')
+            : (weekly.strongestFamily || '—')
+        );
+        weakestEl.textContent = titleCase(
+          window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
+            ? window.FFFTraining.familyLabel(weekly.weakestFamily || '')
+            : (weekly.weakestFamily || '—')
+        );
+        modeEl.textContent = titleCase(String(weekly.weeklyMode || 'steady').replace(/-/g, ' '));
+
+        if(swapsEl){
+          var swaps = Array.isArray(weekly.swapSuggestions) ? weekly.swapSuggestions : [];
+          swapsEl.innerHTML = swaps.map(function(item){
+            return '<span class="swap-chip">' + escapeHtml(item) + '</span>';
+          }).join('');
+          swapsWrap.style.display = swaps.length ? 'block' : 'none';
+        }
+      }catch(err){
+        sessionsEl.textContent = '—';
+        adherenceEl.textContent = '—';
+        qualityEl.textContent = '—';
+        strongestEl.textContent = '—';
+        weakestEl.textContent = '—';
+        modeEl.textContent = '—';
+        if(swapsEl) swapsEl.innerHTML = '';
       }
     }
 
@@ -793,6 +945,7 @@
 
                 var result = window.FFF.logSet(engineKey, weight, reps, notes);
                 renderCoachSummary();
+                renderWeeklySnapshot();
                 refreshFeedback();
 
                 if(pbEl && result && result.isNewPB){
@@ -828,6 +981,7 @@
 
       if(!window.FFF){
         renderCoachSummary();
+        renderWeeklySnapshot();
         return;
       }
 
@@ -835,6 +989,7 @@
         window.FFF.ready();
       }catch(err){
         renderCoachSummary();
+        renderWeeklySnapshot();
         return;
       }
 
@@ -860,11 +1015,13 @@
           try{
             window.FFF.setCheck(key, box.checked);
             renderCoachSummary();
+            renderWeeklySnapshot();
           }catch(err){}
         });
       });
 
       renderCoachSummary();
+      renderWeeklySnapshot();
       wireWorkoutPlanLogsToEngine();
     });
   </script>

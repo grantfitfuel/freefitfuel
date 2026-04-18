@@ -673,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activityCardio: 'cardio'
   };
 
-  Object.entries(checkboxMap).forEach(([id, key]) => {
+    Object.entries(checkboxMap).forEach(([id, key]) => {
     const box = document.getElementById(id);
     if (!box) return;
 
@@ -681,9 +681,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     box.addEventListener('change', () => {
       FFF.setCheck(key, box.checked);
+      renderCoachSummary();
     });
   });
 
+  renderCoachSummary();
   wireWorkoutPlanLogsToEngine();
 });
 

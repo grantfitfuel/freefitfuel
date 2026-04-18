@@ -1,63 +1,45 @@
-// FreeFitFuel Core Engine v3
+// FreeFitFuel Engine — Core Coordinator
 
 window.FFF = (function () {
-  const STORAGE_KEYS = {
-    pb: 'fff.pb.v1',
-    logs: 'fff.logs.v1',
-    checks: 'fff.checks.v1',
-    coaching: 'fff.coaching.v1'
-  };
+  'use strict';
 
-  let state = {
-    pb: {},
-    logs: {},
-    checks: {},
-    coaching: {}
-  };
+  function ensureDeps() {
+    const missing = [];
+    if (!window.FFFState) missing.push('FFFState');
+    if (!window.FFFExerciseDB) missing.push('FFFExerciseDB');
+    if (!window.FFFRecovery) missing.push('FFFRecovery');
+    if (!window.FFFMind) missing.push('FFFMind');
+    if (!window.FFFRoadmap) missing.push('FFFRoadmap');
+    if (!window.FFFTraining) missing.push('FFFTraining');
+    if (!window.FFFMessaging) missing.push('FFFMessaging');
 
-  function safeParse(key) {
-    try {
-      return JSON.parse(localStorage.getItem(key) || '{}');
-    } catch (e) {
-      return {};
+    if (missing.length) {
+      throw new Error('FreeFitFuel engine missing dependencies: ' + missing.join(', '));
     }
   }
 
-  function load() {
-    state.pb = safeParse(STORAGE_KEYS.pb);
-    state.logs = safeParse(STORAGE_KEYS.logs);
-    state.checks = safeParse(STORAGE_KEYS.checks);
-    state.coaching = safeParse(STORAGE_KEYS.coaching);
-  }
-
-  function save() {
-    localStorage.setItem(STORAGE_KEYS.pb, JSON.stringify(state.pb));
-    localStorage.setItem(STORAGE_KEYS.logs, JSON.stringify(state.logs));
-    localStorage.setItem(STORAGE_KEYS.checks, JSON.stringify(state.checks));
-    localStorage.setItem(STORAGE_KEYS.coaching, JSON.stringify(state.coaching));
-  }
-
   function ready() {
-    load();
+    ensureDeps();
+    window.FFFState.load();
     return true;
   }
 
-  function nowISO() {
-    return new Date().toISOString();
+  function score(weight, reps) {
+    return (Number(weight) || 0) * (Number(reps) || 0);
   }
 
   function setPB(exercise, weight, reps) {
-    const current = state.pb[exercise];
-    const score = (Number(weight) || 0) * (Number(reps) || 0);
+    ready();
+    const current = window.FFFState.getPB(exercise);
+    const nextScore = score(weight, reps);
 
-    if (!current || score > (current.score || 0)) {
-      state.pb[exercise] = {
+    if (!current || nextScore > (current.score || 0)) {
+      window.FFFState.setPB(exercise, {
         weight: Number(weight) || 0,
         reps: Number(reps) || 0,
-        score,
-        date: nowISO()
-      };
-      save();
+        score: nextScore,
+        date: window.FFFState.nowISO()
+      });
       return true;
     }
 
@@ -65,31 +47,32 @@ window.FFF = (function () {
   }
 
   function getPB(exercise) {
-    return state.pb[exercise] || null;
+    ready();
+    return window.FFFState.getPB(exercise);
   }
 
   function logSet(exercise, weight, reps, notes) {
-    if (!state.logs[exercise]) state.logs[exercise] = [];
+    ready();
 
     const entry = {
       weight: Number(weight) || 0,
       reps: Number(reps) || 0,
       notes: notes || '',
-      date: nowISO()
+      date: window.FFFState.nowISO()
     };
 
-    state.logs[exercise].push(entry);
+    window.FFFState.appendLog(exercise, entry);
     const isNewPB = setPB(exercise, weight, reps);
-    save();
 
     return {
-      entry,
-      isNewPB
+      entry: entry,
+      isNewPB: isNewPB
     };
   }
 
   function getLogs(exercise) {
-    return state.logs[exercise] || [];
+    ready();
+    return window.FFFState.getLogs(exercise);
   }
 
   function getLatestLog(exercise) {
@@ -98,174 +81,114 @@ window.FFF = (function () {
   }
 
   function setCheck(name, value) {
-    state.checks[name] = !!value;
-    save();
+    ready();
+    return window.FFFState.setCheck(name, value);
   }
 
   function getCheck(name) {
-    return !!state.checks[name];
+    ready();
+    return window.FFFState.getCheck(name);
   }
 
   function getAllChecks() {
-    return { ...state.checks };
+    ready();
+    return window.FFFState.getChecks();
   }
 
   function clearChecks() {
-    state.checks = {};
-    save();
+    ready();
+    window.FFFState.clearChecks();
   }
 
   function getCheckScore() {
-    const checks = getAllChecks();
-    return Object.values(checks).filter(Boolean).length;
+    ready();
+    return window.FFFRecovery.scoreChecks(window.FFFState.getChecks());
   }
 
   function getTotalLogCount() {
-    return Object.values(state.logs).reduce((sum, arr) => sum + arr.length, 0);
-  }
-
-  function daysBetween(a, b) {
-    const ms = Math.abs(new Date(a).getTime() - new Date(b).getTime());
-    return ms / 86400000;
+    ready();
+    return window.FFFState.getTotalLogCount();
   }
 
   function getExerciseTrend(exercise) {
-    const logs = getLogs(exercise);
-    if (logs.length < 2) return { trend: 'insufficient', delta: 0 };
-
-    const last = logs[logs.length - 1];
-    const prev = logs[logs.length - 2];
-
-    const lastScore = (last.weight || 0) * (last.reps || 0);
-    const prevScore = (prev.weight || 0) * (prev.reps || 0);
-    const delta = lastScore - prevScore;
-
-    if (delta > 0) return { trend: 'up', delta };
-    if (delta < 0) return { trend: 'down', delta };
-    return { trend: 'flat', delta: 0 };
+    ready();
+    return window.FFFTraining.getTrend(window.FFFState.getLogs(exercise));
   }
 
   function analyseExercise(exercise) {
-    const logs = getLogs(exercise);
-    const latest = getLatestLog(exercise);
-    const pb = getPB(exercise);
-    const trend = getExerciseTrend(exercise);
-    const checkScore = getCheckScore();
+    ready();
 
-    if (!latest) {
-      return {
-        status: 'empty',
-        headline: 'No data yet',
-        message: 'Log your first set to unlock coaching feedback.'
-      };
-    }
-
-    const lowerNotes = String(latest.notes || '').toLowerCase();
-    const cautionWords = ['pain', 'sharp', 'twinge', 'injury', 'dizzy', 'strain'];
-    const caution = cautionWords.some(word => lowerNotes.includes(word));
-
-    if (caution) {
-      return {
-        status: 'caution',
-        headline: 'Caution flag',
-        message: 'Your notes suggest discomfort. Reduce load, shorten range, or stop if pain is sharp or worsening.'
-      };
-    }
-
-    if (pb && latest.weight === pb.weight && latest.reps === pb.reps) {
-      return {
-        status: 'pb',
-        headline: 'New personal best',
-        message: 'Progress is real. Keep technique just as clean before pushing again.'
-      };
-    }
-
-    if (trend.trend === 'up') {
-      return {
-        status: 'up',
-        headline: 'Moving forward',
-        message: 'You improved from your last logged set. Small wins like this are exactly what builds long-term results.'
-      };
-    }
-
-    if (trend.trend === 'flat' && checkScore <= 1) {
-      return {
-        status: 'recovery',
-        headline: 'Recovery may be limiting you',
-        message: 'Performance is flat and your daily check score is low. Prioritise sleep, hydration, and fuelling before forcing progression.'
-      };
-    }
-
-    if (trend.trend === 'down') {
-      return {
-        status: 'down',
-        headline: 'Slight drop today',
-        message: 'That is not failure. Hold the load steady, tighten form, and try to bounce back next session.'
-      };
-    }
-
-    if (checkScore >= 3) {
-      return {
-        status: 'ready',
-        headline: 'Solid readiness',
-        message: 'Your daily basics look good. If form was clean today, a small progression next session is reasonable.'
-      };
-    }
+    const logs = window.FFFState.getLogs(exercise);
+    const checks = window.FFFState.getChecks();
+    const allLogs = window.FFFState.getAllLogs();
+    const recovery = window.FFFRecovery.analyse(checks, allLogs);
+    const mind = window.FFFMind.analyse(allLogs, checks);
+    const profile = window.FFFExerciseDB.getExerciseProfile(exercise);
+    const decision = window.FFFTraining.decideExercise(profile, logs, recovery, mind);
+    const message = window.FFFMessaging.exerciseMessage(decision);
 
     return {
-      status: 'steady',
-      headline: 'Steady work',
-      message: 'Keep building. Consistent clean reps matter more than chasing every session.'
+      exercise: exercise,
+      profile: profile,
+      logs: logs,
+      latest: logs.length ? logs[logs.length - 1] : null,
+      pb: window.FFFState.getPB(exercise),
+      trend: decision.trend,
+      recovery: recovery,
+      mind: mind,
+      decision: decision,
+      headline: message.headline,
+      message: message.message,
+      status: decision.action
     };
   }
 
   function getGlobalCoachingSummary() {
-    const totalLogs = getTotalLogCount();
-    const checkScore = getCheckScore();
+    ready();
 
-    if (totalLogs === 0) {
-      return {
-        headline: 'Engine ready',
-        message: 'Start logging sessions and the coaching layer will begin responding to your actual training.'
-      };
-    }
-
-    if (checkScore === 4) {
-      return {
-        headline: 'All green on recovery basics',
-        message: 'Hydration, sleep, macros, and activity are all ticked. Good day to train with intent.'
-      };
-    }
-
-    if (checkScore <= 1) {
-      return {
-        headline: 'Low recovery support today',
-        message: 'Training still counts, but keep expectations realistic and focus on quality rather than chasing numbers.'
-      };
-    }
+    const checks = window.FFFState.getChecks();
+    const allLogs = window.FFFState.getAllLogs();
+    const roadmap = window.FFFState.getRoadmap();
+    const recovery = window.FFFRecovery.analyse(checks, allLogs);
+    const mind = window.FFFMind.analyse(allLogs, checks);
+    const roadmapSummary = window.FFFRoadmap.summarise(roadmap);
+    const totalLogs = window.FFFState.getTotalLogCount();
+    const globalDecision = window.FFFTraining.decideGlobal(recovery, mind, roadmapSummary, totalLogs);
+    const message = window.FFFMessaging.globalMessage(globalDecision, recovery, mind);
 
     return {
-      headline: 'Keep stacking consistent days',
-      message: 'You do not need perfect conditions. You do need enough good days repeated over time.'
+      headline: message.headline,
+      message: message.message,
+      recovery: recovery,
+      mind: mind,
+      roadmap: roadmapSummary,
+      totalLogs: totalLogs,
+      mode: globalDecision.mode
     };
   }
 
+  function resetWellnessAndLogs() {
+    ready();
+    window.FFFState.nukeAllFFFLocalData();
+  }
+
   return {
-    version: '3.0',
-    ready,
-    setPB,
-    getPB,
-    logSet,
-    getLogs,
-    getLatestLog,
-    setCheck,
-    getCheck,
-    getAllChecks,
-    clearChecks,
-    getCheckScore,
-    getTotalLogCount,
-    getExerciseTrend,
-    analyseExercise,
-    getGlobalCoachingSummary
+    version: '4.0',
+    ready: ready,
+    setPB: setPB,
+    getPB: getPB,
+    logSet: logSet,
+    getLogs: getLogs,
+    getLatestLog: getLatestLog,
+    setCheck: setCheck,
+    getCheck: getCheck,
+    getAllChecks: getAllChecks,
+    clearChecks: clearChecks,
+    getCheckScore: getCheckScore,
+    getTotalLogCount: getTotalLogCount,
+    getExerciseTrend: getExerciseTrend,
+    analyseExercise: analyseExercise,
+    getGlobalCoachingSummary: getGlobalCoachingSummary,
+    resetWellnessAndLogs: resetWellnessAndLogs
   };
 })();

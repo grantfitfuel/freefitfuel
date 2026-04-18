@@ -1,300 +1,477 @@
-// FreeFitFuel Engine — Exercise Intelligence
+// FreeFitFuel Engine — Exercise Knowledge Database
 
 window.FFFExerciseDB = (function () {
   'use strict';
 
-  const DB = [
+  const FAMILY_DB = [
     {
-      id: 'goblet_squat',
-      aliases: ['goblet squat', 'front squat', 'squat', 'air squat', 'box squat', 'chair squat'],
-      category: 'lower',
-      movementPattern: 'squat',
-      equipment: ['bodyweight', 'dumbbells', 'barbell'],
-      difficulty: 'beginner',
-      muscles: ['quads', 'glutes', 'core'],
-      jointStress: { shoulder: 0, elbow: 0, wrist: 1, hip: 1, knee: 2, ankle: 1, back: 1 },
-      fatigueCost: 3,
-      regressions: ['box squat', 'chair squat', 'supported squat'],
-      progressions: ['front squat', 'back squat', 'tempo squat'],
-      cues: [
-        'Brace before you move.',
-        'Keep pressure through the mid-foot.',
-        'Let the knees track naturally over the toes.',
-        'Stand tall without throwing the ribs up.'
+      key: 'squat',
+      patterns: ['squat', 'quad-dominant', 'knee-dominant'],
+      match: [
+        'squat','goblet squat','front squat','back squat','box squat','hack squat',
+        'leg press','split squat','bulgarian','step up','step-up','lunge','reverse lunge',
+        'walking lunge','air squat','chair squat','wall sit','spanish squat'
       ],
-      injuryFlags: ['knee', 'hip', 'low_back']
+      primaryJoints: ['knee', 'hip'],
+      tissues: ['quads', 'glutes', 'patellar tendon', 'adductors'],
+      riskZones: ['knee', 'patellar tendon', 'hip'],
+      commonFailurePoints: [
+        'knee cave under fatigue',
+        'loss of depth consistency',
+        'torso collapse',
+        'rushing the eccentric',
+        'overloading before the pattern is stable'
+      ],
+      regressions: [
+        'box squat',
+        'chair squat',
+        'split squat to reduced depth',
+        'supported step-up',
+        'spanish squat hold'
+      ],
+      progressions: [
+        'goblet squat',
+        'front squat',
+        'back squat',
+        'tempo squat',
+        'paused squat'
+      ]
     },
     {
-      id: 'rdl',
-      aliases: ['romanian deadlift', 'rdl', 'deadlift', 'db romanian deadlift', 'hinge'],
-      category: 'lower',
-      movementPattern: 'hinge',
-      equipment: ['bodyweight', 'dumbbells', 'barbell', 'bands'],
-      difficulty: 'intermediate',
-      muscles: ['glutes', 'hamstrings', 'back'],
-      jointStress: { shoulder: 0, elbow: 0, wrist: 1, hip: 1, knee: 1, ankle: 0, back: 2 },
-      fatigueCost: 4,
-      regressions: ['band hip hinge', 'glute bridge', 'hip hinge drill'],
-      progressions: ['barbell rdl', 'single-leg rdl'],
-      cues: [
-        'Push the hips back first.',
-        'Keep the weight close.',
-        'Ribs stay stacked and lats stay on.',
-        'Stop before the low back starts taking over.'
+      key: 'hinge',
+      patterns: ['hinge', 'posterior-chain'],
+      match: [
+        'rdl','romanian deadlift','deadlift','db romanian deadlift','hip hinge',
+        'good morning','hip thrust','glute bridge','bridge','pull through',
+        'kettlebell swing','kb swing','single-leg rdl','single leg rdl'
       ],
-      injuryFlags: ['hamstring', 'low_back', 'hip']
+      primaryJoints: ['hip', 'spine'],
+      tissues: ['hamstrings', 'glutes', 'spinal erectors'],
+      riskZones: ['low back', 'hamstring', 'hip'],
+      commonFailurePoints: [
+        'losing spinal position',
+        'turning the hinge into a squat',
+        'loading range that is not owned',
+        'hamstrings taking over from glutes late in sets'
+      ],
+      regressions: [
+        'glute bridge',
+        'hip thrust',
+        'dowel hinge',
+        'reduced-range rdl'
+      ],
+      progressions: [
+        'db rdl',
+        'barbell rdl',
+        'deadlift',
+        'single-leg rdl',
+        'tempo hinge'
+      ]
     },
     {
-      id: 'push_up',
-      aliases: ['push-up', 'push up', 'incline push-up', 'knee push-up', 'diamond push-up'],
-      category: 'upper',
-      movementPattern: 'horizontal_push',
-      equipment: ['bodyweight'],
-      difficulty: 'beginner',
-      muscles: ['chest', 'triceps', 'shoulders', 'core'],
-      jointStress: { shoulder: 2, elbow: 1, wrist: 2, hip: 0, knee: 0, ankle: 0, back: 1 },
-      fatigueCost: 3,
-      regressions: ['wall push-up', 'incline push-up', 'knee push-up'],
-      progressions: ['feet-elevated push-up', 'weighted push-up', 'close-grip push-up'],
-      cues: [
-        'Body moves as one piece.',
-        'Hands screw into the floor lightly.',
-        'Keep the neck long and ribs quiet.',
-        'Stop before the shoulders roll forward.'
+      key: 'horizontal-push',
+      patterns: ['push', 'horizontal-push', 'press'],
+      match: [
+        'bench','bench press','db bench','dumbbell bench','floor press','push-up',
+        'push up','press-up','press up','incline press','incline dumbbell bench',
+        'chest press','dip','dips','close-grip push-up','close grip push up'
       ],
-      injuryFlags: ['shoulder', 'wrist', 'elbow']
+      primaryJoints: ['shoulder', 'elbow'],
+      tissues: ['pecs', 'triceps', 'front delts'],
+      riskZones: ['shoulder', 'elbow', 'wrist'],
+      commonFailurePoints: [
+        'flare through the shoulder',
+        'loss of scapular control',
+        'elbows drifting too wide',
+        'compensating with lumbar extension'
+      ],
+      regressions: [
+        'incline push-up',
+        'floor press',
+        'light dumbbell bench',
+        'close-grip elevated push-up'
+      ],
+      progressions: [
+        'db bench press',
+        'bench press',
+        'weighted push-up',
+        'dip progression'
+      ]
     },
     {
-      id: 'row',
-      aliases: ['row', 'db row', 'dumbbell row', 'one-arm db row', 'inverted row', 'chest-supported row'],
-      category: 'upper',
-      movementPattern: 'horizontal_pull',
-      equipment: ['bodyweight', 'dumbbells', 'bands'],
-      difficulty: 'beginner',
-      muscles: ['lats', 'mid_back', 'biceps'],
-      jointStress: { shoulder: 1, elbow: 1, wrist: 1, hip: 0, knee: 0, ankle: 0, back: 1 },
-      fatigueCost: 3,
-      regressions: ['band row', 'lighter db row', 'supported row'],
-      progressions: ['chest-supported row', 'heavier one-arm row'],
-      cues: [
-        'Pull the elbow toward the back pocket.',
-        'Keep the shoulder away from the ear.',
-        'Do not twist to manufacture range.',
-        'Pause briefly when the shoulder blade comes back.'
+      key: 'vertical-push',
+      patterns: ['push', 'vertical-push', 'press'],
+      match: [
+        'overhead press','ohp','db overhead press','shoulder press','press',
+        'landmine press','arnold press','pike push-up','pike push up',
+        'handstand push-up','handstand push up'
       ],
-      injuryFlags: ['shoulder', 'elbow']
+      primaryJoints: ['shoulder', 'elbow', 'scapula'],
+      tissues: ['delts', 'triceps', 'upper traps', 'serratus'],
+      riskZones: ['shoulder', 'neck', 'low back'],
+      commonFailurePoints: [
+        'rib flare and lumbar overextension',
+        'shrugging under fatigue',
+        'pressing around pain instead of through clean range',
+        'neck tension as load rises'
+      ],
+      regressions: [
+        'landmine press',
+        'seated db press',
+        'half-kneeling press',
+        'light strict press'
+      ],
+      progressions: [
+        'standing db press',
+        'barbell overhead press',
+        'push press',
+        'handstand progression'
+      ]
     },
     {
-      id: 'pull_up',
-      aliases: ['pull-up', 'pull up', 'chin-up', 'chin up', 'band-assist pull-up', 'negative pull-up'],
-      category: 'upper',
-      movementPattern: 'vertical_pull',
-      equipment: ['bodyweight', 'bands'],
-      difficulty: 'intermediate',
-      muscles: ['lats', 'biceps', 'grip', 'core'],
-      jointStress: { shoulder: 2, elbow: 2, wrist: 1, hip: 0, knee: 0, ankle: 0, back: 1 },
-      fatigueCost: 4,
-      regressions: ['band-assisted pull-up', 'negative pull-up', 'inverted row'],
-      progressions: ['strict pull-up', 'weighted pull-up'],
-      cues: [
-        'Start from a true hang you can control.',
-        'Drive elbows down rather than yanking with the hands.',
-        'Keep ribs down and legs quiet.',
-        'Own the lowering phase.'
+      key: 'horizontal-pull',
+      patterns: ['pull', 'horizontal-pull', 'row'],
+      match: [
+        'row','db row','dumbbell row','one-arm row','one arm row',
+        'chest-supported row','chest supported row','seated row','cable row',
+        'inverted row','ring row','band row','machine row'
       ],
-      injuryFlags: ['shoulder', 'elbow', 'wrist']
+      primaryJoints: ['shoulder', 'elbow', 'scapula'],
+      tissues: ['lats', 'mid-back', 'rear delts', 'biceps'],
+      riskZones: ['elbow', 'shoulder', 'upper back'],
+      commonFailurePoints: [
+        'yanking with the arm',
+        'losing torso stability',
+        'shrugging instead of rowing',
+        'using momentum to finish reps'
+      ],
+      regressions: [
+        'band row',
+        'light chest-supported row',
+        'supported one-arm row'
+      ],
+      progressions: [
+        'db row',
+        'chest-supported row',
+        'inverted row',
+        'heavy row variations'
+      ]
     },
     {
-      id: 'overhead_press',
-      aliases: ['overhead press', 'db overhead press', 'shoulder press', 'strict press', 'pike push-up'],
-      category: 'upper',
-      movementPattern: 'vertical_push',
-      equipment: ['bodyweight', 'dumbbells', 'barbell'],
-      difficulty: 'intermediate',
-      muscles: ['shoulders', 'triceps', 'upper_back', 'core'],
-      jointStress: { shoulder: 3, elbow: 1, wrist: 1, hip: 0, knee: 0, ankle: 0, back: 1 },
-      fatigueCost: 3,
-      regressions: ['half-kneeling press', 'lighter db press', 'landmine press'],
-      progressions: ['standing strict press', 'push press'],
-      cues: [
-        'Ribs stay down as the weight goes up.',
-        'Press up and slightly back.',
-        'Finish with the biceps near the ears without shrugging hard.',
-        'Do not turn it into a standing backbend.'
+      key: 'vertical-pull',
+      patterns: ['pull', 'vertical-pull'],
+      match: [
+        'pull-up','pull up','chin-up','chin up','lat pulldown','pulldown',
+        'assisted pull-up','assisted pull up','band pull-up','band pull up'
       ],
-      injuryFlags: ['shoulder', 'neck']
+      primaryJoints: ['shoulder', 'elbow', 'scapula'],
+      tissues: ['lats', 'biceps', 'forearms', 'upper back'],
+      riskZones: ['elbow', 'shoulder', 'wrist'],
+      commonFailurePoints: [
+        'losing scapular control at the bottom',
+        'cranking through elbow pain',
+        'using excessive body English',
+        'rushing to harder variants too soon'
+      ],
+      regressions: [
+        'band-assisted pull-up',
+        'lat pulldown',
+        'ring row',
+        'eccentric pull-up'
+      ],
+      progressions: [
+        'bodyweight pull-up',
+        'weighted pull-up',
+        'strict chin-up',
+        'higher-volume pull-up work'
+      ]
     },
     {
-      id: 'split_squat',
-      aliases: ['split squat', 'bulgarian split squat', 'reverse lunge', 'walking lunge', 'step up'],
-      category: 'lower',
-      movementPattern: 'single_leg',
-      equipment: ['bodyweight', 'dumbbells'],
-      difficulty: 'intermediate',
-      muscles: ['quads', 'glutes', 'adductors', 'core'],
-      jointStress: { shoulder: 0, elbow: 0, wrist: 0, hip: 1, knee: 2, ankle: 1, back: 1 },
-      fatigueCost: 3,
-      regressions: ['supported split squat', 'step-back lunge', 'sit-to-stand'],
-      progressions: ['rear-foot elevated split squat', 'loaded split squat'],
-      cues: [
-        'Stay tall through the torso.',
-        'Front foot stays rooted.',
-        'Lower under control rather than dropping.',
-        'Use the front leg to stand, not a bounce.'
+      key: 'core-anti-extension',
+      patterns: ['core', 'anti-extension'],
+      match: [
+        'plank','dead bug','hollow hold','hollow body hold','ab wheel',
+        'rollout','body saw','stir the pot'
       ],
-      injuryFlags: ['knee', 'hip', 'ankle']
+      primaryJoints: ['spine', 'ribcage', 'pelvis'],
+      tissues: ['abdominals', 'deep core', 'serratus'],
+      riskZones: ['low back', 'neck'],
+      commonFailurePoints: [
+        'lumbar extension under fatigue',
+        'rib flare',
+        'holding breath instead of bracing'
+      ],
+      regressions: [
+        'dead bug',
+        'short plank',
+        'bear hold'
+      ],
+      progressions: [
+        'plank',
+        'body saw',
+        'rollout',
+        'hollow variation'
+      ]
     },
     {
-      id: 'plank',
-      aliases: ['plank', 'side plank', 'rkc plank', 'hollow hold'],
-      category: 'core',
-      movementPattern: 'anti_extension',
-      equipment: ['bodyweight'],
-      difficulty: 'beginner',
-      muscles: ['core', 'obliques', 'glutes', 'shoulders'],
-      jointStress: { shoulder: 1, elbow: 0, wrist: 1, hip: 0, knee: 0, ankle: 0, back: 0 },
-      fatigueCost: 2,
-      regressions: ['short lever plank', 'knee plank', 'dead bug'],
-      progressions: ['long lever plank', 'rkc plank', 'side plank'],
-      cues: [
-        'Ribs down, glutes on.',
-        'Long line from head to heel.',
-        'Breathe quietly instead of bracing like you are being punched.',
-        'End the set before your hips sag.'
+      key: 'core-rotation-lateral',
+      patterns: ['core', 'rotation', 'lateral'],
+      match: [
+        'side plank','copenhagen','pallof','woodchop','russian twist',
+        'carry','farmer carry','suitcase carry','windmill'
       ],
-      injuryFlags: ['shoulder', 'wrist']
+      primaryJoints: ['spine', 'pelvis', 'shoulder'],
+      tissues: ['obliques', 'adductors', 'glutes', 'deep core'],
+      riskZones: ['groin', 'low back', 'shoulder'],
+      commonFailurePoints: [
+        'losing stacked posture',
+        'rotation coming from the wrong segment',
+        'gripping or shrugging to stabilise'
+      ],
+      regressions: [
+        'side plank from knees',
+        'short pallof press',
+        'light suitcase carry'
+      ],
+      progressions: [
+        'full side plank',
+        'copenhagen plank',
+        'heavy carry variations'
+      ]
     },
     {
-      id: 'dead_bug',
-      aliases: ['dead bug', 'banded dead bug'],
-      category: 'core',
-      movementPattern: 'anti_extension',
-      equipment: ['bodyweight', 'bands'],
-      difficulty: 'beginner',
-      muscles: ['deep_core', 'hip_flexors'],
-      jointStress: { shoulder: 0, elbow: 0, wrist: 0, hip: 0, knee: 0, ankle: 0, back: 0 },
-      fatigueCost: 1,
-      regressions: ['heel tap dead bug'],
-      progressions: ['banded dead bug', 'long lever dead bug'],
-      cues: [
-        'Keep the low back gently connected to the floor.',
-        'Move slowly enough that you do not lose the rib position.',
-        'Exhale on the reach.'
+      key: 'calf-foot',
+      patterns: ['ankle', 'calf', 'foot'],
+      match: [
+        'calf raise','heel raise','seated calf raise','standing calf raise',
+        'tib raise','anterior tib raise','toe raise','eccentric calf raise'
       ],
-      injuryFlags: ['low_back']
+      primaryJoints: ['ankle', 'foot'],
+      tissues: ['calf', 'achilles', 'foot intrinsic'],
+      riskZones: ['achilles', 'plantar fascia', 'shin'],
+      commonFailurePoints: [
+        'bouncing through tendon',
+        'not owning the bottom position',
+        'too much speed too soon'
+      ],
+      regressions: [
+        'double-leg calf raise',
+        'supported heel raise',
+        'small-range tib raise'
+      ],
+      progressions: [
+        'single-leg calf raise',
+        'loaded calf raise',
+        'eccentric calf raise'
+      ]
     },
     {
-      id: 'farmer_carry',
-      aliases: ['farmer carry', 'carry', 'suitcase carry'],
-      category: 'carry',
-      movementPattern: 'carry',
-      equipment: ['dumbbells'],
-      difficulty: 'intermediate',
-      muscles: ['grip', 'traps', 'core', 'glutes'],
-      jointStress: { shoulder: 1, elbow: 0, wrist: 1, hip: 0, knee: 0, ankle: 0, back: 1 },
-      fatigueCost: 3,
-      regressions: ['static hold', 'lighter carry'],
-      progressions: ['heavier carry', 'longer distance', 'suitcase carry'],
-      cues: [
-        'Stand tall, do not lean into the weight.',
-        'Walk quietly and keep the ribs stacked.',
-        'Grip hard without shrugging.'
+      key: 'cardio-z2',
+      patterns: ['cardio', 'z2', 'endurance'],
+      match: [
+        'z2','zone 2','walk','walking','bike','cycle','cycling','run','running',
+        'easy run','easy bike','row','rowing','swim','swimming'
       ],
-      injuryFlags: ['shoulder', 'wrist', 'neck']
+      primaryJoints: ['systemic'],
+      tissues: ['cardiorespiratory'],
+      riskZones: ['general fatigue', 'impact accumulation'],
+      commonFailurePoints: [
+        'drifting too hard on easy days',
+        'using cardio as punishment',
+        'stacking intensity on poor recovery'
+      ],
+      regressions: [
+        'walk',
+        'easy bike',
+        'shorter Z2 sessions'
+      ],
+      progressions: [
+        'longer Z2 duration',
+        'more consistency',
+        'better pace control'
+      ]
     },
     {
-      id: 'z2_cardio',
-      aliases: ['z2', 'zone 2', 'zone 2 cardio', 'liss', 'easy cardio', 'walk', 'brisk walk', 'easy bike', 'easy row'],
-      category: 'cardio',
-      movementPattern: 'aerobic_base',
-      equipment: ['bodyweight', 'bike', 'rower'],
-      difficulty: 'beginner',
-      muscles: ['cardiorespiratory'],
-      jointStress: { shoulder: 0, elbow: 0, wrist: 0, hip: 0, knee: 1, ankle: 1, back: 0 },
-      fatigueCost: 2,
-      regressions: ['shorter walk', 'flat route', 'cycle'],
-      progressions: ['longer duration', 'slight hills'],
-      cues: [
-        'Keep it conversational.',
-        'You should finish feeling better than when you started.',
-        'This is not a stealth interval session.'
+      key: 'cardio-threshold',
+      patterns: ['cardio', 'threshold', 'tempo', 'interval'],
+      match: [
+        'threshold','tempo','interval','hill repeat','hills','strides','vo2',
+        'speed work','quality run'
       ],
-      injuryFlags: ['foot', 'achilles', 'shin', 'knee']
-    },
-    {
-      id: 'interval_cardio',
-      aliases: ['intervals', 'hiit', 'threshold', 'tempo', 'hill repeats', 'strides'],
-      category: 'cardio',
-      movementPattern: 'high_intensity',
-      equipment: ['bodyweight', 'bike', 'rower'],
-      difficulty: 'intermediate',
-      muscles: ['cardiorespiratory'],
-      jointStress: { shoulder: 0, elbow: 0, wrist: 0, hip: 1, knee: 2, ankle: 2, back: 0 },
-      fatigueCost: 4,
-      regressions: ['fewer rounds', 'longer recovery', 'bike intervals'],
-      progressions: ['more rounds', 'faster pace', 'hill work'],
-      cues: [
-        'Quality first, not flailing.',
-        'Hold a repeatable effort.',
-        'If mechanics fall apart, the session is too hard.'
+      primaryJoints: ['systemic'],
+      tissues: ['cardiorespiratory', 'muscular endurance'],
+      riskZones: ['fatigue', 'calf', 'achilles', 'hamstring'],
+      commonFailurePoints: [
+        'doing quality on poor recovery',
+        'too much intensity density',
+        'turning threshold into race pace'
       ],
-      injuryFlags: ['achilles', 'shin', 'hamstring', 'knee']
+      regressions: [
+        'short threshold',
+        'reduced reps',
+        'tempo intervals with more recovery'
+      ],
+      progressions: [
+        'longer quality blocks',
+        'more reps',
+        'slightly tighter recovery'
+      ]
     }
   ];
 
-  function normalise(text) {
-    return String(text || '')
-      .trim()
+  const REGION_HINTS = [
+    { key: 'knee', words: ['knee','kneecap','patella','patellar'] },
+    { key: 'hip', words: ['hip','groin','adductor'] },
+    { key: 'low back', words: ['back','low back','lumbar'] },
+    { key: 'shoulder', words: ['shoulder','rotator cuff'] },
+    { key: 'elbow', words: ['elbow','tennis elbow','golfer elbow'] },
+    { key: 'wrist', words: ['wrist','thumb'] },
+    { key: 'hamstring', words: ['hamstring'] },
+    { key: 'achilles', words: ['achilles'] },
+    { key: 'plantar fascia', words: ['plantar','heel','arch'] },
+    { key: 'shin', words: ['shin','tibia'] },
+    { key: 'neck', words: ['neck'] }
+  ];
+
+  function normalise(str) {
+    return String(str || '')
       .toLowerCase()
-      .replace(/[–—]/g, '-')
-      .replace(/\s+/g, ' ');
+      .replace(/[–—−]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
-  function matchExercise(name) {
+  function unique(arr) {
+    const seen = {};
+    const out = [];
+    (arr || []).forEach(function (v) {
+      const k = normalise(v);
+      if (!k || seen[k]) return;
+      seen[k] = true;
+      out.push(v);
+    });
+    return out;
+  }
+
+  function inferRegionHints(name) {
     const n = normalise(name);
-    for (let i = 0; i < DB.length; i++) {
-      const ex = DB[i];
-      if (ex.aliases.some(function (alias) { return n.indexOf(normalise(alias)) !== -1; })) {
-        return ex;
+    const out = [];
+    REGION_HINTS.forEach(function (r) {
+      r.words.forEach(function (w) {
+        if (n.indexOf(normalise(w)) > -1) out.push(r.key);
+      });
+    });
+    return unique(out);
+  }
+
+  function findFamily(name) {
+    const n = normalise(name);
+
+    let best = null;
+    let bestScore = 0;
+
+    FAMILY_DB.forEach(function (fam) {
+      let score = 0;
+      fam.match.forEach(function (token) {
+        if (n.indexOf(normalise(token)) > -1) score++;
+      });
+      if (score > bestScore) {
+        best = fam;
+        bestScore = score;
       }
-    }
-    return null;
+    });
+
+    return best;
   }
 
   function fallbackProfile(name) {
+    const regionHints = inferRegionHints(name);
+
     return {
-      id: 'generic',
-      aliases: [],
-      category: 'general',
-      movementPattern: 'general',
-      equipment: ['unknown'],
-      difficulty: 'beginner',
-      muscles: ['general'],
-      jointStress: { shoulder: 1, elbow: 1, wrist: 1, hip: 1, knee: 1, ankle: 1, back: 1 },
-      fatigueCost: 2,
+      name: name || 'Unknown Exercise',
+      family: 'general',
+      patterns: ['general'],
+      primaryJoints: regionHints.length ? regionHints : ['general'],
+      tissues: ['general'],
+      riskZones: regionHints.length ? regionHints : ['general'],
+      commonFailurePoints: [
+        'load outpacing control',
+        'rushing reps',
+        'ignoring recovery context'
+      ],
       regressions: [],
       progressions: [],
-      cues: [
-        'Keep technique cleaner than your ego wants.',
-        'Move with control.',
-        'Stop before position falls apart.'
-      ],
-      injuryFlags: [],
-      unknown: true,
-      name: name || 'Exercise'
+      aliases: [],
+      confidence: 'low'
     };
   }
 
   function getExerciseProfile(name) {
-    const match = matchExercise(name);
-    if (!match) return fallbackProfile(name);
-    return Object.assign({}, match, { name: name || match.id });
+    const fam = findFamily(name);
+    if (!fam) return fallbackProfile(name);
+
+    const aliases = unique([name].concat(fam.match.slice(0, 8)));
+
+    return {
+      name: name || 'Unknown Exercise',
+      family: fam.key,
+      patterns: fam.patterns.slice(),
+      primaryJoints: fam.primaryJoints.slice(),
+      tissues: fam.tissues.slice(),
+      riskZones: fam.riskZones.slice(),
+      commonFailurePoints: fam.commonFailurePoints.slice(),
+      regressions: fam.regressions.slice(),
+      progressions: fam.progressions.slice(),
+      aliases: aliases,
+      confidence: 'high'
+    };
+  }
+
+  function areRelatedExercises(a, b) {
+    const pa = getExerciseProfile(a);
+    const pb = getExerciseProfile(b);
+
+    if (!pa || !pb) return false;
+    if (pa.family === pb.family) return true;
+
+    const sharedPatterns = pa.patterns.filter(function (p) {
+      return pb.patterns.indexOf(p) > -1;
+    });
+
+    return sharedPatterns.length > 0;
+  }
+
+  function getFamilySummary(name) {
+    const p = getExerciseProfile(name);
+    return {
+      family: p.family,
+      patterns: p.patterns,
+      riskZones: p.riskZones,
+      likelySwapTargets: p.regressions,
+      likelyProgressions: p.progressions
+    };
+  }
+
+  function analyseGroup(exerciseNames) {
+    const arr = Array.isArray(exerciseNames) ? exerciseNames : [];
+    const profiles = arr.map(getExerciseProfile);
+
+    const families = unique(profiles.map(function (p) { return p.family; }));
+    const riskZones = unique([].concat.apply([], profiles.map(function (p) { return p.riskZones; })));
+    const tissues = unique([].concat.apply([], profiles.map(function (p) { return p.tissues; })));
+
+    return {
+      count: profiles.length,
+      families: families,
+      riskZones: riskZones,
+      tissues: tissues
+    };
   }
 
   return {
-    all: DB.slice(),
-    normalise,
-    matchExercise,
-    getExerciseProfile
+    getExerciseProfile: getExerciseProfile,
+    getFamilySummary: getFamilySummary,
+    areRelatedExercises: areRelatedExercises,
+    analyseGroup: analyseGroup
   };
 })();

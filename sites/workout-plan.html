@@ -736,6 +736,35 @@ renderPlan();
 
 <script src="/js/engine/fff-core.js?v=2"></script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.FFF) return;
 
+  FFF.ready();
+
+  const mount = document.createElement('div');
+  mount.style.margin = '12px 20px';
+  mount.style.padding = '12px 14px';
+  mount.style.background = '#111418';
+  mount.style.color = '#e6e6ea';
+  mount.style.border = '1px solid #1f2630';
+  mount.style.borderRadius = '12px';
+  mount.style.fontWeight = '600';
+
+  const pb = FFF.getPB('Dumbbell Curl');
+
+  mount.textContent = pb
+    ? `Saved test PB: Dumbbell Curl ${pb.weight}kg x ${pb.reps}`
+    : 'Engine loaded but no PB saved yet';
+
+  const main = document.querySelector('.wrap');
+  if (main) {
+    main.prepend(mount);
+  } else {
+    document.body.prepend(mount);
+  }
+});
+</script>
+  
 </body>
 </html>

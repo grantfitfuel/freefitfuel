@@ -581,62 +581,7 @@ function renderPlan(){
         var badgeEl = drawer.querySelector('[data-badge]');
         var quoteEl = drawer.querySelector('[data-quote]');
 
-        function bestScore(obj){
-          var best=0;
-          for(var i=1;i<=5;i++){
-            var w=parseFloat(obj['w'+i]||'0')||0;
-            var r=parseFloat(obj['r'+i]||'0')||0;
-            best=Math.max(best, w*r);
-          }
-          return best;
-        }
-        function milestoneText(n){
-          if(n>=200) return 'Milestone: 200 logs saved 🔥';
-          if(n>=100) return 'Milestone: 100 logs saved 🎉';
-          if(n>=50)  return 'Milestone: 50 logs saved 💪';
-          if(n>=25)  return 'Milestone: 25 logs saved 🙌';
-          if(n>=10)  return 'Milestone: 10 logs saved ✅';
-          if(n>=5)   return 'Milestone: 5 logs saved ✨';
-          return '';
-        }
-
-        var anyRest = drawer.querySelector('[data-rest]');
-        var baseKey = anyRest ? anyRest.getAttribute('data-rest').split('.s')[0] : Math.random().toString(36).slice(2);
-
-        try{
-          var saved = JSON.parse(localStorage.getItem(NS_PB+baseKey) || '{}');
-          var inputs = logArea.querySelectorAll('[data-field]');
-          for(var i=0;i<inputs.length;i++){
-            var id=inputs[i].getAttribute('data-field');
-            if(saved[id]) inputs[i].value = saved[id];
-          }
-          var bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-          if(pbEl) pbEl.textContent = bestWas>0 ? ('PB score: '+bestWas.toFixed(1)+' (w×r best set)') : '';
-          var total=parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10);
-          if(badgeEl) badgeEl.textContent = milestoneText(total);
-        }catch(e){}
-
-        var saveBtns = logArea.querySelectorAll('[data-save]');
-        for(var s=0;s<saveBtns.length;s++){
-          saveBtns[s].addEventListener('click', function(){
-            var obj={}, inputs=logArea.querySelectorAll('[data-field]');
-            for(var i=0;i<inputs.length;i++){
-              obj[inputs[i].getAttribute('data-field')] = (inputs[i].value||'').trim();
-            }
-            localStorage.setItem(NS_PB+baseKey, JSON.stringify(obj));
-            var bestNow=bestScore(obj), bestWas=parseFloat(localStorage.getItem(NS_PB+baseKey+'.best')||'0')||0;
-            if(bestNow>bestWas){
-              localStorage.setItem(NS_PB+baseKey+'.best', bestNow);
-              if(pbEl) pbEl.textContent='New PB! '+bestNow.toFixed(1)+' (best w×r)';
-            } else {
-              if(pbEl) pbEl.textContent = bestWas>0 ? ('PB score: '+bestWas.toFixed(1)+' (w×r best set)') : 'Saved.';
-            }
-            var total=(parseInt(localStorage.getItem('fff.workoutplan.saves')||'0',10)+1);
-            localStorage.setItem('fff.workoutplan.saves', total);
-            if(badgeEl) badgeEl.textContent = (total%5===0)?'Progress logged ✅':'';
-            if(quoteEl) quoteEl.textContent = pick(QUOTES);
-          });
-        }
+        
       })(drawers[d]);
     }
 

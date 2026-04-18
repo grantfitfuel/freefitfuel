@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=33">
+  <link rel="stylesheet" href="style.css?v=32">
 
   <style>
     :root{
@@ -31,14 +31,7 @@
     .mov-title a:hover{color:var(--accent)}
     .rx{opacity:.9}
     .mov-tools{display:flex;gap:.4rem;align-items:center}
-    .btn-sm{
-      border:1px solid var(--stroke);
-      background:var(--glass);
-      color:var(--ink);
-      padding:.35rem .6rem;
-      border-radius:8px;
-      cursor:pointer;
-    }
+    .btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.35rem .6rem;border-radius:8px;cursor:pointer}
 
     .drawer{display:none;margin:.45rem 0 0}
     .drawer.open{display:block}
@@ -61,14 +54,7 @@
 
     .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
     .restbar .left{opacity:.9;min-width:44px}
-    .restbar input[type="number"]{
-      width:84px;
-      background:#0b0f14;
-      border:1px solid var(--stroke);
-      border-radius:8px;
-      color:var(--ink);
-      padding:.34rem .45rem;
-    }
+    .restbar input[type="number"]{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.34rem .45rem}
 
     @media (max-width:520px){
       .log-row{grid-template-columns:60px 1fr 1fr; grid-auto-rows:auto}
@@ -87,11 +73,11 @@
     .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.55rem .6rem;border-radius:8px}
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
 
-    .accordion{border:1px solid var(--stroke);border-radius:12px;background:#111418;padding:12px;margin-bottom:1rem}
-    .acc-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;cursor:pointer}
-    .acc-toggle{all:unset;cursor:pointer;color:var(--accent);font-size:1.05rem}
-    .accordion .acc-toggle::after{content:"▸";margin-left:.45rem;opacity:.8}
-    .accordion.open .acc-toggle::after{content:"▾";margin-left:.45rem;opacity:.8}
+    .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px; margin-bottom:1rem}
+    .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem; cursor:pointer}
+    .acc-toggle{all:unset; cursor:pointer; color:var(--accent); font-size:1.05rem}
+    .accordion .acc-toggle::after{content:"▸"; margin-left:.45rem; opacity:.8}
+    .accordion.open .acc-toggle::after{content:"▾"; margin-left:.45rem; opacity:.8}
     .acc-body{margin-top:.5rem}
     [hidden]{display:none !important;}
 
@@ -104,10 +90,7 @@
     .legend .row{display:grid;grid-template-columns:140px 1fr;gap:.6rem;margin-top:.5rem}
     .legend .term{color:var(--ink);font-weight:600}
     .legend .def{color:var(--inkdim)}
-    @media (max-width:520px){
-      .legend .row{grid-template-columns:1fr}
-      .legend .term{opacity:.9}
-    }
+    @media (max-width:520px){ .legend .row{grid-template-columns:1fr} .legend .term{opacity:.9} }
   </style>
 </head>
 <body>
@@ -187,14 +170,12 @@
 <script>
 /* ===== Keys / constants ===== */
 var ROADMAP_KEY = 'fff.roadmap.plan.v1';
+var LEGACY_NS_PB = 'fff.workoutplan.pb.';
+var LEGACY_NS_CHECK = 'fff.workoutplan.check.';
 
 /* ===== Small utils ===== */
-function yt(q){
-  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(String(q || 'exercise') + ' form');
-}
-function pick(arr){
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(String(q||'exercise')+' form'); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function escapeHtml(str){
   return String(str || '')
     .replace(/&/g, '&amp;')
@@ -203,7 +184,7 @@ function escapeHtml(str){
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
-var QUOTES = [
+var QUOTES=[
   "Small wins compound. Log the set, own the day.",
   "Perfect form, steady breath, then add a little.",
   "Consistency beats intensity when intensity is inconsistent.",
@@ -213,14 +194,14 @@ var QUOTES = [
 
 /* ===== Rest timer ===== */
 function restControlsHTML(id){
-  return '' +
-    '<div class="restbar" data-rest="' + id + '" data-bound="0">' +
-      '<span>⏱ Rest:</span>' +
-      '<input type="number" min="5" step="5" value="90" aria-label="Rest seconds">' +
-      '<button class="btn-sm" data-act="rest-start">Start</button>' +
-      '<button class="btn-sm" data-act="rest-stop">Stop</button>' +
-      '<span class="left" aria-live="polite">90s</span>' +
-    '</div>';
+  return ''+
+  '<div class="restbar" data-rest="'+id+'" data-bound="0">'+
+    '<span>⏱ Rest:</span>'+
+    '<input type="number" min="5" step="5" value="90" aria-label="Rest seconds">'+
+    '<button class="btn-sm" data-act="rest-start">Start</button>'+
+    '<button class="btn-sm" data-act="rest-stop">Stop</button>'+
+    '<span class="left" aria-live="polite">90s</span>'+
+  '</div>';
 }
 function hookRestTimers(scope){
   var bars = scope.querySelectorAll('.restbar');
@@ -330,7 +311,7 @@ function renderProgressGuide(stages){
       + '<div class="block">'
       +   '<p class="quote" style="margin-top:0">'
       +     '<strong>This plan has one stage:</strong> ' + onlyName + '<br>'
-      +     stageGuidanceText(only.name, only.blurb)
+      +     + stageGuidanceText(only.name, only.blurb)
       +   '</p>'
       +   '<p class="meta" style="margin:.55rem 0 0">'
       +     'If progress stalls, recovery worsens, or the plan starts to feel too easy, update your roadmap and generate the next stage rather than forcing this one indefinitely.'
@@ -377,31 +358,30 @@ var LEGEND_DEFS = {
 };
 function detectLegendTerms(data){
   var found = {};
-  function pushTerm(t){ found[t] = true; }
-
+  function pushTerm(t){ found[t]=true; }
   var stages = (data && data.stages) ? data.stages : [];
-  for(var si = 0; si < stages.length; si++){
+  for(var si=0; si<stages.length; si++){
     var prog = stages[si].programByDay || [];
-    for(var di = 0; di < prog.length; di++){
+    for(var di=0; di<prog.length; di++){
       var day = prog[di] || [];
-      for(var ei = 0; ei < day.length; ei++){
+      for(var ei=0; ei<day.length; ei++){
         var it = day[ei] || {};
         var name = String(it.name || '');
-        var cue  = String(it.cue || '');
+        var cue  = String(it.cue  || '');
         var extras = (name + ' ' + cue).toUpperCase();
 
-        if(it.type && String(it.type).toLowerCase() === 'compound') pushTerm('Compound');
-        if(it.type && String(it.type).toLowerCase() === 'accessory') pushTerm('Accessory');
+        if (it.type && String(it.type).toLowerCase()==='compound') pushTerm('Compound');
+        if (it.type && String(it.type).toLowerCase()==='accessory') pushTerm('Accessory');
 
-        var ABBR = ['LISS','MISS','HIIT','AMRAP','EMOM','RPE','ROM','SS'];
-        for(var a = 0; a < ABBR.length; a++){
-          if(extras.indexOf(ABBR[a]) > -1) pushTerm(ABBR[a]);
+        var ABBR=['LISS','MISS','HIIT','AMRAP','EMOM','RPE','ROM','SS'];
+        for(var a=0;a<ABBR.length;a++){
+          if(extras.indexOf(ABBR[a])>-1) pushTerm(ABBR[a]);
         }
 
-        if(it.rir !== undefined && String(it.rir).trim() !== '') pushTerm('RIR');
+        if (it.rir !== undefined && String(it.rir).trim()!=='') pushTerm('RIR');
 
-        var tempoPattern = /\b\d-\d-\d\b/;
-        if(tempoPattern.test(name) || tempoPattern.test(cue)) pushTerm('Tempo');
+        var tempoPattern=/\b\d-\d-\d\b/;
+        if (tempoPattern.test(name) || tempoPattern.test(cue)) pushTerm('Tempo');
       }
     }
   }
@@ -410,33 +390,29 @@ function detectLegendTerms(data){
 function renderLegend(terms){
   var mount = document.getElementById('legendMount');
   if(!mount) return;
-
   if(!terms.length){
-    mount.innerHTML = '';
+    mount.innerHTML='';
     return;
   }
-
-  var rows = '';
-  for(var i = 0; i < terms.length; i++){
-    var t = terms[i], def = LEGEND_DEFS[t] || '';
-    rows += '<div class="row"><div class="term">' + t + '</div><div class="def">' + def + '</div></div>';
+  var rows='';
+  for(var i=0;i<terms.length;i++){
+    var t=terms[i], def=LEGEND_DEFS[t]||'';
+    rows += '<div class="row"><div class="term">'+t+'</div><div class="def">'+def+'</div></div>';
   }
-  mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>' + rows + '</details>';
+  mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>'+rows+'</details>';
 }
 
 /* ===== Accordion ===== */
 function setupAccordions(){
   var accs = document.querySelectorAll('.accordion');
-  for(var i = 0; i < accs.length; i++){
+  for(var i=0;i<accs.length;i++){
     (function(acc){
       var btn = acc.querySelector('.acc-toggle');
-      var body = acc.querySelector('.acc-body');
-      if(!btn || !body) return;
-
+      var body= acc.querySelector('.acc-body');
+      if(!btn||!body) return;
       acc.classList.remove('open');
       btn.setAttribute('aria-expanded','false');
-      body.hidden = true;
-
+      body.hidden=true;
       btn.addEventListener('click', function(){
         var isOpen = acc.classList.contains('open');
         acc.classList.toggle('open', !isOpen);
@@ -449,26 +425,26 @@ function setupAccordions(){
 
 /* ===== Render Plan ===== */
 function renderPlan(){
-  var wrap = document.getElementById('plan');
-  var msg  = document.getElementById('planMsg');
+  var wrap=document.getElementById('plan');
+  var msg =document.getElementById('planMsg');
   if(!wrap) return;
 
   try{
-    var raw = null;
-    try{ raw = localStorage.getItem(ROADMAP_KEY); }catch(e){}
+    var raw=null;
+    try{ raw=localStorage.getItem(ROADMAP_KEY); }catch(e){}
 
     if(!raw){
-      wrap.innerHTML = '<div class="warn">No roadmap found.</div>';
+      wrap.innerHTML='<div class="warn">No roadmap found.</div>';
       renderLegend([]);
       renderProgressGuide([]);
       return;
     }
 
-    var data = null;
+    var data=null;
     try{
-      data = JSON.parse(raw);
+      data=JSON.parse(raw);
     }catch(e){
-      wrap.innerHTML = '<div class="warn">Saved roadmap unreadable.</div>';
+      wrap.innerHTML='<div class="warn">Saved roadmap unreadable.</div>';
       renderLegend([]);
       renderProgressGuide([]);
       return;
@@ -476,7 +452,7 @@ function renderPlan(){
 
     var stages = Array.isArray(data.stages) ? data.stages : [];
     if(!stages.length){
-      wrap.innerHTML = '<div class="warn">Roadmap has no stages.</div>';
+      wrap.innerHTML='<div class="warn">Roadmap has no stages.</div>';
       renderLegend([]);
       renderProgressGuide([]);
       return;
@@ -486,64 +462,60 @@ function renderPlan(){
     renderLegend(terms);
     renderProgressGuide(stages);
 
-    var html = '';
-
-    for(var si = 0; si < stages.length; si++){
+    var html='';
+    for(var si=0; si<stages.length; si++){
       var stage = stages[si] || {};
-      html += '<div class="accordion">' +
-                '<div class="acc-head"><button class="acc-toggle" aria-expanded="false">' + escapeHtml(stage.name || ('Stage ' + (si + 1))) + '</button></div>' +
-                '<div class="acc-body" hidden>' +
-                  (stage.blurb ? ('<p class="meta">' + escapeHtml(stage.blurb) + '</p>') : '') +
+      html += '<div class="accordion">'+
+                '<div class="acc-head"><button class="acc-toggle" aria-expanded="false">'+escapeHtml(stage.name||('Stage '+(si+1)))+'</button></div>'+
+                '<div class="acc-body" hidden>'+
+                  (stage.blurb?('<p class="meta">'+escapeHtml(stage.blurb)+'</p>'):'')+
                   '<div class="days">';
 
       var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-
-      for(var di = 0; di < 7; di++){
+      for(var di=0; di<7; di++){
         var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
         var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
+        html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>'+escapeHtml(label)+'</strong></div></div>';
 
-        html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>' + escapeHtml(label) + '</strong></div></div>';
-
-        for(var ei = 0; ei < items.length; ei++){
+        for(var ei=0; ei<items.length; ei++){
           var it = items[ei] || {};
-          var presc = (it.type === 'cardio')
-            ? [it.duration_min ? (it.duration_min + ' min') : null, it.work_s ? ('work ' + it.work_s + 's') : null, it.rest_s ? ('rest ' + it.rest_s + 's') : null, it.rounds ? (it.rounds + ' rounds') : null].filter(Boolean).join(' · ')
-            : ((it.sets || '—') + '×' + (it.reps || '—') + ' · ' + (it.rir || '—') + ' RIR · ' + (it.rest || 60) + 's rest');
+          var presc = (it.type==='cardio')
+            ? [it.duration_min? (it.duration_min+' min'):null, it.work_s?('work '+it.work_s+'s'):null, it.rest_s?('rest '+it.rest_s+'s'):null, it.rounds? (it.rounds+' rounds'):null].filter(Boolean).join(' · ')
+            : ((it.sets||'—')+'×'+(it.reps||'—')+' · '+(it.rir||'—')+' RIR · '+(it.rest||60)+'s rest');
 
-          html += '<div class="mov" style="margin:.5rem 0 0">' +
-                    '<div class="mov-head">' +
-                      '<div class="mov-title">' +
-                        '<a href="' + yt(it.name || 'exercise') + '" target="_blank" rel="noopener">' + escapeHtml(it.name || 'Exercise') + '</a>' +
-                        ((it.type && it.type !== 'cardio') ? (' <span class="badge">' + escapeHtml(it.type) + '</span>') : '') +
-                      '</div>' +
-                      '<div class="rx">' + escapeHtml(presc) + '</div>' +
-                      '<div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>' +
-                    '</div>' +
-                    (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
-                    ((it.alts && it.alts.length) ? ('<div class="alt-chips">' + it.alts.map(function(alt){ return '<a class="alt-chip" href="' + yt(alt) + '" target="_blank" rel="noopener">' + escapeHtml(alt) + '</a>'; }).join('') + '</div>') : '') +
-                    '<div class="drawer" data-drawer>' +
-                      '<div class="log-grid" data-log>' +
+          html += '<div class="mov" style="margin:.5rem 0 0">'+
+                    '<div class="mov-head">'+
+                      '<div class="mov-title">'+
+                        '<a href="'+yt(it.name||'exercise')+'" target="_blank" rel="noopener">'+escapeHtml(it.name||'Exercise')+'</a>'+
+                        ((it.type && it.type!=='cardio') ? (' <span class="badge">'+escapeHtml(it.type)+'</span>') : '')+
+                      '</div>'+
+                      '<div class="rx">'+escapeHtml(presc)+'</div>'+
+                      '<div class="mov-tools"><button class="btn-sm" data-open>Log</button></div>'+
+                    '</div>'+
+                    (it.cue?('<p class="meta" style="margin:.3rem 0 0">'+escapeHtml(it.cue)+'</p>'):'')+
+                    ((it.alts && it.alts.length)?('<div class="alt-chips">'+it.alts.map(function(alt){ return '<a class="alt-chip" href="'+yt(alt)+'" target="_blank" rel="noopener">'+escapeHtml(alt)+'</a>'; }).join('')+'</div>'):'')+
+                    '<div class="drawer" data-drawer>'+
+                      '<div class="log-grid" data-log>'+
                         [1,2,3,4,5].map(function(i){
-                          return ''
-                            + '<div class="log-row">'
-                            +   '<strong>Set ' + i + '</strong>'
-                            +   '<input inputmode="decimal" placeholder="kg" data-field="w' + i + '">'
-                            +   '<input inputmode="numeric" placeholder="reps" data-field="r' + i + '">'
-                            +   '<input placeholder="notes" data-field="n' + i + '">'
-                            +   '<button class="btn-sm" data-save>Save</button>'
-                            + '</div>'
-                            + (it.type === 'cardio' ? '' : restControlsHTML('s' + si + 'd' + di + 'e' + ei + '.s' + i));
-                        }).join('') +
-                      '</div>' +
-                      '<div class="meta-row">' +
-                        '<span class="pb" data-pb></span>' +
-                        '<span class="badge" data-badge></span>' +
-                      '</div>' +
-                      '<div class="quote" data-quote></div>' +
-                    '</div>' +
+                          return ''+
+                          '<div class="log-row">'+
+                            '<strong>Set '+i+'</strong>'+
+                            '<input inputmode="decimal" placeholder="kg" data-field="w'+i+'">'+
+                            '<input inputmode="numeric" placeholder="reps" data-field="r'+i+'">'+
+                            '<input placeholder="notes" data-field="n'+i+'">'+
+                            '<button class="btn-sm" data-save>Save</button>'+
+                          '</div>'+
+                          (it.type==='cardio' ? '' : restControlsHTML('s'+si+'d'+di+'e'+ei+'.s'+i));
+                        }).join('')+
+                      '</div>'+
+                      '<div class="meta-row">'+
+                        '<span class="pb" data-pb></span>'+
+                        '<span class="badge" data-badge></span>'+
+                      '</div>'+
+                      '<div class="quote" data-quote></div>'+
+                    '</div>'+
                   '</div>';
         }
-
         html += '</div>';
       }
 
@@ -551,13 +523,11 @@ function renderPlan(){
     }
 
     wrap.innerHTML = html;
-
-    if(msg) msg.textContent = 'Loaded ' + stages.length + ' stage' + (stages.length > 1 ? 's' : '') + ' from local plan.';
-
+    if(msg) msg.textContent = 'Loaded '+stages.length+' stage'+(stages.length>1?'s':'')+' from local plan.';
     setupAccordions();
 
     var openBtns = wrap.querySelectorAll('.mov .btn-sm[data-open]');
-    for(var ob = 0; ob < openBtns.length; ob++){
+    for(var ob=0; ob<openBtns.length; ob++){
       (function(btn){
         btn.addEventListener('click', function(){
           var drawer = btn.closest('.mov').querySelector('[data-drawer]');
@@ -567,12 +537,11 @@ function renderPlan(){
         });
       })(openBtns[ob]);
     }
-
   }catch(err){
     wrap.innerHTML = '<div class="warn">An error occurred while rendering the plan.</div>';
     renderLegend([]);
     renderProgressGuide([]);
-    if(msg) msg.textContent = 'Error: ' + (err && err.message ? err.message : String(err));
+    if(msg) msg.textContent = 'Error: '+(err && err.message ? err.message : String(err));
   }
 }
 </script>
@@ -580,196 +549,218 @@ function renderPlan(){
 <script src="/js/engine/fff-core.js?v=5"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function(){
-  if(!window.FFF) return;
-
-  if(typeof FFF.ready === 'function'){
-    FFF.ready();
-  }
-
-  bindWellnessToEngine();
+document.addEventListener('DOMContentLoaded', () => {
   renderPlan();
-  wireWorkoutPlanLogsToEngine();
-  renderCoachSummary();
 
-  document.getElementById('btnExport').addEventListener('click', exportAll);
-  document.getElementById('importFile').addEventListener('change', function(e){
-    var f = (e.target && e.target.files && e.target.files[0]) || null;
-    if(f) importAll(f);
-  });
-  document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
-});
+  if (!window.FFF) return;
 
-function bindWellnessToEngine(){
-  var checkboxMap = {
+  if (typeof FFF.ready === 'function') FFF.ready();
+
+  const checkboxMap = {
     hydrDone: 'hydration',
     sleepDone: 'sleep',
     macroDone: 'macros',
     activityCardio: 'cardio'
   };
 
-  Object.keys(checkboxMap).forEach(function(id){
-    var key = checkboxMap[id];
-    var box = document.getElementById(id);
-    if(!box) return;
+  Object.entries(checkboxMap).forEach(([id, key]) => {
+    const box = document.getElementById(id);
+    if (!box) return;
 
-    if(typeof FFF.getCheck === 'function'){
+    if (typeof FFF.getCheck === 'function') {
       box.checked = !!FFF.getCheck(key);
     }
 
-    box.addEventListener('change', function(){
-      if(typeof FFF.setCheck === 'function'){
+    box.addEventListener('change', () => {
+      if (typeof FFF.setCheck === 'function') {
         FFF.setCheck(key, box.checked);
       }
       renderCoachSummary();
     });
   });
-}
 
-function renderCoachSummary(){
-  var mount = document.getElementById('coachSummary');
-  if(!mount || !window.FFF) return;
+  wireWorkoutPlanLogsToEngine();
+  renderCoachSummary();
 
-  var hydration = typeof FFF.getCheck === 'function' ? !!FFF.getCheck('hydration') : false;
-  var sleep     = typeof FFF.getCheck === 'function' ? !!FFF.getCheck('sleep') : false;
-  var macros    = typeof FFF.getCheck === 'function' ? !!FFF.getCheck('macros') : false;
-  var cardio    = typeof FFF.getCheck === 'function' ? !!FFF.getCheck('cardio') : false;
+  document.getElementById('btnExport').addEventListener('click', exportAll);
+  document.getElementById('importFile').addEventListener('change', function(e){
+    var f=(e.target && e.target.files && e.target.files[0])||null;
+    if(f) importAll(f);
+  });
+  document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
+});
+
+function renderCoachSummary() {
+  var box = document.getElementById('coachSummary');
+  if (!box || !window.FFF || typeof FFF.getCheck !== 'function') return;
+
+  var hydration = !!FFF.getCheck('hydration');
+  var sleep = !!FFF.getCheck('sleep');
+  var macros = !!FFF.getCheck('macros');
+  var cardio = !!FFF.getCheck('cardio');
 
   var score = [hydration, sleep, macros, cardio].filter(Boolean).length;
 
-  if(score === 4){
-    mount.innerHTML = '<strong>Coach summary:</strong> All four foundations are in place today. Train well and keep the standard high.';
-  }else if(score === 3){
-    mount.innerHTML = '<strong>Coach summary:</strong> Strong day so far. One foundation still needs attention.';
-  }else if(score === 2){
-    mount.innerHTML = '<strong>Coach summary:</strong> Decent base, but there is room to tighten the day up before it drifts.';
-  }else if(score === 1){
-    mount.innerHTML = '<strong>Coach summary:</strong> You have started the day, but only one foundation is covered. Get the basics back in place.';
-  }else{
-    mount.innerHTML = '<strong>Coach summary:</strong> No foundations logged yet. Start with hydration, food, movement, and sleep support.';
+  if (score === 4) {
+    box.className = 'ok';
+    box.textContent = 'Excellent. You have hit all four foundations today: hydration, sleep, macros, and activity.';
+    return;
   }
+
+  if (score === 3) {
+    box.className = 'ok';
+    box.textContent = 'Strong day. One foundation is still missing. Finish that and you have a complete day.';
+    return;
+  }
+
+  if (score === 2) {
+    box.className = 'warn';
+    box.textContent = 'Decent base, but you are only halfway there today. Tighten up the missing basics before worrying about perfection.';
+    return;
+  }
+
+  if (score === 1) {
+    box.className = 'warn';
+    box.textContent = 'You have one box ticked. Start with the next easiest win and build momentum.';
+    return;
+  }
+
+  box.className = 'warn';
+  box.textContent = 'Nothing ticked yet. Start small: hydration first, then one more action.';
 }
 
-function wireWorkoutPlanLogsToEngine(){
-  var planRoot = document.getElementById('plan');
-  if(!planRoot || !window.FFF) return;
+function wireWorkoutPlanLogsToEngine() {
+  const planRoot = document.getElementById('plan');
+  if (!planRoot || !window.FFF) return;
 
-  var stageAccordions = planRoot.querySelectorAll('.accordion');
+  const stageAccordions = planRoot.querySelectorAll('.accordion');
 
-  stageAccordions.forEach(function(accordion, stageIndex){
-    var stageTitleBtn = accordion.querySelector('.acc-toggle');
-    var stageName = stageTitleBtn ? stageTitleBtn.textContent.trim() : ('Stage ' + (stageIndex + 1));
+  stageAccordions.forEach((accordion, stageIndex) => {
+    const stageTitleBtn = accordion.querySelector('.acc-toggle');
+    const stageName = stageTitleBtn ? stageTitleBtn.textContent.trim() : `Stage ${stageIndex + 1}`;
 
-    var dayBlocks = accordion.querySelectorAll('.days > .mov');
+    const dayBlocks = accordion.querySelectorAll('.days > .mov');
 
-    dayBlocks.forEach(function(dayBlock, dayIndex){
-      var dayTitleEl = dayBlock.querySelector('.mov-head strong');
-      var dayName = dayTitleEl ? dayTitleEl.textContent.trim() : ('Day ' + (dayIndex + 1));
+    dayBlocks.forEach((dayBlock, dayIndex) => {
+      const dayTitleEl = dayBlock.querySelector('.mov-head strong');
+      const dayName = dayTitleEl ? dayTitleEl.textContent.trim() : `Day ${dayIndex + 1}`;
 
-      var exerciseBlocks = dayBlock.querySelectorAll(':scope > .mov[style]');
+      const exerciseBlocks = dayBlock.querySelectorAll(':scope > .mov[style]');
 
-      exerciseBlocks.forEach(function(exerciseBlock){
-        var titleLink = exerciseBlock.querySelector('.mov-title a');
-        if(!titleLink) return;
+      exerciseBlocks.forEach((exerciseBlock) => {
+        const titleLink = exerciseBlock.querySelector('.mov-title a');
+        if (!titleLink) return;
 
-        var exerciseName = titleLink.textContent.trim();
-        var engineKey = stageName + ' | ' + dayName + ' | ' + exerciseName;
+        const exerciseName = titleLink.textContent.trim();
+        const engineKey = `${stageName} | ${dayName} | ${exerciseName}`;
 
-        var openBtn = exerciseBlock.querySelector('[data-open]');
-        var drawer = exerciseBlock.querySelector('[data-drawer]');
-        if(!drawer) return;
+        const openBtn = exerciseBlock.querySelector('[data-open]');
+        const drawer = exerciseBlock.querySelector('[data-drawer]');
+        if (!drawer) return;
 
-        var logArea = drawer.querySelector('[data-log]');
-        var pbEl = drawer.querySelector('[data-pb]');
-        var badgeEl = drawer.querySelector('[data-badge]');
-        var quoteEl = drawer.querySelector('[data-quote]');
+        const logArea = drawer.querySelector('[data-log]');
+        const pbEl = drawer.querySelector('[data-pb]');
+        const badgeEl = drawer.querySelector('[data-badge]');
+        const quoteEl = drawer.querySelector('[data-quote]');
 
-        if(!logArea) return;
+        if (!logArea) return;
+
+        function getTotalEngineLogCount() {
+          try {
+            const raw = localStorage.getItem('fff.engine.logs.v1');
+            if (!raw) return 0;
+            const parsed = JSON.parse(raw);
+            let total = 0;
+            Object.keys(parsed || {}).forEach(function(k){
+              if (Array.isArray(parsed[k])) total += parsed[k].length;
+            });
+            return total;
+          } catch (e) {
+            return 0;
+          }
+        }
 
         function milestoneText(n){
-          if(n >= 200) return 'Milestone: 200 logs saved 🔥';
-          if(n >= 100) return 'Milestone: 100 logs saved 🎉';
-          if(n >= 50)  return 'Milestone: 50 logs saved 💪';
-          if(n >= 25)  return 'Milestone: 25 logs saved 🙌';
-          if(n >= 10)  return 'Milestone: 10 logs saved ✅';
-          if(n >= 5)   return 'Milestone: 5 logs saved ✨';
+          if(n>=200) return 'Milestone: 200 logs saved 🔥';
+          if(n>=100) return 'Milestone: 100 logs saved 🎉';
+          if(n>=50)  return 'Milestone: 50 logs saved 💪';
+          if(n>=25)  return 'Milestone: 25 logs saved 🙌';
+          if(n>=10)  return 'Milestone: 10 logs saved ✅';
+          if(n>=5)   return 'Milestone: 5 logs saved ✨';
           return '';
         }
 
-        function getEngineLogCount(){
-          if(typeof FFF.getLogCount === 'function') return FFF.getLogCount();
-          if(typeof FFF.getAllLogs === 'function'){
-            var logs = FFF.getAllLogs();
-            return Array.isArray(logs) ? logs.length : 0;
-          }
-          return 0;
-        }
-
         function refreshPB(){
-          var pb = (typeof FFF.getPB === 'function') ? FFF.getPB(engineKey) : null;
+          if (!window.FFF) return;
 
-          if(pbEl){
-            if(pb && typeof pb.score === 'number'){
-              pbEl.textContent = 'PB score: ' + pb.score.toFixed(1) + ' (best w×r)';
+          if (typeof FFF.getPB === 'function') {
+            const pb = FFF.getPB(engineKey);
+            if (pb && pb.score != null) {
+              pbEl.textContent = `PB score: ${Number(pb.score).toFixed(1)} (best w×r)`;
             } else {
               pbEl.textContent = '';
             }
           }
 
-          if(badgeEl){
-            badgeEl.textContent = milestoneText(getEngineLogCount());
-          }
+          const totalLogs = getTotalEngineLogCount();
+          badgeEl.textContent = milestoneText(totalLogs);
         }
 
         function populateLatestValues(){
-          var logs = (typeof FFF.getLogs === 'function') ? FFF.getLogs(engineKey) : [];
-          if(!logs || !logs.length){
+          if (!window.FFF || typeof FFF.getLogs !== 'function') {
             refreshPB();
             return;
           }
 
-          var latest = logs[logs.length - 1];
-          var w1 = logArea.querySelector('[data-field="w1"]');
-          var r1 = logArea.querySelector('[data-field="r1"]');
-          var n1 = logArea.querySelector('[data-field="n1"]');
+          const logs = FFF.getLogs(engineKey);
+          if (!logs || !logs.length) {
+            refreshPB();
+            return;
+          }
 
-          if(w1 && !w1.value) w1.value = latest.weight != null ? latest.weight : '';
-          if(r1 && !r1.value) r1.value = latest.reps != null ? latest.reps : '';
-          if(n1 && !n1.value) n1.value = latest.notes != null ? latest.notes : '';
+          const latest = logs[logs.length - 1];
+
+          const w1 = logArea.querySelector('[data-field="w1"]');
+          const r1 = logArea.querySelector('[data-field="r1"]');
+          const n1 = logArea.querySelector('[data-field="n1"]');
+
+          if (w1 && !w1.value) w1.value = latest.weight ?? '';
+          if (r1 && !r1.value) r1.value = latest.reps ?? '';
+          if (n1 && !n1.value) n1.value = latest.notes ?? '';
 
           refreshPB();
         }
 
         populateLatestValues();
 
-        var saveButtons = logArea.querySelectorAll('[data-save]');
-        saveButtons.forEach(function(btn){
-          btn.addEventListener('click', function(){
-            var rowEl = btn.closest('.log-row');
-            if(!rowEl) return;
+        const saveButtons = logArea.querySelectorAll('[data-save]');
+        saveButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            if (!window.FFF || typeof FFF.logSet !== 'function') return;
 
-            var inputs = rowEl.querySelectorAll('[data-field]');
-            var weight = 0;
-            var reps = 0;
-            var notes = '';
+            const rowEl = btn.closest('.log-row');
+            if (!rowEl) return;
 
-            inputs.forEach(function(input){
-              var field = input.getAttribute('data-field');
-              var val = (input.value || '').trim();
+            const inputs = rowEl.querySelectorAll('[data-field]');
+            let weight = 0;
+            let reps = 0;
+            let notes = '';
 
-              if(field.indexOf('w') === 0) weight = parseFloat(val) || 0;
-              if(field.indexOf('r') === 0) reps = parseFloat(val) || 0;
-              if(field.indexOf('n') === 0) notes = val;
+            inputs.forEach(input => {
+              const field = input.getAttribute('data-field');
+              const val = (input.value || '').trim();
+
+              if (field.startsWith('w')) weight = parseFloat(val) || 0;
+              if (field.startsWith('r')) reps = parseFloat(val) || 0;
+              if (field.startsWith('n')) notes = val;
             });
 
-            if(typeof FFF.logSet === 'function'){
-              FFF.logSet(engineKey, weight, reps, notes);
-            }
+            FFF.logSet(engineKey, weight, reps, notes);
 
-            var pb = (typeof FFF.getPB === 'function') ? FFF.getPB(engineKey) : null;
-            if(pbEl){
-              if(pb && pb.weight === weight && pb.reps === reps && reps > 0){
-                pbEl.textContent = 'New PB! ' + pb.weight + ' × ' + pb.reps;
+            if (typeof FFF.getPB === 'function') {
+              const pb = FFF.getPB(engineKey);
+              if (pb && pb.weight === weight && pb.reps === reps) {
+                pbEl.textContent = `New PB! ${pb.weight} × ${pb.reps}`;
               } else {
                 refreshPB();
               }
@@ -777,17 +768,15 @@ function wireWorkoutPlanLogsToEngine(){
               refreshPB();
             }
 
-            if(quoteEl){
+            if (quoteEl) {
               quoteEl.textContent = pick(QUOTES);
             }
           });
         });
 
-        if(openBtn){
+        if (openBtn) {
           openBtn.addEventListener('click', function(){
-            setTimeout(function(){
-              refreshPB();
-            }, 0);
+            setTimeout(refreshPB, 0);
           });
         }
       });
@@ -797,68 +786,42 @@ function wireWorkoutPlanLogsToEngine(){
 
 /* ===== Export / Import / Reset ===== */
 function exportAll(){
-  try{
-    if(window.FFF && typeof FFF.exportAll === 'function'){
-      var exported = FFF.exportAll();
-      var blob1 = new Blob([JSON.stringify(exported, null, 2)], { type:'application/json' });
-      var url1 = URL.createObjectURL(blob1);
-      var a1 = document.createElement('a');
-      a1.href = url1;
-      a1.download = 'freefitfuel-workout-plan-backup.json';
-      document.body.appendChild(a1);
-      a1.click();
-      a1.remove();
-      URL.revokeObjectURL(url1);
-      return;
-    }
+  var dump={};
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(!k) continue;
 
-    var dump = {};
-    for(var i = 0; i < localStorage.length; i++){
-      var k = localStorage.key(i);
-      if(!k) continue;
-      if(
-        k === ROADMAP_KEY ||
-        k.indexOf('fff.workoutplan.') === 0 ||
-        k.indexOf('fff.engine.') === 0 ||
-        k.indexOf('fff.check.') === 0 ||
-        k.indexOf('fff.pb.') === 0 ||
-        k.indexOf('fff.log.') === 0 ||
-        k.indexOf('fff.hero.') === 0
-      ){
-        dump[k] = localStorage.getItem(k);
-      }
+    if(
+      k === ROADMAP_KEY ||
+      k.indexOf(LEGACY_NS_PB) === 0 ||
+      k.indexOf(LEGACY_NS_CHECK) === 0 ||
+      k.indexOf('fff.engine.') === 0
+    ){
+      dump[k]=localStorage.getItem(k);
     }
-
-    var blob = new Blob([JSON.stringify(dump, null, 2)], { type:'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'freefitfuel-workout-plan-backup.json';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }catch(e){
-    alert('Export failed.');
   }
+
+  var blob=new Blob([JSON.stringify(dump,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='freefitfuel-workout-plan-backup.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 function importAll(file){
-  var r = new FileReader();
-  r.onload = function(){
+  var r=new FileReader();
+  r.onload=function(){
     try{
-      var obj = JSON.parse(String(r.result || '{}'));
-
-      if(window.FFF && typeof FFF.importAll === 'function'){
-        FFF.importAll(obj);
-      } else {
-        for(var k in obj){
-          if(Object.prototype.hasOwnProperty.call(obj, k)){
-            localStorage.setItem(k, obj[k]);
-          }
+      var obj=JSON.parse(String(r.result||'{}'));
+      for(var k in obj){
+        if(Object.prototype.hasOwnProperty.call(obj,k)){
+          localStorage.setItem(k, obj[k]);
         }
       }
-
       alert('Import complete. Reloading plan.');
       location.reload();
     }catch(e){
@@ -869,48 +832,51 @@ function importAll(file){
 }
 
 function resetPBsAndWellness(){
-  try{
-    if(window.FFF && typeof FFF.resetAll === 'function'){
-      FFF.resetAll();
+  var del=[];
+
+  for(var i=0;i<localStorage.length;i++){
+    var k=localStorage.key(i);
+    if(!k) continue;
+
+    if(
+      k.indexOf(LEGACY_NS_PB) === 0 ||
+      k.indexOf(LEGACY_NS_CHECK) === 0 ||
+      k === 'fff.engine.checks.v1' ||
+      k === 'fff.engine.logs.v1' ||
+      k === 'fff.engine.pbs.v1' ||
+      k === 'fff.engine.quotes.v1' ||
+      k === 'fff.engine.meta.v1'
+    ){
+      del.push(k);
     }
-
-    var removeKeys = [];
-    var prefixes = [
-      'fff.workoutplan.pb.',
-      'fff.workoutplan.check.',
-      'fff.engine.',
-      'fff.check.',
-      'fff.pb.',
-      'fff.log.',
-      'fff.hero.phase1.',
-      'fff.hero.phase2.',
-      'fff.hero.phase3.',
-      'fff.hero.phase4.'
-    ];
-
-    for(var i = 0; i < localStorage.length; i++){
-      var k = localStorage.key(i);
-      if(!k) continue;
-
-      for(var j = 0; j < prefixes.length; j++){
-        if(k.indexOf(prefixes[j]) === 0){
-          removeKeys.push(k);
-          break;
-        }
-      }
-    }
-
-    for(var r = 0; r < removeKeys.length; r++){
-      localStorage.removeItem(removeKeys[r]);
-    }
-
-    alert('Cleared PBs, logs, and wellness toggles. Roadmap left intact.');
-    location.reload();
-  }catch(err){
-    alert('Reset failed: ' + (err && err.message ? err.message : err));
   }
+
+  for(var j=0;j<del.length;j++){
+    localStorage.removeItem(del[j]);
+  }
+
+  /* Also ask engine to clear itself if methods exist */
+  try{
+    if(window.FFF && typeof FFF.clearAllLogs === 'function'){
+      FFF.clearAllLogs();
+    }
+  }catch(e){}
+
+  try{
+    if(window.FFF && typeof FFF.clearAllChecks === 'function'){
+      FFF.clearAllChecks();
+    }
+  }catch(e){}
+
+  try{
+    if(window.FFF && typeof FFF.clearAllPBs === 'function'){
+      FFF.clearAllPBs();
+    }
+  }catch(e){}
+
+  alert('Cleared PBs, logs, and wellness toggles. Roadmap left intact.');
+  location.reload();
 }
 </script>
-
 </body>
 </html>

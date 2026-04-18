@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=32">
+  <link rel="stylesheet" href="style.css?v=33">
 
   <style>
     :root{
@@ -31,8 +31,7 @@
     .mov-title a:hover{color:var(--accent)}
     .rx{opacity:.9}
     .mov-tools{display:flex;gap:.4rem;align-items:center}
-    .btn-sm,
-    .btn{
+    .btn-sm,.btn{
       border:1px solid var(--stroke);
       background:var(--glass);
       color:var(--ink);
@@ -42,7 +41,7 @@
       text-decoration:none;
       display:inline-flex;
       align-items:center;
-      justify-content:center;
+      justify-content:center
     }
 
     .drawer{display:none;margin:.45rem 0 0}
@@ -86,11 +85,11 @@
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
     .meta{color:var(--inkdim)}
 
-    .accordion{border:1px solid var(--stroke);border-radius:12px;background:#111418;padding:12px;margin-bottom:1rem}
-    .acc-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;cursor:pointer}
-    .acc-toggle{all:unset;cursor:pointer;color:var(--accent);font-size:1.05rem}
-    .accordion .acc-toggle::after{content:"▸";margin-left:.45rem;opacity:.8}
-    .accordion.open .acc-toggle::after{content:"▾";margin-left:.45rem;opacity:.8}
+    .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px; margin-bottom:1rem}
+    .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem; cursor:pointer}
+    .acc-toggle{all:unset; cursor:pointer; color:var(--accent); font-size:1.05rem}
+    .accordion .acc-toggle::after{content:"▸"; margin-left:.45rem; opacity:.8}
+    .accordion.open .acc-toggle::after{content:"▾"; margin-left:.45rem; opacity:.8}
     .acc-body{margin-top:.5rem}
     [hidden]{display:none !important;}
 
@@ -123,17 +122,13 @@
         <label><input type="checkbox" id="hydrDone"> Hydration hit</label>
         <label><input type="checkbox" id="sleepDone"> Sleep goal met</label>
         <label><input type="checkbox" id="macroDone"> Macros on target</label>
-        <label>
-          <input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?">
-          Walk / Bike / Run
-        </label>
+        <label><input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?"> Walk / Bike / Run</label>
       </div>
       <p class="quote">Consistency across training, nutrition, sleep & stress = success.</p>
     </section>
 
     <section class="section">
       <h2>Your Personalised Plan</h2>
-
       <div id="coachSummary" class="ok" style="margin-bottom:12px;"></div>
       <div id="progressGuide"></div>
       <div id="legendMount"></div>
@@ -180,19 +175,27 @@
     </footer>
   </div>
 
+  <!-- Engine files: load sub-engines BEFORE coordinator -->
+  <script src="/js/engine/fff-state.js?v=1"></script>
+  <script src="/js/engine/fff-exercise-db.js?v=1"></script>
+  <script src="/js/engine/fff-recovery.js?v=1"></script>
+  <script src="/js/engine/fff-mind.js?v=1"></script>
+  <script src="/js/engine/fff-roadmap.js?v=1"></script>
+  <script src="/js/engine/fff-training.js?v=1"></script>
+  <script src="/js/engine/fff-messaging.js?v=1"></script>
   <script src="/js/engine/fff-core.js?v=6"></script>
 
   <script>
-    /* ===== Keys ===== */
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
 
-    /* ===== Small utils ===== */
     function yt(q){
       return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(String(q || 'exercise') + ' form');
     }
+
     function pick(arr){
       return arr[Math.floor(Math.random() * arr.length)];
     }
+
     function escapeHtml(str){
       return String(str || '')
         .replace(/&/g, '&amp;')
@@ -201,6 +204,7 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
+
     var QUOTES = [
       "Small wins compound. Log the set, own the day.",
       "Perfect form, steady breath, then add a little.",
@@ -209,7 +213,6 @@
       "Show up. Scale smart. Keep going."
     ];
 
-    /* ===== Rest timer ===== */
     function restControlsHTML(id){
       return '' +
         '<div class="restbar" data-rest="' + id + '" data-bound="0">' +
@@ -275,7 +278,6 @@
       }
     }
 
-    /* ===== Adaptive Progress Guide ===== */
     function normaliseStageName(name){
       return String(name || '').trim().toLowerCase();
     }
@@ -325,25 +327,16 @@
         var onlyName = escapeHtml(only.name || 'Current Stage');
 
         html += ''
-          + '<p class="lead">'
-          + 'This personalised plan currently has one stage. Stay with it until training feels controlled, recovery is manageable, and progress is steady.'
-          + '</p>'
+          + '<p class="lead">This personalised plan currently has one stage. Stay with it until training feels controlled, recovery is manageable, and progress is steady.</p>'
           + '<div class="block">'
-          +   '<p class="quote" style="margin-top:0">'
-          +     '<strong>This plan has one stage:</strong> ' + onlyName + '<br>'
-          +     stageGuidanceText(only.name, only.blurb)
-          +   '</p>'
-          +   '<p class="meta" style="margin:.55rem 0 0">'
-          +     'If progress stalls, recovery worsens, or the plan starts to feel too easy, update your roadmap and generate the next stage rather than forcing this one indefinitely.'
-          +   '</p>'
+          +   '<p class="quote" style="margin-top:0"><strong>This plan has one stage:</strong> ' + onlyName + '<br>' + stageGuidanceText(only.name, only.blurb) + '</p>'
+          +   '<p class="meta" style="margin:.55rem 0 0">If progress stalls, recovery worsens, or the plan starts to feel too easy, update your roadmap and generate the next stage rather than forcing this one indefinitely.</p>'
           + '</div>';
       } else {
         html += ''
-          + '<p class="lead">'
-          + 'This personalised plan uses a phased structure rather than a fixed timeline. Stay in each stage until its goal is being met consistently, then move forward.'
-          + '</p>'
+          + '<p class="lead">This personalised plan uses a phased structure rather than a fixed timeline. Stay in each stage until its goal is being met consistently, then move forward.</p>'
           + '<div class="block">'
-          +   '<p class="quote" style="margin-top:0"><strong>How to progress through this plan:</strong></p>';
+          + '<p class="quote" style="margin-top:0"><strong>How to progress through this plan:</strong></p>';
 
         for(var i = 0; i < stages.length; i++){
           var stage = stages[i] || {};
@@ -351,17 +344,12 @@
           html += '<p class="meta" style="margin:.35rem 0"><strong>' + stageName + '</strong> → ' + stageGuidanceText(stage.name, stage.blurb) + '</p>';
         }
 
-        html += ''
-          +   '<p class="meta" style="margin:.7rem 0 0">'
-          +     'There is no single fixed number of weeks that suits everyone. Move on when progress is established, not simply because time has passed.'
-          +   '</p>'
-          + '</div>';
+        html += '<p class="meta" style="margin:.7rem 0 0">There is no single fixed number of weeks that suits everyone. Move on when progress is established, not simply because time has passed.</p></div>';
       }
 
       mount.innerHTML = html;
     }
 
-    /* ===== Dynamic Legend ===== */
     var LEGEND_DEFS = {
       "Compound": "Big multi-joint lifts. Shown as an orange badge next to the exercise name.",
       "Accessory": "Support or isolation work to build weak links or useful volume.",
@@ -407,14 +395,12 @@
           }
         }
       }
-
       return Object.keys(found);
     }
 
     function renderLegend(terms){
       var mount = document.getElementById('legendMount');
       if(!mount) return;
-
       if(!terms.length){
         mount.innerHTML = '';
         return;
@@ -422,15 +408,12 @@
 
       var rows = '';
       for(var i = 0; i < terms.length; i++){
-        var t = terms[i];
-        var def = LEGEND_DEFS[t] || '';
+        var t = terms[i], def = LEGEND_DEFS[t] || '';
         rows += '<div class="row"><div class="term">' + t + '</div><div class="def">' + def + '</div></div>';
       }
-
       mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>' + rows + '</details>';
     }
 
-    /* ===== Accordion ===== */
     function setupAccordions(){
       var accs = document.querySelectorAll('.accordion');
       for(var i = 0; i < accs.length; i++){
@@ -453,7 +436,6 @@
       }
     }
 
-    /* ===== Render Plan ===== */
     function renderPlan(){
       var wrap = document.getElementById('plan');
       var msg = document.getElementById('planMsg');
@@ -491,15 +473,13 @@
           return;
         }
 
-        var terms = detectLegendTerms(data);
-        renderLegend(terms);
+        renderLegend(detectLegendTerms(data));
         renderProgressGuide(stages);
 
         var html = '';
 
         for(var si = 0; si < stages.length; si++){
           var stage = stages[si] || {};
-
           html += '<div class="accordion">' +
                     '<div class="acc-head"><button class="acc-toggle" aria-expanded="false" type="button">' + escapeHtml(stage.name || ('Stage ' + (si + 1))) + '</button></div>' +
                     '<div class="acc-body" hidden>' +
@@ -507,7 +487,6 @@
                       '<div class="days">';
 
           var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-
           for(var di = 0; di < 7; di++){
             var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
             var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
@@ -516,12 +495,11 @@
 
             for(var ei = 0; ei < items.length; ei++){
               var it = items[ei] || {};
-
               var presc = (it.type === 'cardio')
                 ? [it.duration_min ? (it.duration_min + ' min') : null, it.work_s ? ('work ' + it.work_s + 's') : null, it.rest_s ? ('rest ' + it.rest_s + 's') : null, it.rounds ? (it.rounds + ' rounds') : null].filter(Boolean).join(' · ')
                 : ((it.sets || '—') + '×' + (it.reps || '—') + ' · ' + (it.rir || '—') + ' RIR · ' + (it.rest || 60) + 's rest');
 
-              html += '<div class="mov exercise-item" data-stage-index="' + si + '" data-day-index="' + di + '" data-exercise-index="' + ei + '">' +
+              html += '<div class="mov exercise-item">' +
                         '<div class="mov-head">' +
                           '<div class="mov-title">' +
                             '<a href="' + yt(it.name || 'exercise') + '" target="_blank" rel="noopener">' + escapeHtml(it.name || 'Exercise') + '</a>' +
@@ -537,15 +515,14 @@
                         '<div class="drawer" data-drawer>' +
                           '<div class="log-grid" data-log>' +
                             [1,2,3,4,5].map(function(i){
-                              return '' +
-                                '<div class="log-row" data-set-row="' + i + '">' +
-                                  '<strong>Set ' + i + '</strong>' +
-                                  '<input inputmode="decimal" placeholder="kg" data-field="w' + i + '">' +
-                                  '<input inputmode="numeric" placeholder="reps" data-field="r' + i + '">' +
-                                  '<input placeholder="notes" data-field="n' + i + '">' +
-                                  '<button class="btn-sm" data-save type="button">Save</button>' +
-                                '</div>' +
-                                (it.type === 'cardio' ? '' : restControlsHTML('s' + si + 'd' + di + 'e' + ei + '.s' + i));
+                              return '<div class="log-row">' +
+                                       '<strong>Set ' + i + '</strong>' +
+                                       '<input inputmode="decimal" placeholder="kg" data-field="w' + i + '">' +
+                                       '<input inputmode="numeric" placeholder="reps" data-field="r' + i + '">' +
+                                       '<input placeholder="notes" data-field="n' + i + '">' +
+                                       '<button class="btn-sm" data-save type="button">Save</button>' +
+                                     '</div>' +
+                                     (it.type === 'cardio' ? '' : restControlsHTML('s' + si + 'd' + di + 'e' + ei + '.s' + i));
                             }).join('') +
                           '</div>' +
                           '<div class="meta-row">' +
@@ -573,10 +550,8 @@
             btn.addEventListener('click', function(){
               var exerciseItem = btn.closest('.exercise-item');
               if(!exerciseItem) return;
-
               var drawer = exerciseItem.querySelector('[data-drawer]');
               if(!drawer) return;
-
               drawer.classList.toggle('open');
               if(drawer.classList.contains('open')) hookRestTimers(drawer);
             });
@@ -590,7 +565,6 @@
       }
     }
 
-    /* ===== Export / Import / Reset ===== */
     function exportAll(){
       var dump = {};
       var allow = [
@@ -609,7 +583,7 @@
         }
       }
 
-      var blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+      var blob = new Blob([JSON.stringify(dump, null, 2)], {type:'application/json'});
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
@@ -639,55 +613,34 @@
       r.readAsText(file);
     }
 
-    function clearKnownFFFKeysDirectly(){
-      var keysToRemove = [
-        'fff.pb.v1',
-        'fff.logs.v1',
-        'fff.checks.v1',
-        'fff.coaching.v1'
-      ];
-
-      for(var i = 0; i < keysToRemove.length; i++){
-        try{
-          localStorage.removeItem(keysToRemove[i]);
-        }catch(e){}
-      }
-    }
-
-    function clearWellnessBoxesInUI(){
-      var ids = ['hydrDone', 'sleepDone', 'macroDone', 'activityCardio'];
-      for(var i = 0; i < ids.length; i++){
-        var el = document.getElementById(ids[i]);
-        if(el) el.checked = false;
-      }
-    }
-
     function resetPBsAndWellness(){
       try{
-        var usedEngineReset = false;
+        var done = false;
 
         if(window.FFF && typeof window.FFF.resetWellnessAndLogs === 'function'){
-          try{
-            var result = window.FFF.resetWellnessAndLogs();
-            usedEngineReset = result !== false;
-          }catch(engineErr){
-            usedEngineReset = false;
-          }
+          done = window.FFF.resetWellnessAndLogs() !== false;
         }
 
-        if(!usedEngineReset){
-          clearKnownFFFKeysDirectly();
+        if(!done){
+          localStorage.removeItem('fff.pb.v1');
+          localStorage.removeItem('fff.logs.v1');
+          localStorage.removeItem('fff.checks.v1');
+          localStorage.removeItem('fff.coaching.v1');
         }
 
         if(window.FFF && typeof window.FFF.ready === 'function'){
-          try{
-            window.FFF.ready();
-          }catch(e){}
+          window.FFF.ready();
         }
 
-        clearWellnessBoxesInUI();
+        var checkIds = ['hydrDone','sleepDone','macroDone','activityCardio'];
+        for(var i = 0; i < checkIds.length; i++){
+          var box = document.getElementById(checkIds[i]);
+          if(box) box.checked = false;
+        }
+
         renderPlan();
         renderCoachSummary();
+        wireWorkoutPlanLogsToEngine();
 
         alert('Cleared workout logs, PBs and wellness checks. Roadmap left intact.');
       }catch(e){
@@ -695,20 +648,26 @@
       }
     }
 
-    /* ===== Coaching ===== */
     function renderCoachSummary(){
-      if(!window.FFF) return;
-
       var el = document.getElementById('coachSummary');
       if(!el) return;
 
-      var summary = window.FFF.getGlobalCoachingSummary();
-      el.innerHTML =
-        '<strong>' + escapeHtml(summary.headline || 'Coaching') + '</strong><br>' +
-        escapeHtml(summary.message || '');
+      if(!window.FFF){
+        el.className = 'warn';
+        el.innerHTML = '<strong>Engine not loaded</strong><br>Coach system is unavailable.';
+        return;
+      }
+
+      try{
+        var summary = window.FFF.getGlobalCoachingSummary();
+        el.className = 'ok';
+        el.innerHTML = '<strong>' + escapeHtml(summary.headline || 'Coaching') + '</strong><br>' + escapeHtml(summary.message || '');
+      }catch(err){
+        el.className = 'warn';
+        el.innerHTML = '<strong>Coach unavailable</strong><br>' + escapeHtml(err && err.message ? err.message : 'Engine could not produce a coaching summary.');
+      }
     }
 
-    /* ===== Engine wiring ===== */
     function wireWorkoutPlanLogsToEngine(){
       if(!window.FFF) return;
 
@@ -720,13 +679,11 @@
       Array.prototype.forEach.call(stageAccordions, function(accordion, stageIndex){
         var stageTitleBtn = accordion.querySelector('.acc-toggle');
         var stageName = stageTitleBtn ? stageTitleBtn.textContent.trim() : ('Stage ' + (stageIndex + 1));
-
         var dayBlocks = accordion.querySelectorAll('.days > .mov');
 
         Array.prototype.forEach.call(dayBlocks, function(dayBlock, dayIndex){
           var dayTitleEl = dayBlock.querySelector('.mov-head strong');
           var dayName = dayTitleEl ? dayTitleEl.textContent.trim() : ('Day ' + (dayIndex + 1));
-
           var exerciseBlocks = dayBlock.querySelectorAll(':scope > .exercise-item');
 
           Array.prototype.forEach.call(exerciseBlocks, function(exerciseBlock){
@@ -735,17 +692,14 @@
 
             var exerciseName = titleLink.textContent.trim();
             var engineKey = stageName + ' | ' + dayName + ' | ' + exerciseName;
-
             var openBtn = exerciseBlock.querySelector('[data-open]');
             var drawer = exerciseBlock.querySelector('[data-drawer]');
-            if(!drawer) return;
+            var logArea = drawer ? drawer.querySelector('[data-log]') : null;
+            var pbEl = drawer ? drawer.querySelector('[data-pb]') : null;
+            var badgeEl = drawer ? drawer.querySelector('[data-badge]') : null;
+            var quoteEl = drawer ? drawer.querySelector('[data-quote]') : null;
 
-            var logArea = drawer.querySelector('[data-log]');
-            var pbEl = drawer.querySelector('[data-pb]');
-            var badgeEl = drawer.querySelector('[data-badge]');
-            var quoteEl = drawer.querySelector('[data-quote]');
-
-            if(!logArea) return;
+            if(!drawer || !logArea) return;
 
             function milestoneText(n){
               if(n >= 200) return 'Milestone: 200 logs saved 🔥';
@@ -758,24 +712,26 @@
             }
 
             function refreshFeedback(){
-              var pb = window.FFF.getPB(engineKey);
-              var totalLogs = window.FFF.getTotalLogCount();
-              var coaching = window.FFF.analyseExercise(engineKey);
+              try{
+                var pb = window.FFF.getPB(engineKey);
+                var totalLogs = window.FFF.getTotalLogCount();
+                var coaching = window.FFF.analyseExercise(engineKey);
 
-              if(pbEl){
-                if(pb){
-                  pbEl.textContent = 'PB score: ' + Number(pb.score || 0).toFixed(1) + ' (best w×r)';
-                } else {
-                  pbEl.textContent = '';
+                if(pbEl){
+                  pbEl.textContent = pb ? ('PB score: ' + Number(pb.score || 0).toFixed(1) + ' (best w×r)') : '';
                 }
-              }
 
-              if(badgeEl){
-                badgeEl.textContent = milestoneText(totalLogs);
-              }
+                if(badgeEl){
+                  badgeEl.textContent = milestoneText(totalLogs);
+                }
 
-              if(quoteEl && coaching && coaching.message){
-                quoteEl.textContent = coaching.headline + ' — ' + coaching.message;
+                if(quoteEl && coaching){
+                  quoteEl.textContent = (coaching.headline || '') + ' — ' + (coaching.message || '');
+                }
+              }catch(err){
+                if(quoteEl){
+                  quoteEl.textContent = 'Coach unavailable for this exercise right now.';
+                }
               }
             }
 
@@ -786,16 +742,9 @@
                 return;
               }
 
-              var rows = logArea.querySelectorAll('.log-row');
-              if(!rows.length){
-                refreshFeedback();
-                return;
-              }
-
-              var firstRow = rows[0];
-              var w1 = firstRow.querySelector('[data-field="w1"]');
-              var r1 = firstRow.querySelector('[data-field="r1"]');
-              var n1 = firstRow.querySelector('[data-field="n1"]');
+              var w1 = logArea.querySelector('[data-field="w1"]');
+              var r1 = logArea.querySelector('[data-field="r1"]');
+              var n1 = logArea.querySelector('[data-field="n1"]');
 
               if(w1 && !w1.value) w1.value = latest.weight != null ? latest.weight : '';
               if(r1 && !r1.value) r1.value = latest.reps != null ? latest.reps : '';
@@ -842,9 +791,7 @@
 
             if(openBtn){
               openBtn.addEventListener('click', function(){
-                setTimeout(function(){
-                  refreshFeedback();
-                }, 0);
+                setTimeout(refreshFeedback, 0);
               });
             }
           });
@@ -852,33 +799,28 @@
       });
     }
 
-    /* ===== Boot ===== */
     document.addEventListener('DOMContentLoaded', function(){
       renderPlan();
 
-      var exportBtn = document.getElementById('btnExport');
-      var importFile = document.getElementById('importFile');
-      var resetBtn = document.getElementById('btnReset');
+      document.getElementById('btnExport').addEventListener('click', exportAll);
+      document.getElementById('importFile').addEventListener('change', function(e){
+        var f = (e.target && e.target.files && e.target.files[0]) || null;
+        if(f) importAll(f);
+        e.target.value = '';
+      });
+      document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
 
-      if(exportBtn){
-        exportBtn.addEventListener('click', exportAll);
+      if(!window.FFF){
+        renderCoachSummary();
+        return;
       }
 
-      if(importFile){
-        importFile.addEventListener('change', function(e){
-          var f = (e.target && e.target.files && e.target.files[0]) || null;
-          if(f) importAll(f);
-          e.target.value = '';
-        });
+      try{
+        window.FFF.ready();
+      }catch(err){
+        renderCoachSummary();
+        return;
       }
-
-      if(resetBtn){
-        resetBtn.addEventListener('click', resetPBsAndWellness);
-      }
-
-      if(!window.FFF) return;
-
-      window.FFF.ready();
 
       var checkboxMap = {
         hydrDone: 'hydration',
@@ -892,11 +834,17 @@
         var box = document.getElementById(id);
         if(!box) return;
 
-        box.checked = window.FFF.getCheck(key);
+        try{
+          box.checked = window.FFF.getCheck(key);
+        }catch(err){
+          box.checked = false;
+        }
 
         box.addEventListener('change', function(){
-          window.FFF.setCheck(key, box.checked);
-          renderCoachSummary();
+          try{
+            window.FFF.setCheck(key, box.checked);
+            renderCoachSummary();
+          }catch(err){}
         });
       });
 

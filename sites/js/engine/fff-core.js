@@ -147,6 +147,23 @@ window.FFF = (function () {
     return window.FFFTraining.getTrend(window.FFFState.getLogs(exercise));
   }
 
+  function getFamilySummary() {
+    ready();
+    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    const checks = window.FFFState.getChecks() || {};
+    const recovery = window.FFFRecovery.analyse(checks, allLogs);
+    return window.FFFTraining.summariseFamilies(allLogs, recovery);
+  }
+
+  function getWeeklySummary() {
+    ready();
+    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    const checks = window.FFFState.getChecks() || {};
+    const roadmapSummary = getRoadmapSummary();
+    const recovery = window.FFFRecovery.analyse(checks, allLogs);
+    return window.FFFTraining.weeklySummary(allLogs, recovery, roadmapSummary);
+  }
+
   function analyseExercise(exercise) {
     ready();
 
@@ -201,7 +218,8 @@ window.FFF = (function () {
       recovery,
       mind,
       roadmapSummary,
-      totalLogs
+      totalLogs,
+      allLogs
     );
 
     const message = window.FFFMessaging.globalMessage(
@@ -219,7 +237,11 @@ window.FFF = (function () {
       totalLogs: totalLogs,
       mode: globalDecision && globalDecision.mode ? globalDecision.mode : 'unknown',
       tone: globalDecision && globalDecision.tone ? globalDecision.tone : 'grounded',
-      reason: globalDecision && globalDecision.reason ? globalDecision.reason : []
+      reason: globalDecision && globalDecision.reason ? globalDecision.reason : [],
+      familySummary: globalDecision && globalDecision.familySummary ? globalDecision.familySummary : {},
+      strongestFamily: globalDecision && globalDecision.strongestFamily ? globalDecision.strongestFamily : null,
+      weakestFamily: globalDecision && globalDecision.weakestFamily ? globalDecision.weakestFamily : null,
+      weekly: globalDecision && globalDecision.weekly ? globalDecision.weekly : {}
     };
   }
 
@@ -284,7 +306,7 @@ window.FFF = (function () {
   }
 
   return {
-    version: '5.0',
+    version: '7.0',
     ready: ready,
 
     setPB: setPB,
@@ -302,6 +324,8 @@ window.FFF = (function () {
 
     getTotalLogCount: getTotalLogCount,
     getExerciseTrend: getExerciseTrend,
+    getFamilySummary: getFamilySummary,
+    getWeeklySummary: getWeeklySummary,
 
     analyseExercise: analyseExercise,
     getGlobalCoachingSummary: getGlobalCoachingSummary,

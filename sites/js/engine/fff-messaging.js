@@ -1,111 +1,118 @@
-// FreeFitFuel Engine — Human Coaching Language
+// FreeFitFuel Engine — Messaging Layer
 
 window.FFFMessaging = (function () {
   'use strict';
 
   function exerciseMessage(decision) {
-    const latest = decision.latest;
-    const profile = decision.profile;
-
-    if (!latest) {
+    if (!decision) {
       return {
-        headline: 'Start with a clean first marker',
-        message: 'Do not chase a heroic first entry. Log one honest set with tidy form and let that become the baseline you build from.'
+        headline: 'No coaching available',
+        message: 'The engine could not generate exercise guidance for this movement yet.'
       };
     }
 
-    if (decision.painFlag) {
-      return {
-        headline: 'Protect the joint, not the ego',
-        message: 'Your notes suggest discomfort. Strip this back today. Shorten the range, lower the load, or swap to a friendlier variation before this becomes a bigger interruption.'
-      };
-    }
+    switch (decision.action) {
+      case 'start':
+        return {
+          headline: 'Start calm and collect signal',
+          message: 'Do not try to prove anything on the first log. Give the engine clean data: controlled set, honest effort, clear notes.'
+        };
 
-    if (decision.action === 'progress' && decision.emphasis === 'momentum') {
-      return {
-        headline: 'You are moving in the right direction',
-        message: 'This exercise is trending up. Keep the next jump small. The aim is repeatable progress, not a sudden leap that you have to pay for.'
-      };
-    }
+      case 'protect':
+        return {
+          headline: 'Protect this movement for now',
+          message: 'This no longer looks like a normal progression decision. Reduce load or range, use a safer variation if needed, and prioritise symptom control over numbers.'
+        };
 
-    if (decision.action === 'progress' && decision.emphasis === 'confidence') {
-      return {
-        headline: 'You look ready for a small step forward',
-        message: 'Recovery markers are favourable and nothing here suggests you need to force it. Add a rep or a small load increase only if the last set stayed technically clean.'
-      };
-    }
+      case 'recover':
+        return {
+          headline: 'Recovery is the limiter today',
+          message: 'The issue is probably not effort or character. It looks more like fatigue or under-recovery. Hold or reduce load and rebuild quality first.'
+        };
 
-    if (decision.action === 'reduce') {
-      return {
-        headline: 'Today is a trim-the-fat session',
-        message: 'You do not need to prove fitness by grinding through a poor recovery day. Reduce the demand, keep the movement honest, and leave enough in the tank to come back stronger.'
-      };
-    }
+      case 'steady':
+        return {
+          headline: 'Keep this session emotionally neutral',
+          message: 'Do not turn one log into a judgement on yourself. Keep it controlled, finish the work cleanly, and let consistency speak louder than mood.'
+        };
 
-    if (decision.action === 'hold' && decision.emphasis === 'technique') {
-      return {
-        headline: 'Hold the load and sharpen the rep',
-        message: 'Performance dipped slightly. That is not failure. Keep the weight where it is, tidy the pattern, and make the next session look better before you ask it to be heavier.'
-      };
-    }
+      case 'progress':
+        return {
+          headline: 'You have earned a small progression',
+          message: 'This lift is moving in the right direction and the wider picture supports it. Add a rep or a modest load increase next time, not both.'
+        };
 
-    if (profile.unknown) {
-      return {
-        headline: 'Steady work matters',
-        message: 'This movement is logged, but it is not yet deeply profiled in the engine. Treat today as a quality practice session and progress in small controlled steps.'
-      };
-    }
+      case 'refine':
+        return {
+          headline: 'Refine before you force',
+          message: 'This looks like a plateau, not a dead end. Improve execution, rest discipline, and rep quality before trying to bully the numbers upward.'
+        };
 
-    return {
-      headline: 'Keep stacking useful work',
-      message: 'The win today is not drama. It is another solid session recorded with enough honesty that the next decision can be smarter.'
-    };
+      case 'push':
+        return {
+          headline: 'Good day to push carefully',
+          message: 'The overall picture is supportive. Be assertive, but still precise. Clean reps first, small progression second.'
+        };
+
+      case 'hold':
+      default:
+        return {
+          headline: 'Hold steady and build',
+          message: 'Nothing here suggests panic or a dramatic change. Keep the load sensible, own the reps, and keep stacking steady work.'
+        };
+    }
   }
 
   function globalMessage(globalDecision, recovery, mind) {
-    if (globalDecision.mode === 'protect') {
+    if (!globalDecision) {
       return {
-        headline: 'Protect and rebuild',
-        message: 'Something in the recent notes suggests you need a calmer hand right now. Reduce intensity, keep movement clean, and lean on physio-style progressions rather than forcing normal training.'
+        headline: 'Coach unavailable',
+        message: 'The engine could not produce a global coaching summary.'
       };
     }
 
-    if (globalDecision.mode === 'downshift') {
-      return {
-        headline: 'Your capacity matters more than your pride',
-        message: 'The engine is reading this more like strain than laziness. Lower the day’s ambition. A reduced session still counts if it keeps the habit and avoids digging a bigger hole.'
-      };
-    }
+    switch (globalDecision.mode) {
+      case 'start':
+        return {
+          headline: 'Engine ready — begin by building consistency',
+          message: 'Right now the most valuable thing is not intensity but signal. Log sessions honestly, keep the basics simple, and let the coach learn your patterns.'
+        };
 
-    if (globalDecision.mode === 'push') {
-      return {
-        headline: 'Good day to train with intent',
-        message: 'Recovery markers are strong. You do not need chaos, but you do have room for purposeful work and a small progression where form supports it.'
-      };
-    }
+      case 'protect':
+        return {
+          headline: 'Protect mode: reduce pressure and recover',
+          message: 'The current picture suggests accumulated stress, pain risk, or under-recovery. Your job today is not to prove toughness. It is to keep the plan sustainable.'
+        };
 
-    if (globalDecision.mode === 'recover') {
-      return {
-        headline: 'Recovery is the session today',
-        message: 'Your basics are not supporting hard progress right now. Keep the session lighter, finish feeling more composed, and let sleep, food and hydration do some of the heavy lifting.'
-      };
-    }
+      case 'steady':
+        return {
+          headline: 'Steady the system before you demand more',
+          message: 'The mental or emotional load looks high enough that aggressive coaching would be the wrong call. Keep the ask realistic and finish something clean.'
+        };
 
-    if (mind.narrative === 'inner_critic_high') {
-      return {
-        headline: 'Do not let the inner critic write the programme',
-        message: 'You do not need punishment. You need useful work. Aim for clean reps, honest effort, and a finish that leaves your confidence more intact than when you started.'
-      };
-    }
+      case 'hold':
+        return {
+          headline: 'Hold the line',
+          message: 'You do not need to retreat, but you also do not need to chase. Recovery looks mixed, so the smartest move is controlled work and better basics.'
+        };
 
-    return {
-      headline: 'Keep stacking consistent days',
-      message: 'Not every day needs to feel heroic. Enough good days repeated over time will still beat random bursts of motivation.'
-    };
+      case 'push':
+        return {
+          headline: 'Conditions look good for progress',
+          message: 'Recovery and mindset are lining up well enough for constructive progression. Push with discipline, not ego.'
+        };
+
+      case 'build':
+      default:
+        return {
+          headline: 'Keep stacking capable days',
+          message: 'The picture is not calling for a dramatic shift. Stay consistent, keep quality high, and let progress come from repeated good decisions.'
+        };
+    }
   }
 
   return {
-    exerciseMessage,
-    globalMessage
+    exerciseMessage: exerciseMessage,
+    globalMessage: globalMessage
   };
 })();

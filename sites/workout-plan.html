@@ -581,7 +581,9 @@ function renderPlan(){
         var badgeEl = drawer.querySelector('[data-badge]');
         var quoteEl = drawer.querySelector('[data-quote]');
 
-        
+if (pbEl) pbEl.textContent = '';
+if (badgeEl) badgeEl.textContent = '';
+if (quoteEl) quoteEl.textContent = '';
       })(drawers[d]);
     }
 

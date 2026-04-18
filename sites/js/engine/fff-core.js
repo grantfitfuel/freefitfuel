@@ -169,11 +169,44 @@ window.FFF = (function () {
 
   function resetWellnessAndLogs() {
     ready();
-    window.FFFState.nukeAllFFFLocalData();
+
+    // Clear PBs only
+    if (typeof window.FFFState.clearPBs === 'function') {
+      window.FFFState.clearPBs();
+    } else {
+      localStorage.removeItem('fff.pb.v1');
+    }
+
+    // Clear logs only
+    if (typeof window.FFFState.clearLogs === 'function') {
+      window.FFFState.clearLogs();
+    } else {
+      localStorage.removeItem('fff.logs.v1');
+    }
+
+    // Clear wellness checks only
+    if (typeof window.FFFState.clearChecks === 'function') {
+      window.FFFState.clearChecks();
+    } else {
+      localStorage.removeItem('fff.checks.v1');
+    }
+
+    // Clear coaching cache only
+    if (typeof window.FFFState.clearCoaching === 'function') {
+      window.FFFState.clearCoaching();
+    } else {
+      localStorage.removeItem('fff.coaching.v1');
+    }
+
+    // Explicitly do NOT touch the roadmap
+    // fff.roadmap.plan.v1 must remain intact
+
+    window.FFFState.load();
+    return true;
   }
 
   return {
-    version: '4.0',
+    version: '4.1',
     ready: ready,
     setPB: setPB,
     getPB: getPB,

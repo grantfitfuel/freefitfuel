@@ -1,112 +1,86 @@
-/* =========================================================
-   FreeFitFuel Engine — CORE
-   ========================================================= */
+// FreeFitFuel Core Engine v1
 
-(function (global) {
-  'use strict';
+window.FFF = (function () {
 
-  if (global.FFF) return; // prevent double load
+  const STORAGE_KEYS = {
+    pb: 'fff.pb.v1',
+    logs: 'fff.logs.v1',
+    checks: 'fff.checks.v1'
+  };
 
-  const FFF = {};
+  let state = {
+    pb: {},
+    logs: {},
+    checks: {}
+  };
 
-  /* =========================
-     VERSION
-     ========================= */
-  FFF.version = 'B2-core-1.0';
+  function load() {
+    state.pb = JSON.parse(localStorage.getItem(STORAGE_KEYS.pb) || '{}');
+    state.logs = JSON.parse(localStorage.getItem(STORAGE_KEYS.logs) || '{}');
+    state.checks = JSON.parse(localStorage.getItem(STORAGE_KEYS.checks) || '{}');
+  }
 
-  /* =========================
-     UTILITIES
-     ========================= */
-  FFF.utils = {
+  function save() {
+    localStorage.setItem(STORAGE_KEYS.pb, JSON.stringify(state.pb));
+    localStorage.setItem(STORAGE_KEYS.logs, JSON.stringify(state.logs));
+    localStorage.setItem(STORAGE_KEYS.checks, JSON.stringify(state.checks));
+  }
 
-    clamp(n, min, max) {
-      return Math.max(min, Math.min(max, n));
-    },
+  function setPB(exercise, weight, reps) {
+    const current = state.pb[exercise];
 
-    round(n, dp = 0) {
-      const p = Math.pow(10, dp);
-      return Math.round(n * p) / p;
-    },
-
-    toNum(v, fallback = 0) {
-      const n = Number(v);
-      return Number.isFinite(n) ? n : fallback;
-    },
-
-    str(v, fallback = '') {
-      return (v === undefined || v === null || v === '') ? fallback : String(v);
-    },
-
-    slug(v) {
-      return String(v)
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '_')
-        .replace(/^_+|_+$/g, '');
-    },
-
-    deepClone(obj) {
-      return JSON.parse(JSON.stringify(obj));
+    if (!current || (weight * reps > current.weight * current.reps)) {
+      state.pb[exercise] = { weight, reps, date: new Date().toISOString() };
+      save();
+      return true;
     }
+    return false;
+  }
 
+  function getPB(exercise) {
+    return state.pb[exercise] || null;
+  }
+
+  function logSet(exercise, weight, reps) {
+    if (!state.logs[exercise]) state.logs[exercise] = [];
+
+    state.logs[exercise].push({
+      weight,
+      reps,
+      date: new Date().toISOString()
+    });
+
+    setPB(exercise, weight, reps);
+    save();
+  }
+
+  function getLogs(exercise) {
+    return state.logs[exercise] || [];
+  }
+
+  function setCheck(name, value) {
+    state.checks[name] = value;
+    save();
+  }
+
+  function getCheck(name) {
+    return state.checks[name] || false;
+  }
+
+  function ready() {
+    load();
+    console.log('FFF Engine Ready');
+  }
+
+  return {
+    version: '1.0',
+    ready,
+    setPB,
+    getPB,
+    logSet,
+    getLogs,
+    setCheck,
+    getCheck
   };
 
-  /* =========================
-     EVENT BUS
-     ========================= */
-  const events = {};
-
-  FFF.on = function (event, handler) {
-    if (!events[event]) events[event] = [];
-    events[event].push(handler);
-  };
-
-  FFF.emit = function (event, data) {
-    (events[event] || []).forEach(fn => fn(data));
-  };
-
-  /* =========================
-     SAFE STORAGE
-     ========================= */
-  FFF.store = {
-
-    get(key, fallback = null) {
-      try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      } catch {
-        return fallback;
-      }
-    },
-
-    set(key, value) {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
-      } catch {}
-    },
-
-    remove(key) {
-      try {
-        localStorage.removeItem(key);
-      } catch {}
-    }
-
-  };
-
-  /* =========================
-     DEBUG
-     ========================= */
-  FFF.debug = function (...args) {
-    console.log('[FFF]', ...args);
-  };
-
-  /* =========================
-     READY CHECK
-     ========================= */
-  FFF.ready = function () {
-    FFF.debug('Engine ready:', FFF.version);
-  };
-
-  global.FFF = FFF;
-
-})(window);
+})();

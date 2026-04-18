@@ -31,7 +31,8 @@
     .mov-title a:hover{color:var(--accent)}
     .rx{opacity:.9}
     .mov-tools{display:flex;gap:.4rem;align-items:center}
-    .btn-sm,.btn{
+    .btn-sm,
+    .btn{
       border:1px solid var(--stroke);
       background:var(--glass);
       color:var(--ink);
@@ -41,7 +42,7 @@
       text-decoration:none;
       display:inline-flex;
       align-items:center;
-      justify-content:center
+      justify-content:center;
     }
 
     .drawer{display:none;margin:.45rem 0 0}
@@ -122,13 +123,17 @@
         <label><input type="checkbox" id="hydrDone"> Hydration hit</label>
         <label><input type="checkbox" id="sleepDone"> Sleep goal met</label>
         <label><input type="checkbox" id="macroDone"> Macros on target</label>
-        <label><input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?"> Walk / Bike / Run</label>
+        <label>
+          <input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?">
+          Walk / Bike / Run
+        </label>
       </div>
       <p class="quote">Consistency across training, nutrition, sleep & stress = success.</p>
     </section>
 
     <section class="section">
       <h2>Your Personalised Plan</h2>
+
       <div id="coachSummary" class="ok" style="margin-bottom:12px;"></div>
       <div id="progressGuide"></div>
       <div id="legendMount"></div>
@@ -175,7 +180,7 @@
     </footer>
   </div>
 
-  <!-- Engine files: load sub-engines BEFORE coordinator -->
+  <!-- Engine files -->
   <script src="/js/engine/fff-state.js?v=1"></script>
   <script src="/js/engine/fff-exercise-db.js?v=1"></script>
   <script src="/js/engine/fff-recovery.js?v=1"></script>
@@ -183,7 +188,7 @@
   <script src="/js/engine/fff-roadmap.js?v=1"></script>
   <script src="/js/engine/fff-training.js?v=1"></script>
   <script src="/js/engine/fff-messaging.js?v=1"></script>
-  <script src="/js/engine/fff-core.js?v=6"></script>
+  <script src="/js/engine/fff-core.js?v=7"></script>
 
   <script>
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
@@ -336,7 +341,7 @@
         html += ''
           + '<p class="lead">This personalised plan uses a phased structure rather than a fixed timeline. Stay in each stage until its goal is being met consistently, then move forward.</p>'
           + '<div class="block">'
-          + '<p class="quote" style="margin-top:0"><strong>How to progress through this plan:</strong></p>';
+          +   '<p class="quote" style="margin-top:0"><strong>How to progress through this plan:</strong></p>';
 
         for(var i = 0; i < stages.length; i++){
           var stage = stages[i] || {};
@@ -408,9 +413,11 @@
 
       var rows = '';
       for(var i = 0; i < terms.length; i++){
-        var t = terms[i], def = LEGEND_DEFS[t] || '';
+        var t = terms[i];
+        var def = LEGEND_DEFS[t] || '';
         rows += '<div class="row"><div class="term">' + t + '</div><div class="def">' + def + '</div></div>';
       }
+
       mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>' + rows + '</details>';
     }
 
@@ -615,17 +622,26 @@
 
     function resetPBsAndWellness(){
       try{
-        var done = false;
+        var roadmapBefore = localStorage.getItem(ROADMAP_KEY);
 
-        if(window.FFF && typeof window.FFF.resetWellnessAndLogs === 'function'){
-          done = window.FFF.resetWellnessAndLogs() !== false;
+        if(!roadmapBefore){
+          alert('No roadmap is currently saved. Reset cancelled.');
+          return;
         }
 
-        if(!done){
+        if(window.FFF && typeof window.FFF.resetWellnessAndLogs === 'function'){
+          window.FFF.resetWellnessAndLogs();
+        } else {
           localStorage.removeItem('fff.pb.v1');
           localStorage.removeItem('fff.logs.v1');
           localStorage.removeItem('fff.checks.v1');
           localStorage.removeItem('fff.coaching.v1');
+        }
+
+        var roadmapAfter = localStorage.getItem(ROADMAP_KEY);
+
+        if(!roadmapAfter && roadmapBefore){
+          localStorage.setItem(ROADMAP_KEY, roadmapBefore);
         }
 
         if(window.FFF && typeof window.FFF.ready === 'function'){

@@ -738,9 +738,147 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const oldTestBox = document.querySelector('[data-engine-test-box]');
-  if (oldTestBox) oldTestBox.remove();
+  wireWorkoutPlanLogsToEngine();
 });
+
+function wireWorkoutPlanLogsToEngine() {
+  const planRoot = document.getElementById('plan');
+  if (!planRoot) return;
+
+  const stageAccordions = planRoot.querySelectorAll('.accordion');
+
+  stageAccordions.forEach((accordion, stageIndex) => {
+    const stageTitleBtn = accordion.querySelector('.acc-toggle');
+    const stageName = stageTitleBtn ? stageTitleBtn.textContent.trim() : `Stage ${stageIndex + 1}`;
+
+    const dayBlocks = accordion.querySelectorAll('.days > .mov');
+
+    dayBlocks.forEach((dayBlock, dayIndex) => {
+      const dayTitleEl = dayBlock.querySelector('.mov-head strong');
+      const dayName = dayTitleEl ? dayTitleEl.textContent.trim() : `Day ${dayIndex + 1}`;
+
+      const exerciseBlocks = dayBlock.querySelectorAll(':scope > .mov[style]');
+
+      exerciseBlocks.forEach((exerciseBlock, exerciseIndex) => {
+        const titleLink = exerciseBlock.querySelector('.mov-title a');
+        if (!titleLink) return;
+
+        const exerciseName = titleLink.textContent.trim();
+        const engineKey = `${stageName} | ${dayName} | ${exerciseName}`;
+
+        const openBtn = exerciseBlock.querySelector('[data-open]');
+        const drawer = exerciseBlock.querySelector('[data-drawer]');
+        if (!drawer) return;
+
+        const logArea = drawer.querySelector('[data-log]');
+        const pbEl = drawer.querySelector('[data-pb]');
+        const badgeEl = drawer.querySelector('[data-badge]');
+        const quoteEl = drawer.querySelector('[data-quote]');
+
+        if (!logArea) return;
+
+        function milestoneText(n){
+          if(n>=200) return 'Milestone: 200 logs saved 🔥';
+          if(n>=100) return 'Milestone: 100 logs saved 🎉';
+          if(n>=50)  return 'Milestone: 50 logs saved 💪';
+          if(n>=25)  return 'Milestone: 25 logs saved 🙌';
+          if(n>=10)  return 'Milestone: 10 logs saved ✅';
+          if(n>=5)   return 'Milestone: 5 logs saved ✨';
+          return '';
+        }
+
+        function pick(arr){
+          return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        const QUOTES = [
+          "Small wins compound. Log the set, own the day.",
+          "Perfect form, steady breath, then add a little.",
+          "Consistency beats intensity when intensity is inconsistent.",
+          "One clean rep beats five messy ones.",
+          "Show up. Scale smart. Keep going."
+        ];
+
+        function refreshPB(){
+          const pb = FFF.getPB(engineKey);
+          if (pb) {
+            pbEl.textContent = `PB score: ${pb.score.toFixed(1)} (best w×r)`;
+          } else {
+            pbEl.textContent = '';
+          }
+
+          const totalLogs = Object.values(FFF.getAllChecks()).length;
+          if (badgeEl) badgeEl.textContent = badgeEl.textContent || '';
+        }
+
+        function populateLatestValues(){
+          const logs = FFF.getLogs(engineKey);
+          if (!logs.length) {
+            refreshPB();
+            return;
+          }
+
+          const latest = logs[logs.length - 1];
+
+          const w1 = logArea.querySelector('[data-field="w1"]');
+          const r1 = logArea.querySelector('[data-field="r1"]');
+          const n1 = logArea.querySelector('[data-field="n1"]');
+
+          if (w1 && !w1.value) w1.value = latest.weight ?? '';
+          if (r1 && !r1.value) r1.value = latest.reps ?? '';
+          if (n1 && !n1.value) n1.value = latest.notes ?? '';
+
+          refreshPB();
+        }
+
+        populateLatestValues();
+
+        const saveButtons = logArea.querySelectorAll('[data-save]');
+        saveButtons.forEach((btn, btnIndex) => {
+          btn.addEventListener('click', () => {
+            const rowEl = btn.closest('.log-row');
+            if (!rowEl) return;
+
+            const inputs = rowEl.querySelectorAll('[data-field]');
+            let weight = 0;
+            let reps = 0;
+            let notes = '';
+
+            inputs.forEach(input => {
+              const field = input.getAttribute('data-field');
+              const val = (input.value || '').trim();
+
+              if (field.startsWith('w')) weight = parseFloat(val) || 0;
+              if (field.startsWith('r')) reps = parseFloat(val) || 0;
+              if (field.startsWith('n')) notes = val;
+            });
+
+            FFF.logSet(engineKey, weight, reps, notes);
+
+            const pb = FFF.getPB(engineKey);
+            if (pb && pb.weight === weight && pb.reps === reps) {
+              pbEl.textContent = `New PB! ${pb.weight} × ${pb.reps}`;
+            } else {
+              refreshPB();
+            }
+
+            if (quoteEl) {
+              quoteEl.textContent = pick(QUOTES);
+            }
+          });
+        });
+
+        if (openBtn) {
+          openBtn.addEventListener('click', () => {
+            setTimeout(() => {
+              refreshPB();
+            }, 0);
+          });
+        }
+      });
+    });
+  });
+}
 </script>
   
 </body>

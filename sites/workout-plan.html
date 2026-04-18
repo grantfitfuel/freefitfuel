@@ -173,29 +173,7 @@ var ROADMAP_KEY = 'fff.roadmap.plan.v1';
 var NS_PB = 'fff.workoutplan.pb.';
 var NS_CHECK = 'fff.workoutplan.check.';
 
-/* ===== Wellness toggle persistence + migration ===== */
-(function initWellness(){
-  try{
-    var oldKeys = [NS_CHECK+'activityWalk', NS_CHECK+'activityRun', NS_CHECK+'activityBike'];
-    var newKey  = NS_CHECK+'activityCardio';
-    var anyOld = false;
-    for(var i=0;i<oldKeys.length;i++){
-      if(localStorage.getItem(oldKeys[i]) === '1'){ anyOld = true; break; }
-    }
-    if(anyOld && localStorage.getItem(newKey)!=='1'){ localStorage.setItem(newKey,'1'); }
-    for(var j=0;j<oldKeys.length;j++){ localStorage.removeItem(oldKeys[j]); }
-  }catch(e){}
 
-  ['hydrDone','sleepDone','macroDone','activityCardio'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var k = NS_CHECK+id;
-    try{ if(localStorage.getItem(k)==='1') el.checked=true; }catch(e){}
-    el.addEventListener('change', function(){
-      try{ localStorage.setItem(k, el.checked?'1':'0'); }catch(e){}
-    });
-  });
-})();
 
 /* ===== Small utils ===== */
 function yt(q){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(String(q||'exercise')+' form'); }

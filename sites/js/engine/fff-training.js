@@ -11,11 +11,6 @@ window.FFFTraining = (function () {
     return (Number(log && log.weight) || 0) * (Number(log && log.reps) || 0);
   }
 
-  function latest(logs) {
-    logs = safeArray(logs);
-    return logs.length ? logs[logs.length - 1] : null;
-  }
-
   function getTrend(logs) {
     logs = safeArray(logs);
 
@@ -94,10 +89,8 @@ window.FFFTraining = (function () {
 
   function phaseLens(roadmapSummary) {
     const current = roadmapSummary || {};
-    const stage = current.currentStageType || 'unknown';
-
     return {
-      stage: stage,
+      stage: current.currentStageType || 'unknown',
       bias: current.currentBias || 'unknown',
       progressionExpectation: current.progressionExpectation || 'unknown',
       flatOk: !!(window.FFFRoadmap && typeof window.FFFRoadmap.isFlatPerformanceAcceptable === 'function'
@@ -278,21 +271,53 @@ window.FFFTraining = (function () {
     const readiness = recovery && typeof recovery.readiness === 'number' ? recovery.readiness : 50;
     const fatigue = recovery && typeof recovery.fatigue === 'number' ? recovery.fatigue : 20;
     const underRecoveryRisk = recovery && typeof recovery.underRecoveryRisk === 'number' ? recovery.underRecoveryRisk : 0;
+    const checkScore = recovery && typeof recovery.checkScore === 'number' ? recovery.checkScore : 0;
     const mentalRisk = mind && mind.risk ? mind.risk : 'low';
     const pressure = mind && typeof mind.pressure === 'number' ? mind.pressure : 20;
+    const confidence = mind && typeof mind.confidence === 'number' ? mind.confidence : 50;
     const phase = phaseLens(roadmapSummary);
 
     let mode = 'build';
     let reason = [];
     let tone = 'grounded';
 
+    // Make wellness visibly matter even before logs exist
     if (!totalLogs) {
-      return {
-        mode: 'start',
-        tone: 'grounded',
-        reason: ['No log history yet — build consistency first'],
-        phase: phase
-      };
+      if (checkScore === 4) {
+        return {
+          mode: 'ready',
+          tone: 'confident',
+          reason: ['All core recovery markers are in place even though training history is still limited'],
+          phase: phase
+        };
+      }
+
+      if (checkScore === 3) {
+        return {
+          mode: 'good-foundations',
+          tone: 'grounded',
+          reason: ['Recovery basics look mostly strong and the system is ready for consistent training'],
+          phase: phase
+        };
+      }
+
+      if (checkScore === 2) {
+        return {
+          mode: 'mixed-foundations',
+          tone: 'grounded',
+          reason: ['Some recovery basics are in place, but there is room to tighten the foundation'],
+          phase: phase
+        };
+      }
+
+      if (checkScore <= 1) {
+        return {
+          mode: 'poor-foundations',
+          tone: 'supportive',
+          reason: ['Very few recovery basics are currently in place, so expectations should stay realistic'],
+          phase: phase
+        };
+      }
     }
 
     if (underRecoveryRisk >= 65 || fatigue >= 75) {
@@ -366,6 +391,24 @@ window.FFFTraining = (function () {
     }
 
     if (phase.stage === 'transform' || phase.stage === 'foundation') {
+      if (checkScore === 4 && confidence >= 55) {
+        return {
+          mode: 'build',
+          tone: 'confident',
+          reason: ['Recovery basics are strong and this phase rewards patient, steady progress'],
+          phase: phase
+        };
+      }
+
+      if (checkScore <= 1) {
+        return {
+          mode: 'stabilise',
+          tone: 'supportive',
+          reason: ['This phase needs consistency, and the recovery basics are too weak to ignore'],
+          phase: phase
+        };
+      }
+
       return {
         mode: 'build',
         tone: 'grounded',

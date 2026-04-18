@@ -26,7 +26,6 @@ window.FFFMessaging = (function () {
     const patternState = decision.patternState || 'neutral';
     const reasonText = joinReasons(decision.reason || []);
     const nextStep = decision.nextStep || '';
-    const tone = decision.tone || 'grounded';
 
     if (decision.action === 'start') {
       return {
@@ -138,6 +137,41 @@ window.FFFMessaging = (function () {
     const mode = globalDecision.mode || 'build';
     const reasonText = joinReasons(globalDecision.reason || []);
     const phase = globalDecision.phase && globalDecision.phase.stage ? globalDecision.phase.stage : 'unknown';
+
+    if (mode === 'ready') {
+      return {
+        headline: 'Recovery basics are all in place',
+        message: 'Hydration, sleep, food, and daily movement are all showing up. That does not guarantee a perfect session, but it does mean the platform under your training is strong.'
+      };
+    }
+
+    if (mode === 'good-foundations') {
+      return {
+        headline: 'Your foundation looks mostly solid',
+        message: 'Most of the recovery basics are in place. That is enough to train productively, and the next gain comes from repeating that standard more often.'
+      };
+    }
+
+    if (mode === 'mixed-foundations') {
+      return {
+        headline: 'Some basics are there, some still need tightening',
+        message: 'This is not a write-off. It just means the platform under your training is mixed. You will get more from steadier sleep, hydration, and fuelling than from trying to manufacture motivation.'
+      };
+    }
+
+    if (mode === 'poor-foundations') {
+      return {
+        headline: 'The basics need attention first',
+        message: 'Very few recovery markers are currently in place. Training can still count, but expectations should stay realistic and the priority should be rebuilding the foundation.'
+      };
+    }
+
+    if (mode === 'stabilise') {
+      return {
+        headline: 'Stabilise the base before you push on',
+        message: 'This phase needs consistency, and the basics are not strong enough to ignore. Tighten the daily foundations first and let the plan become easier to sustain.'
+      };
+    }
 
     if (mode === 'start') {
       return {

@@ -733,5 +733,22 @@ document.getElementById('btnReset').addEventListener('click', resetPBsAndWellnes
 /* ===== Boot ===== */
 renderPlan();
 </script>
+  <script src="/js/engine/fff-core.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const test = document.createElement('div');
+  test.style.margin = '12px';
+  test.style.padding = '10px';
+  test.style.background = '#132317';
+  test.style.color = '#b8ffbf';
+  test.style.border = '1px solid #1f2630';
+  test.style.borderRadius = '10px';
+  test.textContent = window.FFF
+    ? 'FFF engine working'
+    : 'FFF engine NOT working';
+  document.body.prepend(test);
+});
+</script>
 </body>
 </html>

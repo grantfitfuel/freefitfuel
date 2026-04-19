@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=34">
+  <link rel="stylesheet" href="style.css?v=35">
 
   <style>
     :root{
@@ -149,6 +149,31 @@
       background:rgba(255,255,255,.06);
       font-size:.85rem;
     }
+
+    .status-grid{
+      display:grid;
+      gap:10px;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      margin-top:10px;
+    }
+    .status-box{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:10px;
+    }
+    .status-title{
+      font-size:.8rem;
+      color:var(--inkdim);
+    }
+    .status-value{
+      font-size:1.2rem;
+      font-weight:700;
+      margin-top:4px;
+    }
+    .status-strong{color:#90ee90}
+    .status-building{color:#ffd580}
+    .status-weak{color:#ff8a8a}
   </style>
 </head>
 <body>
@@ -176,6 +201,32 @@
     <section class="section">
       <h2>Coach Summary</h2>
       <div id="coachSummary" class="ok" style="margin-bottom:12px;"></div>
+
+      <div class="block" id="movementStatus">
+        <h3 style="margin:.1rem 0 .6rem">Live Movement Status</h3>
+        <div class="status-grid">
+          <div class="status-box" data-family="push">
+            <div class="status-title">Pressing</div>
+            <div class="status-value">—</div>
+          </div>
+          <div class="status-box" data-family="pull">
+            <div class="status-title">Pulling</div>
+            <div class="status-value">—</div>
+          </div>
+          <div class="status-box" data-family="legs">
+            <div class="status-title">Lower Body</div>
+            <div class="status-value">—</div>
+          </div>
+          <div class="status-box" data-family="core">
+            <div class="status-title">Core</div>
+            <div class="status-value">—</div>
+          </div>
+          <div class="status-box" data-family="cardio">
+            <div class="status-title">Cardio</div>
+            <div class="status-value">—</div>
+          </div>
+        </div>
+      </div>
 
       <div id="weeklySnapshot" class="block">
         <h3 style="margin:.1rem 0 .5rem">Weekly Coaching Snapshot</h3>
@@ -300,6 +351,17 @@
       return str.split(' ').map(function(part){
         return part ? part.charAt(0).toUpperCase() + part.slice(1) : '';
       }).join(' ');
+    }
+
+    function compactLabel(str){
+      str = String(str || '').toLowerCase();
+      if(!str) return '—';
+      if(str.indexOf('press') > -1 || str.indexOf('push') > -1) return 'Pressing';
+      if(str.indexOf('pull') > -1 || str.indexOf('row') > -1) return 'Pulling';
+      if(str.indexOf('squat') > -1 || str.indexOf('lower') > -1 || str.indexOf('posterior') > -1 || str.indexOf('hinge') > -1) return 'Lower Body';
+      if(str.indexOf('core') > -1) return 'Core';
+      if(str.indexOf('cardio') > -1) return 'Cardio';
+      return titleCase(str);
     }
 
     var QUOTES = [
@@ -749,6 +811,7 @@
         renderPlan();
         renderCoachSummary();
         renderWeeklySnapshot();
+        renderMovementStatus();
         wireWorkoutPlanLogsToEngine();
 
         alert('Cleared workout logs, PBs and wellness checks. Roadmap left intact.');
@@ -806,12 +869,12 @@
         sessionsEl.textContent = String(weekly.sessionsLogged != null ? weekly.sessionsLogged : 0);
         adherenceEl.textContent = String(weekly.adherence != null ? weekly.adherence : 0) + '/100';
         qualityEl.textContent = String(weekly.quality != null ? weekly.quality : 0) + '/100';
-        strongestEl.textContent = titleCase(
+        strongestEl.textContent = compactLabel(
           window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
             ? window.FFFTraining.familyLabel(weekly.strongestFamily || '')
             : (weekly.strongestFamily || '—')
         );
-        weakestEl.textContent = titleCase(
+        weakestEl.textContent = compactLabel(
           window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
             ? window.FFFTraining.familyLabel(weekly.weakestFamily || '')
             : (weekly.weakestFamily || '—')
@@ -834,6 +897,67 @@
         modeEl.textContent = '—';
         if(swapsEl) swapsEl.innerHTML = '';
       }
+    }
+
+    function renderMovementStatus(){
+      if(!window.FFF || !window.FFF.getWeeklySummary) return;
+
+      var weekly = window.FFF.getWeeklySummary();
+      if(!weekly) return;
+
+      var families = weekly.familySummary || {};
+
+      var map = {
+        push: ['horizontal-push', 'vertical-push'],
+        pull: ['horizontal-pull', 'vertical-pull'],
+        legs: ['squat', 'hinge', 'calf-foot'],
+        core: ['core-anti-extension', 'core-rotation-lateral'],
+        cardio: ['cardio-z2', 'cardio-threshold']
+      };
+
+      Object.keys(map).forEach(function(groupKey){
+        var holder = document.querySelector('[data-family="' + groupKey + '"] .status-value');
+        if(!holder) return;
+
+        var keys = map[groupKey];
+        var concern = 0;
+        var hasData = false;
+        var hasProgressing = false;
+        var hasFatigue = false;
+        var hasWatch = false;
+
+        keys.forEach(function(key){
+          if(families[key]){
+            hasData = true;
+            concern += Number(families[key].concern || 0);
+            if(families[key].state === 'progressing') hasProgressing = true;
+            if(families[key].state === 'fatigued') hasFatigue = true;
+            if(families[key].state === 'watch') hasWatch = true;
+          }
+        });
+
+        holder.classList.remove('status-strong', 'status-building', 'status-weak');
+
+        if(!hasData){
+          holder.textContent = '—';
+          return;
+        }
+
+        if(hasFatigue || concern >= 55){
+          holder.textContent = 'NEEDS ATTENTION';
+          holder.classList.add('status-weak');
+          return;
+        }
+
+        if(hasProgressing && !hasWatch && concern < 35){
+          holder.textContent = 'STRONG';
+          holder.classList.add('status-strong');
+          return;
+        }
+
+        holder.textContent = 'BUILDING';
+        holder.classList.add('status-building');
+      });
     }
 
     function wireWorkoutPlanLogsToEngine(){
@@ -946,6 +1070,7 @@
                 var result = window.FFF.logSet(engineKey, weight, reps, notes);
                 renderCoachSummary();
                 renderWeeklySnapshot();
+                renderMovementStatus();
                 refreshFeedback();
 
                 if(pbEl && result && result.isNewPB){
@@ -982,6 +1107,7 @@
       if(!window.FFF){
         renderCoachSummary();
         renderWeeklySnapshot();
+        renderMovementStatus();
         return;
       }
 
@@ -990,6 +1116,7 @@
       }catch(err){
         renderCoachSummary();
         renderWeeklySnapshot();
+        renderMovementStatus();
         return;
       }
 
@@ -1016,12 +1143,14 @@
             window.FFF.setCheck(key, box.checked);
             renderCoachSummary();
             renderWeeklySnapshot();
+            renderMovementStatus();
           }catch(err){}
         });
       });
 
       renderCoachSummary();
       renderWeeklySnapshot();
+      renderMovementStatus();
       wireWorkoutPlanLogsToEngine();
     });
   </script>

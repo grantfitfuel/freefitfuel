@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Plan | FreeFitFuel</title>
+
+<link rel="stylesheet" href="style.css?v=30">
+
+<style>
+
+/* ===== Layout ===== */
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.card {
+  background: #111;
+  border: 1px solid #222;
+  padding: 18px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+}
+
+/* ===== Coaching ===== */
+
+.coach-headline {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #FF6A00;
+}
+
+.coach-message {
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* ===== Intervention ===== */
+
+.intervention {
+  border-left: 4px solid #FF6A00;
+}
+
+.intervention-actions li {
+  margin-bottom: 6px;
+}
+
+/* ===== Decision ===== */
+
+.decision {
+  font-weight: 600;
+}
+
+/* ===== Button ===== */
+
+.refresh-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  background: #FF6A00;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.refresh-btn:hover {
+  opacity: 0.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<section class="wrap">
+
+<h1>My Plan</h1>
+
+<!-- GLOBAL COACH -->
+<div class="card" id="globalCoach">
+  <div class="coach-headline" id="globalHeadline"></div>
+  <div class="coach-message" id="globalMessage"></div>
+</div>
+
+<!-- MENTAL INTERVENTION -->
+<div class="card intervention" id="interventionCard">
+  <h2 id="interventionHeadline"></h2>
+  <p id="interventionMessage"></p>
+  <ul id="interventionActions" class="intervention-actions"></ul>
+</div>
+
+<!-- TODAY DECISION -->
+<div class="card">
+  <h2>Today</h2>
+  <div id="todayDecision" class="decision"></div>
+  <p id="todayReason"></p>
+</div>
+
+<!-- NEXT SESSION -->
+<div class="card">
+  <h2>Next Session</h2>
+  <div id="nextSessionTitle"></div>
+  <p id="nextSessionAction"></p>
+  <p id="nextSessionTarget"></p>
+</div>
+
+<!-- WEEKLY SUMMARY -->
+<div class="card">
+  <h2>Weekly Snapshot</h2>
+  <p id="weeklySummary"></p>
+</div>
+
+<button class="refresh-btn" onclick="render()">Refresh Coaching</button>
+
+</section>
+
+<!-- ENGINE FILES -->
+<script src="/js/engine/fff-state.js?v=2"></script>
+<script src="/js/engine/fff-exercise-db.js?v=1"></script>
+<script src="/js/engine/fff-recovery.js?v=1"></script>
+<script src="/js/engine/fff-mind.js?v=1"></script>
+<script src="/js/engine/fff-roadmap.js?v=1"></script>
+<script src="/js/engine/fff-training.js?v=1"></script>
+<script src="/js/engine/fff-messaging.js?v=1"></script>
+<script src="/js/engine/fff-interventions.js?v=1"></script>
+<script src="/js/engine/fff-core.js?v=10"></script>
+
+<script>
+
+function render() {
+  try {
+    const data = FFF.getGlobalCoachingSummary();
+
+    // ===== GLOBAL =====
+    document.getElementById('globalHeadline').innerText = data.headline || '';
+    document.getElementById('globalMessage').innerText = data.message || '';
+
+    // ===== INTERVENTION =====
+    const i = data.intervention || {};
+
+    document.getElementById('interventionHeadline').innerText = i.headline || '';
+    document.getElementById('interventionMessage').innerText = i.message || '';
+
+    const ul = document.getElementById('interventionActions');
+    ul.innerHTML = '';
+
+    (i.actions || []).forEach(a => {
+      const li = document.createElement('li');
+      li.innerText = a;
+      ul.appendChild(li);
+    });
+
+    // ===== TODAY =====
+    const today = data.todayDecision || {};
+    document.getElementById('todayDecision').innerText =
+      (today.decision || '').replace(/-/g, ' ');
+    document.getElementById('todayReason').innerText = today.reason || '';
+
+    // ===== NEXT SESSION =====
+    const next = data.nextSession || {};
+    document.getElementById('nextSessionTitle').innerText = next.title || '';
+    document.getElementById('nextSessionAction').innerText = next.action || '';
+    document.getElementById('nextSessionTarget').innerText = next.target || '';
+
+    // ===== WEEKLY =====
+    const w = data.weekly || {};
+    document.getElementById('weeklySummary').innerText =
+      (w.sessionsLogged || 0) + ' sessions • ' +
+      (w.adherence || 0) + '/100 adherence • ' +
+      (w.quality || 0) + '/100 quality';
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', render);
+
+</script>
+
+</body>
+</html>

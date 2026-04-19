@@ -5,205 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=38">
+  <link rel="stylesheet" href="style.css?v=39">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
     :root{
-      --bg:#0b0f14;
-      --ink:#e6e6ea;
-      --inkdim:#b7b7c2;
-      --glass:#0f131a;
-      --glass2:#111418;
-      --stroke:#1f2630;
-      --accent:#ff6a00;
-      --accent-soft:rgba(255,106,0,.12);
-      --ok:#90ee90;
-      --warn:#ffd580;
-      --danger:#ff9b9b;
-      --maxw:1180px;
-      --shadow:0 10px 30px rgba(0,0,0,.28);
+      --bg:#0b0f14; --ink:#e6e6ea; --inkdim:#b7b7c2;
+      --glass:#0f131a; --glass2:#111418; --stroke:#1f2630; --accent:#ff6a00;
+      --accentSoft:rgba(255,106,0,.14); --maxw:1180px;
+      --ok:#90ee90; --warn:#ffd580; --bad:#ff9b9b;
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      background:linear-gradient(180deg,#0b0f14 0%, #0d1218 100%);
-      color:var(--ink);
-      font-family:Inter,system-ui,Arial,sans-serif;
-      line-height:1.45;
-    }
-
+    body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif;margin:0}
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px 40px}
-    h1{margin:.1rem 0 .35rem;font-size:clamp(1.9rem, 3vw, 2.7rem);line-height:1.05}
-    h2{margin:.1rem 0 .55rem;font-size:1.15rem;color:var(--accent)}
-    h3{margin:.1rem 0 .45rem}
-    .lead{color:var(--inkdim);margin:0}
+    h1{margin:.15rem 0 .45rem;font-size:2rem}
+    h2{margin:.15rem 0 .6rem;font-size:1.2rem;color:var(--accent)}
+    h3{margin:.1rem 0 .5rem}
+    .lead{color:var(--inkdim)}
     .meta{color:var(--inkdim)}
-    .muted-note{color:var(--inkdim);font-size:.92rem}
 
     .hero-shell{
       background:
-        radial-gradient(circle at top right, rgba(255,106,0,.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(255,106,0,.15), transparent 28%),
         linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
       border:1px solid var(--stroke);
-      border-radius:22px;
-      padding:18px;
-      box-shadow:var(--shadow);
-      margin-bottom:16px;
+      border-radius:18px;
+      margin:0 0 14px;
+      padding:16px;
     }
-
-    .hero-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
-    }
-
+    .hero-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
     .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+      display:inline-flex;align-items:center;gap:8px;
       border:1px solid rgba(255,106,0,.35);
       background:rgba(255,106,0,.10);
       color:var(--accent);
       border-radius:999px;
-      padding:.35rem .7rem;
-      font-size:.84rem;
+      padding:.3rem .7rem;
+      font-size:.82rem;
       font-weight:700;
-      letter-spacing:.01em;
       margin-bottom:10px;
     }
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
 
-    .top-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
-
-    .btn,.btn-sm,.goal-chip{
-      border:1px solid var(--stroke);
-      background:var(--glass);
-      color:var(--ink);
-      text-decoration:none;
-      border-radius:10px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      transition:.18s ease;
-      font-family:inherit;
-    }
-    .btn:hover,.btn-sm:hover,.goal-chip:hover{border-color:rgba(255,106,0,.45);transform:translateY(-1px)}
-    .btn{min-height:42px;padding:.7rem 1rem;font-weight:700}
-    .btn-sm{min-height:34px;padding:.42rem .7rem;font-size:.92rem}
-    .btn-primary{background:linear-gradient(180deg, rgba(255,106,0,.95), rgba(255,106,0,.82));color:#111;border-color:#ff8a38}
-    .btn-primary:hover{filter:brightness(1.03)}
-
-    .section{
-      background:var(--glass);
-      border:1px solid var(--stroke);
-      border-radius:16px;
-      padding:14px;
-      box-shadow:var(--shadow);
-      margin:14px 0;
-    }
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;margin:14px 0;padding:14px}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
     .section-head p{margin:0;color:var(--inkdim)}
 
     .grid{display:grid;gap:12px}
-    .grid-2{grid-template-columns:1.2fr .8fr}
+    .grid-2{grid-template-columns:1.25fr .75fr}
     .grid-3{grid-template-columns:repeat(3,1fr)}
     .grid-4{grid-template-columns:repeat(4,1fr)}
     .grid-5{grid-template-columns:repeat(5,1fr)}
-
     @media (max-width:980px){
       .grid-2,.grid-3,.grid-4,.grid-5{grid-template-columns:1fr}
     }
 
-    .card{
-      background:var(--glass2);
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      padding:12px;
-      min-width:0;
-    }
-    .card h3{margin:.05rem 0 .35rem;font-size:.96rem;color:var(--inkdim);font-weight:700}
-    .metric{font-size:1.48rem;font-weight:800;line-height:1.05}
+    .card{background:var(--glass2);border:1px solid var(--stroke);border-radius:14px;padding:12px}
+    .metric{font-size:1.42rem;font-weight:800;line-height:1.08}
     .sub{font-size:.9rem;color:var(--inkdim);margin-top:.35rem}
 
-    .setup-shell{
-      display:grid;
-      grid-template-columns:1.3fr .7fr;
-      gap:14px;
-    }
-    @media (max-width:980px){
-      .setup-shell{grid-template-columns:1fr}
-    }
-
-    .form-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-    @media (max-width:980px){
-      .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-    @media (max-width:560px){
-      .form-grid{grid-template-columns:1fr}
-    }
-
-    label.field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      font-weight:600;
-      font-size:.95rem;
-    }
-    .input, select{
-      width:100%;
-      background:#0c1118;
-      border:1px solid var(--stroke);
-      border-radius:10px;
-      color:var(--ink);
-      padding:.62rem .7rem;
-      min-height:42px;
-      font:inherit;
-    }
-
-    .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
-    .seg{display:flex;flex-wrap:wrap;gap:8px}
+    .btn-sm,
+    .btn,
     .goal-chip{
-      min-height:38px;
-      padding:.55rem .9rem;
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      color:var(--ink);
+      padding:.38rem .7rem;
+      border-radius:10px;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-family:inherit;
+    }
+    .btn{padding:.7rem 1rem;font-weight:700}
+    .btn-primary{background:var(--accent);border-color:#ff944a;color:#111}
+    .btn:hover,.btn-sm:hover,.goal-chip:hover{border-color:rgba(255,106,0,.45)}
+
+    .setup-shell{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
+    @media (max-width:980px){ .setup-shell{grid-template-columns:1fr} }
+
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .seg{display:flex;gap:8px;flex-wrap:wrap}
+    .goal-chip{
       border-radius:999px;
       font-weight:700;
       background:rgba(255,255,255,.04);
+      padding:.55rem .9rem;
     }
-    .goal-chip[aria-pressed="true"]{
-      background:var(--accent);
-      color:#111;
-      border-color:#ff944a;
+    .goal-chip[aria-pressed="true"]{background:var(--accent);color:#111;border-color:#ff944a}
+
+    .form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    @media (max-width:980px){ .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media (max-width:560px){ .form-grid{grid-template-columns:1fr} }
+
+    label.field{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.95rem}
+    .input, select{
+      background:#0c1118;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);
+      padding:.6rem .65rem;width:100%;min-height:42px;font:inherit
     }
 
-    .inline-note{
-      margin-top:8px;
-      font-size:.9rem;
-      color:var(--inkdim);
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tag{
+      border:1px solid var(--stroke);border-radius:999px;padding:.2rem .6rem;
+      background:rgba(255,255,255,.05);font-size:.82rem
     }
+    .tag-accent{border-color:rgba(255,106,0,.35);background:var(--accentSoft);color:#ffd6bd}
 
     .coach-banner{
       margin-top:12px;
@@ -211,240 +122,108 @@
         linear-gradient(180deg, rgba(255,106,0,.12), rgba(255,106,0,.06)),
         var(--glass2);
       border:1px solid rgba(255,106,0,.24);
-      border-radius:16px;
+      border-radius:14px;
       padding:14px 15px;
     }
-    .coach-banner strong{
-      display:block;
-      font-size:1.05rem;
-      color:#ffd4b8;
-      margin-bottom:4px;
-    }
-    .coach-banner p{margin:0;color:var(--ink)}
+    .coach-banner strong{display:block;color:#ffd6bd;margin-bottom:4px}
 
-    .wellness-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:10px;
-    }
-    @media (max-width:860px){
-      .wellness-grid{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width:480px){
-      .wellness-grid{grid-template-columns:1fr}
-    }
+    .wellness-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    @media (max-width:860px){ .wellness-grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:520px){ .wellness-grid{grid-template-columns:1fr} }
 
     .wellness-item{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      background:rgba(255,255,255,.03);
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      padding:10px 12px;
+      display:flex;gap:10px;align-items:flex-start;
+      background:rgba(255,255,255,.03);border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;
     }
-    .wellness-item input[type="checkbox"]{
-      margin-top:2px;
-      transform:scale(1.15);
-      accent-color:var(--accent);
-    }
-    .wellness-item .w-title{font-weight:700}
-    .wellness-item .w-sub{font-size:.85rem;color:var(--inkdim);margin-top:2px}
+    .wellness-item input[type="checkbox"]{accent-color:var(--accent);transform:scale(1.15);margin-top:2px}
+    .w-title{font-weight:700}
+    .w-sub{font-size:.85rem;color:var(--inkdim);margin-top:2px}
 
-    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .tag{
-      border:1px solid var(--stroke);
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
-      padding:.25rem .6rem;
-      font-size:.82rem;
-      color:var(--ink);
-    }
-    .tag-accent{
-      border-color:rgba(255,106,0,.35);
-      background:rgba(255,106,0,.10);
-      color:#ffd4b8;
-    }
+    .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
+    @media (max-width:980px){ .two-col{grid-template-columns:1fr} }
 
-    .intervention{
-      border-left:4px solid var(--accent);
-      padding-left:12px;
-    }
-    .intervention ul{margin:.6rem 0 0 1.1rem;padding:0}
-    .intervention li{margin:.36rem 0;color:var(--ink)}
+    .intervention{border-left:4px solid var(--accent);padding-left:12px}
+    .intervention ul{margin:.55rem 0 0 1rem;padding:0}
+    .intervention li{margin:.35rem 0}
 
-    .status-grid{
-      display:grid;
-      gap:10px;
-      grid-template-columns:repeat(5,1fr);
-      margin-top:10px;
-    }
-    @media (max-width:980px){
-      .status-grid{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width:560px){
-      .status-grid{grid-template-columns:1fr}
-    }
-    .status-box{
-      background:rgba(255,255,255,.03);
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      padding:10px;
-    }
-    .status-title{font-size:.82rem;color:var(--inkdim)}
-    .status-value{margin-top:6px;font-size:1.05rem;font-weight:800}
+    .status-grid{display:grid;gap:10px;grid-template-columns:repeat(5,1fr);margin-top:10px}
+    @media (max-width:980px){ .status-grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:560px){ .status-grid{grid-template-columns:1fr} }
+    .status-box{background:rgba(255,255,255,.03);border:1px solid var(--stroke);border-radius:12px;padding:10px}
+    .status-title{font-size:.8rem;color:var(--inkdim)}
+    .status-value{font-size:1.1rem;font-weight:700;margin-top:4px}
     .status-strong{color:var(--ok)}
     .status-building{color:var(--warn)}
-    .status-weak{color:var(--danger)}
+    .status-weak{color:var(--bad)}
 
     .line-list{display:grid;gap:8px}
-    .line{
-      border:1px solid var(--stroke);
-      border-radius:10px;
-      background:rgba(255,255,255,.03);
-      padding:.7rem .8rem;
-      color:var(--ink);
+    .plan-line{
+      border:1px solid var(--stroke);border-radius:10px;padding:.6rem .7rem;background:rgba(255,255,255,.03)
     }
 
-    .days{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
-    @media (max-width:900px){.days{grid-template-columns:1fr}}
+    .days{display:grid;gap:12px}
+    @media (min-width:780px){ .days{grid-template-columns:repeat(2,1fr)} }
 
-    .mov{
-      border:1px dashed var(--stroke);
-      border-radius:12px;
-      padding:.65rem;
-      margin:.45rem 0;
-      min-width:0;
-    }
-
-    .mov-head{
-      display:flex;
-      gap:.6rem;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
+    .mov{border:1px dashed var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.45rem 0}
+    .mov-head{display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .mov-title a{color:var(--ink);text-decoration:underline dotted}
     .mov-title a:hover{color:var(--accent)}
-    .rx{opacity:.92}
+    .rx{opacity:.9}
+    .mov-tools{display:flex;gap:.4rem;align-items:center}
 
-    .drawer{display:none;margin:.55rem 0 0}
+    .drawer{display:none;margin:.45rem 0 0}
     .drawer.open{display:block}
-
-    .log-grid{display:grid;gap:.4rem}
-    .log-row{
-      display:grid;
-      grid-template-columns:72px 1fr 1fr 1fr auto;
-      gap:.35rem;
-      align-items:center;
-    }
+    .log-grid{display:grid;gap:.35rem}
+    .log-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr auto;gap:.35rem;align-items:center}
     .log-row input{
-      background:#0b0f14;
-      border:1px solid var(--stroke);
-      border-radius:8px;
-      color:var(--ink);
-      padding:.42rem .5rem;
-      width:100%;
+      background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.38rem .45rem
     }
-    @media (max-width:560px){
-      .log-row{
-        grid-template-columns:60px 1fr 1fr;
-        grid-auto-rows:auto;
-      }
+    .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
+    .pb{color:#90ee90}
+    .badge{
+      border:1px solid var(--accent);border-radius:999px;padding:.15rem .55rem;
+      background:rgba(255,106,0,.15);color:var(--accent);font-size:.8rem;font-weight:600;margin-left:.4rem;
+    }
+    .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
+
+    .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
+    .restbar .left{opacity:.9;min-width:44px}
+    .restbar input[type="number"]{
+      width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.34rem .45rem
+    }
+
+    @media (max-width:520px){
+      .log-row{grid-template-columns:60px 1fr 1fr;grid-auto-rows:auto}
+      .log-row input[placeholder="kg"]{grid-column:1 / span 1}
+      .log-row input[placeholder="reps"]{grid-column:2 / span 1}
       .log-row input[placeholder="notes"]{grid-column:1 / span 2}
     }
 
-    .restbar{
-      display:flex;
-      align-items:center;
-      gap:.45rem;
-      margin:.45rem 0 .1rem;
-      flex-wrap:wrap;
-    }
-    .restbar .left{opacity:.95;min-width:46px}
-    .restbar input[type="number"]{
-      width:86px;
-      background:#0b0f14;
-      border:1px solid var(--stroke);
-      border-radius:8px;
-      color:var(--ink);
-      padding:.38rem .45rem;
-    }
+    .accordion{border:1px solid var(--stroke);border-radius:12px;background:#111418;padding:12px;margin-bottom:1rem}
+    .acc-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;cursor:pointer}
+    .acc-toggle{all:unset;cursor:pointer;color:var(--accent);font-size:1.05rem;font-weight:700}
+    .accordion .acc-toggle::after{content:"▸";margin-left:.45rem;opacity:.8}
+    .accordion.open .acc-toggle::after{content:"▾";margin-left:.45rem;opacity:.8}
+    .acc-body{margin-top:.5rem}
+    [hidden]{display:none !important;}
 
-    .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.45rem}
-    .pb{color:var(--ok)}
-    .quote{font-size:.92rem;color:var(--inkdim);margin-top:.3rem}
-
-    .alt-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem}
+    .alt-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.25rem}
     .alt-chip{
-      border:1px solid var(--stroke);
-      border-radius:999px;
-      padding:.15rem .55rem;
-      background:rgba(255,255,255,.06);
-      font-size:.85rem;
-      color:var(--ink);
-      text-decoration:none;
+      border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;background:rgba(255,255,255,.06);font-size:.85rem;color:var(--ink);text-decoration:none
     }
 
-    .legend{
-      background:#0f131a;
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      padding:10px;
-      margin:.6rem 0;
-    }
-    .legend summary{cursor:pointer;color:var(--accent);font-weight:700;list-style:none}
+    .legend{background:#0f131a;border:1px solid var(--stroke);border-radius:12px;padding:10px;margin:.6rem 0}
+    .legend summary{cursor:pointer;color:var(--accent);font-weight:600;list-style:none}
     .legend summary::-webkit-details-marker{display:none}
-    .legend .row{display:grid;grid-template-columns:140px 1fr;gap:.6rem;margin-top:.55rem}
-    .legend .term{font-weight:700}
+    .legend .row{display:grid;grid-template-columns:140px 1fr;gap:.6rem;margin-top:.5rem}
+    .legend .term{color:var(--ink);font-weight:600}
     .legend .def{color:var(--inkdim)}
-    @media (max-width:560px){
+    @media (max-width:520px){
       .legend .row{grid-template-columns:1fr}
+      .legend .term{opacity:.9}
     }
 
-    .accordion{
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      background:#111418;
-      padding:12px;
-      margin-bottom:1rem;
-    }
-    .acc-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:.75rem;
-    }
-    .acc-toggle{
-      all:unset;
-      cursor:pointer;
-      color:var(--accent);
-      font-size:1.04rem;
-      font-weight:700;
-    }
-    .accordion .acc-toggle::after{
-      content:"▸";
-      margin-left:.45rem;
-      opacity:.8;
-    }
-    .accordion.open .acc-toggle::after{content:"▾"}
-    .acc-body{margin-top:.6rem}
-    [hidden]{display:none !important}
-
-    .two-col{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:14px;
-    }
-    @media (max-width:980px){
-      .two-col{grid-template-columns:1fr}
-    }
-
-    code{
-      background:rgba(255,255,255,.05);
-      padding:.1rem .3rem;
-      border-radius:6px;
-    }
+    code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
   </style>
 </head>
 <body>
@@ -457,19 +236,18 @@
         <div>
           <div class="eyebrow">FreeFitFuel™ • My Plan</div>
           <h1>Your training cockpit</h1>
-          <p class="lead">Build your roadmap here, then let the system coach, track, and adapt everything underneath it.</p>
+          <p class="lead">Create the roadmap here, then let the system coach, track, and adapt everything underneath it.</p>
         </div>
-
         <div class="top-actions">
-          <a class="btn btn-primary" href="workouts.html">Browse workouts</a>
-          <a class="btn" href="nutrition.html">Nutrition support</a>
-          <a class="btn" href="wellbeing.html">Wellbeing tools</a>
+          <a class="btn btn-primary" href="workouts.html">Workouts</a>
+          <a class="btn" href="nutrition.html">Nutrition</a>
+          <a class="btn" href="wellbeing.html">Wellbeing</a>
         </div>
       </div>
 
       <div class="coach-banner" id="coachSummary">
         <strong>Loading coaching…</strong>
-        <p>Pulling together recovery, mindset, training, and roadmap signals.</p>
+        <p>Pulling together roadmap, recovery, mindset, and training signals.</p>
       </div>
     </section>
 
@@ -477,7 +255,7 @@
       <div class="section-head">
         <div>
           <h2>Goal & body setup</h2>
-          <p>This is now the hub. Create or update your roadmap here, then use the live plan below.</p>
+          <p>This is now the plan creator, not just the viewer.</p>
         </div>
       </div>
 
@@ -529,23 +307,42 @@
               </select>
             </label>
 
-            <label class="field" id="bfWrap" style="display:none;">Body fat %
+            <label class="field" id="bfWrap" style="display:none;">
+              Body fat %
               <input id="bodyFat" class="input" type="number" min="1" max="70" step="0.1">
             </label>
 
-            <label class="field">Target body fat %
+            <label class="field">
+              Target body fat %
               <input id="targetBodyFat" class="input" type="number" min="6" max="40" step="0.5" value="10">
+            </label>
+
+            <label class="field">
+              Training status
+              <select id="trainingStatus" class="input">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate" selected>Intermediate</option>
+                <option value="advanced">Advanced / already muscular</option>
+              </select>
+            </label>
+
+            <label class="field">
+              After leaning out, build more muscle?
+              <select id="wantsMuscleGain" class="input">
+                <option value="no" selected>No</option>
+                <option value="yes">Yes</option>
+              </select>
             </label>
           </div>
 
           <div class="tag-row" style="margin-top:12px">
-            <button class="btn btn-primary" id="btnGenerateSingle" type="button">Generate plan for selected goal</button>
-            <button class="btn" id="btnGenerateStaged" type="button">Generate staged roadmap</button>
+            <button class="btn btn-primary" id="btnGenerateRoadmap" type="button">Generate my roadmap</button>
+            <button class="btn" id="btnGenerateStaged" type="button">Generate full staged roadmap</button>
             <button class="btn" id="generatePDF" type="button">Download roadmap PDF</button>
           </div>
 
-          <div class="inline-note">
-            Single-goal uses the selected chip only. Staged roadmap builds a sequenced path such as Cut → Transform → Maintain → Lean Bulk where appropriate.
+          <div class="meta" style="margin-top:10px">
+            “Generate my roadmap” uses the smarter path logic. “Generate full staged roadmap” always gives the full four-stage sequence.
           </div>
         </div>
 
@@ -569,7 +366,7 @@
               <div class="metric" id="outFat">—</div>
             </div>
           </div>
-          <p class="muted-note" id="goalLine" style="margin-top:12px">Goal: <strong>Maintain</strong> — based on Mifflin–St Jeor + activity</p>
+          <p class="meta" id="goalLine" style="margin-top:12px">Goal: <strong>Maintain</strong> — based on Mifflin–St Jeor + activity</p>
           <div class="tag-row" id="roadmapMeta"></div>
         </div>
       </div>
@@ -579,45 +376,16 @@
       <div class="section-head">
         <div>
           <h2>Daily wellness check</h2>
-          <p>Small daily markers help the coach judge whether today is a push, hold, protect, or re-entry day.</p>
+          <p>These signals feed directly into the coaching engine.</p>
         </div>
       </div>
 
       <div class="wellness-grid">
-        <label class="wellness-item">
-          <input type="checkbox" id="hydrDone">
-          <span>
-            <span class="w-title">Hydration hit</span>
-            <span class="w-sub">Basic fluid intake in place</span>
-          </span>
-        </label>
-
-        <label class="wellness-item">
-          <input type="checkbox" id="sleepDone">
-          <span>
-            <span class="w-title">Sleep goal met</span>
-            <span class="w-sub">Enough rest to support recovery</span>
-          </span>
-        </label>
-
-        <label class="wellness-item">
-          <input type="checkbox" id="macroDone">
-          <span>
-            <span class="w-title">Macros on target</span>
-            <span class="w-sub">Fuelling broadly matched the plan</span>
-          </span>
-        </label>
-
-        <label class="wellness-item">
-          <input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?">
-          <span>
-            <span class="w-title">Walk / Bike / Run</span>
-            <span class="w-sub">General movement and circulation done</span>
-          </span>
-        </label>
+        <label class="wellness-item"><input type="checkbox" id="hydrDone"><span><span class="w-title">Hydration hit</span><span class="w-sub">Basic fluid intake in place</span></span></label>
+        <label class="wellness-item"><input type="checkbox" id="sleepDone"><span><span class="w-title">Sleep goal met</span><span class="w-sub">Enough rest to support recovery</span></span></label>
+        <label class="wellness-item"><input type="checkbox" id="macroDone"><span><span class="w-title">Macros on target</span><span class="w-sub">Fuelling broadly matched the plan</span></span></label>
+        <label class="wellness-item"><input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?"><span><span class="w-title">Walk / Bike / Run</span><span class="w-sub">General movement and circulation done</span></span></label>
       </div>
-
-      <p class="muted-note">Consistency across training, nutrition, sleep, stress, and movement is what gives the coach clean signal.</p>
     </section>
 
     <section class="two-col">
@@ -625,7 +393,7 @@
         <div class="section-head">
           <div>
             <h2>Mental reset</h2>
-            <p>When mental state is off, the system should help you get moving again without sounding repetitive or mechanical.</p>
+            <p>When mental state is off, the system should help you get back on track usefully.</p>
           </div>
         </div>
 
@@ -665,7 +433,7 @@
       <div class="section-head">
         <div>
           <h2>Adaptive coaching cockpit</h2>
-          <p>Quick-scan signals so the user can understand the week in seconds, not paragraphs.</p>
+          <p>Quick scan of risk, pressure, and current movement-family picture.</p>
         </div>
       </div>
 
@@ -675,49 +443,31 @@
           <div class="metric" id="cockpitStrain">—</div>
           <div class="sub">Accumulated load, density, and fatigue picture</div>
         </div>
-
         <div class="card">
           <h3>Pain risk</h3>
           <div class="metric" id="cockpitPain">—</div>
-          <div class="sub">Risk inferred from notes and broader movement stress</div>
+          <div class="sub">Risk inferred from notes and wider pattern stress</div>
         </div>
-
         <div class="card">
           <h3>Progression pressure</h3>
           <div class="metric" id="cockpitPressure">—</div>
           <div class="sub">Risk of pushing harder than the week supports</div>
         </div>
-
         <div class="card">
           <h3>Deload flag</h3>
           <div class="metric" id="cockpitDeload">—</div>
-          <div class="sub">Whether a lighter week is now the smart move</div>
+          <div class="sub">Whether a lighter week is now advised</div>
         </div>
       </div>
 
       <div class="card" style="margin-top:12px">
         <h3>Live movement status</h3>
         <div class="status-grid">
-          <div class="status-box" data-family="push">
-            <div class="status-title">Pressing</div>
-            <div class="status-value">—</div>
-          </div>
-          <div class="status-box" data-family="pull">
-            <div class="status-title">Pulling</div>
-            <div class="status-value">—</div>
-          </div>
-          <div class="status-box" data-family="legs">
-            <div class="status-title">Lower body</div>
-            <div class="status-value">—</div>
-          </div>
-          <div class="status-box" data-family="core">
-            <div class="status-title">Core</div>
-            <div class="status-value">—</div>
-          </div>
-          <div class="status-box" data-family="cardio">
-            <div class="status-title">Cardio</div>
-            <div class="status-value">—</div>
-          </div>
+          <div class="status-box" data-family="push"><div class="status-title">Pressing</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="pull"><div class="status-title">Pulling</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="legs"><div class="status-title">Lower Body</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="core"><div class="status-title">Core</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="cardio"><div class="status-title">Cardio</div><div class="status-value">—</div></div>
         </div>
       </div>
     </section>
@@ -727,44 +477,20 @@
         <div class="section-head">
           <div>
             <h2>Weekly snapshot</h2>
-            <p>Simple scan of the last week so the user understands the trend without drowning in data.</p>
+            <p>Simple readout of the last week.</p>
           </div>
         </div>
 
         <div class="grid grid-3">
-          <div class="card">
-            <h3>Sessions</h3>
-            <div class="metric" id="weekSessions">—</div>
-            <div class="sub">Distinct training days in the last 7 days</div>
-          </div>
-          <div class="card">
-            <h3>Adherence</h3>
-            <div class="metric" id="weekAdherence">—</div>
-            <div class="sub">Consistency score for the week</div>
-          </div>
-          <div class="card">
-            <h3>Quality</h3>
-            <div class="metric" id="weekQuality">—</div>
-            <div class="sub">Quality signal after strain and pain penalties</div>
-          </div>
+          <div class="card"><h3>Sessions Logged</h3><div class="metric" id="weekSessions">—</div><div class="sub">Distinct training days in the last 7 days</div></div>
+          <div class="card"><h3>Adherence</h3><div class="metric" id="weekAdherence">—</div><div class="sub">Consistency score for the week</div></div>
+          <div class="card"><h3>Training Quality</h3><div class="metric" id="weekQuality">—</div><div class="sub">Quality signal after strain and pain penalties</div></div>
         </div>
 
         <div class="grid grid-3" style="margin-top:12px">
-          <div class="card">
-            <h3>Strongest pattern</h3>
-            <div class="metric" style="font-size:1.05rem" id="weekStrongest">—</div>
-            <div class="sub">Area showing the best recent signal</div>
-          </div>
-          <div class="card">
-            <h3>Weakest pattern</h3>
-            <div class="metric" style="font-size:1.05rem" id="weekWeakest">—</div>
-            <div class="sub">Area most likely to need caution or refinement</div>
-          </div>
-          <div class="card">
-            <h3>Weekly mode</h3>
-            <div class="metric" style="font-size:1.05rem" id="weekMode">—</div>
-            <div class="sub">The current weekly coaching stance</div>
-          </div>
+          <div class="card"><h3>Strongest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekStrongest">—</div><div class="sub">Area showing the best recent signal</div></div>
+          <div class="card"><h3>Weakest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekWeakest">—</div><div class="sub">Area most likely to need caution or refinement</div></div>
+          <div class="card"><h3>Weekly Mode</h3><div class="metric" style="font-size:1.05rem" id="weekMode">—</div><div class="sub">The current weekly coaching stance</div></div>
         </div>
 
         <div class="tag-row" id="weekSwaps"></div>
@@ -774,7 +500,7 @@
         <div class="section-head">
           <div>
             <h2>Adaptive next-week plan</h2>
-            <p>The point is not just to analyse the week, but to change what happens next in a useful way.</p>
+            <p>What changes next based on the current picture.</p>
           </div>
         </div>
 
@@ -789,49 +515,48 @@
       <div class="section-head">
         <div>
           <h2>Your personalised plan</h2>
-          <p>The roadmap is generated above, then rendered and coached here below.</p>
+          <p>This keeps the previous plan display behaviour as the rendering base.</p>
         </div>
       </div>
 
       <div id="progressGuide"></div>
       <div id="legendMount"></div>
       <div id="plan"></div>
-      <p id="planMsg" class="muted-note"></p>
+      <p id="planMsg" class="meta"></p>
     </section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>Backup and reset</h2>
-          <p>Reset clears logs, PBs, and wellness, but preserves the roadmap.</p>
+          <h2>Backup / Reset</h2>
+          <p>Reset clears logs, PBs, and wellness only. Roadmap stays intact.</p>
         </div>
       </div>
 
       <div class="tag-row">
-        <button class="btn-sm" id="btnExport" type="button">Export workout data (.json)</button>
-        <label class="btn-sm" for="importFile" style="cursor:pointer">Import data</label>
+        <button class="btn-sm" id="btnExport" type="button">Export all workout data (.json)</button>
+        <label class="btn-sm" for="importFile" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center">Import data</label>
         <input id="importFile" type="file" accept="application/json" style="display:none">
-        <button class="btn-sm" id="btnReset" type="button">Reset logs + PBs + wellness</button>
+        <button class="btn-sm" id="btnReset" type="button">Reset (logs + PBs + wellness only)</button>
       </div>
-
-      <p class="muted-note">Roadmap is stored in <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
+      <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
     </section>
 
     <section class="section">
-      <h2>Injury recovery & physio</h2>
+      <h2>Injury Recovery & Physio</h2>
       <p class="lead">Supporting your training doesn’t just mean sets and reps — it also means guidance for when things go wrong.</p>
       <div class="grid grid-2">
         <div>
           <p>
-            Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail progress.
+            Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail your progress.
             Our <strong>Physio & Recovery</strong> page gives you safe, practical progressions:
             <em>Acute → Rebuild → Return</em>.
           </p>
-          <p class="muted-note">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
+          <p class="meta">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
           <a class="btn" href="physio.html">Open Physio & Recovery</a>
         </div>
         <div>
-          <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:12px">
+          <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px">
         </div>
       </div>
     </section>
@@ -896,7 +621,7 @@
     ];
 
     function ensureJsPDF() {
-      return new Promise(function(resolve, reject){
+      return new Promise(function(resolve, reject) {
         if (window.jspdf && window.jspdf.jsPDF) return resolve(true);
         var s = document.createElement('script');
         s.src = '/assets/js/jspdf.umd.min.js';
@@ -913,15 +638,96 @@
       return { min: adj(min), max: adj(max) };
     }
 
-    function normaliseGoalForId(goal){
-      if(goal === 'Cut') return 'cut';
-      if(goal === 'Build/Bulk') return 'bulk';
-      if(goal === 'Transform') return 'transform';
-      return 'maintain';
-    }
-
     function useBodyFatEnabled(){
       return document.getElementById('useBodyFatSelect').value === 'yes';
+    }
+
+    function getTrainingStatus() {
+      return String(document.getElementById('trainingStatus').value || 'intermediate').toLowerCase();
+    }
+
+    function wantsMuscleGain() {
+      return String(document.getElementById('wantsMuscleGain').value || 'no').toLowerCase() === 'yes';
+    }
+
+    function inferStartBF() {
+      if (useBodyFatEnabled()) {
+        var bf = parseFloat(document.getElementById('bodyFat').value || 0);
+        if (!isNaN(bf) && bf > 0) return bf;
+      }
+
+      var kg = parseFloat(document.getElementById('bmrWeight').value || 0);
+      var cm = parseFloat(document.getElementById('bmrHeight').value || 0);
+      var A  = parseFloat(document.getElementById('bmrAge').value || 0);
+      var BMI = (kg && cm) ? kg / Math.pow(cm/100, 2) : NaN;
+      if (isNaN(BMI) || !isFinite(BMI)) return NaN;
+
+      var s = (document.getElementById('bmrSex').value === 'male') ? 1 : 0;
+      return Math.round((1.20*BMI + 0.23*A - 10.8*s - 5.4) * 10) / 10;
+    }
+
+    function getEffectiveStartBF() {
+      var bf = inferStartBF();
+      return isNaN(bf) ? null : bf;
+    }
+
+    function classifyBodyFatBand(startBF, sex) {
+      if (startBF == null) return 'unknown';
+      var isMale = String(sex || '').toLowerCase() === 'male';
+
+      if (isMale) {
+        if (startBF >= 25) return 'high';
+        if (startBF >= 18) return 'moderate';
+        return 'lean';
+      } else {
+        if (startBF >= 32) return 'high';
+        if (startBF >= 25) return 'moderate';
+        return 'lean';
+      }
+    }
+
+    function chooseRoadmapFlow(goal, startBF, sex, trainingStatus, wantsGain) {
+      var bodyFatBand = classifyBodyFatBand(startBF, sex);
+      var trained = (trainingStatus === 'advanced');
+
+      if (goal === 'Maintain') {
+        return ['maintain'];
+      }
+
+      if (goal === 'Build/Bulk') {
+        return ['bulk'];
+      }
+
+      if (goal === 'Cut') {
+        if (trained) {
+          return wantsGain ? ['cut', 'maintain', 'bulk'] : ['cut', 'maintain'];
+        }
+        return wantsGain ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'maintain'];
+      }
+
+      if (goal === 'Transform') {
+        if (bodyFatBand === 'high') {
+          if (trained) {
+            return wantsGain ? ['cut', 'maintain', 'bulk'] : ['cut', 'maintain'];
+          }
+          return wantsGain ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'maintain'];
+        }
+
+        if (bodyFatBand === 'moderate') {
+          if (trained) {
+            return wantsGain ? ['transform', 'maintain', 'bulk'] : ['transform', 'maintain'];
+          }
+          return wantsGain ? ['transform', 'maintain', 'bulk'] : ['transform', 'maintain'];
+        }
+
+        if (bodyFatBand === 'lean') {
+          return wantsGain ? ['maintain', 'bulk'] : ['maintain'];
+        }
+
+        return wantsGain ? ['transform', 'maintain', 'bulk'] : ['transform', 'maintain'];
+      }
+
+      return ['maintain'];
     }
 
     function calcBMR(s, kg, cm, yrs) {
@@ -932,6 +738,7 @@
           return 370 + (21.6 * lbm);
         }
       }
+
       return s === 'male'
         ? 10 * kg + 6.25 * cm - 5 * yrs + 5
         : 10 * kg + 6.25 * cm - 5 * yrs - 161;
@@ -960,22 +767,6 @@
       var fat_g   = Math.round((kcal * fat_pct) / 9);
 
       return { kcal: Math.round(kcal), protein_g: protein_g, carbs_g: carbs_g, fat_g: fat_g };
-    }
-
-    function inferStartBF() {
-      if (useBodyFatEnabled()) {
-        var bf = parseFloat(document.getElementById('bodyFat').value || 0);
-        if (!isNaN(bf) && bf > 0) return bf;
-      }
-
-      var kg = parseFloat(document.getElementById('bmrWeight').value || 0);
-      var cm = parseFloat(document.getElementById('bmrHeight').value || 0);
-      var A  = parseFloat(document.getElementById('bmrAge').value || 0);
-      var BMI = (kg && cm) ? kg / Math.pow(cm/100, 2) : NaN;
-      if (isNaN(BMI) || !isFinite(BMI)) return NaN;
-
-      var s = (document.getElementById('bmrSex').value === 'male') ? 1 : 0;
-      return Math.round((1.20*BMI + 0.23*A - 10.8*s - 5.4) * 10) / 10;
     }
 
     function buildProgram(stageId) {
@@ -1152,11 +943,7 @@
       else if (actMult <= 1.45) adherence = 0.9;
       else if (actMult >= 1.75) adherence = 1.1;
 
-      var flow = userOverrideFlow || (
-        (startBF && startBF >= 30)
-          ? ['cut','transform','maintain','bulk']
-          : ['transform','maintain','bulk']
-      );
+      var flow = userOverrideFlow || ['cut', 'transform', 'maintain', 'bulk'];
 
       var targets = {
         cut: function(s,t){ return '~' + Math.max(t || 24, s ? Math.ceil(s - 4) : 26) + '%'; },
@@ -1176,6 +963,7 @@
         var id = flow[i];
         var bw = approxWeeks(baseDur[id].min, baseDur[id].max, adherence);
         var program = buildProgram(id);
+
         stages.push({
           id:id,
           name: id==='cut' ? 'Cutting' : id==='transform' ? 'Transform (Recomp)' : id==='maintain' ? 'Maintenance (Hold)' : 'Lean Bulk',
@@ -1195,61 +983,42 @@
       return { stages: stages, meta: { youtubeTip: youtubeTip, restPresets: restPresets } };
     }
 
-    function buildSingleRoadmap() {
-      var kg  = parseFloat(document.getElementById('bmrWeight').value || 0);
-      var cm  = parseFloat(document.getElementById('bmrHeight').value || 0);
-      var yrs = parseFloat(document.getElementById('bmrAge').value || 0);
-      var sx  = document.getElementById('bmrSex').value;
+    function buildGoalRoadmap() {
       var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
-      var currentBF = inferStartBF();
+      var sex = document.getElementById('bmrSex').value;
+      var currentBF = getEffectiveStartBF();
       var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
       var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
+      var trainingStatus = getTrainingStatus();
+      var wantsGain = wantsMuscleGain();
 
-      var mapId = normaliseGoalForId(GOAL);
-      var p = buildProgram(mapId);
-      var weeks = mapId==='cut' ? {min:6,max:14} : mapId==='transform' ? {min:8,max:16} : mapId==='maintain' ? {min:2,max:4} : {min:8,max:16};
-      var adherence = (actMult<=1.25?0.8:(actMult<=1.45?0.9:(actMult>=1.75?1.1:1.0)));
-      var adj = approxWeeks(weeks.min,weeks.max, adherence);
+      var flow = chooseRoadmapFlow(GOAL, currentBF, sex, trainingStatus, wantsGain);
+      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, flow);
 
       return {
         goal: GOAL,
-        startBF: isNaN(currentBF) ? null : Math.round(currentBF*10)/10,
+        startBF: currentBF == null ? null : Math.round(currentBF * 10) / 10,
         endBF: userTargetBF,
-        stages: [{
-          id: mapId,
-          name: mapId==='cut' ? 'Cutting' : mapId==='transform' ? 'Transform (Recomp)' : mapId==='maintain' ? 'Maintenance (Hold)' : 'Lean Bulk',
-          bf_target: mapId==='cut'
-            ? (userTargetBF ? ('~' + Math.max(userTargetBF, 24) + '%') : '~26–28%')
-            : mapId==='transform'
-              ? (userTargetBF ? ('~' + Math.max(userTargetBF, 20) + '%') : '~20–22%')
-              : mapId==='maintain'
-                ? 'Hold current'
-                : (userTargetBF ? ('+1–2% from ' + userTargetBF + '% end') : '+1–2% from end'),
-          weeks_min: adj.min,
-          weeks_max: adj.max,
-          blurb:
-            mapId==='cut' ? 'Calorie deficit, protein priority, progressive overload. LISS 2–4×/week; optional short intervals.' :
-            mapId==='transform' ? 'Small deficit near maintenance. Keep lifts progressing. Add steps or easy cycling.' :
-            mapId==='maintain' ? 'Calories at or near TDEE; maintain strength. Low-stress conditioning.' :
-            'Slight surplus. Progressive overload focus; keep conditioning easy.',
-          split: p.split,
-          programByDay: p.programByDay
-        }],
-        meta: { youtubeTip:'For exercise form, search YouTube: exercise name + “form”.', restPresets:[10,30,45,60,90] }
+        trainingStatus: trainingStatus,
+        wantsMuscleGain: wantsGain,
+        stages: flowData.stages,
+        meta: flowData.meta
       };
     }
 
     function buildStagedRoadmap() {
       var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
-      var currentBF = inferStartBF();
+      var currentBF = getEffectiveStartBF();
       var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
       var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
+      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, ['cut', 'transform', 'maintain', 'bulk']);
 
-      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, null);
       return {
         goal: GOAL,
-        startBF: isNaN(currentBF) ? null : Math.round(currentBF*10)/10,
+        startBF: currentBF == null ? null : Math.round(currentBF * 10) / 10,
         endBF: userTargetBF,
+        trainingStatus: getTrainingStatus(),
+        wantsMuscleGain: wantsMuscleGain(),
         stages: flowData.stages,
         meta: flowData.meta
       };
@@ -1281,12 +1050,23 @@
       document.getElementById('goalLine').innerHTML = 'Goal: <strong>' + escapeHtml(GOAL) + '</strong> — based on ' + used + ' + activity';
 
       var tags = [];
-      var startBF = inferStartBF();
+      var startBF = getEffectiveStartBF();
       var targetBF = parseFloat(document.getElementById('targetBodyFat').value || '');
-      if (!isNaN(startBF)) tags.push('<span class="tag tag-accent">Start BF ~' + escapeHtml(String(startBF)) + '%</span>');
+      if (startBF != null) tags.push('<span class="tag tag-accent">Start BF ~' + escapeHtml(String(startBF)) + '%</span>');
       if (!isNaN(targetBF) && targetBF > 0) tags.push('<span class="tag">Target BF ' + escapeHtml(String(targetBF)) + '%</span>');
       tags.push('<span class="tag">TDEE ~' + Math.round(tdee) + ' kcal</span>');
+      tags.push('<span class="tag">' + escapeHtml(titleCase(getTrainingStatus())) + '</span>');
+      tags.push('<span class="tag">' + (wantsMuscleGain() ? 'Muscle gain later: yes' : 'Muscle gain later: no') + '</span>');
       document.getElementById('roadmapMeta').innerHTML = tags.join('');
+    }
+
+    function generateRoadmapWithoutPDF(staged) {
+      var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
+      saveRoadmap(roadmap);
+      renderPlan();
+      refreshAllCoachViews();
+      wireWorkoutPlanLogsToEngine();
+      return roadmap;
     }
 
     async function generatePDFAndSaveRoadmap(staged) {
@@ -1296,7 +1076,7 @@
         return;
       }
 
-      var roadmap = staged ? buildStagedRoadmap() : buildSingleRoadmap();
+      var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
       saveRoadmap(roadmap);
 
       var kg  = parseFloat(document.getElementById('bmrWeight').value || 0);
@@ -1304,12 +1084,12 @@
       var yrs = parseFloat(document.getElementById('bmrAge').value || 0);
       var sx  = document.getElementById('bmrSex').value;
       var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
-      var currentBF = inferStartBF();
+      var currentBF = getEffectiveStartBF();
       var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
       var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
       var bmr = calcBMR(sx, kg, cm, yrs);
       var tdee = bmr * actMult;
-      var lbm  = (!isNaN(currentBF)) ? (kg * (1 - currentBF/100)) : null;
+      var lbm  = (currentBF != null) ? (kg * (1 - currentBF/100)) : null;
 
       var jsPDF = window.jspdf.jsPDF;
       var doc = new jsPDF({ unit:'pt', format:'a4', compress:true });
@@ -1365,18 +1145,20 @@
         'Height: ' + (cm || '—') + ' cm',
         'Age: ' + (yrs || '—') + ' years',
         'Sex: ' + (sx==='male' ? 'Male' : 'Female'),
-        'Body fat (approx.): ' + (!isNaN(currentBF) ? currentBF + '%' : '—'),
+        'Body fat (approx.): ' + (currentBF != null ? currentBF + '%' : '—'),
         'Target Body Fat: ' + (userTargetBF || '—'),
         'Lean Body Mass: ' + (lbm!==null ? (Math.round(lbm*10)/10)+' kg' : '—'),
         'BMR: ~' + Math.round(bmr) + ' kcal/day',
         'Estimated TDEE (activity x' + actMult + '): ~' + Math.round(tdee) + ' kcal/day',
-        'Selected Goal chip: ' + GOAL
+        'Goal: ' + GOAL,
+        'Training status: ' + titleCase(getTrainingStatus()),
+        'Muscle gain later: ' + (wantsMuscleGain() ? 'Yes' : 'No')
       ].forEach(function(t){ addWrapped('• ' + t); });
 
       newSection(8);
       doc.setFont('helvetica','bold');
       doc.setFontSize(13);
-      doc.text(staged ? 'Stage Plan (Science-based sequence)' : 'Plan (Single Phase)', marginX, y);
+      doc.text('Roadmap', marginX, y);
       y += 16;
       doc.setFont('helvetica','normal');
       doc.setFontSize(11);
@@ -1433,15 +1215,6 @@
       wireWorkoutPlanLogsToEngine();
     }
 
-    function generateRoadmapWithoutPDF(staged) {
-      var roadmap = staged ? buildStagedRoadmap() : buildSingleRoadmap();
-      saveRoadmap(roadmap);
-      renderPlan();
-      refreshAllCoachViews();
-      wireWorkoutPlanLogsToEngine();
-      return roadmap;
-    }
-
     function restControlsHTML(id){
       return '' +
         '<div class="restbar" data-rest="' + id + '" data-bound="0">' +
@@ -1471,8 +1244,8 @@
             var m = Math.floor(s / 60), r = s % 60;
             return m ? (m + ':' + String(r).padStart(2, '0')) : (r + 's');
           }
-
           function show(s){ left.textContent = fmt(s); }
+
           show(parseInt((input && input.value) || '0', 10));
 
           if(start){
@@ -1523,21 +1296,13 @@
       if(n.indexOf('bulk') > -1 || b.indexOf('bulk') > -1 || b.indexOf('muscle gain') > -1){
         return 'Stay here while calories are increasing in a controlled way without excessive fat gain.';
       }
-      if(n.indexOf('build') > -1 || b.indexOf('strength') > -1){
-        return 'Stay here while strength, exercise quality, and recovery are progressing well.';
-      }
-      if(n.indexOf('rebuild') > -1 || b.indexOf('rebuild') > -1){
-        return 'Stay here while movement quality, confidence, and training tolerance are improving consistently.';
-      }
-      if(n.indexOf('foundation') > -1){
-        return 'Stay here while technique, routine, and recovery are becoming consistent and reliable.';
-      }
       return 'Stay here until the goal of this stage feels established and repeatable before moving on.';
     }
 
     function renderProgressGuide(stages){
       var mount = document.getElementById('progressGuide');
       if(!mount) return;
+
       if(!Array.isArray(stages) || !stages.length){
         mount.innerHTML = '';
         return;
@@ -1546,20 +1311,18 @@
       var html = '';
       if(stages.length === 1){
         var only = stages[0] || {};
-        html += ''
-          + '<div class="card" style="margin-bottom:10px">'
-          +   '<h3>Phase guide</h3>'
-          +   '<div class="sub"><strong>This plan has one stage:</strong> ' + escapeHtml(only.name || 'Current Stage') + '</div>'
-          +   '<div class="sub" style="margin-top:8px">' + stageGuidanceText(only.name, only.blurb) + '</div>'
-          + '</div>';
+        html += '<div class="card" style="margin-bottom:10px">' +
+                  '<h3>Phase guide</h3>' +
+                  '<div class="sub"><strong>This plan has one stage:</strong> ' + escapeHtml(only.name || 'Current Stage') + '</div>' +
+                  '<div class="sub" style="margin-top:8px">' + stageGuidanceText(only.name, only.blurb) + '</div>' +
+                '</div>';
       } else {
-        html += ''
-          + '<div class="card" style="margin-bottom:10px">'
-          +   '<h3>Phase guide</h3>'
-          +   '<div class="sub">This plan uses a phased structure rather than a fixed timeline. Stay in each stage until its goal is being met consistently, then move forward.</div>';
+        html += '<div class="card" style="margin-bottom:10px">' +
+                  '<h3>Phase guide</h3>' +
+                  '<div class="sub">This roadmap uses a phased structure rather than a fixed timeline. Move on when progress is established, not merely because time has passed.</div>';
         for(var i = 0; i < stages.length; i++){
           var stage = stages[i] || {};
-          html += '<div class="line" style="margin-top:8px"><strong>' + escapeHtml(stage.name || ('Stage ' + (i + 1))) + '</strong> → ' + stageGuidanceText(stage.name, stage.blurb) + '</div>';
+          html += '<div class="plan-line" style="margin-top:8px"><strong>' + escapeHtml(stage.name || ('Stage ' + (i + 1))) + '</strong> → ' + stageGuidanceText(stage.name, stage.blurb) + '</div>';
         }
         html += '</div>';
       }
@@ -1624,7 +1387,8 @@
       var rows = '';
       for(var i = 0; i < terms.length; i++){
         var t = terms[i];
-        rows += '<div class="row"><div class="term">' + t + '</div><div class="def">' + (LEGEND_DEFS[t] || '') + '</div></div>';
+        var def = LEGEND_DEFS[t] || '';
+        rows += '<div class="row"><div class="term">' + t + '</div><div class="def">' + def + '</div></div>';
       }
 
       mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>' + rows + '</details>';
@@ -1659,8 +1423,9 @@
 
       try{
         var raw = localStorage.getItem(ROADMAP_KEY);
+
         if(!raw){
-          wrap.innerHTML = '<div class="card">No roadmap found yet. Create one above.</div>';
+          wrap.innerHTML = '<div class="card">No roadmap found. Create one above.</div>';
           renderLegend([]);
           renderProgressGuide([]);
           if(msg) msg.textContent = 'No roadmap loaded.';
@@ -1686,10 +1451,11 @@
           html += '<div class="accordion">' +
                     '<div class="acc-head"><button class="acc-toggle" aria-expanded="false" type="button">' + escapeHtml(stage.name || ('Stage ' + (si + 1))) + '</button></div>' +
                     '<div class="acc-body" hidden>' +
-                      (stage.blurb ? ('<p class="muted-note">' + escapeHtml(stage.blurb) + '</p>') : '') +
+                      (stage.blurb ? ('<p class="meta">' + escapeHtml(stage.blurb) + '</p>') : '') +
                       '<div class="days">';
 
           var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
           for(var di = 0; di < 7; di++){
             var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
             var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
@@ -1706,12 +1472,12 @@
                         '<div class="mov-head">' +
                           '<div class="mov-title">' +
                             '<a href="' + yt(it.name || 'exercise') + '" target="_blank" rel="noopener">' + escapeHtml(it.name || 'Exercise') + '</a>' +
-                            ((it.type && it.type !== 'cardio') ? (' <span class="tag tag-accent">' + escapeHtml(it.type) + '</span>') : '') +
+                            ((it.type && it.type !== 'cardio') ? (' <span class="badge">' + escapeHtml(it.type) + '</span>') : '') +
                           '</div>' +
                           '<div class="rx">' + escapeHtml(presc) + '</div>' +
                           '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
                         '</div>' +
-                        (it.cue ? ('<p class="muted-note" style="margin:.35rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
+                        (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
                         ((it.alts && it.alts.length) ? ('<div class="alt-chips">' + it.alts.map(function(alt){
                           return '<a class="alt-chip" href="' + yt(alt) + '" target="_blank" rel="noopener">' + escapeHtml(alt) + '</a>';
                         }).join('') + '</div>') : '') +
@@ -1730,7 +1496,7 @@
                           '</div>' +
                           '<div class="meta-row">' +
                             '<span class="pb" data-pb></span>' +
-                            '<span class="tag" data-badge></span>' +
+                            '<span class="badge" data-badge></span>' +
                           '</div>' +
                           '<div class="quote" data-quote></div>' +
                         '</div>' +
@@ -1848,6 +1614,7 @@
         renderPlan();
         refreshAllCoachViews();
         wireWorkoutPlanLogsToEngine();
+
         alert('Cleared workout logs, PBs and wellness checks. Roadmap left intact.');
       }catch(e){
         alert('Reset failed. Please try again.');
@@ -1872,33 +1639,81 @@
     }
 
     function renderIntervention(){
-      if(!window.FFF) return;
+      var headline = 'Keep moving gently';
+      var message = 'If the day feels heavy, lower the ask and make the next step easier rather than trying to force intensity.';
+      var actions = [
+        'Strip the next session back to the first useful block instead of the whole thing.',
+        'Swap one hard exercise for a friendlier version and still log the win.',
+        'Use a two-minute reset before training: slower breathing, loosen shoulders, start small.'
+      ];
+      var tags = ['Reset mode', 'Low friction', 'Stay in the game'];
+
       try{
-        var summary = window.FFF.getGlobalCoachingSummary();
-        var intervention = summary.intervention || {};
+        if(window.FFF){
+          var summary = window.FFF.getGlobalCoachingSummary();
+          var mode = String(summary.mode || '').toLowerCase();
+          var risk = summary.mind && summary.mind.risk ? String(summary.mind.risk).toLowerCase() : 'low';
+          var pressure = summary.mind && typeof summary.mind.pressure === 'number' ? summary.mind.pressure : 20;
+          var confidence = summary.mind && typeof summary.mind.confidence === 'number' ? summary.mind.confidence : 50;
 
-        document.getElementById('interventionHeadline').textContent = intervention.headline || 'Keep building';
-        document.getElementById('interventionMessage').textContent = intervention.message || 'Keep the next step simple and useful.';
-
-        var ul = document.getElementById('interventionActions');
-        ul.innerHTML = '';
-        (intervention.actions || []).forEach(function(item){
-          var li = document.createElement('li');
-          li.textContent = item;
-          ul.appendChild(li);
-        });
-
-        var tags = [];
-        if(intervention.state) tags.push('<span class="tag tag-accent">' + escapeHtml(titleCase(intervention.state)) + '</span>');
-        if(summary.mind && summary.mind.tone) tags.push('<span class="tag">' + escapeHtml(titleCase(summary.mind.tone)) + ' tone</span>');
-        if(summary.mode) tags.push('<span class="tag">' + escapeHtml(titleCase(String(summary.mode).replace(/-/g,' '))) + '</span>');
-        document.getElementById('interventionTags').innerHTML = tags.join('');
+          if(mode === 'deload' || mode === 'protect' || mode === 'pain-risk'){
+            headline = 'Reduce pressure, keep momentum';
+            message = 'The system is not asking for heroics. Keep the plan alive with a lower-irritation version rather than proving a point today.';
+            actions = [
+              'Cut one main movement back and keep reps clean.',
+              'Choose the least provocative variation and stop while form is still tidy.',
+              'Finish the session feeling steadier than when you started.'
+            ];
+            tags = ['Protect mode', 'Lower irritation', 'Preserve momentum'];
+          } else if(mode === 'steady' || pressure >= 70){
+            headline = 'Bring the emotional temperature down';
+            message = 'This looks more like a pressure problem than a laziness problem. Make the next action smaller and more definite.';
+            actions = [
+              'Do the first work set only, then reassess.',
+              'Swap outcome language for task language: just complete the next block.',
+              'If focus is scattered, use a short timer and work inside it.'
+            ];
+            tags = ['Steady mode', 'Reduce pressure', 'Task focus'];
+          } else if(risk === 'high' || confidence < 40){
+            headline = 'Re-entry beats retreat';
+            message = 'Confidence looks dented. The aim is not perfection. The aim is to get a useful signal back into the system.';
+            actions = [
+              'Start with the easiest valid version of the first exercise.',
+              'Log the session even if it is scaled down.',
+              'End with one clear success rather than one missed standard.'
+            ];
+            tags = ['Re-entry', 'Confidence rebuild', 'Useful signal'];
+          } else if(mode === 'push'){
+            headline = 'Good day to progress carefully';
+            message = 'Conditions are supportive enough for a measured push, but keep the standard high and do not let enthusiasm turn sloppy.';
+            actions = [
+              'Progress one lever only: load, reps, or execution.',
+              'Keep recovery honest between sets.',
+              'Stop while the session is still high quality.'
+            ];
+            tags = ['Measured push', 'Quality first', 'Use the window'];
+          }
+        }
       }catch(err){}
+
+      document.getElementById('interventionHeadline').textContent = headline;
+      document.getElementById('interventionMessage').textContent = message;
+
+      var ul = document.getElementById('interventionActions');
+      ul.innerHTML = '';
+      actions.forEach(function(item){
+        var li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+
+      document.getElementById('interventionTags').innerHTML = tags.map(function(t){
+        return '<span class="tag tag-accent">' + escapeHtml(t) + '</span>';
+      }).join('');
     }
 
     function renderTodayCoach(){
       if(!window.FFF) return;
-
       try{
         var summary = window.FFF.getGlobalCoachingSummary();
         var today = summary.todayDecision || {};
@@ -1914,7 +1729,7 @@
         if(nextSession.target) meta.push('<span class="tag tag-accent">' + escapeHtml(nextSession.target) + '</span>');
         if(today.sessionType) meta.push('<span class="tag">' + escapeHtml(titleCase(String(today.sessionType).replace(/-/g, ' '))) + '</span>');
         if(Array.isArray(nextSession.swaps)){
-          nextSession.swaps.slice(0, 3).forEach(function(item){
+          nextSession.swaps.slice(0,3).forEach(function(item){
             meta.push('<span class="tag">' + escapeHtml(item) + '</span>');
           });
         }
@@ -1926,16 +1741,12 @@
       if(!window.FFF) return;
       try{
         var summary = window.FFF.getGlobalCoachingSummary();
-
         document.getElementById('cockpitStrain').textContent =
           (summary.strain && summary.strain.strainRisk != null ? summary.strain.strainRisk : 0) + '/100';
-
         document.getElementById('cockpitPain').textContent =
           summary.painRisk && summary.painRisk.state ? titleCase(summary.painRisk.state) : '—';
-
         document.getElementById('cockpitPressure').textContent =
           (summary.progressionPressure && summary.progressionPressure.score != null ? summary.progressionPressure.score : 0) + '/100';
-
         document.getElementById('cockpitDeload').textContent =
           summary.deload && summary.deload.suggested ? 'YES' : 'NO';
       }catch(err){}
@@ -2013,13 +1824,12 @@
       try{
         var summary = window.FFF.getGlobalCoachingSummary();
         var nextWeek = summary.nextWeek || {};
-
         document.getElementById('nextWeekTitle').textContent = nextWeek.title || 'Adaptive next-week plan';
 
         var changesEl = document.getElementById('nextWeekChanges');
         var changes = Array.isArray(nextWeek.changes) ? nextWeek.changes : [];
         changesEl.innerHTML = changes.map(function(line){
-          return '<div class="line">' + escapeHtml(line) + '</div>';
+          return '<div class="plan-line">' + escapeHtml(line) + '</div>';
         }).join('');
       }catch(err){}
     }
@@ -2086,9 +1896,11 @@
                 if(pbEl){
                   pbEl.textContent = pb ? ('PB score: ' + Number(pb.score || 0).toFixed(1) + ' (best w×r)') : '';
                 }
+
                 if(badgeEl){
                   badgeEl.textContent = milestoneText(totalLogs);
                 }
+
                 if(quoteEl && coaching){
                   quoteEl.textContent = (coaching.headline || '') + ' — ' + (coaching.message || '');
                 }
@@ -2177,14 +1989,9 @@
         var raw = localStorage.getItem(ROADMAP_KEY);
         if(!raw) return;
         var roadmap = JSON.parse(raw);
+
         if(roadmap && roadmap.goal){
-          var map = {
-            'Maintain':'Maintain',
-            'Cut':'Cut',
-            'Build/Bulk':'Build/Bulk',
-            'Transform':'Transform'
-          };
-          setGoalChip(map[roadmap.goal] || roadmap.goal);
+          setGoalChip(roadmap.goal);
         }
         if(roadmap && roadmap.startBF != null){
           document.getElementById('useBodyFatSelect').value = 'yes';
@@ -2193,6 +2000,12 @@
         }
         if(roadmap && roadmap.endBF != null){
           document.getElementById('targetBodyFat').value = roadmap.endBF;
+        }
+        if(roadmap && roadmap.trainingStatus){
+          document.getElementById('trainingStatus').value = roadmap.trainingStatus;
+        }
+        if(roadmap && typeof roadmap.wantsMuscleGain === 'boolean'){
+          document.getElementById('wantsMuscleGain').value = roadmap.wantsMuscleGain ? 'yes' : 'no';
         }
       }catch(err){}
     }
@@ -2211,13 +2024,15 @@
         updateMacroTargets();
       });
 
-      ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','bodyFat','targetBodyFat'].forEach(function(id){
+      ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','bodyFat','targetBodyFat','trainingStatus','wantsMuscleGain'].forEach(function(id){
         var el = document.getElementById(id);
-        if(el) el.addEventListener('input', updateMacroTargets);
-        if(el) el.addEventListener('change', updateMacroTargets);
+        if(el){
+          el.addEventListener('input', updateMacroTargets);
+          el.addEventListener('change', updateMacroTargets);
+        }
       });
 
-      document.getElementById('btnGenerateSingle').addEventListener('click', function(){
+      document.getElementById('btnGenerateRoadmap').addEventListener('click', function(){
         generateRoadmapWithoutPDF(false);
       });
 
@@ -2226,10 +2041,8 @@
       });
 
       document.getElementById('generatePDF').addEventListener('click', async function(){
-        var staged = confirm(
-          'Press OK to create a staged roadmap PDF.\nPress Cancel to create a single-goal roadmap PDF for the selected goal.'
-        );
-        await generatePDFAndSaveRoadmap(staged);
+        var full = confirm('Press OK for the full staged roadmap PDF.\nPress Cancel for the smarter goal-led roadmap PDF.');
+        await generatePDFAndSaveRoadmap(full);
       });
 
       document.getElementById('btnExport').addEventListener('click', exportAll);

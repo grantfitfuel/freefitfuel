@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Personalised Workout Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=36">
+  <link rel="stylesheet" href="style.css?v=37">
 
   <style>
     :root{
@@ -16,7 +16,9 @@
     body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif}
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
     h1{margin:.2rem 0 .6rem;font-size:1.8rem}
+    h3{margin:.1rem 0 .5rem}
     .lead{color:var(--inkdim)}
+    .meta{color:var(--inkdim)}
 
     .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:14px}
     .section>h2{margin:.15rem 0 .6rem;font-size:1.2rem;color:var(--accent)}
@@ -31,6 +33,7 @@
     .mov-title a:hover{color:var(--accent)}
     .rx{opacity:.9}
     .mov-tools{display:flex;gap:.4rem;align-items:center}
+
     .btn-sm,
     .btn{
       border:1px solid var(--stroke);
@@ -49,7 +52,14 @@
     .drawer.open{display:block}
     .log-grid{display:grid;gap:.35rem}
     .log-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr auto;gap:.35rem;align-items:center}
-    .log-row input{background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.38rem .45rem}
+    .log-row input{
+      background:#0b0f14;
+      border:1px solid var(--stroke);
+      border-radius:8px;
+      color:var(--ink);
+      padding:.38rem .45rem
+    }
+
     .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
     .pb{color:#90ee90}
     .badge{
@@ -66,7 +76,14 @@
 
     .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
     .restbar .left{opacity:.9;min-width:44px}
-    .restbar input[type="number"]{width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.34rem .45rem}
+    .restbar input[type="number"]{
+      width:84px;
+      background:#0b0f14;
+      border:1px solid var(--stroke);
+      border-radius:8px;
+      color:var(--ink);
+      padding:.34rem .45rem
+    }
 
     @media (max-width:520px){
       .log-row{grid-template-columns:60px 1fr 1fr;grid-auto-rows:auto}
@@ -80,22 +97,33 @@
     label{display:flex;align-items:center;gap:.5rem}
     input[type="checkbox"]{accent-color:var(--accent)}
     input[type="number"], input[type="text"]{
-      background:#0c1118;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.4rem .5rem;width:100%;
+      background:#0c1118;
+      border:1px solid var(--stroke);
+      border-radius:8px;
+      color:var(--ink);
+      padding:.4rem .5rem;
+      width:100%;
     }
+
     .warn{background:#23140f;border:1px solid #3a2016;color:#ffb89a;padding:.55rem .6rem;border-radius:8px}
     .ok{background:#142316;border:1px solid #203a23;color:#b9ffb9;padding:.55rem .6rem;border-radius:8px}
-    .meta{color:var(--inkdim)}
 
-    .accordion{border:1px solid var(--stroke); border-radius:12px; background:#111418; padding:12px; margin-bottom:1rem}
-    .acc-head{display:flex; align-items:center; justify-content:space-between; gap:.75rem; cursor:pointer}
-    .acc-toggle{all:unset; cursor:pointer; color:var(--accent); font-size:1.05rem}
-    .accordion .acc-toggle::after{content:"▸"; margin-left:.45rem; opacity:.8}
-    .accordion.open .acc-toggle::after{content:"▾"; margin-left:.45rem; opacity:.8}
+    .accordion{border:1px solid var(--stroke);border-radius:12px;background:#111418;padding:12px;margin-bottom:1rem}
+    .acc-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;cursor:pointer}
+    .acc-toggle{all:unset;cursor:pointer;color:var(--accent);font-size:1.05rem}
+    .accordion .acc-toggle::after{content:"▸";margin-left:.45rem;opacity:.8}
+    .accordion.open .acc-toggle::after{content:"▾";margin-left:.45rem;opacity:.8}
     .acc-body{margin-top:.5rem}
     [hidden]{display:none !important;}
 
     .alt-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.25rem}
-    .alt-chip{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;background:rgba(255,255,255,.06);font-size:.85rem}
+    .alt-chip{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.15rem .55rem;
+      background:rgba(255,255,255,.06);
+      font-size:.85rem
+    }
 
     .legend{background:#0f131a;border:1px solid var(--stroke);border-radius:12px;padding:10px;margin:.6rem 0}
     .legend summary{cursor:pointer;color:var(--accent);font-weight:600;list-style:none}
@@ -136,6 +164,7 @@
       color:var(--inkdim);
       font-size:.88rem;
     }
+
     .swap-list{
       display:flex;
       flex-wrap:wrap;
@@ -211,7 +240,7 @@
       <div id="coachSummary" class="ok" style="margin-bottom:12px;"></div>
 
       <div class="block" id="movementStatus">
-        <h3 style="margin:.1rem 0 .6rem">Live Movement Status</h3>
+        <h3>Live Movement Status</h3>
         <div class="status-grid">
           <div class="status-box" data-family="push">
             <div class="status-title">Pressing</div>
@@ -237,7 +266,7 @@
       </div>
 
       <div id="weeklySnapshot" class="block">
-        <h3 style="margin:.1rem 0 .5rem">Weekly Coaching Snapshot</h3>
+        <h3>Weekly Coaching Snapshot</h3>
         <div class="weekly-grid">
           <div class="weekly-box">
             <h3>Sessions Logged</h3>
@@ -277,7 +306,7 @@
       </div>
 
       <div id="adaptiveCockpit" class="block">
-        <h3 style="margin:.1rem 0 .5rem">Adaptive Coaching Cockpit</h3>
+        <h3>Adaptive Coaching Cockpit</h3>
         <div class="weekly-grid">
           <div class="weekly-box">
             <h3>Strain Risk</h3>
@@ -303,14 +332,14 @@
       </div>
 
       <div id="todayCoach" class="block">
-        <h3 style="margin:.1rem 0 .5rem">What Should I Do Today?</h3>
+        <h3>What Should I Do Today?</h3>
         <div class="weekly-value" id="todayDecision" style="font-size:1.05rem">—</div>
         <div class="weekly-sub" id="todayReason">—</div>
         <div class="swap-list" id="todaySessionMeta"></div>
       </div>
 
       <div id="nextWeekPlan" class="block">
-        <h3 style="margin:.1rem 0 .5rem">Adaptive Next-Week Plan</h3>
+        <h3>Adaptive Next-Week Plan</h3>
         <div class="weekly-sub" id="nextWeekTitle" style="margin-bottom:8px">—</div>
         <div id="nextWeekChanges"></div>
       </div>
@@ -364,14 +393,14 @@
   </div>
 
   <script src="/js/engine/fff-state.js?v=1"></script>
-  <script src="/js/engine/fff-exercise-db.js?v=2"></script>
-  <script src="/js/engine/fff-recovery.js?v=2"></script>
-  <script src="/js/engine/fff-mind.js?v=2"></script>
-  <script src="/js/engine/fff-roadmap.js?v=2"></script>
+  <script src="/js/engine/fff-exercise-db.js?v=1"></script>
+  <script src="/js/engine/fff-recovery.js?v=1"></script>
+  <script src="/js/engine/fff-mind.js?v=1"></script>
+  <script src="/js/engine/fff-roadmap.js?v=1"></script>
   <script src="/js/engine/fff-memory.js?v=1"></script>
-  <script src="/js/engine/fff-training.js?v=7"></script>
-  <script src="/js/engine/fff-messaging.js?v=8"></script>
-  <script src="/js/engine/fff-core.js?v=13"></script>
+  <script src="/js/engine/fff-training.js?v=1"></script>
+  <script src="/js/engine/fff-messaging.js?v=1"></script>
+  <script src="/js/engine/fff-core.js?v=81"></script>
 
   <script>
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
@@ -690,567 +719,4 @@
         for(var si = 0; si < stages.length; si++){
           var stage = stages[si] || {};
           html += '<div class="accordion">' +
-                    '<div class="acc-head"><button class="acc-toggle" aria-expanded="false" type="button">' + escapeHtml(stage.name || ('Stage ' + (si + 1))) + '</button></div>' +
-                    '<div class="acc-body" hidden>' +
-                      (stage.blurb ? ('<p class="meta">' + escapeHtml(stage.blurb) + '</p>') : '') +
-                      '<div class="days">';
-
-          var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-          for(var di = 0; di < 7; di++){
-            var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
-            var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
-
-            html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>' + escapeHtml(label) + '</strong></div></div>';
-
-            for(var ei = 0; ei < items.length; ei++){
-              var it = items[ei] || {};
-              var presc = (it.type === 'cardio')
-                ? [it.duration_min ? (it.duration_min + ' min') : null, it.work_s ? ('work ' + it.work_s + 's') : null, it.rest_s ? ('rest ' + it.rest_s + 's') : null, it.rounds ? (it.rounds + ' rounds') : null].filter(Boolean).join(' · ')
-                : ((it.sets || '—') + '×' + (it.reps || '—') + ' · ' + (it.rir || '—') + ' RIR · ' + (it.rest || 60) + 's rest');
-
-              html += '<div class="mov exercise-item">' +
-                        '<div class="mov-head">' +
-                          '<div class="mov-title">' +
-                            '<a href="' + yt(it.name || 'exercise') + '" target="_blank" rel="noopener">' + escapeHtml(it.name || 'Exercise') + '</a>' +
-                            ((it.type && it.type !== 'cardio') ? (' <span class="badge">' + escapeHtml(it.type) + '</span>') : '') +
-                          '</div>' +
-                          '<div class="rx">' + escapeHtml(presc) + '</div>' +
-                          '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
-                        '</div>' +
-                        (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
-                        ((it.alts && it.alts.length) ? ('<div class="alt-chips">' + it.alts.map(function(alt){
-                          return '<a class="alt-chip" href="' + yt(alt) + '" target="_blank" rel="noopener">' + escapeHtml(alt) + '</a>';
-                        }).join('') + '</div>') : '') +
-                        '<div class="drawer" data-drawer>' +
-                          '<div class="log-grid" data-log>' +
-                            [1,2,3,4,5].map(function(i){
-                              return '<div class="log-row">' +
-                                       '<strong>Set ' + i + '</strong>' +
-                                       '<input inputmode="decimal" placeholder="kg" data-field="w' + i + '">' +
-                                       '<input inputmode="numeric" placeholder="reps" data-field="r' + i + '">' +
-                                       '<input placeholder="notes" data-field="n' + i + '">' +
-                                       '<button class="btn-sm" data-save type="button">Save</button>' +
-                                     '</div>' +
-                                     (it.type === 'cardio' ? '' : restControlsHTML('s' + si + 'd' + di + 'e' + ei + '.s' + i));
-                            }).join('') +
-                          '</div>' +
-                          '<div class="meta-row">' +
-                            '<span class="pb" data-pb></span>' +
-                            '<span class="badge" data-badge></span>' +
-                          '</div>' +
-                          '<div class="quote" data-quote></div>' +
-                        '</div>' +
-                      '</div>';
-            }
-
-            html += '</div>';
-          }
-
-          html += '</div></div></div>';
-        }
-
-        wrap.innerHTML = html;
-        if(msg) msg.textContent = 'Loaded ' + stages.length + ' stage' + (stages.length > 1 ? 's' : '') + ' from local plan.';
-        setupAccordions();
-
-        var openBtns = wrap.querySelectorAll('[data-open]');
-        for(var ob = 0; ob < openBtns.length; ob++){
-          (function(btn){
-            btn.addEventListener('click', function(){
-              var exerciseItem = btn.closest('.exercise-item');
-              if(!exerciseItem) return;
-              var drawer = exerciseItem.querySelector('[data-drawer]');
-              if(!drawer) return;
-              drawer.classList.toggle('open');
-              if(drawer.classList.contains('open')) hookRestTimers(drawer);
-            });
-          })(openBtns[ob]);
-        }
-      }catch(err){
-        wrap.innerHTML = '<div class="warn">An error occurred while rendering the plan.</div>';
-        renderLegend([]);
-        renderProgressGuide([]);
-        if(msg) msg.textContent = 'Error: ' + (err && err.message ? err.message : String(err));
-      }
-    }
-
-    function exportAll(){
-      var dump = {};
-      var allow = [
-        'fff.roadmap.plan.v1',
-        'fff.pb.v1',
-        'fff.logs.v1',
-        'fff.checks.v1',
-        'fff.coaching.v1',
-        'fff.memory.v1'
-      ];
-
-      for(var i = 0; i < localStorage.length; i++){
-        var k = localStorage.key(i);
-        if(!k) continue;
-        if(allow.indexOf(k) > -1){
-          dump[k] = localStorage.getItem(k);
-        }
-      }
-
-      var blob = new Blob([JSON.stringify(dump, null, 2)], {type:'application/json'});
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'freefitfuel-workout-plan-backup.json';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    function importAll(file){
-      var r = new FileReader();
-      r.onload = function(){
-        try{
-          var obj = JSON.parse(String(r.result || '{}'));
-          for(var k in obj){
-            if(Object.prototype.hasOwnProperty.call(obj, k)){
-              localStorage.setItem(k, obj[k]);
-            }
-          }
-          alert('Import complete. Reloading plan.');
-          location.reload();
-        }catch(e){
-          alert('Import failed — invalid file.');
-        }
-      };
-      r.readAsText(file);
-    }
-
-    function resetPBsAndWellness(){
-      try{
-        var roadmapBefore = localStorage.getItem(ROADMAP_KEY);
-
-        if(!roadmapBefore){
-          alert('No roadmap is currently saved. Reset cancelled.');
-          return;
-        }
-
-        if(window.FFF && typeof window.FFF.resetWellnessAndLogs === 'function'){
-          window.FFF.resetWellnessAndLogs();
-        } else {
-          localStorage.removeItem('fff.pb.v1');
-          localStorage.removeItem('fff.logs.v1');
-          localStorage.removeItem('fff.checks.v1');
-          localStorage.removeItem('fff.coaching.v1');
-        }
-
-        var roadmapAfter = localStorage.getItem(ROADMAP_KEY);
-
-        if(!roadmapAfter && roadmapBefore){
-          localStorage.setItem(ROADMAP_KEY, roadmapBefore);
-        }
-
-        if(window.FFF && typeof window.FFF.ready === 'function'){
-          window.FFF.ready();
-        }
-
-        var checkIds = ['hydrDone','sleepDone','macroDone','activityCardio'];
-        for(var i = 0; i < checkIds.length; i++){
-          var box = document.getElementById(checkIds[i]);
-          if(box) box.checked = false;
-        }
-
-        renderPlan();
-        refreshAllCoachViews();
-        wireWorkoutPlanLogsToEngine();
-
-        alert('Cleared workout logs, PBs and wellness checks. Roadmap left intact.');
-      }catch(e){
-        alert('Reset failed. Please try again.');
-      }
-    }
-
-    function renderCoachSummary(){
-      var el = document.getElementById('coachSummary');
-      if(!el) return;
-
-      if(!window.FFF){
-        el.className = 'warn';
-        el.innerHTML = '<strong>Engine not loaded</strong><br>Coach system is unavailable.';
-        return;
-      }
-
-      try{
-        var summary = window.FFF.getGlobalCoachingSummary();
-
-        if(window.FFFMemory && typeof window.FFFMemory.updateWeekly === 'function'){
-          window.FFFMemory.updateWeekly(summary);
-        }
-
-        el.className = 'ok';
-        el.innerHTML = '<strong>' + escapeHtml(summary.headline || 'Coaching') + '</strong><br>' + escapeHtml(summary.message || '');
-      }catch(err){
-        el.className = 'warn';
-        el.innerHTML = '<strong>Coach unavailable</strong><br>' + escapeHtml(err && err.message ? err.message : 'Engine could not produce a coaching summary.');
-      }
-    }
-
-    function renderWeeklySnapshot(){
-      var sessionsEl = document.getElementById('weekSessions');
-      var adherenceEl = document.getElementById('weekAdherence');
-      var qualityEl = document.getElementById('weekQuality');
-      var strongestEl = document.getElementById('weekStrongest');
-      var weakestEl = document.getElementById('weekWeakest');
-      var modeEl = document.getElementById('weekMode');
-      var swapsWrap = document.getElementById('weekSwapsWrap');
-      var swapsEl = document.getElementById('weekSwaps');
-
-      if(!sessionsEl || !window.FFF) return;
-
-      try{
-        var weekly = window.FFF.getWeeklySummary ? window.FFF.getWeeklySummary() : null;
-
-        if(!weekly){
-          sessionsEl.textContent = '—';
-          adherenceEl.textContent = '—';
-          qualityEl.textContent = '—';
-          strongestEl.textContent = '—';
-          weakestEl.textContent = '—';
-          modeEl.textContent = '—';
-          if(swapsEl) swapsEl.innerHTML = '';
-          return;
-        }
-
-        sessionsEl.textContent = String(weekly.sessionsLogged != null ? weekly.sessionsLogged : 0);
-        adherenceEl.textContent = String(weekly.adherence != null ? weekly.adherence : 0) + '/100';
-        qualityEl.textContent = String(weekly.quality != null ? weekly.quality : 0) + '/100';
-        strongestEl.textContent = compactLabel(
-          window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
-            ? window.FFFTraining.familyLabel(weekly.strongestFamily || '')
-            : (weekly.strongestFamily || '—')
-        );
-        weakestEl.textContent = compactLabel(
-          window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
-            ? window.FFFTraining.familyLabel(weekly.weakestFamily || '')
-            : (weekly.weakestFamily || '—')
-        );
-        modeEl.textContent = titleCase(String(weekly.weeklyMode || 'steady').replace(/-/g, ' '));
-
-        if(swapsEl){
-          var swaps = Array.isArray(weekly.swapSuggestions) ? weekly.swapSuggestions : [];
-          swapsEl.innerHTML = swaps.map(function(item){
-            return '<span class="swap-chip">' + escapeHtml(item) + '</span>';
-          }).join('');
-          swapsWrap.style.display = swaps.length ? 'block' : 'none';
-        }
-      }catch(err){
-        sessionsEl.textContent = '—';
-        adherenceEl.textContent = '—';
-        qualityEl.textContent = '—';
-        strongestEl.textContent = '—';
-        weakestEl.textContent = '—';
-        modeEl.textContent = '—';
-        if(swapsEl) swapsEl.innerHTML = '';
-      }
-    }
-
-    function renderMovementStatus(){
-      if(!window.FFF || !window.FFF.getWeeklySummary) return;
-
-      var weekly = window.FFF.getWeeklySummary();
-      if(!weekly) return;
-
-      var families = weekly.familyBreakdown || {};
-
-      ['push','pull','legs','core','cardio'].forEach(function(groupKey){
-        var holder = document.querySelector('[data-family="' + groupKey + '"] .status-value');
-        if(!holder) return;
-
-        var data = families[groupKey];
-        holder.classList.remove('status-strong', 'status-building', 'status-weak');
-
-        if(!data){
-          holder.textContent = '—';
-          return;
-        }
-
-        if(data.state === 'strong'){
-          holder.textContent = 'STRONG';
-          holder.classList.add('status-strong');
-          return;
-        }
-
-        if(data.state === 'weak'){
-          holder.textContent = 'NEEDS ATTENTION';
-          holder.classList.add('status-weak');
-          return;
-        }
-
-        holder.textContent = 'BUILDING';
-        holder.classList.add('status-building');
-      });
-    }
-
-    function renderAdaptiveCockpit(){
-      if(!window.FFF) return;
-
-      try{
-        var summary = window.FFF.getGlobalCoachingSummary();
-
-        var strainEl = document.getElementById('cockpitStrain');
-        var painEl = document.getElementById('cockpitPain');
-        var pressureEl = document.getElementById('cockpitPressure');
-        var deloadEl = document.getElementById('cockpitDeload');
-
-        if(strainEl) strainEl.textContent = (summary.strain && summary.strain.strainRisk != null ? summary.strain.strainRisk : 0) + '/100';
-        if(painEl) painEl.textContent = summary.painRisk && summary.painRisk.state ? titleCase(summary.painRisk.state) : '—';
-        if(pressureEl) pressureEl.textContent = (summary.progressionPressure && summary.progressionPressure.score != null ? summary.progressionPressure.score : 0) + '/100';
-        if(deloadEl) deloadEl.textContent = summary.deload && summary.deload.suggested ? 'YES' : 'NO';
-      }catch(err){}
-    }
-
-    function renderTodayCoach(){
-      if(!window.FFF) return;
-
-      try{
-        var summary = window.FFF.getGlobalCoachingSummary();
-        var today = summary.todayDecision || {};
-        var nextSession = summary.nextSession || {};
-
-        if(window.FFFMemory && typeof window.FFFMemory.updateTodayDecision === 'function'){
-          window.FFFMemory.updateTodayDecision(today);
-        }
-
-        var decisionEl = document.getElementById('todayDecision');
-        var reasonEl = document.getElementById('todayReason');
-        var metaEl = document.getElementById('todaySessionMeta');
-
-        if(decisionEl) decisionEl.textContent = titleCase(String(today.decision || '—').replace(/-/g, ' '));
-        if(reasonEl) reasonEl.textContent = today.reason || '—';
-
-        if(metaEl){
-          var chips = [];
-          if(today.sessionType) chips.push('<span class="swap-chip">' + escapeHtml(titleCase(String(today.sessionType).replace(/-/g, ' '))) + '</span>');
-          if(nextSession.target) chips.push('<span class="swap-chip">' + escapeHtml(nextSession.target) + '</span>');
-          if(Array.isArray(nextSession.swaps)){
-            nextSession.swaps.slice(0, 3).forEach(function(item){
-              chips.push('<span class="swap-chip">' + escapeHtml(item) + '</span>');
-            });
-          }
-          metaEl.innerHTML = chips.join('');
-        }
-      }catch(err){}
-    }
-
-    function renderNextWeekPlan(){
-      if(!window.FFF) return;
-
-      try{
-        var summary = window.FFF.getGlobalCoachingSummary();
-        var nextWeek = summary.nextWeek || {};
-
-        var titleEl = document.getElementById('nextWeekTitle');
-        var changesEl = document.getElementById('nextWeekChanges');
-
-        if(titleEl) titleEl.textContent = nextWeek.title || 'Adaptive next-week plan';
-        if(changesEl){
-          var changes = Array.isArray(nextWeek.changes) ? nextWeek.changes : [];
-          changesEl.innerHTML = changes.map(function(line){
-            return '<div class="plan-line">' + escapeHtml(line) + '</div>';
-          }).join('');
-        }
-      }catch(err){}
-    }
-
-    function refreshAllCoachViews(){
-      renderCoachSummary();
-      renderWeeklySnapshot();
-      renderMovementStatus();
-      renderAdaptiveCockpit();
-      renderTodayCoach();
-      renderNextWeekPlan();
-    }
-
-    function wireWorkoutPlanLogsToEngine(){
-      if(!window.FFF) return;
-
-      var planRoot = document.getElementById('plan');
-      if(!planRoot) return;
-
-      var stageAccordions = planRoot.querySelectorAll('.accordion');
-
-      Array.prototype.forEach.call(stageAccordions, function(accordion, stageIndex){
-        var stageTitleBtn = accordion.querySelector('.acc-toggle');
-        var stageName = stageTitleBtn ? stageTitleBtn.textContent.trim() : ('Stage ' + (stageIndex + 1));
-        var dayBlocks = accordion.querySelectorAll('.days > .mov');
-
-        Array.prototype.forEach.call(dayBlocks, function(dayBlock, dayIndex){
-          var dayTitleEl = dayBlock.querySelector('.mov-head strong');
-          var dayName = dayTitleEl ? dayTitleEl.textContent.trim() : ('Day ' + (dayIndex + 1));
-          var exerciseBlocks = dayBlock.querySelectorAll(':scope > .exercise-item');
-
-          Array.prototype.forEach.call(exerciseBlocks, function(exerciseBlock){
-            var titleLink = exerciseBlock.querySelector('.mov-title a');
-            if(!titleLink) return;
-
-            var exerciseName = titleLink.textContent.trim();
-            var engineKey = stageName + ' | ' + dayName + ' | ' + exerciseName;
-            var openBtn = exerciseBlock.querySelector('[data-open]');
-            var drawer = exerciseBlock.querySelector('[data-drawer]');
-            var logArea = drawer ? drawer.querySelector('[data-log]') : null;
-            var pbEl = drawer ? drawer.querySelector('[data-pb]') : null;
-            var badgeEl = drawer ? drawer.querySelector('[data-badge]') : null;
-            var quoteEl = drawer ? drawer.querySelector('[data-quote]') : null;
-
-            if(!drawer || !logArea) return;
-
-            function milestoneText(n){
-              if(n >= 200) return 'Milestone: 200 logs saved 🔥';
-              if(n >= 100) return 'Milestone: 100 logs saved 🎉';
-              if(n >= 50) return 'Milestone: 50 logs saved 💪';
-              if(n >= 25) return 'Milestone: 25 logs saved 🙌';
-              if(n >= 10) return 'Milestone: 10 logs saved ✅';
-              if(n >= 5) return 'Milestone: 5 logs saved ✨';
-              return '';
-            }
-
-            function refreshFeedback(){
-              try{
-                var pb = window.FFF.getPB(engineKey);
-                var totalLogs = window.FFF.getTotalLogCount();
-                var coaching = window.FFF.analyseExercise(engineKey);
-
-                if(pbEl){
-                  pbEl.textContent = pb ? ('PB score: ' + Number(pb.score || 0).toFixed(1) + ' (best w×r)') : '';
-                }
-
-                if(badgeEl){
-                  badgeEl.textContent = milestoneText(totalLogs);
-                }
-
-                if(quoteEl && coaching){
-                  quoteEl.textContent = (coaching.headline || '') + ' — ' + (coaching.message || '');
-                }
-              }catch(err){
-                if(quoteEl){
-                  quoteEl.textContent = 'Coach unavailable for this exercise right now.';
-                }
-              }
-            }
-
-            function populateLatestValues(){
-              var latest = window.FFF.getLatestLog(engineKey);
-              if(!latest){
-                refreshFeedback();
-                return;
-              }
-
-              var w1 = logArea.querySelector('[data-field="w1"]');
-              var r1 = logArea.querySelector('[data-field="r1"]');
-              var n1 = logArea.querySelector('[data-field="n1"]');
-
-              if(w1 && !w1.value) w1.value = latest.weight != null ? latest.weight : '';
-              if(r1 && !r1.value) r1.value = latest.reps != null ? latest.reps : '';
-              if(n1 && !n1.value) n1.value = latest.notes != null ? latest.notes : '';
-
-              refreshFeedback();
-            }
-
-            populateLatestValues();
-
-            var saveButtons = logArea.querySelectorAll('[data-save]');
-            Array.prototype.forEach.call(saveButtons, function(btn){
-              btn.addEventListener('click', function(){
-                var rowEl = btn.closest('.log-row');
-                if(!rowEl) return;
-
-                var inputs = rowEl.querySelectorAll('[data-field]');
-                var weight = 0;
-                var reps = 0;
-                var notes = '';
-
-                Array.prototype.forEach.call(inputs, function(input){
-                  var field = input.getAttribute('data-field');
-                  var val = (input.value || '').trim();
-
-                  if(field.indexOf('w') === 0) weight = parseFloat(val) || 0;
-                  if(field.indexOf('r') === 0) reps = parseFloat(val) || 0;
-                  if(field.indexOf('n') === 0) notes = val;
-                });
-
-                var result = window.FFF.logSet(engineKey, weight, reps, notes);
-                refreshAllCoachViews();
-                refreshFeedback();
-
-                if(pbEl && result && result.isNewPB){
-                  pbEl.textContent = 'New PB! ' + weight + ' × ' + reps;
-                }
-
-                if(quoteEl){
-                  quoteEl.textContent = pick(QUOTES);
-                }
-              });
-            });
-
-            if(openBtn){
-              openBtn.addEventListener('click', function(){
-                setTimeout(refreshFeedback, 0);
-              });
-            }
-          });
-        });
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function(){
-      renderPlan();
-
-      document.getElementById('btnExport').addEventListener('click', exportAll);
-      document.getElementById('importFile').addEventListener('change', function(e){
-        var f = (e.target && e.target.files && e.target.files[0]) || null;
-        if(f) importAll(f);
-        e.target.value = '';
-      });
-      document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
-
-      if(!window.FFF){
-        refreshAllCoachViews();
-        return;
-      }
-
-      try{
-        window.FFF.ready();
-      }catch(err){
-        refreshAllCoachViews();
-        return;
-      }
-
-      var checkboxMap = {
-        hydrDone: 'hydration',
-        sleepDone: 'sleep',
-        macroDone: 'macros',
-        activityCardio: 'cardio'
-      };
-
-      Object.keys(checkboxMap).forEach(function(id){
-        var key = checkboxMap[id];
-        var box = document.getElementById(id);
-        if(!box) return;
-
-        try{
-          box.checked = window.FFF.getCheck(key);
-        }catch(err){
-          box.checked = false;
-        }
-
-        box.addEventListener('change', function(){
-          try{
-            window.FFF.setCheck(key, box.checked);
-            refreshAllCoachViews();
-          }catch(err){}
-        });
-      });
-
-      refreshAllCoachViews();
-      wireWorkoutPlanLogsToEngine();
-    });
-  </script>
-</body>
-</html>
+                    '<div class="acc-head"><button class="acc-toggle" aria-expanded="false" type="button">' + escapeHtml(stage.name || ('Stage ' + (si + 1))) + '</button></div

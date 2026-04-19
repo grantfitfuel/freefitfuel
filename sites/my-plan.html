@@ -349,7 +349,7 @@
           </div>
 
           <div class="meta" style="margin-top:10px">
-            “Generate my roadmap” uses the smarter path logic. “Generate full staged roadmap” always gives the full four-stage sequence.
+            “Generate my roadmap” uses the smarter path logic. “Generate full staged roadmap” gives the fullest relevant stage path for your inputs rather than forcing all four stages every time.
           </div>
         </div>
 
@@ -694,34 +694,50 @@
       }
     }
 
-    function chooseRoadmapFlow(goal, startBF, sex, trainingStatus, wantsGain) {
+    function chooseRoadmapFlow(goal, startBF, sex, trainingStatus, wantsGain, mode) {
       var bodyFatBand = classifyBodyFatBand(startBF, sex);
       var trained = (trainingStatus === 'advanced');
+      var fullMode = mode === 'full';
 
       if (goal === 'Maintain') return ['maintain'];
-      if (goal === 'Build/Bulk') return ['bulk'];
+
+      if (goal === 'Build/Bulk') {
+        return fullMode ? ['maintain', 'bulk'] : ['bulk'];
+      }
 
       if (goal === 'Cut') {
-        if (trained) return wantsGain ? ['cut', 'maintain', 'bulk'] : ['cut', 'maintain'];
-        return wantsGain ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'maintain'];
+        if (trained) {
+          if (wantsGain) return fullMode ? ['cut', 'maintain', 'bulk'] : ['cut', 'bulk'];
+          return ['cut', 'maintain'];
+        }
+        if (wantsGain) return fullMode ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'bulk'];
+        return fullMode ? ['cut', 'transform', 'maintain'] : ['cut', 'transform'];
       }
 
       if (goal === 'Transform') {
         if (bodyFatBand === 'high') {
-          if (trained) return wantsGain ? ['cut', 'maintain', 'bulk'] : ['cut', 'maintain'];
-          return wantsGain ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'maintain'];
+          if (trained) {
+            if (wantsGain) return fullMode ? ['cut', 'maintain', 'bulk'] : ['cut', 'bulk'];
+            return ['cut', 'maintain'];
+          }
+          if (wantsGain) return fullMode ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'bulk'];
+          return fullMode ? ['cut', 'transform', 'maintain'] : ['cut', 'transform'];
         }
 
         if (bodyFatBand === 'moderate') {
-          if (trained) return wantsGain ? ['transform', 'maintain', 'bulk'] : ['transform', 'maintain'];
-          return wantsGain ? ['transform', 'maintain', 'bulk'] : ['transform', 'maintain'];
+          if (trained) {
+            if (wantsGain) return fullMode ? ['transform', 'maintain', 'bulk'] : ['transform', 'bulk'];
+            return ['transform', 'maintain'];
+          }
+          if (wantsGain) return fullMode ? ['transform', 'maintain', 'bulk'] : ['transform', 'bulk'];
+          return ['transform', 'maintain'];
         }
 
         if (bodyFatBand === 'lean') {
-          return wantsGain ? ['maintain', 'bulk'] : ['maintain'];
+          return wantsGain ? (fullMode ? ['maintain', 'bulk'] : ['bulk']) : ['maintain'];
         }
 
-        return wantsGain ? ['transform', 'maintain', 'bulk'] : ['transform', 'maintain'];
+        return wantsGain ? (fullMode ? ['transform', 'maintain', 'bulk'] : ['transform', 'bulk']) : ['transform', 'maintain'];
       }
 
       return ['maintain'];
@@ -989,7 +1005,7 @@
       var trainingStatus = getTrainingStatus();
       var wantsGain = wantsMuscleGain();
 
-      var flow = chooseRoadmapFlow(GOAL, currentBF, sex, trainingStatus, wantsGain);
+      var flow = chooseRoadmapFlow(GOAL, currentBF, sex, trainingStatus, wantsGain, 'smart');
       var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, flow);
 
       return {
@@ -998,6 +1014,8 @@
         endBF: userTargetBF,
         trainingStatus: trainingStatus,
         wantsMuscleGain: wantsGain,
+        roadmapMode: 'smart',
+        chosenFlow: flow,
         stages: flowData.stages,
         meta: flowData.meta
       };
@@ -1005,17 +1023,23 @@
 
     function buildStagedRoadmap() {
       var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
+      var sex = document.getElementById('bmrSex').value;
       var currentBF = getEffectiveStartBF();
       var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
       var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
-      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, ['cut', 'transform', 'maintain', 'bulk']);
+      var trainingStatus = getTrainingStatus();
+      var wantsGain = wantsMuscleGain();
+      var flow = chooseRoadmapFlow(GOAL, currentBF, sex, trainingStatus, wantsGain, 'full');
+      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, flow);
 
       return {
         goal: GOAL,
         startBF: currentBF == null ? null : Math.round(currentBF * 10) / 10,
         endBF: userTargetBF,
-        trainingStatus: getTrainingStatus(),
-        wantsMuscleGain: wantsMuscleGain(),
+        trainingStatus: trainingStatus,
+        wantsMuscleGain: wantsGain,
+        roadmapMode: 'full',
+        chosenFlow: flow,
         stages: flowData.stages,
         meta: flowData.meta
       };
@@ -1049,11 +1073,13 @@
       var tags = [];
       var startBF = getEffectiveStartBF();
       var targetBF = parseFloat(document.getElementById('targetBodyFat').value || '');
+      var previewFlow = chooseRoadmapFlow(GOAL, startBF, sx, getTrainingStatus(), wantsMuscleGain(), 'smart');
       if (startBF != null) tags.push('<span class="tag tag-accent">Start BF ~' + escapeHtml(String(startBF)) + '%</span>');
       if (!isNaN(targetBF) && targetBF > 0) tags.push('<span class="tag">Target BF ' + escapeHtml(String(targetBF)) + '%</span>');
       tags.push('<span class="tag">TDEE ~' + Math.round(tdee) + ' kcal</span>');
       tags.push('<span class="tag">' + escapeHtml(titleCase(getTrainingStatus())) + '</span>');
       tags.push('<span class="tag">' + (wantsMuscleGain() ? 'Muscle gain later: yes' : 'Muscle gain later: no') + '</span>');
+      tags.push('<span class="tag tag-accent">Preview path: ' + escapeHtml(previewFlow.join(' → ')) + '</span>');
       document.getElementById('roadmapMeta').innerHTML = tags.join('');
     }
 
@@ -2038,7 +2064,7 @@
       });
 
       document.getElementById('generatePDF').addEventListener('click', async function(){
-        var full = confirm('Press OK for the full staged roadmap PDF.\nPress Cancel for the smarter goal-led roadmap PDF.');
+        var full = confirm('Press OK for the fullest relevant staged roadmap PDF.\nPress Cancel for the smarter goal-led roadmap PDF.');
         await generatePDFAndSaveRoadmap(full);
       });
 

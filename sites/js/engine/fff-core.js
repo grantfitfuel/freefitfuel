@@ -1,4 +1,5 @@
 // FreeFitFuel Engine — Core Coordinator
+// Hardened coordinator matched to current state/recovery/mind/roadmap/training/messaging layers
 
 window.FFF = (function () {
   'use strict';
@@ -19,51 +20,151 @@ window.FFF = (function () {
     }
   }
 
+  function safeNumber(v, fallback) {
+    var n = Number(v);
+    return isNaN(n) ? (fallback || 0) : n;
+  }
+
+  function safeObject(v) {
+    return v && typeof v === 'object' ? v : {};
+  }
+
+  function safeArray(v) {
+    return Array.isArray(v) ? v : [];
+  }
+
   function ready() {
     ensureDeps();
-    window.FFFState.load();
+    if (window.FFFState && typeof window.FFFState.load === 'function') {
+      window.FFFState.load();
+    }
     return true;
   }
 
-  function toNumber(v) {
-    var n = Number(v);
-    return isNaN(n) ? 0 : n;
-  }
-
   function score(weight, reps) {
-    return toNumber(weight) * toNumber(reps);
+    return safeNumber(weight) * safeNumber(reps);
   }
 
   function getRoadmapRaw() {
     ready();
 
-    if (typeof window.FFFState.getRoadmap === 'function') {
-      return window.FFFState.getRoadmap() || null;
-    }
+    try {
+      if (window.FFFState && typeof window.FFFState.getRoadmap === 'function') {
+        return window.FFFState.getRoadmap() || null;
+      }
+    } catch (err) {}
 
     try {
       var raw = localStorage.getItem('fff.roadmap.plan.v1');
       return raw ? JSON.parse(raw) : null;
-    } catch (e) {
+    } catch (err) {
       return null;
     }
   }
 
   function getRoadmapSummary() {
     ready();
-    return window.FFFRoadmap.summarise(getRoadmapRaw());
+
+    try {
+      return window.FFFRoadmap.summarise(getRoadmapRaw());
+    } catch (err) {
+      return {
+        hasRoadmap: false,
+        stageCount: 0,
+        currentBias: 'unknown',
+        currentStageType: 'unknown',
+        progressionExpectation: 'unknown',
+        stageSummaries: [],
+        health: {
+          complexity: 'none',
+          progressionStyle: 'unknown',
+          notes: ['Roadmap summary unavailable.']
+        }
+      };
+    }
+  }
+
+  function getAllLogsSafe() {
+    try {
+      return window.FFFState && typeof window.FFFState.getAllLogs === 'function'
+        ? safeObject(window.FFFState.getAllLogs())
+        : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function getChecksSafe() {
+    try {
+      return window.FFFState && typeof window.FFFState.getChecks === 'function'
+        ? safeObject(window.FFFState.getChecks())
+        : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function getRecoverySafe(checks, allLogs) {
+    try {
+      return safeObject(window.FFFRecovery.analyse(checks, allLogs));
+    } catch (err) {
+      return {
+        checkScore: 0,
+        readiness: 50,
+        fatigue: 20,
+        underRecoveryRisk: 0,
+        consistency: 0,
+        painSignals: 0,
+        recentLoad: 0,
+        recentSessionDays: 0,
+        daysSinceLastLog: null,
+        mode: 'normal'
+      };
+    }
+  }
+
+  function getMindSafe(allLogs, checks) {
+    try {
+      return safeObject(window.FFFMind.analyse(allLogs, checks));
+    } catch (err) {
+      return {
+        headline: 'Mind layer unavailable',
+        summary: 'Mind analysis could not be produced.',
+        tone: 'grounded',
+        risk: 'low',
+        confidence: 50,
+        pressure: 20,
+        discipline: 40,
+        avoidance: 0,
+        painFocus: 0,
+        negativity: 0,
+        selfCriticism: 0,
+        overpush: 0,
+        checkSupport: 0,
+        sampleSize: 0
+      };
+    }
   }
 
   function setPB(exercise, weight, reps) {
     ready();
 
-    var current = window.FFFState.getPB(exercise);
+    var name = String(exercise || '').trim();
+    if (!name) return false;
+
+    var current = null;
+    try {
+      current = window.FFFState.getPB(name);
+    } catch (err) {
+      current = null;
+    }
+
     var nextScore = score(weight, reps);
 
-    if (!current || nextScore > toNumber(current.score)) {
-      window.FFFState.setPB(exercise, {
-        weight: toNumber(weight),
-        reps: toNumber(reps),
+    if (!current || nextScore > safeNumber(current.score)) {
+      window.FFFState.setPB(name, {
+        weight: safeNumber(weight),
+        reps: safeNumber(reps),
         score: nextScore,
         date: window.FFFState.nowISO()
       });
@@ -75,21 +176,34 @@ window.FFF = (function () {
 
   function getPB(exercise) {
     ready();
-    return window.FFFState.getPB(exercise) || null;
+
+    try {
+      return window.FFFState.getPB(String(exercise || '')) || null;
+    } catch (err) {
+      return null;
+    }
   }
 
   function logSet(exercise, weight, reps, notes) {
     ready();
 
+    var name = String(exercise || '').trim();
+    if (!name) {
+      return {
+        entry: null,
+        isNewPB: false
+      };
+    }
+
     var entry = {
-      weight: toNumber(weight),
-      reps: toNumber(reps),
+      weight: safeNumber(weight),
+      reps: safeNumber(reps),
       notes: String(notes || ''),
       date: window.FFFState.nowISO()
     };
 
-    window.FFFState.appendLog(exercise, entry);
-    var isNewPB = setPB(exercise, weight, reps);
+    window.FFFState.appendLog(name, entry);
+    var isNewPB = setPB(name, weight, reps);
 
     return {
       entry: entry,
@@ -99,7 +213,12 @@ window.FFF = (function () {
 
   function getLogs(exercise) {
     ready();
-    return window.FFFState.getLogs(exercise) || [];
+
+    try {
+      return safeArray(window.FFFState.getLogs(String(exercise || '')));
+    } catch (err) {
+      return [];
+    }
   }
 
   function getLatestLog(exercise) {
@@ -109,90 +228,185 @@ window.FFF = (function () {
 
   function setCheck(name, value) {
     ready();
-    return window.FFFState.setCheck(name, !!value);
+
+    try {
+      return window.FFFState.setCheck(String(name || ''), !!value);
+    } catch (err) {
+      return false;
+    }
   }
 
   function getCheck(name) {
     ready();
-    return !!window.FFFState.getCheck(name);
+
+    try {
+      return !!window.FFFState.getCheck(String(name || ''));
+    } catch (err) {
+      return false;
+    }
   }
 
   function getAllChecks() {
     ready();
-    return window.FFFState.getChecks() || {};
+    return getChecksSafe();
   }
 
   function clearChecks() {
     ready();
-    if (typeof window.FFFState.clearChecks === 'function') {
-      window.FFFState.clearChecks();
-    } else {
+
+    try {
+      if (typeof window.FFFState.clearChecks === 'function') {
+        window.FFFState.clearChecks();
+        return true;
+      }
+    } catch (err) {}
+
+    try {
       localStorage.removeItem('fff.checks.v1');
       window.FFFState.load();
+      return true;
+    } catch (err) {
+      return false;
     }
   }
 
   function getCheckScore() {
     ready();
-    return window.FFFRecovery.scoreChecks(window.FFFState.getChecks());
+
+    try {
+      return safeNumber(window.FFFRecovery.scoreChecks(getChecksSafe()), 0);
+    } catch (err) {
+      return 0;
+    }
   }
 
   function getTotalLogCount() {
     ready();
-    return window.FFFState.getTotalLogCount();
+
+    try {
+      return safeNumber(window.FFFState.getTotalLogCount(), 0);
+    } catch (err) {
+      return 0;
+    }
   }
 
   function getExerciseTrend(exercise) {
     ready();
-    return window.FFFTraining.getTrend(window.FFFState.getLogs(exercise));
+
+    try {
+      return safeObject(window.FFFTraining.getTrend(getLogs(exercise)));
+    } catch (err) {
+      return { trend: 'insufficient', delta: 0, lastScore: 0, prevScore: 0 };
+    }
   }
 
   function getFamilySummary() {
     ready();
-    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
-    var checks = window.FFFState.getChecks() || {};
-    var recovery = window.FFFRecovery.analyse(checks, allLogs);
-    return window.FFFTraining.summariseFamilies(allLogs, recovery);
+
+    var allLogs = getAllLogsSafe();
+    var checks = getChecksSafe();
+    var recovery = getRecoverySafe(checks, allLogs);
+
+    try {
+      return safeObject(window.FFFTraining.summariseFamilies(allLogs, recovery));
+    } catch (err) {
+      return {};
+    }
   }
 
   function getWeeklySummary() {
     ready();
-    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
-    var checks = window.FFFState.getChecks() || {};
+
+    var allLogs = getAllLogsSafe();
+    var checks = getChecksSafe();
     var roadmapSummary = getRoadmapSummary();
-    var recovery = window.FFFRecovery.analyse(checks, allLogs);
-    return window.FFFTraining.weeklySummary(allLogs, recovery, roadmapSummary);
+    var recovery = getRecoverySafe(checks, allLogs);
+
+    try {
+      return safeObject(window.FFFTraining.weeklySummary(allLogs, recovery, roadmapSummary));
+    } catch (err) {
+      return {
+        sessionsLogged: 0,
+        exercisesTouched: 0,
+        painMentions: 0,
+        weeklyLoadProxy: 0,
+        adherence: 0,
+        quality: 0,
+        strongestFamily: null,
+        weakestFamily: null,
+        familySummary: {},
+        familyBreakdown: {},
+        weeklyMode: 'steady',
+        swapSuggestions: []
+      };
+    }
   }
 
   function analyseExercise(exercise) {
     ready();
 
-    var logs = window.FFFState.getLogs(exercise) || [];
-    var checks = window.FFFState.getChecks() || {};
-    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    var name = String(exercise || '').trim();
+    var logs = getLogs(name);
+    var checks = getChecksSafe();
+    var allLogs = getAllLogsSafe();
     var roadmapSummary = getRoadmapSummary();
+    var recovery = getRecoverySafe(checks, allLogs);
+    var mind = getMindSafe(allLogs, checks);
 
-    var recovery = window.FFFRecovery.analyse(checks, allLogs);
-    var mind = window.FFFMind.analyse(allLogs, checks);
-    var profile = window.FFFExerciseDB.getExerciseProfile(exercise);
+    var profile = null;
+    try {
+      profile = window.FFFExerciseDB.getExerciseProfile(name);
+    } catch (err) {
+      profile = {
+        name: name || 'Unknown Exercise',
+        family: 'general',
+        patterns: ['general'],
+        primaryJoints: ['general'],
+        tissues: ['general'],
+        riskZones: ['general'],
+        commonFailurePoints: [],
+        regressions: [],
+        progressions: [],
+        aliases: [],
+        confidence: 'low'
+      };
+    }
 
-    var decision = window.FFFTraining.decideExercise(
-      profile,
-      logs,
-      recovery,
-      mind,
-      roadmapSummary
-    );
+    var decision;
+    try {
+      decision = window.FFFTraining.decideExercise(profile, logs, recovery, mind, roadmapSummary);
+    } catch (err) {
+      decision = {
+        action: 'hold',
+        reason: ['Exercise intelligence unavailable'],
+        tone: 'grounded',
+        confidenceBand: 'low',
+        trend: { trend: 'insufficient', delta: 0, lastScore: 0, prevScore: 0 },
+        longTrend: 'unknown',
+        patternState: 'unknown',
+        phase: roadmapSummary,
+        profile: profile,
+        nextStep: 'Stay controlled and keep accumulating useful logs.'
+      };
+    }
 
-    var message = window.FFFMessaging.exerciseMessage(decision);
+    var message;
+    try {
+      message = window.FFFMessaging.exerciseMessage(decision);
+    } catch (err) {
+      message = {
+        headline: 'Exercise coaching unavailable',
+        message: 'The engine could not produce exercise-specific coaching.'
+      };
+    }
 
     return {
-      exercise: exercise,
+      exercise: name,
       profile: profile,
       logs: logs,
       latest: logs.length ? logs[logs.length - 1] : null,
-      pb: window.FFFState.getPB(exercise) || null,
-      trend: decision && decision.trend ? decision.trend : window.FFFTraining.getTrend(logs),
+      pb: getPB(name),
+      trend: decision && decision.trend ? decision.trend : getExerciseTrend(name),
       longTrend: decision && decision.longTrend ? decision.longTrend : 'unknown',
       recovery: recovery,
       mind: mind,
@@ -207,26 +421,51 @@ window.FFF = (function () {
   function getGlobalCoachingSummary() {
     ready();
 
-    var checks = window.FFFState.getChecks() || {};
-    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    var checks = getChecksSafe();
+    var allLogs = getAllLogsSafe();
     var roadmapSummary = getRoadmapSummary();
-    var recovery = window.FFFRecovery.analyse(checks, allLogs);
-    var mind = window.FFFMind.analyse(allLogs, checks);
-    var totalLogs = window.FFFState.getTotalLogCount();
+    var recovery = getRecoverySafe(checks, allLogs);
+    var mind = getMindSafe(allLogs, checks);
+    var totalLogs = getTotalLogCount();
 
-    var globalDecision = window.FFFTraining.decideGlobal(
-      recovery,
-      mind,
-      roadmapSummary,
-      totalLogs,
-      allLogs
-    );
+    var globalDecision;
+    try {
+      globalDecision = window.FFFTraining.decideGlobal(
+        recovery,
+        mind,
+        roadmapSummary,
+        totalLogs,
+        allLogs
+      );
+    } catch (err) {
+      globalDecision = {
+        mode: 'build',
+        tone: 'grounded',
+        reason: ['Global coaching intelligence unavailable'],
+        familySummary: {},
+        strongestFamily: null,
+        weakestFamily: null,
+        weekly: {},
+        strain: {},
+        progressionPressure: {},
+        deload: {},
+        painRisk: {},
+        nextSession: {},
+        todayDecision: {},
+        nextWeek: {},
+        conflicts: []
+      };
+    }
 
-    var message = window.FFFMessaging.globalMessage(
-      globalDecision,
-      recovery,
-      mind
-    );
+    var message;
+    try {
+      message = window.FFFMessaging.globalMessage(globalDecision);
+    } catch (err) {
+      message = {
+        headline: 'Coach unavailable',
+        message: 'The engine could not produce a global coaching summary.'
+      };
+    }
 
     return {
       headline: message.headline,
@@ -246,40 +485,67 @@ window.FFF = (function () {
       progressionPressure: globalDecision && globalDecision.progressionPressure ? globalDecision.progressionPressure : {},
       deload: globalDecision && globalDecision.deload ? globalDecision.deload : {},
       painRisk: globalDecision && globalDecision.painRisk ? globalDecision.painRisk : {},
-      nextSession: globalDecision && globalDecision.nextSession ? globalDecision.nextSession : {}
+      nextSession: globalDecision && globalDecision.nextSession ? globalDecision.nextSession : {},
+      todayDecision: globalDecision && globalDecision.todayDecision ? globalDecision.todayDecision : {},
+      nextWeek: globalDecision && globalDecision.nextWeek ? globalDecision.nextWeek : {},
+      conflicts: globalDecision && globalDecision.conflicts ? globalDecision.conflicts : []
     };
   }
 
   function clearPBsOnly() {
     ready();
 
-    if (typeof window.FFFState.clearPBs === 'function') {
-      window.FFFState.clearPBs();
-    } else {
+    try {
+      if (window.FFFState && typeof window.FFFState.clearPBs === 'function') {
+        window.FFFState.clearPBs();
+        return true;
+      }
+    } catch (err) {}
+
+    try {
       localStorage.removeItem('fff.pb.v1');
       window.FFFState.load();
+      return true;
+    } catch (err) {
+      return false;
     }
   }
 
   function clearLogsOnly() {
     ready();
 
-    if (typeof window.FFFState.clearLogs === 'function') {
-      window.FFFState.clearLogs();
-    } else {
+    try {
+      if (window.FFFState && typeof window.FFFState.clearLogs === 'function') {
+        window.FFFState.clearLogs();
+        return true;
+      }
+    } catch (err) {}
+
+    try {
       localStorage.removeItem('fff.logs.v1');
       window.FFFState.load();
+      return true;
+    } catch (err) {
+      return false;
     }
   }
 
   function clearCoachingOnly() {
     ready();
 
-    if (typeof window.FFFState.clearCoaching === 'function') {
-      window.FFFState.clearCoaching();
-    } else {
+    try {
+      if (window.FFFState && typeof window.FFFState.clearCoaching === 'function') {
+        window.FFFState.clearCoaching();
+        return true;
+      }
+    } catch (err) {}
+
+    try {
       localStorage.removeItem('fff.coaching.v1');
       window.FFFState.load();
+      return true;
+    } catch (err) {
+      return false;
     }
   }
 
@@ -290,7 +556,7 @@ window.FFF = (function () {
 
     try {
       roadmapBackup = localStorage.getItem('fff.roadmap.plan.v1');
-    } catch (e) {
+    } catch (err) {
       roadmapBackup = null;
     }
 
@@ -300,18 +566,20 @@ window.FFF = (function () {
     clearCoachingOnly();
 
     try {
-      var stillThere = localStorage.getItem('fff.roadmap.plan.v1');
-      if (!stillThere && roadmapBackup) {
+      if (!localStorage.getItem('fff.roadmap.plan.v1') && roadmapBackup) {
         localStorage.setItem('fff.roadmap.plan.v1', roadmapBackup);
       }
-    } catch (e) {}
+    } catch (err) {}
 
-    window.FFFState.load();
+    try {
+      window.FFFState.load();
+    } catch (err) {}
+
     return true;
   }
 
   return {
-    version: '8.0',
+    version: '9.0',
     ready: ready,
 
     setPB: setPB,

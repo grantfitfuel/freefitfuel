@@ -4,7 +4,7 @@ window.FFF = (function () {
   'use strict';
 
   function ensureDeps() {
-    const missing = [];
+    var missing = [];
 
     if (!window.FFFState) missing.push('FFFState');
     if (!window.FFFExerciseDB) missing.push('FFFExerciseDB');
@@ -26,7 +26,7 @@ window.FFF = (function () {
   }
 
   function toNumber(v) {
-    const n = Number(v);
+    var n = Number(v);
     return isNaN(n) ? 0 : n;
   }
 
@@ -42,7 +42,7 @@ window.FFF = (function () {
     }
 
     try {
-      const raw = localStorage.getItem('fff.roadmap.plan.v1');
+      var raw = localStorage.getItem('fff.roadmap.plan.v1');
       return raw ? JSON.parse(raw) : null;
     } catch (e) {
       return null;
@@ -57,8 +57,8 @@ window.FFF = (function () {
   function setPB(exercise, weight, reps) {
     ready();
 
-    const current = window.FFFState.getPB(exercise);
-    const nextScore = score(weight, reps);
+    var current = window.FFFState.getPB(exercise);
+    var nextScore = score(weight, reps);
 
     if (!current || nextScore > toNumber(current.score)) {
       window.FFFState.setPB(exercise, {
@@ -81,7 +81,7 @@ window.FFF = (function () {
   function logSet(exercise, weight, reps, notes) {
     ready();
 
-    const entry = {
+    var entry = {
       weight: toNumber(weight),
       reps: toNumber(reps),
       notes: String(notes || ''),
@@ -89,7 +89,7 @@ window.FFF = (function () {
     };
 
     window.FFFState.appendLog(exercise, entry);
-    const isNewPB = setPB(exercise, weight, reps);
+    var isNewPB = setPB(exercise, weight, reps);
 
     return {
       entry: entry,
@@ -103,7 +103,7 @@ window.FFF = (function () {
   }
 
   function getLatestLog(exercise) {
-    const logs = getLogs(exercise);
+    var logs = getLogs(exercise);
     return logs.length ? logs[logs.length - 1] : null;
   }
 
@@ -149,34 +149,34 @@ window.FFF = (function () {
 
   function getFamilySummary() {
     ready();
-    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
-    const checks = window.FFFState.getChecks() || {};
-    const recovery = window.FFFRecovery.analyse(checks, allLogs);
+    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    var checks = window.FFFState.getChecks() || {};
+    var recovery = window.FFFRecovery.analyse(checks, allLogs);
     return window.FFFTraining.summariseFamilies(allLogs, recovery);
   }
 
   function getWeeklySummary() {
     ready();
-    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
-    const checks = window.FFFState.getChecks() || {};
-    const roadmapSummary = getRoadmapSummary();
-    const recovery = window.FFFRecovery.analyse(checks, allLogs);
+    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    var checks = window.FFFState.getChecks() || {};
+    var roadmapSummary = getRoadmapSummary();
+    var recovery = window.FFFRecovery.analyse(checks, allLogs);
     return window.FFFTraining.weeklySummary(allLogs, recovery, roadmapSummary);
   }
 
   function analyseExercise(exercise) {
     ready();
 
-    const logs = window.FFFState.getLogs(exercise) || [];
-    const checks = window.FFFState.getChecks() || {};
-    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
-    const roadmapSummary = getRoadmapSummary();
+    var logs = window.FFFState.getLogs(exercise) || [];
+    var checks = window.FFFState.getChecks() || {};
+    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    var roadmapSummary = getRoadmapSummary();
 
-    const recovery = window.FFFRecovery.analyse(checks, allLogs);
-    const mind = window.FFFMind.analyse(allLogs, checks);
-    const profile = window.FFFExerciseDB.getExerciseProfile(exercise);
+    var recovery = window.FFFRecovery.analyse(checks, allLogs);
+    var mind = window.FFFMind.analyse(allLogs, checks);
+    var profile = window.FFFExerciseDB.getExerciseProfile(exercise);
 
-    const decision = window.FFFTraining.decideExercise(
+    var decision = window.FFFTraining.decideExercise(
       profile,
       logs,
       recovery,
@@ -184,7 +184,7 @@ window.FFF = (function () {
       roadmapSummary
     );
 
-    const message = window.FFFMessaging.exerciseMessage(decision);
+    var message = window.FFFMessaging.exerciseMessage(decision);
 
     return {
       exercise: exercise,
@@ -207,14 +207,14 @@ window.FFF = (function () {
   function getGlobalCoachingSummary() {
     ready();
 
-    const checks = window.FFFState.getChecks() || {};
-    const allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
-    const roadmapSummary = getRoadmapSummary();
-    const recovery = window.FFFRecovery.analyse(checks, allLogs);
-    const mind = window.FFFMind.analyse(allLogs, checks);
-    const totalLogs = window.FFFState.getTotalLogCount();
+    var checks = window.FFFState.getChecks() || {};
+    var allLogs = window.FFFState.getAllLogs ? window.FFFState.getAllLogs() : {};
+    var roadmapSummary = getRoadmapSummary();
+    var recovery = window.FFFRecovery.analyse(checks, allLogs);
+    var mind = window.FFFMind.analyse(allLogs, checks);
+    var totalLogs = window.FFFState.getTotalLogCount();
 
-    const globalDecision = window.FFFTraining.decideGlobal(
+    var globalDecision = window.FFFTraining.decideGlobal(
       recovery,
       mind,
       roadmapSummary,
@@ -222,7 +222,7 @@ window.FFF = (function () {
       allLogs
     );
 
-    const message = window.FFFMessaging.globalMessage(
+    var message = window.FFFMessaging.globalMessage(
       globalDecision,
       recovery,
       mind
@@ -241,7 +241,12 @@ window.FFF = (function () {
       familySummary: globalDecision && globalDecision.familySummary ? globalDecision.familySummary : {},
       strongestFamily: globalDecision && globalDecision.strongestFamily ? globalDecision.strongestFamily : null,
       weakestFamily: globalDecision && globalDecision.weakestFamily ? globalDecision.weakestFamily : null,
-      weekly: globalDecision && globalDecision.weekly ? globalDecision.weekly : {}
+      weekly: globalDecision && globalDecision.weekly ? globalDecision.weekly : {},
+      strain: globalDecision && globalDecision.strain ? globalDecision.strain : {},
+      progressionPressure: globalDecision && globalDecision.progressionPressure ? globalDecision.progressionPressure : {},
+      deload: globalDecision && globalDecision.deload ? globalDecision.deload : {},
+      painRisk: globalDecision && globalDecision.painRisk ? globalDecision.painRisk : {},
+      nextSession: globalDecision && globalDecision.nextSession ? globalDecision.nextSession : {}
     };
   }
 
@@ -281,7 +286,7 @@ window.FFF = (function () {
   function resetWellnessAndLogs() {
     ready();
 
-    let roadmapBackup = null;
+    var roadmapBackup = null;
 
     try {
       roadmapBackup = localStorage.getItem('fff.roadmap.plan.v1');
@@ -295,7 +300,7 @@ window.FFF = (function () {
     clearCoachingOnly();
 
     try {
-      const stillThere = localStorage.getItem('fff.roadmap.plan.v1');
+      var stillThere = localStorage.getItem('fff.roadmap.plan.v1');
       if (!stillThere && roadmapBackup) {
         localStorage.setItem('fff.roadmap.plan.v1', roadmapBackup);
       }
@@ -306,7 +311,7 @@ window.FFF = (function () {
   }
 
   return {
-    version: '7.0',
+    version: '8.0',
     ready: ready,
 
     setPB: setPB,

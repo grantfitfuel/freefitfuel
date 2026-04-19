@@ -1,5 +1,5 @@
 // FreeFitFuel Engine — Messaging Layer
-// High-end adaptive coaching tone
+// Elite adaptive coaching tone with next-step guidance
 
 window.FFFMessaging = (function () {
   'use strict';
@@ -136,7 +136,7 @@ window.FFFMessaging = (function () {
     };
   }
 
-  function globalMessage(globalDecision, recovery, mind) {
+  function globalMessage(globalDecision) {
     if (!globalDecision) {
       return {
         headline: 'Coach unavailable',
@@ -146,7 +146,6 @@ window.FFFMessaging = (function () {
 
     var mode = globalDecision.mode || 'build';
     var reasonText = joinReasons(globalDecision.reason || []);
-    var phase = globalDecision.phase && globalDecision.phase.stage ? globalDecision.phase.stage : 'unknown';
     var strongest = globalDecision.strongestFamily ? familyLabel(globalDecision.strongestFamily) : '';
     var weakest = globalDecision.weakestFamily ? familyLabel(globalDecision.weakestFamily) : '';
     var weekly = globalDecision.weekly || {};
@@ -155,29 +154,40 @@ window.FFFMessaging = (function () {
     var deload = globalDecision.deload || {};
     var painRisk = globalDecision.painRisk || {};
     var progPressure = globalDecision.progressionPressure || {};
+    var conflicts = globalDecision.conflicts || [];
+    var today = globalDecision.todayDecision || {};
+    var nextWeek = globalDecision.nextWeek || {};
 
     var familyLine = (strongest || weakest)
-      ? (' ' + (strongest ? ('Strongest area lately: ' + strongest + '. ') : '') + (weakest ? ('Most fragile area lately: ' + weakest + '. ') : ''))
+      ? (' Strongest area lately: ' + (strongest || '—') + '. Most fragile area lately: ' + (weakest || '—') + '.')
       : '';
 
-    var weeklyLine = weekly && typeof weekly.sessionsLogged === 'number'
+    var weeklyLine = typeof weekly.sessionsLogged === 'number'
       ? (' Weekly picture: ' + weekly.sessionsLogged + ' training day' + (weekly.sessionsLogged === 1 ? '' : 's') +
          ', adherence ' + (weekly.adherence || 0) + '/100, training quality ' + (weekly.quality || 0) + '/100.')
       : '';
 
-    var strainLine = (typeof strain.strainRisk === 'number')
-      ? (' Strain risk: ' + strain.strainRisk + '/100. ')
+    var strainLine = typeof strain.strainRisk === 'number'
+      ? (' Strain risk: ' + strain.strainRisk + '/100.')
+      : '';
+
+    var todayLine = today && today.decision
+      ? (' Today: ' + String(today.decision).replace(/-/g, ' ') + '. ' + (today.reason || ''))
       : '';
 
     var nextLine = nextSession && nextSession.title
       ? (' Next session: ' + nextSession.title + '. ' + (nextSession.action || ''))
       : '';
 
+    var conflictLine = conflicts.length
+      ? (' Goal conflict spotted: ' + conflicts[0])
+      : '';
+
     if (mode === 'deload') {
       return {
         headline: 'Deload is now the smart move',
         message: 'This is not quitting. It is intelligent timing. The combined recovery, strain, and weekly quality picture now says a lighter week will serve you better than another forced push.' +
-          weeklyLine + strainLine + familyLine + nextLine
+          weeklyLine + strainLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -185,7 +195,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Pain risk is rising',
         message: 'The recent notes and broader family picture suggest that irritation is building rather than settling. The right move is to lower pressure now, not wait until the pattern becomes an injury story.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -193,7 +203,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Recovery basics are all in place',
         message: 'Hydration, sleep, food, and daily movement are all showing up. That does not guarantee a perfect session, but it does mean the platform under your training is strong.' +
-          weeklyLine + strainLine + familyLine + nextLine
+          weeklyLine + strainLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -201,7 +211,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Your foundation looks mostly solid',
         message: 'Most of the recovery basics are in place. That is enough to train productively, and the next gain comes from repeating that standard more often.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -209,7 +219,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Some basics are there, some still need tightening',
         message: 'This is not a write-off. It just means the platform under your training is mixed. You will get more from steadier sleep, hydration, and fuelling than from trying to manufacture motivation.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -217,7 +227,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'The basics need attention first',
         message: 'Very few recovery markers are currently in place. Training can still count, but expectations should stay realistic and the priority should be rebuilding the foundation.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -225,7 +235,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Stabilise the base before you push on',
         message: 'This phase needs consistency, and the basics are not strong enough to ignore. Tighten the daily foundations first and let the plan become easier to sustain.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -233,7 +243,7 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Consistency comes before sophistication',
         message: 'Right now the main limiter is not programme design but repeatability. The next gain comes from logging enough consistent sessions to give the coach something worth steering.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -241,8 +251,8 @@ window.FFFMessaging = (function () {
       return {
         headline: 'Reduce strain before you add ambition',
         message: 'The weekly picture suggests too much strain relative to the quality of training. That usually means the answer is not more effort, but cleaner structure, better recovery, and smarter restraint.' +
-          weeklyLine + strainLine + familyLine +
-          (weekly.swapSuggestions && weekly.swapSuggestions.length ? (' Safer swap ideas for the weakest pattern: ' + weekly.swapSuggestions.slice(0, 3).join(', ') + '.') : '') +
+          weeklyLine + strainLine + familyLine + todayLine +
+          (weekly.swapSuggestions && weekly.swapSuggestions.length ? (' Safer swap ideas: ' + weekly.swapSuggestions.slice(0, 3).join(', ') + '.') : '') +
           nextLine
       };
     }
@@ -253,7 +263,7 @@ window.FFFMessaging = (function () {
         message: 'This is the important distinction: it does not look like a single bad exercise. ' +
           (weakest ? ('The ' + weakest + ' pattern is where the strain is showing up most clearly. ') : '') +
           'That usually means the answer is not to force one lift harder, but to lower the load on the broader pattern and recover properly.' +
-          weeklyLine +
+          weeklyLine + todayLine +
           (weekly.swapSuggestions && weekly.swapSuggestions.length ? (' Safer short-term swaps: ' + weekly.swapSuggestions.slice(0, 3).join(', ') + '.') : '') +
           nextLine
       };
@@ -265,7 +275,7 @@ window.FFFMessaging = (function () {
         message: 'The current picture says sustainability matters more than proving a point. ' +
           (reasonText ? sentenceCase(reasonText) + '. ' : '') +
           'Your job is to keep training viable, not to win today at the expense of next week.' +
-          weeklyLine + strainLine + familyLine + nextLine
+          weeklyLine + strainLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -275,7 +285,7 @@ window.FFFMessaging = (function () {
         message: 'The right response here is not to collapse the plan, but to lower the emotional temperature. ' +
           (reasonText ? sentenceCase(reasonText) + '. ' : '') +
           'A calm, completed session is more valuable than a strained attempt to feel heroic.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -285,16 +295,15 @@ window.FFFMessaging = (function () {
         message: 'This looks like one of those phases where trying harder is the wrong lever. ' +
           (reasonText ? sentenceCase(reasonText) + '. ' : '') +
           'Keep the plan alive, but let recovery stop being the weak link.' +
-          weeklyLine + strainLine + familyLine + nextLine
+          weeklyLine + strainLine + familyLine + todayLine + nextLine
       };
     }
 
     if (mode === 'preserve') {
       return {
         headline: 'Preserve strength, do not bully it',
-        message: 'In a ' + phase + ' phase, flat or slightly uneven performance does not mean the plan is broken. ' +
-          'The win is preserving quality and keeping the basics tight while your wider goal does its work.' +
-          weeklyLine + familyLine + nextLine
+        message: 'In your current phase, flat or slightly uneven performance does not mean the plan is broken. The win is preserving quality and keeping the basics tight while your wider goal does its work.' +
+          weeklyLine + familyLine + todayLine + nextLine
       };
     }
 
@@ -304,7 +313,7 @@ window.FFFMessaging = (function () {
         message: 'You do not need a retreat, but you also do not need false urgency. ' +
           (reasonText ? sentenceCase(reasonText) + '. ' : '') +
           'Keep the work honest and let recovery earn the next push.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine + (conflictLine ? (' ' + conflictLine) : '')
       };
     }
 
@@ -315,7 +324,7 @@ window.FFFMessaging = (function () {
           (reasonText ? sentenceCase(reasonText) + '. ' : '') +
           (progPressure.state === 'high' ? 'Do not let progression pressure turn a good window into a reckless one. ' : '') +
           'Progress with precision and do not waste a good window by getting sloppy.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine + (conflictLine ? (' ' + conflictLine) : '')
       };
     }
 
@@ -325,7 +334,7 @@ window.FFFMessaging = (function () {
         message: 'This phase rewards patience more than drama. ' +
           (reasonText ? sentenceCase(reasonText) + '. ' : '') +
           'Judge the trend, not the mood of one workout.' +
-          weeklyLine + familyLine + nextLine
+          weeklyLine + familyLine + todayLine + nextLine + (conflictLine ? (' ' + conflictLine) : '')
       };
     }
 
@@ -333,7 +342,7 @@ window.FFFMessaging = (function () {
       headline: 'Keep building',
       message: (reasonText ? sentenceCase(reasonText) + '. ' : '') +
         'The broader picture still favours steady, repeatable good decisions.' +
-        weeklyLine + familyLine + nextLine
+        weeklyLine + familyLine + todayLine + nextLine
     };
   }
 

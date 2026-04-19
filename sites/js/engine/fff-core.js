@@ -1,5 +1,5 @@
 // FreeFitFuel Engine — Core Coordinator
-// Hardened coordinator matched to current state/recovery/mind/roadmap/training/messaging layers
+// Hardened coordinator matched to current state/recovery/mind/roadmap/training/messaging/intervention layers
 
 window.FFF = (function () {
   'use strict';
@@ -14,6 +14,7 @@ window.FFF = (function () {
     if (!window.FFFRoadmap) missing.push('FFFRoadmap');
     if (!window.FFFTraining) missing.push('FFFTraining');
     if (!window.FFFMessaging) missing.push('FFFMessaging');
+    if (!window.FFFInterventions) missing.push('FFFInterventions');
 
     if (missing.length) {
       throw new Error('FreeFitFuel engine missing dependencies: ' + missing.join(', '));
@@ -457,6 +458,22 @@ window.FFF = (function () {
       };
     }
 
+    var intervention;
+    try {
+      intervention = window.FFFInterventions.getIntervention(
+        mind,
+        recovery,
+        globalDecision && globalDecision.weekly ? globalDecision.weekly : {}
+      );
+    } catch (err) {
+      intervention = {
+        state: 'steady',
+        headline: 'Keep building',
+        message: 'Keep the next step simple and useful.',
+        actions: ['Train as planned.', 'Keep reps clean and controlled.']
+      };
+    }
+
     var message;
     try {
       message = window.FFFMessaging.globalMessage(globalDecision);
@@ -488,7 +505,8 @@ window.FFF = (function () {
       nextSession: globalDecision && globalDecision.nextSession ? globalDecision.nextSession : {},
       todayDecision: globalDecision && globalDecision.todayDecision ? globalDecision.todayDecision : {},
       nextWeek: globalDecision && globalDecision.nextWeek ? globalDecision.nextWeek : {},
-      conflicts: globalDecision && globalDecision.conflicts ? globalDecision.conflicts : []
+      conflicts: globalDecision && globalDecision.conflicts ? globalDecision.conflicts : [],
+      intervention: intervention
     };
   }
 
@@ -579,7 +597,7 @@ window.FFF = (function () {
   }
 
   return {
-    version: '9.0',
+    version: '10.0',
     ready: ready,
 
     setPB: setPB,

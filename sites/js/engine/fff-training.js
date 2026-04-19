@@ -1,5 +1,5 @@
 // FreeFitFuel Engine — Training Intelligence
-// Adaptive coaching: readiness, strain, weekly pressure, deload logic, family intelligence
+// Elite adaptive coaching engine
 
 window.FFFTraining = (function () {
   'use strict';
@@ -61,19 +61,9 @@ window.FFFTraining = (function () {
   function lastNDaysLogs(allLogs, days) {
     var flat = flattenLogs(allLogs);
     var cutoff = Date.now() - (days * 86400000);
-
     return flat.filter(function (entry) {
       return new Date(entry.date || 0).getTime() >= cutoff;
     });
-  }
-
-  function countDistinctDays(flatLogs) {
-    var seen = {};
-    safeArray(flatLogs).forEach(function (entry) {
-      var dk = dayKey(entry.date);
-      if (dk) seen[dk] = true;
-    });
-    return Object.keys(seen).length;
   }
 
   function getTrend(logs) {
@@ -115,28 +105,16 @@ window.FFFTraining = (function () {
     return 'mixed';
   }
 
+  function containsWords(text, words) {
+    text = String(text || '').toLowerCase();
+    return words.some(function (w) { return text.indexOf(w) > -1; });
+  }
+
   function detectPain(logs) {
     logs = safeArray(logs);
     if (!logs.length) return false;
-
     var notes = String((logs[logs.length - 1] && logs[logs.length - 1].notes) || '').toLowerCase();
-    var flags = ['pain','sharp','twinge','injury','strain','tight','ache','flare','aggravated','niggle','sore','hurt'];
-    return flags.some(function (f) { return notes.indexOf(f) > -1; });
-  }
-
-  function painSeverity(logs) {
-    logs = safeArray(logs);
-    if (!logs.length) return 0;
-
-    var notes = String((logs[logs.length - 1] && logs[logs.length - 1].notes) || '').toLowerCase();
-    var severe = ['sharp','injury','aggravated','flare'];
-    var moderate = ['pain','strain','ache','sore','tight','twinge','niggle'];
-
-    var sev = 0;
-    severe.forEach(function (w) { if (notes.indexOf(w) > -1) sev += 25; });
-    moderate.forEach(function (w) { if (notes.indexOf(w) > -1) sev += 10; });
-
-    return Math.min(100, sev);
+    return containsWords(notes, ['pain','sharp','twinge','injury','strain','tight','ache','flare','aggravated','niggle','sore','hurt']);
   }
 
   function phaseLens(roadmapSummary) {
@@ -174,6 +152,15 @@ window.FFFTraining = (function () {
       'general': 'general'
     };
     return map[family] || family || 'general';
+  }
+
+  function familyBucketKey(family) {
+    if (family === 'horizontal-push' || family === 'vertical-push') return 'push';
+    if (family === 'horizontal-pull' || family === 'vertical-pull') return 'pull';
+    if (family === 'squat' || family === 'hinge' || family === 'calf-foot') return 'legs';
+    if (family === 'core-anti-extension' || family === 'core-rotation-lateral') return 'core';
+    if (family === 'cardio-z2' || family === 'cardio-threshold') return 'cardio';
+    return 'other';
   }
 
   function familySignal(profile, logs, recovery) {
@@ -319,6 +306,45 @@ window.FFFTraining = (function () {
     return out;
   }
 
+  function summariseFamilyBuckets(familySummary) {
+    familySummary = safeObj(familySummary);
+    var buckets = {
+      push: [],
+      pull: [],
+      legs: [],
+      core: [],
+      cardio: []
+    };
+
+    Object.keys(familySummary).forEach(function (family) {
+      var key = familyBucketKey(family);
+      if (buckets[key]) buckets[key].push(familySummary[family]);
+    });
+
+    var out = {};
+    Object.keys(buckets).forEach(function (bucket) {
+      var items = buckets[bucket];
+      if (!items.length) {
+        out[bucket] = { quality: 50, state: 'unknown' };
+        return;
+      }
+
+      var totalQuality = items.reduce(function (sum, item) { return sum + Number(item.quality || 0); }, 0);
+      var avgQuality = totalQuality / items.length;
+
+      var state = 'building';
+      if (avgQuality >= 70) state = 'strong';
+      else if (avgQuality < 40) state = 'weak';
+
+      out[bucket] = {
+        quality: Math.round(avgQuality),
+        state: state
+      };
+    });
+
+    return out;
+  }
+
   function strongestFamily(familySummary) {
     familySummary = safeObj(familySummary);
     var best = null;
@@ -379,6 +405,21 @@ window.FFFTraining = (function () {
     return map[family] || [];
   }
 
+  function sessionArchetypes() {
+    return [
+      { id: 'push-strength', label: 'Push Strength', tags: ['push','strength'] },
+      { id: 'pull-strength', label: 'Pull Strength', tags: ['pull','strength'] },
+      { id: 'lower-strength', label: 'Lower Strength', tags: ['legs','strength'] },
+      { id: 'recovery-circuit', label: 'Recovery Circuit', tags: ['recovery','core','cardio'] },
+      { id: 'movement-quality', label: 'Movement Quality', tags: ['recovery','mobility','core'] },
+      { id: 'z2-builder', label: 'Z2 Builder', tags: ['cardio','easy'] },
+      { id: 'deload-upper', label: 'Deload Upper', tags: ['push','pull','deload'] },
+      { id: 'deload-lower', label: 'Deload Lower', tags: ['legs','deload'] },
+      { id: 'low-irritation-upper', label: 'Low-Irritation Upper', tags: ['push','pull','protect'] },
+      { id: 'low-irritation-lower', label: 'Low-Irritation Lower', tags: ['legs','protect'] }
+    ];
+  }
+
   function weeklySummary(allLogs, recovery, roadmapSummary) {
     var last7 = lastNDaysLogs(allLogs, 7);
     var uniqueDays = {};
@@ -430,6 +471,7 @@ window.FFFTraining = (function () {
       strongestFamily: strongest,
       weakestFamily: weakest,
       familySummary: familySummary,
+      familyBreakdown: summariseFamilyBuckets(familySummary),
       weeklyMode: weeklyMode,
       swapSuggestions: weakest ? recommendedSwapForFamily(weakest) : []
     };
@@ -438,6 +480,7 @@ window.FFFTraining = (function () {
   function computeStrainMetrics(allLogs, recovery, weekly) {
     var last14 = lastNDaysLogs(allLogs, 14);
     var days = {};
+
     last14.forEach(function (entry) {
       var dk = dayKey(entry.date);
       if (!dk) return;
@@ -455,10 +498,11 @@ window.FFFTraining = (function () {
         return sum + Math.pow(v - avg, 2);
       }, 0) / dayLoads.length;
     }
+
     var sd = Math.sqrt(variance);
     var monotony = avg > 0 ? (avg / Math.max(sd, 1)) : 0;
-
     var density = weekly && weekly.sessionsLogged ? (weekly.sessionsLogged / 7) * 100 : 0;
+
     var fatigue = recovery && typeof recovery.fatigue === 'number' ? recovery.fatigue : 20;
     var underRecoveryRisk = recovery && typeof recovery.underRecoveryRisk === 'number' ? recovery.underRecoveryRisk : 0;
 
@@ -505,22 +549,22 @@ window.FFFTraining = (function () {
   }
 
   function deloadSignal(recovery, weekly, familySummary, strain) {
-    var score = 0;
+    var value = 0;
 
-    if (recovery && recovery.underRecoveryRisk >= 60) score += 30;
-    if (recovery && recovery.fatigue >= 70) score += 20;
-    if (weekly && weekly.quality < 40) score += 20;
-    if (weekly && weekly.painMentions >= 2) score += 15;
-    if (strain && strain.strainRisk >= 65) score += 20;
+    if (recovery && recovery.underRecoveryRisk >= 60) value += 30;
+    if (recovery && recovery.fatigue >= 70) value += 20;
+    if (weekly && weekly.quality < 40) value += 20;
+    if (weekly && weekly.painMentions >= 2) value += 15;
+    if (strain && strain.strainRisk >= 65) value += 20;
 
     var weakest = weekly && weekly.weakestFamily ? weekly.weakestFamily : null;
-    if (weakest && familySummary && familySummary[weakest] && familySummary[weakest].state === 'fatigued') score += 15;
+    if (weakest && familySummary && familySummary[weakest] && familySummary[weakest].state === 'fatigued') value += 15;
 
-    score = Math.max(0, Math.min(100, score));
+    value = Math.max(0, Math.min(100, value));
 
     return {
-      score: score,
-      suggested: score >= 60
+      score: value,
+      suggested: value >= 60
     };
   }
 
@@ -551,17 +595,66 @@ window.FFFTraining = (function () {
     };
   }
 
+  function goalConflictDetection(roadmapSummary, weekly, strain, progPressure) {
+    var phase = phaseLens(roadmapSummary);
+    var conflicts = [];
+
+    if (phase.stage === 'cut' && weekly && weekly.quality < 40) {
+      conflicts.push('Fat loss goal is being undermined by poor weekly recovery quality.');
+    }
+    if ((phase.stage === 'build' || phase.stage === 'bulk') && strain && strain.strainRisk >= 65) {
+      conflicts.push('Strength or growth goal is colliding with accumulated strain.');
+    }
+    if (phase.stage === 'maintain' && progPressure && progPressure.state === 'high') {
+      conflicts.push('Maintenance goal is clashing with overly aggressive progression pressure.');
+    }
+    if (phase.stage === 'rebuild' && weekly && weekly.painMentions >= 2) {
+      conflicts.push('Rebuild goal is being undermined by repeated irritation signals.');
+    }
+
+    return conflicts;
+  }
+
+  function chooseSessionType(globalMode, weekly, weakestFamily) {
+    var weakBucket = weakestFamily ? familyBucketKey(weakestFamily) : 'other';
+
+    if (globalMode === 'deload') {
+      if (weakBucket === 'legs') return 'deload-lower';
+      if (weakBucket === 'push' || weakBucket === 'pull') return 'deload-upper';
+      return 'movement-quality';
+    }
+
+    if (globalMode === 'family-fatigue' || globalMode === 'reduce-strain' || globalMode === 'protect') {
+      if (weakBucket === 'legs') return 'low-irritation-lower';
+      if (weakBucket === 'push' || weakBucket === 'pull') return 'low-irritation-upper';
+      return 'recovery-circuit';
+    }
+
+    if (globalMode === 'recover' || globalMode === 'stabilise') return 'movement-quality';
+    if (globalMode === 'habit-priority') return 'recovery-circuit';
+    if (globalMode === 'push') {
+      if (weakBucket === 'legs') return 'pull-strength';
+      if (weakBucket === 'push') return 'pull-strength';
+      if (weakBucket === 'pull') return 'lower-strength';
+      return 'push-strength';
+    }
+
+    return 'movement-quality';
+  }
+
   function nextSessionPrescription(globalMode, weekly, recovery, roadmapSummary, familySummary) {
     var weakest = weekly && weekly.weakestFamily ? weekly.weakestFamily : null;
     var swaps = weakest ? recommendedSwapForFamily(weakest) : [];
     var phase = phaseLens(roadmapSummary);
+    var sessionType = chooseSessionType(globalMode, weekly, weakest);
 
     if (globalMode === 'protect' || globalMode === 'reduce-strain' || globalMode === 'family-fatigue') {
       return {
         title: 'Next session: reduce strain',
         action: 'Hold load steady, trim volume, and use friendlier variations where needed.',
         swaps: swaps.slice(0, 3),
-        target: weakest ? ('Protect the ' + familyLabel(weakest) + ' pattern.') : 'Protect the most strained pattern.'
+        target: weakest ? ('Protect the ' + familyLabel(weakest) + ' pattern.') : 'Protect the most strained pattern.',
+        sessionType: sessionType
       };
     }
 
@@ -570,7 +663,18 @@ window.FFFTraining = (function () {
         title: 'Next session: recovery-focused quality',
         action: 'Train, but keep the session technically tidy and emotionally calm. No forced progression.',
         swaps: swaps.slice(0, 2),
-        target: 'Preserve rhythm without adding unnecessary strain.'
+        target: 'Preserve rhythm without adding unnecessary strain.',
+        sessionType: sessionType
+      };
+    }
+
+    if (globalMode === 'deload') {
+      return {
+        title: 'Next session: deload',
+        action: 'Reduce total work, keep reps clean, and leave the session feeling better than you started.',
+        swaps: swaps.slice(0, 3),
+        target: weakest ? ('Calm the ' + familyLabel(weakest) + ' pattern while keeping momentum.') : 'Reduce global strain this week.',
+        sessionType: sessionType
       };
     }
 
@@ -579,7 +683,8 @@ window.FFFTraining = (function () {
         title: 'Next session: measured progression',
         action: 'Progress one lever only: add a rep, add a small load, or sharpen execution.',
         swaps: [],
-        target: phase.seekProgress ? 'Use the current readiness window intelligently.' : 'Progress with restraint.'
+        target: phase.seekProgress ? 'Use the current readiness window intelligently.' : 'Progress with restraint.',
+        sessionType: sessionType
       };
     }
 
@@ -588,7 +693,8 @@ window.FFFTraining = (function () {
         title: 'Next session: just show up cleanly',
         action: 'A completed, logged session matters more than a perfect one.',
         swaps: [],
-        target: 'Rebuild weekly consistency before chasing optimisation.'
+        target: 'Rebuild weekly consistency before chasing optimisation.',
+        sessionType: sessionType
       };
     }
 
@@ -596,8 +702,87 @@ window.FFFTraining = (function () {
       title: 'Next session: build steadily',
       action: 'Keep the session controlled, repeatable, and technically honest.',
       swaps: swaps.slice(0, 2),
-      target: weakest ? ('Keep an eye on the ' + familyLabel(weakest) + ' pattern.') : 'Keep stacking useful sessions.'
+      target: weakest ? ('Keep an eye on the ' + familyLabel(weakest) + ' pattern.') : 'Keep stacking useful sessions.',
+      sessionType: sessionType
     };
+  }
+
+  function decideToday(globalSummary) {
+    globalSummary = safeObj(globalSummary);
+
+    var mode = globalSummary.mode || 'build';
+    var nextSession = globalSummary.nextSession || {};
+    var deload = globalSummary.deload || {};
+    var painRisk = globalSummary.painRisk || {};
+    var weakest = globalSummary.weakestFamily || null;
+
+    var decision = 'train-as-planned';
+    var reason = 'The current picture supports a normal session.';
+    var target = nextSession.target || '';
+    var sessionType = nextSession.sessionType || 'movement-quality';
+
+    if (deload && deload.suggested) {
+      decision = 'start-deload';
+      reason = 'Recovery, strain, and weekly quality now point toward a lighter week.';
+    } else if (painRisk && painRisk.state === 'high') {
+      decision = 'train-lighter';
+      reason = 'Pain-risk signals are high enough that a protective session is smarter than a normal one.';
+    } else if (mode === 'protect' || mode === 'family-fatigue' || mode === 'reduce-strain') {
+      decision = 'swap-session';
+      reason = weakest
+        ? ('The ' + familyLabel(weakest) + ' pattern needs a lower-irritation session.')
+        : 'The current strain picture favours a lower-irritation session.';
+    } else if (mode === 'recover' || mode === 'stabilise') {
+      decision = 'recovery-session';
+      reason = 'A recovery-biased session makes more sense than pushing today.';
+    } else if (mode === 'habit-priority') {
+      decision = 'minimum-effective-session';
+      reason = 'Consistency matters more than intensity today.';
+    } else if (mode === 'push') {
+      decision = 'train-with-progression';
+      reason = 'Conditions are good enough for a measured step forward.';
+    }
+
+    return {
+      decision: decision,
+      reason: reason,
+      target: target,
+      sessionType: sessionType
+    };
+  }
+
+  function adaptiveWeekPlan(globalSummary) {
+    globalSummary = safeObj(globalSummary);
+
+    var mode = globalSummary.mode || 'build';
+    var weekly = globalSummary.weekly || {};
+    var weakest = globalSummary.weakestFamily || null;
+    var swaps = weekly.swapSuggestions || [];
+    var nextWeek = {
+      title: 'Adaptive next-week plan',
+      changes: []
+    };
+
+    if (mode === 'deload') {
+      nextWeek.changes.push('Reduce total working sets by around 30–40%.');
+      nextWeek.changes.push('Keep intensity moderate and stop well short of grinding reps.');
+      if (weakest) nextWeek.changes.push('Use friendlier variations for the ' + familyLabel(weakest) + ' pattern.');
+    } else if (mode === 'family-fatigue' || mode === 'reduce-strain' || mode === 'protect') {
+      nextWeek.changes.push('Reduce volume in the weakest movement family by around 20%.');
+      nextWeek.changes.push('Keep stronger families moving, but do not pile on extra work.');
+      if (swaps.length) nextWeek.changes.push('Use safer swaps: ' + swaps.slice(0, 3).join(', ') + '.');
+    } else if (mode === 'push') {
+      nextWeek.changes.push('Progress only one lever in your priority lifts: reps, load, or execution.');
+      nextWeek.changes.push('Do not add extra density just because readiness is high.');
+    } else if (mode === 'habit-priority') {
+      nextWeek.changes.push('Aim for more consistent training days before changing the programme itself.');
+      nextWeek.changes.push('Keep session length modest and easy to complete.');
+    } else {
+      nextWeek.changes.push('Keep the programme broadly stable and improve quality of execution.');
+      if (weakest) nextWeek.changes.push('Monitor the ' + familyLabel(weakest) + ' pattern closely next week.');
+    }
+
+    return nextWeek;
   }
 
   function decideExercise(profile, logs, recovery, mind, roadmapSummary) {
@@ -653,7 +838,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: 'Reduce load or range, or swap to a friendlier variation.'
       };
     }
@@ -674,7 +858,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: 'Hold or reduce load and prioritise recovery before chasing numbers.'
       };
     }
@@ -695,7 +878,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: 'Aim for clean completion rather than trying to force a jump.'
       };
     }
@@ -716,7 +898,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: 'Keep load stable or trim volume while you restore quality.'
       };
     }
@@ -737,7 +918,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: 'Add a rep or a small load increase next time, not both.'
       };
     }
@@ -771,7 +951,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: action === 'refine'
           ? 'Keep the load steady and improve execution, rest discipline, and rep quality.'
           : 'Repeat cleanly and let consistency do the work.'
@@ -807,7 +986,6 @@ window.FFFTraining = (function () {
         patternState: patternState,
         phase: phase,
         profile: profile,
-        painSeverity: painSeverity(logs),
         nextStep: action === 'adjust'
           ? 'Check recovery, tighten execution, and consider a small programming adjustment rather than forcing harder.'
           : 'Treat this as one session and rebuild quality next time.'
@@ -824,7 +1002,6 @@ window.FFFTraining = (function () {
       patternState: patternState,
       phase: phase,
       profile: profile,
-      painSeverity: painSeverity(logs),
       nextStep: 'Stay controlled and keep accumulating useful logs.'
     };
   }
@@ -847,64 +1024,35 @@ window.FFFTraining = (function () {
     var progPressure = progressionPressure(recovery, mind, roadmapSummary, week, familySummary);
     var deload = deloadSignal(recovery, week, familySummary, strain);
     var painRisk = painRiskSummary(allLogs || {}, week, familySummary);
+    var conflicts = goalConflictDetection(roadmapSummary, week, strain, progPressure);
 
     var mode = 'build';
     var reason = [];
     var tone = 'grounded';
 
     if (!totalLogs) {
-      if (checkScore === 4) {
-        return pack('ready', 'confident', ['All core recovery markers are in place even though training history is still limited']);
-      }
-      if (checkScore === 3) {
-        return pack('good-foundations', 'grounded', ['Recovery basics look mostly strong and the system is ready for consistent training']);
-      }
-      if (checkScore === 2) {
-        return pack('mixed-foundations', 'grounded', ['Some recovery basics are in place, but there is room to tighten the foundation']);
-      }
+      if (checkScore === 4) return pack('ready', 'confident', ['All core recovery markers are in place even though training history is still limited']);
+      if (checkScore === 3) return pack('good-foundations', 'grounded', ['Recovery basics look mostly strong and the system is ready for consistent training']);
+      if (checkScore === 2) return pack('mixed-foundations', 'grounded', ['Some recovery basics are in place, but there is room to tighten the foundation']);
       return pack('poor-foundations', 'supportive', ['Very few recovery basics are currently in place, so expectations should stay realistic']);
     }
 
-    if (deload.suggested) {
-      return pack('deload', 'protective', ['The combined recovery, strain, and weekly quality picture now supports a deload rather than a push']);
-    }
+    if (deload.suggested) return pack('deload', 'protective', ['The combined recovery, strain, and weekly quality picture now supports a deload rather than a push']);
+    if (week.weeklyMode === 'rebuild-habit') return pack('habit-priority', 'supportive', ['Weekly adherence is too low to make fine-grained performance calls matter yet']);
+    if (underRecoveryRisk >= 65 || fatigue >= 75) return pack('protect', 'protective', ['Global recovery picture is poor enough to prioritise recovery and sustainability']);
+    if (mentalRisk === 'high' || pressure >= 75) return pack('steady', 'steadying', ['Mental pressure is high enough that the global ask should come down']);
+    if (week.weeklyMode === 'reduce-strain') return pack('reduce-strain', 'grounded', ['The weekly picture suggests too much strain relative to the quality of recent training']);
+    if (painRisk.state === 'high') return pack('pain-risk', 'protective', ['Recent notes and family signals suggest a meaningful pain-risk picture developing']);
+    if (weakest && familySummary[weakest] && familySummary[weakest].state === 'fatigued') return pack('family-fatigue', 'grounded', ['One movement family looks broadly fatigued rather than this being a one-exercise issue']);
 
-    if (week.weeklyMode === 'rebuild-habit') {
-      return pack('habit-priority', 'supportive', ['Weekly adherence is too low to make fine-grained performance calls matter yet']);
-    }
-
-    if (underRecoveryRisk >= 65 || fatigue >= 75) {
-      return pack('protect', 'protective', ['Global recovery picture is poor enough to prioritise recovery and sustainability']);
-    }
-
-    if (mentalRisk === 'high' || pressure >= 75) {
-      return pack('steady', 'steadying', ['Mental pressure is high enough that the global ask should come down']);
-    }
-
-    if (week.weeklyMode === 'reduce-strain') {
-      return pack('reduce-strain', 'grounded', ['The weekly picture suggests too much strain relative to the quality of recent training']);
-    }
-
-    if (painRisk.state === 'high') {
-      return pack('pain-risk', 'protective', ['Recent notes and family signals suggest a meaningful pain-risk picture developing']);
-    }
-
-    if (weakest && familySummary[weakest] && familySummary[weakest].state === 'fatigued') {
-      return pack('family-fatigue', 'grounded', ['One movement family looks broadly fatigued rather than this being a one-exercise issue']);
-    }
-
-    if (phase.stage === 'rebuild') {
-      return pack('protect', 'protective', ['Rebuild phase: movement quality and confidence matter more than forcing numbers']);
-    }
+    if (phase.stage === 'rebuild') return pack('protect', 'protective', ['Rebuild phase: movement quality and confidence matter more than forcing numbers']);
 
     if (phase.stage === 'cut') {
       if (readiness >= 65) return pack('preserve', 'grounded', ['Cut phase: the job is to preserve strength and keep recovery honest']);
       return pack('recover', 'supportive', ['Cut phase plus lower readiness: hold expectations steady and protect recovery']);
     }
 
-    if (phase.stage === 'maintain') {
-      return pack('steady', 'grounded', ['Maintenance phase: consistency matters more than constant escalation']);
-    }
+    if (phase.stage === 'maintain') return pack('steady', 'grounded', ['Maintenance phase: consistency matters more than constant escalation']);
 
     if (phase.stage === 'build' || phase.stage === 'bulk') {
       if (week.weeklyMode === 'progress-week' && readiness >= 65 && mentalRisk !== 'high' && progPressure.state !== 'high') {
@@ -914,19 +1062,15 @@ window.FFFTraining = (function () {
     }
 
     if (phase.stage === 'transform' || phase.stage === 'foundation') {
-      if (checkScore === 4 && confidence >= 55) {
-        return pack('build', 'confident', ['Recovery basics are strong and this phase rewards patient, steady progress']);
-      }
-      if (checkScore <= 1) {
-        return pack('stabilise', 'supportive', ['This phase needs consistency, and the recovery basics are too weak to ignore']);
-      }
+      if (checkScore === 4 && confidence >= 55) return pack('build', 'confident', ['Recovery basics are strong and this phase rewards patient, steady progress']);
+      if (checkScore <= 1) return pack('stabilise', 'supportive', ['This phase needs consistency, and the recovery basics are too weak to ignore']);
       return pack('build', 'grounded', ['This phase rewards patience, clean trendlines, and repeated good decisions']);
     }
 
     return pack('build', 'grounded', ['The broader picture supports steady accumulation rather than a dramatic shift']);
 
     function pack(nextMode, nextTone, nextReason) {
-      return {
+      var temp = {
         mode: nextMode,
         tone: nextTone,
         reason: nextReason,
@@ -939,8 +1083,12 @@ window.FFFTraining = (function () {
         progressionPressure: progPressure,
         deload: deload,
         painRisk: painRisk,
-        nextSession: nextSessionPrescription(nextMode, week, recovery, roadmapSummary, familySummary)
+        conflicts: conflicts
       };
+      temp.nextSession = nextSessionPrescription(nextMode, week, recovery, roadmapSummary, familySummary);
+      temp.todayDecision = decideToday(temp);
+      temp.nextWeek = adaptiveWeekPlan(temp);
+      return temp;
     }
   }
 

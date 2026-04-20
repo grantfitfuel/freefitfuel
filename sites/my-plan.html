@@ -322,6 +322,12 @@
       .legend .term{opacity:.9}
     }
 
+
+    .physiology-shell{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+    @media (max-width:980px){ .physiology-shell{grid-template-columns:1fr} }
+    .physiology-list{margin:.55rem 0 0 1rem;padding:0}
+    .physiology-list li{margin:.35rem 0}
+
     code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
   </style>
 </head>
@@ -480,6 +486,94 @@
           </div>
           <p class="meta" id="goalLine" style="margin-top:12px">Goal: <strong>Maintain</strong> — based on Mifflin–St Jeor + activity</p>
           <div class="tag-row" id="roadmapMeta"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Physiology modifiers</h2>
+          <p>Use these when biology or blood-sugar needs should shape macros, hydration, and coaching emphasis.</p>
+        </div>
+      </div>
+
+      <div class="physiology-shell">
+        <div class="card">
+          <div class="form-grid">
+            <label class="field">Circadian rhythm / sleep state
+              <select id="circadianState" class="input">
+                <option value="aligned" selected>Aligned / sleep broadly okay</option>
+                <option value="disrupted">Disrupted / poor sleep</option>
+                <option value="shift">Shift work / circadian disruption</option>
+              </select>
+            </label>
+
+            <label class="field">Hormone / cycle context
+              <select id="hormoneState" class="input">
+                <option value="none" selected>None / not applied</option>
+                <option value="follicular">Follicular phase</option>
+                <option value="luteal">Luteal phase</option>
+                <option value="perimenopause">Perimenopause</option>
+                <option value="menopause">Menopause</option>
+              </select>
+            </label>
+
+            <label class="field">Blood sugar focus
+              <select id="bloodSugarState" class="input">
+                <option value="none" selected>No special adjustment</option>
+                <option value="blood-sugar">Blood-sugar support</option>
+                <option value="diabetes">Diabetes / tighter glucose control</option>
+              </select>
+            </label>
+
+            <label class="field">Extra sweat / heat load
+              <select id="hydrationLoad" class="input">
+                <option value="normal" selected>Normal</option>
+                <option value="high">High sweat / hot weather</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="meta" style="margin-top:10px">
+            These are modifier inputs, not diagnoses. They gently adjust the plan rather than overriding it completely.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Adjusted prescription</h3>
+          <div class="grid grid-5" style="gap:10px">
+            <div>
+              <div class="sub">Calories</div>
+              <div class="metric" id="physOutKcal">—</div>
+            </div>
+            <div>
+              <div class="sub">Protein</div>
+              <div class="metric" id="physOutProtein">—</div>
+            </div>
+            <div>
+              <div class="sub">Carbs</div>
+              <div class="metric" id="physOutCarbs">—</div>
+            </div>
+            <div>
+              <div class="sub">Fat</div>
+              <div class="metric" id="physOutFat">—</div>
+            </div>
+            <div>
+              <div class="sub">Water</div>
+              <div class="metric" id="physOutWater">—</div>
+            </div>
+          </div>
+
+          <div class="plan-line" style="margin-top:12px">
+            <strong>Applied reasoning</strong>
+            <ul class="physiology-list" id="physiologyReasons"></ul>
+          </div>
+
+          <div class="plan-line">
+            <strong>Regime emphasis</strong>
+            <div class="sub" id="physiologyRegime">—</div>
+          </div>
         </div>
       </div>
     </section>
@@ -1092,6 +1186,141 @@
       return String(document.getElementById('phaseAggression').value || 'moderate').toLowerCase();
     }
 
+    function getPhysiologyInputs(){
+      return {
+        circadian: String((document.getElementById('circadianState') || {}).value || 'aligned').toLowerCase(),
+        hormone: String((document.getElementById('hormoneState') || {}).value || 'none').toLowerCase(),
+        bloodSugar: String((document.getElementById('bloodSugarState') || {}).value || 'none').toLowerCase(),
+        hydrationLoad: String((document.getElementById('hydrationLoad') || {}).value || 'normal').toLowerCase()
+      };
+    }
+
+    function applyPhysiologyModifiers(baseTargets, stageKey){
+      var adjusted = {
+        kcal: Number(baseTargets.kcal || 0),
+        protein: Number(baseTargets.protein || 0),
+        carbs: Number(baseTargets.carbs || 0),
+        fats: Number(baseTargets.fats || 0),
+        mode: baseTargets.mode || getPhaseAggression(),
+        hydration_l: 0,
+        reasons: [],
+        regime: ''
+      };
+
+      var inputs = getPhysiologyInputs();
+      var kg = parseFloat(document.getElementById('bmrWeight').value || 0) || 0;
+      var water = Math.max(2.0, kg * 0.033);
+
+      if(inputs.circadian === 'disrupted'){
+        adjusted.carbs *= 0.94;
+        adjusted.fats *= 1.06;
+        water += 0.35;
+        adjusted.reasons.push('Poor sleep or circadian disruption detected: slightly steadier carbs, slightly higher fat for satiety, and higher hydration.');
+      }
+
+      if(inputs.circadian === 'shift'){
+        adjusted.carbs *= 0.90;
+        adjusted.fats *= 1.08;
+        water += 0.5;
+        adjusted.reasons.push('Shift-work style disruption applied: keep fuel steadier, avoid overly aggressive deficit behaviour, and increase hydration.');
+      }
+
+      if(inputs.hormone === 'follicular'){
+        adjusted.carbs *= 1.04;
+        adjusted.kcal *= 1.01;
+        adjusted.reasons.push('Follicular phase applied: slightly more carbohydrate support is reasonable when performance and tolerance are often better.');
+      }
+
+      if(inputs.hormone === 'luteal'){
+        adjusted.kcal *= 1.03;
+        adjusted.carbs *= 1.03;
+        water += 0.25;
+        adjusted.reasons.push('Luteal phase applied: allow slightly more intake and hydration to support higher hunger, poorer sleep, and water retention.');
+      }
+
+      if(inputs.hormone === 'perimenopause'){
+        adjusted.protein *= 1.08;
+        adjusted.carbs *= 0.94;
+        water += 0.35;
+        adjusted.reasons.push('Perimenopause applied: slightly higher protein, more controlled carbohydrate, and more hydration to support recovery and body-composition control.');
+      }
+
+      if(inputs.hormone === 'menopause'){
+        adjusted.protein *= 1.10;
+        adjusted.carbs *= 0.92;
+        water += 0.4;
+        adjusted.reasons.push('Menopause applied: keep protein higher, avoid overly loose carbohydrate intake, and support hydration and strength retention.');
+      }
+
+      if(inputs.bloodSugar === 'blood-sugar'){
+        adjusted.carbs *= 0.90;
+        adjusted.protein *= 1.05;
+        water += 0.25;
+        adjusted.reasons.push('Blood-sugar support applied: slightly lower carbohydrate load and slightly higher protein to support steadier energy.');
+      }
+
+      if(inputs.bloodSugar === 'diabetes'){
+        adjusted.carbs *= 0.85;
+        adjusted.protein *= 1.08;
+        water += 0.3;
+        adjusted.reasons.push('Diabetes / tighter glucose control applied: carbohydrate reduced modestly, protein raised slightly, and hydration increased.');
+      }
+
+      if(inputs.hydrationLoad === 'high'){
+        water += 0.5;
+        adjusted.reasons.push('High sweat or heat load applied: hydration target increased.');
+      }
+
+      adjusted.kcal = Math.round(Math.max(1200, adjusted.kcal));
+      adjusted.protein = Math.round(Math.max(0, adjusted.protein));
+      adjusted.carbs = Math.round(Math.max(0, adjusted.carbs));
+      adjusted.fats = Math.round(Math.max(0, adjusted.fats));
+      adjusted.hydration_l = Math.round(water * 10) / 10;
+
+      if(!adjusted.reasons.length){
+        adjusted.reasons.push('No physiology modifiers applied: using standard phase-based prescription.');
+      }
+
+      if(stageKey === 'cut'){
+        adjusted.regime = 'Prioritise protein, preserve recovery, and avoid chasing aggressive restriction when sleep or hormones are working against you.';
+      } else if(stageKey === 'transform'){
+        adjusted.regime = 'Keep body-composition changes slow and steady, with recovery and training quality kept intact.';
+      } else if(stageKey === 'maintain'){
+        adjusted.regime = 'Hold a steady routine, stable hydration, and predictable intake rather than constant adjustment.';
+      } else {
+        adjusted.regime = 'Support performance and muscle gain while keeping hydration and glucose control sensible.';
+      }
+
+      return adjusted;
+    }
+
+    function renderPhysiologyPanel(adjusted){
+      var reasonsEl = document.getElementById('physiologyReasons');
+      if(!adjusted){
+        document.getElementById('physOutKcal').textContent = '—';
+        document.getElementById('physOutProtein').textContent = '—';
+        document.getElementById('physOutCarbs').textContent = '—';
+        document.getElementById('physOutFat').textContent = '—';
+        document.getElementById('physOutWater').textContent = '—';
+        if(reasonsEl) reasonsEl.innerHTML = '<li>No physiology adjustment calculated yet.</li>';
+        document.getElementById('physiologyRegime').textContent = '—';
+        return;
+      }
+
+      document.getElementById('physOutKcal').textContent = adjusted.kcal;
+      document.getElementById('physOutProtein').textContent = adjusted.protein + ' g';
+      document.getElementById('physOutCarbs').textContent = adjusted.carbs + ' g';
+      document.getElementById('physOutFat').textContent = adjusted.fats + ' g';
+      document.getElementById('physOutWater').textContent = adjusted.hydration_l + ' L';
+
+      if(reasonsEl){
+        reasonsEl.innerHTML = adjusted.reasons.map(function(reason){
+          return '<li>' + escapeHtml(reason) + '</li>';
+        }).join('');
+      }
+      document.getElementById('physiologyRegime').textContent = adjusted.regime || '—';
+    }
+
     function inferStartBF() {
       if (useBodyFatEnabled()) {
         var bf = parseFloat(document.getElementById('bodyFat').value || 0);
@@ -1394,7 +1623,7 @@
         var id = flow[i];
         var bw = approxWeeks(baseDur[id].min, baseDur[id].max, adherence);
         var program = buildProgram(id);
-        var stageTargets = targetsFromTDEE(tdee, id);
+        var stageTargets = applyPhysiologyModifiers(targetsFromTDEE(tdee, id), id);
 
         stages.push({
           id:id,
@@ -1524,12 +1753,14 @@
       var bmr = calcBMR(sx, kg, cm, yrs);
       var tdee = bmr * actMult;
       var stageKey = GOAL === 'Cut' ? 'cut' : GOAL === 'Build/Bulk' ? 'bulk' : GOAL === 'Transform' ? 'transform' : 'maintain';
-      var t = targetsFromTDEE(tdee, stageKey);
+      var baseTargets = targetsFromTDEE(tdee, stageKey);
+      var t = applyPhysiologyModifiers(baseTargets, stageKey);
 
       document.getElementById('outKcal').textContent = t.kcal;
       document.getElementById('outProtein').textContent = t.protein + ' g';
       document.getElementById('outCarbs').textContent = t.carbs + ' g';
       document.getElementById('outFat').textContent = t.fats + ' g';
+      renderPhysiologyPanel(t);
 
       var used = (useBodyFatEnabled() && parseFloat(document.getElementById('bodyFat').value || 0) > 0)
         ? 'Katch–McArdle'
@@ -1545,6 +1776,11 @@
       tags.push('<span class="tag">' + escapeHtml(titleCase(getTrainingStatus())) + '</span>');
       tags.push('<span class="tag">' + (wantsMuscleGain() ? 'Muscle gain later: yes' : 'Muscle gain later: no') + '</span>');
       tags.push('<span class="tag">' + escapeHtml(titleCase(getPhaseAggression())) + '</span>');
+      tags.push('<span class="tag">Water ~' + escapeHtml(String(t.hydration_l)) + ' L</span>');
+      var phys = getPhysiologyInputs();
+      if(phys.circadian !== 'aligned') tags.push('<span class="tag">' + escapeHtml(titleCase(phys.circadian)) + '</span>');
+      if(phys.hormone !== 'none') tags.push('<span class="tag">' + escapeHtml(titleCase(phys.hormone)) + '</span>');
+      if(phys.bloodSugar !== 'none') tags.push('<span class="tag">' + escapeHtml(titleCase(phys.bloodSugar)) + '</span>');
       tags.push('<span class="tag tag-accent">Preview path: ' + escapeHtml(getPreviewFlow().join(' → ')) + '</span>');
       document.getElementById('roadmapMeta').innerHTML = tags.join('');
       if (typeof renderWeightLog === 'function') renderWeightLog();
@@ -1972,6 +2208,7 @@
           tags.push('<span class="tag">Protein: ' + escapeHtml(String(current.targets.protein)) + 'g</span>');
           tags.push('<span class="tag">Carbs: ' + escapeHtml(String(current.targets.carbs)) + 'g</span>');
           tags.push('<span class="tag">Fat: ' + escapeHtml(String(current.targets.fats)) + 'g</span>');
+          if(current.targets.hydration_l != null) tags.push('<span class="tag">Water: ' + escapeHtml(String(current.targets.hydration_l)) + ' L</span>');
         }
         if(current.weeks_min != null && current.weeks_max != null){
           tags.push('<span class="tag">Estimated block: ' + escapeHtml(String(current.weeks_min)) + '–' + escapeHtml(String(current.weeks_max)) + ' weeks</span>');
@@ -3369,7 +3606,7 @@
         updateMacroTargets();
       });
 
-      ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','bodyFat','targetBodyFat','trainingStatus','wantsMuscleGain','phaseAggression'].forEach(function(id){
+      ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','bodyFat','targetBodyFat','trainingStatus','wantsMuscleGain','phaseAggression','circadianState','hormoneState','bloodSugarState','hydrationLoad'].forEach(function(id){
         var el = document.getElementById(id);
         if(el){
           el.addEventListener('input', updateMacroTargets);

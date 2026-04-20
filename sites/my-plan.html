@@ -571,6 +571,11 @@
           </div>
 
           <div class="plan-line">
+            <strong>Hydration breakdown</strong>
+            <div class="sub" id="physiologyHydrationBreakdown">—</div>
+          </div>
+
+          <div class="plan-line">
             <strong>Regime emphasis</strong>
             <div class="sub" id="physiologyRegime">—</div>
           </div>
@@ -1203,26 +1208,57 @@
         fats: Number(baseTargets.fats || 0),
         mode: baseTargets.mode || getPhaseAggression(),
         hydration_l: 0,
+        hydration_breakdown: '',
         reasons: [],
         regime: ''
       };
 
       var inputs = getPhysiologyInputs();
       var kg = parseFloat(document.getElementById('bmrWeight').value || 0) || 0;
-      var water = Math.max(2.0, kg * 0.033);
+      var actMult = parseFloat(document.getElementById('bmrActivity').value || 1.55) || 1.55;
+      var trainingToday = !!((document.getElementById('activityCardio') || {}).checked);
+      var baseWaterMl = kg * 35;
+      var waterMl = baseWaterMl;
+      var waterNotes = ['Base: ' + (Math.round(baseWaterMl / 100) / 10).toFixed(1) + 'L from body weight at 35ml/kg'];
+
+      if(actMult >= 1.725){
+        waterMl += 700;
+        waterNotes.push('+0.7L for very high activity');
+      } else if(actMult >= 1.55){
+        waterMl += 400;
+        waterNotes.push('+0.4L for moderate activity');
+      } else if(actMult <= 1.2){
+        waterMl -= 150;
+        waterNotes.push('-0.2L because baseline activity is low');
+      }
+
+      if(trainingToday){
+        waterMl += 300;
+        waterNotes.push('+0.3L for today’s extra movement / cardio');
+      }
+
+      if(stageKey === 'cut'){
+        waterMl += 250;
+        waterNotes.push('+0.3L for cut phase support');
+      } else if(stageKey === 'transform'){
+        waterMl += 150;
+        waterNotes.push('+0.2L for transform phase support');
+      }
 
       if(inputs.circadian === 'disrupted'){
         adjusted.carbs *= 0.94;
         adjusted.fats *= 1.06;
-        water += 0.35;
-        adjusted.reasons.push('Poor sleep or circadian disruption detected: slightly steadier carbs, slightly higher fat for satiety, and higher hydration.');
+        waterMl += 300;
+        waterNotes.push('+0.3L for poor sleep');
+        adjusted.reasons.push('Poor sleep or circadian disruption detected: slightly steadier carbs, slightly higher fat for satiety, and slightly higher hydration.');
       }
 
       if(inputs.circadian === 'shift'){
         adjusted.carbs *= 0.90;
         adjusted.fats *= 1.08;
-        water += 0.5;
-        adjusted.reasons.push('Shift-work style disruption applied: keep fuel steadier, avoid overly aggressive deficit behaviour, and increase hydration.');
+        waterMl += 400;
+        waterNotes.push('+0.4L for shift-work style disruption');
+        adjusted.reasons.push('Shift-work style disruption applied: keep fuel steadier, avoid overly aggressive deficit behaviour, and increase hydration modestly.');
       }
 
       if(inputs.hormone === 'follicular'){
@@ -1234,61 +1270,70 @@
       if(inputs.hormone === 'luteal'){
         adjusted.kcal *= 1.03;
         adjusted.carbs *= 1.03;
-        water += 0.25;
+        waterMl += 250;
+        waterNotes.push('+0.3L for luteal phase');
         adjusted.reasons.push('Luteal phase applied: allow slightly more intake and hydration to support higher hunger, poorer sleep, and water retention.');
       }
 
       if(inputs.hormone === 'perimenopause'){
         adjusted.protein *= 1.08;
         adjusted.carbs *= 0.94;
-        water += 0.35;
+        waterMl += 300;
+        waterNotes.push('+0.3L for perimenopause');
         adjusted.reasons.push('Perimenopause applied: slightly higher protein, more controlled carbohydrate, and more hydration to support recovery and body-composition control.');
       }
 
       if(inputs.hormone === 'menopause'){
         adjusted.protein *= 1.10;
         adjusted.carbs *= 0.92;
-        water += 0.4;
+        waterMl += 350;
+        waterNotes.push('+0.4L for menopause');
         adjusted.reasons.push('Menopause applied: keep protein higher, avoid overly loose carbohydrate intake, and support hydration and strength retention.');
       }
 
       if(inputs.bloodSugar === 'blood-sugar'){
         adjusted.carbs *= 0.90;
         adjusted.protein *= 1.05;
-        water += 0.25;
+        waterMl += 200;
+        waterNotes.push('+0.2L for steadier blood-sugar support');
         adjusted.reasons.push('Blood-sugar support applied: slightly lower carbohydrate load and slightly higher protein to support steadier energy.');
       }
 
       if(inputs.bloodSugar === 'diabetes'){
         adjusted.carbs *= 0.85;
         adjusted.protein *= 1.08;
-        water += 0.3;
+        waterMl += 300;
+        waterNotes.push('+0.3L for diabetes / tighter glucose control');
         adjusted.reasons.push('Diabetes / tighter glucose control applied: carbohydrate reduced modestly, protein raised slightly, and hydration increased.');
       }
 
       if(inputs.hydrationLoad === 'high'){
-        water += 0.5;
+        waterMl += 500;
+        waterNotes.push('+0.5L for high sweat / heat');
         adjusted.reasons.push('High sweat or heat load applied: hydration target increased.');
       }
+
+      waterMl = Math.max(1800, Math.min(5500, waterMl));
 
       adjusted.kcal = Math.round(Math.max(1200, adjusted.kcal));
       adjusted.protein = Math.round(Math.max(0, adjusted.protein));
       adjusted.carbs = Math.round(Math.max(0, adjusted.carbs));
       adjusted.fats = Math.round(Math.max(0, adjusted.fats));
-      adjusted.hydration_l = Math.round(water * 10) / 10;
+      adjusted.hydration_l = Math.round((waterMl / 1000) * 10) / 10;
+      adjusted.hydration_breakdown = waterNotes.join(' • ');
 
       if(!adjusted.reasons.length){
-        adjusted.reasons.push('No physiology modifiers applied: using standard phase-based prescription.');
+        adjusted.reasons.push('No physiology modifiers applied: using standard phase-based prescription with a practical hydration target based on weight and activity.');
       }
 
       if(stageKey === 'cut'){
-        adjusted.regime = 'Prioritise protein, preserve recovery, and avoid chasing aggressive restriction when sleep or hormones are working against you.';
+        adjusted.regime = 'Prioritise protein, preserve recovery, and keep hydration steady rather than taking things to extremes.';
       } else if(stageKey === 'transform'){
-        adjusted.regime = 'Keep body-composition changes slow and steady, with recovery and training quality kept intact.';
+        adjusted.regime = 'Keep body-composition changes slow and steady, with recovery, hydration, and training quality kept intact.';
       } else if(stageKey === 'maintain'){
-        adjusted.regime = 'Hold a steady routine, stable hydration, and predictable intake rather than constant adjustment.';
+        adjusted.regime = 'Hold a steady routine, predictable hydration, and stable intake rather than constant adjustment.';
       } else {
-        adjusted.regime = 'Support performance and muscle gain while keeping hydration and glucose control sensible.';
+        adjusted.regime = 'Support performance and muscle gain while keeping hydration sensible, steady, and not excessive.';
       }
 
       return adjusted;
@@ -1303,6 +1348,7 @@
         document.getElementById('physOutFat').textContent = '—';
         document.getElementById('physOutWater').textContent = '—';
         if(reasonsEl) reasonsEl.innerHTML = '<li>No physiology adjustment calculated yet.</li>';
+        document.getElementById('physiologyHydrationBreakdown').textContent = '—';
         document.getElementById('physiologyRegime').textContent = '—';
         return;
       }
@@ -1318,6 +1364,7 @@
           return '<li>' + escapeHtml(reason) + '</li>';
         }).join('');
       }
+      document.getElementById('physiologyHydrationBreakdown').textContent = adjusted.hydration_breakdown || '—';
       document.getElementById('physiologyRegime').textContent = adjusted.regime || '—';
     }
 

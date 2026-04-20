@@ -795,7 +795,24 @@
             <strong>Why automation will or will not move you</strong>
             <div class="sub" id="phaseAutomationReasoning">No automation reasoning available yet.</div>
           </div>
-          <div class="graph-note">Automation checks run during the weekly check-in. When the current phase goal is clearly reached, the roadmap advances to the next relevant phase automatically.</div>
+          <div class="plan-line">
+            <strong>System recommendation</strong>
+            <div class="sub" id="phaseRecommendationText">No recommendation available yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>Override status</strong>
+            <div class="sub" id="phaseOverrideStatus">No override active.</div>
+          </div>
+          <div class="tag-row" style="margin-top:10px">
+            <button class="btn btn-primary" id="btnAdvancePhase" type="button">Move to next phase</button>
+            <button class="btn" id="btnStayPhase" type="button">Stay in current phase</button>
+            <button class="btn" id="btnClearPhaseOverride" type="button">Clear override</button>
+          </div>
+          <div class="tag-row" style="margin-top:10px">
+            <select id="phaseOverrideSelect" class="input" style="min-width:220px"></select>
+            <button class="btn" id="btnApplyPhaseOverride" type="button">Apply manual phase selection</button>
+          </div>
+          <div class="graph-note">Automation checks run during the weekly check-in. When the current phase goal is clearly reached, the roadmap can advance to the next relevant phase automatically, but you can override that if needed.</div>
         </div>
       </div>
     </section>
@@ -990,6 +1007,7 @@
     var WEIGHT_CHART = null;
     var WEIGHT_CHART_MODE = 'daily';
     var AUTOMATION_EVENT_KEY = 'fff.phase.automation.last.v1';
+    var OVERRIDE_KEY = 'fff.phase.override.v1';
 
     function yt(q){
       return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(String(q || 'exercise') + ' form');
@@ -1468,6 +1486,23 @@
       localStorage.setItem(ROADMAP_KEY, JSON.stringify(roadmap));
     }
 
+    function getPhaseOverride(){
+      try{
+        var raw = localStorage.getItem(OVERRIDE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function savePhaseOverride(data){
+      localStorage.setItem(OVERRIDE_KEY, JSON.stringify(data));
+    }
+
+    function clearPhaseOverride(){
+      localStorage.removeItem(OVERRIDE_KEY);
+    }
+
     function getPreviewFlow(){
       return chooseRoadmapFlow(
         GOAL,
@@ -1750,6 +1785,159 @@
       mount.innerHTML = html;
     }
 
+    function getCurrentAndNextPhase(){
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return {roadmap:null,current:null,next:null};
+      return { roadmap:roadmap, current:roadmap.stages[0] || null, next:roadmap.stages[1] || null };
+    }
+
+    function buildPhaseCompletionReason(current, next, entry, ctx, roadmap){
+      var targetWeight = getTargetWeight();
+      var targetBF = roadmap && roadmap.endBF != null ? roadmap.endBF : null;
+
+      if((current.id === 'cut' || current.id === 'transform') && targetBF != null && entry.bodyfat_est != null && entry.bodyfat_est <= targetBF){
+        if(ctx.waistStableOrDown || ctx.trendLooksReal){
+          return current.id === 'cut'
+            ? 'the target body-fat level was reached with acceptable adherence, recovery, and confirming body-composition signals'
+            : 'the target body-fat level was reached with confirming body-composition context';
+        }
+      }
+
+      if(current.id === 'cut' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
+        if(ctx.waistStableOrDown && ctx.trendLooksReal){
+          return 'the cut target weight was reached and waist / check-in context supported moving on';
+        }
+      }
+
+      if(current.id === 'transform' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
+        if(ctx.waistStableOrDown && ctx.trendLooksReal){
+          return 'the transform target weight was reached and the wider check-in context supported progression';
+        }
+      }
+
+      if(current.id === 'maintain' && next && next.id === 'bulk'){
+        if(ctx.scaleStable && ctx.waistStableOrDown && ctx.decentRecovery && ctx.adequateAdherence){
+          return 'weight and waist were stable enough, with decent adherence and recovery, to begin the next planned build phase';
+        }
+      }
+
+      if(current.id === 'bulk' && targetWeight != null && entry.weight_avg != null && entry.weight_avg >= targetWeight){
+        if(ctx.waistNotRising && ctx.decentRecovery && ctx.trendLooksReal){
+          return 'the build target was reached without a clear waist warning and recovery remained acceptable';
+        }
+      }
+
+      return null;
+    }
+
+    function evaluatePhaseRecommendation(){
+      var pair = getCurrentAndNextPhase();
+      if(!pair.roadmap || !pair.current){
+        return { ready:false, text:'No active roadmap loaded yet.', reason:null };
+      }
+      if(!pair.next){
+        return { ready:false, text:'No later phase is currently planned, so there is nothing to advance to yet.', reason:null };
+      }
+
+      var history = getCheckinHistory();
+      var latestEntry = history.length ? history[history.length - 1] : null;
+      if(!latestEntry){
+        return { ready:false, text:'Save a weekly check-in first so the system has enough context to judge progression.', reason:null };
+      }
+
+      var ctx = getAutomationContext(history.slice(0, -1), latestEntry);
+      if(!ctx.adequateAdherence){
+        return { ready:false, text:'Hold the current phase for now because adherence is not yet strong enough to trust progression.', reason:null, ctx:ctx, entry:latestEntry };
+      }
+      if(ctx.poorRecovery){
+        return { ready:false, text:'Hold the current phase for now because recovery is not yet strong enough to progress safely.', reason:null, ctx:ctx, entry:latestEntry };
+      }
+
+      var reason = buildPhaseCompletionReason(pair.current, pair.next, latestEntry, ctx, pair.roadmap);
+      if(reason){
+        return { ready:true, text:'Ready to move from ' + pair.current.name + ' to ' + pair.next.name + '.', reason:reason, ctx:ctx, entry:latestEntry };
+      }
+
+      return { ready:false, text:'Stay in ' + pair.current.name + ' for now. The phase goal is not clearly completed yet.', reason:null, ctx:ctx, entry:latestEntry };
+    }
+
+    function advanceRoadmapToNext(reason, sourceLabel){
+      var pair = getCurrentAndNextPhase();
+      if(!pair.roadmap || !pair.current || !pair.next) return null;
+
+      var roadmap = pair.roadmap;
+      roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
+      roadmap.completedStages.push({
+        id: pair.current.id,
+        name: pair.current.name,
+        completed_on: todayISO(),
+        reason: reason,
+        source: sourceLabel || 'automatic'
+      });
+      roadmap.stages = roadmap.stages.slice(1);
+      saveRoadmap(roadmap);
+      clearPhaseOverride();
+
+      var event = {
+        date: todayISO(),
+        message: 'Moved from ' + pair.current.name + ' to ' + pair.next.name + ' because ' + reason + '.',
+        source: sourceLabel || 'automatic'
+      };
+      saveLastAutomationEvent(event);
+      return event.message;
+    }
+
+    function jumpRoadmapToPhase(targetId, sourceLabel){
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return null;
+      var idx = roadmap.stages.findIndex(function(s){ return s && s.id === targetId; });
+      if(idx < 0) return null;
+      if(idx === 0){
+        savePhaseOverride({ type:'stay', phaseId:targetId, date:todayISO(), source:sourceLabel || 'manual' });
+        return 'Staying in ' + (roadmap.stages[0].name || 'current phase') + ' by user override.';
+      }
+
+      roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
+      for(var i = 0; i < idx; i++){
+        var stage = roadmap.stages[i];
+        roadmap.completedStages.push({
+          id: stage.id,
+          name: stage.name,
+          completed_on: todayISO(),
+          reason: 'manual override to ' + roadmap.stages[idx].name,
+          source: sourceLabel || 'manual override'
+        });
+      }
+      roadmap.stages = roadmap.stages.slice(idx);
+      saveRoadmap(roadmap);
+      clearPhaseOverride();
+
+      var current = roadmap.stages[0];
+      var event = {
+        date: todayISO(),
+        message: 'Manual override moved the roadmap to ' + current.name + '.',
+        source: sourceLabel || 'manual override'
+      };
+      saveLastAutomationEvent(event);
+      return event.message;
+    }
+
+    function populatePhaseOverrideSelect(){
+      var select = document.getElementById('phaseOverrideSelect');
+      if(!select) return;
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length){
+        select.innerHTML = '<option value="">No active roadmap</option>';
+        select.disabled = true;
+        return;
+      }
+      select.disabled = false;
+      select.innerHTML = roadmap.stages.map(function(stage, idx){
+        var label = (idx === 0 ? 'Current: ' : 'Jump to: ') + (stage.name || stage.id || ('Phase ' + (idx + 1)));
+        return '<option value="' + escapeHtml(stage.id) + '">' + escapeHtml(label) + '</option>';
+      }).join('');
+    }
+
     function renderCurrentPhase(){
       var raw = localStorage.getItem(ROADMAP_KEY);
       if(!raw){
@@ -1805,6 +1993,11 @@
         document.getElementById('nextPhasePreview').textContent = next ? next.name : 'No later phase planned at the moment.';
         document.getElementById('currentRoadmapMode').textContent = titleCase(String(roadmap.roadmapMode || 'smart'));
         document.getElementById('currentAggressionMode').textContent = titleCase(String(roadmap.aggression || 'moderate'));
+
+        var override = getPhaseOverride();
+        if(override && override.phaseId && override.phaseId !== current.id && override.type === 'stay'){
+          clearPhaseOverride();
+        }
 
         var successSignal = '';
         if(current.id === 'cut'){
@@ -2292,31 +2485,43 @@
       var ruleEl = document.getElementById('phaseAutomationRule');
       var lastEl = document.getElementById('phaseAutomationLast');
       var reasoningEl = document.getElementById('phaseAutomationReasoning');
-      if(!ruleEl || !lastEl || !reasoningEl) return;
+      var recommendationEl = document.getElementById('phaseRecommendationText');
+      var overrideStatusEl = document.getElementById('phaseOverrideStatus');
+      var advanceBtn = document.getElementById('btnAdvancePhase');
+      var stayBtn = document.getElementById('btnStayPhase');
+      var clearBtn = document.getElementById('btnClearPhaseOverride');
 
-      var roadmap = getActiveRoadmap();
-      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length){
+      var pair = getCurrentAndNextPhase();
+      var roadmap = pair.roadmap;
+      var current = pair.current;
+      var next = pair.next;
+
+      populatePhaseOverrideSelect();
+
+      if(!roadmap || !current){
         ruleEl.textContent = 'No active roadmap loaded yet.';
         lastEl.textContent = 'No phase automation event yet.';
         reasoningEl.textContent = 'No automation reasoning available yet.';
+        recommendationEl.textContent = 'No recommendation available yet.';
+        overrideStatusEl.textContent = 'No override active.';
+        if(advanceBtn) advanceBtn.disabled = true;
+        if(stayBtn) stayBtn.disabled = true;
+        if(clearBtn) clearBtn.disabled = true;
         return;
       }
 
-      var current = roadmap.stages[0];
       var targetWeight = getTargetWeight();
       var endBF = roadmap.endBF != null ? roadmap.endBF : null;
-      var rule = 'Automation does not use body weight alone. It checks weight trend, waist trend, adherence, and recovery before moving the current phase on.';
+      var rule = 'Current phase: ' + current.name + '. ';
 
       if(current.id === 'cut'){
-        rule += ' In a cut, target weight or target body-fat can trigger advancement only when waist is not moving the wrong way and adherence / recovery are good enough.';
+        rule += 'Automation watches weight trend, waist trend, adherence and recovery before moving to ' + (next ? next.name : 'the next phase') + '.';
       } else if(current.id === 'transform'){
-        rule += ' In transform, advancement needs the phase goal to be reached with body-composition confirmation and enough consistency to trust the signal.';
+        rule += 'Automation looks for confirmed body-composition progress with acceptable adherence and recovery before moving to ' + (next ? next.name : 'the next phase') + '.';
       } else if(current.id === 'maintain'){
-        rule += ' In maintain, advancement needs stable weight, stable waist, and decent adherence / recovery.';
-      } else if(current.id === 'bulk'){
-        rule += ' In bulk, advancement needs the build target to be reached without waist rise or recovery warning signs getting out of hand.';
+        rule += 'Automation wants stable weight, stable waist, and decent adherence / recovery before progressing to ' + (next ? next.name : 'the next phase') + '.';
       } else {
-        rule += ' The current phase must be clearly completed, not guessed from one metric.';
+        rule += 'Automation watches gain trend, waist trend, adherence and recovery before moving to ' + (next ? next.name : 'the next phase') + '.';
       }
 
       if(targetWeight != null){
@@ -2335,234 +2540,33 @@
         lastEl.textContent = 'No phase automation event yet.';
       }
 
+      var recommendation = evaluatePhaseRecommendation();
+      recommendationEl.textContent = recommendation.text;
+
+      var override = getPhaseOverride();
+      if(override && override.type === 'stay' && override.phaseId === current.id){
+        overrideStatusEl.textContent = 'User override active: staying in ' + current.name + ' until you clear the override.';
+      } else {
+        overrideStatusEl.textContent = 'No override active.';
+      }
+
       var history = getCheckinHistory();
       var latestEntry = history.length ? history[history.length - 1] : null;
       var ctx = latestEntry ? getAutomationContext(history.slice(0, -1), latestEntry) : null;
       var reasoning = latestEntry && ctx ? buildAutomationReasoning(current, ctx, latestEntry, roadmap) : ['Save a weekly check-in to see exactly why automation will or will not move you.'];
+      if(override && override.type === 'stay' && override.phaseId === current.id){
+        reasoning.push('A user override is currently blocking automatic progression out of this phase.');
+      }
+      if(recommendation.ready && recommendation.reason){
+        reasoning.push('System recommendation reason: ' + recommendation.reason + '.');
+      }
       reasoningEl.innerHTML = reasoning.map(function(line){ return '• ' + escapeHtml(line); }).join('<br>');
+
+      if(advanceBtn) advanceBtn.disabled = !next;
+      if(stayBtn) stayBtn.disabled = !current;
+      if(clearBtn) clearBtn.disabled = !(override && override.type === 'stay' && override.phaseId === current.id);
     }
 
-    function maybeAutoAdvanceRoadmap(entry){
-      var roadmap = getActiveRoadmap();
-      if(!roadmap || !Array.isArray(roadmap.stages) || roadmap.stages.length < 2) return null;
-
-      var current = roadmap.stages[0];
-      var next = roadmap.stages[1];
-      var targetWeight = getTargetWeight();
-      var targetBF = roadmap.endBF != null ? roadmap.endBF : null;
-      var history = getCheckinHistory();
-      var ctx = getAutomationContext(history, entry);
-
-      function completeCurrent(reason){
-        roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
-        roadmap.completedStages.push({
-          id: current.id,
-          name: current.name,
-          completed_on: todayISO(),
-          reason: reason
-        });
-        roadmap.stages = roadmap.stages.slice(1);
-        saveRoadmap(roadmap);
-
-        var event = {
-          date: todayISO(),
-          message: 'Moved from ' + current.name + ' to ' + next.name + ' because ' + reason + '.'
-        };
-        saveLastAutomationEvent(event);
-        return event.message;
-      }
-
-      if(!ctx.adequateAdherence || ctx.poorRecovery){
-        return null;
-      }
-
-      if((current.id === 'cut' || current.id === 'transform') && targetBF != null && entry.bodyfat_est != null && entry.bodyfat_est <= targetBF){
-        if(ctx.waistStableOrDown || ctx.trendLooksReal){
-          return completeCurrent('the target body-fat level was reached with acceptable adherence, recovery, and confirming body-composition signals');
-        }
-      }
-
-      if(current.id === 'cut' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
-        if(ctx.waistStableOrDown && ctx.trendLooksReal){
-          return completeCurrent('the cut target weight was reached and waist / check-in context supported moving on');
-        }
-      }
-
-      if(current.id === 'transform' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
-        if(ctx.waistStableOrDown && ctx.trendLooksReal){
-          return completeCurrent('the transform target weight was reached and the wider check-in context supported progression');
-        }
-      }
-
-      if(current.id === 'maintain' && next.id === 'bulk' && history.length >= 1){
-        if(ctx.scaleStable && ctx.waistStableOrDown && ctx.decentRecovery && ctx.adequateAdherence){
-          return completeCurrent('weight and waist were stable enough, with decent adherence and recovery, to begin the next planned build phase');
-        }
-      }
-
-      if(current.id === 'bulk' && targetWeight != null && entry.weight_avg != null && entry.weight_avg >= targetWeight){
-        if(ctx.waistNotRising && ctx.decentRecovery && ctx.trendLooksReal){
-          return completeCurrent('the build target was reached without a clear waist warning and recovery remained acceptable');
-        }
-      }
-
-      return null;
-    }
-function evaluateTargetWeight(currentWeight, targetWeight){
-      if(currentWeight == null || targetWeight == null) return null;
-
-      var diffPct = ((currentWeight - targetWeight) / currentWeight) * 100;
-      var msg = '';
-      var cls = 'feedback-good';
-
-      if (diffPct >= 25) {
-        cls = 'feedback-strong';
-        msg = 'This target is very aggressive relative to your current weight. That does not automatically mean anything is wrong, but it is strong enough to pause and sense-check whether it is genuinely realistic, sustainable, and health-led.';
-      } else if (diffPct >= 15) {
-        cls = 'feedback-caution';
-        msg = 'This is an aggressive target. It may still be possible, but it usually needs a longer runway and good recovery rather than a rushed approach.';
-      } else if (diffPct >= 5) {
-        cls = 'feedback-good';
-        msg = 'This looks like a reasonable fat-loss target range if recovery, adherence, and timeline are sensible.';
-      } else if (diffPct > -5) {
-        cls = 'feedback-good';
-        msg = 'This sits around maintenance or mild recomposition territory.';
-      } else {
-        cls = 'feedback-caution';
-        msg = 'This target implies weight gain. That may be appropriate if your goal is to build, but it should still align with your wider roadmap.';
-      }
-
-      if (diffPct >= 25 || targetWeight < 45) {
-        msg += ' If the target is being driven by fear around food, weight, or body image rather than a grounded performance or health goal, it would be worth speaking to a qualified clinician or eating-disorder-informed professional.';
-      }
-
-      return { message: msg, className: cls, diffPct: +diffPct.toFixed(1) };
-    }
-
-    function renderWeightLog(){
-      var body = document.getElementById('weightHistoryBody');
-      if(!body) return;
-
-      var log = getWeightLog();
-      var targetWeightInput = document.getElementById('targetWeight');
-      var currentInputWeight = parseFloat(document.getElementById('bmrWeight').value || '');
-      var targetWeight = getTargetWeight();
-      var start = log.length ? log[0] : null;
-      var latest = log.length ? log[log.length - 1] : null;
-
-      if(targetWeightInput && targetWeight != null && document.activeElement !== targetWeightInput){
-        targetWeightInput.value = targetWeight;
-      }
-
-      document.getElementById('journeyStartWeight').textContent = start ? (start.weight + ' kg') : '—';
-      document.getElementById('journeyCurrentWeight').textContent = latest ? (latest.weight + ' kg') : (isNaN(currentInputWeight) ? '—' : (currentInputWeight + ' kg'));
-
-      var delta = null;
-      if(start && latest){
-        delta = +(latest.weight - start.weight).toFixed(1);
-        document.getElementById('journeyWeightChange').textContent = (delta > 0 ? '+' : '') + delta + ' kg';
-      } else {
-        document.getElementById('journeyWeightChange').textContent = '—';
-      }
-
-      var recentAvg = getRecentWeightAverage(7);
-      if(recentAvg != null){
-        document.getElementById('weightTrendLine').textContent = 'Recent average from your last ' + Math.min(7, log.length) + ' entries: ' + recentAvg + ' kg.';
-      } else {
-        document.getElementById('weightTrendLine').textContent = 'Add entries across the journey. The weekly check-in can then use a recent average rather than one isolated reading.';
-      }
-
-      var targetFeedback = document.getElementById('targetWeightFeedback');
-      var assessment = evaluateTargetWeight(latest ? latest.weight : (isNaN(currentInputWeight) ? null : currentInputWeight), targetWeight);
-      if(assessment){
-        targetFeedback.className = 'sub ' + assessment.className;
-        targetFeedback.textContent = assessment.message;
-      } else {
-        targetFeedback.className = 'sub';
-        targetFeedback.textContent = 'Set a target weight if you want a rough realism check. This is only a sense check, not a diagnosis.';
-      }
-
-      if(!log.length){
-        body.innerHTML = '<tr><td colspan="3" class="meta">No weight entries saved yet.</td></tr>';
-        return;
-      }
-
-      body.innerHTML = log.slice().reverse().map(function(item){
-        return '<tr>' +
-          '<td>' + escapeHtml(item.date || '—') + '</td>' +
-          '<td>' + escapeHtml(String(item.weight)) + ' kg</td>' +
-          '<td>' + (item.note ? escapeHtml(item.note) : '—') + '</td>' +
-        '</tr>';
-      }).join('');
-    }
-
-    function saveWeightEntryFromUI(){
-      var val = parseFloat(document.getElementById('weightLogValue').value || '');
-      var note = document.getElementById('weightLogNote').value || '';
-      var target = parseFloat(document.getElementById('targetWeight').value || '');
-
-      if(!isNaN(target)) saveTargetWeight(target);
-      else if((document.getElementById('targetWeight').value || '').trim() === '') saveTargetWeight(null);
-
-      if(isNaN(val) || val <= 0){
-        renderWeightLog();
-        alert('Enter a valid weight before saving.');
-        return;
-      }
-
-      addWeightLogEntry(val, note);
-      document.getElementById('weightLogValue').value = '';
-      document.getElementById('weightLogNote').value = '';
-      renderWeightLog();
-      alert('Weight entry saved.');
-    }
-
-    function useRecentAverageForCheckin(){
-      var avg = getRecentWeightAverage(7);
-      if(avg == null){
-        alert('No weight entries saved yet. Add at least one entry first.');
-        return;
-      }
-      document.getElementById('checkinWeight').value = avg;
-      alert('Recent average copied into weekly check-in.');
-    }
-
-    function getCheckinHistory(){
-      try{
-        var raw = localStorage.getItem(CHECKIN_KEY);
-        var arr = raw ? JSON.parse(raw) : [];
-        return Array.isArray(arr) ? arr : [];
-      }catch(err){
-        return [];
-      }
-    }
-
-    function saveCheckinHistory(history){
-      localStorage.setItem(CHECKIN_KEY, JSON.stringify(history));
-    }
-
-    function readRadioValue(name){
-      var el = document.querySelector('input[name="' + name + '"]:checked');
-      return el ? parseInt(el.value, 10) : 3;
-    }
-
-    function getActiveRoadmap(){
-      try{
-        var raw = localStorage.getItem(ROADMAP_KEY);
-        if(!raw) return null;
-        return JSON.parse(raw);
-      }catch(err){
-        return null;
-      }
-    }
-
-    function currentPhaseId(){
-      var roadmap = getActiveRoadmap();
-      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return null;
-      return roadmap.stages[0].id || null;
-    }
-
-    
     function buildDecisionReasoning(entry, prev){
       var reasons = [];
       var highAdherence = entry.adherence_nutrition >= 4 && entry.adherence_training >= 4;
@@ -3403,6 +3407,60 @@ function evaluateTargetWeight(currentWeight, targetWeight){
         e.target.value = '';
       });
       document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
+
+      document.getElementById('btnAdvancePhase').addEventListener('click', function(){
+        var recommendation = evaluatePhaseRecommendation();
+        var pair = getCurrentAndNextPhase();
+        if(!pair.current || !pair.next){
+          alert('There is no later phase to move to.');
+          return;
+        }
+        var reason = recommendation.reason || ('the user manually chose to move from ' + pair.current.name + ' to ' + pair.next.name);
+        var message = advanceRoadmapToNext(reason, 'manual');
+        if(message){
+          renderCurrentPhase();
+          renderPlan();
+          renderAutomationStatus();
+          refreshAllCoachViews();
+          wireWorkoutPlanLogsToEngine();
+          alert(message);
+        }
+      });
+
+      document.getElementById('btnStayPhase').addEventListener('click', function(){
+        var pair = getCurrentAndNextPhase();
+        if(!pair.current){
+          alert('No active phase to hold.');
+          return;
+        }
+        savePhaseOverride({ type:'stay', phaseId:pair.current.id, date:todayISO(), source:'manual stay' });
+        renderAutomationStatus();
+        alert('Override saved. Automation will keep you in ' + pair.current.name + ' until you clear the override.');
+      });
+
+      document.getElementById('btnClearPhaseOverride').addEventListener('click', function(){
+        clearPhaseOverride();
+        renderAutomationStatus();
+        alert('Phase override cleared.');
+      });
+
+      document.getElementById('btnApplyPhaseOverride').addEventListener('click', function(){
+        var select = document.getElementById('phaseOverrideSelect');
+        var target = select ? select.value : '';
+        if(!target){
+          alert('Choose a phase first.');
+          return;
+        }
+        var message = jumpRoadmapToPhase(target, 'manual override');
+        if(message){
+          renderCurrentPhase();
+          renderPlan();
+          renderAutomationStatus();
+          refreshAllCoachViews();
+          wireWorkoutPlanLogsToEngine();
+          alert(message);
+        }
+      });
 
       loadExistingRoadmapInputs();
       updateMacroTargets();

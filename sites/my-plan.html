@@ -656,6 +656,11 @@
             <div class="sub" id="checkinPhaseAction">—</div>
           </div>
 
+          <div class="plan-line">
+            <strong>Why this decision was made</strong>
+            <div class="sub" id="checkinReasoning">—</div>
+          </div>
+
           <div class="tag-row" id="checkinTags"></div>
         </div>
       </div>
@@ -785,6 +790,10 @@
           <div class="plan-line">
             <strong>Last automation event</strong>
             <div class="sub" id="phaseAutomationLast">No phase automation event yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>Why automation will or will not move you</strong>
+            <div class="sub" id="phaseAutomationReasoning">No automation reasoning available yet.</div>
           </div>
           <div class="graph-note">Automation checks run during the weekly check-in. When the current phase goal is clearly reached, the roadmap advances to the next relevant phase automatically.</div>
         </div>
@@ -2282,12 +2291,14 @@
     function renderAutomationStatus(){
       var ruleEl = document.getElementById('phaseAutomationRule');
       var lastEl = document.getElementById('phaseAutomationLast');
-      if(!ruleEl || !lastEl) return;
+      var reasoningEl = document.getElementById('phaseAutomationReasoning');
+      if(!ruleEl || !lastEl || !reasoningEl) return;
 
       var roadmap = getActiveRoadmap();
       if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length){
         ruleEl.textContent = 'No active roadmap loaded yet.';
         lastEl.textContent = 'No phase automation event yet.';
+        reasoningEl.textContent = 'No automation reasoning available yet.';
         return;
       }
 
@@ -2323,6 +2334,12 @@
       } else {
         lastEl.textContent = 'No phase automation event yet.';
       }
+
+      var history = getCheckinHistory();
+      var latestEntry = history.length ? history[history.length - 1] : null;
+      var ctx = latestEntry ? getAutomationContext(history.slice(0, -1), latestEntry) : null;
+      var reasoning = latestEntry && ctx ? buildAutomationReasoning(current, ctx, latestEntry, roadmap) : ['Save a weekly check-in to see exactly why automation will or will not move you.'];
+      reasoningEl.innerHTML = reasoning.map(function(line){ return '• ' + escapeHtml(line); }).join('<br>');
     }
 
     function maybeAutoAdvanceRoadmap(entry){
@@ -2545,6 +2562,84 @@ function evaluateTargetWeight(currentWeight, targetWeight){
       return roadmap.stages[0].id || null;
     }
 
+    
+    function buildDecisionReasoning(entry, prev){
+      var reasons = [];
+      var highAdherence = entry.adherence_nutrition >= 4 && entry.adherence_training >= 4;
+      var adequateAdherence = entry.adherence_nutrition >= 3 && entry.adherence_training >= 3;
+      var poorRecovery = entry.recovery <= 2 || entry.sleep <= 2;
+
+      if(prev && entry.weight_avg != null && prev.weight_avg != null){
+        var deltaW = entry.weight_avg - prev.weight_avg;
+        if(deltaW <= -0.15) reasons.push('Weight trend is moving down.');
+        else if(deltaW >= 0.2) reasons.push('Weight trend is moving up.');
+        else reasons.push('Weight trend is broadly flat.');
+      } else {
+        reasons.push('Weight trend is not fully established yet.');
+      }
+
+      if(prev && entry.waist_cm != null && prev.waist_cm != null){
+        var deltaWaist = entry.waist_cm - prev.waist_cm;
+        if(deltaWaist <= -0.5) reasons.push('Waist trend is moving down.');
+        else if(deltaWaist >= 0.5) reasons.push('Waist trend is moving up.');
+        else reasons.push('Waist trend is broadly stable.');
+      } else if(entry.waist_cm != null) {
+        reasons.push('Waist is logged, but trend is not established yet.');
+      } else {
+        reasons.push('No waist trend is available.');
+      }
+
+      if(highAdherence) reasons.push('Adherence looks strong enough to trust the signal.');
+      else if(adequateAdherence) reasons.push('Adherence looks fair but not strong.');
+      else reasons.push('Adherence is too weak to trust the data fully.');
+
+      reasons.push(poorRecovery ? 'Recovery is currently too weak to push harder.' : 'Recovery is acceptable.');
+
+      return reasons;
+    }
+
+    function buildAutomationReasoning(current, ctx, entry, roadmap){
+      var targetWeight = getTargetWeight();
+      var targetBF = roadmap && roadmap.endBF != null ? roadmap.endBF : null;
+      var reasons = [];
+
+      if(entry){
+        if(entry.weight_avg != null){
+          reasons.push('Weekly average weight is ' + entry.weight_avg + ' kg.');
+        } else {
+          reasons.push('No weekly average weight is logged yet.');
+        }
+
+        if(entry.waist_cm != null){
+          reasons.push(ctx.waistStableOrDown ? 'Waist is stable or moving down.' : 'Waist is rising, so automation will hold.');
+        } else {
+          reasons.push('No waist entry is available, so automation leans more heavily on the rest of the check-in.');
+        }
+
+        reasons.push(ctx.adequateAdherence ? 'Adherence is good enough for automation to trust the check-in.' : 'Adherence is not yet good enough for automation to trust the check-in.');
+        reasons.push(ctx.poorRecovery ? 'Recovery is too weak for automation to move the phase on.' : 'Recovery is acceptable for automation.');
+      } else {
+        reasons.push('No weekly check-in has been saved yet.');
+      }
+
+      if(current){
+        if(targetWeight != null) reasons.push('Target weight is set to ' + targetWeight + ' kg.');
+        if(targetBF != null) reasons.push('Target body fat is set to ' + targetBF + '%.');
+
+        if(current.id === 'cut'){
+          reasons.push('Cut automation needs the target to be reached with acceptable adherence, acceptable recovery, and no waist warning.');
+        } else if(current.id === 'transform'){
+          reasons.push('Transform automation needs the target to be reached with confirming body-composition context.');
+        } else if(current.id === 'maintain'){
+          reasons.push('Maintain automation only moves on when weight and waist are stable and recovery / adherence are decent.');
+        } else if(current.id === 'bulk'){
+          reasons.push('Bulk automation only moves on when the build target is reached without a waist warning and with acceptable recovery.');
+        }
+      }
+
+      return reasons;
+    }
+
     function evaluateCheckin(entry, prev){
       var phase = String(entry.phase || '');
       var decision = 'Stay in phase';
@@ -2682,7 +2777,8 @@ function evaluateTargetWeight(currentWeight, targetWeight){
         nutrition: nutrition,
         training: training,
         phaseAction: phaseAction,
-        tags: tags
+        tags: tags,
+        reasoning: buildDecisionReasoning(entry, prev)
       };
     }
 
@@ -2692,6 +2788,9 @@ function evaluateTargetWeight(currentWeight, targetWeight){
       document.getElementById('checkinNutritionAction').textContent = result ? result.nutrition : '—';
       document.getElementById('checkinTrainingAction').textContent = result ? result.training : '—';
       document.getElementById('checkinPhaseAction').textContent = result ? result.phaseAction : '—';
+      document.getElementById('checkinReasoning').innerHTML = result && Array.isArray(result.reasoning) && result.reasoning.length
+        ? result.reasoning.map(function(line){ return '• ' + escapeHtml(line); }).join('<br>')
+        : '—';
       document.getElementById('checkinTags').innerHTML = result ? result.tags.map(function(t){
         return '<span class="tag tag-accent">' + escapeHtml(t) + '</span>';
       }).join('') : '';
@@ -3080,6 +3179,7 @@ function evaluateTargetWeight(currentWeight, targetWeight){
       renderMovementStatus();
       renderWeeklySnapshot();
       renderNextWeekPlan();
+      renderAutomationStatus();
     }
 
     function wireWorkoutPlanLogsToEngine(){

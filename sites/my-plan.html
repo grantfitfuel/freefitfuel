@@ -122,6 +122,18 @@
       color:#ffd6bd;
     }
 
+    .weight-shell{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:980px){ .weight-shell{grid-template-columns:1fr} }
+    .weight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    @media (max-width:980px){ .weight-grid{grid-template-columns:1fr} }
+    .weight-feedback{margin-top:10px}
+    .weight-history-table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:8px}
+    .weight-history-table th,.weight-history-table td{border-bottom:1px solid var(--stroke);padding:.55rem .45rem;text-align:left;vertical-align:top}
+    .weight-history-table th{color:var(--inkdim);font-weight:600}
+    .feedback-good{color:var(--ok)}
+    .feedback-caution{color:var(--warn)}
+    .feedback-strong{color:var(--bad)}
+
     .phase-shell{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     @media (max-width:980px){ .phase-shell{grid-template-columns:1fr} }
 
@@ -646,6 +658,78 @@
       </div>
     </section>
 
+
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Journey weight log</h2>
+          <p>Track the full journey from start to current and use it to keep long-term progress visible.</p>
+        </div>
+      </div>
+
+      <div class="weight-shell">
+        <div class="card">
+          <div class="weight-grid">
+            <div>
+              <div class="sub">Start weight</div>
+              <div class="metric" id="journeyStartWeight">—</div>
+            </div>
+            <div>
+              <div class="sub">Current weight</div>
+              <div class="metric" id="journeyCurrentWeight">—</div>
+            </div>
+            <div>
+              <div class="sub">Total change</div>
+              <div class="metric" id="journeyWeightChange">—</div>
+            </div>
+          </div>
+
+          <div class="checkin-grid" style="margin-top:12px">
+            <label class="field">Log weight (kg)
+              <input id="weightLogValue" class="input" type="number" min="35" max="250" step="0.1" placeholder="e.g. 84.4">
+            </label>
+
+            <label class="field">Target weight (kg)
+              <input id="targetWeight" class="input" type="number" min="35" max="250" step="0.1" placeholder="e.g. 78">
+            </label>
+
+            <label class="field">Optional note
+              <input id="weightLogNote" class="input" type="text" maxlength="120" placeholder="e.g. salty meal, poor sleep, travel">
+            </label>
+          </div>
+
+          <div class="tag-row">
+            <button class="btn btn-primary" id="btnSaveWeightLog" type="button">Save weight entry</button>
+            <button class="btn" id="btnUseWeightAvg" type="button">Use recent average for weekly check-in</button>
+          </div>
+
+          <div class="weight-feedback">
+            <div class="sub" id="weightTrendLine">Add entries across the journey. The weekly check-in can then use a recent average rather than one isolated reading.</div>
+            <div class="sub" id="targetWeightFeedback">No target-weight assessment yet.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recent weight history</h3>
+          <div class="table-wrap">
+            <table class="weight-history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Weight</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody id="weightHistoryBody">
+                <tr><td colspan="3" class="meta">No weight entries saved yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section">
       <div class="section-head">
         <div>
@@ -830,6 +914,8 @@
   <script>
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
     var CHECKIN_KEY = 'fff.weekly.checkins.v1';
+    var WEIGHT_LOG_KEY = 'fff.weight.log.v1';
+    var TARGET_WEIGHT_KEY = 'fff.target.weight.v1';
     var GOAL = 'Maintain';
 
     function yt(q){
@@ -1353,6 +1439,7 @@
       tags.push('<span class="tag">' + escapeHtml(titleCase(getPhaseAggression())) + '</span>');
       tags.push('<span class="tag tag-accent">Preview path: ' + escapeHtml(getPreviewFlow().join(' → ')) + '</span>');
       document.getElementById('roadmapMeta').innerHTML = tags.join('');
+      if (typeof renderWeightLog === 'function') renderWeightLog();
     }
 
     function generateRoadmapWithoutPDF(staged) {
@@ -1875,6 +1962,177 @@
       }
     }
 
+
+
+    function getWeightLog(){
+      try{
+        var raw = localStorage.getItem(WEIGHT_LOG_KEY);
+        var arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      }catch(err){
+        return [];
+      }
+    }
+
+    function saveWeightLog(log){
+      localStorage.setItem(WEIGHT_LOG_KEY, JSON.stringify(log));
+    }
+
+    function addWeightLogEntry(weight, note){
+      var log = getWeightLog();
+      log.push({
+        date: todayISO(),
+        weight: weight,
+        note: String(note || '').trim()
+      });
+      saveWeightLog(log);
+      return log;
+    }
+
+    function getTargetWeight(){
+      var raw = localStorage.getItem(TARGET_WEIGHT_KEY);
+      if(raw == null || raw === '') return null;
+      var n = parseFloat(raw);
+      return isNaN(n) ? null : n;
+    }
+
+    function saveTargetWeight(value){
+      if(value == null || value === '' || isNaN(value)){
+        localStorage.removeItem(TARGET_WEIGHT_KEY);
+        return;
+      }
+      localStorage.setItem(TARGET_WEIGHT_KEY, String(value));
+    }
+
+    function getRecentWeightAverage(days){
+      var log = getWeightLog();
+      if(!log.length) return null;
+      var slice = log.slice(Math.max(0, log.length - (days || 7)));
+      if(!slice.length) return null;
+      var total = 0;
+      for(var i = 0; i < slice.length; i++) total += Number(slice[i].weight || 0);
+      return +(total / slice.length).toFixed(2);
+    }
+
+    function evaluateTargetWeight(currentWeight, targetWeight){
+      if(currentWeight == null || targetWeight == null) return null;
+
+      var diffPct = ((currentWeight - targetWeight) / currentWeight) * 100;
+      var msg = '';
+      var cls = 'feedback-good';
+
+      if (diffPct >= 25) {
+        cls = 'feedback-strong';
+        msg = 'This target is very aggressive relative to your current weight. That does not automatically mean anything is wrong, but it is strong enough to pause and sense-check whether it is genuinely realistic, sustainable, and health-led.';
+      } else if (diffPct >= 15) {
+        cls = 'feedback-caution';
+        msg = 'This is an aggressive target. It may still be possible, but it usually needs a longer runway and good recovery rather than a rushed approach.';
+      } else if (diffPct >= 5) {
+        cls = 'feedback-good';
+        msg = 'This looks like a reasonable fat-loss target range if recovery, adherence, and timeline are sensible.';
+      } else if (diffPct > -5) {
+        cls = 'feedback-good';
+        msg = 'This sits around maintenance or mild recomposition territory.';
+      } else {
+        cls = 'feedback-caution';
+        msg = 'This target implies weight gain. That may be appropriate if your goal is to build, but it should still align with your wider roadmap.';
+      }
+
+      if (diffPct >= 25 || targetWeight < 45) {
+        msg += ' If the target is being driven by fear around food, weight, or body image rather than a grounded performance or health goal, it would be worth speaking to a qualified clinician or eating-disorder-informed professional.';
+      }
+
+      return { message: msg, className: cls, diffPct: +diffPct.toFixed(1) };
+    }
+
+    function renderWeightLog(){
+      var body = document.getElementById('weightHistoryBody');
+      if(!body) return;
+
+      var log = getWeightLog();
+      var targetWeightInput = document.getElementById('targetWeight');
+      var currentInputWeight = parseFloat(document.getElementById('bmrWeight').value || '');
+      var targetWeight = getTargetWeight();
+      var start = log.length ? log[0] : null;
+      var latest = log.length ? log[log.length - 1] : null;
+
+      if(targetWeightInput && targetWeight != null && document.activeElement !== targetWeightInput){
+        targetWeightInput.value = targetWeight;
+      }
+
+      document.getElementById('journeyStartWeight').textContent = start ? (start.weight + ' kg') : '—';
+      document.getElementById('journeyCurrentWeight').textContent = latest ? (latest.weight + ' kg') : (isNaN(currentInputWeight) ? '—' : (currentInputWeight + ' kg'));
+
+      var delta = null;
+      if(start && latest){
+        delta = +(latest.weight - start.weight).toFixed(1);
+        document.getElementById('journeyWeightChange').textContent = (delta > 0 ? '+' : '') + delta + ' kg';
+      } else {
+        document.getElementById('journeyWeightChange').textContent = '—';
+      }
+
+      var recentAvg = getRecentWeightAverage(7);
+      if(recentAvg != null){
+        document.getElementById('weightTrendLine').textContent = 'Recent average from your last ' + Math.min(7, log.length) + ' entries: ' + recentAvg + ' kg.';
+      } else {
+        document.getElementById('weightTrendLine').textContent = 'Add entries across the journey. The weekly check-in can then use a recent average rather than one isolated reading.';
+      }
+
+      var targetFeedback = document.getElementById('targetWeightFeedback');
+      var assessment = evaluateTargetWeight(latest ? latest.weight : (isNaN(currentInputWeight) ? null : currentInputWeight), targetWeight);
+      if(assessment){
+        targetFeedback.className = 'sub ' + assessment.className;
+        targetFeedback.textContent = assessment.message;
+      } else {
+        targetFeedback.className = 'sub';
+        targetFeedback.textContent = 'Set a target weight if you want a rough realism check. This is only a sense check, not a diagnosis.';
+      }
+
+      if(!log.length){
+        body.innerHTML = '<tr><td colspan="3" class="meta">No weight entries saved yet.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = log.slice().reverse().map(function(item){
+        return '<tr>' +
+          '<td>' + escapeHtml(item.date || '—') + '</td>' +
+          '<td>' + escapeHtml(String(item.weight)) + ' kg</td>' +
+          '<td>' + (item.note ? escapeHtml(item.note) : '—') + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function saveWeightEntryFromUI(){
+      var val = parseFloat(document.getElementById('weightLogValue').value || '');
+      var note = document.getElementById('weightLogNote').value || '';
+      var target = parseFloat(document.getElementById('targetWeight').value || '');
+
+      if(!isNaN(target)) saveTargetWeight(target);
+      else if((document.getElementById('targetWeight').value || '').trim() === '') saveTargetWeight(null);
+
+      if(isNaN(val) || val <= 0){
+        renderWeightLog();
+        alert('Enter a valid weight before saving.');
+        return;
+      }
+
+      addWeightLogEntry(val, note);
+      document.getElementById('weightLogValue').value = '';
+      document.getElementById('weightLogNote').value = '';
+      renderWeightLog();
+      alert('Weight entry saved.');
+    }
+
+    function useRecentAverageForCheckin(){
+      var avg = getRecentWeightAverage(7);
+      if(avg == null){
+        alert('No weight entries saved yet. Add at least one entry first.');
+        return;
+      }
+      document.getElementById('checkinWeight').value = avg;
+      alert('Recent average copied into weekly check-in.');
+    }
+
     function getCheckinHistory(){
       try{
         var raw = localStorage.getItem(CHECKIN_KEY);
@@ -2099,7 +2357,7 @@
       var entry = {
         date: todayISO(),
         phase: roadmap.stages[0].id || '',
-        weight_avg: parseFloat(document.getElementById('checkinWeight').value || '') || null,
+        weight_avg: (function(){ var manual = parseFloat(document.getElementById('checkinWeight').value || ''); if(!isNaN(manual) && manual > 0) return manual; var avg = getRecentWeightAverage(7); return avg == null ? null : avg; })(),
         waist_cm: parseFloat(document.getElementById('checkinWaist').value || '') || null,
         bodyfat_est: parseFloat(document.getElementById('checkinBodyFat').value || '') || null,
         adherence_nutrition: readRadioValue('nutritionAdherence'),
@@ -2633,6 +2891,14 @@
       });
 
       document.getElementById('btnSaveCheckin').addEventListener('click', saveWeeklyCheckin);
+      document.getElementById('btnSaveWeightLog').addEventListener('click', saveWeightEntryFromUI);
+      document.getElementById('btnUseWeightAvg').addEventListener('click', useRecentAverageForCheckin);
+      document.getElementById('targetWeight').addEventListener('input', function(){
+        var target = parseFloat(this.value || '');
+        if(!isNaN(target)) saveTargetWeight(target);
+        else if((this.value || '').trim() === '') saveTargetWeight(null);
+        renderWeightLog();
+      });
 
       document.getElementById('btnExport').addEventListener('click', exportAll);
       document.getElementById('importFile').addEventListener('change', function(e){
@@ -2647,6 +2913,7 @@
       renderCurrentPhase();
       renderPlan();
       renderCheckinHistory();
+      renderWeightLog();
 
       if(window.FFF){
         try{ window.FFF.ready(); }catch(err){}

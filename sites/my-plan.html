@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
     :root{
@@ -133,6 +134,28 @@
     .feedback-good{color:var(--ok)}
     .feedback-caution{color:var(--warn)}
     .feedback-strong{color:var(--bad)}
+
+    .graph-shell{display:grid;grid-template-columns:1fr .9fr;gap:14px}
+    @media (max-width:980px){ .graph-shell{grid-template-columns:1fr} }
+    .graph-wrap{position:relative;min-height:320px}
+    .graph-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .toggle-btn{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--ink);
+      padding:.45rem .8rem;
+      border-radius:999px;
+      cursor:pointer;
+      font:inherit;
+    }
+    .toggle-btn[aria-pressed="true"]{
+      background:var(--accent);
+      border-color:#ff944a;
+      color:#111;
+      font-weight:700;
+    }
+    .graph-detail{margin-top:10px}
+    .graph-note{font-size:.88rem;color:var(--inkdim)}
 
     .phase-shell{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     @media (max-width:980px){ .phase-shell{grid-template-columns:1fr} }
@@ -733,6 +756,44 @@
     <section class="section">
       <div class="section-head">
         <div>
+          <h2>Progress graph</h2>
+          <p>View weight as daily entries or weekly averages. Tap or click any point to inspect the rate of change at that point.</p>
+        </div>
+      </div>
+
+      <div class="graph-shell">
+        <div class="card">
+          <div class="graph-toolbar" role="group" aria-label="Weight graph mode">
+            <button class="toggle-btn" id="graphModeDaily" type="button" aria-pressed="true">Daily</button>
+            <button class="toggle-btn" id="graphModeWeekly" type="button" aria-pressed="false">Weekly average</button>
+          </div>
+          <div class="graph-wrap">
+            <canvas id="weightChart" aria-label="Weight progress graph"></canvas>
+          </div>
+          <div class="graph-detail">
+            <div class="sub" id="graphPointTitle">No point selected yet.</div>
+            <div class="sub" id="graphPointStats">Add at least two weight entries to see a meaningful rate of change.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Automation status</h3>
+          <div class="plan-line">
+            <strong>Current auto-progression rule</strong>
+            <div class="sub" id="phaseAutomationRule">No active roadmap loaded yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>Last automation event</strong>
+            <div class="sub" id="phaseAutomationLast">No phase automation event yet.</div>
+          </div>
+          <div class="graph-note">Automation checks run during the weekly check-in. When the current phase goal is clearly reached, the roadmap advances to the next relevant phase automatically.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
           <h2>Daily wellness check</h2>
           <p>These signals feed directly into the coaching engine.</p>
         </div>
@@ -917,6 +978,9 @@
     var WEIGHT_LOG_KEY = 'fff.weight.log.v1';
     var TARGET_WEIGHT_KEY = 'fff.target.weight.v1';
     var GOAL = 'Maintain';
+    var WEIGHT_CHART = null;
+    var WEIGHT_CHART_MODE = 'daily';
+    var AUTOMATION_EVENT_KEY = 'fff.phase.automation.last.v1';
 
     function yt(q){
       return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(String(q || 'exercise') + ' form');
@@ -2014,6 +2078,265 @@
       return +(total / slice.length).toFixed(2);
     }
 
+    function getWeekKey(isoDate){
+      var d = new Date(isoDate + 'T00:00:00');
+      if(isNaN(d.getTime())) return isoDate;
+      var day = d.getDay();
+      var diff = d.getDate() - day + (day === 0 ? -6 : 1);
+      d.setDate(diff);
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function buildWeightSeries(mode){
+      var log = getWeightLog();
+      if(!log.length) return [];
+
+      if(mode === 'weekly'){
+        var grouped = {};
+        for(var i = 0; i < log.length; i++){
+          var item = log[i];
+          var key = getWeekKey(item.date);
+          if(!grouped[key]) grouped[key] = [];
+          grouped[key].push(Number(item.weight || 0));
+        }
+        var keys = Object.keys(grouped).sort();
+        return keys.map(function(key){
+          var arr = grouped[key];
+          var total = 0;
+          for(var j = 0; j < arr.length; j++) total += arr[j];
+          return {
+            label: key,
+            value: +(total / arr.length).toFixed(2),
+            count: arr.length
+          };
+        });
+      }
+
+      return log.map(function(item){
+        return {
+          label: item.date,
+          value: +Number(item.weight || 0).toFixed(2),
+          count: 1
+        };
+      });
+    }
+
+    function renderGraphPointDetail(series, index){
+      var title = document.getElementById('graphPointTitle');
+      var stats = document.getElementById('graphPointStats');
+      if(!title || !stats) return;
+
+      if(!series.length || index == null || !series[index]){
+        title.textContent = 'No point selected yet.';
+        stats.textContent = 'Add at least two weight entries to see a meaningful rate of change.';
+        return;
+      }
+
+      var point = series[index];
+      title.textContent = point.label + ' — ' + point.value + ' kg';
+
+      if(index === 0 || !series[index - 1]){
+        stats.textContent = 'This is the first point in the visible series, so there is no prior rate to compare.';
+        return;
+      }
+
+      var prev = series[index - 1];
+      var delta = +(point.value - prev.value).toFixed(2);
+      var pct = prev.value ? +(((point.value - prev.value) / prev.value) * 100).toFixed(2) : 0;
+      var unit = WEIGHT_CHART_MODE === 'weekly' ? 'kg/week' : 'kg/day';
+      stats.textContent =
+        'Change from previous point: ' +
+        (delta > 0 ? '+' : '') + delta + ' ' + unit +
+        ' (' + (pct > 0 ? '+' : '') + pct + '%).';
+    }
+
+    function renderWeightChart(){
+      var canvas = document.getElementById('weightChart');
+      if(!canvas) return;
+
+      var dailyBtn = document.getElementById('graphModeDaily');
+      var weeklyBtn = document.getElementById('graphModeWeekly');
+      if(dailyBtn) dailyBtn.setAttribute('aria-pressed', WEIGHT_CHART_MODE === 'daily' ? 'true' : 'false');
+      if(weeklyBtn) weeklyBtn.setAttribute('aria-pressed', WEIGHT_CHART_MODE === 'weekly' ? 'true' : 'false');
+
+      var series = buildWeightSeries(WEIGHT_CHART_MODE);
+      renderGraphPointDetail(series, series.length ? series.length - 1 : null);
+
+      if(!(window.Chart && canvas.getContext)){
+        return;
+      }
+
+      if(WEIGHT_CHART){
+        WEIGHT_CHART.destroy();
+        WEIGHT_CHART = null;
+      }
+
+      var ctx = canvas.getContext('2d');
+      WEIGHT_CHART = new window.Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: series.map(function(point){ return point.label; }),
+          datasets: [{
+            label: WEIGHT_CHART_MODE === 'weekly' ? 'Weekly average weight' : 'Daily weight',
+            data: series.map(function(point){ return point.value; }),
+            tension: 0.25,
+            borderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx){
+                  return ctx.parsed.y + ' kg';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#b7b7c2', maxRotation: 0, autoSkip: true },
+              grid: { color: 'rgba(255,255,255,.06)' }
+            },
+            y: {
+              ticks: {
+                color: '#b7b7c2',
+                callback: function(value){ return value + ' kg'; }
+              },
+              grid: { color: 'rgba(255,255,255,.06)' }
+            }
+          },
+          onClick: function(evt, elements){
+            if(!elements || !elements.length) return;
+            var index = elements[0].index;
+            renderGraphPointDetail(series, index);
+          }
+        }
+      });
+    }
+
+    function getLastAutomationEvent(){
+      try{
+        var raw = localStorage.getItem(AUTOMATION_EVENT_KEY);
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function saveLastAutomationEvent(event){
+      localStorage.setItem(AUTOMATION_EVENT_KEY, JSON.stringify(event));
+    }
+
+    function renderAutomationStatus(){
+      var ruleEl = document.getElementById('phaseAutomationRule');
+      var lastEl = document.getElementById('phaseAutomationLast');
+      if(!ruleEl || !lastEl) return;
+
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length){
+        ruleEl.textContent = 'No active roadmap loaded yet.';
+        lastEl.textContent = 'No phase automation event yet.';
+        return;
+      }
+
+      var current = roadmap.stages[0];
+      var targetWeight = getTargetWeight();
+      var endBF = roadmap.endBF != null ? roadmap.endBF : null;
+      var rule = '';
+
+      if(current.id === 'cut' || current.id === 'transform'){
+        rule = 'Advance when the current phase target is clearly reached by body-fat estimate or target weight, then move to the next relevant stage.';
+      } else if(current.id === 'maintain'){
+        rule = 'Advance when weight is stable, recovery is decent, and the next phase is appropriate for the roadmap.';
+      } else if(current.id === 'bulk'){
+        rule = 'Advance when the build target is reached or the current bulk goal is complete.';
+      } else {
+        rule = 'Advance when the current phase goal is clearly reached.';
+      }
+
+      if(targetWeight != null){
+        rule += ' Target weight in use: ' + targetWeight + ' kg.';
+      }
+      if(endBF != null){
+        rule += ' Target body fat in use: ' + endBF + '%.';
+      }
+
+      ruleEl.textContent = rule;
+
+      var event = getLastAutomationEvent();
+      if(event && event.date){
+        lastEl.textContent = event.date + ' — ' + event.message;
+      } else {
+        lastEl.textContent = 'No phase automation event yet.';
+      }
+    }
+
+    function maybeAutoAdvanceRoadmap(entry){
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || roadmap.stages.length < 2) return null;
+
+      var current = roadmap.stages[0];
+      var next = roadmap.stages[1];
+      var targetWeight = getTargetWeight();
+      var targetBF = roadmap.endBF != null ? roadmap.endBF : null;
+      var history = getCheckinHistory();
+
+      function completeCurrent(reason){
+        roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
+        roadmap.completedStages.push({
+          id: current.id,
+          name: current.name,
+          completed_on: todayISO(),
+          reason: reason
+        });
+        roadmap.stages = roadmap.stages.slice(1);
+        saveRoadmap(roadmap);
+
+        var event = {
+          date: todayISO(),
+          message: 'Moved from ' + current.name + ' to ' + next.name + ' because ' + reason + '.'
+        };
+        saveLastAutomationEvent(event);
+        return event.message;
+      }
+
+      if((current.id === 'cut' || current.id === 'transform') && targetBF != null && entry.bodyfat_est != null && entry.bodyfat_est <= targetBF){
+        return completeCurrent('the target body-fat level was reached');
+      }
+
+      if(current.id === 'cut' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
+        return completeCurrent('the target weight was reached during the cut');
+      }
+
+      if(current.id === 'transform' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
+        return completeCurrent('the target weight was reached during transform');
+      }
+
+      if(current.id === 'bulk' && targetWeight != null && entry.weight_avg != null && entry.weight_avg >= targetWeight){
+        return completeCurrent('the target build weight was reached');
+      }
+
+      if(current.id === 'maintain' && next.id === 'bulk' && history.length >= 2){
+        var prev = history[history.length - 2];
+        if(prev && entry.weight_avg != null && prev.weight_avg != null){
+          var stable = Math.abs(entry.weight_avg - prev.weight_avg) <= 0.4;
+          var ready = stable && entry.recovery >= 3 && entry.adherence_nutrition >= 3 && entry.adherence_training >= 3;
+          if(ready){
+            return completeCurrent('weight and recovery looked stable enough to move into the next planned build phase');
+          }
+        }
+      }
+
+      return null;
+    }
+
     function evaluateTargetWeight(currentWeight, targetWeight){
       if(currentWeight == null || targetWeight == null) return null;
 
@@ -2371,9 +2694,25 @@
 
       entry.result = evaluateCheckin(entry, prev);
       history.push(entry);
+
+      var automationMessage = maybeAutoAdvanceRoadmap(entry);
+      if(automationMessage){
+        entry.result.phaseAction = automationMessage;
+        entry.result.decision = 'Phase completed';
+        entry.result.tags = (entry.result.tags || []).concat(['Auto-advanced']);
+      }
+
       saveCheckinHistory(history);
+      renderCurrentPhase();
+      renderPlan();
       renderCheckinHistory();
-      alert('Weekly check-in saved.');
+      renderAutomationStatus();
+
+      if(automationMessage){
+        alert('Weekly check-in saved. ' + automationMessage);
+      } else {
+        alert('Weekly check-in saved.');
+      }
     }
 
     function exportAll(){
@@ -2384,7 +2723,10 @@
         'fff.logs.v1',
         'fff.checks.v1',
         'fff.coaching.v1',
-        'fff.weekly.checkins.v1'
+        'fff.weekly.checkins.v1',
+        'fff.weight.log.v1',
+        'fff.target.weight.v1',
+        'fff.phase.automation.last.v1'
       ];
 
       for(var i = 0; i < localStorage.length; i++){

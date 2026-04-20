@@ -2234,6 +2234,51 @@
       localStorage.setItem(AUTOMATION_EVENT_KEY, JSON.stringify(event));
     }
 
+    
+    function getAutomationContext(history, entry){
+      var prev = history.length ? history[history.length - 1] : null;
+      var prev2 = history.length > 1 ? history[history.length - 2] : null;
+
+      var ctx = {
+        prev: prev,
+        prev2: prev2,
+        highAdherence: entry.adherence_nutrition >= 4 && entry.adherence_training >= 4,
+        adequateAdherence: entry.adherence_nutrition >= 3 && entry.adherence_training >= 3,
+        poorRecovery: entry.recovery <= 2 || entry.sleep <= 2,
+        decentRecovery: entry.recovery >= 3 && entry.sleep >= 3,
+        strongRecovery: entry.recovery >= 4 && entry.sleep >= 3,
+        weightAtOrBeyondTarget: false,
+        waistNotRising: true,
+        waistDropping: false,
+        waistStableOrDown: true,
+        scaleStable: false,
+        confirmedByTwoCheckins: false,
+        trendLooksReal: false
+      };
+
+      if(prev && entry.weight_avg != null && prev.weight_avg != null){
+        ctx.scaleStable = Math.abs(entry.weight_avg - prev.weight_avg) <= 0.4;
+      }
+
+      if(prev && entry.waist_cm != null && prev.waist_cm != null){
+        ctx.waistDropping = entry.waist_cm <= prev.waist_cm - 0.3;
+        ctx.waistNotRising = entry.waist_cm <= prev.waist_cm + 0.2;
+        ctx.waistStableOrDown = entry.waist_cm <= prev.waist_cm + 0.2;
+      }
+
+      if(prev2 && prev && entry.weight_avg != null && prev.weight_avg != null && prev2.weight_avg != null){
+        var delta1 = Math.abs(entry.weight_avg - prev.weight_avg);
+        var delta2 = Math.abs(prev.weight_avg - prev2.weight_avg);
+        ctx.confirmedByTwoCheckins = delta1 <= 0.5 || delta2 <= 0.5;
+      } else {
+        ctx.confirmedByTwoCheckins = !!prev;
+      }
+
+      ctx.trendLooksReal = ctx.confirmedByTwoCheckins;
+
+      return ctx;
+    }
+
     function renderAutomationStatus(){
       var ruleEl = document.getElementById('phaseAutomationRule');
       var lastEl = document.getElementById('phaseAutomationLast');
@@ -2249,16 +2294,18 @@
       var current = roadmap.stages[0];
       var targetWeight = getTargetWeight();
       var endBF = roadmap.endBF != null ? roadmap.endBF : null;
-      var rule = '';
+      var rule = 'Automation does not use body weight alone. It checks weight trend, waist trend, adherence, and recovery before moving the current phase on.';
 
-      if(current.id === 'cut' || current.id === 'transform'){
-        rule = 'Advance when the current phase target is clearly reached by body-fat estimate or target weight, then move to the next relevant stage.';
+      if(current.id === 'cut'){
+        rule += ' In a cut, target weight or target body-fat can trigger advancement only when waist is not moving the wrong way and adherence / recovery are good enough.';
+      } else if(current.id === 'transform'){
+        rule += ' In transform, advancement needs the phase goal to be reached with body-composition confirmation and enough consistency to trust the signal.';
       } else if(current.id === 'maintain'){
-        rule = 'Advance when weight is stable, recovery is decent, and the next phase is appropriate for the roadmap.';
+        rule += ' In maintain, advancement needs stable weight, stable waist, and decent adherence / recovery.';
       } else if(current.id === 'bulk'){
-        rule = 'Advance when the build target is reached or the current bulk goal is complete.';
+        rule += ' In bulk, advancement needs the build target to be reached without waist rise or recovery warning signs getting out of hand.';
       } else {
-        rule = 'Advance when the current phase goal is clearly reached.';
+        rule += ' The current phase must be clearly completed, not guessed from one metric.';
       }
 
       if(targetWeight != null){
@@ -2287,6 +2334,7 @@
       var targetWeight = getTargetWeight();
       var targetBF = roadmap.endBF != null ? roadmap.endBF : null;
       var history = getCheckinHistory();
+      var ctx = getAutomationContext(history, entry);
 
       function completeCurrent(reason){
         roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
@@ -2307,37 +2355,43 @@
         return event.message;
       }
 
+      if(!ctx.adequateAdherence || ctx.poorRecovery){
+        return null;
+      }
+
       if((current.id === 'cut' || current.id === 'transform') && targetBF != null && entry.bodyfat_est != null && entry.bodyfat_est <= targetBF){
-        return completeCurrent('the target body-fat level was reached');
+        if(ctx.waistStableOrDown || ctx.trendLooksReal){
+          return completeCurrent('the target body-fat level was reached with acceptable adherence, recovery, and confirming body-composition signals');
+        }
       }
 
       if(current.id === 'cut' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
-        return completeCurrent('the target weight was reached during the cut');
+        if(ctx.waistStableOrDown && ctx.trendLooksReal){
+          return completeCurrent('the cut target weight was reached and waist / check-in context supported moving on');
+        }
       }
 
       if(current.id === 'transform' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
-        return completeCurrent('the target weight was reached during transform');
+        if(ctx.waistStableOrDown && ctx.trendLooksReal){
+          return completeCurrent('the transform target weight was reached and the wider check-in context supported progression');
+        }
+      }
+
+      if(current.id === 'maintain' && next.id === 'bulk' && history.length >= 1){
+        if(ctx.scaleStable && ctx.waistStableOrDown && ctx.decentRecovery && ctx.adequateAdherence){
+          return completeCurrent('weight and waist were stable enough, with decent adherence and recovery, to begin the next planned build phase');
+        }
       }
 
       if(current.id === 'bulk' && targetWeight != null && entry.weight_avg != null && entry.weight_avg >= targetWeight){
-        return completeCurrent('the target build weight was reached');
-      }
-
-      if(current.id === 'maintain' && next.id === 'bulk' && history.length >= 2){
-        var prev = history[history.length - 2];
-        if(prev && entry.weight_avg != null && prev.weight_avg != null){
-          var stable = Math.abs(entry.weight_avg - prev.weight_avg) <= 0.4;
-          var ready = stable && entry.recovery >= 3 && entry.adherence_nutrition >= 3 && entry.adherence_training >= 3;
-          if(ready){
-            return completeCurrent('weight and recovery looked stable enough to move into the next planned build phase');
-          }
+        if(ctx.waistNotRising && ctx.decentRecovery && ctx.trendLooksReal){
+          return completeCurrent('the build target was reached without a clear waist warning and recovery remained acceptable');
         }
       }
 
       return null;
     }
-
-    function evaluateTargetWeight(currentWeight, targetWeight){
+function evaluateTargetWeight(currentWeight, targetWeight){
       if(currentWeight == null || targetWeight == null) return null;
 
       var diffPct = ((currentWeight - targetWeight) / currentWeight) * 100;

@@ -2,7 +2,6 @@ const COACH = {
 
   getSummary(){
     let totalSessions = 0
-    let skipped = 0
     let improvements = 0
 
     for(let i=0;i<localStorage.length;i++){
@@ -17,36 +16,32 @@ const COACH = {
       if(best > 0) improvements++
     }
 
-    return { totalSessions, skipped, improvements }
+    return { totalSessions, improvements }
   },
 
   analyse(){
 
     const s = this.getSummary()
-
     const insights = []
 
-    // 🔻 Low engagement
     if(s.totalSessions < 3){
       insights.push({
         type: "nudge",
-        msg: "Let’s build consistency first. Keep sessions short and achievable this week."
+        msg: "Start small. Focus on consistency."
       })
     }
 
-    // 🔥 Good progress
     if(s.improvements >= 5){
       insights.push({
         type: "progress",
-        msg: "You’re progressing well. Increasing intensity slightly this week."
+        msg: "Progress detected. Increasing intensity."
       })
     }
 
-    // 😴 Fatigue detection (basic)
     if(s.totalSessions > 6 && s.improvements === 0){
       insights.push({
         type: "fatigue",
-        msg: "Progress has slowed. Reducing volume and adding recovery work."
+        msg: "Fatigue detected. Reducing volume."
       })
     }
 

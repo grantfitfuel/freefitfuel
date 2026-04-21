@@ -252,30 +252,51 @@
     .status-building{color:var(--warn)}
     .status-weak{color:var(--bad)}
 
+    
+    .accordion-strong {
+      border:2px solid var(--accent);
+      border-radius:14px;
+      margin-top:16px;
+      overflow:hidden;
+    }
+    .accordion-strong summary{
+      background:rgba(255,106,0,.15);
+      padding:14px;
+      font-weight:700;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .accordion-strong summary::after{
+      content:"▼";
+      font-size:.9rem;
+    }
+    .accordion-strong[open] summary::after{
+      content:"▲";
+    }
+    .accordion-body{
+      padding:14px;
+      background:#111418;
+    }
+    .hero-simple{
+      padding:14px;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      margin-bottom:12px;
+      background:#0f131a;
+    }
+    .today-focus{
+      border:2px solid var(--accent);
+      background:rgba(255,106,0,.12);
+    }
+
     .plan-line{
       border:1px solid var(--stroke);
       border-radius:10px;
       padding:.6rem .7rem;
       background:rgba(255,255,255,.03);
       margin:.35rem 0;
-    }
-
-    .collapsed-group{
-      margin-top:12px;
-    }
-    .collapsed-group summary{
-      cursor:pointer;
-      color:var(--accent);
-      font-weight:700;
-      list-style:none;
-    }
-    .collapsed-group summary::-webkit-details-marker{display:none}
-    .details-body{margin-top:10px}
-    .today-card{
-      background:
-        linear-gradient(180deg, rgba(255,106,0,.12), rgba(255,106,0,.05)),
-        var(--glass2);
-      border:1px solid rgba(255,106,0,.24);
     }
 
     .days{display:grid;gap:12px}
@@ -359,7 +380,7 @@
         <div>
           <div class="eyebrow">FreeFitFuel™ • My Plan</div>
           <h1>Your training cockpit</h1>
-          <p class="lead">See your current phase, today’s call, your weekly check-in, and your progress graph first. Everything else is there when you need it.</p>
+          <p class="lead">Build your roadmap. Review progress weekly. Follow today’s coaching.</p>
         </div>
         <div class="cta-row">
           <a class="btn btn-primary" href="workouts.html">Workouts</a>
@@ -372,7 +393,7 @@
         <strong>Loading coaching…</strong>
         <p>Pulling together roadmap, recovery, mindset, and training signals.</p>
       </div>
-    </section>
+    </div></div></details></section>
 
     <section class="section">
       <div class="section-head">
@@ -506,7 +527,7 @@
           <div class="tag-row" id="roadmapMeta"></div>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
@@ -599,7 +620,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
@@ -650,7 +671,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
@@ -801,7 +822,7 @@
           </table>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
 
 
@@ -873,7 +894,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
@@ -932,7 +953,7 @@
           <div class="graph-note">Automation checks run during the weekly check-in. When the current phase goal is clearly reached, the roadmap can advance to the next relevant phase automatically, but you can override that if needed.</div>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
@@ -948,7 +969,7 @@
         <label class="wellness-item"><input type="checkbox" id="macroDone"><span><span class="w-title">Macros on target</span><span class="w-sub">Fuelling broadly matched the plan</span></span></label>
         <label class="wellness-item"><input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?"><span><span class="w-title">Walk / Bike / Run</span><span class="w-sub">General movement and circulation done</span></span></label>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="two-col">
       <div class="section">
@@ -971,12 +992,12 @@
       <div class="section">
         <div class="section-head">
           <div>
-            <h2>Today</h2>
-            <p>Your main action block. This should tell you what to do without needing to read the whole page.</p>
+            <h2>Today</h2><div class="today-focus">
+            <p>The system’s practical call for right now.</p>
           </div>
         </div>
 
-        <div class="card today-card">
+        <div class="card">
           <h3>Today’s decision</h3>
           <div class="metric" id="todayDecision">—</div>
           <div class="sub" id="todayReason">—</div>
@@ -989,129 +1010,100 @@
           <div class="tag-row" id="nextSessionMeta"></div>
         </div>
       </div>
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>Performance & recovery</h2>
-          <p>Keep the essentials visible. Open the detail only when you want the deeper coaching layer.</p>
+          <details class="accordion-strong"><summary>Coaching & Performance</summary><div class="accordion-body"><h2 style="display:none">
+          <p>Quick scan of risk, pressure, movement quality, and weekly trend.</p>
         </div>
       </div>
 
-      <div class="grid grid-3">
+      <div class="grid grid-4">
         <div class="card">
-          <h3>Sessions Logged</h3>
-          <div class="metric" id="weekSessions">—</div>
-          <div class="sub">Distinct training days in the last 7 days</div>
+          <h3>Strain risk</h3>
+          <div class="metric" id="cockpitStrain">—</div>
+          <div class="sub">Accumulated load, density, and fatigue picture</div>
         </div>
         <div class="card">
-          <h3>Adherence</h3>
-          <div class="metric" id="weekAdherence">—</div>
-          <div class="sub">Consistency score for the week</div>
+          <h3>Pain risk</h3>
+          <div class="metric" id="cockpitPain">—</div>
+          <div class="sub">Risk inferred from notes and wider pattern stress</div>
         </div>
         <div class="card">
-          <h3>Training Quality</h3>
-          <div class="metric" id="weekQuality">—</div>
-          <div class="sub">Quality signal after strain and pain penalties</div>
+          <h3>Progression pressure</h3>
+          <div class="metric" id="cockpitPressure">—</div>
+          <div class="sub">Risk of pushing harder than the week supports</div>
+        </div>
+        <div class="card">
+          <h3>Deload flag</h3>
+          <div class="metric" id="cockpitDeload">—</div>
+          <div class="sub">Whether a lighter week is now advised</div>
         </div>
       </div>
 
-      <details class="legend collapsed-group">
-        <summary>Coaching detail</summary>
-        <div class="details-body">
-          <div class="grid grid-3">
-            <div class="card"><h3>Strongest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekStrongest">—</div><div class="sub">Area showing the best recent signal</div></div>
-            <div class="card"><h3>Weakest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekWeakest">—</div><div class="sub">Area most likely to need caution or refinement</div></div>
-            <div class="card"><h3>Weekly Mode</h3><div class="metric" style="font-size:1.05rem" id="weekMode">—</div><div class="sub">The current weekly coaching stance</div></div>
-          </div>
-
-          <div class="tag-row" id="weekSwaps"></div>
-
-          <div class="grid grid-4" style="margin-top:12px">
-            <div class="card">
-              <h3>Strain risk</h3>
-              <div class="metric" id="cockpitStrain">—</div>
-              <div class="sub">Accumulated load, density, and fatigue picture</div>
-            </div>
-            <div class="card">
-              <h3>Pain risk</h3>
-              <div class="metric" id="cockpitPain">—</div>
-              <div class="sub">Risk inferred from notes and wider pattern stress</div>
-            </div>
-            <div class="card">
-              <h3>Progression pressure</h3>
-              <div class="metric" id="cockpitPressure">—</div>
-              <div class="sub">Risk of pushing harder than the week supports</div>
-            </div>
-            <div class="card">
-              <h3>Deload flag</h3>
-              <div class="metric" id="cockpitDeload">—</div>
-              <div class="sub">Whether a lighter week is now advised</div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:12px">
-            <h3>Movement status</h3>
-            <div class="status-grid">
-              <div class="status-box" data-family="push"><div class="status-title">Pressing</div><div class="status-value">—</div></div>
-              <div class="status-box" data-family="pull"><div class="status-title">Pulling</div><div class="status-value">—</div></div>
-              <div class="status-box" data-family="legs"><div class="status-title">Lower Body</div><div class="status-value">—</div></div>
-              <div class="status-box" data-family="core"><div class="status-title">Core</div><div class="status-value">—</div></div>
-              <div class="status-box" data-family="cardio"><div class="status-title">Cardio</div><div class="status-value">—</div></div>
-            </div>
-          </div>
-
-          <details class="legend" style="margin-top:14px">
-            <summary>Next week adjustments</summary>
-            <div id="nextWeekChanges" style="margin-top:8px"></div>
-          </details>
+      <div class="card" style="margin-top:12px">
+        <h3>Movement status</h3>
+        <div class="status-grid">
+          <div class="status-box" data-family="push"><div class="status-title">Pressing</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="pull"><div class="status-title">Pulling</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="legs"><div class="status-title">Lower Body</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="core"><div class="status-title">Core</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="cardio"><div class="status-title">Cardio</div><div class="status-value">—</div></div>
         </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:12px">
+        <div class="card"><h3>Sessions Logged</h3><div class="metric" id="weekSessions">—</div><div class="sub">Distinct training days in the last 7 days</div></div>
+        <div class="card"><h3>Adherence</h3><div class="metric" id="weekAdherence">—</div><div class="sub">Consistency score for the week</div></div>
+        <div class="card"><h3>Training Quality</h3><div class="metric" id="weekQuality">—</div><div class="sub">Quality signal after strain and pain penalties</div></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:12px">
+        <div class="card"><h3>Strongest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekStrongest">—</div><div class="sub">Area showing the best recent signal</div></div>
+        <div class="card"><h3>Weakest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekWeakest">—</div><div class="sub">Area most likely to need caution or refinement</div></div>
+        <div class="card"><h3>Weekly Mode</h3><div class="metric" style="font-size:1.05rem" id="weekMode">—</div><div class="sub">The current weekly coaching stance</div></div>
+      </div>
+
+      <div class="tag-row" id="weekSwaps"></div>
+
+      <details class="legend" style="margin-top:14px">
+        <summary>Next week adjustments</summary>
+        <div id="nextWeekChanges" style="margin-top:8px"></div>
       </details>
-    </section>
-
-    </section>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>Your personalised plan</h2>
-          <p>Your full roadmap is still here, but it stays tucked away until you want to inspect or log it.</p>
+          <details class="accordion-strong"><summary>Full Plan</summary><div class="accordion-body"><h2 style="display:none">
+          <p>The roadmap and workout engine meet here.</p>
         </div>
       </div>
 
-      <details class="legend collapsed-group" open>
-        <summary>Full plan</summary>
-        <div class="details-body">
-          <div id="progressGuide"></div>
-          <div id="legendMount"></div>
-          <div id="plan"></div>
-          <p id="planMsg" class="meta"></p>
-        </div>
-      </details>
-    </section>
+      <div id="progressGuide"></div>
+      <div id="legendMount"></div>
+      <div id="plan"></div>
+      <p id="planMsg" class="meta"></p>
+    </div></details></section>
 
     <section class="section">
       <div class="section-head">
         <div>
-          <h2>Backup / Reset</h2>
-          <p>Useful, but not something you need to look at all the time.</p>
+          <details class="accordion-strong"><summary>Data & Backup</summary><div class="accordion-body"><h2 style="display:none">
+          <p>Reset clears logs, PBs, and wellness only. Roadmap stays intact.</p>
         </div>
       </div>
 
-      <details class="legend collapsed-group">
-        <summary>Data & backup</summary>
-        <div class="details-body">
-          <div class="tag-row">
-            <button class="btn-sm" id="btnExport" type="button">Export all workout data (.json)</button>
-            <label class="btn-sm" for="importFile" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center">Import data</label>
-            <input id="importFile" type="file" accept="application/json" style="display:none">
-            <button class="btn-sm" id="btnReset" type="button">Reset (logs + PBs + wellness only)</button>
-          </div>
-          <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
-        </div>
-      </details>
-    </section>
+      <div class="tag-row">
+        <button class="btn-sm" id="btnExport" type="button">Export all workout data (.json)</button>
+        <label class="btn-sm" for="importFile" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center">Import data</label>
+        <input id="importFile" type="file" accept="application/json" style="display:none">
+        <button class="btn-sm" id="btnReset" type="button">Reset (logs + PBs + wellness only)</button>
+      </div>
+      <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
+    </div></details></section>
 
     <section class="section">
       <h2>Injury Recovery & Physio</h2>
@@ -1130,7 +1122,7 @@
           <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px">
         </div>
       </div>
-    </section>
+    </div></details></section>
   </div>
 
   <script src="js/engine/fff-state.js?v=1"></script>

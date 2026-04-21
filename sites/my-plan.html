@@ -13,6 +13,26 @@
 
   <style>
 
+    .activation-banner{
+      border:1px solid rgba(255,106,0,.25);
+      background:rgba(255,106,0,.08);
+      padding:12px 14px;
+      border-radius:12px;
+      margin-bottom:14px;
+      font-weight:700;
+      color:#ffd6bd;
+    }
+    .activation-steps{
+      margin-top:8px;
+      color:var(--inkdim);
+      font-weight:600;
+      font-size:.92rem;
+    }
+    .empty-soft{
+      color:var(--inkdim);
+      opacity:.9;
+    }
+
     .global-header{
       margin:0 0 16px;
       padding:14px 16px;
@@ -513,6 +533,11 @@
 
     <p class="mode-helper">Use Today for the immediate call, Progress for trend and momentum, and Plan for the full structure.</p>
 
+    <div class="activation-banner" id="activationBanner" style="display:none">
+      <div id="activationHeadline">Start here: complete your first weekly check-in to activate your plan.</div>
+      <div class="activation-steps">Step 1 → Set your target • Step 2 → Complete your first weekly check-in • Step 3 → Follow your daily call</div>
+    </div>
+
     <div class="mode-panel is-active" id="modeToday">
     <section class="hero">
       <div class="hero-top">
@@ -597,13 +622,13 @@
               <span id="todayStatusMirror">Status: —</span>
               <span class="emotion-chip" id="todayEmotionMirror">Emotional level: Steady</span>
             </div>
-            <div class="today-reason" id="todayReasonMirror">—</div>
+            <div class="today-reason" id="todayReasonMirror">Your daily guidance will appear once your first check-in is saved.</div>
             <div class="tone-line" id="todayToneMirror">Keep it steady today.</div>
           </div>
           <div class="card" style="margin-top:12px">
             <h3>Next session</h3>
-            <div class="metric" style="font-size:1.05rem" id="nextSessionTitleMirror">—</div>
-            <div class="sub" id="nextSessionActionMirror">—</div>
+            <div class="metric" style="font-size:1.05rem" id="nextSessionTitleMirror">Next session will appear after setup</div>
+            <div class="sub" id="nextSessionActionMirror">Complete your first check-in to generate the next-session guidance.</div>
             <div class="tag-row" id="nextSessionMetaMirror"></div>
           </div>
         </section>
@@ -723,7 +748,7 @@
         <div class="card checkin-result">
           <h3>Check-in result</h3>
           <div class="metric" style="font-size:1.15rem" id="checkinDecision">No check-in yet</div>
-          <div class="sub" id="checkinReason">Submit a weekly check-in to get a recommendation.</div>
+          <div class="sub" id="checkinReason">Complete your first weekly check-in to activate your weekly recommendation.</div>
 
           <div class="plan-line" style="margin-top:12px">
             <strong>Nutrition adjustment</strong>
@@ -763,7 +788,7 @@
               </tr>
             </thead>
             <tbody id="checkinHistoryBody">
-              <tr><td colspan="5" class="meta">No weekly check-ins saved yet.</td></tr>
+              <tr><td colspan="5" class="meta">Your weekly history will appear after your first saved check-in.</td></tr>
             </tbody>
           </table>
         </div>
@@ -796,8 +821,8 @@
         </div>
 
         <div class="card intervention">
-          <div class="metric" id="interventionHeadline">Loading…</div>
-          <div class="sub" id="interventionMessage">Preparing intervention guidance.</div>
+          <div class="metric" id="interventionHeadline">Your guidance will appear once your plan has started.</div>
+          <div class="sub" id="interventionMessage">Mental reset guidance will appear once your plan has started.</div>
           <ul id="interventionActions"></ul>
         </div>
 
@@ -2093,6 +2118,7 @@
       renderCurrentPhase();
       renderPlan();
       refreshAllCoachViews();
+      renderActivationLayer();
       syncPolishMirrors();
       wireWorkoutPlanLogsToEngine();
       return roadmap;
@@ -2650,17 +2676,17 @@
           wrap.innerHTML = '<div class="card">No roadmap found. Create one above.</div>';
           renderLegend([]);
           renderProgressGuide([]);
-          if(msg) msg.textContent = 'No roadmap loaded.';
+          if(msg) msg.textContent = 'Set up your plan in Plan mode to activate this section.';
           return;
         }
 
         var data = JSON.parse(raw);
         var stages = Array.isArray(data.stages) ? data.stages : [];
         if(!stages.length){
-          wrap.innerHTML = '<div class="card">Roadmap has no stages.</div>';
+          wrap.innerHTML = '<div class="card">Your roadmap will appear here once your plan is generated.</div>';
           renderLegend([]);
           renderProgressGuide([]);
-          if(msg) msg.textContent = 'Roadmap has no stages.';
+          if(msg) msg.textContent = 'Your roadmap will appear here once your plan is generated.';
           return;
         }
 
@@ -3335,7 +3361,7 @@
 
     function renderCheckinResult(result){
       document.getElementById('checkinDecision').textContent = result ? result.decision : 'No check-in yet';
-      document.getElementById('checkinReason').textContent = result ? result.reason : 'Submit a weekly check-in to get a recommendation.';
+      document.getElementById('checkinReason').textContent = result ? result.reason : 'Complete your first weekly check-in to activate your weekly recommendation.';
       document.getElementById('checkinNutritionAction').textContent = result ? result.nutrition : '—';
       document.getElementById('checkinTrainingAction').textContent = result ? result.training : '—';
       document.getElementById('checkinPhaseAction').textContent = result ? result.phaseAction : '—';
@@ -3354,7 +3380,7 @@
       var history = getCheckinHistory();
 
       if(!history.length){
-        body.innerHTML = '<tr><td colspan="5" class="meta">No weekly check-ins saved yet.</td></tr>';
+        body.innerHTML = '<tr><td colspan="5" class="meta">Your weekly history will appear after your first saved check-in.</td></tr>';
         renderCheckinResult(null);
         return;
       }
@@ -3414,6 +3440,7 @@
       renderPlan();
       renderCheckinHistory();
       renderAutomationStatus();
+      renderActivationLayer();
       syncPolishMirrors();
 
       if(automationMessage){
@@ -3520,7 +3547,7 @@
       if(!el) return;
 
       if(!window.FFF){
-        el.innerHTML = '<strong>Engine not loaded</strong><p>Coach system is unavailable.</p>';
+        el.innerHTML = '<strong>Coaching not active yet</strong><p>Coaching will activate once your first week of data is in place.</p>';
         return;
       }
 
@@ -3732,6 +3759,7 @@
       renderTodayCoach();
       syncTodayMirrors();
       syncPolishMirrors();
+      renderActivationLayer();
       renderAdaptiveCockpit();
       renderMovementStatus();
       renderWeeklySnapshot();
@@ -4024,6 +4052,44 @@
       var srcMeta = document.getElementById('nextSessionMeta');
       var dstMeta = document.getElementById('nextSessionMetaMirror');
       if(srcMeta && dstMeta) dstMeta.innerHTML = srcMeta.innerHTML;
+    }
+
+
+
+    function hasActivationData(){
+      try{
+        return getCheckinHistory().length > 0 || getWeightLog().length > 0;
+      }catch(err){
+        return false;
+      }
+    }
+
+    function renderActivationLayer(){
+      var banner = document.getElementById('activationBanner');
+      if(!banner) return;
+
+      var hasRoadmap = false;
+      try{
+        var roadmap = getActiveRoadmap();
+        hasRoadmap = !!(roadmap && Array.isArray(roadmap.stages) && roadmap.stages.length);
+      }catch(err){}
+
+      var active = hasActivationData();
+      banner.style.display = active ? 'none' : 'block';
+
+      var headline = document.getElementById('activationHeadline');
+      if(!headline) return;
+
+      if(!hasRoadmap){
+        headline.textContent = 'Start here: go to Plan mode, set your target, and generate your roadmap.';
+      } else {
+        headline.textContent = 'Start here: complete your first weekly check-in to activate your daily guidance and coaching.';
+      }
+
+      var graphMsg = document.getElementById('chartEmpty');
+      if(graphMsg && !active){
+        graphMsg.textContent = 'Your graph will appear after you log your first few weights or save your first weekly check-in.';
+      }
     }
 
 

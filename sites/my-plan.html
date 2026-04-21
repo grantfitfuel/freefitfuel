@@ -81,6 +81,40 @@
     }
     .section.compact{padding:14px}
 
+    .mode-panel{
+      transition:opacity .22s ease, transform .22s ease;
+    }
+    .mode-panel:not(.is-active){
+      opacity:0;
+      transform:translateY(4px);
+      pointer-events:none;
+    }
+    .mode-panel.is-active{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+    .emotion-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      border:1px solid rgba(255,106,0,.18);
+      background:rgba(255,106,0,.08);
+      color:#ffd6bd;
+      border-radius:999px;
+      padding:.28rem .6rem;
+      font-size:.9rem;
+      font-weight:700;
+    }
+    .tone-line{
+      margin-top:10px;
+      color:#f0d7c4;
+      font-weight:600;
+      font-size:.92rem;
+      opacity:.95;
+    }
+
+
     .mode-switch{
       display:flex;
       gap:10px;
@@ -150,10 +184,10 @@
     .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px 40px}
 
     h1{margin:.1rem 0 .45rem;font-size:2rem}
-    h2{margin:.1rem 0 .55rem;font-size:1.22rem;color:var(--accent)}
+    h2{margin:.1rem 0 .45rem;font-size:1.08rem;font-weight:700;color:var(--ink)}
     h3{margin:.1rem 0 .45rem}
     .lead{color:var(--inkdim)}
-    .meta{color:var(--inkdim)}
+    .meta{color:var(--inkdim);opacity:.82}
 
     .hero{
       background:
@@ -178,11 +212,11 @@
     }
     .cta-row{display:flex;gap:10px;flex-wrap:wrap}
 
-    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;margin:18px 0;padding:16px}
+    .section{background:var(--glass);border:1px solid rgba(255,255,255,.05);border-radius:18px;margin:22px 0;padding:16px}
     .section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
     .section-head p{margin:0;color:var(--inkdim)}
 
-    .card{background:var(--glass2);border:1px solid var(--stroke);border-radius:14px;padding:12px}
+    .card{background:rgba(255,255,255,.03);border:none;border-radius:14px;padding:12px}
     .grid{display:grid;gap:12px}
     .grid-2{grid-template-columns:1.25fr .75fr}
     .grid-3{grid-template-columns:repeat(3,1fr)}
@@ -210,7 +244,7 @@
     .btn:hover,.btn-sm:hover,.goal-chip:hover{border-color:rgba(255,106,0,.45)}
 
     .metric{font-size:1.42rem;font-weight:800;line-height:1.06}
-    .sub{font-size:.9rem;color:var(--inkdim);margin-top:.35rem}
+    .sub{font-size:.85rem;color:var(--inkdim);margin-top:.35rem;opacity:.82}
 
     .setup-shell{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
     @media (max-width:980px){ .setup-shell{grid-template-columns:1fr } }
@@ -477,7 +511,7 @@
       </div>
     </div>
 
-    <p class="mode-helper">Use Today for your immediate call, Progress for trends, and Plan for the full roadmap and setup.</p>
+    <p class="mode-helper">Use Today for the immediate call, Progress for trend and momentum, and Plan for the full structure.</p>
 
     <div class="mode-panel is-active" id="modeToday">
     <section class="hero">
@@ -554,15 +588,17 @@
         <section class="section compact">
           <div class="panel-kicker">Do this now</div>
           <h2 style="margin-top:0">Today</h2>
-          <p class="lead" style="margin-top:0">One clear command block first. The rest of the detail is below when you need it.</p>
+          <p class="lead" style="margin-top:0">One clear command block first. The rest of the detail stays out of the way until you need it.</p>
           <div class="today-command" style="margin-top:10px">
             <div class="main-call" id="todayDecisionMirror">—</div>
             <div class="today-meta">
               <span id="todayCaloriesMirror">Calories: —</span>
               <span id="todayWaterMirror">Water: —</span>
               <span id="todayStatusMirror">Status: —</span>
+              <span class="emotion-chip" id="todayEmotionMirror">Emotional level: Steady</span>
             </div>
             <div class="today-reason" id="todayReasonMirror">—</div>
+            <div class="tone-line" id="todayToneMirror">Keep it steady today.</div>
           </div>
           <div class="card" style="margin-top:12px">
             <h3>Next session</h3>
@@ -594,6 +630,16 @@
 
             <label class="field">Body fat % optional
               <input id="checkinBodyFat" class="input" type="number" min="1" max="70" step="0.1" placeholder="e.g. 22.5">
+            </label>
+
+            <label class="field">Emotional level
+              <select id="emotionalLevel" class="input">
+                <option value="drained">Drained</option>
+                <option value="flat">Flat</option>
+                <option value="steady" selected>Steady</option>
+                <option value="positive">Positive</option>
+                <option value="strong">Strong</option>
+              </select>
             </label>
           </div>
 
@@ -2047,6 +2093,7 @@
       renderCurrentPhase();
       renderPlan();
       refreshAllCoachViews();
+      syncPolishMirrors();
       wireWorkoutPlanLogsToEngine();
       return roadmap;
     }
@@ -3091,6 +3138,14 @@
 
       reasons.push(poorRecovery ? 'Recovery is currently too weak to push harder.' : 'Recovery is acceptable.');
 
+      if(entry.emotional_level){
+        if(entry.emotional_level === 'drained') reasons.push('Emotional level is drained, so the plan should stay supportive rather than pushy.');
+        else if(entry.emotional_level === 'flat') reasons.push('Emotional level is flat, so a steadier week is sensible.');
+        else if(entry.emotional_level === 'positive') reasons.push('Emotional level is positive, which supports a steadier push if recovery also agrees.');
+        else if(entry.emotional_level === 'strong') reasons.push('Emotional level is strong, which supports progress if the rest of the signals agree.');
+        else reasons.push('Emotional level is steady.');
+      }
+
       return reasons;
     }
 
@@ -3287,7 +3342,9 @@
       document.getElementById('checkinReasoning').innerHTML = result && Array.isArray(result.reasoning) && result.reasoning.length
         ? result.reasoning.map(function(line){ return '• ' + escapeHtml(line); }).join('<br>')
         : '—';
-      document.getElementById('checkinTags').innerHTML = result ? result.tags.map(function(t){
+      var latestHistory = getCheckinHistory();
+      var latestEmotion = latestHistory.length ? latestHistory[latestHistory.length - 1].emotional_level : '';
+      document.getElementById('checkinTags').innerHTML = result ? result.tags.concat(latestEmotion ? ['Emotion: ' + titleCase(latestEmotion)] : []).map(function(t){
         return '<span class="tag tag-accent">' + escapeHtml(t) + '</span>';
       }).join('') : '';
     }
@@ -3338,6 +3395,7 @@
         energy: readRadioValue('energyScore'),
         hunger: readRadioValue('hungerScore'),
         sleep: readRadioValue('sleepScore'),
+        emotional_level: String(document.getElementById('emotionalLevel').value || 'steady'),
         notes: String(document.getElementById('checkinNotes').value || '').trim()
       };
 
@@ -3356,6 +3414,7 @@
       renderPlan();
       renderCheckinHistory();
       renderAutomationStatus();
+      syncPolishMirrors();
 
       if(automationMessage){
         alert('Weekly check-in saved. ' + automationMessage);
@@ -3909,6 +3968,19 @@
       if(todayCalories) todayCalories.textContent = 'Calories: ' + ((kcal && kcal.textContent) ? kcal.textContent : '—');
       if(todayWater) todayWater.textContent = 'Water: ' + ((water && water.textContent) ? water.textContent : '—');
       if(todayStatus) todayStatus.textContent = 'Status: ' + ((mode && mode.textContent && mode.textContent !== '—') ? mode.textContent : ((status && status.textContent) ? status.textContent : '—'));
+
+      var emotionMirror = document.getElementById('todayEmotionMirror');
+      var toneMirror = document.getElementById('todayToneMirror');
+      var emotionSel = document.getElementById('emotionalLevel');
+      var emotion = emotionSel ? emotionSel.value : 'steady';
+      if(emotionMirror) emotionMirror.textContent = 'Emotional level: ' + titleCase(emotion);
+
+      var tone = 'Keep it steady today.';
+      if(emotion === 'drained') tone = 'Go gently today. A lighter win still counts.';
+      else if(emotion === 'flat') tone = 'Keep the ask modest and focus on follow-through.';
+      else if(emotion === 'positive') tone = 'Good momentum today. Stay controlled and clean.';
+      else if(emotion === 'strong') tone = 'You have a good window today. Push with control, not chaos.';
+      if(toneMirror) toneMirror.textContent = tone;
 
       var gp = document.getElementById('globalPhaseText');
       var gt = document.getElementById('globalTargetText');

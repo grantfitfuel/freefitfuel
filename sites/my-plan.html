@@ -279,6 +279,30 @@
       padding:14px;
       background:#111418;
     }
+
+    .mode-switch{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:0 0 16px;
+    }
+    .mode-tab{
+      border:1px solid var(--stroke);
+      background:var(--glass2);
+      color:var(--ink);
+      padding:.7rem 1rem;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .mode-tab.is-active{
+      background:var(--accent);
+      color:#111;
+      border-color:#ff944a;
+    }
+    .mode-panel{display:none}
+    .mode-panel.is-active{display:block}
+
     .hero-simple{
       padding:14px;
       border:1px solid var(--stroke);
@@ -826,6 +850,9 @@
 
 
 
+    </div>
+
+    <div class="mode-panel" id="modeProgress">
     <section class="section">
       <div class="section-head">
         <div>
@@ -1123,6 +1150,7 @@
         </div>
       </div>
     </div></details></section>
+    </div>
   </div>
 
   <script src="js/engine/fff-state.js?v=1"></script>
@@ -3678,7 +3706,41 @@
       }catch(err){}
     }
 
+
+    function setMode(mode){
+      var tabs = document.querySelectorAll('.mode-tab');
+      var panels = document.querySelectorAll('.mode-panel');
+
+      Array.prototype.forEach.call(tabs, function(tab){
+        tab.classList.toggle('is-active', tab.getAttribute('data-mode') === mode);
+      });
+
+      Array.prototype.forEach.call(panels, function(panel){
+        panel.classList.toggle('is-active', panel.id === ('mode' + mode.charAt(0).toUpperCase() + mode.slice(1)));
+      });
+
+      try{ localStorage.setItem('fff.myplan.mode.v1', mode); }catch(err){}
+    }
+
+    function loadSavedMode(){
+      try{
+        var saved = localStorage.getItem('fff.myplan.mode.v1') || 'today';
+        return /^(today|progress|plan)$/.test(saved) ? saved : 'today';
+      }catch(err){
+        return 'today';
+      }
+    }
+
+
     document.addEventListener('DOMContentLoaded', function(){
+      var modeTabs = document.querySelectorAll('.mode-tab');
+      Array.prototype.forEach.call(modeTabs, function(btn){
+        btn.addEventListener('click', function(){
+          setMode(btn.getAttribute('data-mode'));
+        });
+      });
+      setMode(loadSavedMode());
+
       var goalButtons = document.querySelectorAll('.goal-chip');
       Array.prototype.forEach.call(goalButtons, function(btn){
         btn.addEventListener('click', function(){

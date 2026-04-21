@@ -2,18 +2,16 @@
 <html lang="en-GB">
 <head>
   <script defer data-domain="freefitfuel.com" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.tagged-events.js"></script>
-<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+  <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="stylesheet" href="style.css?v=21">
 
-  <!-- Favicons & app icons -->
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
-  <link rel="icon" type="image/png" sizes="32x32"  href="img/freefitfuel-logo-32.png">
-  <link rel="icon" type="image/png" sizes="48x48"  href="img/freefitfuel-logo-48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/freefitfuel-logo-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="img/freefitfuel-logo-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/freefitfuel-logo-180.png">
   <link rel="icon" type="image/png" sizes="512x512" href="img/freefitfuel-logo-512.png">
   <meta name="theme-color" content="#FF6A00">
@@ -23,7 +21,171 @@
   <link rel="apple-touch-icon" href="/img/freefitfuel-logo-180.png">
 
   <style>
-    /* ===== Carousel styles ===== */
+    .hero-system{
+      display:grid;
+      gap:18px;
+      grid-template-columns:1.1fr .9fr;
+      align-items:center;
+    }
+    @media (max-width:900px){
+      .hero-system{grid-template-columns:1fr}
+    }
+    .hero-card{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      padding:14px;
+    }
+    .hero-card h2{
+      margin:.1rem 0 .45rem;
+      font-size:1rem;
+    }
+    .hero-list{
+      margin:.35rem 0 0;
+      padding-left:1.1rem;
+      color:var(--inkdim);
+    }
+    .hero-list li{margin:.2rem 0}
+    .hero-sub{
+      max-width:62ch;
+    }
+    .cta-stack{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+    .cta-note{
+      margin-top:12px;
+      color:var(--inkdim);
+      font-size:.95rem;
+    }
+    .highlight-card{
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.13), rgba(255,106,0,.05)),
+        rgba(255,255,255,.04);
+      border:1px solid rgba(255,106,0,.22);
+    }
+    .steps{
+      display:grid;
+      gap:12px;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+    @media (max-width:900px){
+      .steps{grid-template-columns:1fr}
+    }
+    .step{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:14px;
+    }
+    .step-num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:32px;
+      height:32px;
+      border-radius:999px;
+      background:rgba(255,106,0,.14);
+      border:1px solid rgba(255,106,0,.25);
+      color:var(--accent);
+      font-weight:800;
+      margin-bottom:10px;
+    }
+    .engine-grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+    @media (max-width:900px){
+      .engine-grid{grid-template-columns:1fr}
+    }
+    .engine-item{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:14px;
+    }
+    .engine-item h3{margin:.1rem 0 .4rem}
+    .support-grid{
+      display:grid;
+      gap:12px;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+    @media (max-width:980px){
+      .support-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:640px){
+      .support-grid{grid-template-columns:1fr}
+    }
+    .support-card{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:14px;
+    }
+    .support-card h3{margin:.1rem 0 .4rem}
+    .system-strip{
+      margin:18px 0 0;
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,106,0,.22);
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.12), rgba(255,106,0,.05)),
+        rgba(255,255,255,.04);
+    }
+    .system-strip p{margin:.15rem 0 0}
+    .system-flow{
+      display:grid;
+      gap:12px;
+      grid-template-columns:1fr auto 1fr auto 1fr;
+      align-items:center;
+      margin-top:12px;
+    }
+    .system-flow .node{
+      background:#0c0f13;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:12px;
+      text-align:center;
+    }
+    .system-flow .arrow{
+      color:var(--accent);
+      font-weight:800;
+      text-align:center;
+    }
+    @media (max-width:900px){
+      .system-flow{
+        grid-template-columns:1fr;
+      }
+      .system-flow .arrow{
+        transform:rotate(90deg);
+      }
+    }
+    .privacy-link{
+      display:flex;
+      justify-content:center;
+      margin:30px 0 10px;
+    }
+    .btn-privacy{
+      display:inline-block;
+      padding:10px 20px;
+      border:1px solid var(--accent);
+      border-radius:8px;
+      text-decoration:none;
+      color:var(--accent);
+      font-weight:600;
+      font-size:1rem;
+      transition:all .2s ease-in-out;
+    }
+    .btn-privacy:hover,
+    .btn-privacy:focus-visible{
+      background:var(--accent);
+      color:var(--ink);
+      outline:none;
+    }
+
     #ideas .carousel{
       --gap:14px; --h:150px; --duration:28s;
       display:flex; gap:var(--gap); overflow:hidden; position:relative;
@@ -37,7 +199,6 @@
     }
     #ideas .carousel:hover .carousel-track,
     #ideas.is-paused .carousel-track{ animation-play-state:paused; }
-
     #ideas .idea{
       flex:0 0 auto; width:240px; border-radius:14px;
       border:1px solid var(--stroke); background:#0c0f13; overflow:hidden;
@@ -51,7 +212,6 @@
     @keyframes scroll-left{ from{transform:translateX(0)} to{transform:translateX(calc(-50% - var(--gap)))} }
     @media (max-width:560px){ #ideas .carousel{ --h:130px } #ideas .idea{ width:200px } }
 
-    /* ===== Modal styles ===== */
     dialog#ideaModal{
       background:#0f1319; color:var(--ink);
       border:1px solid var(--stroke); border-radius:14px; padding:0;
@@ -74,98 +234,185 @@
     .btn--pill:hover{ color:var(--accent) }
     .meta{ color:var(--inkdim); font-size:.92rem }
   </style>
-  <title>FreeFitFuel™ — Free Fitness, Nutrition & Wellbeing Plans</title>
-<meta name="description" content="FreeFitFuel&trade provides free workouts, nutrition guidance and wellbeing support. Dumbbell, bodyweight & band training, hydration tips, recipes and mental health tools.">
 
-<!-- OpenGraph -->
-<meta property="og:title" content="FreeFitFuel — Free Fitness, Nutrition & Wellbeing Plans">
-<meta property="og:description" content="Accessible, no-paywall fitness and nutrition. Dumbbell, bodyweight, bands, recipes & mental wellbeing — free forever.">
-<meta property="og:image" content="https://www.freefitfuel.com/img/freefitfuel-hero.png">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.freefitfuel.com/">
+  <title>FreeFitFuel™ — Adaptive Fitness, Nutrition & Wellbeing</title>
+  <meta name="description" content="FreeFitFuel™ is a free adaptive fitness, nutrition and wellbeing system. Build your plan, check in weekly, and follow your daily call with training, nutrition, hydration and recovery guidance.">
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FreeFitFuel — Free Fitness, Nutrition & Wellbeing Plans">
-<meta name="twitter:description" content="Fitness and nutrition plans that fit life. Free. Accessible. Evidence-based.">
-<meta name="twitter:image" content="https://www.freefitfuel.com/img/freefitfuel-hero.png">
+  <meta property="og:title" content="FreeFitFuel™ — Adaptive Fitness, Nutrition & Wellbeing">
+  <meta property="og:description" content="Build your plan, check in weekly, and let your training, nutrition, hydration and recovery adapt with you. Free and accessible.">
+  <meta property="og:image" content="https://www.freefitfuel.com/img/freefitfuel-hero.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.freefitfuel.com/">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FreeFitFuel™ — Adaptive Fitness, Nutrition & Wellbeing">
+  <meta name="twitter:description" content="A free personalised system for training, nutrition, hydration and recovery.">
+  <meta name="twitter:image" content="https://www.freefitfuel.com/img/freefitfuel-hero.png">
 </head>
 
 <body>
-  <!-- Shared header mount -->
   <div id="site-header"></div>
   <script src="/js/header-loader.js"></script>
 
-  <!-- HERO -->
   <header class="hero" role="banner" aria-label="FreeFitFuel hero">
     <figure class="hero-media">
       <img src="img/hero.jpg" alt="Mat being unrolled and light dumbbells">
       <div class="overlay" aria-hidden="true"></div>
     </figure>
     <div class="hero-content wrap">
-      <span class="eyebrow">Healthy body & mind</span>
-      <h1><span class="accent">Stronger, Healthier, You</span></h1>
-      <p class="lead">Home workouts and balanced meals to fuel your body and mind - friendly, free, and easy to follow.</p>
-            <p class="lead">For a UK audience.</p>
-      <div class="cta-row">
-        <a class="btn" href="workouts.html">Start Training</a>
-        <a class="btn" href="nutrition.html">See Meal Ideas</a>
+      <span class="eyebrow">Adaptive training, nutrition & wellbeing</span>
+      <div class="hero-system">
+        <div>
+          <h1><span class="accent">Your plan adapts as you go</span></h1>
+          <p class="lead hero-sub">Set your target. Check in weekly. Follow your daily call. FreeFitFuel™ is built to help people stop guessing and start following a clear system that adjusts with real life.</p>
+          <p class="lead">Built for a UK audience. Free to use. Designed to support both physical and mental wellbeing.</p>
+          <div class="cta-stack">
+            <a class="btn" href="my-plan.html">Build My Plan</a>
+            <a class="btn" href="my-plan.html">Start Today</a>
+          </div>
+          <p class="cta-note">No fixed programme. No paywall. No guessing what to do next.</p>
+        </div>
+
+        <aside class="hero-card highlight-card" aria-label="How the system works at a glance">
+          <h2>What the system does</h2>
+          <ul class="hero-list">
+            <li>Builds your roadmap around your goal</li>
+            <li>Sets calories, macros, hydration and recovery emphasis</li>
+            <li>Uses weekly check-ins to guide progression</li>
+            <li>Gives you a daily call instead of leaving you to overthink it</li>
+          </ul>
+        </aside>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="grid" aria-label="Key sections">
-      <article class="card">
-        <h2>Wellbeing</h2>
-        <p class="meta">Carer Support, Neuroscience, and Mental Health - practical tools for tough days.</p>
-        <a class="btn" href="wellbeing.html">Open Wellbeing</a>
-      </article>
-      <article class="card">
-        <h2>Workouts</h2>
-        <p class="meta">Fuel Your Strength -
-Smart dumbbell & bodyweight routines with warm-ups, cool-downs, calisthenics, reformer Pilates, flexibility, stretching, and recovery.</p>
-        <a class="btn" href="workouts.html">Browse Fitness</a>
-      </article>
-      <article class="card">
-        <h2>Nutrition</h2>
-        <p class="meta">Fuel Your Goals -
-Budget-friendly recipes, hydration tips, and a smart macro calculator to power your personal plan</p>
-        <a class="btn" href="nutrition.html">See Fuel</a>
-      </article>
-      <!-- Hero Training (Ultimate Challenge) -->
-<article class="card">
-  <h2><span class="accent">Hero Training</span></h2>
-  <p class="meta">
-    The ultimate, science-based 3–12 month challenge. Progressive strength, Z2 endurance,
-    mobility & recovery - built for real life, any age.
-  </p>
-  <a class="btn" href="/hero-training.html">Start Phase I</a>
-</article>
-    </section>
+    <section class="section" aria-label="How FreeFitFuel works">
+      <h2>How it works</h2>
+      <div class="steps">
+        <article class="step">
+          <span class="step-num">1</span>
+          <h3>Set your target</h3>
+          <p class="meta">Choose your goal, body data, and direction so the system knows where you are starting from.</p>
+        </article>
 
-    <section class="split" id="workouts" aria-label="Home workout highlight">
-      <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
-      <div>
-        <h2>Move better at home</h2>
-        <p class="meta">Short, effective sessions with a pair of dumbbells or just bodyweight - realistic for busy days.</p>
-        <a class="btn" href="workouts.html">See workout plans</a>
+        <article class="step">
+          <span class="step-num">2</span>
+          <h3>Check in weekly</h3>
+          <p class="meta">Log your week in under a minute. The plan uses your trend, recovery, adherence and context.</p>
+        </article>
+
+        <article class="step">
+          <span class="step-num">3</span>
+          <h3>Follow your daily call</h3>
+          <p class="meta">Training, calories, hydration and recovery all point back to one clear next step.</p>
+        </article>
       </div>
     </section>
 
-    <!-- Carousel -->
+    <section class="section" aria-label="Why this system works">
+      <h2>Why this works</h2>
+      <div class="engine-grid">
+        <article class="engine-item">
+          <h3>No fixed plans</h3>
+          <p class="meta">Your body, energy, and life change. Your plan should change too.</p>
+        </article>
+
+        <article class="engine-item">
+          <h3>Decisions made clearly</h3>
+          <p class="meta">You do not need to keep second-guessing training, food, or recovery every day.</p>
+        </article>
+
+        <article class="engine-item">
+          <h3>Built around real life</h3>
+          <p class="meta">The system accounts for consistency, recovery, physiology, hydration and weekly reality.</p>
+        </article>
+      </div>
+
+      <div class="system-strip">
+        <strong>Your plan is the centre of everything.</strong>
+        <p class="meta">Workouts, nutrition, hydration and recovery all feed into the same personalised engine. The rest of the site supports the plan rather than competing with it.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-label="System journey">
+      <h2>The FreeFitFuel flow</h2>
+      <div class="system-flow">
+        <div class="node">
+          <h3>Build My Plan</h3>
+          <p class="meta">Set up your goal and roadmap</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <h3>Check In Weekly</h3>
+          <p class="meta">Log progress and recovery</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <h3>Follow Today</h3>
+          <p class="meta">Use the daily call and stay consistent</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="support-grid" aria-label="Supporting tools">
+      <article class="support-card">
+        <h3>My Plan</h3>
+        <p class="meta">The engine. Your roadmap, weekly check-ins, daily call, progress graph, hydration, recovery and plan logic all live here.</p>
+        <a class="btn" href="my-plan.html">Open My Plan</a>
+      </article>
+
+      <article class="support-card">
+        <h3>Workouts</h3>
+        <p class="meta">Exercises and routines that support your personalised plan, from dumbbells and bands to mobility and recovery.</p>
+        <a class="btn" href="workouts.html">Browse Workouts</a>
+      </article>
+
+      <article class="support-card">
+        <h3>Nutrition</h3>
+        <p class="meta">Meal ideas, hydration support and food guidance aligned to the targets your plan gives you.</p>
+        <a class="btn" href="nutrition.html">See Nutrition</a>
+      </article>
+
+      <article class="support-card">
+        <h3>Wellbeing</h3>
+        <p class="meta">Mental health, recovery and wellbeing support for the days when energy, motivation or life pressure gets in the way.</p>
+        <a class="btn" href="wellbeing.html">Open Wellbeing</a>
+      </article>
+    </section>
+
+    <section class="split" id="workouts" aria-label="Workout system highlight">
+      <figure><img src="img/curl.jpg" alt="Seated dumbbell curl at home"></figure>
+      <div>
+        <h2>Workouts that support the plan</h2>
+        <p class="meta">FreeFitFuel workouts are no longer just standalone pages. They now sit around the plan engine, so your training has a reason, a direction, and a next step.</p>
+        <div class="cta-stack">
+          <a class="btn" href="my-plan.html">Go to My Plan</a>
+          <a class="btn" href="workouts.html">View Workout Library</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Featured challenge">
+      <h2>Featured pathway</h2>
+      <article class="support-card">
+        <h3><span class="accent">Hero Training</span></h3>
+        <p class="meta">A longer-form challenge for those who want a bigger commitment. Progressive strength, endurance, mobility and recovery, built around real life rather than fantasy programming.</p>
+        <a class="btn" href="/hero-training.html">Start Phase I</a>
+      </article>
+    </section>
+
     <section id="ideas" class="strip" aria-label="Inspiration gallery">
       <h2>Ideas you can start this week</h2>
       <div class="carousel">
         <div class="carousel-track">
-          <!-- set A -->
           <figure class="idea" data-idea="bands"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption>Resistance bands — full-body, joint-friendly</figcaption></figure>
           <figure class="idea" data-idea="rope"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption>Skipping — 5–10 minutes for fast cardio</figcaption></figure>
           <figure class="idea" data-idea="floorpress"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption>Floor press — chest &amp; triceps without a bench</figcaption></figure>
           <figure class="idea" data-idea="yoga"><span class="thumb"><img src="img/yoga.jpg" alt="Yoga pose on a mat at home"></span><figcaption>Yoga flow — mobility and calm in 10 minutes</figcaption></figure>
           <figure class="idea" data-idea="mealprep"><span class="thumb"><img src="img/mealprep.jpg" alt="Healthy meal prep bowls and vegetables"></span><figcaption>Meal prep — clear portions, real food</figcaption></figure>
           <figure class="idea" data-idea="curl"><span class="thumb"><img src="img/curl.jpg" alt="Leg-supported cross-body curl"></span><figcaption>Leg-supported cross-body curl — shoulder-friendly biceps</figcaption></figure>
-          <!-- set B (duplicate for seamless loop) -->
+
           <figure class="idea" data-idea="bands"><span class="thumb"><img src="img/bands.jpg" alt="Resistance bands workout at home"></span><figcaption>Resistance bands — full-body, joint-friendly</figcaption></figure>
           <figure class="idea" data-idea="rope"><span class="thumb"><img src="img/rope.jpg" alt="Skipping rope cardio"></span><figcaption>Skipping — 5–10 minutes for fast cardio</figcaption></figure>
           <figure class="idea" data-idea="floorpress"><span class="thumb"><img src="img/floorpress.jpg" alt="Dumbbell floor press on the floor"></span><figcaption>Floor press — chest &amp; triceps without a bench</figcaption></figure>
@@ -174,47 +421,28 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
           <figure class="idea" data-idea="curl"><span class="thumb"><img src="img/curl.jpg" alt="Leg-supported cross-body curl"></span><figcaption>Leg-supported cross-body curl — shoulder-friendly biceps</figcaption></figure>
         </div>
       </div>
-      <p class="meta" style="margin:.45rem 0 0">Hover to pause. Tap a tile for sets/reps & form cues.</p>
+      <p class="meta" style="margin:.45rem 0 0">Hover to pause. Tap a tile for sets, reps and form cues.</p>
     </section>
 
-    <!-- Disclaimer -->
+    <section class="section final-cta" aria-label="Final call to action">
+      <h2>Start your plan</h2>
+      <p class="meta">Set your target and let the system guide you day by day, week by week, with training, nutrition, hydration and recovery all pointing in the same direction.</p>
+      <div class="cta-stack">
+        <a class="btn" href="my-plan.html">Build My Plan</a>
+        <a class="btn" href="my-plan.html">Start Today</a>
+      </div>
+    </section>
+
     <section class="section">
       <h2>Important Note</h2>
       <p>The content on FreeFitFuel™ is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
     </section>
   </main>
 
-<!-- Privacy Statement Button -->
-<div class="privacy-link">
-  <a href="/privacy.html" class="btn-privacy">Privacy Statement</a>
-</div>
+  <div class="privacy-link">
+    <a href="/privacy.html" class="btn-privacy">Privacy Statement</a>
+  </div>
 
-<style>
-  .privacy-link{
-    display:flex;
-    justify-content:center;
-    margin:30px 0 10px;
-  }
-  .btn-privacy{
-    display:inline-block;
-    padding:10px 20px;
-    border:1px solid var(--accent);
-    border-radius:8px;
-    text-decoration:none;
-    color:var(--accent);
-    font-weight:600;
-    font-size:1rem;
-    transition:all .2s ease-in-out;
-  }
-  .btn-privacy:hover,
-  .btn-privacy:focus-visible{
-    background:var(--accent);
-    color:var(--ink);
-    outline:none;
-  }
-</style>
-  
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
@@ -223,7 +451,6 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
     </div>
   </footer>
 
-  <!-- Idea Modal -->
   <dialog id="ideaModal" aria-labelledby="ideaTitle">
     <div class="modal-head">
       <h3 id="ideaTitle">Idea</h3>
@@ -245,7 +472,6 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
     </div>
   </dialog>
 
-  <!-- Mobile menu toggle (unchanged) -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const btn = document.querySelector('.hamburger');
@@ -259,9 +485,7 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
     });
   </script>
 
-  <!-- Carousel modal + rich coaching content -->
   <script>
-    /* ---------- Rich idea data ---------- */
     const IDEA_DATA = {
       bands:{
         title:'Resistance Bands',
@@ -270,111 +494,116 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
         guide:'https://www.youtube.com/results?search_query=how+to+use+resistance+bands+full+body+form',
         plan:{sets:'2–3 rounds', reps:'Upper 10–15 • Lower 10–15', tempo:'Controlled (2s down)', rest:'45–75s'},
         cues:[
-          'Anchor safely; band path aligns with the joint you’re training.',
-          'Keep tension at end-range — don’t “slingshot” back.',
-          'Exhale through effort; ribs stacked over pelvis.'
+          'Anchor safely. Band path should align with the joint you are training.',
+          'Keep tension at end-range rather than slingshotting back.',
+          'Exhale through effort. Keep ribs stacked over pelvis.'
         ],
         mistakes:[
           'Leaning or twisting to finish reps.',
-          'Band rubbing sharp edges (risk of snap).'
+          'Letting the band rub across sharp edges.'
         ]
       },
       rope:{
         title:'Skipping Rope',
         img:'img/rope.jpg',
-        desc:'Tiny footprint, big cardio with low setup time.',
+        desc:'Tiny footprint, big cardio return with very little setup.',
         guide:'https://www.youtube.com/results?search_query=jump+rope+beginner+form',
         plan:{sets:'5 × 1:00 on / 0:30 off', reps:'—', tempo:'Relaxed bounce', rest:'As programmed'},
         cues:[
-          'Elbows tucked; spin from wrists, not shoulders.',
-          'Land softly mid-foot; knees “springy”.',
-          'Head tall, gaze forward; breathe through nose if comfortable.'
+          'Keep elbows tucked and spin from the wrists, not the shoulders.',
+          'Land softly through the mid-foot with springy knees.',
+          'Stay tall and keep your gaze forward.'
         ],
         mistakes:[
-          'Piking hips or tensing shoulders.',
-          'Jumping too high (fatigues calves fast).'
+          'Jumping too high and burning out the calves.',
+          'Tensing the shoulders throughout.'
         ]
       },
       floorpress:{
         title:'Dumbbell Floor Press',
         img:'img/floorpress.jpg',
-        desc:'Pressing from the floor limits shoulder extension and protects the joint.',
+        desc:'Pressing from the floor limits shoulder extension and helps keep the movement shoulder-friendly.',
         guide:'https://www.youtube.com/results?search_query=dumbbell+floor+press+form',
         plan:{sets:'3–4', reps:'6–10', tempo:'2s down • 1s pause on floor • drive up', rest:'60–90s'},
         cues:[
-          'Wrists stacked over elbows; forearms vertical at bottom.',
-          'Light shoulder blades together + down; ribs quiet.',
-          'Pause on triceps, not elbows; press through the floor.'
+          'Keep wrists stacked over elbows.',
+          'Set the shoulder blades gently back and down.',
+          'Pause on the triceps, not the elbows.'
         ],
         mistakes:[
-          'Flaring elbows past ~45–60°.',
-          'Bouncing off the floor.'
+          'Flaring elbows too far out.',
+          'Bouncing off the floor to create momentum.'
         ]
       },
       yoga:{
         title:'Yoga Flow (10 min)',
         img:'img/yoga.jpg',
-        desc:'Short sequence for hips, spine and calm breathing.',
+        desc:'A short sequence for hips, spine, breathing and calm.',
         guide:'https://www.youtube.com/results?search_query=10+minute+yoga+flow+beginner',
         plan:{sets:'1–2 rounds', reps:'8–12 poses • 1–3 breaths/pose', tempo:'Slow, nasal breathing', rest:'As needed'},
         cues:[
-          'Longer exhales; jaw and shoulders soft.',
-          'Move within easy range; no pinchy end-ranges.'
+          'Use longer exhales and keep jaw and shoulders soft.',
+          'Move within easy range and avoid pinchy end-ranges.'
         ],
         mistakes:[
-          'Holding breath during transitions.',
-          'Chasing stretch intensity over ease.'
+          'Holding your breath during transitions.',
+          'Chasing intensity instead of ease.'
         ]
       },
       mealprep:{
         title:'Meal Prep Base',
         img:'img/mealprep.jpg',
-        desc:'Cook once, eat 3–4 times. Save money and decisions.',
+        desc:'Cook once and eat several times. Save money, time and decisions.',
         guide:'https://www.youtube.com/results?search_query=healthy+meal+prep+for+the+week',
-        plan:{sets:'1 session', reps:'3–4 mains + veg + carb base', tempo:'Batch & portion', rest:'—'},
+        plan:{sets:'1 session', reps:'3–4 mains + veg + carb base', tempo:'Batch and portion', rest:'—'},
         cues:[
-          'Protein + fibre + colour on each plate.',
-          'Portion before storing; clear labels keep you on track.'
+          'Build each plate around protein, fibre and colour.',
+          'Portion before storing so the week feels simpler.'
         ],
         mistakes:[
-          'Cooking without containers ready.',
-          'Skipping protein → hungry later.'
+          'Cooking without storage containers ready.',
+          'Skipping protein and ending up hungry later.'
         ]
       },
       curl:{
         title:'Leg-Supported Cross-Body Curl',
         img:'img/curl.jpg',
-        desc:'Biceps isolation with forearm braced on the inner thigh. Cross-body path biases the short head and stays shoulder-friendly.',
-        guide: 'https://www.youtube.com/results?search_query=dumbbell+concentration+curl+form',
+        desc:'Biceps isolation with the forearm braced on the inner thigh. The cross-body path keeps the movement controlled and shoulder-friendly.',
+        guide:'https://www.youtube.com/results?search_query=dumbbell+concentration+curl+form',
         plan:{sets:'3–4', reps:'8–12/arm', tempo:'2s up • 3s down • brief squeeze at top', rest:'45–75s'},
         cues:[
-          'Sit tall; plant feet. Hinge slightly and glue upper arm to inner thigh.',
-          'Curl across the torso toward the opposite shoulder; wrist neutral.',
-          'Only forearm moves — shoulder and upper arm stay quiet.'
+          'Sit tall, plant your feet, and brace the upper arm on the inner thigh.',
+          'Curl across the torso toward the opposite shoulder.',
+          'Let only the forearm move.'
         ],
         mistakes:[
           'Swinging the weight or lifting the elbow off the thigh.',
-          'Cranking the wrist into extreme supination at the top.'
+          'Cranking the wrist into an extreme position at the top.'
         ]
       }
     };
 
-    /* ---------- Modal wiring ---------- */
     (function(){
       const section = document.getElementById('ideas');
-      const dlg   = document.getElementById('ideaModal');
+      const dlg = document.getElementById('ideaModal');
       const title = document.getElementById('ideaTitle');
-      const img   = document.getElementById('ideaImg');
-      const desc  = document.getElementById('ideaDesc');
-      const list  = document.getElementById('ideaDetails');
+      const img = document.getElementById('ideaImg');
+      const desc = document.getElementById('ideaDesc');
+      const list = document.getElementById('ideaDetails');
       const guide = document.getElementById('ideaGuide');
 
-      function esc(s){ return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+      function esc(s){
+        return String(s).replace(/[&<>"']/g, m => ({
+          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        }[m]));
+      }
 
       function openModal(key){
-        const d = IDEA_DATA[key]; if(!d) return;
+        const d = IDEA_DATA[key];
+        if(!d) return;
         title.textContent = d.title;
-        img.src = d.img; img.alt = d.title;
+        img.src = d.img;
+        img.alt = d.title;
         desc.textContent = d.desc;
         guide.href = d.guide;
 
@@ -392,19 +621,10 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
           `<em>Tempo</em> ${esc(d.plan.tempo)}`,
           d.plan.rest ? `<em>Rest</em> ${esc(d.plan.rest)}` : ''
         ].filter(Boolean).join(' · ');
+
         list.appendChild(make('Plan', planHTML));
-
-        const cuesHTML = `<ul style="margin:.35rem 0 .1rem; padding-left:1.1rem;">${d.cues.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`;
-        list.appendChild(make('Cues', cuesHTML));
-
-        const misHTML = `<ul style="margin:.35rem 0 .1rem; padding-left:1.1rem;">${d.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`;
-        list.appendChild(make('Common mistakes', misHTML));
-
-        if(d.shoulder){
-          const li = document.createElement('li');
-          li.innerHTML = `<a class="btn--pill" href="${d.shoulder}" target="_blank" rel="noopener">Shoulder-friendly tips</a>`;
-          list.appendChild(li);
-        }
+        list.appendChild(make('Cues', `<ul style="margin:.35rem 0 .1rem; padding-left:1.1rem;">${d.cues.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`));
+        list.appendChild(make('Common mistakes', `<ul style="margin:.35rem 0 .1rem; padding-left:1.1rem;">${d.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`));
 
         section.classList.add('is-paused');
         dlg.showModal();
@@ -415,17 +635,20 @@ Budget-friendly recipes, hydration tips, and a smart macro calculator to power y
         section.classList.remove('is-paused');
       }
 
-      document.querySelectorAll('#ideas .idea').forEach(tile=>{
+      document.querySelectorAll('#ideas .idea').forEach(tile => {
         tile.setAttribute('tabindex','0');
-        tile.addEventListener('click', ()=> openModal(tile.dataset.idea));
-        tile.addEventListener('keydown', e=>{
-          if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openModal(tile.dataset.idea); }
+        tile.addEventListener('click', () => openModal(tile.dataset.idea));
+        tile.addEventListener('keydown', e => {
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            openModal(tile.dataset.idea);
+          }
         });
       });
 
       dlg.querySelector('[data-close]').addEventListener('click', closeModal);
-      dlg.addEventListener('click', e=>{ if(e.target===dlg) closeModal(); });
-      window.addEventListener('keydown', e=>{ if(e.key==='Escape' && dlg.open) closeModal(); });
+      dlg.addEventListener('click', e => { if(e.target === dlg) closeModal(); });
+      window.addEventListener('keydown', e => { if(e.key === 'Escape' && dlg.open) closeModal(); });
     })();
   </script>
 

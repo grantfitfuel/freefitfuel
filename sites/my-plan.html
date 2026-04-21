@@ -33,6 +33,31 @@
       opacity:.9;
     }
 
+    .equip-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width:860px){
+      .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:560px){
+      .equip-grid{grid-template-columns:1fr}
+    }
+    .equip-pill{
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:.7rem .8rem;
+      font-weight:600;
+    }
+    .equip-pill input{accent-color:var(--accent);transform:scale(1.08)}
+    .equip-note{margin-top:10px}
+
     .global-header{
       margin:0 0 16px;
       padding:14px 16px;
@@ -1182,6 +1207,36 @@
             Conservative = easier recovery and sustainability. Aggressive = faster results but higher fatigue and risk.
           </p>
 
+
+          <div class="card" style="margin-top:14px">
+            <h3>Equipment & training environment</h3>
+            <p class="meta">Your plan should only use what you actually have. These choices are now shared with Workouts so both pages stay in sync.</p>
+
+            <div class="form-grid" style="margin-top:10px">
+              <label class="field">Primary environment
+                <select id="trainingEnvironment" class="input">
+                  <option value="home" selected>Home</option>
+                  <option value="gym">Gym</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="equip-grid" aria-label="Available equipment">
+              <label class="equip-pill"><input type="checkbox" id="equipBw" checked> <span>Bodyweight</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipDb" checked> <span>Dumbbells</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipBand" checked> <span>Bands</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipRack"> <span>Bar / Door anchor</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipRings"> <span>Rings</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipBench"> <span>Bench</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipKb"> <span>Kettlebells</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipCardio"> <span>Cardio equipment</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipGymAccess"> <span>Gym access</span></label>
+            </div>
+
+            <p class="meta equip-note" id="equipmentSummary">Current profile: Bodyweight, Dumbbells, Bands • Environment: Home</p>
+          </div>
+
           <div class="tag-row" style="margin-top:12px">
             <button class="btn btn-primary" id="btnGenerateRoadmap" type="button">Generate my roadmap</button>
             <button class="btn" id="btnGenerateStaged" type="button">Generate full staged roadmap</button>
@@ -1378,6 +1433,129 @@
 
   <script>
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
+
+    var EQUIPMENT_KEY = 'fff.equipment.profile.v1';
+
+    function defaultEquipmentProfile(){
+      return {
+        environment: 'home',
+        equip: {
+          bw: true,
+          db: true,
+          band: true,
+          rack: false,
+          rings: false,
+          bench: false,
+          kb: false,
+          cardio: false,
+          gymAccess: false
+        }
+      };
+    }
+
+    function loadLegacyWorkoutPrefs(){
+      try{
+        var old = JSON.parse(localStorage.getItem('fff.workouts.v1.prefs') || '{}');
+        if(!old || !old.equip) return null;
+        return {
+          environment: 'home',
+          equip: {
+            bw: !!old.equip.bw,
+            db: !!old.equip.db,
+            band: !!old.equip.band,
+            rack: !!old.equip.rack,
+            rings: !!old.equip.rings,
+            bench: false,
+            kb: false,
+            cardio: false,
+            gymAccess: false
+          }
+        };
+      }catch(err){
+        return null;
+      }
+    }
+
+    function loadEquipmentProfile(){
+      try{
+        var saved = JSON.parse(localStorage.getItem(EQUIPMENT_KEY) || 'null');
+        if(saved && saved.equip){
+          var d = defaultEquipmentProfile();
+          return {
+            environment: saved.environment || d.environment,
+            equip: Object.assign({}, d.equip, saved.equip || {})
+          };
+        }
+      }catch(err){}
+      return loadLegacyWorkoutPrefs() || defaultEquipmentProfile();
+    }
+
+    function saveEquipmentProfile(profile){
+      try{
+        localStorage.setItem(EQUIPMENT_KEY, JSON.stringify(profile));
+      }catch(err){}
+    }
+
+    function getEquipmentProfileFromUI(){
+      return {
+        environment: String(document.getElementById('trainingEnvironment').value || 'home'),
+        equip: {
+          bw: !!document.getElementById('equipBw').checked,
+          db: !!document.getElementById('equipDb').checked,
+          band: !!document.getElementById('equipBand').checked,
+          rack: !!document.getElementById('equipRack').checked,
+          rings: !!document.getElementById('equipRings').checked,
+          bench: !!document.getElementById('equipBench').checked,
+          kb: !!document.getElementById('equipKb').checked,
+          cardio: !!document.getElementById('equipCardio').checked,
+          gymAccess: !!document.getElementById('equipGymAccess').checked
+        }
+      };
+    }
+
+    function applyEquipmentProfileToUI(profile){
+      profile = profile || defaultEquipmentProfile();
+      document.getElementById('trainingEnvironment').value = profile.environment || 'home';
+      document.getElementById('equipBw').checked = !!profile.equip.bw;
+      document.getElementById('equipDb').checked = !!profile.equip.db;
+      document.getElementById('equipBand').checked = !!profile.equip.band;
+      document.getElementById('equipRack').checked = !!profile.equip.rack;
+      document.getElementById('equipRings').checked = !!profile.equip.rings;
+      document.getElementById('equipBench').checked = !!profile.equip.bench;
+      document.getElementById('equipKb').checked = !!profile.equip.kb;
+      document.getElementById('equipCardio').checked = !!profile.equip.cardio;
+      document.getElementById('equipGymAccess').checked = !!profile.equip.gymAccess;
+      updateEquipmentSummary();
+    }
+
+    function equipmentListFromProfile(profile){
+      profile = profile || defaultEquipmentProfile();
+      var names = [];
+      if(profile.equip.bw) names.push('Bodyweight');
+      if(profile.equip.db) names.push('Dumbbells');
+      if(profile.equip.band) names.push('Bands');
+      if(profile.equip.rack) names.push('Bar / Door anchor');
+      if(profile.equip.rings) names.push('Rings');
+      if(profile.equip.bench) names.push('Bench');
+      if(profile.equip.kb) names.push('Kettlebells');
+      if(profile.equip.cardio) names.push('Cardio equipment');
+      if(profile.equip.gymAccess) names.push('Gym access');
+      return names.length ? names : ['Bodyweight'];
+    }
+
+    function updateEquipmentSummary(){
+      var el = document.getElementById('equipmentSummary');
+      if(!el) return;
+      var profile = getEquipmentProfileFromUI();
+      el.textContent = 'Current profile: ' + equipmentListFromProfile(profile).join(', ') + ' • Environment: ' + titleCase(profile.environment);
+    }
+
+    function saveEquipmentProfileFromUI(){
+      var profile = getEquipmentProfileFromUI();
+      saveEquipmentProfile(profile);
+      updateEquipmentSummary();
+      return profile;
+    }
     var CHECKIN_KEY = 'fff.weekly.checkins.v1';
     var WEIGHT_LOG_KEY = 'fff.weight.log.v1';
     var TARGET_WEIGHT_KEY = 'fff.target.weight.v1';
@@ -2101,6 +2279,7 @@
       tags.push('<span class="tag">TDEE ~' + Math.round(tdee) + ' kcal</span>');
       tags.push('<span class="tag">' + escapeHtml(titleCase(getTrainingStatus())) + '</span>');
       tags.push('<span class="tag">' + (wantsMuscleGain() ? 'Muscle gain later: yes' : 'Muscle gain later: no') + '</span>');
+      tags.push('<span class="tag">Equipment: ' + escapeHtml(equipmentListFromProfile(getEquipmentProfileFromUI()).slice(0,3).join(', ')) + (equipmentListFromProfile(getEquipmentProfileFromUI()).length > 3 ? '…' : '') + '</span>');
       tags.push('<span class="tag">' + escapeHtml(titleCase(getPhaseAggression())) + '</span>');
       tags.push('<span class="tag">Water ~' + escapeHtml(String(t.hydration_l)) + ' L</span>');
       var phys = getPhysiologyInputs();
@@ -3930,6 +4109,11 @@
         if(roadmap && typeof roadmap.wantsMuscleGain === 'boolean'){
           document.getElementById('wantsMuscleGain').value = roadmap.wantsMuscleGain ? 'yes' : 'no';
         }
+        if(roadmap && roadmap.equipmentProfile){
+          applyEquipmentProfileToUI(roadmap.equipmentProfile);
+        } else {
+          applyEquipmentProfileToUI(loadEquipmentProfile());
+        }
         if(roadmap && roadmap.aggression){
           document.getElementById('phaseAggression').value = roadmap.aggression;
         }
@@ -4123,6 +4307,15 @@
         }
       });
 
+
+      ['trainingEnvironment','equipBw','equipDb','equipBand','equipRack','equipRings','equipBench','equipKb','equipCardio','equipGymAccess'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(!el) return;
+        el.addEventListener('change', function(){
+          saveEquipmentProfileFromUI();
+        });
+      });
+
       document.getElementById('btnGenerateRoadmap').addEventListener('click', function(){
         generateRoadmapWithoutPDF(false);
       });
@@ -4209,6 +4402,8 @@
       });
 
       loadExistingRoadmapInputs();
+      applyEquipmentProfileToUI(loadEquipmentProfile());
+      saveEquipmentProfileFromUI();
       updateMacroTargets();
       renderCurrentPhase();
       renderPlan();

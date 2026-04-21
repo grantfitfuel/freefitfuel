@@ -13,6 +13,74 @@
 
   <style>
 
+    .global-header{
+      margin:0 0 16px;
+      padding:14px 16px;
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      background:
+        radial-gradient(circle at top right, rgba(255,106,0,.14), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .global-header h1{margin:.1rem 0 .35rem;font-size:2rem}
+    .global-header .subline{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--inkdim);
+      font-weight:600;
+    }
+    .today-command{
+      border:2px solid rgba(255,106,0,.35);
+      border-radius:16px;
+      padding:16px;
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.16), rgba(255,106,0,.06)),
+        var(--glass2);
+    }
+    .today-command .main-call{
+      font-size:1.8rem;
+      font-weight:900;
+      line-height:1.05;
+      margin-bottom:8px;
+    }
+    .today-command .today-meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .today-command .today-meta span{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.28rem .55rem;
+      background:rgba(255,255,255,.06);
+      font-size:.92rem;
+    }
+    .today-command .today-reason{
+      color:var(--inkdim);
+      font-size:.93rem;
+    }
+    .summary-card{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:12px;
+    }
+    .summary-card ul{
+      margin:.35rem 0 0 1rem;
+      padding:0;
+    }
+    .summary-card li{margin:.25rem 0}
+    .progress-chart-card{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:14px;
+    }
+    .section.compact{padding:14px}
+
     .mode-switch{
       display:flex;
       gap:10px;
@@ -400,6 +468,15 @@
       <button class="mode-tab" type="button" data-mode="progress">Progress</button>
       <button class="mode-tab" type="button" data-mode="plan">Plan</button>
     </div>
+    <div class="global-header">
+      <h1>My Plan</h1>
+      <div class="subline">
+        <span id="globalPhaseText">Phase: —</span>
+        <span id="globalTargetText">Target: —</span>
+        <span id="globalStatusText">Status: —</span>
+      </div>
+    </div>
+
     <p class="mode-helper">Use Today for your immediate call, Progress for trends, and Plan for the full roadmap and setup.</p>
 
     <div class="mode-panel is-active" id="modeToday">
@@ -474,14 +551,18 @@
         </div>
       </div>
     </section>
-        <section class="section today-callout">
+        <section class="section compact">
           <div class="panel-kicker">Do this now</div>
           <h2 style="margin-top:0">Today</h2>
-          <p class="lead" style="margin-top:0">This is the main action block. It should answer what you do today without forcing you to scan the whole page.</p>
-          <div class="card today-callout" style="margin-top:10px">
-            <h3>Today’s decision</h3>
-            <div class="metric" id="todayDecisionMirror">—</div>
-            <div class="sub" id="todayReasonMirror">—</div>
+          <p class="lead" style="margin-top:0">One clear command block first. The rest of the detail is below when you need it.</p>
+          <div class="today-command" style="margin-top:10px">
+            <div class="main-call" id="todayDecisionMirror">—</div>
+            <div class="today-meta">
+              <span id="todayCaloriesMirror">Calories: —</span>
+              <span id="todayWaterMirror">Water: —</span>
+              <span id="todayStatusMirror">Status: —</span>
+            </div>
+            <div class="today-reason" id="todayReasonMirror">—</div>
           </div>
           <div class="card" style="margin-top:12px">
             <h3>Next session</h3>
@@ -702,7 +783,6 @@
     </div>
 
     <div class="mode-panel" id="modeProgress">
-    <section class="hero">
       <div class="hero-top">
         <div>
           <div class="eyebrow">FreeFitFuel™ • My Plan</div>
@@ -915,7 +995,6 @@
     </div>
 
     <div class="mode-panel" id="modePlan">
-    <section class="hero">
       <div class="hero-top">
         <div>
           <div class="eyebrow">FreeFitFuel™ • My Plan</div>
@@ -3593,6 +3672,7 @@
       renderIntervention();
       renderTodayCoach();
       syncTodayMirrors();
+      syncPolishMirrors();
       renderAdaptiveCockpit();
       renderMovementStatus();
       renderWeeklySnapshot();
@@ -3791,6 +3871,71 @@
         return 'today';
       }
     }
+
+
+    function syncPolishMirrors(){
+      var srcDecision = document.getElementById('todayDecision');
+      var dstDecision = document.getElementById('todayDecisionMirror');
+      if(srcDecision && dstDecision) dstDecision.textContent = srcDecision.textContent || '—';
+
+      var srcReason = document.getElementById('todayReason');
+      var dstReason = document.getElementById('todayReasonMirror');
+      if(srcReason && dstReason) dstReason.textContent = srcReason.textContent || '—';
+
+      var srcTitle = document.getElementById('nextSessionTitle');
+      var dstTitle = document.getElementById('nextSessionTitleMirror');
+      if(srcTitle && dstTitle) dstTitle.textContent = srcTitle.textContent || '—';
+
+      var srcAction = document.getElementById('nextSessionAction');
+      var dstAction = document.getElementById('nextSessionActionMirror');
+      if(srcAction && dstAction) dstAction.textContent = srcAction.textContent || '—';
+
+      var srcMeta = document.getElementById('nextSessionMeta');
+      var dstMeta = document.getElementById('nextSessionMetaMirror');
+      if(srcMeta && dstMeta) dstMeta.innerHTML = srcMeta.innerHTML;
+
+      var kcal = document.getElementById('physOutKcal');
+      var water = document.getElementById('physOutWater');
+      var mode = document.getElementById('weekMode');
+      var status = document.getElementById('automationStatusHeadline');
+      var phase = document.getElementById('currentPhaseName');
+      var targetWeight = document.getElementById('targetWeight');
+      var targetBf = document.getElementById('targetBodyFat');
+
+      var todayCalories = document.getElementById('todayCaloriesMirror');
+      var todayWater = document.getElementById('todayWaterMirror');
+      var todayStatus = document.getElementById('todayStatusMirror');
+
+      if(todayCalories) todayCalories.textContent = 'Calories: ' + ((kcal && kcal.textContent) ? kcal.textContent : '—');
+      if(todayWater) todayWater.textContent = 'Water: ' + ((water && water.textContent) ? water.textContent : '—');
+      if(todayStatus) todayStatus.textContent = 'Status: ' + ((mode && mode.textContent && mode.textContent !== '—') ? mode.textContent : ((status && status.textContent) ? status.textContent : '—'));
+
+      var gp = document.getElementById('globalPhaseText');
+      var gt = document.getElementById('globalTargetText');
+      var gs = document.getElementById('globalStatusText');
+      if(gp) gp.textContent = 'Phase: ' + ((phase && phase.textContent) ? phase.textContent : '—');
+      if(gt){
+        var t = '—';
+        if(targetWeight && targetWeight.value) t = targetWeight.value + ' kg';
+        else if(targetBf && targetBf.value) t = targetBf.value + '% BF';
+        gt.textContent = 'Target: ' + t;
+      }
+      if(gs) gs.textContent = 'Status: ' + ((mode && mode.textContent && mode.textContent !== '—') ? mode.textContent : '—');
+
+      var ws = document.getElementById('weekSessions');
+      var wa = document.getElementById('weekAdherence');
+      var wq = document.getElementById('weekQuality');
+      var wm = document.getElementById('weekMode');
+      var wsi = document.getElementById('weekSessionsInline');
+      var wai = document.getElementById('weekAdherenceInline');
+      var wqi = document.getElementById('weekQualityInline');
+      var wmi = document.getElementById('weekModeInline');
+      if(wsi && ws) wsi.textContent = ws.textContent;
+      if(wai && wa) wai.textContent = wa.textContent;
+      if(wqi && wq) wqi.textContent = wq.textContent;
+      if(wmi && wm) wmi.textContent = wm.textContent;
+    }
+
 
     function syncTodayMirrors(){
       var ids = [

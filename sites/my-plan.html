@@ -4510,15 +4510,9 @@
 
     function itemAllowed(item, style, equip){
       if(!item) return false;
-      var styles = item.styles || [];
-      var styleOk = false;
-      if(style === 'mixed'){
-        styleOk = styles.indexOf('mixed') > -1;
-      } else if(style === 'balanced'){
-        styleOk = styles.indexOf('mixed') > -1 || styles.indexOf('calisthenics') > -1 || styles.indexOf('circuit') > -1;
-      } else {
-        styleOk = styles.indexOf(style) > -1;
-      }
+      var styleOk = style === 'mixed'
+        ? (item.styles||[]).indexOf('reformer') === -1 || (item.styles||[]).indexOf('mixed') > -1
+        : (item.styles||[]).indexOf(style) > -1;
       if(!styleOk) return false;
       if(!Array.isArray(item.equipment) || !item.equipment.length) return true;
       for(var i=0;i<item.equipment.length;i++){
@@ -4593,6 +4587,21 @@
           choose(pickByPurpose(lib, 'calisthenics', equip, ['legs']), used),
           choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
         ], ['Stretching module']);
+      } else if(style === 'balanced'){
+        pushSession('Upper Balance', 'Push and pull balance', [
+          choose(pickByPurpose(lib, 'mixed', equip, ['push']), used),
+          choose(pickByPurpose(lib, 'mixed', equip, ['pull']), used)
+        ], []);
+        pushSession('Lower Balance', 'Legs and trunk', [
+          choose(pickByPurpose(lib, 'mixed', equip, ['legs']), used),
+          choose(pickByPurpose(lib, 'mixed', equip, ['core']), used)
+        ], []);
+        pushSession('Conditioning', 'Engine and athletic balance', [
+          choose(lib.items.filter(function(it){ return itemAllowed(it, 'mixed', equip) && (it.type === 'circuit' || (it.purposes||[]).indexOf('conditioning')>-1); }), used)
+        ], ['Use tracker for run, walk or cycle']);
+        pushSession('Mobility & Reset', 'Recovery and movement quality', [
+          choose(pickByPurpose(lib, 'mixed', equip, ['mobility','stretching','recovery']), used)
+        ], ['Stretching module']);
       } else {
         pushSession('Upper Push', 'Mixed strength', [
           choose(pickByPurpose(lib, 'mixed', equip, ['push']), used),
@@ -4648,6 +4657,11 @@
       return sessions;
     }
 
+    function goLog(exName){
+      try{ localStorage.setItem('fff.quickLog', exName || ''); }catch(err){}
+      window.location.href = 'workouts.html';
+    }
+
     function renderCards(mount, sessions){
       if(!mount) return;
       if(!sessions.length){
@@ -4655,21 +4669,19 @@
         return;
       }
 
-      function actionButton(href, label, primary){
-        var cls = primary ? 'btn btn-primary' : 'btn-sm';
-        return '<a class="' + cls + '" href="' + href + '" target="_blank" rel="noopener" style="text-decoration:none;">' + label + '</a>';
+      function actionBtn(href, label, primary){
+        return '<a href="' + href + '" target="_blank" rel="noopener" class="' + (primary ? 'btn btn-primary' : 'btn-sm') + '">' + label + '</a>';
       }
 
-      function extraAction(extra){
-        var low = String(extra || '').toLowerCase();
-        if(low.indexOf('tracker') > -1 || low.indexOf('endurance') > -1) return actionButton('tracker.html', 'Open Tracker', false);
-        if(low.indexOf('stretch') > -1) return actionButton('stretching.html', 'Open Stretching', false);
-        if(low.indexOf('physio') > -1 || low.indexOf('recovery') > -1) return actionButton('physio.html', 'Open Physio', false);
-        if(low.indexOf('yoga') > -1) return actionButton('yoga-meditation.html', 'Open Yoga', false);
-        if(low.indexOf('nutrition') > -1 || low.indexOf('meal') > -1) return actionButton('nutrition.html', 'Open Nutrition', false);
-        if(low.indexOf('hormone') > -1 || low.indexOf('physiology') > -1 || low.indexOf('cortisol') > -1) return actionButton('hormones.html', 'Open Physiology', false);
-        if(low.indexOf('ladder') > -1 || low.indexOf('benchmark') > -1) return actionButton('ladder-challenge.html', 'Open Ladder', false);
-        if(low.indexOf('reformer') > -1) return actionButton('reformer-pilates.html', 'Open Reformer', false);
+      function moduleAction(text){
+        var lower = String(text || '').toLowerCase();
+        if(lower.indexOf('tracker') > -1 || lower.indexOf('gps') > -1) return actionBtn('tracker.html', 'Open Tracker', false);
+        if(lower.indexOf('stretch') > -1) return actionBtn('stretching.html', 'Open Stretching', false);
+        if(lower.indexOf('physio') > -1) return actionBtn('physio.html', 'Open Physio', false);
+        if(lower.indexOf('yoga') > -1) return actionBtn('yoga-meditation.html', 'Open Yoga', false);
+        if(lower.indexOf('nutrition') > -1 || lower.indexOf('meal') > -1) return actionBtn('nutrition.html', 'Open Nutrition', false);
+        if(lower.indexOf('hormone') > -1 || lower.indexOf('physiology') > -1 || lower.indexOf('cortisol') > -1 || lower.indexOf('vagus') > -1) return actionBtn('hormones.html', 'Open Physiology', false);
+        if(lower.indexOf('ladder') > -1) return actionBtn('ladder-challenge.html', 'Open Ladder', false);
         return '';
       }
 
@@ -4678,27 +4690,21 @@
           var meta = [];
           if(item.type) meta.push(item.type);
           if(item.equipment && item.equipment.length) meta.push(item.equipment.join(', '));
+          var watch = item.yt ? actionBtn(ytURL(item.yt), '&#9654; Watch Form', true) : '';
+          var logBtn = '<button type="button" class="btn-sm" onclick="goLog(' + JSON.stringify(item.name || '') + ')">Log this</button>';
           return '' +
             '<div class="card" style="margin-top:10px;">' +
-              '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;">' +
-                '<div>' +
-                  '<strong style="display:block;margin-bottom:4px;">' + item.name + '</strong>' +
-                  (meta.length ? '<div class="meta">' + meta.join(' • ') + '</div>' : '') +
-                '</div>' +
-                '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-                  (item.yt ? actionButton(ytURL(item.yt), '▶ Watch Form', true) : '') +
-                  actionButton('workouts.html', 'Log this', false) +
-                '</div>' +
-              '</div>' +
+              '<div style="font-weight:800;font-size:1.05rem;">' + (item.name || '') + '</div>' +
+              (meta.length ? '<div class="meta" style="margin-top:4px;">' + meta.join(' • ') + '</div>' : '') +
+              '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:10px;">' + watch + logBtn + '</div>' +
             '</div>';
         }).join('');
 
-        var extrasHtml = (session.extras||[]).map(function(extra){
-          var act = extraAction(extra);
+        var extrasHtml = (session.extras||[]).map(function(x){
           return '' +
             '<div class="card" style="margin-top:10px;">' +
-              '<div class="meta" style="margin-bottom:' + (act ? '8px' : '0') + ';">' + extra + '</div>' +
-              act +
+              '<div class="meta" style="margin-bottom:8px;">' + x + '</div>' +
+              moduleAction(x) +
             '</div>';
         }).join('');
 
@@ -4745,7 +4751,7 @@
         '<div style="margin-top:12px;display:flex;gap:.6rem;flex-wrap:wrap;">' +
           '<button type="button" id="mpx-build" class="btn">Build this week</button>' +
         '</div>' +
-        '<p id="mpx-status" class="meta" style="margin-top:10px;">Waiting for your weekly build. Real exercises will be pulled from your workouts library.</p>' +
+        '<p id="mpx-status" class="meta" style="margin-top:10px;">Waiting for your weekly build.</p>' +
         '<div id="mpx-output"></div>';
 
       if(footer && footer.parentNode){

@@ -5025,10 +5025,34 @@
         });
       }
 
-      refreshAllCoachViews();
-      wireWorkoutPlanLogsToEngine();
-      wireBuilder();
-      renderBuilder();
+      try{ refreshAllCoachViews(); }catch(err){ console.warn('coach init skipped', err); }
+      try{ wireWorkoutPlanLogsToEngine(); }catch(err){ console.warn('log wiring skipped', err); }
+
+      function initBuilderSafe(){
+        try{
+          if(typeof wireBuilder === 'function') wireBuilder();
+          if(typeof renderBuilder === 'function') renderBuilder();
+        }catch(err){
+          console.error('builder init failed', err);
+          var status = document.getElementById('builderStatus');
+          if(status){
+            status.textContent = 'Builder failed to initialise. Refresh once. If it still fails, this file needs the safe-init version.';
+          }
+        }
+      }
+
+      initBuilderSafe();
+      window.addEventListener('load', initBuilderSafe, { once:true });
+      var refreshBtn = document.getElementById('btnRefreshBuilder');
+      if(refreshBtn){
+        refreshBtn.addEventListener('click', function(){
+          try{
+            if(typeof renderBuilder === 'function') renderBuilder();
+          }catch(err){
+            console.error('manual builder render failed', err);
+          }
+        });
+      }
     });
   </script>
 </body>

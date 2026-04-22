@@ -4445,344 +4445,56 @@
     });
   </script>
 
-  <script>
-  (function(){
-    function ready(fn){
-      if(document.readyState === 'loading'){
-        document.addEventListener('DOMContentLoaded', fn, { once:true });
-      }else{
-        fn();
-      }
-    }
 
-    function byId(id){ return document.getElementById(id); }
+<!-- BUILDER ADDITION -->
+<section class="section">
+  <h2>Build Your Week</h2>
+  <select id="builderType">
+    <option value="mixed">Mixed</option>
+    <option value="balanced">Balanced</option>
+    <option value="cal">Calisthenics</option>
+    <option value="circuits">Circuits</option>
+    <option value="reformer">Reformer</option>
+  </select>
+  <button id="builderBtn" class="btn btn-primary">Build this week</button>
+  <div id="builderOutput"></div>
+</section>
 
-    function readJSON(key, fallback){
-      try{
-        var raw = localStorage.getItem(key);
-        if(!raw) return fallback;
-        return JSON.parse(raw);
-      }catch(err){
-        return fallback;
-      }
-    }
+<script>
+(function(){
+const plans = {
+  mixed:["Push","Pull","Legs","Full Body"],
+  balanced:["Push+Pull","Legs+Core","Conditioning","Recovery"],
+  cal:["Push Progression","Pull Progression","Core","Legs"],
+  circuits:["AMRAP","EMOM","Conditioning","Core"],
+  reformer:["Lower","Core","Upper","Flow"]
+};
 
-    function loadLibrary(){
-      var lib = readJSON('fff.library.cache.v1', null);
-      if(lib && Array.isArray(lib.items) && lib.items.length) return lib;
-      return {
-        version: 1,
-        items: [
-          { key:'pushup', type:'exercise', name:'Push-up', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['push'], yt:'push up form' },
-          { key:'dbbench', type:'exercise', name:'Dumbbell Bench Press', equipment:['db'], styles:['mixed'], purposes:['push'], yt:'dumbbell bench press form' },
-          { key:'doorrow', type:'exercise', name:'Door/Table Row', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'bodyweight row at home form' },
-          { key:'bandrow', type:'exercise', name:'Band Row', equipment:['band'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'resistance band row form' },
-          { key:'stepup', type:'exercise', name:'Step-up', equipment:['db'], styles:['mixed'], purposes:['legs'], yt:'dumbbell step up form' },
-          { key:'sidepl', type:'exercise', name:'Side Plank', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['core'], yt:'side plank form' },
-          { key:'ringrow', type:'exercise', name:'Ring Row', equipment:['rings'], styles:['calisthenics'], purposes:['pull'], yt:'gymnastic ring row form' },
-          { key:'ringpush', type:'exercise', name:'Ring Push-up', equipment:['rings'], styles:['calisthenics'], purposes:['push'], yt:'ring push up form' },
-          { key:'amrap20-triplet', type:'circuit', name:'Triplet — AMRAP 20', equipment:['bw'], styles:['mixed','circuit'], purposes:['conditioning'], yt:'triplet amrap 20 workout form' },
-          { key:'emom30-triplet', type:'circuit', name:'Triplet — EMOM 30', equipment:['bw'], styles:['mixed','circuit'], purposes:['conditioning'], yt:'triplet emom 30 workout form' },
-          { key:'ladder-standard', type:'challenge', name:'Ladder Challenge', equipment:['bw'], styles:['mixed','circuit'], purposes:['challenge'], yt:'ladder challenge workout form' },
-          { key:'mobility-lower', type:'mobility', name:'Lower Body Mobility Flow', equipment:['bw'], styles:['mixed','calisthenics','circuit','reformer'], purposes:['mobility','recovery'], yt:'lower body mobility flow' },
-          { key:'stretch-reset', type:'mobility', name:'Daily Stretch Reset', equipment:['bw'], styles:['mixed','calisthenics','circuit','reformer'], purposes:['stretching','recovery'], yt:'full body stretch routine' },
-          { key:'physio-lower', type:'recovery', name:'Lower Body Recovery Block', equipment:['bw','band'], styles:['mixed','calisthenics','circuit'], purposes:['recovery','physio'], yt:'lower body recovery mobility' },
-          { key:'reformer-foundation', type:'session', name:'Reformer Foundation Session', equipment:['bw'], styles:['reformer'], purposes:['full'], yt:'reformer pilates foundation session' },
-          { key:'reformer-core', type:'session', name:'Reformer Core Session', equipment:['bw'], styles:['reformer'], purposes:['core'], yt:'reformer pilates core session' }
-        ]
-      };
-    }
+function yt(q){
+  return "https://www.youtube.com/results?search_query="+encodeURIComponent(q+" exercise form");
+}
 
-    function loadEquipment(){
-      var profile = readJSON('fff.equipment.profile.v1', null);
-      var equip = (profile && profile.equip) ? profile.equip : {};
-      return {
-        bw: !!equip.bw || equip.bw === undefined,
-        db: !!equip.db,
-        band: !!equip.band,
-        rack: !!equip.rack,
-        rings: !!equip.rings,
-        bench: !!equip.bench,
-        cardio: !!equip.cardio,
-        gymAccess: !!equip.gymAccess
-      };
-    }
+document.getElementById("builderBtn")?.addEventListener("click", function(){
+  const type = document.getElementById("builderType").value;
+  const out = document.getElementById("builderOutput");
+  out.innerHTML = "";
 
-    function itemAllowed(item, style, equip){
-      if(!item) return false;
-      var styleOk = style === 'mixed'
-        ? (item.styles||[]).indexOf('reformer') === -1 || (item.styles||[]).indexOf('mixed') > -1
-        : (item.styles||[]).indexOf(style) > -1;
-      if(!styleOk) return false;
-      if(!Array.isArray(item.equipment) || !item.equipment.length) return true;
-      for(var i=0;i<item.equipment.length;i++){
-        if(equip[item.equipment[i]]) return true;
-      }
-      return false;
-    }
+  (plans[type]||[]).forEach(day=>{
+    const d = document.createElement("div");
+    d.className="card";
+    d.innerHTML = `
+      <strong>${day}</strong>
+      <div style="margin-top:6px">
+        <a class="btn" target="_blank" href="${yt(day)}">▶ Watch Form</a>
+        <a class="btn-sm" href="workouts.html">Log this</a>
+      </div>
+    `;
+    out.appendChild(d);
+  });
+});
+})();
+</script>
 
-    function pickByPurpose(lib, style, equip, purposes){
-      return lib.items.filter(function(item){
-        if(!itemAllowed(item, style, equip)) return false;
-        var p = item.purposes || [];
-        return purposes.some(function(x){ return p.indexOf(x) > -1; });
-      });
-    }
-
-    function choose(arr, used){
-      for(var i=0;i<arr.length;i++){
-        if(used.indexOf(arr[i].key) === -1) return arr[i];
-      }
-      return arr[0] || null;
-    }
-
-    function ytURL(term){
-      return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(term || '');
-    }
-
-    function roadmapMeta(){
-      var map = readJSON('fff.roadmap.plan.v1', {});
-      return {
-        goal: map.stage || map.goal || '',
-        level: map.level || '',
-        phase: map.currentPhaseId || ''
-      };
-    }
-
-    function buildAutoPlan(style, days){
-      var lib = loadLibrary();
-      var equip = loadEquipment();
-      var used = [];
-      var sessions = [];
-
-      function pushSession(title, subtitle, items, extras){
-        sessions.push({ title:title, subtitle:subtitle, items:items||[], extras:extras||[] });
-        items.forEach(function(it){ if(it && it.key) used.push(it.key); });
-      }
-
-      if(style === 'reformer'){
-        var reformerFull = choose(pickByPurpose(lib, 'reformer', equip, ['full','control']), used);
-        var reformerCore = choose(pickByPurpose(lib, 'reformer', equip, ['core']), used);
-        var mobility = choose(pickByPurpose(lib, 'reformer', equip, ['mobility','stretching','recovery']), used);
-        pushSession('Reformer Full Body', 'Controlled strength and alignment', [reformerFull], ['Tracker not required']);
-        pushSession('Reformer Core', 'Core control and breathing', [reformerCore], []);
-        pushSession('Mobility & Reset', 'Flexibility and recovery', [mobility], ['Stretching module']);
-      } else if(style === 'circuits'){
-        var circuitA = choose(lib.items.filter(function(it){ return itemAllowed(it, 'circuit', equip) && it.type === 'circuit'; }), used);
-        var circuitB = choose(lib.items.filter(function(it){ return itemAllowed(it, 'circuit', equip) && it.type === 'circuit' && used.indexOf(it.key) === -1; }), used);
-        var mobilityC = choose(pickByPurpose(lib, 'circuit', equip, ['mobility','recovery','stretching']), used);
-        pushSession('Circuit A', 'Conditioning block', [circuitA], ['Use your tracker for endurance if outdoors']);
-        pushSession('Circuit B', 'Repeatable conditioning benchmark', [circuitB], []);
-        pushSession('Recovery Flow', 'Mobility and cooldown', [mobilityC], ['Stretching module']);
-      } else if(style === 'calisthenics'){
-        pushSession('Calisthenics Push', 'Bodyweight / rings push', [
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['push']), used),
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
-        ], []);
-        pushSession('Calisthenics Pull', 'Bodyweight / rings pull', [
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['pull']), used),
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
-        ], []);
-        pushSession('Calisthenics Legs', 'Legs and trunk', [
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['legs']), used),
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
-        ], ['Stretching module']);
-      } else {
-        pushSession('Upper Push', 'Mixed strength', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['push']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['push']), used)
-        ], []);
-        pushSession('Upper Pull', 'Mixed strength', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['pull']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['pull']), used)
-        ], []);
-        pushSession('Lower Body', 'Strength and trunk', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['legs']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['core']), used)
-        ], []);
-        pushSession('Conditioning', 'Optional engine work', [
-          choose(lib.items.filter(function(it){ return itemAllowed(it, 'mixed', equip) && (it.type === 'circuit' || (it.purposes||[]).indexOf('conditioning')>-1); }), used)
-        ], ['Use tracker for run, walk or cycle']);
-      }
-
-      var ladder = lib.items.filter(function(it){ return it.key === 'ladder-standard'; })[0];
-      var stretch = lib.items.filter(function(it){ return it.key === 'stretch-reset'; })[0];
-      var physio = lib.items.filter(function(it){ return it.key === 'physio-lower'; })[0];
-
-      if(days >= 4 && ladder) sessions.push({ title:'Benchmark', subtitle:'Ladder challenge', items:[ladder], extras:['Ladder module'] });
-      if(stretch) sessions.push({ title:'Flexibility', subtitle:'Stretching and mobility', items:[stretch], extras:['Stretching page'] });
-      if(physio) sessions.push({ title:'Recovery', subtitle:'Physio and return-to-training', items:[physio], extras:['Physio page'] });
-
-      return sessions.slice(0, Math.max(1, days));
-    }
-
-    function buildGuidedPlan(style, days, toggles){
-      var sessions = buildAutoPlan(style, days);
-      if(!toggles.ladder){
-        sessions = sessions.filter(function(s){ return s.title !== 'Benchmark'; });
-      }
-      if(!toggles.stretching){
-        sessions = sessions.filter(function(s){ return s.title !== 'Flexibility'; });
-      }
-      if(!toggles.physio){
-        sessions = sessions.filter(function(s){ return s.title !== 'Recovery'; });
-      }
-      if(toggles.endurance){
-        sessions.push({ title:'Endurance', subtitle:'Cardio session using the tracker', items:[], extras:['Open tracker.html for GPS, pace, splits and PBs'] });
-      }
-      if(toggles.yoga){
-        sessions.push({ title:'Yoga & Meditation', subtitle:'Nervous system downshift', items:[], extras:['Use yoga-meditation.html'] });
-      }
-      if(toggles.nutrition){
-        sessions.push({ title:'Nutrition', subtitle:'Fuel your week', items:[], extras:['Use nutrition.html and nutrition-mealplan.html'] });
-      }
-      if(toggles.hormones){
-        sessions.push({ title:'Physiology', subtitle:'Hormones, cortisol, vagus context', items:[], extras:['Use hormones.html as context layer'] });
-      }
-      return sessions;
-    }
-
-    function renderCards(mount, sessions){
-      if(!mount) return;
-      if(!sessions.length){
-        mount.innerHTML = '<p class="meta">No sessions generated. Check training type and equipment.</p>';
-        return;
-      }
-      mount.innerHTML = sessions.map(function(session, idx){
-        var items = (session.items||[]).filter(Boolean).map(function(item){
-          if(!item) return '';
-          var link = item.yt ? '<a href="' + ytURL(item.yt) + '" target="_blank" rel="noopener">' + item.name + '</a>' : item.name;
-          var meta = [];
-          if(item.type) meta.push(item.type);
-          if(item.equipment && item.equipment.length) meta.push(item.equipment.join(', '));
-          return '<li>' + link + (meta.length ? ' <span class="meta">(' + meta.join(' • ') + ')</span>' : '') + '</li>';
-        }).join('');
-        var extras = (session.extras||[]).map(function(x){ return '<li>' + x + '</li>'; }).join('');
-        return '' +
-          '<article class="section" style="margin-top:10px;">' +
-            '<h3 style="margin:.1rem 0 .35rem;">Day ' + (idx+1) + ': ' + session.title + '</h3>' +
-            '<p class="meta">' + (session.subtitle || '') + '</p>' +
-            ((items || extras) ? '<ul style="margin:.5rem 0 0 1.05rem;">' + items + extras + '</ul>' : '') +
-          '</article>';
-      }).join('');
-    }
-
-    function mountBuilder(){
-      if(byId('mpx-builder')) return;
-
-      var host = document.querySelector('main') || document.querySelector('.wrap') || document.body;
-      var footer = document.querySelector('footer');
-      var wrap = document.createElement('section');
-      wrap.id = 'mpx-builder';
-      wrap.className = 'section';
-      wrap.style.marginTop = '14px';
-      wrap.innerHTML = '' +
-        '<h2>Build Your Week</h2>' +
-        '<p class="meta">Use Auto Plan to generate a balanced week, or Guided Build to shape it while staying within your saved equipment and training options.</p>' +
-        '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0;">' +
-          '<button type="button" id="mpx-mode-auto" class="btn">Auto Plan</button>' +
-          '<button type="button" id="mpx-mode-guided" class="btn" style="background:var(--glass);color:var(--ink);border:1px solid var(--stroke);">Guided Build</button>' +
-        '</div>' +
-        '<div class="grid" style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">' +
-          '<label>Training type<select id="mpx-style" class="input"><option value="mixed">Mixed</option><option value="calisthenics">Calisthenics</option><option value="circuits">Circuits</option><option value="reformer">Reformer</option></select></label>' +
-          '<label>Days this week<select id="mpx-days" class="input"><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option></select></label>' +
-        '</div>' +
-        '<div id="mpx-guided" style="display:none;margin-top:10px;">' +
-          '<div style="display:flex;gap:.7rem;flex-wrap:wrap;">' +
-            '<label><input type="checkbox" id="mpx-ladder" checked> Ladder</label>' +
-            '<label><input type="checkbox" id="mpx-stretching" checked> Stretching</label>' +
-            '<label><input type="checkbox" id="mpx-physio" checked> Physio</label>' +
-            '<label><input type="checkbox" id="mpx-endurance"> Endurance</label>' +
-            '<label><input type="checkbox" id="mpx-yoga"> Yoga</label>' +
-            '<label><input type="checkbox" id="mpx-nutrition" checked> Nutrition</label>' +
-            '<label><input type="checkbox" id="mpx-hormones"> Physiology</label>' +
-          '</div>' +
-        '</div>' +
-        '<div style="margin-top:12px;display:flex;gap:.6rem;flex-wrap:wrap;">' +
-          '<button type="button" id="mpx-build" class="btn">Build this week</button>' +
-        '</div>' +
-        '<p id="mpx-status" class="meta" style="margin-top:10px;">Waiting for your weekly build.</p>' +
-        '<div id="mpx-output"></div>';
-
-      if(footer && footer.parentNode){
-        footer.parentNode.insertBefore(wrap, footer);
-      } else {
-        host.appendChild(wrap);
-      }
-    }
-
-    function bindBuilder(){
-      var currentMode = 'auto';
-      var btnAuto = byId('mpx-mode-auto');
-      var btnGuided = byId('mpx-mode-guided');
-      var guided = byId('mpx-guided');
-      var build = byId('mpx-build');
-      var status = byId('mpx-status');
-      var out = byId('mpx-output');
-      if(!btnAuto || !btnGuided || !guided || !build || !status || !out) return;
-
-      function setMode(mode){
-        currentMode = mode;
-        guided.style.display = mode === 'guided' ? 'block' : 'none';
-        if(mode === 'auto'){
-          btnAuto.style.background = 'var(--accent)';
-          btnAuto.style.color = '#111';
-          btnAuto.style.border = '0';
-          btnGuided.style.background = 'var(--glass)';
-          btnGuided.style.color = 'var(--ink)';
-          btnGuided.style.border = '1px solid var(--stroke)';
-        } else {
-          btnGuided.style.background = 'var(--accent)';
-          btnGuided.style.color = '#111';
-          btnGuided.style.border = '0';
-          btnAuto.style.background = 'var(--glass)';
-          btnAuto.style.color = 'var(--ink)';
-          btnAuto.style.border = '1px solid var(--stroke)';
-        }
-      }
-
-      btnAuto.addEventListener('click', function(){ setMode('auto'); });
-      btnGuided.addEventListener('click', function(){ setMode('guided'); });
-
-      build.addEventListener('click', function(){
-        try{
-          var style = byId('mpx-style').value;
-          var days = parseInt(byId('mpx-days').value || '4', 10);
-          var sessions;
-          if(currentMode === 'guided'){
-            sessions = buildGuidedPlan(style, days, {
-              ladder: !!byId('mpx-ladder').checked,
-              stretching: !!byId('mpx-stretching').checked,
-              physio: !!byId('mpx-physio').checked,
-              endurance: !!byId('mpx-endurance').checked,
-              yoga: !!byId('mpx-yoga').checked,
-              nutrition: !!byId('mpx-nutrition').checked,
-              hormones: !!byId('mpx-hormones').checked
-            });
-          } else {
-            sessions = buildAutoPlan(style, days);
-          }
-
-          renderCards(out, sessions);
-          var equip = loadEquipment();
-          var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });
-          status.textContent = 'Built ' + sessions.length + ' sessions using ' + style + ' mode and your saved equipment: ' + (eqList.length ? eqList.join(', ') : 'none found');
-        }catch(err){
-          status.textContent = 'Build failed: ' + (err && err.message ? err.message : 'unknown error');
-        }
-      });
-
-      setMode('auto');
-    }
-
-    ready(function(){
-      try{
-        mountBuilder();
-        bindBuilder();
-      }catch(err){}
-    });
-  })();
-  </script>
 
 </body>
 </html>

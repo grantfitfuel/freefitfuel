@@ -4690,27 +4690,23 @@
     }
 
     function openWorkoutLibrary(payload, quickName){
-  try{
-    // ALWAYS store payload first
-    localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+      try{
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload || {}));
+        if(quickName) localStorage.setItem('fff.quickLog', quickName);
+      }catch(err){}
 
-    // Optional quick log target
-    if(quickName){
-      localStorage.setItem('fff.quickLog', quickName);
+      var go = function(){
+        window.location.href = 'workouts.html';
+      };
+
+      if(window.requestAnimationFrame){
+        requestAnimationFrame(function(){
+          setTimeout(go, 80);
+        });
+      } else {
+        setTimeout(go, 80);
+      }
     }
-
-    // Debug (you can remove later)
-    console.log('Payload sent to workouts:', payload);
-
-  }catch(err){
-    console.error('Payload failed:', err);
-  }
-
-  // IMPORTANT: delay navigation slightly to ensure storage completes
-  setTimeout(function(){
-    window.location.href = 'workouts.html';
-  }, 50);
-}
 
     function renderCards(mount, sessions){
       if(!mount) return;

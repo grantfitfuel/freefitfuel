@@ -99,33 +99,23 @@
   </header>
 
   <main class="wrap">
-    <p class="lead">This page is your workout library and logging engine. Exercise choice, goal, and equipment are set in <strong>My Plan</strong>. Use this page to train, open form lookups, and save logs, PBs, and timers.</p>
-
-    <div class="section" style="margin-top:0;padding:12px 14px;border-color:rgba(255,106,0,.24);background:linear-gradient(180deg, rgba(255,106,0,.10), rgba(255,106,0,.04));">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-        <div>
-          <strong style="display:block;margin-bottom:4px;">Using Workouts as your training library</strong>
-          <div class="meta">Your build is controlled from My Plan. Come here to train and log, then switch back to My Plan to change the build.</div>
+    <p class="lead">This page is now your workout library and logging engine. It reads the current build from <strong>My Plan</strong>, then shows the selected sessions and exercises with the real logging drawers, PBs, timers and YouTube form lookups.</p>
+    <section class="section" id="libraryStatus">
+      <h2>Workout Library</h2>
+      <div class="block">
+        <strong id="libraryModeLabel">Waiting for My Plan</strong>
+        <p class="meta" id="libraryModeText">Open My Plan and build your week. This page will then show the exact sessions and exercises selected there.</p>
+        <div class="backup" aria-label="Backup controls">
+          <button class="btn-sm" id="btnExport">Export logs (.json)</button>
+          <label class="btn-sm" for="importFile" style="cursor:pointer">Import logs</label>
+          <input id="importFile" type="file" accept="application/json" style="display:none">
+          <span class="meta">Tip: export occasionally to guard against browser cleanup.</span>
+          <button class="btn-sm" id="btnResetAll" title="Delete all saved logs & PBs">Reset all logs</button>
+          <a class="btn" href="my-plan.html" style="margin-left:auto">← Back to My Plan</a>
         </div>
-        <a class="btn" href="my-plan.html">← Back to My Plan</a>
       </div>
-    </div>
+    </section>
 
-    <!-- Backup -->
-    <div class="backup" aria-label="Backup controls">
-      <button class="btn-sm" id="btnExport">Export logs (.json)</button>
-      <label class="btn-sm" for="importFile" style="cursor:pointer">Import logs</label>
-      <input id="importFile" type="file" accept="application/json" style="display:none">
-      <span class="meta">Tip: export occasionally to guard against browser cleanup.</span>
-      <button class="btn-sm" id="btnResetAll" title="Delete all saved logs & PBs">Reset all logs</button>
-    </div>
-      
-    
-<a class="btn" href="strength-longevity.html">
-  Strength &amp; Longevity (40+)
-</a>
-    
-    <!-- ===== Weekly Split (Chunk 1) ===== -->
     <section class="section">
       <h2>Weekly Split</h2>
       <div id="plan" class="plan"></div>
@@ -418,23 +408,37 @@ const QUOTES = [
 let PREFS = loadPrefs();
 let level = PREFS.level;
 let goal  = PREFS.goal;
+let LIBRARY_PAYLOAD = null;
 
 /* ========= DOM + UTIL HELPERS ========= */
-function filters(){
-  const d = PREFS.equip;
-  return {
-    db:    document.getElementById('f-db')?.checked    ?? d.db,
-    band:  document.getElementById('f-band')?.checked  ?? d.band,
-    bw:    document.getElementById('f-bw')?.checked    ?? d.bw,
-    rack:  document.getElementById('f-rack')?.checked  ?? d.rack,
-    rings: document.getElementById('f-rings')?.checked ?? d.rings
-  };
+function payloadEquip(){
+  try{
+    const raw = localStorage.getItem('fff.libraryPayload');
+    if(raw) LIBRARY_PAYLOAD = JSON.parse(raw);
+  }catch(err){}
+  return (LIBRARY_PAYLOAD && LIBRARY_PAYLOAD.equip) ? LIBRARY_PAYLOAD.equip : PREFS.equip;
 }
-function applyPrefsToUI(){
-  document.querySelectorAll('.seg [data-level]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.level===PREFS.level ? 'true' : 'false'));
-  document.querySelectorAll('.seg [data-goal]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.goal===PREFS.goal ? 'true' : 'false'));
-  const e = PREFS.equip, set=(id,val)=>{const el=document.getElementById(id); if(el) el.checked = !!val;};
-  set('f-db',e.db); set('f-band',e.band); set('f-bw',e.bw); set('f-rack',e.rack); set('f-rings',e.rings);
+function libraryStyle(){
+  try{
+    const raw = localStorage.getItem('fff.libraryPayload');
+    if(raw) LIBRARY_PAYLOAD = JSON.parse(raw);
+  }catch(err){}
+  return (LIBRARY_PAYLOAD && LIBRARY_PAYLOAD.style) ? LIBRARY_PAYLOAD.style : 'mixed';
+}
+function updateLibraryBanner(){
+  try{
+    const raw = localStorage.getItem('fff.libraryPayload');
+    LIBRARY_PAYLOAD = raw ? JSON.parse(raw) : null;
+  }catch(err){ LIBRARY_PAYLOAD = null; }
+  const label = document.getElementById('libraryModeLabel');
+  const text = document.getElementById('libraryModeText');
+  if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){
+    if(label) label.textContent = 'Showing the current build from My Plan';
+    if(text) text.textContent = 'Training type: ' + (LIBRARY_PAYLOAD.style || 'mixed') + '. These sessions came from your most recent build. Use this page to log the selected exercises and keep PBs, timers and backups in one place.';
+  } else {
+    if(label) label.textContent = 'Waiting for My Plan';
+    if(text) text.textContent = 'Open My Plan and build your week. This page will then show the selected sessions and exercises.';
+  }
 }
 function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }
 function applyGoal(rx){
@@ -444,7 +448,7 @@ function applyGoal(rx){
   return rx;
 }
 function findExerciseByKey(k){ return EXERCISES.find(e=>e.k===k); }
-function gearOK(ex){ return !!filters()[ex.eq]; }
+function gearOK(ex){ return !!payloadEquip()[ex.eq]; }
 function pickExerciseOrAlt(primaryKey){
   let ex = findExerciseByKey(primaryKey);
   if(ex && gearOK(ex)) return {ex, isAlt:false};
@@ -578,99 +582,122 @@ function hookRestTimers(scope){
 /* ========= RENDER: WEEKLY SPLIT ========= */
 const planEl = document.getElementById('plan');
 
-function renderPlan(){
-  planEl.innerHTML = '';
-  const groups = [['push','Push Day'],['pull','Pull Day'],['legs','Legs / Core Day'],['full','Full-Body Day']];
-
-  groups.forEach(([key,label])=>{
-    const blk = document.createElement('div'); blk.className='block'; blk.innerHTML = `<h3>${label}</h3>`;
-
-    PLAN[key][level].forEach(item=>{
-      const pickRes = pickExerciseOrAlt(item.k); if(!pickRes.ex) return;
-      const ex = pickRes.ex;
-
-      const row = document.createElement('div'); row.className='mov';
-      row.innerHTML = `
-        <div class="mov-head">
-          <div class="mov-title">
-            <a href="${ytSearchURL(ex.yt)}" target="_blank" rel="noopener" title="YouTube form search">
-              ${ex.n}${pickRes.isAlt ? ' <span class="meta">(alt)</span>' : ''}
-            </a>
+function makeExerciseRow(ex, rx, note){
+  const row = document.createElement('div'); row.className='mov';
+  row.innerHTML = `
+    <div class="mov-head">
+      <div class="mov-title">
+        <a href="${ytSearchURL(ex.yt)}" target="_blank" rel="noopener" title="YouTube form search">
+          ${ex.n}${note ? ' <span class="meta">(' + note + ')</span>' : ''}
+        </a>
+      </div>
+      <div class="rx">${rx || ''}</div>
+      <div class="mov-tools">
+        <button class="btn-sm" data-open>Log</button>
+        <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
+      </div>
+    </div>
+    <div class="drawer" data-drawer>
+      <div class="log-grid" data-log>
+        ${[1,2,3,4,5].map(i=>`
+          <div class="log-row">
+            <strong>Set ${i}</strong>
+            <input inputmode="decimal" placeholder="kg" data-field="w${i}">
+            <input inputmode="numeric" placeholder="reps" data-field="r${i}">
+            <input placeholder="notes" data-field="n${i}">
+            <button class="btn-sm" data-save>Save</button>
           </div>
-          <div class="rx">${applyGoal(item.rx)}</div>
-          <div class="mov-tools">
-            <button class="btn-sm" data-open>Log</button>
-            <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
-          </div>
-        </div>
-        ${pickRes.isAlt ? '<p class="meta" style="margin:.35rem 0 0">Suggested alternative shown based on current equipment.</p>' : ''}
-        <div class="drawer" data-drawer>
-          <div class="log-grid" data-log>
-            ${[1,2,3,4,5].map(i=>`
-              <div class="log-row">
-                <strong>Set ${i}</strong>
-                <input inputmode="decimal" placeholder="kg"   data-field="w${i}">
-                <input inputmode="numeric" placeholder="reps" data-field="r${i}">
-                <input placeholder="notes" data-field="n${i}">
-                <button class="btn-sm" data-save>Save</button>
-              </div>
-              ${restControlsHTML(ex.k, i)}
-            `).join('')}
-          </div>
-          <div class="meta-row">
-            <span class="pb" data-pb></span>
-            <span class="badge" data-badge></span>
-          </div>
-          <div class="quote" data-quote></div>
-        </div>
-      `;
+          ${restControlsHTML(ex.k, i)}
+        `).join('')}
+      </div>
+      <div class="meta-row">
+        <span class="pb" data-pb></span>
+        <span class="badge" data-badge></span>
+      </div>
+      <div class="quote" data-quote></div>
+    </div>
+  `;
 
-      const drawer = row.querySelector('[data-drawer]');
-      row.querySelector('[data-open]').addEventListener('click', ()=>{ drawer.classList.toggle('open'); if(drawer.classList.contains('open')) hookRestTimers(drawer); });
-      row.querySelector('[data-clear]').addEventListener('click', ()=>{
-        localStorage.removeItem(NS+ex.k); localStorage.removeItem(NS+ex.k+'.best');
-        populateFromStore(); flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
-      });
-
-      const logArea = row.querySelector('[data-log]');
-      const pbEl    = row.querySelector('[data-pb]');
-      const badgeEl = row.querySelector('[data-badge]');
-      const quoteEl = row.querySelector('[data-quote]');
-
-      function populateFromStore(){
-        const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
-        logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value = saved[id]; });
-        const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
-        badgeEl.textContent = milestoneText();
-      }
-      populateFromStore();
-
-      logArea.querySelectorAll('[data-save]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
-          localStorage.setItem(NS+ex.k, JSON.stringify(obj));
-          const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
-          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
-          const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
-          badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
-        });
-      });
-
-      blk.appendChild(row);
-    });
-
-    planEl.appendChild(blk);
+  const drawer = row.querySelector('[data-drawer]');
+  row.querySelector('[data-open]').addEventListener('click', ()=>{ drawer.classList.toggle('open'); if(drawer.classList.contains('open')) hookRestTimers(drawer); });
+  row.querySelector('[data-clear]').addEventListener('click', ()=>{
+    localStorage.removeItem(NS+ex.k); localStorage.removeItem(NS+ex.k+'.best');
+    populateFromStore(); flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
   });
 
-  // Section quote
-  const q = document.createElement('p'); q.className='quote'; q.textContent = pick(QUOTES);
-  planEl.parentElement.appendChild(q);
+  const logArea = row.querySelector('[data-log]');
+  const pbEl    = row.querySelector('[data-pb]');
+  const badgeEl = row.querySelector('[data-badge]');
+  const quoteEl = row.querySelector('[data-quote]');
+
+  function populateFromStore(){
+    const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
+    logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value = saved[id]; });
+    const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
+    pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+    badgeEl.textContent = milestoneText();
+  }
+  populateFromStore();
+
+  logArea.querySelectorAll('[data-save]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
+      localStorage.setItem(NS+ex.k, JSON.stringify(obj));
+      const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
+      if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
+      else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
+      const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
+      badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
+    });
+  });
+
+  return row;
+}
+
+function exFromPayloadItem(item){
+  if(!item) return null;
+  const byName = EXERCISES.find(e => e.n.toLowerCase() === String(item.name||'').toLowerCase());
+  if(byName) return byName;
+  return {
+    k: String(item.name||'custom').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+    n: item.name || 'Exercise',
+    eq: (item.equipment && item.equipment[0]) || 'bw',
+    yt: item.yt || ((item.name || 'exercise') + ' form')
+  };
+}
+
+function renderPlan(){
+  planEl.innerHTML = '';
+  updateLibraryBanner();
+
+  if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){
+    LIBRARY_PAYLOAD.sessions.forEach((session, idx)=>{
+      const blk = document.createElement('div');
+      blk.className = 'block';
+      blk.innerHTML = `<h3>Day ${idx + 1}: ${session.title || 'Session'}</h3><p class="meta">${session.subtitle || ''}</p>`;
+      (session.items || []).forEach(item=>{
+        const ex = exFromPayloadItem(item);
+        if(ex) blk.appendChild(makeExerciseRow(ex, item.type || '', 'from plan'));
+      });
+      if((session.extras||[]).length){
+        const note = document.createElement('p');
+        note.className = 'meta';
+        note.textContent = 'Also includes: ' + session.extras.join(' • ');
+        blk.appendChild(note);
+      }
+      planEl.appendChild(blk);
+    });
+    return;
+  }
+
+  const empty = document.createElement('div');
+  empty.className = 'block';
+  empty.innerHTML = '<h3>No active plan received</h3><p class="meta">Build your week in My Plan, then return here to log the selected exercises.</p>';
+  planEl.appendChild(empty);
 }
 
 /* ========= RENDER: CALISTHENICS ========= */
-function renderCal(){
+function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){ const calEl=document.getElementById('cal'); if(calEl) calEl.innerHTML=''; return; }
   const calEl = document.getElementById('cal'); if(!calEl) return; calEl.innerHTML='';
   CAL.forEach(group=>{
     const blk = document.createElement('div'); blk.className='block'; blk.innerHTML = `<h3>${group.title}</h3>`;
@@ -761,7 +788,7 @@ function renderCal(){
 }
 
 /* ========= RENDER: CIRCUITS (with drawer timers) ========= */
-function renderCircuits(){
+function renderCircuits(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){ const wrap=document.getElementById('circuits'); if(wrap) wrap.innerHTML=''; return; }
   const wrap = document.getElementById('circuits'); if(!wrap) return; wrap.innerHTML='';
 
   CIRCUITS.forEach(c=>{
@@ -931,33 +958,46 @@ document.getElementById('btnResetAll')?.addEventListener('click', ()=>{
 });
 
 /* ========= CONTROLS WIRING (persist prefs) ========= */
-function wireControls(){
-  document.querySelectorAll('.seg [data-level]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      document.querySelectorAll('.seg [data-level]').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true'); level=b.dataset.level; PREFS.level=level; savePrefs(PREFS);
-      renderPlan(); renderCal(); renderCircuits();
-    });
-  });
-  document.querySelectorAll('.seg [data-goal]').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      document.querySelectorAll('.seg [data-goal]').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true'); goal=b.dataset.goal; PREFS.goal=goal; savePrefs(PREFS);
-      renderPlan(); renderCal(); renderCircuits();
-    });
-  });
-  ['f-db','f-band','f-bw','f-rack','f-rings'].forEach(id=>{
-    const el=document.getElementById(id); if(!el) return;
-    el.addEventListener('change', ()=>{ PREFS.equip=filters(); savePrefs(PREFS); renderPlan(); renderCal(); renderCircuits(); });
-  });
-}
+function wireControls(){}
 
 /* ========= MOUNT ========= */
-applyPrefsToUI();
-wireControls();
+updateLibraryBanner();
 renderPlan();
 renderCal();
 renderCircuits();
+
+/* ========= QUICK LOG RECEIVER ========= */
+(function(){
+  const target = localStorage.getItem('fff.quickLog');
+  if(!target) return;
+  function openRequestedExercise(){
+    const q = String(target).toLowerCase().trim();
+    if(!q) return;
+    const rows = Array.from(document.querySelectorAll('.mov'));
+    for(const row of rows){
+      const titleEl = row.querySelector('.mov-title');
+      const title = (titleEl?.textContent || '').toLowerCase();
+      if(!title || title.indexOf(q) === -1) continue;
+
+      const openBtn = row.querySelector('[data-open]');
+      const drawer = row.querySelector('[data-drawer]');
+      if(drawer && !drawer.classList.contains('open') && openBtn){
+        openBtn.click();
+      }
+
+      row.style.outline = '2px solid rgba(255,106,0,.75)';
+      row.style.outlineOffset = '2px';
+      row.scrollIntoView({ behavior:'smooth', block:'center' });
+
+      const firstInput = row.querySelector('.drawer.open input');
+      if(firstInput){ firstInput.focus(); }
+
+      try { localStorage.removeItem('fff.quickLog'); } catch(err){}
+      return;
+    }
+  }
+  setTimeout(openRequestedExercise, 180);
+})();
 </script>
 </body>
 </html>

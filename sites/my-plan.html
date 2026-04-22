@@ -4721,7 +4721,7 @@
       }
 
       var style = document.getElementById('mpx-style') ? document.getElementById('mpx-style').value : 'mixed';
-      var equip = readEquip();
+      var equip = loadEquipment();
       var payload = buildLibraryPayload(style, sessions, equip);
 
       mount.innerHTML = sessions.map(function(session, idx){

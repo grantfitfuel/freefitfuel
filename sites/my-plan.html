@@ -4735,7 +4735,21 @@
       var equip = loadEquipment();
       var payload = buildLibraryPayload(style, sessions, equip);
 
-      mount.innerHTML = sessions.map(function(session, idx){
+      try{
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+      }catch(err){}
+
+      mount.innerHTML = ''
+        + '<div class="card" style="margin-bottom:12px;border:1px solid rgba(255,106,0,.22);background:rgba(255,106,0,.08);">'
+        +   '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">'
+        +     '<div>'
+        +       '<strong style="display:block;margin-bottom:4px;">Your plan is ready</strong>'
+        +       '<div class="meta">Open Workouts to train and log the exercises from this build.</div>'
+        +     '</div>'
+        +     '<button type="button" class="btn btn-primary" id="openLibraryBtn">Open Workouts</button>'
+        +   '</div>'
+        + '</div>'
+        + sessions.map(function(session, idx){
             var itemsHtml = (session.items||[]).filter(Boolean).map(function(item){
               var meta = [];
               if(item.type) meta.push(item.type);
@@ -4765,6 +4779,13 @@
               +   itemsHtml + extrasHtml
               + '</article>';
           }).join('');
+
+      var openLibraryBtn = document.getElementById('openLibraryBtn');
+      if(openLibraryBtn){
+        openLibraryBtn.addEventListener('click', function(){
+          openWorkoutLibrary(payload, '');
+        });
+      }
 
       mount.querySelectorAll('[data-log-name]').forEach(function(btn){
         btn.addEventListener('click', function(){

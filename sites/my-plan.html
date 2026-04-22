@@ -4737,6 +4737,11 @@
 
       try{
         localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        localStorage.setItem('fff.currentPlan', JSON.stringify({
+          sessions: sessions || [],
+          style: style || 'mixed',
+          equip: equip || {}
+        }));
       }catch(err){}
 
       mount.innerHTML = ''
@@ -4900,7 +4905,30 @@
         }
       });
 
+      function restorePersistedPlan(){
+        try{
+          var saved = localStorage.getItem('fff.currentPlan');
+          if(!saved) return;
+          var data = JSON.parse(saved);
+          if(!data || !data.sessions || !data.sessions.length) return;
+
+          var styleEl = byId('mpx-style');
+          if(styleEl && data.style){
+            styleEl.value = data.style;
+          }
+
+          renderCards(out, data.sessions);
+
+          var statusText = 'Restored your last built plan';
+          if(data.style){
+            statusText += ' (' + data.style + ')';
+          }
+          status.textContent = statusText;
+        }catch(err){}
+      }
+
       setMode('auto');
+      restorePersistedPlan();
     }
 
     ready(function(){

@@ -976,6 +976,45 @@ wireControls();
 renderPlan();
 renderCal();
 renderCircuits();
+
+/* ========= QUICK LOG RECEIVER (My Plan -> Workouts) ========= */
+(function(){
+  const target = (function(){
+    try { return localStorage.getItem('fff.quickLog') || ''; }
+    catch(err){ return ''; }
+  })();
+  if(!target) return;
+
+  function openRequestedExercise(){
+    const q = String(target).toLowerCase().trim();
+    if(!q) return;
+
+    const rows = Array.from(document.querySelectorAll('.mov'));
+    for(const row of rows){
+      const titleEl = row.querySelector('.mov-title');
+      const title = (titleEl?.textContent || '').toLowerCase();
+      if(!title || title.indexOf(q) === -1) continue;
+
+      const openBtn = row.querySelector('[data-open]');
+      const drawer = row.querySelector('[data-drawer]');
+      if(drawer && !drawer.classList.contains('open') && openBtn){
+        openBtn.click();
+      }
+
+      row.style.outline = '2px solid rgba(255,106,0,.75)';
+      row.style.outlineOffset = '2px';
+      row.scrollIntoView({ behavior:'smooth', block:'center' });
+
+      const firstInput = row.querySelector('.drawer.open input');
+      if(firstInput){ firstInput.focus(); }
+
+      try { localStorage.removeItem('fff.quickLog'); } catch(err){}
+      return;
+    }
+  }
+
+  setTimeout(openRequestedExercise, 180);
+})();
 </script>
 </body>
 </html>

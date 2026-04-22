@@ -4738,9 +4738,19 @@
       try{
         localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
         localStorage.setItem('fff.currentPlan', JSON.stringify({
-          sessions: sessions || [],
+          payload: payload,
           style: style || 'mixed',
-          equip: equip || {}
+          days: document.getElementById('mpx-days') ? String(document.getElementById('mpx-days').value || '4') : '4',
+          mode: (document.getElementById('mpx-guided') && document.getElementById('mpx-guided').style.display === 'block') ? 'guided' : 'auto',
+          toggles: {
+            ladder: !!(document.getElementById('mpx-ladder') && document.getElementById('mpx-ladder').checked),
+            stretching: !!(document.getElementById('mpx-stretching') && document.getElementById('mpx-stretching').checked),
+            physio: !!(document.getElementById('mpx-physio') && document.getElementById('mpx-physio').checked),
+            endurance: !!(document.getElementById('mpx-endurance') && document.getElementById('mpx-endurance').checked),
+            yoga: !!(document.getElementById('mpx-yoga') && document.getElementById('mpx-yoga').checked),
+            nutrition: !!(document.getElementById('mpx-nutrition') && document.getElementById('mpx-nutrition').checked),
+            hormones: !!(document.getElementById('mpx-hormones') && document.getElementById('mpx-hormones').checked)
+          }
         }));
       }catch(err){}
 
@@ -4852,6 +4862,8 @@
       var build = byId('mpx-build');
       var status = byId('mpx-status');
       var out = byId('mpx-output');
+      var styleEl = byId('mpx-style');
+      var daysEl = byId('mpx-days');
       if(!btnAuto || !btnGuided || !guided || !build || !status || !out) return;
 
       function setMode(mode){
@@ -4874,13 +4886,45 @@
         }
       }
 
+      function restorePersistedPlan(){
+        try{
+          var raw = localStorage.getItem('fff.currentPlan');
+          if(!raw) return false;
+          var saved = JSON.parse(raw);
+          if(!saved || !saved.payload || !saved.payload.sessions || !saved.payload.sessions.length) return false;
+
+          if(styleEl && saved.style){
+            styleEl.value = saved.style;
+          }
+          if(daysEl && saved.days){
+            daysEl.value = String(saved.days);
+          }
+
+          var toggles = saved.toggles || {};
+          if(byId('mpx-ladder')) byId('mpx-ladder').checked = !!toggles.ladder;
+          if(byId('mpx-stretching')) byId('mpx-stretching').checked = !!toggles.stretching;
+          if(byId('mpx-physio')) byId('mpx-physio').checked = !!toggles.physio;
+          if(byId('mpx-endurance')) byId('mpx-endurance').checked = !!toggles.endurance;
+          if(byId('mpx-yoga')) byId('mpx-yoga').checked = !!toggles.yoga;
+          if(byId('mpx-nutrition')) byId('mpx-nutrition').checked = !!toggles.nutrition;
+          if(byId('mpx-hormones')) byId('mpx-hormones').checked = !!toggles.hormones;
+
+          setMode(saved.mode === 'guided' ? 'guided' : 'auto');
+          renderCards(out, saved.payload.sessions);
+          status.textContent = 'Restored your last built plan';
+          return true;
+        }catch(err){
+          return false;
+        }
+      }
+
       btnAuto.addEventListener('click', function(){ setMode('auto'); });
       btnGuided.addEventListener('click', function(){ setMode('guided'); });
 
       build.addEventListener('click', function(){
         try{
-          var style = byId('mpx-style').value;
-          var days = parseInt(byId('mpx-days').value || '4', 10);
+          var style = styleEl.value;
+          var days = parseInt(daysEl.value || '4', 10);
           var sessions;
           if(currentMode === 'guided'){
             sessions = buildGuidedPlan(style, days, {
@@ -4905,30 +4949,9 @@
         }
       });
 
-      function restorePersistedPlan(){
-        try{
-          var saved = localStorage.getItem('fff.currentPlan');
-          if(!saved) return;
-          var data = JSON.parse(saved);
-          if(!data || !data.sessions || !data.sessions.length) return;
-
-          var styleEl = byId('mpx-style');
-          if(styleEl && data.style){
-            styleEl.value = data.style;
-          }
-
-          renderCards(out, data.sessions);
-
-          var statusText = 'Restored your last built plan';
-          if(data.style){
-            statusText += ' (' + data.style + ')';
-          }
-          status.textContent = statusText;
-        }catch(err){}
+      if(!restorePersistedPlan()){
+        setMode('auto');
       }
-
-      setMode('auto');
-      restorePersistedPlan();
     }
 
     ready(function(){

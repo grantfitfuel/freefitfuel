@@ -5025,34 +5025,53 @@
         });
       }
 
-      try{ refreshAllCoachViews(); }catch(err){ console.warn('coach init skipped', err); }
-      try{ wireWorkoutPlanLogsToEngine(); }catch(err){ console.warn('log wiring skipped', err); }
-
-      function initBuilderSafe(){
+      try{ refreshAllCoachViews(); }catch(err){ console.error('coach init failed', err); }
+      try{ wireWorkoutPlanLogsToEngine(); }catch(err){ console.error('log engine init failed', err); }
+      try{ wireBuilder(); }catch(err){ console.error('builder wire failed', err); }
+      try{ renderBuilder(); }catch(err){
+        console.error('builder render failed', err);
         try{
-          if(typeof wireBuilder === 'function') wireBuilder();
-          if(typeof renderBuilder === 'function') renderBuilder();
-        }catch(err){
-          console.error('builder init failed', err);
           var status = document.getElementById('builderStatus');
-          if(status){
-            status.textContent = 'Builder failed to initialise. Refresh once. If it still fails, this file needs the safe-init version.';
-          }
-        }
+          if(status) status.textContent = 'Builder hit an error while loading. Tap Build this week to retry.';
+        }catch(e){}
       }
 
-      initBuilderSafe();
-      window.addEventListener('load', initBuilderSafe, { once:true });
-      var refreshBtn = document.getElementById('btnRefreshBuilder');
-      if(refreshBtn){
-        refreshBtn.addEventListener('click', function(){
-          try{
-            if(typeof renderBuilder === 'function') renderBuilder();
-          }catch(err){
-            console.error('manual builder render failed', err);
-          }
-        });
-      }
+      try{
+        var buildBtn = document.getElementById('btnRefreshBuilder');
+        if(buildBtn){
+          buildBtn.addEventListener('click', function(ev){
+            ev.preventDefault();
+            try{
+              renderBuilder();
+            }catch(err){
+              console.error('manual builder render failed', err);
+              try{
+                var state = getBuilderStateFromUI();
+                saveBuilderState(state);
+                applyBuilderStateToUI(state);
+                var pool = buildSessionPool();
+                var out = '';
+                if(state.mode === 'guided'){
+                  renderBuilderGuided(state);
+                } else {
+                  var selected = applyAutoSelection(pool, state);
+                  for(var i = 0; i < selected.length; i++){
+                    out += renderSessionCard(selected[i], 'Day ' + (i + 1));
+                  }
+                  var autoOut = document.getElementById('builderAutoOutput');
+                  if(autoOut) autoOut.innerHTML = out || '<div class="card">No auto plan yet.</div>';
+                  var status = document.getElementById('builderStatus');
+                  if(status) status.textContent = builderStatusLine(state);
+                }
+              }catch(err2){
+                console.error('fallback builder failed', err2);
+                var status = document.getElementById('builderStatus');
+                if(status) status.textContent = 'Builder failed to generate this week. Please use Reset builder once and try again.';
+              }
+            }
+          });
+        }
+      }catch(err){ console.error('builder button bind failed', err); }
     });
   </script>
 </body>

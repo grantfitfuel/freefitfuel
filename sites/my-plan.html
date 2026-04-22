@@ -2610,6 +2610,15 @@
 
       renderCurrentPhase();
       renderPlan();
+      try{
+        wireBuilder();
+        renderBuilder();
+      }catch(builderInitErr){
+        console.error('Builder init error:', builderInitErr);
+        var builderStatus = builderNode('builderStatus');
+        if(builderStatus) builderStatus.textContent = 'Builder could not initialise: ' + (builderInitErr && builderInitErr.message ? builderInitErr.message : 'unknown error');
+      }
+
       refreshAllCoachViews();
       wireWorkoutPlanLogsToEngine();
       wireBuilder();
@@ -4481,6 +4490,7 @@
 
 
     document.addEventListener('DOMContentLoaded', function(){
+      try{
       var modeTabs = document.querySelectorAll('.mode-tab');
       Array.prototype.forEach.call(modeTabs, function(btn){
         btn.addEventListener('click', function(){
@@ -4643,8 +4653,15 @@
         });
       });
 
+      }catch(coreStartupErr){
+        console.error('Core startup error before builder init:', coreStartupErr);
+      }
 
       var BUILDER_KEY = 'fff.plan.builder.v1';
+
+      function builderNode(id){
+        return document.getElementById(id);
+      }
 
       function defaultBuilderState(){
         return {
@@ -4680,16 +4697,25 @@
         var state = loadBuilderState();
         var activeMode = document.querySelector('[data-builder-mode][aria-pressed="true"]');
         var activeType = document.querySelector('[data-training-type][aria-pressed="true"]');
+        var daysNode = builderNode('builderDays');
+        var emphasisNode = builderNode('builderEmphasis');
+        var ladderNode = builderNode('builderIncludeLadder');
+        var stretchNode = builderNode('builderIncludeStretch');
+        var physioNode = builderNode('builderIncludePhysio');
+        var enduranceNode = builderNode('builderIncludeEndurance');
+        var yogaNode = builderNode('builderIncludeYoga');
+        var nutritionNode = builderNode('builderIncludeNutrition');
+
         state.mode = activeMode ? activeMode.getAttribute('data-builder-mode') : state.mode;
         state.trainingType = activeType ? activeType.getAttribute('data-training-type') : state.trainingType;
-        state.days = parseInt(document.getElementById('builderDays').value || state.days, 10) || 4;
-        state.emphasis = document.getElementById('builderEmphasis').value || 'balanced';
-        state.includeLadder = !!document.getElementById('builderIncludeLadder').checked;
-        state.includeStretch = !!document.getElementById('builderIncludeStretch').checked;
-        state.includePhysio = !!document.getElementById('builderIncludePhysio').checked;
-        state.includeEndurance = !!document.getElementById('builderIncludeEndurance').checked;
-        state.includeYoga = !!document.getElementById('builderIncludeYoga').checked;
-        state.includeNutrition = !!document.getElementById('builderIncludeNutrition').checked;
+        state.days = parseInt((daysNode && daysNode.value) || state.days, 10) || 4;
+        state.emphasis = (emphasisNode && emphasisNode.value) || state.emphasis || 'balanced';
+        state.includeLadder = ladderNode ? !!ladderNode.checked : !!state.includeLadder;
+        state.includeStretch = stretchNode ? !!stretchNode.checked : !!state.includeStretch;
+        state.includePhysio = physioNode ? !!physioNode.checked : !!state.includePhysio;
+        state.includeEndurance = enduranceNode ? !!enduranceNode.checked : !!state.includeEndurance;
+        state.includeYoga = yogaNode ? !!yogaNode.checked : !!state.includeYoga;
+        state.includeNutrition = nutritionNode ? !!nutritionNode.checked : !!state.includeNutrition;
         return state;
       }
 
@@ -4701,16 +4727,27 @@
         document.querySelectorAll('[data-training-type]').forEach(function(btn){
           btn.setAttribute('aria-pressed', btn.getAttribute('data-training-type') === state.trainingType ? 'true' : 'false');
         });
-        document.getElementById('builderDays').value = String(state.days || 4);
-        document.getElementById('builderEmphasis').value = state.emphasis || 'balanced';
-        document.getElementById('builderIncludeLadder').checked = !!state.includeLadder;
-        document.getElementById('builderIncludeStretch').checked = !!state.includeStretch;
-        document.getElementById('builderIncludePhysio').checked = !!state.includePhysio;
-        document.getElementById('builderIncludeEndurance').checked = !!state.includeEndurance;
-        document.getElementById('builderIncludeYoga').checked = !!state.includeYoga;
-        document.getElementById('builderIncludeNutrition').checked = !!state.includeNutrition;
-        document.getElementById('builderGuidedWrap').style.display = state.mode === 'guided' ? '' : 'none';
-        document.getElementById('builderAutoWrap').style.display = state.mode === 'guided' ? 'none' : '';
+        var daysNode = builderNode('builderDays');
+        var emphasisNode = builderNode('builderEmphasis');
+        var ladderNode = builderNode('builderIncludeLadder');
+        var stretchNode = builderNode('builderIncludeStretch');
+        var physioNode = builderNode('builderIncludePhysio');
+        var enduranceNode = builderNode('builderIncludeEndurance');
+        var yogaNode = builderNode('builderIncludeYoga');
+        var nutritionNode = builderNode('builderIncludeNutrition');
+        var guidedWrap = builderNode('builderGuidedWrap');
+        var autoWrap = builderNode('builderAutoWrap');
+
+        if(daysNode) daysNode.value = String(state.days || 4);
+        if(emphasisNode) emphasisNode.value = state.emphasis || 'balanced';
+        if(ladderNode) ladderNode.checked = !!state.includeLadder;
+        if(stretchNode) stretchNode.checked = !!state.includeStretch;
+        if(physioNode) physioNode.checked = !!state.includePhysio;
+        if(enduranceNode) enduranceNode.checked = !!state.includeEndurance;
+        if(yogaNode) yogaNode.checked = !!state.includeYoga;
+        if(nutritionNode) nutritionNode.checked = !!state.includeNutrition;
+        if(guidedWrap) guidedWrap.style.display = state.mode === 'guided' ? '' : 'none';
+        if(autoWrap) autoWrap.style.display = state.mode === 'guided' ? 'none' : '';
       }
 
       function currentStageIdForBuilder(){
@@ -4908,7 +4945,7 @@
         for(var i = 0; i < selected.length; i++){
           html += renderSessionCard(selected[i], 'Day ' + (i + 1));
         }
-        document.getElementById('builderAutoOutput').innerHTML = html || '<div class="card">No auto plan yet.</div>';
+        var autoOut = builderNode('builderAutoOutput'); if(autoOut) autoOut.innerHTML = html || '<div class="card">No auto plan yet.</div>';
       }
 
       function sessionBankOptions(pool){
@@ -4940,8 +4977,8 @@
             '<div><select data-guided-day="' + d + '">' + sessionBankOptions(pool) + '</select></div>' +
           '</div>';
         }
-        document.getElementById('builderGuidedRows').innerHTML = rows;
-        document.getElementById('builderSessionBank').innerHTML = bankHtml;
+        var guidedRows = builderNode('builderGuidedRows'); if(guidedRows) guidedRows.innerHTML = rows;
+        var sessionBank = builderNode('builderSessionBank'); if(sessionBank) sessionBank.innerHTML = bankHtml;
         document.querySelectorAll('[data-guided-day]').forEach(function(sel){
           var dayKey = 'day' + sel.getAttribute('data-guided-day');
           if(state.picks[dayKey]) sel.value = state.picks[dayKey];
@@ -4961,7 +4998,7 @@
           var card = findPoolCard(pool, key);
           if(card) output += renderSessionCard(card, 'Day ' + day);
         }
-        document.getElementById('builderAutoOutput').innerHTML = output || '<div class="card">Choose your sessions above. The session bank stays constrained to your real library and module stack.</div>';
+        var guidedOut = builderNode('builderAutoOutput'); if(guidedOut) guidedOut.innerHTML = output || '<div class="card">Choose your sessions above. The session bank stays constrained to your real library and module stack.</div>';
       }
 
       function builderStatusLine(state){
@@ -4979,7 +5016,7 @@
         var state = getBuilderStateFromUI();
         saveBuilderState(state);
         applyBuilderStateToUI(state);
-        document.getElementById('builderStatus').textContent = builderStatusLine(state);
+        var builderStatus = builderNode('builderStatus'); if(builderStatus) builderStatus.textContent = builderStatusLine(state);
         if(state.mode === 'guided'){
           renderBuilderGuided(state);
         }else{
@@ -5013,65 +5050,33 @@
           node.addEventListener('change', renderBuilder);
         });
 
-        document.getElementById('btnRefreshBuilder').addEventListener('click', function(){
+        var btnRefreshBuilder = builderNode('btnRefreshBuilder');
+        if(btnRefreshBuilder){ btnRefreshBuilder.addEventListener('click', function(){
           renderBuilder();
-        });
+        }); }
 
-        document.getElementById('btnResetBuilder').addEventListener('click', function(){
+        var btnResetBuilder = builderNode('btnResetBuilder');
+        if(btnResetBuilder){ btnResetBuilder.addEventListener('click', function(){
           var fresh = defaultBuilderState();
           saveBuilderState(fresh);
           applyBuilderStateToUI(fresh);
           renderBuilder();
-        });
+        }); }
       }
 
-      try{ refreshAllCoachViews(); }catch(err){ console.error('coach init failed', err); }
-      try{ wireWorkoutPlanLogsToEngine(); }catch(err){ console.error('log engine init failed', err); }
-      try{ wireBuilder(); }catch(err){ console.error('builder wire failed', err); }
-      try{ renderBuilder(); }catch(err){
-        console.error('builder render failed', err);
-        try{
-          var status = document.getElementById('builderStatus');
-          if(status) status.textContent = 'Builder hit an error while loading. Tap Build this week to retry.';
-        }catch(e){}
-      }
+      refreshAllCoachViews();
+      wireWorkoutPlanLogsToEngine();
+    });
 
+    window.addEventListener('load', function(){
       try{
-        var buildBtn = document.getElementById('btnRefreshBuilder');
-        if(buildBtn){
-          buildBtn.addEventListener('click', function(ev){
-            ev.preventDefault();
-            try{
-              renderBuilder();
-            }catch(err){
-              console.error('manual builder render failed', err);
-              try{
-                var state = getBuilderStateFromUI();
-                saveBuilderState(state);
-                applyBuilderStateToUI(state);
-                var pool = buildSessionPool();
-                var out = '';
-                if(state.mode === 'guided'){
-                  renderBuilderGuided(state);
-                } else {
-                  var selected = applyAutoSelection(pool, state);
-                  for(var i = 0; i < selected.length; i++){
-                    out += renderSessionCard(selected[i], 'Day ' + (i + 1));
-                  }
-                  var autoOut = document.getElementById('builderAutoOutput');
-                  if(autoOut) autoOut.innerHTML = out || '<div class="card">No auto plan yet.</div>';
-                  var status = document.getElementById('builderStatus');
-                  if(status) status.textContent = builderStatusLine(state);
-                }
-              }catch(err2){
-                console.error('fallback builder failed', err2);
-                var status = document.getElementById('builderStatus');
-                if(status) status.textContent = 'Builder failed to generate this week. Please use Reset builder once and try again.';
-              }
-            }
-          });
+        if(typeof wireBuilder === 'function' && typeof renderBuilder === 'function'){
+          wireBuilder();
+          renderBuilder();
         }
-      }catch(err){ console.error('builder button bind failed', err); }
+      }catch(err){
+        console.error('Builder load retry failed:', err);
+      }
     });
   </script>
 </body>

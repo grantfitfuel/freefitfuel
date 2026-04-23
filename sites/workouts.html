@@ -432,18 +432,12 @@ function updateLibraryBanner(){
   }catch(err){ LIBRARY_PAYLOAD = null; }
   const label = document.getElementById('libraryModeLabel');
   const text = document.getElementById('libraryModeText');
-  const calSection = document.getElementById('cal') ? document.getElementById('cal').closest('.section') : null;
-  const circuitsSection = document.getElementById('circuits') ? document.getElementById('circuits').closest('.section') : null;
   if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){
     if(label) label.textContent = 'Showing the current build from My Plan';
     if(text) text.textContent = 'Training type: ' + (LIBRARY_PAYLOAD.style || 'mixed') + '. These sessions came from your most recent build. Use this page to log the selected exercises and keep PBs, timers and backups in one place.';
-    if(calSection) calSection.style.display = 'none';
-    if(circuitsSection) circuitsSection.style.display = 'none';
   } else {
     if(label) label.textContent = 'Waiting for My Plan';
     if(text) text.textContent = 'Open My Plan and build your week. This page will then show the selected sessions and exercises.';
-    if(calSection) calSection.style.display = '';
-    if(circuitsSection) circuitsSection.style.display = '';
   }
 }
 function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }

@@ -4860,6 +4860,9 @@
           }
 
           renderCards(out, sessions);
+          try{
+  localStorage.setItem('fff.currentPlan', JSON.stringify(sessions));
+}catch(e){}
           var equip = loadEquipment();
           var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });
           status.textContent = 'Built ' + sessions.length + ' sessions using ' + style + ' mode and your saved equipment: ' + (eqList.length ? eqList.join(', ') : 'none found');

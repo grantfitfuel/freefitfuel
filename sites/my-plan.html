@@ -1435,50 +1435,6 @@
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
 
     var EQUIPMENT_KEY = 'fff.equipment.profile.v1';
-    var PLAN_FORM_KEY = 'fff.myplan.form.v1';
-
-    function savePlanFormState(){
-      try{
-        var ids = ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','useBodyFatSelect','bodyFat','targetBodyFat','trainingStatus','wantsMuscleGain','phaseAggression','circadianState','hormoneState','bloodSugarState','hydrationLoad','trainingEnvironment','checkinWeight','checkinWaist','checkinBodyFat','emotionalLevel','checkinNotes','targetWeight','weightLogValue','weightLogNote'];
-        var state = { goal: GOAL || 'Maintain', values:{} };
-        ids.forEach(function(id){
-          var el = document.getElementById(id);
-          if(!el) return;
-          state.values[id] = el.type === 'checkbox' ? !!el.checked : String(el.value ?? '');
-        });
-        localStorage.setItem(PLAN_FORM_KEY, JSON.stringify(state));
-      }catch(err){}
-    }
-
-    function restorePlanFormState(){
-      try{
-        var raw = localStorage.getItem(PLAN_FORM_KEY);
-        if(!raw) return false;
-        var state = JSON.parse(raw);
-        if(state && state.goal){
-          setGoalChip(state.goal);
-        }
-        var values = (state && state.values) ? state.values : {};
-        Object.keys(values).forEach(function(id){
-          var el = document.getElementById(id);
-          if(!el) return;
-          if(el.type === 'checkbox'){
-            el.checked = !!values[id];
-          } else {
-            el.value = values[id];
-          }
-        });
-        if(document.getElementById('bfWrap')){
-          document.getElementById('bfWrap').style.display = (document.getElementById('useBodyFatSelect') && document.getElementById('useBodyFatSelect').value === 'yes') ? 'block' : 'none';
-        }
-        updateEquipmentSummary();
-        updateMacroTargets();
-        return true;
-      }catch(err){
-        return false;
-      }
-    }
-
 
     function defaultEquipmentProfile(){
       return {
@@ -4346,8 +4302,8 @@
       ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','bodyFat','targetBodyFat','trainingStatus','wantsMuscleGain','phaseAggression','circadianState','hormoneState','bloodSugarState','hydrationLoad'].forEach(function(id){
         var el = document.getElementById(id);
         if(el){
-          el.addEventListener('input', function(){ updateMacroTargets(); savePlanFormState(); });
-          el.addEventListener('change', function(){ updateMacroTargets(); savePlanFormState(); });
+          el.addEventListener('input', updateMacroTargets);
+          el.addEventListener('change', updateMacroTargets);
         }
       });
 
@@ -4357,18 +4313,15 @@
         if(!el) return;
         el.addEventListener('change', function(){
           saveEquipmentProfileFromUI();
-          savePlanFormState();
         });
       });
 
       document.getElementById('btnGenerateRoadmap').addEventListener('click', function(){
         generateRoadmapWithoutPDF(false);
-        savePlanFormState();
       });
 
       document.getElementById('btnGenerateStaged').addEventListener('click', function(){
         generateRoadmapWithoutPDF(true);
-        savePlanFormState();
       });
 
       document.getElementById('generatePDF').addEventListener('click', async function(){
@@ -4451,7 +4404,6 @@
       loadExistingRoadmapInputs();
       applyEquipmentProfileToUI(loadEquipmentProfile());
       saveEquipmentProfileFromUI();
-      restorePlanFormState();
       updateMacroTargets();
       renderCurrentPhase();
       renderPlan();
@@ -4739,21 +4691,10 @@
 
     function openWorkoutLibrary(payload, quickName){
       try{
-        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload || {}));
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
         if(quickName) localStorage.setItem('fff.quickLog', quickName);
       }catch(err){}
-
-      var go = function(){
-        window.location.href = 'workouts.html';
-      };
-
-      if(window.requestAnimationFrame){
-        requestAnimationFrame(function(){
-          setTimeout(go, 80);
-        });
-      } else {
-        setTimeout(go, 80);
-      }
+      window.location.href = 'workouts.html';
     }
 
     function renderCards(mount, sessions){
@@ -4783,36 +4724,7 @@
       var equip = loadEquipment();
       var payload = buildLibraryPayload(style, sessions, equip);
 
-      try{
-        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
-        localStorage.setItem('fff.currentPlan', JSON.stringify({
-          payload: payload,
-          style: style || 'mixed',
-          days: document.getElementById('mpx-days') ? String(document.getElementById('mpx-days').value || '4') : '4',
-          mode: (document.getElementById('mpx-guided') && document.getElementById('mpx-guided').style.display === 'block') ? 'guided' : 'auto',
-          toggles: {
-            ladder: !!(document.getElementById('mpx-ladder') && document.getElementById('mpx-ladder').checked),
-            stretching: !!(document.getElementById('mpx-stretching') && document.getElementById('mpx-stretching').checked),
-            physio: !!(document.getElementById('mpx-physio') && document.getElementById('mpx-physio').checked),
-            endurance: !!(document.getElementById('mpx-endurance') && document.getElementById('mpx-endurance').checked),
-            yoga: !!(document.getElementById('mpx-yoga') && document.getElementById('mpx-yoga').checked),
-            nutrition: !!(document.getElementById('mpx-nutrition') && document.getElementById('mpx-nutrition').checked),
-            hormones: !!(document.getElementById('mpx-hormones') && document.getElementById('mpx-hormones').checked)
-          }
-        }));
-      }catch(err){}
-
-      mount.innerHTML = ''
-        + '<div class="card" style="margin-bottom:12px;border:1px solid rgba(255,106,0,.22);background:rgba(255,106,0,.08);">'
-        +   '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">'
-        +     '<div>'
-        +       '<strong style="display:block;margin-bottom:4px;">Your plan is ready</strong>'
-        +       '<div class="meta">Open Workouts to train and log the exercises from this build.</div>'
-        +     '</div>'
-        +     '<button type="button" class="btn btn-primary" id="openLibraryBtn">Open Workouts</button>'
-        +   '</div>'
-        + '</div>'
-        + sessions.map(function(session, idx){
+      mount.innerHTML = sessions.map(function(session, idx){
             var itemsHtml = (session.items||[]).filter(Boolean).map(function(item){
               var meta = [];
               if(item.type) meta.push(item.type);
@@ -4842,13 +4754,6 @@
               +   itemsHtml + extrasHtml
               + '</article>';
           }).join('');
-
-      var openLibraryBtn = document.getElementById('openLibraryBtn');
-      if(openLibraryBtn){
-        openLibraryBtn.addEventListener('click', function(){
-          openWorkoutLibrary(payload, '');
-        });
-      }
 
       mount.querySelectorAll('[data-log-name]').forEach(function(btn){
         btn.addEventListener('click', function(){
@@ -4963,35 +4868,7 @@
         }
       });
 
-      function restorePersistedPlan(){
-        try{
-          var raw = localStorage.getItem('fff.currentPlan');
-          if(!raw) return false;
-          var saved = JSON.parse(raw);
-          if(!saved || !saved.payload || !saved.payload.sessions || !saved.payload.sessions.length) return false;
-
-          if(byId('mpx-style') && saved.style) byId('mpx-style').value = saved.style;
-          if(byId('mpx-days') && saved.days) byId('mpx-days').value = String(saved.days);
-          if(byId('mpx-ladder')) byId('mpx-ladder').checked = !!(saved.toggles && saved.toggles.ladder);
-          if(byId('mpx-stretching')) byId('mpx-stretching').checked = !!(saved.toggles && saved.toggles.stretching);
-          if(byId('mpx-physio')) byId('mpx-physio').checked = !!(saved.toggles && saved.toggles.physio);
-          if(byId('mpx-endurance')) byId('mpx-endurance').checked = !!(saved.toggles && saved.toggles.endurance);
-          if(byId('mpx-yoga')) byId('mpx-yoga').checked = !!(saved.toggles && saved.toggles.yoga);
-          if(byId('mpx-nutrition')) byId('mpx-nutrition').checked = !!(saved.toggles && saved.toggles.nutrition);
-          if(byId('mpx-hormones')) byId('mpx-hormones').checked = !!(saved.toggles && saved.toggles.hormones);
-
-          setMode(saved.mode === 'guided' ? 'guided' : 'auto');
-          renderCards(out, saved.payload.sessions);
-          status.textContent = 'Restored your last built plan';
-          return true;
-        }catch(err){
-          return false;
-        }
-      }
-
-      if(!restorePersistedPlan()){
-        setMode('auto');
-      }
+      setMode('auto');
     }
 
     ready(function(){

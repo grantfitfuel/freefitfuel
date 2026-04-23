@@ -1435,6 +1435,7 @@
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
 
     var EQUIPMENT_KEY = 'fff.equipment.profile.v1';
+    var CURRENT_PLAN_KEY = 'fff.currentPlan.v1';
 
     function defaultEquipmentProfile(){
       return {
@@ -4721,8 +4722,18 @@
       }
 
       var style = document.getElementById('mpx-style') ? document.getElementById('mpx-style').value : 'mixed';
+      var daysEl = document.getElementById('mpx-days');
       var equip = loadEquipment();
       var payload = buildLibraryPayload(style, sessions, equip);
+
+      try{
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        localStorage.setItem(CURRENT_PLAN_KEY, JSON.stringify({
+          style: style,
+          days: daysEl ? String(daysEl.value || '4') : '4',
+          payload: payload
+        }));
+      }catch(err){}
 
       mount.innerHTML = sessions.map(function(session, idx){
             var itemsHtml = (session.items||[]).filter(Boolean).map(function(item){
@@ -4815,7 +4826,9 @@
       var build = byId('mpx-build');
       var status = byId('mpx-status');
       var out = byId('mpx-output');
-      if(!btnAuto || !btnGuided || !guided || !build || !status || !out) return;
+      var styleEl = byId('mpx-style');
+      var daysEl = byId('mpx-days');
+      if(!btnAuto || !btnGuided || !guided || !build || !status || !out || !styleEl || !daysEl) return;
 
       function setMode(mode){
         currentMode = mode;
@@ -4837,13 +4850,33 @@
         }
       }
 
+      function restorePersistedPlan(){
+        try{
+          var raw = localStorage.getItem(CURRENT_PLAN_KEY);
+          if(!raw) return false;
+
+          var saved = JSON.parse(raw);
+          if(!saved || !saved.payload || !saved.payload.sessions || !saved.payload.sessions.length) return false;
+
+          if(saved.style) styleEl.value = saved.style;
+          if(saved.days) daysEl.value = String(saved.days);
+
+          setMode('auto');
+          renderCards(out, saved.payload.sessions);
+          status.textContent = 'Restored your last built plan';
+          return true;
+        }catch(err){
+          return false;
+        }
+      }
+
       btnAuto.addEventListener('click', function(){ setMode('auto'); });
       btnGuided.addEventListener('click', function(){ setMode('guided'); });
 
       build.addEventListener('click', function(){
         try{
-          var style = byId('mpx-style').value;
-          var days = parseInt(byId('mpx-days').value || '4', 10);
+          var style = styleEl.value;
+          var days = parseInt(daysEl.value || '4', 10);
           var sessions;
           if(currentMode === 'guided'){
             sessions = buildGuidedPlan(style, days, {
@@ -4860,9 +4893,6 @@
           }
 
           renderCards(out, sessions);
-          try{
-  localStorage.setItem('fff.currentPlan', JSON.stringify(sessions));
-}catch(e){}
           var equip = loadEquipment();
           var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });
           status.textContent = 'Built ' + sessions.length + ' sessions using ' + style + ' mode and your saved equipment: ' + (eqList.length ? eqList.join(', ') : 'none found');
@@ -4871,7 +4901,9 @@
         }
       });
 
-      setMode('auto');
+      if(!restorePersistedPlan()){
+        setMode('auto');
+      }
     }
 
     ready(function(){

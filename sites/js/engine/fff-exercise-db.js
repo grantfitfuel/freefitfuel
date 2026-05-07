@@ -1,10 +1,9 @@
-// FreeFitFuel Engine — Exercise Knowledge Database v4
-// Drop-in replacement for: /js/engine/fff-exercise-db.js
-// Hybrid adaptive training database: weights + calisthenics + Pilates + circuits + mobility + rehab.
+// FreeFitFuel Engine — Exercise Knowledge Database v4.2
+// Drop-in replacement for /js/engine/fff-exercise-db.js
+// Built to feed the existing My Plan fallback cache, injury profile selector and Workouts payload.
 
 window.FFFExerciseDB = (function () {
   'use strict';
-
   const FAMILY_DB = [
   {
     "key": "horizontal-push",
@@ -162,7 +161,7 @@ window.FFFExerciseDB = (function () {
   },
   {
     "key": "hip-extension",
-    "label": "Glute Bridge / Hip Extension",
+    "label": "Hip Extension / Glutes",
     "patterns": [
       "hip-extension"
     ],
@@ -184,7 +183,7 @@ window.FFFExerciseDB = (function () {
   },
   {
     "key": "calf-ankle",
-    "label": "Calves / Ankles",
+    "label": "Calf / Ankle",
     "patterns": [
       "calf-ankle"
     ],
@@ -228,7 +227,7 @@ window.FFFExerciseDB = (function () {
   },
   {
     "key": "core-anti-rotation",
-    "label": "Core Anti-Rotation / Lateral",
+    "label": "Core Anti-Rotation",
     "patterns": [
       "core-anti-rotation"
     ],
@@ -338,7 +337,7 @@ window.FFFExerciseDB = (function () {
   },
   {
     "key": "rehab-return",
-    "label": "Rehab / Return-to-Training",
+    "label": "Rehab / Return",
     "patterns": [
       "rehab-return"
     ],
@@ -425,415 +424,43 @@ window.FFFExerciseDB = (function () {
     ]
   }
 ];
-  const INJURY_RULES = {
-  "biceps-tendon-pain": {
-    "label": "Biceps tendon pain",
-    "avoidPatterns": [
-      "heavy-supinated-curl",
-      "aggressive-vertical-pull",
-      "jerky-row",
-      "deep-fly",
-      "pelican-curl"
-    ],
-    "cautionPatterns": [
-      "horizontal-pull",
-      "vertical-pull",
-      "horizontal-push",
-      "arms"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "supported-row",
-      "tempo-control",
-      "banded-light",
-      "left-first"
-    ],
-    "notes": [
-      "Prefer neutral grips and supported rows.",
-      "Avoid heavy curls, jerky rows, pelican curls and grinding pull-ups while symptoms are active."
-    ]
-  },
-  "shoulder-pain": {
-    "label": "Shoulder pain / impingement sensitivity",
-    "avoidPatterns": [
-      "deep-fly",
-      "upright-row",
-      "behind-neck",
-      "dip-deep",
-      "overhead-heavy",
-      "handstand",
-      "unstable-heavy",
-      "planche-load"
-    ],
-    "cautionPatterns": [
-      "vertical-push",
-      "horizontal-push",
-      "vertical-pull",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "floor-press",
-      "scapular-control",
-      "reduced-range",
-      "supported",
-      "banded-light"
-    ],
-    "notes": [
-      "Keep pressing in a pain-free range.",
-      "Prioritise neutral grip, floor press, incline push-up and scapular control."
-    ]
-  },
-  "rotator-cuff-sensitivity": {
-    "label": "Rotator cuff sensitivity",
-    "avoidPatterns": [
-      "deep-fly",
-      "unstable-heavy",
-      "overhead-heavy",
-      "dip-deep",
-      "handstand"
-    ],
-    "cautionPatterns": [
-      "vertical-push",
-      "horizontal-push",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "scapular-control",
-      "external-rotation",
-      "banded-light",
-      "reduced-range"
-    ],
-    "notes": [
-      "Use low load cuff and scapular-control work.",
-      "Avoid deep or unstable pressing until tolerance improves."
-    ]
-  },
-  "elbow-pain": {
-    "label": "Elbow pain",
-    "avoidPatterns": [
-      "heavy-curl",
-      "heavy-extension",
-      "high-volume-pull-up",
-      "diamond-push-up",
-      "muscle-up-transition"
-    ],
-    "cautionPatterns": [
-      "vertical-pull",
-      "arms",
-      "horizontal-pull",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "banded-light",
-      "tempo-control",
-      "reduced-volume"
-    ],
-    "notes": [
-      "Reduce direct arm loading first.",
-      "Use neutral grips and lighter band work."
-    ]
-  },
-  "wrist-pain": {
-    "label": "Wrist pain",
-    "avoidPatterns": [
-      "loaded-wrist-extension",
-      "flat-palm-push-up",
-      "front-rack",
-      "handstand",
-      "planche-load"
-    ],
-    "cautionPatterns": [
-      "push-up",
-      "front-rack",
-      "bear-position",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "handles",
-      "dumbbell-grip",
-      "forearm-support"
-    ],
-    "notes": [
-      "Use dumbbells/handles for push-ups where possible.",
-      "Avoid forcing loaded wrist extension."
-    ]
-  },
-  "knee-pain": {
-    "label": "Knee pain",
-    "avoidPatterns": [
-      "jumping",
-      "deep-knee-flexion-fast",
-      "high-impact",
-      "pistol",
-      "plyometric",
-      "running-impact"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "step-up",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "box-range",
-      "supported",
-      "glute-dominant",
-      "isometric",
-      "low-impact",
-      "reduced-range"
-    ],
-    "notes": [
-      "Use controlled range and slow tempo.",
-      "Prefer box squats, supported split squats, low step-ups, bridges and hinge work."
-    ]
-  },
-  "patellar-tendon-pain": {
-    "label": "Patellar tendon pain",
-    "avoidPatterns": [
-      "jumping",
-      "fast-squat",
-      "deep-knee-flexion-fast",
-      "plyometric",
-      "sissy-squat"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "step-up"
-    ],
-    "preferPatterns": [
-      "spanish-squat",
-      "isometric",
-      "controlled-step-up",
-      "box-range"
-    ],
-    "notes": [
-      "Avoid ballistic knee-dominant work.",
-      "Use controlled step-ups, Spanish squat holds and gradual loading."
-    ]
-  },
-  "hip-pain": {
-    "label": "Hip pain / impingement sensitivity",
-    "avoidPatterns": [
-      "deep-hip-flexion",
-      "wide-stance-deep",
-      "twist-loaded",
-      "pistol"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "hinge",
-      "pilates-core"
-    ],
-    "preferPatterns": [
-      "reduced-range",
-      "glute-bridge",
-      "supported",
-      "step-up-low",
-      "glute-dominant"
-    ],
-    "notes": [
-      "Avoid forcing deep hip positions.",
-      "Prioritise glute bridges, low step-ups and controlled hinge range."
-    ]
-  },
-  "low-back-sensitivity": {
-    "label": "Lower back sensitivity",
-    "avoidPatterns": [
-      "loaded-spinal-flexion",
-      "heavy-unsupported-hinge",
-      "ballistic-hinge",
-      "twist-loaded",
-      "unsupported-heavy-row"
-    ],
-    "cautionPatterns": [
-      "hinge",
-      "carry",
-      "rotation",
-      "squat"
-    ],
-    "preferPatterns": [
-      "supported",
-      "core-bracing",
-      "reduced-range",
-      "single-leg-supported",
-      "anti-extension",
-      "neutral-spine"
-    ],
-    "notes": [
-      "Avoid chasing load when bracing is poor.",
-      "Prefer supported rows, glute bridges, dead bugs and reduced-range RDLs."
-    ]
-  },
-  "disc-sensitivity": {
-    "label": "Disc sensitivity",
-    "avoidPatterns": [
-      "loaded-spinal-flexion",
-      "twist-loaded",
-      "ballistic-hinge",
-      "sit-up-loaded",
-      "rollover"
-    ],
-    "cautionPatterns": [
-      "hinge",
-      "rotation",
-      "carry",
-      "pilates-core"
-    ],
-    "preferPatterns": [
-      "anti-extension",
-      "anti-rotation",
-      "supported",
-      "neutral-spine"
-    ],
-    "notes": [
-      "Prioritise neutral spine, anti-extension and anti-rotation.",
-      "Avoid loaded flexion and twisting under fatigue."
-    ]
-  },
-  "ankle-instability": {
-    "label": "Ankle instability",
-    "avoidPatterns": [
-      "jumping",
-      "lateral-hop",
-      "unstable-loaded",
-      "running-impact"
-    ],
-    "cautionPatterns": [
-      "lunge-split",
-      "step-up",
-      "running",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "supported",
-      "calf-control",
-      "balance-regression",
-      "low-impact"
-    ],
-    "notes": [
-      "Use stable surfaces and support.",
-      "Progress calf/foot control gradually."
-    ]
-  },
-  "achilles-calf-sensitivity": {
-    "label": "Achilles / calf sensitivity",
-    "avoidPatterns": [
-      "jumping",
-      "running-impact",
-      "sprint",
-      "plyometric"
-    ],
-    "cautionPatterns": [
-      "calf-ankle",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "isometric",
-      "low-impact",
-      "controlled-calf"
-    ],
-    "notes": [
-      "Avoid sudden spikes in jumping or running.",
-      "Use controlled calf raises and low-impact conditioning."
-    ]
-  },
-  "left-right-imbalance": {
-    "label": "Left/right imbalance",
-    "avoidPatterns": [
-      "bilateral-hide-imbalance"
-    ],
-    "cautionPatterns": [
-      "bilateral-heavy"
-    ],
-    "preferPatterns": [
-      "unilateral",
-      "left-first",
-      "right-matches-left",
-      "single-side-control"
-    ],
-    "notes": [
-      "Use unilateral work.",
-      "Weaker side sets the standard; stronger side matches, not exceeds."
-    ]
-  },
-  "poor-overhead-mobility": {
-    "label": "Poor overhead mobility",
-    "avoidPatterns": [
-      "overhead-heavy",
-      "handstand",
-      "behind-neck"
-    ],
-    "cautionPatterns": [
-      "vertical-push",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "incline-press",
-      "scapular-control",
-      "landmine-pattern",
-      "thoracic-mobility"
-    ],
-    "notes": [
-      "Do not force overhead range.",
-      "Use incline pressing, wall slides, serratus work and mobility first."
-    ]
-  },
-  "beginner-low-confidence": {
-    "label": "Beginner / low confidence",
-    "avoidPatterns": [
-      "advanced",
-      "complex",
-      "plyometric",
-      "unstable-heavy"
-    ],
-    "cautionPatterns": [
-      "conditioning",
-      "advanced-core",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "simple",
-      "supported",
-      "bodyweight",
-      "clear-progression",
-      "low-cognitive-load"
-    ],
-    "notes": [
-      "Use simple movements with clear success criteria.",
-      "Prioritise confidence and repeatability."
-    ]
-  },
-  "older-adult": {
-    "label": "Older adult / deconditioned",
-    "avoidPatterns": [
-      "high-impact",
-      "advanced",
-      "plyometric",
-      "max-effort"
-    ],
-    "cautionPatterns": [
-      "floor-transition",
-      "balance-demand"
-    ],
-    "preferPatterns": [
-      "supported",
-      "low-impact",
-      "chair-friendly",
-      "balance-regression",
-      "simple"
-    ],
-    "notes": [
-      "Prefer supported, low-impact and chair-friendly options.",
-      "Prioritise balance, strength confidence and joint comfort."
-    ]
-  }
-};
   const STYLE_PROFILES = {
+  "mixed": {
+    "label": "Mixed / Balanced",
+    "preferFamilies": [
+      "horizontal-push",
+      "horizontal-pull",
+      "squat",
+      "hinge",
+      "core-anti-extension",
+      "conditioning",
+      "mobility-recovery"
+    ],
+    "preferDomains": [
+      "weights",
+      "calisthenics",
+      "hybrid",
+      "mobility"
+    ]
+  },
+  "balanced": {
+    "label": "Balanced",
+    "preferFamilies": [
+      "horizontal-push",
+      "horizontal-pull",
+      "squat",
+      "hinge",
+      "core-anti-extension",
+      "conditioning",
+      "mobility-recovery"
+    ],
+    "preferDomains": [
+      "weights",
+      "calisthenics",
+      "hybrid",
+      "mobility"
+    ]
+  },
   "strength-hypertrophy": {
     "label": "Strength & Hypertrophy",
     "preferFamilies": [
@@ -849,6 +476,22 @@ window.FFFExerciseDB = (function () {
       "weights",
       "hypertrophy",
       "strength"
+    ]
+  },
+  "calisthenics": {
+    "label": "Calisthenics & Movement",
+    "preferFamilies": [
+      "horizontal-push",
+      "vertical-pull",
+      "horizontal-pull",
+      "calisthenics-skill",
+      "core-anti-extension",
+      "core-anti-rotation"
+    ],
+    "preferDomains": [
+      "calisthenics",
+      "skill",
+      "bodyweight"
     ]
   },
   "movement-calisthenics": {
@@ -867,6 +510,23 @@ window.FFFExerciseDB = (function () {
       "bodyweight"
     ]
   },
+  "reformer": {
+    "label": "Reformer / Pilates",
+    "preferFamilies": [
+      "pilates-core",
+      "mobility-recovery",
+      "hip-extension",
+      "core-anti-extension",
+      "core-anti-rotation",
+      "movement-restoration"
+    ],
+    "preferDomains": [
+      "reformer",
+      "pilates",
+      "mobility",
+      "control"
+    ]
+  },
   "pilates-mobility": {
     "label": "Pilates & Mobility",
     "preferFamilies": [
@@ -881,6 +541,40 @@ window.FFFExerciseDB = (function () {
       "pilates",
       "mobility",
       "recovery"
+    ]
+  },
+  "circuits": {
+    "label": "Circuits",
+    "preferFamilies": [
+      "conditioning",
+      "carry",
+      "squat",
+      "lunge-split",
+      "horizontal-push",
+      "horizontal-pull",
+      "mobility-recovery"
+    ],
+    "preferDomains": [
+      "conditioning",
+      "circuit",
+      "low-impact"
+    ]
+  },
+  "fat-loss-conditioning": {
+    "label": "Fat-loss Conditioning",
+    "preferFamilies": [
+      "conditioning",
+      "carry",
+      "squat",
+      "lunge-split",
+      "horizontal-push",
+      "horizontal-pull",
+      "mobility-recovery"
+    ],
+    "preferDomains": [
+      "conditioning",
+      "circuit",
+      "low-impact"
     ]
   },
   "hybrid-athlete": {
@@ -899,23 +593,6 @@ window.FFFExerciseDB = (function () {
       "strength",
       "conditioning",
       "calisthenics"
-    ]
-  },
-  "fat-loss-conditioning": {
-    "label": "Fat-loss Conditioning",
-    "preferFamilies": [
-      "conditioning",
-      "carry",
-      "squat",
-      "lunge-split",
-      "horizontal-push",
-      "horizontal-pull",
-      "mobility-recovery"
-    ],
-    "preferDomains": [
-      "conditioning",
-      "circuit",
-      "low-impact"
     ]
   },
   "joint-longevity": {
@@ -967,43 +644,757 @@ window.FFFExerciseDB = (function () {
     ]
   }
 };
+  const INJURY_RULES = {
+  "tennis-elbow": {
+    "label": "Tennis elbow / lateral elbow tendon pain",
+    "region": "outer elbow",
+    "avoidPatterns": [
+      "heavy-gripping",
+      "straight-bar-curl",
+      "high-volume-pull-up",
+      "jerky-row",
+      "heavy-wrist-extension",
+      "explosive-pull",
+      "pelican-curl"
+    ],
+    "cautionPatterns": [
+      "vertical-pull",
+      "horizontal-pull",
+      "arms",
+      "carry"
+    ],
+    "preferPatterns": [
+      "neutral-grip",
+      "supported-row",
+      "banded-light",
+      "isometric",
+      "eccentric-wrist-extensor",
+      "reduced-grip",
+      "scapular-control"
+    ],
+    "notes": [
+      "Reduce gripping and straight-bar curling volume.",
+      "Prefer neutral-grip rows, band rows, supported rows and controlled tendon loading."
+    ]
+  },
+  "golfers-elbow": {
+    "label": "Golfer\u2019s elbow / inner elbow tendon pain",
+    "region": "inner elbow",
+    "avoidPatterns": [
+      "heavy-gripping",
+      "heavy-supinated-curl",
+      "high-volume-pull-up",
+      "heavy-wrist-flexion",
+      "explosive-pull"
+    ],
+    "cautionPatterns": [
+      "vertical-pull",
+      "horizontal-pull",
+      "arms",
+      "carry"
+    ],
+    "preferPatterns": [
+      "neutral-grip",
+      "banded-light",
+      "supported-row",
+      "isometric",
+      "reduced-grip"
+    ],
+    "notes": [
+      "Avoid hard gripping and heavy curls during flares.",
+      "Use neutral grips, lighter bands and progressive forearm loading."
+    ]
+  },
+  "outer-biceps-left-pain": {
+    "label": "Outer left biceps / brachialis pain",
+    "region": "left upper arm",
+    "avoidPatterns": [
+      "heavy-supinated-curl",
+      "aggressive-vertical-pull",
+      "straight-bar-curl",
+      "pelican-curl",
+      "jerky-row",
+      "deep-fly"
+    ],
+    "cautionPatterns": [
+      "vertical-pull",
+      "horizontal-pull",
+      "horizontal-push",
+      "arms"
+    ],
+    "preferPatterns": [
+      "neutral-grip",
+      "hammer-grip",
+      "supported-row",
+      "left-first",
+      "right-matches-left",
+      "banded-light",
+      "tempo-control"
+    ],
+    "notes": [
+      "Bias neutral or hammer grips and supported pulling.",
+      "For left-sided weakness, let the left side set the load and reps."
+    ]
+  },
+  "distal-biceps-tendon-irritation": {
+    "label": "Distal biceps tendon irritation",
+    "region": "front elbow / lower biceps",
+    "avoidPatterns": [
+      "heavy-supinated-curl",
+      "aggressive-vertical-pull",
+      "heavy-gripping",
+      "jerky-row"
+    ],
+    "cautionPatterns": [
+      "vertical-pull",
+      "horizontal-pull",
+      "arms",
+      "carry"
+    ],
+    "preferPatterns": [
+      "neutral-grip",
+      "banded-light",
+      "supported-row",
+      "tempo-control",
+      "reduced-volume"
+    ],
+    "notes": [
+      "Avoid heavy supinated pulling or curling when symptomatic.",
+      "Return with neutral-grip rows and very controlled curls."
+    ]
+  },
+  "shoulder-impingement": {
+    "label": "Shoulder impingement / painful arc",
+    "region": "shoulder",
+    "avoidPatterns": [
+      "deep-fly",
+      "upright-row",
+      "behind-neck",
+      "dip-deep",
+      "overhead-heavy",
+      "handstand",
+      "planche-load",
+      "unstable-heavy"
+    ],
+    "cautionPatterns": [
+      "vertical-push",
+      "horizontal-push",
+      "vertical-pull",
+      "calisthenics-skill"
+    ],
+    "preferPatterns": [
+      "neutral-grip",
+      "floor-press",
+      "scapular-control",
+      "reduced-range",
+      "supported",
+      "banded-light",
+      "external-rotation"
+    ],
+    "notes": [
+      "Avoid forcing deep or overhead ranges.",
+      "Prefer neutral-grip pressing, floor press, wall slides and cuff/scapular work."
+    ]
+  },
+  "rotator-cuff-irritation": {
+    "label": "Rotator cuff irritation",
+    "region": "shoulder",
+    "avoidPatterns": [
+      "deep-fly",
+      "unstable-heavy",
+      "overhead-heavy",
+      "dip-deep",
+      "handstand"
+    ],
+    "cautionPatterns": [
+      "vertical-push",
+      "horizontal-push",
+      "calisthenics-skill"
+    ],
+    "preferPatterns": [
+      "scapular-control",
+      "external-rotation",
+      "banded-light",
+      "reduced-range"
+    ],
+    "notes": [
+      "Prioritise low-load cuff, face pulls and scapular control before heavier pressing."
+    ]
+  },
+  "wrist-pain": {
+    "label": "Wrist pain / loaded extension sensitivity",
+    "region": "wrist",
+    "avoidPatterns": [
+      "loaded-wrist-extension",
+      "flat-palm-push-up",
+      "front-rack",
+      "handstand",
+      "planche-load"
+    ],
+    "cautionPatterns": [
+      "horizontal-push",
+      "vertical-push",
+      "calisthenics-skill"
+    ],
+    "preferPatterns": [
+      "neutral-grip",
+      "handles",
+      "dumbbell-grip",
+      "forearm-support"
+    ],
+    "notes": [
+      "Use handles, dumbbells or forearm-supported variations where possible."
+    ]
+  },
+  "hip-flexor-tendon-pain": {
+    "label": "Hip flexor tendon pain / front hip pain",
+    "region": "front hip",
+    "avoidPatterns": [
+      "high-knee",
+      "sprinting",
+      "deep-hip-flexion",
+      "hanging-leg-raise",
+      "mountain-climber-fast",
+      "pistol"
+    ],
+    "cautionPatterns": [
+      "lunge-split",
+      "squat",
+      "pilates-core",
+      "conditioning"
+    ],
+    "preferPatterns": [
+      "glute-dominant",
+      "hip-flexor-isometric",
+      "reduced-range",
+      "supported",
+      "pelvic-control",
+      "mobility-gentle"
+    ],
+    "notes": [
+      "Reduce high-knee drills, sprinting and aggressive hip-flexion work.",
+      "Use hip flexor isometrics, glute bridges, controlled split squats and gentle mobility."
+    ]
+  },
+  "hip-tendon-pain-reduced-rom": {
+    "label": "Hip tendon pain with reduced movement",
+    "region": "hip",
+    "avoidPatterns": [
+      "deep-hip-flexion",
+      "wide-stance-deep",
+      "twist-loaded",
+      "pistol",
+      "sprinting",
+      "high-impact"
+    ],
+    "cautionPatterns": [
+      "squat",
+      "lunge-split",
+      "hinge",
+      "conditioning"
+    ],
+    "preferPatterns": [
+      "reduced-range",
+      "glute-bridge",
+      "supported",
+      "step-up-low",
+      "glute-dominant",
+      "pelvic-control",
+      "mobility-gentle"
+    ],
+    "notes": [
+      "Keep range pain-free and controlled.",
+      "Use glute bridges, low step-ups, supported split squats and Pilates-style pelvic control."
+    ]
+  },
+  "glute-med-tendinopathy": {
+    "label": "Outer hip / glute med tendon irritation",
+    "region": "outer hip",
+    "avoidPatterns": [
+      "side-lying-compression",
+      "deep-side-lunge",
+      "high-impact",
+      "cross-leg-stretch-aggressive"
+    ],
+    "cautionPatterns": [
+      "lunge-split",
+      "conditioning",
+      "core-anti-rotation"
+    ],
+    "preferPatterns": [
+      "glute-dominant",
+      "supported",
+      "isometric",
+      "pelvic-control",
+      "reduced-range"
+    ],
+    "notes": [
+      "Avoid compressive side-lying positions if painful.",
+      "Use controlled glute bridge work, supported balance and gradual lateral hip loading."
+    ]
+  },
+  "hip-clicking-painful": {
+    "label": "Clicking hip with pain or catching",
+    "region": "hip",
+    "avoidPatterns": [
+      "deep-hip-flexion",
+      "fast-leg-circles",
+      "hanging-leg-raise",
+      "pistol",
+      "twist-loaded"
+    ],
+    "cautionPatterns": [
+      "pilates-core",
+      "squat",
+      "lunge-split"
+    ],
+    "preferPatterns": [
+      "reduced-range",
+      "pelvic-control",
+      "mobility-gentle",
+      "glute-dominant"
+    ],
+    "notes": [
+      "Keep circles and hip-flexion range small and controlled.",
+      "Painful clicking, locking or catching should be assessed."
+    ]
+  },
+  "clicky-knees-painless": {
+    "label": "Clicky knees, painless",
+    "region": "knee",
+    "avoidPatterns": [
+      "jumping-fatigued",
+      "fast-squat"
+    ],
+    "cautionPatterns": [
+      "squat",
+      "lunge-split",
+      "conditioning"
+    ],
+    "preferPatterns": [
+      "controlled-step-up",
+      "box-range",
+      "tempo-control",
+      "quad-control",
+      "glute-dominant",
+      "calf-control"
+    ],
+    "notes": [
+      "Painless clicking often needs better control rather than complete avoidance.",
+      "Build step-ups, box squats, glute and calf control gradually."
+    ]
+  },
+  "clicky-knees-painful": {
+    "label": "Clicky knees with pain, swelling or catching",
+    "region": "knee",
+    "avoidPatterns": [
+      "jumping",
+      "deep-knee-flexion-fast",
+      "pistol",
+      "sissy-squat",
+      "high-impact",
+      "twist-loaded"
+    ],
+    "cautionPatterns": [
+      "squat",
+      "lunge-split",
+      "step-up",
+      "conditioning"
+    ],
+    "preferPatterns": [
+      "box-range",
+      "supported",
+      "isometric",
+      "spanish-squat",
+      "reduced-range",
+      "low-impact"
+    ],
+    "notes": [
+      "Painful clicking, swelling, locking or giving way needs caution.",
+      "Use reduced range, supported work and low-impact conditioning."
+    ]
+  },
+  "patellar-tendon-pain": {
+    "label": "Patellar tendon pain",
+    "region": "front knee",
+    "avoidPatterns": [
+      "jumping",
+      "fast-squat",
+      "deep-knee-flexion-fast",
+      "plyometric",
+      "sissy-squat"
+    ],
+    "cautionPatterns": [
+      "squat",
+      "lunge-split",
+      "step-up"
+    ],
+    "preferPatterns": [
+      "spanish-squat",
+      "isometric",
+      "controlled-step-up",
+      "box-range"
+    ],
+    "notes": [
+      "Avoid ballistic knee-dominant work during flares.",
+      "Use Spanish squat holds, wall sits and gradual loading."
+    ]
+  },
+  "knee-pain-general": {
+    "label": "General knee pain",
+    "region": "knee",
+    "avoidPatterns": [
+      "jumping",
+      "deep-knee-flexion-fast",
+      "high-impact",
+      "pistol",
+      "plyometric"
+    ],
+    "cautionPatterns": [
+      "squat",
+      "lunge-split",
+      "step-up",
+      "conditioning"
+    ],
+    "preferPatterns": [
+      "box-range",
+      "supported",
+      "glute-dominant",
+      "isometric",
+      "low-impact",
+      "reduced-range"
+    ],
+    "notes": [
+      "Prefer controlled range, step height and tempo."
+    ]
+  },
+  "low-back-non-specific": {
+    "label": "Low back, non-specific",
+    "region": "low back",
+    "avoidPatterns": [
+      "loaded-spinal-flexion",
+      "heavy-unsupported-hinge",
+      "ballistic-hinge",
+      "twist-loaded",
+      "unsupported-heavy-row"
+    ],
+    "cautionPatterns": [
+      "hinge",
+      "carry",
+      "squat",
+      "pilates-core"
+    ],
+    "preferPatterns": [
+      "supported",
+      "core-bracing",
+      "reduced-range",
+      "anti-extension",
+      "anti-rotation",
+      "neutral-spine"
+    ],
+    "notes": [
+      "Keep moving within comfort and avoid maxing out during rebuild.",
+      "Use dead bug, bird dog, side plank, glute bridge and controlled RDL progressions."
+    ]
+  },
+  "disc-sensitivity": {
+    "label": "Disc sensitivity",
+    "region": "low back",
+    "avoidPatterns": [
+      "loaded-spinal-flexion",
+      "twist-loaded",
+      "ballistic-hinge",
+      "sit-up-loaded",
+      "rollover"
+    ],
+    "cautionPatterns": [
+      "hinge",
+      "rotation",
+      "carry",
+      "pilates-core"
+    ],
+    "preferPatterns": [
+      "anti-extension",
+      "anti-rotation",
+      "supported",
+      "neutral-spine"
+    ],
+    "notes": [
+      "Prioritise neutral spine and avoid loaded flexion/twisting under fatigue."
+    ]
+  },
+  "plantar-fasciitis": {
+    "label": "Plantar fasciitis / heel pain",
+    "region": "foot",
+    "avoidPatterns": [
+      "jumping",
+      "running-impact",
+      "sprint",
+      "long-walk-spike"
+    ],
+    "cautionPatterns": [
+      "conditioning",
+      "calf-ankle",
+      "lunge-split"
+    ],
+    "preferPatterns": [
+      "controlled-calf",
+      "foot-intrinsic",
+      "low-impact",
+      "isometric",
+      "gradual-walk"
+    ],
+    "notes": [
+      "Avoid sudden walking/running spikes.",
+      "Use calf control, foot strength and low-impact conditioning."
+    ]
+  },
+  "achilles-calf-sensitivity": {
+    "label": "Achilles / calf sensitivity",
+    "region": "achilles/calf",
+    "avoidPatterns": [
+      "jumping",
+      "running-impact",
+      "sprint",
+      "plyometric"
+    ],
+    "cautionPatterns": [
+      "calf-ankle",
+      "conditioning"
+    ],
+    "preferPatterns": [
+      "isometric",
+      "low-impact",
+      "controlled-calf"
+    ],
+    "notes": [
+      "Avoid sudden spikes in jumping or running."
+    ]
+  },
+  "beginner-low-confidence": {
+    "label": "Beginner / low confidence",
+    "region": "whole body",
+    "avoidPatterns": [
+      "advanced",
+      "complex",
+      "plyometric",
+      "unstable-heavy"
+    ],
+    "cautionPatterns": [
+      "conditioning",
+      "calisthenics-skill"
+    ],
+    "preferPatterns": [
+      "simple",
+      "supported",
+      "bodyweight",
+      "clear-progression",
+      "low-cognitive-load"
+    ],
+    "notes": [
+      "Use simple repeatable movements with clear success criteria."
+    ]
+  },
+  "older-adult": {
+    "label": "Older adult / deconditioned",
+    "region": "whole body",
+    "avoidPatterns": [
+      "high-impact",
+      "advanced",
+      "plyometric",
+      "max-effort"
+    ],
+    "cautionPatterns": [
+      "floor-transition",
+      "balance-demand"
+    ],
+    "preferPatterns": [
+      "supported",
+      "low-impact",
+      "chair-friendly",
+      "balance-regression",
+      "simple"
+    ],
+    "notes": [
+      "Prefer supported, low-impact and chair-friendly options."
+    ]
+  }
+};
   const EXERCISES = [
+  {
+    "key": "pushup",
+    "name": "Push-up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics"
+    ],
+    "purposes": [
+      "push"
+    ],
+    "muscles": [
+      "chest",
+      "triceps",
+      "core"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "push-up",
+      "core-bracing"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "incline-push-up"
+    ],
+    "progressions": [
+      "tempo-push-up",
+      "ring-push-up"
+    ],
+    "aliases": [
+      "Push-up",
+      "pushup"
+    ],
+    "yt": "Push-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "bodyweight"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 2,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "incline-push-up",
+    "name": "Incline Push-up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw",
+      "bench"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics"
+    ],
+    "purposes": [
+      "push"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "supported",
+      "reduced-range",
+      "simple"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "wall-push-up"
+    ],
+    "progressions": [
+      "pushup"
+    ],
+    "aliases": [
+      "Incline Push-up",
+      "incline push up"
+    ],
+    "yt": "Incline Push-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rehab"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
   {
     "key": "wall-push-up",
     "name": "Wall Push-up",
     "family": "horizontal-push",
     "movement": "horizontal-push",
     "equipment": [
-      "bodyweight",
-      "wall"
+      "bw"
     ],
-    "muscles": [
-      "chest",
-      "triceps"
+    "styles": [
+      "mixed",
+      "calisthenics"
     ],
+    "purposes": [
+      "push",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "rebuild",
-      "beginner"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain"
+      "shoulder-impingement"
     ],
-    "avoidIf": [],
     "tags": [
-      "simple",
       "supported",
-      "bodyweight",
-      "reduced-range",
+      "simple",
       "low-cognitive-load"
     ],
-    "alternatives": [
-      "incline-push-up",
-      "band-chest-press"
-    ],
-    "regressions": [
-      "scapular-wall-push"
-    ],
+    "alternatives": [],
+    "regressions": [],
     "progressions": [
       "incline-push-up"
     ],
@@ -1014,380 +1405,102 @@ window.FFFExerciseDB = (function () {
     "yt": "Wall Push-up form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "calisthenics",
       "rehab",
-      "recovery"
-    ],
-    "styleBias": [
-      "low-overwhelm",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "incline-push-up",
-    "name": "Incline Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bodyweight",
-      "bench",
-      "box"
-    ],
-    "muscles": [
-      "chest",
-      "triceps"
-    ],
-    "difficulty": [
-      "beginner",
-      "rebuild"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "supported",
-      "push-up",
-      "simple"
-    ],
-    "alternatives": [
-      "push-up",
-      "dumbbell-floor-press"
-    ],
-    "regressions": [
-      "wall-push-up",
-      "knee-push-up"
-    ],
-    "progressions": [
-      "push-up"
-    ],
-    "aliases": [
-      "Incline Push-up",
-      "incline push up"
-    ],
-    "yt": "Incline Push-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "rehab"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "push-up",
-    "name": "Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "wrist-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "push-up",
-      "core-bracing"
-    ],
-    "alternatives": [
-      "incline-push-up",
-      "dumbbell-floor-press"
-    ],
-    "regressions": [
-      "incline-push-up",
-      "knee-push-up"
-    ],
-    "progressions": [
-      "tempo-push-up",
-      "ring-push-up"
-    ],
-    "aliases": [
-      "Push-up",
-      "push up"
-    ],
-    "yt": "Push-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "bodyweight"
-    ],
-    "styleBias": [
-      "movement-calisthenics",
-      "hybrid-athlete"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "tempo-push-up",
-    "name": "Tempo Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "wrist-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "push-up",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "push-up",
-      "dumbbell-floor-press"
-    ],
-    "regressions": [
-      "push-up"
-    ],
-    "progressions": [
-      "feet-elevated-push-up"
-    ],
-    "aliases": [
-      "Tempo Push-up",
-      "tempo push up"
-    ],
-    "yt": "Tempo Push-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
       "calisthenics"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "mixed",
+      "calisthenics"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "dbbench",
+    "name": "Dumbbell Bench Press",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "mixed",
+      "strength-hypertrophy"
+    ],
+    "purposes": [
+      "push"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "neutral-grip",
+      "tempo-control"
+    ],
+    "alternatives": [
+      "dumbbell-floor-press",
+      "incline-push-up"
+    ],
+    "regressions": [
+      "dumbbell-floor-press"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Dumbbell Bench Press",
+      "dbbench"
+    ],
+    "yt": "Dumbbell Bench Press form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "strength",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength-hypertrophy"
     ],
     "jointStress": 3,
     "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "ring-push-up",
-    "name": "Ring Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "rings"
-    ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unstable",
-      "push-up",
-      "skill"
-    ],
-    "alternatives": [
-      "push-up",
-      "dumbbell-bench-press"
-    ],
-    "regressions": [
-      "push-up"
-    ],
-    "progressions": [
-      "feet-elevated-ring-push-up"
-    ],
-    "aliases": [
-      "Ring Push-up",
-      "ring push up"
-    ],
-    "yt": "Ring Push-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "pseudo-planche-push-up",
-    "name": "Pseudo Planche Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "chest",
-      "front delts",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "wrist-pain",
-      "shoulder-pain",
-      "elbow-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "planche-load",
-      "advanced",
-      "loaded-wrist-extension"
-    ],
-    "alternatives": [
-      "push-up",
-      "planche-lean"
-    ],
-    "regressions": [
-      "tempo-push-up",
-      "planche-lean"
-    ],
-    "progressions": [
-      "planche-push-up"
-    ],
-    "aliases": [
-      "Pseudo Planche Push-up",
-      "pseudo planche push up"
-    ],
-    "yt": "Pseudo Planche Push-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "dumbbell-floor-press",
@@ -1395,35 +1508,36 @@ window.FFFExerciseDB = (function () {
     "family": "horizontal-push",
     "movement": "horizontal-push",
     "equipment": [
-      "dumbbells"
+      "db"
     ],
-    "muscles": [
-      "chest",
-      "triceps"
+    "styles": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "push",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild",
       "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain"
+      "outer-biceps-left-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "floor-press",
       "neutral-grip",
+      "floor-press",
       "reduced-range"
     ],
     "alternatives": [
-      "dumbbell-bench-press",
-      "push-up"
-    ],
-    "regressions": [
       "incline-push-up"
     ],
+    "regressions": [],
     "progressions": [
-      "dumbbell-bench-press"
+      "dbbench"
     ],
     "aliases": [
       "Dumbbell Floor Press",
@@ -1432,1229 +1546,285 @@ window.FFFExerciseDB = (function () {
     "yt": "Dumbbell Floor Press form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "weights",
-      "strength",
-      "hypertrophy",
       "rehab"
     ],
     "styleBias": [
+      "mixed",
       "strength-hypertrophy",
       "rebuild-recovery"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "single-arm-floor-press",
-    "name": "Single-arm Dumbbell Floor Press",
+    "key": "ringpush",
+    "name": "Ring Push-up",
     "family": "horizontal-push",
     "movement": "horizontal-push",
     "equipment": [
-      "dumbbells"
+      "rings"
     ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "core"
+    "styles": [
+      "calisthenics"
     ],
-    "difficulty": [
-      "rebuild",
-      "intermediate"
+    "purposes": [
+      "push"
     ],
-    "cautionIf": [
-      "biceps-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unilateral",
-      "left-first",
-      "right-matches-left",
-      "floor-press"
-    ],
-    "alternatives": [
-      "single-arm-dumbbell-bench-press",
-      "dumbbell-floor-press"
-    ],
-    "regressions": [
-      "dumbbell-floor-press"
-    ],
-    "progressions": [
-      "single-arm-dumbbell-bench-press"
-    ],
-    "aliases": [
-      "Single-arm Dumbbell Floor Press",
-      "single arm floor press"
-    ],
-    "yt": "Single-arm Dumbbell Floor Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dumbbell-bench-press",
-    "name": "Dumbbell Bench Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "front delts"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "biceps-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "neutral-grip",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "single-arm-dumbbell-bench-press",
-      "dumbbell-floor-press",
-      "push-up"
-    ],
-    "regressions": [
-      "dumbbell-floor-press"
-    ],
-    "progressions": [
-      "tempo-dumbbell-bench-press"
-    ],
-    "aliases": [
-      "Dumbbell Bench Press",
-      "dumbbell bench press"
-    ],
-    "yt": "Dumbbell Bench Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "single-arm-dumbbell-bench-press",
-    "name": "Single-arm Dumbbell Bench Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unilateral",
-      "left-first",
-      "right-matches-left",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "dumbbell-bench-press",
-      "single-arm-floor-press"
-    ],
-    "regressions": [
-      "single-arm-floor-press"
-    ],
-    "progressions": [
-      "tempo-dumbbell-bench-press"
-    ],
-    "aliases": [
-      "Single-arm Dumbbell Bench Press",
-      "single arm dumbbell bench press"
-    ],
-    "yt": "Single-arm Dumbbell Bench Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "strength-hypertrophy",
-      "joint-longevity"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "incline-dumbbell-press",
-    "name": "Incline Dumbbell Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "upper chest",
-      "shoulders",
-      "triceps"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "biceps-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "neutral-grip",
-      "incline-press"
-    ],
-    "alternatives": [
-      "dumbbell-floor-press",
-      "push-up"
-    ],
-    "regressions": [
-      "incline-push-up"
-    ],
-    "progressions": [
-      "dumbbell-bench-press"
-    ],
-    "aliases": [
-      "Incline Dumbbell Press",
-      "incline dumbbell press"
-    ],
-    "yt": "Incline Dumbbell Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dumbbell-squeeze-press",
-    "name": "Dumbbell Squeeze Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "chest",
-      "triceps"
-    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "shoulder-pain"
+      "shoulder-impingement",
+      "wrist-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "neutral-grip",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "dumbbell-floor-press",
+      "unstable",
+      "skill",
       "push-up"
     ],
+    "alternatives": [],
     "regressions": [
-      "dumbbell-floor-press"
-    ],
-    "progressions": [
-      "dumbbell-bench-press"
-    ],
-    "aliases": [
-      "Dumbbell Squeeze Press",
-      "dumbbell squeeze press"
-    ],
-    "yt": "Dumbbell Squeeze Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dumbbell-bench-fly",
-    "name": "Dumbbell Bench Fly",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "chest"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "biceps-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "deep-fly",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "dumbbell-squeeze-press",
-      "band-chest-fly"
-    ],
-    "regressions": [
-      "dumbbell-squeeze-press"
-    ],
-    "progressions": [
-      "slow-eccentric-fly"
-    ],
-    "aliases": [
-      "Dumbbell Bench Fly",
-      "dumbbell bench fly"
-    ],
-    "yt": "Dumbbell Bench Fly form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "band-chest-press",
-    "name": "Band Chest Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bands"
-    ],
-    "muscles": [
-      "chest",
-      "triceps"
-    ],
-    "difficulty": [
-      "beginner",
-      "rebuild"
-    ],
-    "cautionIf": [
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "banded-light",
-      "neutral-grip"
-    ],
-    "alternatives": [
-      "incline-push-up",
-      "dumbbell-floor-press"
-    ],
-    "regressions": [
-      "wall-push-up"
-    ],
-    "progressions": [
-      "push-up"
-    ],
-    "aliases": [
-      "Band Chest Press",
-      "band chest press"
-    ],
-    "yt": "Band Chest Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "wall-slide",
-    "name": "Wall Slide",
-    "family": "mobility-recovery",
-    "movement": "mobility-recovery",
-    "equipment": [
-      "bodyweight",
-      "wall"
-    ],
-    "muscles": [
-      "serratus",
-      "shoulder mobility"
-    ],
-    "difficulty": [
-      "rebuild",
-      "beginner"
-    ],
-    "cautionIf": [],
-    "avoidIf": [],
-    "tags": [
-      "scapular-control",
-      "thoracic-mobility",
-      "simple"
-    ],
-    "alternatives": [
-      "scaption-raise"
-    ],
-    "regressions": [
-      "breathing-reset"
-    ],
-    "progressions": [
-      "scaption-raise"
-    ],
-    "aliases": [
-      "Wall Slide",
-      "wall slide"
-    ],
-    "yt": "Wall Slide form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "mobility",
-      "rehab",
-      "pilates"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "scapular-push-up",
-    "name": "Scapular Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "serratus",
-      "scapular stabilisers"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "wrist-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "scapular-control",
-      "push-up"
-    ],
-    "alternatives": [
-      "push-up",
-      "planche-lean"
-    ],
-    "regressions": [
-      "scapular-wall-push"
+      "pushup"
     ],
     "progressions": [
       "pseudo-planche-push-up"
     ],
     "aliases": [
-      "Scapular Push-up",
-      "scapular push up"
+      "Ring Push-up",
+      "ringpush"
     ],
-    "yt": "Scapular Push-up form",
+    "yt": "Ring Push-up form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "calisthenics",
-      "rehab"
+      "skill"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "calisthenics"
     ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 4,
+    "fatigueCost": 4,
+    "skillDemand": 4,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "band-external-rotation",
-    "name": "Band External Rotation",
-    "family": "rehab-return",
-    "movement": "rehab-return",
+    "key": "pseudo-planche-push-up",
+    "name": "Pseudo Planche Push-up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
     "equipment": [
-      "bands"
+      "bw"
     ],
-    "muscles": [
-      "rotator cuff"
+    "styles": [
+      "calisthenics"
     ],
-    "difficulty": [
-      "rebuild",
-      "beginner"
+    "purposes": [
+      "push",
+      "skill"
     ],
-    "cautionIf": [
-      "rotator-cuff-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "external-rotation",
-      "banded-light",
-      "scapular-control"
-    ],
-    "alternatives": [
-      "scaption-raise",
-      "face-pull"
-    ],
-    "regressions": [
-      "wall-slide"
-    ],
-    "progressions": [
-      "face-pull"
-    ],
-    "aliases": [
-      "Band External Rotation",
-      "band external rotation"
-    ],
-    "yt": "Band External Rotation form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "longevity"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dumbbell-lateral-raise",
-    "name": "Dumbbell Lateral Raise",
-    "family": "vertical-push",
-    "movement": "vertical-push",
-    "equipment": [
-      "dumbbells"
-    ],
-    "muscles": [
-      "side delts"
-    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "banded-light"
-    ],
-    "alternatives": [
-      "band-lateral-raise",
-      "scaption-raise"
-    ],
-    "regressions": [
-      "scaption-raise"
-    ],
-    "progressions": [
-      "lean-away-lateral-raise"
-    ],
-    "aliases": [
-      "Dumbbell Lateral Raise",
-      "dumbbell lateral raise"
-    ],
-    "yt": "Dumbbell Lateral Raise form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "seated-dumbbell-shoulder-press",
-    "name": "Seated Dumbbell Shoulder Press",
-    "family": "vertical-push",
-    "movement": "vertical-push",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "shoulders",
-      "triceps"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "poor-overhead-mobility"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "overhead-heavy"
-    ],
-    "alternatives": [
-      "incline-dumbbell-press",
-      "half-kneeling-single-arm-press"
-    ],
-    "regressions": [
-      "incline-dumbbell-press"
-    ],
-    "progressions": [
-      "standing-dumbbell-press"
-    ],
-    "aliases": [
-      "Seated Dumbbell Shoulder Press",
-      "seated dumbbell shoulder press"
-    ],
-    "yt": "Seated Dumbbell Shoulder Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "half-kneeling-single-arm-press",
-    "name": "Half-kneeling Single-arm Press",
-    "family": "vertical-push",
-    "movement": "vertical-push",
-    "equipment": [
-      "dumbbells"
-    ],
-    "muscles": [
-      "shoulders",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "rebuild",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "poor-overhead-mobility"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unilateral",
-      "core-bracing",
-      "single-side-control"
-    ],
-    "alternatives": [
-      "seated-dumbbell-shoulder-press",
-      "incline-dumbbell-press"
-    ],
-    "regressions": [
-      "incline-dumbbell-press"
-    ],
-    "progressions": [
-      "standing-dumbbell-press"
-    ],
-    "aliases": [
-      "Half-kneeling Single-arm Press",
-      "half kneeling single arm press"
-    ],
-    "yt": "Half-kneeling Single-arm Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "pike-push-up",
-    "name": "Pike Push-up",
-    "family": "vertical-push",
-    "movement": "vertical-push",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "shoulders",
-      "triceps"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
+      "shoulder-impingement",
       "wrist-pain",
-      "poor-overhead-mobility"
+      "tennis-elbow"
     ],
-    "avoidIf": [],
     "tags": [
-      "overhead-heavy",
-      "push-up"
+      "planche-load",
+      "loaded-wrist-extension",
+      "advanced"
     ],
-    "alternatives": [
-      "incline-dumbbell-press",
-      "seated-dumbbell-shoulder-press"
-    ],
+    "alternatives": [],
     "regressions": [
-      "push-up"
+      "planche-lean",
+      "pushup"
     ],
-    "progressions": [
-      "wall-handstand-hold"
-    ],
+    "progressions": [],
     "aliases": [
-      "Pike Push-up",
-      "pike push up"
+      "Pseudo Planche Push-up",
+      "pseudo planche push up"
     ],
-    "yt": "Pike Push-up form",
+    "yt": "Pseudo Planche Push-up form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "skill"
+    ],
+    "styleBias": [
+      "calisthenics"
+    ],
+    "jointStress": 5,
+    "fatigueCost": 4,
+    "skillDemand": 5,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "doorrow",
+    "name": "Door/Table Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics"
+    ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "bodyweight-row",
+      "simple",
+      "reduced-grip"
+    ],
+    "alternatives": [
+      "bandrow",
+      "ringrow"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Door/Table Row",
+      "doorrow"
+    ],
+    "yt": "Door/Table Row form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "calisthenics"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "mixed",
+      "calisthenics"
     ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 3,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "wall-walk",
-    "name": "Wall Walk",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "bodyweight",
-      "wall"
-    ],
-    "muscles": [
-      "shoulders",
-      "core",
-      "serratus"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain",
-      "poor-overhead-mobility"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "handstand",
-      "overhead-heavy",
-      "skill"
-    ],
-    "alternatives": [
-      "pike-push-up",
-      "wall-handstand-hold"
-    ],
-    "regressions": [
-      "pike-push-up"
-    ],
-    "progressions": [
-      "chest-to-wall-handstand"
-    ],
-    "aliases": [
-      "Wall Walk",
-      "wall walk"
-    ],
-    "yt": "Wall Walk form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "chest-to-wall-handstand",
-    "name": "Chest-to-Wall Handstand",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "bodyweight",
-      "wall"
-    ],
-    "muscles": [
-      "shoulders",
-      "core",
-      "glutes"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain",
-      "poor-overhead-mobility"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "handstand",
-      "overhead-heavy",
-      "skill"
-    ],
-    "alternatives": [
-      "wall-handstand-hold",
-      "pike-push-up"
-    ],
-    "regressions": [
-      "wall-walk"
-    ],
-    "progressions": [
-      "freestanding-handstand-drill"
-    ],
-    "aliases": [
-      "Chest-to-Wall Handstand",
-      "chest to wall handstand"
-    ],
-    "yt": "Chest-to-Wall Handstand form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "freestanding-handstand-drill",
-    "name": "Freestanding Handstand Drill",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "shoulders",
-      "core",
-      "balance"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain",
-      "poor-overhead-mobility"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "handstand",
-      "skill",
-      "balance-demand"
-    ],
-    "alternatives": [
-      "chest-to-wall-handstand"
-    ],
-    "regressions": [
-      "chest-to-wall-handstand"
-    ],
-    "progressions": [
-      "handstand-push-up-negative"
-    ],
-    "aliases": [
-      "Freestanding Handstand Drill",
-      "freestanding handstand drill"
-    ],
-    "yt": "Freestanding Handstand Drill form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 5,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "band-row",
+    "key": "bandrow",
     "name": "Band Row",
     "family": "horizontal-pull",
     "movement": "horizontal-pull",
     "equipment": [
-      "bands"
+      "band"
     ],
-    "muscles": [
-      "lats",
-      "mid-back",
-      "biceps"
+    "styles": [
+      "mixed",
+      "calisthenics",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
+      "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain"
     ],
-    "avoidIf": [],
     "tags": [
       "banded-light",
       "neutral-grip",
-      "simple"
+      "supported-row",
+      "reduced-grip"
     ],
     "alternatives": [
-      "supported-one-arm-row",
       "chest-supported-row"
     ],
-    "regressions": [
-      "scapular-row"
-    ],
+    "regressions": [],
     "progressions": [
-      "dumbbell-row"
+      "ringrow"
     ],
     "aliases": [
       "Band Row",
-      "band row"
+      "bandrow"
     ],
     "yt": "Band Row form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -2662,227 +1832,87 @@ window.FFFExerciseDB = (function () {
       "weights"
     ],
     "styleBias": [
+      "mixed",
+      "calisthenics",
       "rebuild-recovery"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "door-table-row",
-    "name": "Door/Table Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "bodyweight",
-      "table"
-    ],
-    "muscles": [
-      "lats",
-      "mid-back",
-      "biceps"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "bodyweight-row",
-      "simple"
-    ],
-    "alternatives": [
-      "band-row",
-      "ring-row"
-    ],
-    "regressions": [
-      "band-row"
-    ],
-    "progressions": [
-      "inverted-row"
-    ],
-    "aliases": [
-      "Door/Table Row",
-      "door table row"
-    ],
-    "yt": "Door/Table Row form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "bodyweight"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "ring-row",
+    "key": "ringrow",
     "name": "Ring Row",
     "family": "horizontal-pull",
     "movement": "horizontal-pull",
     "equipment": [
       "rings"
     ],
-    "muscles": [
-      "lats",
-      "mid-back",
-      "biceps",
-      "core"
+    "styles": [
+      "calisthenics"
     ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain"
     ],
-    "avoidIf": [],
     "tags": [
       "bodyweight-row",
-      "scapular-control"
+      "scapular-control",
+      "neutral-grip"
     ],
-    "alternatives": [
-      "band-row",
-      "inverted-row"
-    ],
+    "alternatives": [],
     "regressions": [
-      "band-row"
+      "bandrow"
     ],
     "progressions": [
       "feet-elevated-ring-row"
     ],
     "aliases": [
       "Ring Row",
-      "ring row"
+      "ringrow"
     ],
     "yt": "Ring Row form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "calisthenics"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "calisthenics"
     ],
     "jointStress": 3,
     "fatigueCost": 2,
     "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "supported-one-arm-row",
-    "name": "Supported One-arm Dumbbell Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "lats",
-      "mid-back",
-      "biceps"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "supported-row",
-      "unilateral",
-      "left-first"
-    ],
-    "alternatives": [
-      "chest-supported-row",
-      "band-row"
-    ],
-    "regressions": [
-      "band-row"
-    ],
-    "progressions": [
-      "dumbbell-row"
-    ],
-    "aliases": [
-      "Supported One-arm Dumbbell Row",
-      "supported one arm row"
-    ],
-    "yt": "Supported One-arm Dumbbell Row form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "chest-supported-row",
@@ -2890,35 +1920,36 @@ window.FFFExerciseDB = (function () {
     "family": "horizontal-pull",
     "movement": "horizontal-pull",
     "equipment": [
-      "dumbbells",
+      "db",
       "bench"
     ],
-    "muscles": [
-      "mid-back",
-      "lats",
-      "rear delts"
+    "styles": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
     "difficulty": [
+      "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain",
+      "low-back-non-specific"
     ],
-    "avoidIf": [],
     "tags": [
       "supported-row",
       "neutral-grip"
     ],
     "alternatives": [
-      "band-row",
-      "supported-one-arm-row"
+      "bandrow"
     ],
-    "regressions": [
-      "band-row"
-    ],
-    "progressions": [
-      "tempo-chest-supported-row"
-    ],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Chest-supported Dumbbell Row",
       "chest supported row"
@@ -2926,367 +1957,32 @@ window.FFFExerciseDB = (function () {
     "yt": "Chest-supported Dumbbell Row form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "weights",
-      "strength",
       "rehab"
     ],
     "styleBias": [
+      "mixed",
       "strength-hypertrophy",
-      "joint-longevity"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "kroc-row",
-    "name": "Kroc Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "lats",
-      "upper back",
-      "grip"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unsupported-heavy-row",
-      "high-fatigue"
-    ],
-    "alternatives": [
-      "dumbbell-row",
-      "chest-supported-row"
-    ],
-    "regressions": [
-      "dumbbell-row"
-    ],
-    "progressions": [
-      "heavy-dumbbell-row"
-    ],
-    "aliases": [
-      "Kroc Row",
-      "kroc row"
-    ],
-    "yt": "Kroc Row form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 5,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "face-pull",
-    "name": "Band Face Pull",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "bands"
-    ],
-    "muscles": [
-      "rear delts",
-      "rotator cuff",
-      "upper back"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "scapular-control",
-      "banded-light"
-    ],
-    "alternatives": [
-      "band-pull-apart",
-      "chest-supported-row"
-    ],
-    "regressions": [
-      "band-pull-apart"
-    ],
-    "progressions": [
-      "chest-supported-row"
-    ],
-    "aliases": [
-      "Band Face Pull",
-      "face pull"
-    ],
-    "yt": "Band Face Pull form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "band-lat-pulldown",
-    "name": "Band Lat Pulldown",
-    "family": "vertical-pull",
-    "movement": "vertical-pull",
-    "equipment": [
-      "bands"
-    ],
-    "muscles": [
-      "lats",
-      "biceps"
-    ],
-    "difficulty": [
-      "beginner",
-      "rebuild"
-    ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "banded-light",
-      "scapular-control"
-    ],
-    "alternatives": [
-      "band-row",
-      "ring-row"
-    ],
-    "regressions": [
-      "scapular-pulldown"
-    ],
-    "progressions": [
-      "assisted-pull-up"
-    ],
-    "aliases": [
-      "Band Lat Pulldown",
-      "band lat pulldown"
-    ],
-    "yt": "Band Lat Pulldown form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "rehab"
-    ],
-    "styleBias": [
       "rebuild-recovery"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "scapular-pull-up",
-    "name": "Scapular Pull-up",
-    "family": "vertical-pull",
-    "movement": "vertical-pull",
-    "equipment": [
-      "pull-up-bar"
-    ],
-    "muscles": [
-      "lats",
-      "scapular stabilisers"
-    ],
-    "difficulty": [
-      "beginner",
-      "rebuild"
-    ],
-    "cautionIf": [
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "scapular-control"
-    ],
-    "alternatives": [
-      "assisted-pull-up",
-      "band-lat-pulldown"
-    ],
-    "regressions": [
-      "scapular-pulldown"
-    ],
-    "progressions": [
-      "assisted-pull-up"
-    ],
-    "aliases": [
-      "Scapular Pull-up",
-      "scapular pull up"
-    ],
-    "yt": "Scapular Pull-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 3,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "assisted-pull-up",
-    "name": "Assisted Pull-up",
-    "family": "vertical-pull",
-    "movement": "vertical-pull",
-    "equipment": [
-      "pull-up-bar",
-      "bands"
-    ],
-    "muscles": [
-      "lats",
-      "biceps",
-      "upper back"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "aggressive-vertical-pull"
-    ],
-    "alternatives": [
-      "band-lat-pulldown",
-      "ring-row"
-    ],
-    "regressions": [
-      "band-lat-pulldown"
-    ],
-    "progressions": [
-      "pull-up-negative"
-    ],
-    "aliases": [
-      "Assisted Pull-up",
-      "assisted pull up"
-    ],
-    "yt": "Assisted Pull-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 3,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "pull-up",
@@ -3294,33 +1990,34 @@ window.FFFExerciseDB = (function () {
     "family": "vertical-pull",
     "movement": "vertical-pull",
     "equipment": [
-      "pull-up-bar"
+      "rack"
     ],
-    "muscles": [
-      "lats",
-      "biceps",
-      "upper back"
+    "styles": [
+      "calisthenics",
+      "strength-hypertrophy"
     ],
+    "purposes": [
+      "pull",
+      "skill"
+    ],
+    "muscles": [],
     "difficulty": [
-      "intermediate",
-      "advanced"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain",
-      "shoulder-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain",
+      "shoulder-impingement"
     ],
-    "avoidIf": [],
     "tags": [
-      "aggressive-vertical-pull"
+      "aggressive-vertical-pull",
+      "heavy-gripping"
     ],
-    "alternatives": [
-      "assisted-pull-up",
-      "band-lat-pulldown",
-      "ring-row"
-    ],
+    "alternatives": [],
     "regressions": [
-      "assisted-pull-up"
+      "assisted-pull-up",
+      "band-lat-pulldown"
     ],
     "progressions": [
       "weighted-pull-up"
@@ -3332,8 +2029,10 @@ window.FFFExerciseDB = (function () {
     "yt": "Pull-up form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -3341,304 +2040,503 @@ window.FFFExerciseDB = (function () {
       "strength"
     ],
     "styleBias": [
-      "movement-calisthenics",
-      "hybrid-athlete"
+      "calisthenics",
+      "strength-hypertrophy"
     ],
     "jointStress": 4,
     "fatigueCost": 4,
     "skillDemand": 3,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "weighted-pull-up",
-    "name": "Weighted Pull-up",
+    "key": "assisted-pull-up",
+    "name": "Assisted Pull-up",
     "family": "vertical-pull",
     "movement": "vertical-pull",
     "equipment": [
-      "pull-up-bar",
-      "weight"
+      "rack",
+      "band"
     ],
-    "muscles": [
-      "lats",
-      "biceps",
-      "upper back"
+    "styles": [
+      "calisthenics"
     ],
-    "difficulty": [
-      "advanced"
+    "purposes": [
+      "pull"
     ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "aggressive-vertical-pull",
-      "advanced",
-      "max-effort"
-    ],
-    "alternatives": [
-      "pull-up",
-      "chest-supported-row"
-    ],
-    "regressions": [
-      "pull-up"
-    ],
-    "progressions": [
-      "heavy-weighted-pull-up"
-    ],
-    "aliases": [
-      "Weighted Pull-up",
-      "weighted pull up"
-    ],
-    "yt": "Weighted Pull-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 5,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "muscle-up-transition-drill",
-    "name": "Muscle-up Transition Drill",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "rings",
-      "low-bar"
-    ],
-    "muscles": [
-      "lats",
-      "chest",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "elbow-pain",
-      "biceps-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "muscle-up-transition",
-      "skill",
-      "complex"
-    ],
-    "alternatives": [
-      "assisted-muscle-up",
-      "ring-row"
-    ],
-    "regressions": [
-      "ring-row",
-      "band-lat-pulldown"
-    ],
-    "progressions": [
-      "assisted-muscle-up"
-    ],
-    "aliases": [
-      "Muscle-up Transition Drill",
-      "muscle up transition drill"
-    ],
-    "yt": "Muscle-up Transition Drill form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "ring-support-hold",
-    "name": "Ring Support Hold",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "rings"
-    ],
-    "muscles": [
-      "triceps",
-      "shoulders",
-      "core"
-    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "shoulder-pain",
-      "elbow-pain",
-      "wrist-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "ring-support",
-      "skill",
-      "unstable"
+      "aggressive-vertical-pull",
+      "scapular-control"
     ],
-    "alternatives": [
-      "parallel-bar-support",
-      "ring-dip"
-    ],
+    "alternatives": [],
     "regressions": [
-      "bench-support-hold"
+      "band-lat-pulldown"
     ],
     "progressions": [
-      "ring-dip-negative"
+      "pull-up"
     ],
     "aliases": [
-      "Ring Support Hold",
-      "ring support hold"
+      "Assisted Pull-up",
+      "assisted pull up"
     ],
-    "yt": "Ring Support Hold form",
+    "yt": "Assisted Pull-up form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "calisthenics",
-      "skill"
+      "calisthenics"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "calisthenics"
     ],
     "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "fatigueCost": 2,
+    "skillDemand": 2,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "ring-dip",
-    "name": "Ring Dip",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
+    "key": "scapular-pull-up",
+    "name": "Scapular Pull-up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
     "equipment": [
-      "rings"
+      "rack"
     ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "shoulders"
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "pull",
+      "skill",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "advanced"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "shoulder-pain",
-      "elbow-pain"
+      "shoulder-impingement"
     ],
-    "avoidIf": [],
     "tags": [
-      "dip-deep",
-      "unstable",
-      "advanced"
+      "scapular-control"
     ],
-    "alternatives": [
-      "parallel-bar-dip",
-      "ring-push-up"
-    ],
+    "alternatives": [],
     "regressions": [
-      "ring-dip-negative"
+      "band-lat-pulldown"
     ],
     "progressions": [
-      "weighted-ring-dip"
+      "assisted-pull-up"
     ],
     "aliases": [
-      "Ring Dip",
-      "ring dip"
+      "Scapular Pull-up",
+      "scapular pull up"
     ],
-    "yt": "Ring Dip form",
+    "yt": "Scapular Pull-up form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "calisthenics",
-      "skill"
+      "rehab"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "calisthenics",
+      "rebuild-recovery"
     ],
-    "jointStress": 5,
-    "fatigueCost": 5,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "face-pull",
+    "name": "Band Face Pull",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control",
+      "banded-light",
+      "external-rotation"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Face Pull",
+      "face pull"
+    ],
+    "yt": "Band Face Pull form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "weights"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "kneeling-arm-series",
+    "name": "Kneeling Arm Series / Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band",
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "core",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "pelvic-control",
+      "scapular-control",
+      "banded-light"
+    ],
+    "alternatives": [
+      "bandrow",
+      "prone-wt-lifts"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Kneeling Arm Series / Band Row",
+      "kneeling arm series"
+    ],
+    "yt": "Kneeling Arm Series / Band Row form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "reformer",
+      "pilates",
+      "rehab"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Tall kneel, ribs stacked, scapulae glide.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "prone-wt-lifts",
+    "name": "Prone W/T Lifts",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control",
+      "low-cognitive-load"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Prone W/T Lifts",
+      "prone wt lifts"
+    ],
+    "yt": "Prone W/T Lifts form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "pilates",
+      "rehab"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Squeeze shoulder blades gently, keep ribs heavy and neck long.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "stepup",
+    "name": "Step-up",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "db",
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "strength-hypertrophy"
+    ],
+    "purposes": [
+      "legs"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "knee-pain-general",
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "controlled-step-up",
+      "unilateral",
+      "left-first"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "step-up-low",
+      "sit-to-stand"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Step-up",
+      "stepup"
+    ],
+    "yt": "Step-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "rehab"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength-hypertrophy"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 2,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "step-up-low",
+    "name": "Low Step-up",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "bw",
+      "db"
+    ],
+    "styles": [
+      "mixed",
+      "rebuild-recovery",
+      "joint-longevity"
+    ],
+    "purposes": [
+      "legs",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "controlled-step-up",
+      "step-up-low",
+      "unilateral",
+      "reduced-range"
+    ],
+    "alternatives": [
+      "supported-split-squat"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Low Step-up",
+      "step up low"
+    ],
+    "yt": "Low Step-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "weights"
+    ],
+    "styleBias": [
+      "mixed",
+      "rebuild-recovery",
+      "joint-longevity"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "sit-to-stand",
@@ -3646,36 +2544,37 @@ window.FFFExerciseDB = (function () {
     "family": "squat",
     "movement": "squat",
     "equipment": [
-      "chair",
-      "bodyweight"
+      "bw",
+      "chair"
     ],
-    "muscles": [
-      "quads",
-      "glutes"
+    "styles": [
+      "mixed",
+      "rebuild-recovery",
+      "joint-longevity"
     ],
+    "purposes": [
+      "legs",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "rebuild",
-      "beginner"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "hip-pain"
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
     ],
-    "avoidIf": [],
     "tags": [
       "chair-friendly",
+      "supported",
       "simple",
-      "supported"
+      "box-range"
     ],
-    "alternatives": [
-      "chair-squat",
-      "box-squat"
-    ],
-    "regressions": [
-      "supported-sit-to-stand"
-    ],
+    "alternatives": [],
+    "regressions": [],
     "progressions": [
-      "chair-squat"
+      "box-squat"
     ],
     "aliases": [
       "Sit-to-Stand",
@@ -3684,8 +2583,10 @@ window.FFFExerciseDB = (function () {
     "yt": "Sit-to-Stand form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -3693,22 +2594,21 @@ window.FFFExerciseDB = (function () {
       "longevity"
     ],
     "styleBias": [
+      "mixed",
       "rebuild-recovery",
       "joint-longevity"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "box-squat",
@@ -3716,33 +2616,35 @@ window.FFFExerciseDB = (function () {
     "family": "squat",
     "movement": "squat",
     "equipment": [
-      "bodyweight",
-      "dumbbells",
-      "box"
+      "bw",
+      "db"
     ],
-    "muscles": [
-      "quads",
-      "glutes"
+    "styles": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "legs"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
+      "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "hip-pain"
+      "knee-pain-general",
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
     ],
-    "avoidIf": [],
     "tags": [
       "box-range",
-      "reduced-range"
+      "reduced-range",
+      "tempo-control"
     ],
-    "alternatives": [
-      "goblet-squat",
-      "chair-squat"
-    ],
+    "alternatives": [],
     "regressions": [
-      "chair-squat"
+      "sit-to-stand"
     ],
     "progressions": [
       "goblet-squat"
@@ -3754,8 +2656,10 @@ window.FFFExerciseDB = (function () {
     "yt": "Box Squat form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -3763,21 +2667,21 @@ window.FFFExerciseDB = (function () {
       "rehab"
     ],
     "styleBias": [
-      "joint-longevity"
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "goblet-squat",
@@ -3785,38 +2689,33 @@ window.FFFExerciseDB = (function () {
     "family": "squat",
     "movement": "squat",
     "equipment": [
-      "dumbbells",
-      "kettlebell"
+      "db"
     ],
-    "muscles": [
-      "quads",
-      "glutes",
-      "core"
+    "styles": [
+      "mixed",
+      "strength-hypertrophy"
     ],
+    "purposes": [
+      "legs"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "hip-pain",
-      "low-back-sensitivity"
+      "knee-pain-general",
+      "hip-tendon-pain-reduced-rom"
     ],
-    "avoidIf": [],
     "tags": [
-      "squat"
+      "squat",
+      "tempo-control"
     ],
-    "alternatives": [
-      "box-squat",
-      "split-squat",
-      "step-up"
-    ],
+    "alternatives": [],
     "regressions": [
       "box-squat"
     ],
-    "progressions": [
-      "tempo-goblet-squat"
-    ],
+    "progressions": [],
     "aliases": [
       "Goblet Squat",
       "goblet squat"
@@ -3824,96 +2723,31 @@ window.FFFExerciseDB = (function () {
     "yt": "Goblet Squat form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "weights",
-      "strength",
-      "hypertrophy"
+      "strength"
     ],
     "styleBias": [
+      "mixed",
       "strength-hypertrophy"
     ],
     "jointStress": 3,
     "fatigueCost": 3,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "cyclist-squat",
-    "name": "Cyclist Squat",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "dumbbells",
-      "wedge"
-    ],
-    "muscles": [
-      "quads"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "knee-pain",
-      "patellar-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "deep-knee-flexion-fast"
-    ],
-    "alternatives": [
-      "heel-elevated-goblet-squat",
-      "box-squat"
-    ],
-    "regressions": [
-      "box-squat"
-    ],
-    "progressions": [
-      "tempo-cyclist-squat"
-    ],
-    "aliases": [
-      "Cyclist Squat",
-      "cyclist squat"
-    ],
-    "yt": "Cyclist Squat form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "spanish-squat-hold",
@@ -3921,34 +2755,35 @@ window.FFFExerciseDB = (function () {
     "family": "squat",
     "movement": "squat",
     "equipment": [
-      "bands"
+      "band"
     ],
-    "muscles": [
-      "quads",
-      "patellar tendon"
+    "styles": [
+      "mixed",
+      "rebuild-recovery",
+      "joint-longevity"
     ],
+    "purposes": [
+      "legs",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "rebuild",
+      "beginner",
       "intermediate"
     ],
     "cautionIf": [
       "patellar-tendon-pain"
     ],
-    "avoidIf": [],
     "tags": [
       "spanish-squat",
-      "isometric"
+      "isometric",
+      "quad-control"
     ],
     "alternatives": [
-      "wall-sit",
-      "box-squat"
-    ],
-    "regressions": [
       "wall-sit"
     ],
-    "progressions": [
-      "spanish-squat-reps"
-    ],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Spanish Squat Hold",
       "spanish squat hold"
@@ -3956,97 +2791,98 @@ window.FFFExerciseDB = (function () {
     "yt": "Spanish Squat Hold form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "rehab",
-      "weights"
+      "rehab"
     ],
     "styleBias": [
+      "mixed",
+      "rebuild-recovery",
       "joint-longevity"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "sissy-squat-regression",
-    "name": "Sissy Squat Regression",
+    "key": "wall-sit",
+    "name": "Wall Sit",
     "family": "squat",
     "movement": "squat",
     "equipment": [
-      "bodyweight",
-      "support"
+      "bw"
     ],
-    "muscles": [
-      "quads"
+    "styles": [
+      "mixed",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "legs",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "advanced"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "patellar-tendon-pain"
+      "patellar-tendon-pain",
+      "clicky-knees-painful"
     ],
-    "avoidIf": [],
     "tags": [
-      "sissy-squat",
-      "deep-knee-flexion-fast",
-      "advanced"
+      "isometric",
+      "quad-control",
+      "simple"
     ],
-    "alternatives": [
-      "spanish-squat-reps",
-      "heel-elevated-goblet-squat"
-    ],
-    "regressions": [
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [
       "spanish-squat-hold"
     ],
-    "progressions": [
-      "sissy-squat"
-    ],
     "aliases": [
-      "Sissy Squat Regression",
-      "sissy squat regression"
+      "Wall Sit",
+      "wall sit"
     ],
-    "yt": "Sissy Squat Regression form",
+    "yt": "Wall Sit form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "calisthenics",
-      "weights"
+      "rehab"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "mixed",
+      "rebuild-recovery"
     ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "supported-split-squat",
@@ -4054,35 +2890,33 @@ window.FFFExerciseDB = (function () {
     "family": "lunge-split",
     "movement": "lunge-split",
     "equipment": [
-      "bodyweight",
-      "support"
+      "bw"
     ],
-    "muscles": [
-      "quads",
-      "glutes"
+    "styles": [
+      "mixed",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "legs",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
+      "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "hip-pain",
-      "ankle-instability"
+      "hip-tendon-pain-reduced-rom",
+      "clicky-knees-painful"
     ],
-    "avoidIf": [],
     "tags": [
       "supported",
       "unilateral",
+      "reduced-range",
       "left-first"
     ],
-    "alternatives": [
-      "split-squat",
-      "step-up-low"
-    ],
-    "regressions": [
-      "chair-squat"
-    ],
+    "alternatives": [],
+    "regressions": [],
     "progressions": [
       "split-squat"
     ],
@@ -4093,8 +2927,10 @@ window.FFFExerciseDB = (function () {
     "yt": "Supported Split Squat form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -4102,90 +2938,20 @@ window.FFFExerciseDB = (function () {
       "weights"
     ],
     "styleBias": [
-      "joint-longevity"
+      "mixed",
+      "rebuild-recovery"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "bulgarian-split-squat",
-    "name": "Bulgarian Split Squat",
-    "family": "lunge-split",
-    "movement": "lunge-split",
-    "equipment": [
-      "dumbbells",
-      "bench"
-    ],
-    "muscles": [
-      "quads",
-      "glutes"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "knee-pain",
-      "hip-pain",
-      "ankle-instability"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unilateral",
-      "left-first"
-    ],
-    "alternatives": [
-      "split-squat",
-      "step-up"
-    ],
-    "regressions": [
-      "split-squat"
-    ],
-    "progressions": [
-      "front-foot-elevated-split-squat"
-    ],
-    "aliases": [
-      "Bulgarian Split Squat",
-      "bulgarian split squat"
-    ],
-    "yt": "Bulgarian Split Squat form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "shrimp-squat-regression",
@@ -4193,39 +2959,34 @@ window.FFFExerciseDB = (function () {
     "family": "lunge-split",
     "movement": "lunge-split",
     "equipment": [
-      "bodyweight",
-      "support"
+      "bw"
     ],
-    "muscles": [
-      "quads",
-      "glutes",
-      "balance"
+    "styles": [
+      "calisthenics"
     ],
+    "purposes": [
+      "legs",
+      "skill"
+    ],
+    "muscles": [],
     "difficulty": [
-      "intermediate",
-      "advanced"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "hip-pain",
-      "ankle-instability"
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
     ],
-    "avoidIf": [],
     "tags": [
       "unilateral",
       "balance-demand",
       "advanced"
     ],
-    "alternatives": [
-      "split-squat",
-      "step-up"
-    ],
+    "alternatives": [],
     "regressions": [
       "supported-split-squat"
     ],
-    "progressions": [
-      "shrimp-squat"
-    ],
+    "progressions": [],
     "aliases": [
       "Shrimp Squat Regression",
       "shrimp squat regression"
@@ -4233,8 +2994,10 @@ window.FFFExerciseDB = (function () {
     "yt": "Shrimp Squat Regression form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -4242,367 +3005,85 @@ window.FFFExerciseDB = (function () {
       "skill"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "calisthenics"
     ],
     "jointStress": 5,
     "fatigueCost": 4,
     "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "step-up-low",
-    "name": "Low Step-up",
-    "family": "lunge-split",
-    "movement": "lunge-split",
+    "key": "sissy-squat-regression",
+    "name": "Sissy Squat Regression",
+    "family": "squat",
+    "movement": "squat",
     "equipment": [
-      "step",
-      "dumbbells"
+      "bw"
     ],
-    "muscles": [
-      "quads",
-      "glutes"
+    "styles": [
+      "calisthenics"
     ],
+    "purposes": [
+      "legs",
+      "skill"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
-    ],
-    "cautionIf": [
-      "knee-pain",
-      "hip-pain",
-      "ankle-instability"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "controlled-step-up",
-      "step-up-low",
-      "unilateral"
-    ],
-    "alternatives": [
-      "step-up",
-      "supported-split-squat"
-    ],
-    "regressions": [
-      "sit-to-stand"
-    ],
-    "progressions": [
-      "step-up"
-    ],
-    "aliases": [
-      "Low Step-up",
-      "step up low"
-    ],
-    "yt": "Low Step-up form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "peterson-step-up",
-    "name": "Peterson Step-up",
-    "family": "lunge-split",
-    "movement": "lunge-split",
-    "equipment": [
-      "step",
-      "support"
-    ],
-    "muscles": [
-      "quads",
-      "knee control"
-    ],
-    "difficulty": [
       "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "patellar-tendon-pain"
+      "patellar-tendon-pain",
+      "clicky-knees-painful"
     ],
-    "avoidIf": [],
     "tags": [
-      "controlled-step-up",
-      "tendon-loading"
+      "sissy-squat",
+      "deep-knee-flexion-fast",
+      "advanced"
     ],
-    "alternatives": [
-      "step-up-low",
+    "alternatives": [],
+    "regressions": [
       "spanish-squat-hold"
     ],
-    "regressions": [
-      "step-up-low"
-    ],
-    "progressions": [
-      "step-up"
-    ],
+    "progressions": [],
     "aliases": [
-      "Peterson Step-up",
-      "peterson step up"
+      "Sissy Squat Regression",
+      "sissy squat regression"
     ],
-    "yt": "Peterson Step-up form",
+    "yt": "Sissy Squat Regression form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "rehab",
-      "weights"
+      "calisthenics",
+      "skill"
     ],
     "styleBias": [
-      "joint-longevity"
+      "calisthenics"
     ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 5,
+    "fatigueCost": 4,
+    "skillDemand": 4,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dowel-hip-hinge",
-    "name": "Dowel Hip Hinge",
-    "family": "hinge",
-    "movement": "hinge",
-    "equipment": [
-      "bodyweight",
-      "dowel"
-    ],
-    "muscles": [
-      "hamstrings",
-      "glutes"
-    ],
-    "difficulty": [
-      "rebuild",
-      "beginner"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity",
-      "hip-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "reduced-range",
-      "simple",
-      "neutral-spine"
-    ],
-    "alternatives": [
-      "dumbbell-rdl",
-      "glute-bridge"
-    ],
-    "regressions": [
-      "glute-bridge"
-    ],
-    "progressions": [
-      "dumbbell-rdl"
-    ],
-    "aliases": [
-      "Dowel Hip Hinge",
-      "dowel hip hinge"
-    ],
-    "yt": "Dowel Hip Hinge form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "mobility"
-    ],
-    "styleBias": [
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dumbbell-rdl",
-    "name": "Dumbbell Romanian Deadlift",
-    "family": "hinge",
-    "movement": "hinge",
-    "equipment": [
-      "dumbbells"
-    ],
-    "muscles": [
-      "hamstrings",
-      "glutes",
-      "back"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity",
-      "hip-pain",
-      "hamstring-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "hinge",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "glute-bridge",
-      "reduced-range-rdl"
-    ],
-    "regressions": [
-      "dowel-hip-hinge",
-      "glute-bridge"
-    ],
-    "progressions": [
-      "single-leg-rdl-supported"
-    ],
-    "aliases": [
-      "Dumbbell Romanian Deadlift",
-      "dumbbell rdl"
-    ],
-    "yt": "Dumbbell Romanian Deadlift form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "single-leg-rdl-supported",
-    "name": "Supported Single-leg RDL",
-    "family": "hinge",
-    "movement": "hinge",
-    "equipment": [
-      "dumbbells",
-      "support"
-    ],
-    "muscles": [
-      "hamstrings",
-      "glutes",
-      "balance"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity",
-      "ankle-instability"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "unilateral",
-      "supported",
-      "single-leg-supported"
-    ],
-    "alternatives": [
-      "dumbbell-rdl",
-      "glute-bridge"
-    ],
-    "regressions": [
-      "dumbbell-rdl"
-    ],
-    "progressions": [
-      "single-leg-rdl"
-    ],
-    "aliases": [
-      "Supported Single-leg RDL",
-      "single leg rdl supported"
-    ],
-    "yt": "Supported Single-leg RDL form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "glute-bridge",
@@ -4610,34 +3091,37 @@ window.FFFExerciseDB = (function () {
     "family": "hip-extension",
     "movement": "hip-extension",
     "equipment": [
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "glutes",
-      "hamstrings"
+    "styles": [
+      "mixed",
+      "reformer",
+      "rebuild-recovery",
+      "pilates-mobility"
     ],
+    "purposes": [
+      "legs",
+      "core",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
+      "intermediate"
     ],
     "cautionIf": [
-      "hip-pain",
-      "low-back-sensitivity"
+      "hip-tendon-pain-reduced-rom",
+      "low-back-non-specific"
     ],
-    "avoidIf": [],
     "tags": [
       "glute-dominant",
-      "simple"
+      "simple",
+      "pelvic-control"
     ],
-    "alternatives": [
-      "single-leg-glute-bridge",
-      "hip-thrust"
-    ],
-    "regressions": [
-      "posterior-pelvic-tilt-drill"
-    ],
+    "alternatives": [],
+    "regressions": [],
     "progressions": [
-      "single-leg-glute-bridge"
+      "weighted-glute-bridge"
     ],
     "aliases": [
       "Glute Bridge",
@@ -4646,8 +3130,10 @@ window.FFFExerciseDB = (function () {
     "yt": "Glute Bridge form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -4655,330 +3141,267 @@ window.FFFExerciseDB = (function () {
       "pilates"
     ],
     "styleBias": [
-      "rebuild-recovery"
+      "mixed",
+      "reformer",
+      "rebuild-recovery",
+      "pilates-mobility"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "hip-thrust",
-    "name": "Hip Thrust",
-    "family": "hip-extension",
-    "movement": "hip-extension",
+    "key": "hip-flexor-isometric",
+    "name": "Hip Flexor Isometric Press",
+    "family": "rehab-return",
+    "movement": "rehab-return",
     "equipment": [
-      "bench",
-      "dumbbells"
+      "bw"
     ],
-    "muscles": [
-      "glutes",
-      "hamstrings"
+    "styles": [
+      "rebuild-recovery",
+      "joint-longevity"
     ],
+    "purposes": [
+      "recovery",
+      "physio"
+    ],
+    "muscles": [],
     "difficulty": [
+      "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "hip-pain",
-      "low-back-sensitivity"
+      "hip-flexor-tendon-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "glute-dominant"
+      "hip-flexor-isometric",
+      "isometric",
+      "mobility-gentle"
     ],
-    "alternatives": [
-      "glute-bridge",
-      "dumbbell-rdl"
-    ],
-    "regressions": [
-      "glute-bridge"
-    ],
-    "progressions": [
-      "weighted-hip-thrust"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Hip Thrust",
-      "hip thrust"
+      "Hip Flexor Isometric Press",
+      "hip flexor isometric"
     ],
-    "yt": "Hip Thrust form",
+    "yt": "Hip Flexor Isometric Press form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "weights",
-      "hypertrophy"
+      "rehab",
+      "physio"
     ],
     "styleBias": [
-      "strength-hypertrophy"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "slider-hamstring-curl",
-    "name": "Slider Hamstring Curl",
-    "family": "hinge",
-    "movement": "hinge",
-    "equipment": [
-      "sliders",
-      "towel"
-    ],
-    "muscles": [
-      "hamstrings",
-      "glutes"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "hamstring-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "bodyweight",
-      "posterior-chain"
-    ],
-    "alternatives": [
-      "hamstring-walkout",
-      "dumbbell-rdl"
-    ],
-    "regressions": [
-      "hamstring-walkout"
-    ],
-    "progressions": [
-      "nordic-curl-regression"
-    ],
-    "aliases": [
-      "Slider Hamstring Curl",
-      "slider hamstring curl"
-    ],
-    "yt": "Slider Hamstring Curl form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "strength"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 3,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "nordic-curl-regression",
-    "name": "Nordic Curl Regression",
-    "family": "hinge",
-    "movement": "hinge",
-    "equipment": [
-      "bodyweight",
-      "anchor"
-    ],
-    "muscles": [
-      "hamstrings"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "hamstring-pain",
-      "knee-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "advanced",
-      "posterior-chain"
-    ],
-    "alternatives": [
-      "slider-hamstring-curl",
-      "dumbbell-rdl"
-    ],
-    "regressions": [
-      "slider-hamstring-curl"
-    ],
-    "progressions": [
-      "nordic-curl"
-    ],
-    "aliases": [
-      "Nordic Curl Regression",
-      "nordic curl regression"
-    ],
-    "yt": "Nordic Curl Regression form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "strength"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "breathing-reset",
-    "name": "Breathing Reset",
-    "family": "mobility-recovery",
-    "movement": "mobility-recovery",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "nervous system",
-      "core"
-    ],
-    "difficulty": [
-      "all"
-    ],
-    "cautionIf": [],
-    "avoidIf": [],
-    "tags": [
-      "recovery",
-      "simple",
-      "low-cognitive-load"
-    ],
-    "alternatives": [
-      "mobility-reset"
-    ],
-    "regressions": [
-      "rest"
-    ],
-    "progressions": [
-      "dead-bug"
-    ],
-    "aliases": [
-      "Breathing Reset",
-      "breathing reset"
-    ],
-    "yt": "Breathing Reset form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "recovery"
-    ],
-    "styleBias": [
-      "low-overwhelm",
-      "rebuild-recovery"
+      "rebuild-recovery",
+      "joint-longevity"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Press knee gently into hand, hold 20 to 30 seconds, stay pain-free.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "posterior-pelvic-tilt-drill",
-    "name": "Posterior Pelvic Tilt Drill",
+    "key": "marches-with-band",
+    "name": "Marches with Band",
+    "family": "rehab-return",
+    "movement": "rehab-return",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "legs",
+      "recovery",
+      "physio"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-flexor-tendon-pain"
+    ],
+    "tags": [
+      "hip-flexor-isometric",
+      "pelvic-control",
+      "banded-light"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "hip-flexor-isometric"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Marches with Band",
+      "marches with band"
+    ],
+    "yt": "Marches with Band form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "physio"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "leg-circles-frogs",
+    "name": "Leg Circles & Frogs",
     "family": "pilates-core",
     "movement": "pilates-core",
     "equipment": [
-      "bodyweight"
+      "bw",
+      "band"
     ],
-    "muscles": [
-      "deep core",
-      "glutes"
+    "styles": [
+      "reformer",
+      "pilates-mobility"
     ],
+    "purposes": [
+      "core",
+      "mobility",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "rebuild",
-      "beginner"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "low-back-sensitivity"
+      "hip-clicking-painful",
+      "hip-flexor-tendon-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "core-bracing",
-      "simple",
-      "pilates"
+      "pelvic-control",
+      "mobility-gentle"
     ],
     "alternatives": [
-      "glute-bridge",
-      "dead-bug"
+      "mat-leg-circles",
+      "frog-with-miniband"
     ],
-    "regressions": [
-      "breathing-reset"
-    ],
-    "progressions": [
-      "glute-bridge"
-    ],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Posterior Pelvic Tilt Drill",
-      "posterior pelvic tilt drill"
+      "Leg Circles & Frogs",
+      "leg circles frogs"
     ],
-    "yt": "Posterior Pelvic Tilt Drill form",
+    "yt": "Leg Circles & Frogs form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "reformer",
+      "pilates"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Control circle size, keep pelvis steady, no rib flare.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "mat-leg-circles",
+    "name": "Mat Leg Circles",
+    "family": "pilates-core",
+    "movement": "pilates-core",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility"
+    ],
+    "purposes": [
+      "core",
+      "mobility"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-clicking-painful"
+    ],
+    "tags": [
+      "pelvic-control",
+      "mobility-gentle",
+      "reduced-range"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Mat Leg Circles",
+      "mat leg circles"
+    ],
+    "yt": "Mat Leg Circles form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -4986,21 +3409,155 @@ window.FFFExerciseDB = (function () {
       "rehab"
     ],
     "styleBias": [
+      "reformer",
       "pilates-mobility"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Small smooth circles, pelvis steady.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "frog-with-miniband",
+    "name": "Frog with Mini-band",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "legs",
+      "mobility"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "glute-dominant",
+      "pelvic-control",
+      "banded-light"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Frog with Mini-band",
+      "frog with miniband"
+    ],
+    "yt": "Frog with Mini-band form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "pilates",
+      "rehab"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "sidepl",
+    "name": "Side Plank",
+    "family": "core-anti-rotation",
+    "movement": "core-anti-rotation",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics",
+      "pilates-mobility"
+    ],
+    "purposes": [
+      "core"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "anti-rotation",
+      "lateral-core"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "side-plank-knees"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Side Plank",
+      "sidepl"
+    ],
+    "yt": "Side Plank form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "pilates",
+      "calisthenics"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics",
+      "pilates-mobility"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "dead-bug",
@@ -5008,34 +3565,34 @@ window.FFFExerciseDB = (function () {
     "family": "core-anti-extension",
     "movement": "core-anti-extension",
     "equipment": [
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "deep core"
+    "styles": [
+      "mixed",
+      "rebuild-recovery",
+      "pilates-mobility"
     ],
+    "purposes": [
+      "core",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
+      "intermediate"
     ],
     "cautionIf": [
-      "low-back-sensitivity",
+      "low-back-non-specific",
       "disc-sensitivity"
     ],
-    "avoidIf": [],
     "tags": [
+      "anti-extension",
       "core-bracing",
-      "anti-extension"
+      "neutral-spine"
     ],
-    "alternatives": [
-      "plank",
-      "bird-dog"
-    ],
-    "regressions": [
-      "breathing-reset"
-    ],
-    "progressions": [
-      "hollow-tuck-hold"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Dead Bug",
       "dead bug"
@@ -5043,8 +3600,144 @@ window.FFFExerciseDB = (function () {
     "yt": "Dead Bug form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "pilates"
+    ],
+    "styleBias": [
+      "mixed",
+      "rebuild-recovery",
+      "pilates-mobility"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "bird-dog",
+    "name": "Bird Dog",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "core",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "neutral-spine",
+      "core-bracing"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Bird Dog",
+      "bird dog"
+    ],
+    "yt": "Bird Dog form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab"
+    ],
+    "styleBias": [
+      "mixed",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "pelvic-curl",
+    "name": "Pelvic Curl",
+    "family": "pilates-core",
+    "movement": "pilates-core",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "core",
+      "mobility",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "pelvic-control",
+      "spinal-articulation",
+      "glute-dominant"
+    ],
+    "alternatives": [
+      "glute-bridge"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Pelvic Curl",
+      "pelvic curl"
+    ],
+    "yt": "Pelvic Curl form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -5052,22 +3745,21 @@ window.FFFExerciseDB = (function () {
       "rehab"
     ],
     "styleBias": [
+      "reformer",
       "pilates-mobility",
-      "joint-longevity"
+      "rebuild-recovery"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Peel spine off mat one vertebra at a time.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "pilates-hundred-prep",
@@ -5075,35 +3767,32 @@ window.FFFExerciseDB = (function () {
     "family": "pilates-core",
     "movement": "pilates-core",
     "equipment": [
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "deep core",
-      "hip flexors"
+    "styles": [
+      "reformer",
+      "pilates-mobility"
     ],
+    "purposes": [
+      "core"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "neck-pain",
-      "low-back-sensitivity"
+      "hip-flexor-tendon-pain",
+      "low-back-non-specific"
     ],
-    "avoidIf": [],
     "tags": [
       "pilates",
-      "breathing"
+      "breathing",
+      "pelvic-control"
     ],
-    "alternatives": [
-      "dead-bug",
-      "heel-tap"
-    ],
-    "regressions": [
-      "breathing-reset"
-    ],
-    "progressions": [
-      "pilates-hundred"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Pilates Hundred Prep",
       "pilates hundred prep"
@@ -5111,74 +3800,143 @@ window.FFFExerciseDB = (function () {
     "yt": "Pilates Hundred Prep form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "pilates"
     ],
     "styleBias": [
+      "reformer",
       "pilates-mobility"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "pilates-roll-down",
-    "name": "Pilates Roll-down",
+    "key": "long-stretch-plank",
+    "name": "Long Stretch / Plank Series",
     "family": "pilates-core",
     "movement": "pilates-core",
     "equipment": [
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "spinal control",
-      "deep core"
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "calisthenics"
     ],
+    "purposes": [
+      "core",
+      "push"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "disc-sensitivity",
-      "low-back-sensitivity"
+      "shoulder-impingement",
+      "wrist-pain",
+      "low-back-non-specific"
     ],
-    "avoidIf": [],
     "tags": [
-      "pilates",
-      "spinal-articulation"
+      "plank",
+      "core-bracing",
+      "skill"
     ],
     "alternatives": [
-      "cat-cow",
-      "pelvic-curl"
+      "forearm-plank"
     ],
-    "regressions": [
-      "breathing-reset"
-    ],
-    "progressions": [
-      "roll-up-prep"
-    ],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Pilates Roll-down",
-      "pilates roll down"
+      "Long Stretch / Plank Series",
+      "long stretch plank"
     ],
-    "yt": "Pilates Roll-down form",
+    "yt": "Long Stretch / Plank Series form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "reformer",
+      "pilates"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility",
+      "calisthenics"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 2,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Strong plank, move shoulders and hips as one piece.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "mermaid",
+    "name": "Mermaid Stretch",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "mobility",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "mobility-gentle",
+      "breathing"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Mermaid Stretch",
+      "mermaid"
+    ],
+    "yt": "Mermaid Stretch form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -5186,1041 +3944,299 @@ window.FFFExerciseDB = (function () {
       "mobility"
     ],
     "styleBias": [
-      "pilates-mobility"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 1,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "plank",
-    "name": "Plank",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "core",
-      "shoulders"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "core-bracing",
-      "anti-extension"
-    ],
-    "alternatives": [
-      "dead-bug",
-      "bear-hold"
-    ],
-    "regressions": [
-      "dead-bug"
-    ],
-    "progressions": [
-      "body-saw"
-    ],
-    "aliases": [
-      "Plank",
-      "plank"
-    ],
-    "yt": "Plank form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "pilates"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "hollow-tuck-hold",
-    "name": "Hollow Tuck Hold",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "abdominals",
-      "deep core"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "hollow-body",
-      "anti-extension",
-      "skill-transfer"
-    ],
-    "alternatives": [
-      "dead-bug",
-      "hollow-hold"
-    ],
-    "regressions": [
-      "dead-bug"
-    ],
-    "progressions": [
-      "hollow-hold"
-    ],
-    "aliases": [
-      "Hollow Tuck Hold",
-      "hollow tuck hold"
-    ],
-    "yt": "Hollow Tuck Hold form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "hollow-hold",
-    "name": "Hollow Hold",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "abdominals",
-      "deep core"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "hollow-body",
-      "advanced-core",
-      "anti-extension",
-      "skill-transfer"
-    ],
-    "alternatives": [
-      "dead-bug",
-      "heel-tap"
-    ],
-    "regressions": [
-      "hollow-tuck-hold"
-    ],
-    "progressions": [
-      "hollow-rock"
-    ],
-    "aliases": [
-      "Hollow Hold",
-      "hollow hold"
-    ],
-    "yt": "Hollow Hold form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "arch-body-hold",
-    "name": "Arch Body Hold",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "posterior chain",
-      "back",
-      "glutes"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "arch-body",
-      "skill-transfer"
-    ],
-    "alternatives": [
-      "bird-dog",
-      "superman-hold"
-    ],
-    "regressions": [
-      "bird-dog"
-    ],
-    "progressions": [
-      "arch-rock"
-    ],
-    "aliases": [
-      "Arch Body Hold",
-      "arch body hold"
-    ],
-    "yt": "Arch Body Hold form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "side-plank",
-    "name": "Side Plank",
-    "family": "core-anti-rotation",
-    "movement": "core-anti-rotation",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "obliques",
-      "glutes",
-      "shoulders"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "lateral-core"
-    ],
-    "alternatives": [
-      "side-plank-knees",
-      "pallof-press"
-    ],
-    "regressions": [
-      "side-plank-knees"
-    ],
-    "progressions": [
-      "copenhagen-plank-short"
-    ],
-    "aliases": [
-      "Side Plank",
-      "side plank"
-    ],
-    "yt": "Side Plank form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "pilates"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "pallof-press",
-    "name": "Pallof Press",
-    "family": "core-anti-rotation",
-    "movement": "core-anti-rotation",
-    "equipment": [
-      "bands"
-    ],
-    "muscles": [
-      "obliques",
-      "deep core"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "anti-rotation",
-      "banded-light"
-    ],
-    "alternatives": [
-      "side-plank",
-      "dead-bug"
-    ],
-    "regressions": [
-      "dead-bug"
-    ],
-    "progressions": [
-      "pallof-hold"
-    ],
-    "aliases": [
-      "Pallof Press",
-      "pallof press"
-    ],
-    "yt": "Pallof Press form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "pilates",
-      "weights"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "l-sit-tuck",
-    "name": "Tuck L-Sit",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "parallettes",
-      "rings",
-      "chairs"
-    ],
-    "muscles": [
-      "hip flexors",
-      "deep core",
-      "triceps"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "wrist-pain",
-      "hip-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "l-sit",
-      "skill",
-      "support-hold"
-    ],
-    "alternatives": [
-      "hollow-tuck-hold",
-      "ring-support-hold"
-    ],
-    "regressions": [
-      "hollow-tuck-hold"
-    ],
-    "progressions": [
-      "advanced-tuck-l-sit"
-    ],
-    "aliases": [
-      "Tuck L-Sit",
-      "l sit tuck"
-    ],
-    "yt": "Tuck L-Sit form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "hanging-knee-raise",
-    "name": "Hanging Knee Raise",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "pull-up-bar"
-    ],
-    "muscles": [
-      "abs",
-      "hip flexors",
-      "grip"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "elbow-pain",
-      "hip-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "hanging-core"
-    ],
-    "alternatives": [
-      "captain-chair-knee-raise",
-      "dead-bug"
-    ],
-    "regressions": [
-      "dead-bug"
-    ],
-    "progressions": [
-      "hanging-leg-raise"
-    ],
-    "aliases": [
-      "Hanging Knee Raise",
-      "hanging knee raise"
-    ],
-    "yt": "Hanging Knee Raise form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 3,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "dragon-flag-regression",
-    "name": "Dragon Flag Regression",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bench"
-    ],
-    "muscles": [
-      "abs",
-      "lats",
-      "hip flexors"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "advanced-core",
-      "high-tension"
-    ],
-    "alternatives": [
-      "hollow-hold",
-      "hanging-leg-raise"
-    ],
-    "regressions": [
-      "hollow-hold"
-    ],
-    "progressions": [
-      "dragon-flag"
-    ],
-    "aliases": [
-      "Dragon Flag Regression",
-      "dragon flag regression"
-    ],
-    "yt": "Dragon Flag Regression form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 5,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "tuck-front-lever-hold",
-    "name": "Tuck Front Lever Hold",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "rings",
-      "pull-up-bar"
-    ],
-    "muscles": [
-      "lats",
-      "core",
-      "scapular stabilisers"
-    ],
-    "difficulty": [
-      "advanced"
-    ],
-    "cautionIf": [
-      "shoulder-pain",
-      "elbow-pain",
-      "biceps-tendon-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "front-lever",
-      "skill",
-      "high-tension"
-    ],
-    "alternatives": [
-      "scapular-pull-up",
-      "ring-row"
-    ],
-    "regressions": [
-      "scapular-pull-up"
-    ],
-    "progressions": [
-      "advanced-tuck-front-lever"
-    ],
-    "aliases": [
-      "Tuck Front Lever Hold",
-      "tuck front lever hold"
-    ],
-    "yt": "Tuck Front Lever Hold form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 5,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "planche-lean",
-    "name": "Planche Lean",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "front delts",
-      "serratus",
-      "core",
-      "wrists"
-    ],
-    "difficulty": [
-      "intermediate",
-      "advanced"
-    ],
-    "cautionIf": [
-      "wrist-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "planche-load",
-      "loaded-wrist-extension",
-      "skill"
-    ],
-    "alternatives": [
-      "scapular-push-up",
-      "pseudo-planche-push-up"
-    ],
-    "regressions": [
-      "scapular-push-up"
-    ],
-    "progressions": [
-      "pseudo-planche-push-up",
-      "tuck-planche"
-    ],
-    "aliases": [
-      "Planche Lean",
-      "planche lean"
-    ],
-    "yt": "Planche Lean form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "crow-pose",
-    "name": "Crow Pose",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "bodyweight"
-    ],
-    "muscles": [
-      "wrists",
-      "shoulders",
-      "core"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "wrist-pain",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "balance-demand",
-      "loaded-wrist-extension",
-      "skill"
-    ],
-    "alternatives": [
-      "frog-stand",
-      "planche-lean"
-    ],
-    "regressions": [
-      "frog-stand"
-    ],
-    "progressions": [
-      "tuck-planche"
-    ],
-    "aliases": [
-      "Crow Pose",
-      "crow pose"
-    ],
-    "yt": "Crow Pose form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "movement-calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 3,
-    "skillDemand": 4,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "farmer-carry",
-    "name": "Farmer Carry",
-    "family": "carry",
-    "movement": "carry",
-    "equipment": [
-      "dumbbells",
-      "kettlebell"
-    ],
-    "muscles": [
-      "grip",
-      "traps",
-      "core"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "carry"
-    ],
-    "alternatives": [
-      "suitcase-carry",
-      "marching-carry"
-    ],
-    "regressions": [
-      "suitcase-carry"
-    ],
-    "progressions": [
-      "heavy-farmer-carry"
-    ],
-    "aliases": [
-      "Farmer Carry",
-      "farmer carry"
-    ],
-    "yt": "Farmer Carry form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "hybrid",
-      "conditioning"
-    ],
-    "styleBias": [
-      "hybrid-athlete",
-      "fat-loss-conditioning"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "suitcase-carry",
-    "name": "Suitcase Carry",
-    "family": "carry",
-    "movement": "carry",
-    "equipment": [
-      "dumbbells",
-      "kettlebell"
-    ],
-    "muscles": [
-      "core",
-      "grip",
-      "obliques"
-    ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-sensitivity",
-      "shoulder-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "carry",
-      "anti-rotation"
-    ],
-    "alternatives": [
-      "pallof-press",
-      "side-plank"
-    ],
-    "regressions": [
-      "side-plank"
-    ],
-    "progressions": [
-      "heavy-suitcase-carry"
-    ],
-    "aliases": [
-      "Suitcase Carry",
-      "suitcase carry"
-    ],
-    "yt": "Suitcase Carry form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab",
-      "hybrid"
-    ],
-    "styleBias": [
-      "joint-longevity"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "band-curl",
-    "name": "Band Curl",
-    "family": "arms",
-    "movement": "arms",
-    "equipment": [
-      "bands"
-    ],
-    "muscles": [
-      "biceps"
-    ],
-    "difficulty": [
-      "beginner",
-      "rebuild"
-    ],
-    "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "banded-light"
-    ],
-    "alternatives": [
-      "hammer-curl",
-      "alternating-dumbbell-curl"
-    ],
-    "regressions": [
-      "isometric-curl-hold"
-    ],
-    "progressions": [
-      "hammer-curl"
-    ],
-    "aliases": [
-      "Band Curl",
-      "band curl"
-    ],
-    "yt": "Band Curl form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
+      "reformer",
+      "pilates-mobility",
       "rebuild-recovery"
     ],
     "jointStress": 1,
-    "fatigueCost": 1,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Sit tall, reach long, breathe into the side body.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "elephant-pike-stretch",
+    "name": "Elephant / Box Pike Stretch",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw",
+      "bench"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility"
+    ],
+    "purposes": [
+      "mobility",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "hamstring-pain"
+    ],
+    "tags": [
+      "mobility-gentle",
+      "posterior-chain"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Elephant / Box Pike Stretch",
+      "elephant pike stretch"
+    ],
+    "yt": "Elephant / Box Pike Stretch form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "pilates",
+      "mobility"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Hips high, gently pulse heels, do not force range.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "mobility-lower",
+    "name": "Lower Body Mobility Flow",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics",
+      "circuits",
+      "reformer",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "mobility",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom",
+      "clicky-knees-painful"
+    ],
+    "tags": [
+      "mobility-gentle",
+      "reduced-range"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Lower Body Mobility Flow",
+      "mobility lower"
+    ],
+    "yt": "Lower Body Mobility Flow form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "mobility",
+      "rehab"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics",
+      "circuits",
+      "reformer",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "stretch-reset",
+    "name": "Daily Stretch Reset",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics",
+      "circuits",
+      "reformer"
+    ],
+    "purposes": [
+      "stretching",
+      "recovery",
+      "mobility"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "mobility-gentle",
+      "low-cognitive-load"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Daily Stretch Reset",
+      "stretch reset"
+    ],
+    "yt": "Daily Stretch Reset form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "mobility",
+      "recovery"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics",
+      "circuits",
+      "reformer"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "physio-lower",
+    "name": "Lower Body Recovery Block",
+    "family": "rehab-return",
+    "movement": "rehab-return",
+    "equipment": [
+      "bw",
+      "band"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics",
+      "circuits",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "recovery",
+      "physio",
+      "legs"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom",
+      "clicky-knees-painful",
+      "patellar-tendon-pain"
+    ],
+    "tags": [
+      "reduced-range",
+      "glute-dominant",
+      "isometric",
+      "mobility-gentle"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Lower Body Recovery Block",
+      "physio lower"
+    ],
+    "yt": "Lower Body Recovery Block form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "physio"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics",
+      "circuits",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "hammer-curl",
@@ -6228,35 +4244,33 @@ window.FFFExerciseDB = (function () {
     "family": "arms",
     "movement": "arms",
     "equipment": [
-      "dumbbells"
+      "db"
     ],
-    "muscles": [
-      "biceps",
-      "brachialis",
-      "forearms"
+    "styles": [
+      "mixed",
+      "strength-hypertrophy"
     ],
+    "purposes": [
+      "arms"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain",
-      "elbow-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "neutral-grip"
+      "neutral-grip",
+      "hammer-grip"
     ],
     "alternatives": [
-      "band-curl",
-      "alternating-dumbbell-curl"
-    ],
-    "regressions": [
       "band-curl"
     ],
-    "progressions": [
-      "cross-body-hammer-curl"
-    ],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Hammer Curl",
       "hammer curl"
@@ -6264,77 +4278,269 @@ window.FFFExerciseDB = (function () {
     "yt": "Hammer Curl form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "weights",
-      "hypertrophy"
+      "weights"
     ],
     "styleBias": [
+      "mixed",
       "strength-hypertrophy"
     ],
     "jointStress": 2,
     "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "pelican-curl-regression",
-    "name": "Pelican Curl Regression",
+    "key": "band-curl",
+    "name": "Band Curl",
     "family": "arms",
     "movement": "arms",
     "equipment": [
-      "rings"
+      "band"
     ],
-    "muscles": [
-      "biceps",
-      "forearms",
-      "shoulders"
+    "styles": [
+      "mixed",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "arms",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "advanced"
+      "beginner",
+      "intermediate"
     ],
     "cautionIf": [
-      "biceps-tendon-pain",
-      "shoulder-pain",
-      "elbow-pain"
+      "tennis-elbow",
+      "outer-biceps-left-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "pelican-curl",
-      "heavy-curl",
-      "advanced"
+      "banded-light",
+      "reduced-grip"
     ],
-    "alternatives": [
-      "band-curl",
-      "ring-row"
-    ],
-    "regressions": [
-      "band-curl"
-    ],
-    "progressions": [
-      "pelican-curl"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Pelican Curl Regression",
-      "pelican curl regression"
+      "Band Curl",
+      "band curl"
     ],
-    "yt": "Pelican Curl Regression form",
+    "yt": "Band Curl form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "weights"
+    ],
+    "styleBias": [
+      "mixed",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "wrist-extensor-eccentric",
+    "name": "Wrist Extensor Eccentric",
+    "family": "rehab-return",
+    "movement": "rehab-return",
+    "equipment": [
+      "db",
+      "band"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "recovery",
+      "physio"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow"
+    ],
+    "tags": [
+      "eccentric-wrist-extensor",
+      "tendon-loading",
+      "banded-light"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Wrist Extensor Eccentric",
+      "wrist extensor eccentric"
+    ],
+    "yt": "Wrist Extensor Eccentric form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "physio"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Assist up, slowly lower through comfortable range.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "isometric-grip-light",
+    "name": "Light Grip Isometric",
+    "family": "rehab-return",
+    "movement": "rehab-return",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "recovery",
+      "physio"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "golfers-elbow"
+    ],
+    "tags": [
+      "isometric",
+      "reduced-grip",
+      "tendon-loading"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Light Grip Isometric",
+      "isometric grip light"
+    ],
+    "yt": "Light Grip Isometric form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "physio"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "ring-dip",
+    "name": "Ring Dip",
+    "family": "calisthenics-skill",
+    "movement": "calisthenics-skill",
+    "equipment": [
+      "rings"
+    ],
+    "styles": [
+      "calisthenics"
+    ],
+    "purposes": [
+      "push",
+      "skill"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "tennis-elbow"
+    ],
+    "tags": [
+      "dip-deep",
+      "unstable",
+      "advanced"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "ring-support-hold"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Ring Dip",
+      "ring dip"
+    ],
+    "yt": "Ring Dip form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
@@ -6342,151 +4548,348 @@ window.FFFExerciseDB = (function () {
       "skill"
     ],
     "styleBias": [
-      "movement-calisthenics"
+      "calisthenics"
     ],
     "jointStress": 5,
-    "fatigueCost": 4,
+    "fatigueCost": 5,
     "skillDemand": 5,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "band-pushdown",
-    "name": "Band Pushdown",
-    "family": "arms",
-    "movement": "arms",
+    "key": "ring-support-hold",
+    "name": "Ring Support Hold",
+    "family": "calisthenics-skill",
+    "movement": "calisthenics-skill",
     "equipment": [
-      "bands"
+      "rings"
     ],
-    "muscles": [
-      "triceps"
+    "styles": [
+      "calisthenics"
     ],
+    "purposes": [
+      "push",
+      "skill"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "elbow-pain"
+      "shoulder-impingement",
+      "wrist-pain"
     ],
-    "avoidIf": [],
     "tags": [
-      "banded-light"
+      "support-hold",
+      "skill"
     ],
-    "alternatives": [
-      "close-grip-push-up",
-      "overhead-band-extension"
-    ],
-    "regressions": [
-      "light-band-pushdown"
-    ],
-    "progressions": [
-      "close-grip-push-up"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Band Pushdown",
-      "band pushdown"
+      "Ring Support Hold",
+      "ring support hold"
     ],
-    "yt": "Band Pushdown form",
+    "yt": "Ring Support Hold form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "weights",
-      "rehab"
+      "calisthenics",
+      "skill"
     ],
     "styleBias": [
-      "strength-hypertrophy"
+      "calisthenics"
     ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 3,
+    "fatigueCost": 2,
+    "skillDemand": 4,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "walk",
-    "name": "Walk",
+    "key": "hollow-hold",
+    "name": "Hollow Hold",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "calisthenics"
+    ],
+    "purposes": [
+      "core",
+      "skill"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "hollow-body",
+      "skill-transfer",
+      "anti-extension"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "dead-bug"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Hollow Hold",
+      "hollow hold"
+    ],
+    "yt": "Hollow Hold form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "skill"
+    ],
+    "styleBias": [
+      "calisthenics"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "l-sit-tuck",
+    "name": "Tuck L-Sit",
+    "family": "calisthenics-skill",
+    "movement": "calisthenics-skill",
+    "equipment": [
+      "bw",
+      "rings"
+    ],
+    "styles": [
+      "calisthenics"
+    ],
+    "purposes": [
+      "core",
+      "skill"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-flexor-tendon-pain",
+      "wrist-pain"
+    ],
+    "tags": [
+      "l-sit",
+      "support-hold",
+      "skill"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "hollow-hold"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Tuck L-Sit",
+      "l sit tuck"
+    ],
+    "yt": "Tuck L-Sit form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "skill"
+    ],
+    "styleBias": [
+      "calisthenics"
+    ],
+    "jointStress": 4,
+    "fatigueCost": 2,
+    "skillDemand": 4,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "amrap20-triplet",
+    "name": "Triplet \u2014 AMRAP 20",
     "family": "conditioning",
     "movement": "conditioning",
     "equipment": [
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "cardio",
-      "recovery"
+    "styles": [
+      "mixed",
+      "circuits"
     ],
+    "purposes": [
+      "conditioning"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild",
-      "all"
+      "intermediate"
     ],
-    "cautionIf": [],
-    "avoidIf": [],
+    "cautionIf": [
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
+    ],
     "tags": [
-      "low-impact",
-      "simple"
+      "circuit",
+      "amrap",
+      "conditioning"
     ],
     "alternatives": [
-      "zone-2-bike",
-      "marching-in-place"
+      "low-impact-circuit"
     ],
-    "regressions": [
-      "short-walk"
-    ],
-    "progressions": [
-      "longer-walk"
-    ],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Walk",
-      "walk"
+      "Triplet \u2014 AMRAP 20",
+      "amrap20 triplet"
     ],
-    "yt": "Walk form",
+    "yt": "Triplet \u2014 AMRAP 20 form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "conditioning",
-      "recovery"
+      "circuit"
     ],
     "styleBias": [
-      "joint-longevity",
-      "low-overwhelm"
+      "mixed",
+      "circuits"
     ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 2,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "emom30-triplet",
+    "name": "Triplet \u2014 EMOM 30",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "circuits"
+    ],
+    "purposes": [
+      "conditioning"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "circuit",
+      "emom",
+      "conditioning"
+    ],
+    "alternatives": [
+      "low-impact-circuit"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Triplet \u2014 EMOM 30",
+      "emom30 triplet"
+    ],
+    "yt": "Triplet \u2014 EMOM 30 form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "conditioning",
+      "circuit"
+    ],
+    "styleBias": [
+      "mixed",
+      "circuits"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "low-impact-circuit",
@@ -6494,37 +4897,33 @@ window.FFFExerciseDB = (function () {
     "family": "conditioning",
     "movement": "conditioning",
     "equipment": [
-      "bodyweight",
-      "dumbbells",
-      "bands"
+      "bw",
+      "db",
+      "band"
     ],
-    "muscles": [
-      "cardio",
-      "full-body"
+    "styles": [
+      "mixed",
+      "circuits",
+      "rebuild-recovery"
     ],
+    "purposes": [
+      "conditioning",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild"
+      "intermediate"
     ],
-    "cautionIf": [
-      "knee-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
+    "cautionIf": [],
     "tags": [
       "low-impact",
-      "simple"
+      "simple",
+      "circuit"
     ],
-    "alternatives": [
-      "walk",
-      "zone-2-bike"
-    ],
-    "regressions": [
-      "walk"
-    ],
-    "progressions": [
-      "density-circuit"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Low-impact Conditioning Circuit",
       "low impact circuit"
@@ -6532,243 +4931,165 @@ window.FFFExerciseDB = (function () {
     "yt": "Low-impact Conditioning Circuit form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "conditioning",
-      "circuit",
       "rehab"
     ],
     "styleBias": [
-      "fat-loss-conditioning",
-      "low-overwhelm"
+      "mixed",
+      "circuits",
+      "rebuild-recovery"
     ],
     "jointStress": 2,
     "fatigueCost": 3,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "emom-triplet",
-    "name": "EMOM Triplet",
+    "key": "ladder-standard",
+    "name": "Ladder Challenge",
     "family": "conditioning",
     "movement": "conditioning",
     "equipment": [
-      "bodyweight",
-      "dumbbells",
-      "bands"
+      "bw"
     ],
-    "muscles": [
-      "full-body",
-      "cardio"
+    "styles": [
+      "mixed",
+      "circuits",
+      "calisthenics"
     ],
+    "purposes": [
+      "challenge",
+      "conditioning"
+    ],
+    "muscles": [],
     "difficulty": [
+      "beginner",
       "intermediate"
     ],
     "cautionIf": [
-      "knee-pain",
-      "shoulder-pain",
-      "low-back-sensitivity"
+      "clicky-knees-painful",
+      "shoulder-impingement"
     ],
-    "avoidIf": [],
     "tags": [
+      "ladder",
       "circuit",
-      "emom",
-      "conditioning"
+      "challenge"
     ],
-    "alternatives": [
-      "low-impact-circuit",
-      "density-circuit"
-    ],
-    "regressions": [
-      "low-impact-circuit"
-    ],
-    "progressions": [
-      "advanced-emom"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "EMOM Triplet",
-      "emom triplet"
+      "Ladder Challenge",
+      "ladder standard"
     ],
-    "yt": "EMOM Triplet form",
+    "yt": "Ladder Challenge form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
       "conditioning",
-      "circuit",
-      "hybrid"
+      "calisthenics"
     ],
     "styleBias": [
-      "fat-loss-conditioning",
-      "hybrid-athlete"
+      "mixed",
+      "circuits",
+      "calisthenics"
     ],
     "jointStress": 3,
     "fatigueCost": 4,
     "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
     "recoveryFriendliness": 3,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "amrap-triplet",
-    "name": "AMRAP Triplet",
+    "key": "walk",
+    "name": "Walk",
     "family": "conditioning",
     "movement": "conditioning",
     "equipment": [
-      "bodyweight",
-      "dumbbells",
-      "bands"
+      "bw"
     ],
-    "muscles": [
-      "full-body",
-      "cardio"
+    "styles": [
+      "mixed",
+      "joint-longevity",
+      "low-overwhelm"
     ],
-    "difficulty": [
-      "intermediate"
-    ],
-    "cautionIf": [
-      "knee-pain",
-      "shoulder-pain",
-      "low-back-sensitivity"
-    ],
-    "avoidIf": [],
-    "tags": [
-      "circuit",
-      "amrap",
-      "conditioning"
-    ],
-    "alternatives": [
-      "low-impact-circuit",
-      "density-circuit"
-    ],
-    "regressions": [
-      "low-impact-circuit"
-    ],
-    "progressions": [
-      "advanced-amrap"
-    ],
-    "aliases": [
-      "AMRAP Triplet",
-      "amrap triplet"
-    ],
-    "yt": "AMRAP Triplet form",
-    "phaseUse": [
-      "cut",
-      "recomp",
-      "maintain",
-      "build"
-    ],
-    "domains": [
+    "purposes": [
       "conditioning",
-      "circuit",
-      "hybrid"
+      "recovery"
     ],
-    "styleBias": [
-      "fat-loss-conditioning",
-      "hybrid-athlete"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 4,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
-  },
-  {
-    "key": "skipping",
-    "name": "Skipping / Jump Rope",
-    "family": "conditioning",
-    "movement": "conditioning",
-    "equipment": [
-      "rope"
-    ],
-    "muscles": [
-      "cardio",
-      "calves"
-    ],
+    "muscles": [],
     "difficulty": [
+      "beginner",
       "intermediate"
     ],
-    "cautionIf": [
-      "knee-pain",
-      "ankle-instability",
-      "achilles-calf-sensitivity"
-    ],
-    "avoidIf": [],
+    "cautionIf": [],
     "tags": [
-      "jumping",
-      "high-impact"
+      "low-impact",
+      "simple",
+      "recovery"
     ],
-    "alternatives": [
-      "walk",
-      "zone-2-bike",
-      "low-impact-circuit"
-    ],
-    "regressions": [
-      "marching-in-place"
-    ],
-    "progressions": [
-      "interval-skipping"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Skipping / Jump Rope",
-      "skipping"
+      "Walk",
+      "walk"
     ],
-    "yt": "Skipping / Jump Rope form",
+    "yt": "Walk form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "conditioning"
+      "endurance",
+      "recovery"
     ],
     "styleBias": [
-      "fat-loss-conditioning"
+      "mixed",
+      "joint-longevity",
+      "low-overwhelm"
     ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 2,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
+    "jointStress": 1,
+    "fatigueCost": 1,
+    "skillDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
     "key": "tai-chi-walk",
@@ -6776,38 +5097,34 @@ window.FFFExerciseDB = (function () {
     "family": "movement-restoration",
     "movement": "movement-restoration",
     "equipment": [
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "balance",
+    "styles": [
+      "mixed",
+      "joint-longevity",
+      "low-overwhelm"
+    ],
+    "purposes": [
       "mobility",
       "recovery"
     ],
+    "muscles": [],
     "difficulty": [
       "beginner",
-      "rebuild",
-      "all"
+      "intermediate"
     ],
     "cautionIf": [
-      "ankle-instability",
-      "knee-pain"
+      "clicky-knees-painful",
+      "hip-tendon-pain-reduced-rom"
     ],
-    "avoidIf": [],
     "tags": [
       "low-impact",
       "balance-regression",
       "recovery"
     ],
-    "alternatives": [
-      "walk",
-      "mobility-reset"
-    ],
-    "regressions": [
-      "marching-in-place"
-    ],
-    "progressions": [
-      "walk"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
       "Tai Chi Walk",
       "tai chi walk"
@@ -6815,174 +5132,234 @@ window.FFFExerciseDB = (function () {
     "yt": "Tai Chi Walk form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "rehab",
-      "longevity"
+      "mobility",
+      "recovery"
     ],
     "styleBias": [
+      "mixed",
       "joint-longevity",
       "low-overwhelm"
     ],
     "jointStress": 1,
     "fatigueCost": 1,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 5,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   },
   {
-    "key": "chair-yoga-flow",
-    "name": "Chair Yoga Flow",
-    "family": "movement-restoration",
-    "movement": "movement-restoration",
+    "key": "reformer-foundation",
+    "name": "Reformer Foundation Session",
+    "family": "pilates-core",
+    "movement": "pilates-core",
     "equipment": [
-      "chair",
-      "bodyweight"
+      "bw"
     ],
-    "muscles": [
-      "mobility",
-      "breathing"
+    "styles": [
+      "reformer",
+      "pilates-mobility"
     ],
+    "purposes": [
+      "full",
+      "core",
+      "recovery"
+    ],
+    "muscles": [],
     "difficulty": [
-      "rebuild",
-      "beginner"
+      "beginner",
+      "intermediate"
     ],
-    "cautionIf": [
-      "older-adult"
-    ],
-    "avoidIf": [],
+    "cautionIf": [],
     "tags": [
-      "chair-friendly",
-      "low-impact",
-      "simple"
+      "pilates",
+      "pelvic-control",
+      "controlled-load"
     ],
-    "alternatives": [
-      "mobility-reset",
-      "seated-march"
-    ],
-    "regressions": [
-      "breathing-reset"
-    ],
-    "progressions": [
-      "tai-chi-walk"
-    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
     "aliases": [
-      "Chair Yoga Flow",
-      "chair yoga flow"
+      "Reformer Foundation Session",
+      "reformer foundation"
     ],
-    "yt": "Chair Yoga Flow form",
+    "yt": "Reformer Foundation Session form",
     "phaseUse": [
       "cut",
-      "recomp",
+      "transform",
       "maintain",
+      "bulk",
+      "recomp",
       "build"
     ],
     "domains": [
-      "pilates",
-      "mobility",
-      "rehab"
+      "reformer",
+      "pilates"
     ],
     "styleBias": [
-      "joint-longevity",
-      "rebuild-recovery"
+      "reformer",
+      "pilates-mobility"
     ],
-    "jointStress": 1,
-    "fatigueCost": 1,
+    "jointStress": 2,
+    "fatigueCost": 2,
     "skillDemand": 1,
-    "coordinationDemand": 1,
-    "balanceDemand": 1,
     "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
+    "recoveryFriendliness": 4,
     "movementQuality": 3,
-    "defaultRx": "3 sets, controlled reps",
+    "defaultRx": "3 sets of controlled reps",
     "tempo": "controlled",
     "rest": "60-120 sec",
-    "coachingCue": "Keep the movement controlled and pain-free.",
-    "source": "fff-exercise-db-v4"
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "reformer-core",
+    "name": "Reformer Core Session",
+    "family": "pilates-core",
+    "movement": "pilates-core",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility"
+    ],
+    "purposes": [
+      "core"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-flexor-tendon-pain",
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "pilates",
+      "core-bracing",
+      "pelvic-control"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Reformer Core Session",
+      "reformer core"
+    ],
+    "yt": "Reformer Core Session form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "reformer",
+      "pilates"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
   }
 ];
   const PROGRESSION_TREES = {
   "push-up": [
     "wall-push-up",
-    "knee-push-up",
     "incline-push-up",
-    "push-up",
-    "tempo-push-up",
-    "ring-push-up",
+    "pushup",
+    "ringpush",
     "pseudo-planche-push-up"
   ],
   "pull-up": [
-    "band-lat-pulldown",
+    "bandrow",
     "scapular-pull-up",
     "assisted-pull-up",
-    "pull-up",
-    "weighted-pull-up"
+    "pull-up"
   ],
-  "handstand": [
-    "wall-slide",
-    "pike-push-up",
-    "wall-walk",
-    "chest-to-wall-handstand",
-    "freestanding-handstand-drill"
+  "tennis-elbow-rebuild": [
+    "isometric-grip-light",
+    "wrist-extensor-eccentric",
+    "bandrow",
+    "chest-supported-row",
+    "ringrow"
   ],
-  "l-sit": [
-    "dead-bug",
-    "hollow-tuck-hold",
-    "l-sit-tuck"
+  "outer-biceps-left-rebuild": [
+    "bandrow",
+    "hammer-curl",
+    "chest-supported-row",
+    "assisted-pull-up",
+    "pull-up"
   ],
-  "front-lever": [
-    "scapular-pull-up",
-    "ring-row",
-    "tuck-front-lever-hold"
-  ],
-  "planche": [
-    "scapular-push-up",
-    "crow-pose",
-    "planche-lean",
-    "pseudo-planche-push-up"
-  ],
-  "single-leg-stability": [
-    "sit-to-stand",
+  "hip-tendon-rebuild": [
+    "hip-flexor-isometric",
+    "glute-bridge",
+    "mat-leg-circles",
     "step-up-low",
     "supported-split-squat",
-    "bulgarian-split-squat",
-    "shrimp-squat-regression"
+    "stepup"
+  ],
+  "clicky-knee-control": [
+    "sit-to-stand",
+    "wall-sit",
+    "box-squat",
+    "step-up-low",
+    "spanish-squat-hold",
+    "goblet-squat"
+  ],
+  "low-back-rebuild": [
+    "dead-bug",
+    "bird-dog",
+    "sidepl",
+    "glute-bridge",
+    "dumbbell-rdl"
   ],
   "pilates-core": [
     "breathing-reset",
     "posterior-pelvic-tilt-drill",
     "dead-bug",
     "pilates-hundred-prep",
-    "pilates-roll-down"
+    "pelvic-curl"
+  ],
+  "calisthenics-core": [
+    "dead-bug",
+    "hollow-hold",
+    "l-sit-tuck"
   ]
 };
 
-  function normalise(str) {
-    return String(str || '').toLowerCase().replace(/[–—−]/g, '-').replace(/&/g, 'and').replace(/[^a-z0-9+\- ]+/g, ' ').replace(/\s+/g, ' ').trim();
-  }
-  function slug(str) { return normalise(str).replace(/\s+/g, '-'); }
+  function normalise(str) { return String(str || '').toLowerCase().replace(/[–—−]/g,'-').replace(/&/g,'and').replace(/[^a-z0-9+\- ]+/g,' ').replace(/\s+/g,' ').trim(); }
+  function slug(str) { return normalise(str).replace(/\s+/g,'-'); }
   function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
   function safeArray(v) { return Array.isArray(v) ? v : []; }
-  function unique(arr) {
-    const seen = {}, out = [];
-    (arr || []).forEach(v => { const k = normalise(v); if(k && !seen[k]){seen[k]=true; out.push(v);} });
-    return out;
-  }
-  function hasAny(arr, values) {
-    arr = arr || []; values = values || [];
-    return values.some(v => arr.indexOf(v) > -1);
-  }
+  function unique(arr) { const seen={}, out=[]; (arr||[]).forEach(v=>{const k=normalise(v); if(k&&!seen[k]){seen[k]=true; out.push(v);}}); return out; }
+  function hasAny(arr, vals) { arr=arr||[]; vals=vals||[]; return vals.some(v=>arr.indexOf(v)>-1); }
 
   const BY_KEY = {};
   const BY_NAME = {};
@@ -6996,354 +5373,90 @@ window.FFFExerciseDB = (function () {
 
   function findExercise(nameOrKey) {
     if(!nameOrKey) return null;
-    const directKey = slug(nameOrKey);
-    if(BY_KEY[directKey]) return clone(BY_KEY[directKey]);
+    const direct = BY_KEY[slug(nameOrKey)];
+    if(direct) return clone(direct);
     const exact = BY_NAME[normalise(nameOrKey)];
     if(exact) return clone(exact);
-    const n = normalise(nameOrKey);
-    let best = null, bestScore = 0;
+    const n = normalise(nameOrKey); let best=null, score=0;
     EXERCISES.forEach(ex => {
-      let score = 0;
-      if(normalise(ex.name).indexOf(n) > -1 || n.indexOf(normalise(ex.name)) > -1) score += 4;
-      (ex.aliases || []).forEach(a => {
-        if(normalise(a).indexOf(n) > -1 || n.indexOf(normalise(a)) > -1) score += 2;
-      });
-      if(score > bestScore) { best = ex; bestScore = score; }
+      let s=0;
+      if(normalise(ex.name).indexOf(n)>-1 || n.indexOf(normalise(ex.name))>-1) s+=4;
+      (ex.aliases||[]).forEach(a=>{ if(normalise(a).indexOf(n)>-1 || n.indexOf(normalise(a))>-1) s+=2; });
+      if(s>score){best=ex; score=s;}
     });
     return best ? clone(best) : null;
   }
 
-  function labelForKey(key) {
-    const found = BY_KEY[key] || findExercise(key);
-    return found ? found.name : key;
-  }
+  function labelForKey(key) { const found = BY_KEY[key] || findExercise(key); return found ? found.name : key; }
 
-  function fallbackProfile(name) {
-    return {
-      name: name || 'Unknown Exercise',
-      key: slug(name),
-      family: 'general',
-      patterns: ['general'],
-      primaryJoints: ['general'],
-      tissues: ['general'],
-      riskZones: ['general'],
-      commonFailurePoints: ['load outpacing control', 'rushing reps', 'ignoring recovery context'],
-      regressions: [],
-      progressions: [],
-      alternatives: [],
-      aliases: [],
-      confidence: 'low'
-    };
-  }
+  function fallbackProfile(name) { return { name:name||'Unknown Exercise', key:slug(name), family:'general', patterns:['general'], primaryJoints:['general'], tissues:['general'], riskZones:['general'], commonFailurePoints:['load outpacing control','rushing reps','ignoring recovery context'], regressions:[], progressions:[], alternatives:[], aliases:[], confidence:'low' }; }
 
   function getExerciseProfile(name) {
-    const found = findExercise(name);
-    if(!found) return fallbackProfile(name);
-    const fam = familyByKey(found.family);
+    const ex = findExercise(name); if(!ex) return fallbackProfile(name);
+    const fam = familyByKey(ex.family);
     return {
-      name: found.name,
-      key: found.key,
-      family: found.family,
-      movement: found.movement || found.family,
-      patterns: fam ? fam.patterns.slice() : [found.family],
-      primaryJoints: fam ? fam.primaryJoints.slice() : [],
-      tissues: unique((fam ? fam.tissues : []).concat(found.muscles || [])),
-      riskZones: fam ? fam.riskZones.slice() : [],
-      commonFailurePoints: fam ? fam.commonFailurePoints.slice() : [],
-      regressions: (found.regressions || []).map(labelForKey),
-      progressions: (found.progressions || []).map(labelForKey),
-      alternatives: (found.alternatives || []).map(labelForKey),
-      equipment: (found.equipment || []).slice(),
-      muscles: (found.muscles || []).slice(),
-      cautionIf: (found.cautionIf || []).slice(),
-      tags: (found.tags || []).slice(),
-      aliases: (found.aliases || []).slice(),
-      phaseUse: (found.phaseUse || []).slice(),
-      domains: (found.domains || []).slice(),
-      styleBias: (found.styleBias || []).slice(),
-      jointStress: found.jointStress,
-      fatigueCost: found.fatigueCost,
-      skillDemand: found.skillDemand,
-      coordinationDemand: found.coordinationDemand,
-      balanceDemand: found.balanceDemand,
-      cognitiveLoad: found.cognitiveLoad,
-      recoveryFriendliness: found.recoveryFriendliness,
-      movementQuality: found.movementQuality,
-      yt: found.yt,
-      defaultRx: found.defaultRx,
-      tempo: found.tempo,
-      rest: found.rest,
-      coachingCue: found.coachingCue,
-      confidence: 'high'
+      name:ex.name, key:ex.key, family:ex.family, movement:ex.movement || ex.family,
+      patterns:fam ? fam.patterns.slice() : [ex.family], primaryJoints:fam ? fam.primaryJoints.slice() : [],
+      tissues:unique((fam ? fam.tissues : []).concat(ex.muscles || [])), riskZones:fam ? fam.riskZones.slice() : [],
+      commonFailurePoints:fam ? fam.commonFailurePoints.slice() : [],
+      regressions:(ex.regressions || []).map(labelForKey), progressions:(ex.progressions || []).map(labelForKey), alternatives:(ex.alternatives || []).map(labelForKey),
+      equipment:(ex.equipment || []).slice(), styles:(ex.styles || []).slice(), purposes:(ex.purposes || []).slice(), muscles:(ex.muscles || []).slice(), cautionIf:(ex.cautionIf || []).slice(), tags:(ex.tags || []).slice(), aliases:(ex.aliases || []).slice(), phaseUse:(ex.phaseUse || []).slice(), domains:(ex.domains || []).slice(), styleBias:(ex.styleBias || []).slice(),
+      jointStress:ex.jointStress, fatigueCost:ex.fatigueCost, skillDemand:ex.skillDemand, cognitiveLoad:ex.cognitiveLoad, recoveryFriendliness:ex.recoveryFriendliness, movementQuality:ex.movementQuality, yt:ex.yt, defaultRx:ex.defaultRx, tempo:ex.tempo, rest:ex.rest, coachingCue:ex.coachingCue, confidence:'high'
     };
   }
 
-  function getFamilySummary(name) {
-    const p = getExerciseProfile(name);
-    return {
-      family: p.family,
-      patterns: p.patterns,
-      riskZones: p.riskZones,
-      likelySwapTargets: p.regressions.concat(p.alternatives),
-      likelyProgressions: p.progressions
-    };
-  }
+  function getFamilySummary(name) { const p=getExerciseProfile(name); return { family:p.family, patterns:p.patterns, riskZones:p.riskZones, likelySwapTargets:p.regressions.concat(p.alternatives), likelyProgressions:p.progressions }; }
+  function areRelatedExercises(a,b) { const pa=getExerciseProfile(a), pb=getExerciseProfile(b); return !!(pa&&pb&&(pa.family===pb.family || pa.patterns.some(p=>pb.patterns.indexOf(p)>-1))); }
+  function analyseGroup(names) { const profiles=(Array.isArray(names)?names:[]).map(getExerciseProfile); return { count:profiles.length, families:unique(profiles.map(p=>p.family)), riskZones:unique([].concat.apply([], profiles.map(p=>p.riskZones||[]))), tissues:unique([].concat.apply([], profiles.map(p=>p.tissues||[]))) }; }
 
-  function areRelatedExercises(a,b) {
-    const pa = getExerciseProfile(a), pb = getExerciseProfile(b);
-    if(!pa || !pb) return false;
-    if(pa.family === pb.family) return true;
-    return pa.patterns.some(p => pb.patterns.indexOf(p) > -1);
-  }
-
-  function analyseGroup(exerciseNames) {
-    const arr = Array.isArray(exerciseNames) ? exerciseNames : [];
-    const profiles = arr.map(getExerciseProfile);
-    return {
-      count: profiles.length,
-      families: unique(profiles.map(p => p.family)),
-      riskZones: unique([].concat.apply([], profiles.map(p => p.riskZones || []))),
-      tissues: unique([].concat.apply([], profiles.map(p => p.tissues || [])))
-    };
-  }
-
-  function contextStyle(context) {
-    const style = slug((context || {}).trainingStyle || (context || {}).stylePreference || (context || {}).style || '');
-    return STYLE_PROFILES[style] ? style : '';
-  }
+  function contextStyle(context) { const s=slug((context||{}).trainingStyle || (context||{}).stylePreference || (context||{}).style || ''); return STYLE_PROFILES[s] ? s : ''; }
 
   function scoreExerciseForContext(exercise, context) {
-    exercise = typeof exercise === 'string' ? findExercise(exercise) : exercise;
-    if(!exercise) return -999;
-    context = context || {};
-    const injuries = safeArray(context.injuries || []).map(slug);
-    const equipment = safeArray(context.equipment || []).map(slug);
-    const phase = normalise(context.phase || context.goal || '');
-    const painLevel = Number(context.painLevel || context.maxPain || 0);
-    const level = normalise(context.level || context.experience || '');
-    const styleKey = contextStyle(context);
-    const style = styleKey ? STYLE_PROFILES[styleKey] : null;
-    const recovery = normalise(context.recovery || context.readiness || '');
-    let score = 0;
-
-    if(!equipment.length) score += 1;
-    else if((exercise.equipment || []).indexOf('bodyweight') > -1 || (exercise.equipment || []).some(e => equipment.indexOf(slug(e)) > -1)) score += 5;
-    else score -= 8;
-
-    if(style) {
-      if(style.preferFamilies.indexOf(exercise.family) > -1) score += 4;
-      if(hasAny(exercise.domains || [], style.preferDomains || [])) score += 4;
-      if((exercise.styleBias || []).indexOf(styleKey) > -1) score += 5;
-    }
-
-    if(level && (exercise.difficulty || []).indexOf(level) > -1) score += 2;
-    if(level === 'beginner' && (exercise.difficulty || []).indexOf('advanced') > -1) score -= 8;
-    if(level === 'rebuild' && exercise.jointStress >= 4) score -= 8;
-
-    if(phase.indexOf('cut') > -1 || phase.indexOf('recomp') > -1) {
-      if((exercise.tags || []).indexOf('tempo-control') > -1 || (exercise.tags || []).indexOf('supported') > -1 || (exercise.tags || []).indexOf('simple') > -1) score += 1;
-      if(exercise.fatigueCost >= 5) score -= 2;
-      if((exercise.tags || []).indexOf('max-effort') > -1) score -= 5;
-    }
-
-    if(phase.indexOf('build') > -1 || phase.indexOf('hypertrophy') > -1 || phase.indexOf('bulk') > -1) {
-      if((exercise.domains || []).indexOf('strength') > -1 || (exercise.domains || []).indexOf('hypertrophy') > -1) score += 2;
-      if((exercise.tags || []).indexOf('recovery') > -1) score -= 1;
-    }
-
-    if(recovery === 'poor' || recovery === 'low' || recovery === 'fragile') {
-      score += exercise.recoveryFriendliness || 0;
-      score -= exercise.fatigueCost || 0;
-      if((exercise.tags || []).indexOf('recovery') > -1 || (exercise.tags || []).indexOf('simple') > -1) score += 3;
-    }
-
-    injuries.forEach(injury => {
-      const rule = INJURY_RULES[injury];
-      if(!rule) return;
-      if((exercise.cautionIf || []).indexOf(injury) > -1) score -= painLevel >= 3 ? 9 : 4;
-      if(hasAny(exercise.tags || [], rule.avoidPatterns || [])) score -= painLevel >= 3 ? 12 : 5;
-      if(hasAny(exercise.tags || [], rule.preferPatterns || [])) score += 7;
-      if((rule.cautionPatterns || []).indexOf(exercise.family) > -1) score -= painLevel >= 3 ? 6 : 2;
-    });
-
-    if((exercise.tags || []).indexOf('unilateral') > -1 && injuries.indexOf('left-right-imbalance') > -1) score += 7;
-    if((exercise.tags || []).indexOf('left-first') > -1 && injuries.indexOf('left-right-imbalance') > -1) score += 3;
-    if((exercise.tags || []).indexOf('chair-friendly') > -1 && injuries.indexOf('older-adult') > -1) score += 6;
-    if((exercise.tags || []).indexOf('low-impact') > -1 && (injuries.indexOf('knee-pain') > -1 || injuries.indexOf('ankle-instability') > -1)) score += 4;
-    if(context.lowOverwhelm || styleKey === 'low-overwhelm') score -= exercise.cognitiveLoad || 0;
+    exercise = typeof exercise === 'string' ? findExercise(exercise) : exercise; if(!exercise) return -999; context=context||{};
+    const injuries=safeArray(context.injuries||[]).map(slug);
+    const equipment=safeArray(context.equipment||[]).map(slug);
+    const styleKey=contextStyle(context); const style=styleKey ? STYLE_PROFILES[styleKey] : null;
+    const phase=normalise(context.phase || context.goal || ''); const level=normalise(context.level || context.experience || '');
+    const painLevel=Number(context.painLevel || context.maxPain || 0); const recovery=normalise(context.recovery || context.readiness || '');
+    let score=0;
+    if(!equipment.length) score+=1; else if((exercise.equipment||[]).indexOf('bw')>-1 || (exercise.equipment||[]).indexOf('bodyweight')>-1 || (exercise.equipment||[]).some(e=>equipment.indexOf(slug(e))>-1)) score+=5; else score-=8;
+    if(style) { if(style.preferFamilies.indexOf(exercise.family)>-1) score+=4; if(hasAny(exercise.domains||[], style.preferDomains||[])) score+=4; if(hasAny(exercise.styles||[], [styleKey])) score+=4; }
+    if(level && (exercise.difficulty||[]).indexOf(level)>-1) score+=2; if(level==='beginner' && (exercise.difficulty||[]).indexOf('advanced')>-1) score-=8; if(level==='rebuild' && exercise.jointStress>=4) score-=8;
+    if(phase.indexOf('cut')>-1 || phase.indexOf('transform')>-1 || phase.indexOf('recomp')>-1) { if(hasAny(exercise.tags||[], ['tempo-control','supported','simple','low-impact'])) score+=2; if(exercise.fatigueCost>=5) score-=3; }
+    if(phase.indexOf('bulk')>-1 || phase.indexOf('build')>-1 || phase.indexOf('hypertrophy')>-1) { if(hasAny(exercise.domains||[], ['strength','hypertrophy','weights'])) score+=2; }
+    if(['poor','low','fragile','flare','overloaded'].indexOf(recovery)>-1) { score += exercise.recoveryFriendliness || 0; score -= exercise.fatigueCost || 0; if(hasAny(exercise.tags||[], ['recovery','simple','low-cognitive-load'])) score+=3; }
+    injuries.forEach(injury => { const rule=INJURY_RULES[injury]; if(!rule) return; if((exercise.cautionIf||[]).indexOf(injury)>-1) score -= painLevel>=3 ? 10 : 5; if(hasAny(exercise.tags||[], rule.avoidPatterns||[])) score -= painLevel>=3 ? 12 : 5; if(hasAny(exercise.tags||[], rule.preferPatterns||[])) score += 8; if((rule.cautionPatterns||[]).indexOf(exercise.family)>-1) score -= painLevel>=3 ? 5 : 2; });
+    if(context.lowOverwhelm || styleKey==='low-overwhelm') score -= exercise.cognitiveLoad || 0;
     return score;
   }
 
   function filterExercises(query) {
-    query = query || {};
-    let list = EXERCISES.slice();
-
-    if(query.family) {
-      const fams = Array.isArray(query.family) ? query.family : [query.family];
-      list = list.filter(ex => fams.indexOf(ex.family) > -1);
-    }
-
-    if(query.domain) {
-      const domains = Array.isArray(query.domain) ? query.domain : [query.domain];
-      list = list.filter(ex => hasAny(ex.domains || [], domains));
-    }
-
-    if(query.equipment && query.equipment.length) {
-      const eq = query.equipment.map(slug);
-      list = list.filter(ex => (ex.equipment || []).indexOf('bodyweight') > -1 || (ex.equipment || []).some(e => eq.indexOf(slug(e)) > -1));
-    }
-
-    if(query.difficulty) {
-      const difficulty = normalise(query.difficulty);
-      list = list.filter(ex => (ex.difficulty || []).indexOf(difficulty) > -1 || (ex.difficulty || []).indexOf('all') > -1);
-    }
-
-    list = list.map(ex => {
-      const scored = clone(ex);
-      scored.contextScore = scoreExerciseForContext(ex, query);
-      return scored;
-    });
-
-    if(query.injuries && query.injuries.length) list = list.filter(ex => ex.contextScore > -10);
-    list.sort((a,b) => b.contextScore - a.contextScore);
-    return clone(list);
+    query=query||{}; let list=EXERCISES.slice();
+    if(query.family) { const fams=Array.isArray(query.family)?query.family:[query.family]; list=list.filter(ex=>fams.indexOf(ex.family)>-1); }
+    if(query.purpose) { const ps=Array.isArray(query.purpose)?query.purpose:[query.purpose]; list=list.filter(ex=>hasAny(ex.purposes||[], ps)); }
+    if(query.style || query.trainingStyle) { const s=slug(query.style || query.trainingStyle); if(s && s!=='mixed') list=list.filter(ex=>hasAny(ex.styles||[], [s,'mixed'])); }
+    if(query.equipment && query.equipment.length) { const eq=query.equipment.map(slug); list=list.filter(ex=>(ex.equipment||[]).indexOf('bw')>-1 || (ex.equipment||[]).some(e=>eq.indexOf(slug(e))>-1)); }
+    list=list.map(ex=>{ const copy=clone(ex); copy.contextScore=scoreExerciseForContext(ex, query); return copy; });
+    if(query.injuries && query.injuries.length) list=list.filter(ex=>ex.contextScore>-12);
+    return clone(list.sort((a,b)=>b.contextScore-a.contextScore));
   }
 
   function suggestAlternatives(nameOrKey, context, limit) {
-    context = context || {};
-    limit = limit || 8;
-    const original = findExercise(nameOrKey);
-    if(!original) return [];
-    const directKeys = unique([].concat(original.regressions || [], original.alternatives || []));
-    const direct = directKeys.map(findExercise).filter(Boolean);
-    const sameFamily = EXERCISES.filter(ex => ex.family === original.family && ex.key !== original.key);
-    const keys = unique(direct.concat(sameFamily).map(x => x.key));
-    return keys.map(findExercise).filter(Boolean).map(ex => {
-      ex.contextScore = scoreExerciseForContext(ex, context);
-      return ex;
-    }).filter(ex => ex.contextScore > -12).sort((a,b) => b.contextScore - a.contextScore).slice(0, limit);
+    context=context||{}; limit=limit||8; const original=findExercise(nameOrKey); if(!original) return [];
+    const direct=(original.regressions||[]).concat(original.alternatives||[]).map(findExercise).filter(Boolean);
+    const same=EXERCISES.filter(ex=>ex.family===original.family && ex.key!==original.key);
+    const keys=unique(direct.concat(same).map(x=>x.key));
+    return keys.map(findExercise).filter(Boolean).map(ex=>{ex.contextScore=scoreExerciseForContext(ex, context); return ex;}).filter(ex=>ex.contextScore>-12).sort((a,b)=>b.contextScore-a.contextScore).slice(0,limit);
   }
 
-  function buildMovementMenu(context) {
-    context = context || {};
-    return FAMILY_DB.map(fam => ({
-      key: fam.key,
-      label: fam.label,
-      options: filterExercises(Object.assign({}, context, { family: fam.key })).slice(0,12)
-    }));
-  }
+  function buildMovementMenu(context) { return FAMILY_DB.map(fam=>({ key:fam.key, label:fam.label, options:filterExercises(Object.assign({}, context||{}, {family:fam.key})).slice(0,12) })); }
+  function getProgressionTree(key) { const k=slug(key); let tree=PROGRESSION_TREES[k]; if(!tree) { const holder=Object.keys(PROGRESSION_TREES).find(name=>PROGRESSION_TREES[name].indexOf(k)>-1); if(holder) tree=PROGRESSION_TREES[holder]; } return tree ? tree.map(findExercise).filter(Boolean) : []; }
+  function buildTemplate(context) { const styleKey=contextStyle(context||{})||'mixed'; const fams=(STYLE_PROFILES[styleKey]||STYLE_PROFILES.mixed).preferFamilies; return fams.slice(0,7).map(family=>{ const opts=filterExercises(Object.assign({}, context||{}, {family})).slice(0,5); const fam=familyByKey(family); return {family, label:fam?fam.label:family, recommended:opts[0]||null, alternatives:opts.slice(1)}; }); }
+  function buildHybridSession(context) { const template=buildTemplate(context); return { title:'FreeFitFuel Adaptive Session', style:contextStyle(context||{})||'mixed', items:template.map(t=>t.recommended).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,equipment:x.equipment,rx:x.defaultRx,cue:x.coachingCue,alternatives:suggestAlternatives(x.key,context,3).map(a=>a.name)})) }; }
+  function buildCircuit(context) { const fams=['conditioning','horizontal-push','horizontal-pull','squat','core-anti-extension']; return { title:'Adaptive Conditioning Circuit', format:'AMRAP or EMOM at recoverable pace', items:fams.map(f=>filterExercises(Object.assign({},context||{},{family:f}))[0]).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,rx:x.defaultRx,cue:x.coachingCue})) }; }
+  function getMyPlanLibrary() { return { version:'4.2', source:'fff-exercise-db', items:EXERCISES.map(ex=>({ key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[] })) }; }
+  function seedMyPlanCache() { try { localStorage.setItem('fff.library.cache.v1', JSON.stringify(getMyPlanLibrary())); return true; } catch(err) { return false; } }
+  function getLibraryStats() { const byFamily={}, byInjury={}; EXERCISES.forEach(ex=>{ byFamily[ex.family]=(byFamily[ex.family]||0)+1; (ex.cautionIf||[]).forEach(i=>byInjury[i]=(byInjury[i]||0)+1); }); return { totalExercises:EXERCISES.length, familyCount:FAMILY_DB.length, injuryProfiles:Object.keys(INJURY_RULES).length, styleProfiles:Object.keys(STYLE_PROFILES).length, progressionTrees:Object.keys(PROGRESSION_TREES).length, byFamily, byInjury }; }
 
-  function chooseTop(family, context, used) {
-    used = used || {};
-    const options = filterExercises(Object.assign({}, context, { family })).filter(x => !used[x.key]);
-    const top = options[0] || null;
-    if(top) used[top.key] = true;
-    return top;
-  }
-
-  function buildTemplate(context) {
-    context = context || {};
-    const styleKey = contextStyle(context);
-    let families;
-    if(styleKey && STYLE_PROFILES[styleKey]) families = STYLE_PROFILES[styleKey].preferFamilies.slice(0,7);
-    else families = ['horizontal-push','horizontal-pull','squat','hinge','core-anti-extension','conditioning'];
-    return families.map(family => {
-      const options = filterExercises(Object.assign({}, context, { family })).slice(0,5);
-      const fam = familyByKey(family);
-      return { family, label: fam ? fam.label : family, recommended: options[0] || null, alternatives: options.slice(1) };
-    });
-  }
-
-  function buildReason(exercise, context) {
-    const bits = [];
-    const styleKey = contextStyle(context);
-    if(styleKey && (exercise.styleBias || []).indexOf(styleKey) > -1) bits.push('matches your style preference');
-    if((context.injuries || []).length && exercise.recoveryFriendliness >= 4) bits.push('joint-friendly option');
-    if((exercise.tags || []).indexOf('unilateral') > -1) bits.push('helps side-to-side control');
-    if((exercise.domains || []).indexOf('pilates') > -1) bits.push('supports deep core and control');
-    if((exercise.domains || []).indexOf('calisthenics') > -1) bits.push('builds relative strength and movement skill');
-    if((exercise.domains || []).indexOf('strength') > -1) bits.push('supports measurable strength progression');
-    return bits.length ? bits.join(', ') : 'best current match for your setup';
-  }
-
-  function buildHybridSession(context) {
-    context = context || {};
-    const used = {};
-    const styleKey = contextStyle(context) || 'hybrid-athlete';
-    const families = STYLE_PROFILES[styleKey] ? STYLE_PROFILES[styleKey].preferFamilies : STYLE_PROFILES['hybrid-athlete'].preferFamilies;
-    const items = families.slice(0,6).map(family => chooseTop(family, context, used)).filter(Boolean).map(pick => ({
-      family: pick.family,
-      name: pick.name,
-      key: pick.key,
-      equipment: pick.equipment,
-      reason: buildReason(pick, context),
-      alternatives: suggestAlternatives(pick.key, context, 3).map(a => a.name),
-      cue: pick.coachingCue,
-      rx: pick.defaultRx
-    }));
-    return { title: (STYLE_PROFILES[styleKey] ? STYLE_PROFILES[styleKey].label : 'Hybrid') + ' Adaptive Session', style: styleKey, items };
-  }
-
-  function buildCircuit(context) {
-    context = context || {};
-    const mode = slug(context.circuitMode || context.trainingStyle || 'fat-loss-conditioning');
-    const families = mode === 'pilates-mobility'
-      ? ['pilates-core','mobility-recovery','hip-extension','core-anti-rotation']
-      : mode === 'joint-longevity'
-        ? ['movement-restoration','hip-extension','core-anti-rotation','calf-ankle']
-        : ['conditioning','horizontal-push','horizontal-pull','squat','core-anti-extension'];
-    const used = {};
-    const items = families.map(family => chooseTop(family, context, used)).filter(Boolean).map(x => ({
-      key: x.key, name: x.name, family: x.family, rx: x.defaultRx, cue: x.coachingCue,
-      alternatives: suggestAlternatives(x.key, context, 2).map(a => a.name)
-    }));
-    return { title: mode === 'pilates-mobility' ? 'Pilates Control Circuit' : 'Adaptive Conditioning Circuit', format: mode === 'pilates-mobility' ? '2-4 rounds, slow controlled quality' : 'AMRAP or EMOM, recoverable pace', items };
-  }
-
-  function getProgressionTree(key) {
-    const k = slug(key);
-    let tree = PROGRESSION_TREES[k];
-    if(!tree) {
-      const holder = Object.keys(PROGRESSION_TREES).find(name => PROGRESSION_TREES[name].indexOf(k) > -1);
-      if(holder) tree = PROGRESSION_TREES[holder];
-    }
-    return tree ? tree.map(findExercise).filter(Boolean) : [];
-  }
-
-  function getLibraryStats() {
-    const byFamily = {}, byDomain = {};
-    EXERCISES.forEach(ex => {
-      byFamily[ex.family] = (byFamily[ex.family] || 0) + 1;
-      (ex.domains || []).forEach(d => byDomain[d] = (byDomain[d] || 0) + 1);
-    });
-    return {
-      totalExercises: EXERCISES.length,
-      familyCount: FAMILY_DB.length,
-      injuryProfiles: Object.keys(INJURY_RULES).length,
-      styleProfiles: Object.keys(STYLE_PROFILES).length,
-      progressionTrees: Object.keys(PROGRESSION_TREES).length,
-      byFamily,
-      byDomain
-    };
-  }
-
-  return {
-    getExerciseProfile,
-    getFamilySummary,
-    areRelatedExercises,
-    analyseGroup,
-    getAllExercises: () => clone(EXERCISES),
-    findExercise,
-    filterExercises,
-    suggestAlternatives,
-    buildMovementMenu,
-    getInjuryRules: () => clone(INJURY_RULES),
-    scoreExerciseForContext,
-    buildTemplate,
-    getLibraryStats,
-    getStyleProfiles: () => clone(STYLE_PROFILES),
-    buildHybridSession,
-    buildCircuit,
-    getProgressionTree
-  };
+  return { getExerciseProfile, getFamilySummary, areRelatedExercises, analyseGroup, getAllExercises:()=>clone(EXERCISES), findExercise, filterExercises, suggestAlternatives, buildMovementMenu, getInjuryRules:()=>clone(INJURY_RULES), scoreExerciseForContext, buildTemplate, getLibraryStats, getStyleProfiles:()=>clone(STYLE_PROFILES), buildHybridSession, buildCircuit, getProgressionTree, getMyPlanLibrary, seedMyPlanCache };
 })();

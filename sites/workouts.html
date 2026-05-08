@@ -64,12 +64,22 @@
     .restbar{display:flex;align-items:center;gap:.4rem;margin-top:.4rem;flex-wrap:wrap}
     .restbar .left{opacity:.9}
     .timer .left{margin-left:.4rem;opacity:.9}
+
+
+    /* Adaptive notes inside existing log drawers */
+    .adaptive-notes{margin:.55rem 0;padding:.65rem .7rem;border:1px solid rgba(255,106,0,.28);border-radius:10px;background:rgba(255,106,0,.055)}
+    .adaptive-notes h4{margin:0 0 .35rem;color:var(--accent);font-size:.95rem}
+    .adaptive-grid{display:grid;gap:.35rem}
+    .adaptive-line{font-size:.9rem;color:var(--inkdim);line-height:1.35}
+    .adaptive-line strong{color:var(--ink)}
+    .adaptive-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem}
+    .adaptive-tag{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .45rem;background:rgba(255,255,255,.045);font-size:.8rem;color:var(--inkdim)}
   </style>
-  <title>FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands</title>
+  <title>FreeFitFuel Workouts â Dumbbell, Bodyweight & Bands</title>
   <meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands">
+  <meta property="og:title" content="FreeFitFuel Workouts â Dumbbell, Bodyweight & Bands">
   <meta property="og:description" content="Weekly splits, calisthenics progressions & cross-training circuits. Log reps, save PBs & build consistency.">
   <meta property="og:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
   <meta property="og:type" content="article">
@@ -77,7 +87,7 @@
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="FreeFitFuel Workouts — Dumbbell, Bodyweight & Bands">
+  <meta name="twitter:title" content="FreeFitFuel Workouts â Dumbbell, Bodyweight & Bands">
   <meta name="twitter:description" content="Free structured workouts. Track PBs. Train anywhere with dumbbells, bands & bodyweight.">
   <meta name="twitter:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
 </head>
@@ -111,7 +121,7 @@
           <input id="importFile" type="file" accept="application/json" style="display:none">
           <span class="meta">Tip: export occasionally to guard against browser cleanup.</span>
           <button class="btn-sm" id="btnResetAll" title="Delete all saved logs & PBs">Reset all logs</button>
-          <a class="btn" href="my-plan.html" style="margin-left:auto">← Back to My Plan</a>
+          <a class="btn" href="my-plan.html" style="margin-left:auto">â Back to My Plan</a>
         </div>
       </div>
     </section>
@@ -119,7 +129,7 @@
     <section class="section">
       <h2>Weekly Split</h2>
       <div id="plan" class="plan"></div>
-      <p class="meta">Short on time? Run the <strong>Full-Body</strong> day 2–3×/week and sprinkle easy cardio or mobility between.</p>
+      <p class="meta">Short on time? Run the <strong>Full-Body</strong> day 2â3Ã/week and sprinkle easy cardio or mobility between.</p>
     </section>
 
     <!-- ===== Calisthenics (Chunk 2) ===== -->
@@ -146,13 +156,13 @@
     build towards it over 4 weeks, and use it to measure real progress.
   </p>
   <p class="meta" style="margin-top:.4rem">
-  Best used as a milestone session every 4–8 weeks.
+  Best used as a milestone session every 4â8 weeks.
 </p>
   <a href="ladder-challenge.html"
      style="display:inline-block;margin-top:10px;padding:9px 16px;
      background:var(--accent);color:#fff;text-decoration:none;
      border-radius:8px;font-weight:600;">
-    Open Ladder Challenge →
+    Open Ladder Challenge â
   </a>
 </div>
       
@@ -160,7 +170,7 @@
 <section class="section">
   <h2>Fuel Your Workouts with a Personalised Plan</h2>
   <p>
-    Training is only half the journey—what you eat shapes your results. On our 
+    Training is only half the journeyâwhat you eat shapes your results. On our 
     <a href="nutrition.html" style="color:var(--accent);font-weight:600">Nutrition page</a> 
     you can enter your details and instantly generate a tailored plan designed around your goals.  
   </p>
@@ -187,7 +197,7 @@
      style="display:inline-block;margin-top:10px;padding:9px 16px;
      background:var(--accent);color:#fff;text-decoration:none;
      border-radius:8px;font-weight:600;">
-    Explore Reformer Pilates →
+    Explore Reformer Pilates â
   </a>
 </div>
     
@@ -203,7 +213,7 @@
      style="display:inline-block;margin-top:8px;padding:8px 14px;
      background:var(--accent);color:#fff;text-decoration:none;
      border-radius:8px;font-weight:600;">
-    View Stretching Page →
+    View Stretching Page â
   </a>
 </div>
 </section>   
@@ -211,15 +221,15 @@
     <!-- PHYSIO PANEL LINK -->
 <section class="section">
   <h2>Injury Recovery & Physio</h2>
-  <p class="lead">Supporting your training doesn’t just mean sets and reps — it also means guidance for when things go wrong.</p>
+  <p class="lead">Supporting your training doesnât just mean sets and reps â it also means guidance for when things go wrong.</p>
   <div class="grid cols-2">
     <div>
       <p>
         Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail your progress.  
         Our <strong>Physio & Recovery</strong> page gives you safe, practical progressions: 
-        <em>Acute → Rebuild → Return</em>.
+        <em>Acute â Rebuild â Return</em>.
       </p>
-      <p class="meta">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
+      <p class="meta">Educational only â not a substitute for medical care. If in doubt, seek professional review.</p>
       <a class="btn" href="physio.html">Open Physio & Recovery</a>
     </div>
   </div>
@@ -227,7 +237,7 @@
     
     <section class="section">
       <h2>Important Note</h2>
-      <p>The content on FreeFitFuel™ is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+      <p>The content on FreeFitFuelâ¢ is for general fitness education only and isnât a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
     </section>
   </main>
 
@@ -236,7 +246,7 @@
   <footer class="site-footer">
     <div class="container">
       <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-      <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+      <p>&copy; 2025 FreeFitFuelâ¢ Â· All rights reserved.</p>
       <p class="credit">Created by Grant Cameron Anthony</p>
     </div>
   </footer>
@@ -290,7 +300,7 @@ const EXERCISES = [
   {k:'ringdip',  n:'Ring Dip', eq:'rings', yt:'ring dip progression form'},
   {k:'ringpush', n:'Ring Push-up', eq:'rings', yt:'ring push up form'},
   {k:'ringsup',  n:'Ring Support Hold', eq:'rings', yt:'ring support hold form'},
-  {k:'ringlsit', n:'Ring L-Sit (tuck→L)', eq:'rings', yt:'ring l sit progression'}
+  {k:'ringlsit', n:'Ring L-Sit (tuckâL)', eq:'rings', yt:'ring l sit progression'}
 ];
 
 const ALTS = {
@@ -315,66 +325,66 @@ const ALTS = {
 
 const PLAN = {
   push:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'dbfloor',rx:'3×8–12'},{k:'latraise',rx:'3×12–15'}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'ohpress',rx:'4×6–10'},{k:'latraise',rx:'3×12–15'}],
-    advanced:[{k:'dbbench',rx:'5×5–8'},{k:'ohpress',rx:'5×6–8'},{k:'latraise',rx:'4×12–15'}]
+    beginner:[{k:'pushup',rx:'3Ã6â10'},{k:'dbfloor',rx:'3Ã8â12'},{k:'latraise',rx:'3Ã12â15'}],
+    intermediate:[{k:'dbbench',rx:'4Ã6â10'},{k:'ohpress',rx:'4Ã6â10'},{k:'latraise',rx:'3Ã12â15'}],
+    advanced:[{k:'dbbench',rx:'5Ã5â8'},{k:'ohpress',rx:'5Ã6â8'},{k:'latraise',rx:'4Ã12â15'}]
   },
   pull:{
-    beginner:[{k:'doorrow',rx:'3×8–12'},{k:'bandrow',rx:'3×10–12'}],
-    intermediate:[{k:'csrow',rx:'4×8–12'},{k:'bandlat',rx:'4×10–12'}],
-    advanced:[{k:'chin',rx:'5×AMRAP'},{k:'csrow',rx:'5×6–10'}]
+    beginner:[{k:'doorrow',rx:'3Ã8â12'},{k:'bandrow',rx:'3Ã10â12'}],
+    intermediate:[{k:'csrow',rx:'4Ã8â12'},{k:'bandlat',rx:'4Ã10â12'}],
+    advanced:[{k:'chin',rx:'5ÃAMRAP'},{k:'csrow',rx:'5Ã6â10'}]
   },
   legs:{
-    beginner:[{k:'stepup',rx:'3×8–12'},{k:'dbrdl',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'stepup',rx:'4×8–12'},{k:'dbrdl',rx:'4×6–10'},{k:'split',rx:'3×8–12/leg'}],
-    advanced:[{k:'stepup',rx:'5×8–12'},{k:'dbrdl',rx:'5×6–8'},{k:'split',rx:'4×8–12/leg'}]
+    beginner:[{k:'stepup',rx:'3Ã8â12'},{k:'dbrdl',rx:'3Ã8â12'},{k:'sidepl',rx:'2Ã25â40s'}],
+    intermediate:[{k:'stepup',rx:'4Ã8â12'},{k:'dbrdl',rx:'4Ã6â10'},{k:'split',rx:'3Ã8â12/leg'}],
+    advanced:[{k:'stepup',rx:'5Ã8â12'},{k:'dbrdl',rx:'5Ã6â8'},{k:'split',rx:'4Ã8â12/leg'}]
   },
   full:{
-    beginner:[{k:'pushup',rx:'3×6–10'},{k:'bandrow',rx:'3×10–12'},{k:'stepup',rx:'3×8–12'},{k:'sidepl',rx:'2×25–40s'}],
-    intermediate:[{k:'dbbench',rx:'4×6–10'},{k:'csrow',rx:'4×8–12'},{k:'dbrdl',rx:'4×8–12'},{k:'dbcp',rx:'3×6–8'}],
-    advanced:[{k:'dbcp',rx:'5×3–5'},{k:'dbbench',rx:'5×5–8'},{k:'csrow',rx:'5×6–10'},{k:'manmaker',rx:'4×8–10'}]
+    beginner:[{k:'pushup',rx:'3Ã6â10'},{k:'bandrow',rx:'3Ã10â12'},{k:'stepup',rx:'3Ã8â12'},{k:'sidepl',rx:'2Ã25â40s'}],
+    intermediate:[{k:'dbbench',rx:'4Ã6â10'},{k:'csrow',rx:'4Ã8â12'},{k:'dbrdl',rx:'4Ã8â12'},{k:'dbcp',rx:'3Ã6â8'}],
+    advanced:[{k:'dbcp',rx:'5Ã3â5'},{k:'dbbench',rx:'5Ã5â8'},{k:'csrow',rx:'5Ã6â10'},{k:'manmaker',rx:'4Ã8â10'}]
   }
 };
 
 const CAL = [
   {title:'Push', items:[
     {k:'pushup', name:'Push-up', eq:'bw',
-     rxB:'Incline push-up — 3×8–12', rxI:'Flat push-up — 4×8–12', rxA:'Feet-elevated or ring push-up — 5×6–10'},
+     rxB:'Incline push-up â 3Ã8â12', rxI:'Flat push-up â 4Ã8â12', rxA:'Feet-elevated or ring push-up â 5Ã6â10'},
     {k:'ringpush', name:'Ring Push-up', eq:'rings',
-     rxB:'Rings high (inclined) — 3×8–12', rxI:'Rings mid — 4×8–12 (tempo 3–1–1)', rxA:'Rings low/feet-up — 5×6–10 (slow negative)'}
+     rxB:'Rings high (inclined) â 3Ã8â12', rxI:'Rings mid â 4Ã8â12 (tempo 3â1â1)', rxA:'Rings low/feet-up â 5Ã6â10 (slow negative)'}
   ]},
   {title:'Pull', items:[
     {k:'doorrow', name:'Bodyweight Row (table/door)', eq:'bw',
-     rxB:'Row (high angle) — 3×8–12', rxI:'Row (feet further) — 4×8–12', rxA:'Row (feet elevated) — 5×6–10'},
+     rxB:'Row (high angle) â 3Ã8â12', rxI:'Row (feet further) â 4Ã8â12', rxA:'Row (feet elevated) â 5Ã6â10'},
     {k:'ringrow', name:'Ring Row', eq:'rings',
-     rxB:'Rings high, knees bent — 3×8–12', rxI:'Rings mid, straight body — 4×8–12', rxA:'Rings low, feet elevated — 5×6–10 (1s pause top)'}
+     rxB:'Rings high, knees bent â 3Ã8â12', rxI:'Rings mid, straight body â 4Ã8â12', rxA:'Rings low, feet elevated â 5Ã6â10 (1s pause top)'}
   ]},
   {title:'Core / Stability', items:[
     {k:'sidepl', name:'Side Plank', eq:'bw',
-     rxB:'3×25–40s/side', rxI:'3×35–50s/side', rxA:'3×45–60s/side (long lever)'},
+     rxB:'3Ã25â40s/side', rxI:'3Ã35â50s/side', rxA:'3Ã45â60s/side (long lever)'},
     {k:'ringsup', name:'Ring Support Hold', eq:'rings',
-     rxB:'Support holds — 5×10–20s', rxI:'Support + knee raises — 4×6–10', rxA:'Support + tuck→L pulses — 4×6–8'},
-    {k:'ringlsit', name:'Ring L-Sit (tuck→L)', eq:'rings',
-     rxB:'Tuck holds — 6×5–10s', rxI:'Advanced tuck — 5×5–10s', rxA:'Partial→full L — 8–10×3–8s'}
+     rxB:'Support holds â 5Ã10â20s', rxI:'Support + knee raises â 4Ã6â10', rxA:'Support + tuckâL pulses â 4Ã6â8'},
+    {k:'ringlsit', name:'Ring L-Sit (tuckâL)', eq:'rings',
+     rxB:'Tuck holds â 6Ã5â10s', rxI:'Advanced tuck â 5Ã5â10s', rxA:'Partialâfull L â 8â10Ã3â8s'}
   ]},
   {title:'Legs', items:[
     {k:'stepup', name:'Step-up', eq:'db',
-     rxB:'Box just below knee — 3×8–12/leg', rxI:'Add load — 4×8–12/leg', rxA:'Higher box / tempo pauses — 5×6–10/leg'}
+     rxB:'Box just below knee â 3Ã8â12/leg', rxI:'Add load â 4Ã8â12/leg', rxA:'Higher box / tempo pauses â 5Ã6â10/leg'}
   ]}
 ];
 
 const CIRCUITS = [
-  { k:'amrap20-triplet', title:'Triplet — AMRAP 20',
-    desc:'20:00 continuous: pull/row • push • squat. Keep sets submax.',
+  { k:'amrap20-triplet', title:'Triplet â AMRAP 20',
+    desc:'20:00 continuous: pull/row â¢ push â¢ squat. Keep sets submax.',
     presetSec:1200, scoreHint:'Score = rounds + extra reps', scoreType:'roundsreps',
     items:[
       {k:'doorrow',name:'Row / Pull-up',yt:'bodyweight row form',rx:{beginner:'3',intermediate:'5',advanced:'5'}},
       {k:'pushup', name:'Push-up', yt:'push up form', rx:{beginner:'6 (incline)',intermediate:'10',advanced:'10'}},
       {k:'airsquat',name:'Air Squat', yt:'air squat form', rx:{beginner:'10',intermediate:'15',advanced:'15'}}
     ],
-    tailNote:' — repeat for 20:00'
+    tailNote:' â repeat for 20:00'
   },
-  { k:'emom30-triplet', title:'Triplet — EMOM 30',
+  { k:'emom30-triplet', title:'Triplet â EMOM 30',
     desc:'Every minute for 30:00 do the triplet; rest in the remainder.',
     presetSec:1800, scoreHint:'Score = minutes completed unbroken (or total minutes)', scoreType:'higher',
     items:[
@@ -382,16 +392,16 @@ const CIRCUITS = [
       {k:'pushup', name:'Push-up', yt:'push up form', rx:{beginner:'6 (incline)',intermediate:'10',advanced:'10'}},
       {k:'airsquat',name:'Air Squat', yt:'air squat form', rx:{beginner:'10',intermediate:'15',advanced:'15'}}
     ],
-    tailNote:' — every minute ×30'
+    tailNote:' â every minute Ã30'
   },
-  { k:'ladder-rope-situp', title:'Rope + Sit-up Ladder — For Time',
+  { k:'ladder-rope-situp', title:'Rope + Sit-up Ladder â For Time',
     desc:'50-40-30-20-10 of jump-rope & sit-ups.',
-    presetSec:900, scoreHint:'Score = finish time (mm:ss) — lower is better', scoreType:'lower',
+    presetSec:900, scoreHint:'Score = finish time (mm:ss) â lower is better', scoreType:'lower',
     items:[
       {k:'jumprope',name:'Jump Rope',yt:'single unders jump rope form',rx:{beginner:'Singles',intermediate:'Singles (2:1) or DU attempts',advanced:'Double-unders'}},
       {k:'situp',   name:'Sit-up',  yt:'abmat sit up form',rx:{beginner:'Sit-ups',intermediate:'Sit-ups',advanced:'Sit-ups'}}
     ],
-    tailNote:' — cap 12–15 min'
+    tailNote:' â cap 12â15 min'
   }
 ];
 
@@ -442,8 +452,8 @@ function updateLibraryBanner(){
 }
 function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }
 function applyGoal(rx){
-  if(goal==='cut')       return rx+' · short rests';
-  if(goal==='build')     return rx.replace(/(\d+)×/,(m,n)=>(+n+1)+'×')+' · add load';
+  if(goal==='cut')       return rx+' Â· short rests';
+  if(goal==='build')     return rx.replace(/(\d+)Ã/,(m,n)=>(+n+1)+'Ã')+' Â· add load';
   if(goal==='transform') return rx+' + finisher';
   return rx;
 }
@@ -463,12 +473,12 @@ function bestScore(obj){
 }
 function milestoneText(count){
   const n = typeof count==='number' ? count : parseInt(localStorage.getItem(NS+'saves')||'0',10);
-  if(n>=200) return 'Milestone: 200 logs saved 🔥';
-  if(n>=100) return 'Milestone: 100 logs saved 🎉';
-  if(n>=50)  return 'Milestone: 50 logs saved 💪';
-  if(n>=25)  return 'Milestone: 25 logs saved 🙌';
-  if(n>=10)  return 'Milestone: 10 logs saved ✅';
-  if(n>=5)   return 'Milestone: 5 logs saved ✨';
+  if(n>=200) return 'Milestone: 200 logs saved ð¥';
+  if(n>=100) return 'Milestone: 100 logs saved ð';
+  if(n>=50)  return 'Milestone: 50 logs saved ðª';
+  if(n>=25)  return 'Milestone: 25 logs saved ð';
+  if(n>=10)  return 'Milestone: 10 logs saved â';
+  if(n>=5)   return 'Milestone: 5 logs saved â¨';
   return '';
 }
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
@@ -505,7 +515,7 @@ function restControlsHTML(exKey, setNum){
   const id = `${exKey}.s${setNum}`;
   return `
     <div class="restbar" data-rest="${id}" data-bound="0">
-      <span>⏱ Rest:</span>
+      <span>â± Rest:</span>
       <input type="number" min="5" step="5" value="90" aria-label="Rest seconds">
       <button class="btn-sm" data-act="rest-start" title="3-beep lead-in then countdown">Start</button>
       <button class="btn-sm" data-act="rest-stop">Stop</button>
@@ -560,7 +570,7 @@ function hookRestTimers(scope){
   function boot(){
     try{
       // applyPrefsToUI / wireControls / initial renders are in Part 1 already
-      // If Part 1 didn’t already render (e.g. you moved calls), you can safely call:
+      // If Part 1 didnât already render (e.g. you moved calls), you can safely call:
       if (typeof applyPrefsToUI === 'function') applyPrefsToUI();
       if (typeof wireControls   === 'function') wireControls();
       renderPlan(); renderCal(); renderCircuits();
@@ -582,6 +592,138 @@ function hookRestTimers(scope){
 /* ========= RENDER: WEEKLY SPLIT ========= */
 const planEl = document.getElementById('plan');
 
+
+
+/* ========= ADAPTIVE NOTES FROM ENGINE ========= */
+function escHTML(value){
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+  });
+}
+
+function readJSONSafe(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  }catch(err){
+    return fallback;
+  }
+}
+
+function activeInjuryLabels(){
+  const profile = readJSONSafe('fff.injuryProfile.v1', null) || readJSONSafe('fff.myplan.injuries.v1', null);
+  if(!profile) return [];
+
+  const active = Array.isArray(profile.activeKeys) ? profile.activeKeys : [];
+  const items = profile.items || {};
+
+  const labels = {
+    'tennis-elbow':'Tennis elbow',
+    'tennis_elbow':'Tennis elbow',
+    'lateral-epicondylitis':'Tennis elbow',
+    'outer-left-biceps-pain':'Outer left biceps pain',
+    'outer_biceps_left_pain':'Outer left biceps pain',
+    'distal-biceps-tendon-irritation':'Distal biceps tendon irritation',
+    'hip-tendon-pain-reduced-movement':'Hip tendon pain with reduced movement',
+    'hip_tendon_pain_reduced_movement':'Hip tendon pain with reduced movement',
+    'hip-flexor-tendon-pain':'Hip flexor tendon pain',
+    'clicky-knees-painless':'Clicky knees, painless',
+    'clicky-knees-painful':'Clicky knees, painful',
+    'knee-clicking-painful':'Clicky knees, painful',
+    'knee-clicking-painless':'Clicky knees, painless',
+    'biceps-tendon-pain':'Biceps tendon pain',
+    'shoulder-pain':'Shoulder pain',
+    'rotator-cuff-sensitivity':'Rotator cuff sensitivity',
+    'elbow-pain':'Elbow pain',
+    'wrist-pain':'Wrist pain',
+    'knee-pain':'Knee pain',
+    'patellar-tendon-pain':'Patellar tendon pain',
+    'hip-pain':'Hip pain',
+    'low-back-sensitivity':'Lower back sensitivity',
+    'disc-sensitivity':'Disc sensitivity',
+    'ankle-instability':'Ankle instability',
+    'achilles-calf-sensitivity':'Achilles/calf sensitivity',
+    'left-right-imbalance':'Left/right imbalance',
+    'poor-overhead-mobility':'Poor overhead mobility',
+    'beginner-low-confidence':'Beginner/low confidence',
+    'older-adult':'Older adult/deconditioned'
+  };
+
+  const keys = active.length ? active : Object.keys(items).filter(function(k){ return items[k] && items[k] !== 'none'; });
+  return keys.map(function(k){
+    const severity = items[k] && items[k] !== true ? String(items[k]) : '';
+    return (labels[k] || String(k).replace(/[-_]+/g,' ')) + (severity ? ' Â· ' + severity : '');
+  });
+}
+
+function adaptiveProfileForExercise(ex){
+  if(!ex) return null;
+  const candidates = [ex.name, ex.n, ex.key, ex.k].filter(Boolean);
+  if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getExerciseProfile === 'function'){
+    for(const name of candidates){
+      const p = window.FFFExerciseDB.getExerciseProfile(name);
+      if(p && p.confidence !== 'low') return p;
+    }
+  }
+  return null;
+}
+
+function adaptiveAlternativesForExercise(ex, profile){
+  const names = [];
+  if(profile && Array.isArray(profile.alternatives)) names.push.apply(names, profile.alternatives);
+  if(profile && Array.isArray(profile.regressions)) names.push.apply(names, profile.regressions);
+  if(ex && ex.k && ALTS[ex.k]){
+    ALTS[ex.k].forEach(function(k){
+      const alt = findExerciseByKey(k);
+      if(alt && alt.n) names.push(alt.n);
+    });
+  }
+  return Array.from(new Set(names.filter(Boolean))).slice(0,3);
+}
+
+function adaptiveNotesHTML(ex, rx){
+  const profile = adaptiveProfileForExercise(ex);
+  const injuries = activeInjuryLabels();
+  const lines = [];
+  const tags = [];
+
+  if(profile && profile.coachingCue){
+    lines.push('<div class="adaptive-line"><strong>Technique:</strong> ' + escHTML(profile.coachingCue) + '</div>');
+  }else if(ex && ex.yt){
+    lines.push('<div class="adaptive-line"><strong>Technique:</strong> Use the form lookup and keep the movement controlled, pain-free and repeatable.</div>');
+  }
+
+  if(rx){
+    lines.push('<div class="adaptive-line"><strong>Dose:</strong> ' + escHTML(rx) + '</div>');
+  }
+
+  if(profile && Array.isArray(profile.cautionIf) && profile.cautionIf.length){
+    lines.push('<div class="adaptive-line"><strong>Caution flags:</strong> ' + escHTML(profile.cautionIf.join(', ')) + '</div>');
+  }
+
+  const alternatives = adaptiveAlternativesForExercise(ex, profile);
+  if(alternatives.length){
+    lines.push('<div class="adaptive-line"><strong>Swap if painful:</strong> ' + escHTML(alternatives.join(' â¢ ')) + '</div>');
+  }
+
+  if(profile && profile.jointStress != null){ tags.push('Joint stress ' + profile.jointStress + '/5'); }
+  if(profile && profile.fatigueCost != null){ tags.push('Fatigue ' + profile.fatigueCost + '/5'); }
+  if(profile && profile.skillDemand != null){ tags.push('Skill ' + profile.skillDemand + '/5'); }
+  if(injuries.length){ tags.push('Active injury profile'); }
+
+  if(injuries.length){
+    lines.push('<div class="adaptive-line"><strong>Your selected issues:</strong> ' + escHTML(injuries.slice(0,4).join(' â¢ ')) + '</div>');
+  }
+
+  if(!lines.length && !tags.length) return '';
+
+  return '<div class="adaptive-notes" data-adaptive-notes>' +
+    '<h4>Adaptive coaching notes</h4>' +
+    '<div class="adaptive-grid">' + lines.join('') + '</div>' +
+    (tags.length ? '<div class="adaptive-tags">' + tags.map(function(t){ return '<span class="adaptive-tag">' + escHTML(t) + '</span>'; }).join('') + '</div>' : '') +
+  '</div>';
+}
+
 function makeExerciseRow(ex, rx, note){
   const row = document.createElement('div'); row.className='mov';
   row.innerHTML = `
@@ -594,10 +736,11 @@ function makeExerciseRow(ex, rx, note){
       <div class="rx">${rx || ''}</div>
       <div class="mov-tools">
         <button class="btn-sm" data-open>Log</button>
-        <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
+        <button class="btn-sm" data-clear title="Clear this exerciseâs saved data">Clear</button>
       </div>
     </div>
     <div class="drawer" data-drawer>
+      ${adaptiveNotesHTML(ex, rx)}
       <div class="log-grid" data-log>
         ${[1,2,3,4,5].map(i=>`
           <div class="log-row">
@@ -634,7 +777,7 @@ function makeExerciseRow(ex, rx, note){
     const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
     logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value = saved[id]; });
     const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-    pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+    pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : '';
     badgeEl.textContent = milestoneText();
   }
   populateFromStore();
@@ -644,8 +787,8 @@ function makeExerciseRow(ex, rx, note){
       const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
       localStorage.setItem(NS+ex.k, JSON.stringify(obj));
       const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-      if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
-      else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
+      if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best wÃr)`; }
+      else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : 'Saved.'; }
       const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
       badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
     });
@@ -682,7 +825,7 @@ function renderPlan(){
       if((session.extras||[]).length){
         const note = document.createElement('p');
         note.className = 'meta';
-        note.textContent = 'Also includes: ' + session.extras.join(' • ');
+        note.textContent = 'Also includes: ' + session.extras.join(' â¢ ');
         blk.appendChild(note);
       }
       planEl.appendChild(blk);
@@ -718,11 +861,12 @@ function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessio
           <div class="rx">${rx}</div>
           <div class="mov-tools">
             <button class="btn-sm" data-open>Log</button>
-            <button class="btn-sm" data-clear title="Clear this exercise’s saved data">Clear</button>
+            <button class="btn-sm" data-clear title="Clear this exerciseâs saved data">Clear</button>
           </div>
         </div>
         ${pickRes.isAlt ? '<p class="meta" style="margin:.35rem 0 0">Alternative shown based on equipment.</p>' : ''}
         <div class="drawer" data-drawer>
+          ${adaptiveNotesHTML(ex, rx)}
           <div class="log-grid" data-log>
             ${[1,2,3,4,5].map(i=>`
               <div class="log-row">
@@ -759,7 +903,7 @@ function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessio
         const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
         logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value=saved[id]; });
         const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : '';
+        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : '';
         badgeEl.textContent = milestoneText();
       }
       populateFromStore();
@@ -769,8 +913,8 @@ function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessio
           const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
           localStorage.setItem(NS+ex.k, JSON.stringify(obj));
           const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w×r)`; }
-          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w×r best set)` : 'Saved.'; }
+          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best wÃr)`; }
+          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : 'Saved.'; }
           const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
           badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
         });
@@ -799,8 +943,8 @@ function renderCircuits(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.s
       const q  = ex ? ex.yt : (it.yt || (it.name + ' exercise form'));
       const link = `<a href="${ytSearchURL(q)}" target="_blank" rel="noopener" title="YouTube form search">${it.name}</a>`;
       const dose = (level==='beginner')?it.rx.beginner : (level==='intermediate')?it.rx.intermediate : it.rx.advanced;
-      return `${link} — ${dose}`;
-    }).join(' &nbsp;•&nbsp; ');
+      return `${link} â ${dose}`;
+    }).join(' &nbsp;â¢&nbsp; ');
 
     blk.innerHTML = `
       <h3>${c.title}</h3>
@@ -947,7 +1091,7 @@ document.getElementById('btnExport')?.addEventListener('click', ()=>{
 document.getElementById('importFile')?.addEventListener('change', (e)=>{
   const file=e.target.files?.[0]; if(!file) return; const reader=new FileReader();
   reader.onload=()=>{ try{ const obj=JSON.parse(String(reader.result||'{}')); Object.keys(obj).forEach(k=>{ if(k.startsWith(NS)) localStorage.setItem(k,obj[k]);});
-    alert('Logs imported ✅'); renderPlan(); renderCal(); renderCircuits(); }catch{ alert('Import failed — invalid file.'); } };
+    alert('Logs imported â'); renderPlan(); renderCal(); renderCircuits(); }catch{ alert('Import failed â invalid file.'); } };
   reader.readAsText(file);
 });
 document.getElementById('btnResetAll')?.addEventListener('click', ()=>{

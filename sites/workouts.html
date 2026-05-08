@@ -65,15 +65,90 @@
     .restbar .left{opacity:.9}
     .timer .left{margin-left:.4rem;opacity:.9}
 
+    /* Adaptive movement polish */
+    .mov{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:12px;
+      padding:.75rem .8rem;
+      margin:.55rem 0;
+      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+    }
+    .mov-head{
+      align-items:flex-start;
+      gap:.65rem;
+    }
+    .mov-main{min-width:0;flex:1 1 220px}
+    .mov-title{font-weight:800;line-height:1.2}
+    .mov-title a{font-size:1rem}
+    .mov-sub{
+      margin-top:.28rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:.35rem;
+      align-items:center;
+      color:var(--inkdim);
+      font-size:.86rem;
+    }
+    .chip-mini{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.14rem .45rem;
+      background:rgba(255,255,255,.055);
+      color:var(--inkdim);
+      line-height:1.3;
+    }
+    .chip-mini.accent{
+      border-color:rgba(255,106,0,.42);
+      background:rgba(255,106,0,.10);
+      color:#ffd0ad;
+    }
+    .rx{
+      color:var(--inkdim);
+      font-size:.9rem;
+      white-space:nowrap;
+      margin-top:.05rem;
+    }
+    .mov-tools{flex:0 0 auto}
+    .btn-sm{
+      padding:.32rem .55rem;
+      min-width:54px;
+      font-size:.9rem;
+    }
+    .adaptive-note{
+      margin:.55rem 0 .65rem;
+      padding:.65rem .7rem;
+      border:1px solid rgba(255,106,0,.26);
+      border-radius:10px;
+      background:rgba(255,106,0,.07);
+      display:grid;
+      gap:.45rem;
+    }
+    .adaptive-note .note-line{
+      display:grid;
+      grid-template-columns:112px minmax(0,1fr);
+      gap:.55rem;
+      color:var(--inkdim);
+      font-size:.9rem;
+      line-height:1.35;
+    }
+    .adaptive-note .note-line strong{
+      color:var(--ink);
+      font-weight:800;
+    }
+    .adaptive-note .note-line.warning strong{color:#ffd0ad}
+    @media(max-width:560px){
+      .mov-head{display:block}
+      .mov-tools{margin-top:.55rem}
+      .mov-tools .btn-sm{margin-right:.35rem}
+      .rx{white-space:normal;margin-top:.3rem}
+      .adaptive-note .note-line{grid-template-columns:1fr;gap:.15rem}
+      .log-row{grid-template-columns:1fr 1fr;align-items:start}
+      .log-row strong{grid-column:1 / -1}
+      .log-row button{grid-column:1 / -1}
+    }
 
-    /* Adaptive notes inside existing log drawers */
-    .adaptive-notes{margin:.55rem 0;padding:.65rem .7rem;border:1px solid rgba(255,106,0,.28);border-radius:10px;background:rgba(255,106,0,.055)}
-    .adaptive-notes h4{margin:0 0 .35rem;color:var(--accent);font-size:.95rem}
-    .adaptive-grid{display:grid;gap:.35rem}
-    .adaptive-line{font-size:.9rem;color:var(--inkdim);line-height:1.35}
-    .adaptive-line strong{color:var(--ink)}
-    .adaptive-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem}
-    .adaptive-tag{border:1px solid var(--stroke);border-radius:999px;padding:.15rem .45rem;background:rgba(255,255,255,.045);font-size:.8rem;color:var(--inkdim)}
   </style>
   <title>FreeFitFuel Workouts â Dumbbell, Bodyweight & Bands</title>
   <meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
@@ -121,7 +196,7 @@
           <input id="importFile" type="file" accept="application/json" style="display:none">
           <span class="meta">Tip: export occasionally to guard against browser cleanup.</span>
           <button class="btn-sm" id="btnResetAll" title="Delete all saved logs & PBs">Reset all logs</button>
-          <a class="btn" href="my-plan.html" style="margin-left:auto">â Back to My Plan</a>
+          <a class="btn" href="my-plan.html" style="margin-left:auto">&larr; Back to My Plan</a>
         </div>
       </div>
     </section>
@@ -162,7 +237,7 @@
      style="display:inline-block;margin-top:10px;padding:9px 16px;
      background:var(--accent);color:#fff;text-decoration:none;
      border-radius:8px;font-weight:600;">
-    Open Ladder Challenge â
+    Open Ladder Challenge &rarr;
   </a>
 </div>
       
@@ -197,7 +272,7 @@
      style="display:inline-block;margin-top:10px;padding:9px 16px;
      background:var(--accent);color:#fff;text-decoration:none;
      border-radius:8px;font-weight:600;">
-    Explore Reformer Pilates â
+    Explore Reformer Pilates &rarr;
   </a>
 </div>
     
@@ -213,7 +288,7 @@
      style="display:inline-block;margin-top:8px;padding:8px 14px;
      background:var(--accent);color:#fff;text-decoration:none;
      border-radius:8px;font-weight:600;">
-    View Stretching Page â
+    View Stretching Page &rarr;
   </a>
 </div>
 </section>   
@@ -593,150 +668,146 @@ function hookRestTimers(scope){
 const planEl = document.getElementById('plan');
 
 
-
-/* ========= ADAPTIVE NOTES FROM ENGINE ========= */
-function escHTML(value){
-  return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
-  });
+function cleanTypeLabel(value){
+  const raw = String(value || '').trim();
+  if(!raw || raw === 'from plan') return 'From My Plan';
+  return raw.replace(/[-_]+/g,' ').replace(/\b\w/g, c => c.toUpperCase());
 }
-
-function readJSONSafe(key, fallback){
-  try{
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  }catch(err){
-    return fallback;
-  }
+function htmlEscape(value){
+  return String(value == null ? '' : value)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
 }
-
-function activeInjuryLabels(){
-  const profile = readJSONSafe('fff.injuryProfile.v1', null) || readJSONSafe('fff.myplan.injuries.v1', null);
-  if(!profile) return [];
-
-  const active = Array.isArray(profile.activeKeys) ? profile.activeKeys : [];
-  const items = profile.items || {};
-
-  const labels = {
-    'tennis-elbow':'Tennis elbow',
-    'tennis_elbow':'Tennis elbow',
-    'lateral-epicondylitis':'Tennis elbow',
-    'outer-left-biceps-pain':'Outer left biceps pain',
-    'outer_biceps_left_pain':'Outer left biceps pain',
-    'distal-biceps-tendon-irritation':'Distal biceps tendon irritation',
-    'hip-tendon-pain-reduced-movement':'Hip tendon pain with reduced movement',
-    'hip_tendon_pain_reduced_movement':'Hip tendon pain with reduced movement',
-    'hip-flexor-tendon-pain':'Hip flexor tendon pain',
-    'clicky-knees-painless':'Clicky knees, painless',
-    'clicky-knees-painful':'Clicky knees, painful',
-    'knee-clicking-painful':'Clicky knees, painful',
-    'knee-clicking-painless':'Clicky knees, painless',
-    'biceps-tendon-pain':'Biceps tendon pain',
-    'shoulder-pain':'Shoulder pain',
-    'rotator-cuff-sensitivity':'Rotator cuff sensitivity',
-    'elbow-pain':'Elbow pain',
-    'wrist-pain':'Wrist pain',
-    'knee-pain':'Knee pain',
-    'patellar-tendon-pain':'Patellar tendon pain',
-    'hip-pain':'Hip pain',
-    'low-back-sensitivity':'Lower back sensitivity',
-    'disc-sensitivity':'Disc sensitivity',
-    'ankle-instability':'Ankle instability',
-    'achilles-calf-sensitivity':'Achilles/calf sensitivity',
-    'left-right-imbalance':'Left/right imbalance',
-    'poor-overhead-mobility':'Poor overhead mobility',
-    'beginner-low-confidence':'Beginner/low confidence',
-    'older-adult':'Older adult/deconditioned'
+function equipmentLabel(eq){
+  const map = {
+    bw:'Bodyweight',
+    db:'Dumbbells',
+    band:'Band',
+    bands:'Bands',
+    rack:'Pull-up bar',
+    rings:'Rings',
+    bench:'Bench',
+    cardio:'Cardio',
+    gymAccess:'Gym'
   };
-
-  const keys = active.length ? active : Object.keys(items).filter(function(k){ return items[k] && items[k] !== 'none'; });
-  return keys.map(function(k){
-    const severity = items[k] && items[k] !== true ? String(items[k]) : '';
-    return (labels[k] || String(k).replace(/[-_]+/g,' ')) + (severity ? ' Â· ' + severity : '');
-  });
+  if(Array.isArray(eq)) return eq.map(equipmentLabel).join(', ');
+  return map[eq] || cleanTypeLabel(eq || 'Bodyweight');
 }
-
-function adaptiveProfileForExercise(ex){
-  if(!ex) return null;
-  const candidates = [ex.name, ex.n, ex.key, ex.k].filter(Boolean);
-  if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getExerciseProfile === 'function'){
-    for(const name of candidates){
-      const p = window.FFFExerciseDB.getExerciseProfile(name);
-      if(p && p.confidence !== 'low') return p;
-    }
+function getActiveInjuryLabels(){
+  const keys = ['fff.myplan.injuries.v1','fff.injuryProfile.v1'];
+  for(const key of keys){
+    try{
+      const raw = localStorage.getItem(key);
+      if(!raw) continue;
+      const profile = JSON.parse(raw);
+      if(profile && Array.isArray(profile.activeKeys) && profile.activeKeys.length){
+        return profile.activeKeys.map(k => cleanTypeLabel(k)).slice(0,4);
+      }
+      if(profile && profile.items){
+        return Object.keys(profile.items)
+          .filter(k => profile.items[k] && profile.items[k] !== 'none')
+          .map(k => cleanTypeLabel(k))
+          .slice(0,4);
+      }
+    }catch(err){}
   }
+  return [];
+}
+function getExerciseDBProfile(ex){
+  try{
+    if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getExerciseProfile === 'function'){
+      return window.FFFExerciseDB.getExerciseProfile(ex.n || ex.name || ex.k);
+    }
+  }catch(err){}
   return null;
 }
-
-function adaptiveAlternativesForExercise(ex, profile){
-  const names = [];
-  if(profile && Array.isArray(profile.alternatives)) names.push.apply(names, profile.alternatives);
-  if(profile && Array.isArray(profile.regressions)) names.push.apply(names, profile.regressions);
-  if(ex && ex.k && ALTS[ex.k]){
-    ALTS[ex.k].forEach(function(k){
-      const alt = findExerciseByKey(k);
-      if(alt && alt.n) names.push(alt.n);
-    });
-  }
-  return Array.from(new Set(names.filter(Boolean))).slice(0,3);
+function fallbackAdaptiveProfile(ex){
+  const name = String(ex.n || '').toLowerCase();
+  const family =
+    /push|press|dip/.test(name) ? 'Push' :
+    /row|pull|chin/.test(name) ? 'Pull' :
+    /squat|step|lunge|leg|rdl|deadlift|hinge/.test(name) ? 'Lower body' :
+    /plank|core|sit|hollow/.test(name) ? 'Core' :
+    /walk|run|rope|amrap|emom|circuit/.test(name) ? 'Conditioning' :
+    'Training';
+  const cue =
+    family === 'Push' ? 'Keep ribs down, move with control, and stop short of sharp shoulder or elbow pain.' :
+    family === 'Pull' ? 'Set the shoulder blades first, pull smoothly, and avoid yanking through the elbow or biceps tendon.' :
+    family === 'Lower body' ? 'Use a pain-free range, keep the knee tracking cleanly, and slow the lowering phase.' :
+    family === 'Core' ? 'Brace gently, breathe, and keep the lower back from taking over.' :
+    family === 'Conditioning' ? 'Keep the pace repeatable rather than frantic. You should finish able to recover.' :
+    'Move deliberately and keep the effort inside a pain-free range.';
+  return {
+    family,
+    coachingCue: cue,
+    alternatives: [],
+    regressions: [],
+    progressions: [],
+    cautionIf: [],
+    tags: []
+  };
 }
-
 function adaptiveNotesHTML(ex, rx){
-  const profile = adaptiveProfileForExercise(ex);
-  const injuries = activeInjuryLabels();
+  const profile = getExerciseDBProfile(ex) || fallbackAdaptiveProfile(ex);
+  const injuries = getActiveInjuryLabels();
   const lines = [];
-  const tags = [];
+  const family = profile.family || profile.movement || '';
+  const equip = equipmentLabel(ex.eq || ex.equipment || 'bw');
 
-  if(profile && profile.coachingCue){
-    lines.push('<div class="adaptive-line"><strong>Technique:</strong> ' + escHTML(profile.coachingCue) + '</div>');
-  }else if(ex && ex.yt){
-    lines.push('<div class="adaptive-line"><strong>Technique:</strong> Use the form lookup and keep the movement controlled, pain-free and repeatable.</div>');
+  lines.push(`<div class="note-line"><strong>Why here</strong><span>${htmlEscape(family ? family + ' pattern' : 'Movement pattern')} using ${htmlEscape(equip)}. Built from your current My Plan selection.</span></div>`);
+
+  if(profile.coachingCue){
+    lines.push(`<div class="note-line"><strong>Technique</strong><span>${htmlEscape(profile.coachingCue)}</span></div>`);
   }
 
-  if(rx){
-    lines.push('<div class="adaptive-line"><strong>Dose:</strong> ' + escHTML(rx) + '</div>');
-  }
+  const swaps = []
+    .concat(profile.regressions || [])
+    .concat(profile.alternatives || [])
+    .filter(Boolean)
+    .slice(0,3);
 
-  if(profile && Array.isArray(profile.cautionIf) && profile.cautionIf.length){
-    lines.push('<div class="adaptive-line"><strong>Caution flags:</strong> ' + escHTML(profile.cautionIf.join(', ')) + '</div>');
+  if(swaps.length){
+    lines.push(`<div class="note-line"><strong>Swap if needed</strong><span>${swaps.map(htmlEscape).join(', ')}</span></div>`);
+  }else{
+    lines.push(`<div class="note-line"><strong>Swap if needed</strong><span>Reduce range, slow the tempo, or choose the closest easier variation from your plan.</span></div>`);
   }
-
-  const alternatives = adaptiveAlternativesForExercise(ex, profile);
-  if(alternatives.length){
-    lines.push('<div class="adaptive-line"><strong>Swap if painful:</strong> ' + escHTML(alternatives.join(' â¢ ')) + '</div>');
-  }
-
-  if(profile && profile.jointStress != null){ tags.push('Joint stress ' + profile.jointStress + '/5'); }
-  if(profile && profile.fatigueCost != null){ tags.push('Fatigue ' + profile.fatigueCost + '/5'); }
-  if(profile && profile.skillDemand != null){ tags.push('Skill ' + profile.skillDemand + '/5'); }
-  if(injuries.length){ tags.push('Active injury profile'); }
 
   if(injuries.length){
-    lines.push('<div class="adaptive-line"><strong>Your selected issues:</strong> ' + escHTML(injuries.slice(0,4).join(' â¢ ')) + '</div>');
+    lines.push(`<div class="note-line warning"><strong>Active flags</strong><span>${injuries.map(htmlEscape).join(', ')}. Keep this movement below sharp pain and avoid chasing load during a flare.</span></div>`);
   }
 
-  if(!lines.length && !tags.length) return '';
-
-  return '<div class="adaptive-notes" data-adaptive-notes>' +
-    '<h4>Adaptive coaching notes</h4>' +
-    '<div class="adaptive-grid">' + lines.join('') + '</div>' +
-    (tags.length ? '<div class="adaptive-tags">' + tags.map(function(t){ return '<span class="adaptive-tag">' + escHTML(t) + '</span>'; }).join('') + '</div>' : '') +
-  '</div>';
+  return `<div class="adaptive-note" aria-label="Adaptive coaching notes">${lines.join('')}</div>`;
 }
 
 function makeExerciseRow(ex, rx, note){
-  const row = document.createElement('div'); row.className='mov';
+  const row = document.createElement('div');
+  row.className = 'mov';
+
+  const safeName = htmlEscape(ex.n || 'Exercise');
+  const safeType = htmlEscape(cleanTypeLabel(rx || note || 'Exercise'));
+  const sourceLabel = note ? htmlEscape(cleanTypeLabel(note)) : '';
+  const safeYT = htmlEscape(ytSearchURL(ex.yt || ((ex.n || 'exercise') + ' form')));
+  const metaChips = [
+    `<span class="chip-mini accent">${safeType}</span>`,
+    `<span class="chip-mini">${htmlEscape(equipmentLabel(ex.eq || ex.equipment || 'bw'))}</span>`
+  ];
+  if(sourceLabel) metaChips.push(`<span class="chip-mini">${sourceLabel}</span>`);
+
   row.innerHTML = `
     <div class="mov-head">
-      <div class="mov-title">
-        <a href="${ytSearchURL(ex.yt)}" target="_blank" rel="noopener" title="YouTube form search">
-          ${ex.n}${note ? ' <span class="meta">(' + note + ')</span>' : ''}
-        </a>
+      <div class="mov-main">
+        <div class="mov-title">
+          <a href="${safeYT}" target="_blank" rel="noopener" title="YouTube form search">${safeName}</a>
+        </div>
+        <div class="mov-sub">${metaChips.join('')}</div>
       </div>
-      <div class="rx">${rx || ''}</div>
+      <div class="rx">${htmlEscape(rx && rx !== 'exercise' ? rx : '')}</div>
       <div class="mov-tools">
         <button class="btn-sm" data-open>Log</button>
-        <button class="btn-sm" data-clear title="Clear this exerciseâs saved data">Clear</button>
+        <button class="btn-sm" data-clear title="Clear this exercise's saved data">Clear</button>
       </div>
     </div>
     <div class="drawer" data-drawer>
@@ -762,10 +833,15 @@ function makeExerciseRow(ex, rx, note){
   `;
 
   const drawer = row.querySelector('[data-drawer]');
-  row.querySelector('[data-open]').addEventListener('click', ()=>{ drawer.classList.toggle('open'); if(drawer.classList.contains('open')) hookRestTimers(drawer); });
+  row.querySelector('[data-open]').addEventListener('click', ()=>{
+    drawer.classList.toggle('open');
+    if(drawer.classList.contains('open')) hookRestTimers(drawer);
+  });
   row.querySelector('[data-clear]').addEventListener('click', ()=>{
-    localStorage.removeItem(NS+ex.k); localStorage.removeItem(NS+ex.k+'.best');
-    populateFromStore(); flash(row.querySelector('[data-quote]'), "Cleared. Fresh start.");
+    localStorage.removeItem(NS+ex.k);
+    localStorage.removeItem(NS+ex.k+'.best');
+    populateFromStore();
+    flash(row.querySelector('[data-quote]'), 'Cleared. Fresh start.');
   });
 
   const logArea = row.querySelector('[data-log]');
@@ -775,22 +851,33 @@ function makeExerciseRow(ex, rx, note){
 
   function populateFromStore(){
     const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
-    logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value = saved[id]; });
+    logArea.querySelectorAll('[data-field]').forEach(inp=>{
+      const id=inp.dataset.field;
+      if(saved[id]) inp.value = saved[id];
+    });
     const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-    pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : '';
+    pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w x r best set)` : '';
     badgeEl.textContent = milestoneText();
   }
   populateFromStore();
 
   logArea.querySelectorAll('[data-save]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
+      const obj = {};
+      logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
       localStorage.setItem(NS+ex.k, JSON.stringify(obj));
-      const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-      if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best wÃr)`; }
-      else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : 'Saved.'; }
-      const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
-      badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
+      const bestNow = bestScore(obj);
+      const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
+      if(bestNow>bestWas){
+        localStorage.setItem(NS+ex.k+'.best', bestNow);
+        pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w x r)`;
+      }else{
+        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w x r best set)` : 'Saved.';
+      }
+      const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1);
+      localStorage.setItem(NS+'saves', total);
+      badgeEl.textContent = milestoneText(total);
+      flash(quoteEl, pick(QUOTES));
     });
   });
 
@@ -799,13 +886,25 @@ function makeExerciseRow(ex, rx, note){
 
 function exFromPayloadItem(item){
   if(!item) return null;
-  const byName = EXERCISES.find(e => e.n.toLowerCase() === String(item.name||'').toLowerCase());
-  if(byName) return byName;
+  const itemName = String(item.name || '').trim();
+  const itemKey = String(item.key || item.k || itemName || 'custom')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/(^-|-$)/g,'') || 'custom';
+  const byName = EXERCISES.find(e => e.n.toLowerCase() === itemName.toLowerCase());
+  if(byName){
+    return Object.assign({}, byName, {
+      k: byName.k || itemKey,
+      eq: (item.equipment && item.equipment[0]) || byName.eq || 'bw',
+      yt: item.yt || byName.yt || (itemName + ' form')
+    });
+  }
   return {
-    k: String(item.name||'custom').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
-    n: item.name || 'Exercise',
-    eq: (item.equipment && item.equipment[0]) || 'bw',
-    yt: item.yt || ((item.name || 'exercise') + ' form')
+    k: itemKey,
+    n: itemName || 'Exercise',
+    eq: (Array.isArray(item.equipment) && item.equipment[0]) || item.eq || 'bw',
+    equipment: item.equipment || [],
+    yt: item.yt || ((itemName || 'exercise') + ' form')
   };
 }
 
@@ -866,7 +965,6 @@ function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessio
         </div>
         ${pickRes.isAlt ? '<p class="meta" style="margin:.35rem 0 0">Alternative shown based on equipment.</p>' : ''}
         <div class="drawer" data-drawer>
-          ${adaptiveNotesHTML(ex, rx)}
           <div class="log-grid" data-log>
             ${[1,2,3,4,5].map(i=>`
               <div class="log-row">
@@ -903,7 +1001,7 @@ function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessio
         const saved = JSON.parse(localStorage.getItem(NS+ex.k) || '{}');
         logArea.querySelectorAll('[data-field]').forEach(inp=>{ const id=inp.dataset.field; if(saved[id]) inp.value=saved[id]; });
         const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : '';
+        pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w x r best set)` : '';
         badgeEl.textContent = milestoneText();
       }
       populateFromStore();
@@ -913,8 +1011,8 @@ function renderCal(){ if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessio
           const obj = {}; logArea.querySelectorAll('[data-field]').forEach(inp=>{ obj[inp.dataset.field]=inp.value.trim(); });
           localStorage.setItem(NS+ex.k, JSON.stringify(obj));
           const bestNow = bestScore(obj); const bestWas = parseFloat(localStorage.getItem(NS+ex.k+'.best')||'0')||0;
-          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best wÃr)`; }
-          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (wÃr best set)` : 'Saved.'; }
+          if(bestNow>bestWas){ localStorage.setItem(NS+ex.k+'.best', bestNow); pbEl.textContent=`New PB! ${bestNow.toFixed(1)} (best w x r)`; }
+          else{ pbEl.textContent = bestWas>0 ? `PB score: ${bestWas.toFixed(1)} (w x r best set)` : 'Saved.'; }
           const total = (parseInt(localStorage.getItem(NS+'saves')||'0',10) + 1); localStorage.setItem(NS+'saves', total);
           badgeEl.textContent = milestoneText(total); flash(quoteEl, pick(QUOTES));
         });

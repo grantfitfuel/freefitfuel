@@ -149,6 +149,64 @@
       .log-row button{grid-column:1 / -1}
     }
 
+
+/* ===== Recovery & Training Hub ===== */
+.systems-shell{
+  margin:18px 0;
+}
+.system-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:14px;
+}
+.fff-system-card{
+  background:#111418;
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  padding:14px;
+}
+.fff-system-card.featured{
+  border-color:rgba(255,106,0,.45);
+  background:linear-gradient(180deg,rgba(255,106,0,.10),rgba(255,255,255,.02));
+}
+.system-pill{
+  display:inline-flex;
+  align-items:center;
+  background:rgba(255,106,0,.16);
+  border:1px solid rgba(255,106,0,.35);
+  color:#ffd2b2;
+  border-radius:999px;
+  padding:.2rem .55rem;
+  font-size:.78rem;
+  margin-bottom:.65rem;
+}
+.system-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin:.7rem 0;
+  color:var(--inkdim);
+  font-size:.88rem;
+}
+.system-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  margin-bottom:.8rem;
+}
+.system-btn{
+  margin-top:.35rem;
+}
+.system-group{
+  margin-top:24px;
+}
+.system-group-title{
+  margin:0 0 .8rem;
+  border-left:4px solid var(--accent);
+  padding-left:.7rem;
+}
+
+
   </style>
   <title>FreeFitFuel Workouts  -  Dumbbell, Bodyweight & Bands</title>
   <meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
@@ -314,6 +372,25 @@
       <h2>Important Note</h2>
       <p>The content on FreeFitFuel™ is for general fitness education only and isn't a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
     </section>
+
+<!-- ===== Recovery & Training Hub ===== -->
+<section class="section systems-shell">
+  <h2>Recovery & Training Hub</h2>
+
+  <p class="lead">
+    Standalone FreeFitFuel systems for recovery, mobility, strength foundations,
+    pain-management, conditioning and skill progression.
+  </p>
+
+  <div class="block">
+    <h3>Recommended Systems</h3>
+    <div id="featuredSystems" class="system-grid"></div>
+  </div>
+
+  <div id="systemsLibrary"></div>
+</section>
+
+
   </main>
 
 
@@ -1241,5 +1318,7 @@ renderCircuits();
   setTimeout(openRequestedExercise, 180);
 })();
 </script>
+<script src="/js/fff-systems.js"></script>
+<script src="/js/fff-system-renderer.js"></script>
 </body>
 </html>

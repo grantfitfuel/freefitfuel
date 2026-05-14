@@ -208,20 +208,20 @@
 
 
   </style>
-  <title>FreeFitFuel Workouts  -  Dumbbell, Bodyweight & Bands</title>
-  <meta name="description" content="Smart free workouts for all levels. Log sets, track PBs, use calisthenics progressions and cross-training circuits. Dumbbell, bands & bodyweight training.">
+  <title>FreeFitFuel Workouts | Training, Recovery & Movement</title>
+  <meta name="description" content="Structured FreeFitFuel workouts, recovery systems, mobility, conditioning, physio support and progression pathways for real-world training.">
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="FreeFitFuel Workouts  -  Dumbbell, Bodyweight & Bands">
-  <meta property="og:description" content="Weekly splits, calisthenics progressions & cross-training circuits. Log reps, save PBs & build consistency.">
+  <meta property="og:title" content="FreeFitFuel Workouts | Training, Recovery & Movement">
+  <meta property="og:description" content="Training plans, recovery systems, mobility, conditioning, physio support and progression pathways. Log reps, save PBs and build consistency.">
   <meta property="og:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.freefitfuel.com/workouts.html">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="FreeFitFuel Workouts  -  Dumbbell, Bodyweight & Bands">
-  <meta name="twitter:description" content="Free structured workouts. Track PBs. Train anywhere with dumbbells, bands & bodyweight.">
+  <meta name="twitter:title" content="FreeFitFuel Workouts | Training, Recovery & Movement">
+  <meta name="twitter:description" content="Free structured training, recovery systems, mobility, conditioning and progression pathways. Track PBs and train smarter.">
   <meta name="twitter:image" content="https://www.freefitfuel.com/img/workouts-hero.png">
 </head>
 <body>
@@ -236,18 +236,18 @@
       <div class="overlay" aria-hidden="true"></div>
     </figure>
     <div class="content wrap">
-      <h1><span class="accent">Workouts that fit life</span></h1>
-      <p class="lead">Clear plans with clickable form lookups, personal logging, badges and gentle nudges. Train smart with dumbbells, bands or bodyweight.</p>
+      <h1><span class="accent">Training, recovery and movement that fit life</span></h1>
+      <p class="lead">Clear plans with clickable form lookups, personal logging, badges and gentle nudges. Train smart across strength, mobility, conditioning, recovery and progression work.</p>
     </div>
   </header>
 
   <main class="wrap">
-    <p class="lead">This page is now your workout library and logging engine. It reads the current build from <strong>My Plan</strong>, then shows the selected sessions and exercises with the real logging drawers, PBs, timers and YouTube form lookups.</p>
+    <p class="lead">This page is now your training library and logging engine. It reads the current build from <strong>My Plan</strong>, then shows the selected sessions and exercises with real logging drawers, PBs, timers and YouTube form lookups. It also links into recovery, mobility, physio and progression systems.</p>
     <section class="section" id="libraryStatus">
-      <h2>Workout Library</h2>
+      <h2>Training Library</h2>
       <div class="block">
         <strong id="libraryModeLabel">Waiting for My Plan</strong>
-        <p class="meta" id="libraryModeText">Open My Plan and build your week. This page will then show the exact sessions and exercises selected there.</p>
+        <p class="meta" id="libraryModeText">Open My Plan and build your week. This page will then show the exact sessions, exercises and supporting systems selected there.</p>
         <div class="backup" aria-label="Backup controls">
           <button class="btn-sm" id="btnExport">Export logs (.json)</button>
           <label class="btn-sm" for="importFile" style="cursor:pointer">Import logs</label>
@@ -299,20 +299,18 @@
   </a>
 </div>
       
-        <!-- ===== personalised workouts ===== -->
+        <!-- ===== My Plan + Nutrition Link ===== -->
 <section class="section">
-  <h2>Fuel Your Workouts with a Personalised Plan</h2>
+  <h2>Fuel Your Training from My Plan</h2>
   <p>
-    Training is only half the journey: what you eat shapes your results. On our 
-    <a href="nutrition.html" style="color:var(--accent);font-weight:600">Nutrition page</a> 
-    you can enter your details and instantly generate a tailored plan designed around your goals.  
+    Training and recovery work best when your food, calories and macros support the goal. 
+    <a href="my-plan.html" style="color:var(--accent);font-weight:600">My Plan</a> is now the main place to build your personal training direction and store your core targets.
   </p>
   <p>
-    Your plan comes alive with an interactive tracker you can revisit anytime. Prefer offline? 
-    Download a print-ready PDF or save it to keep your nutrition and workouts in sync wherever you go.  
+    The <a href="nutrition.html" style="color:var(--accent);font-weight:600">Nutrition page</a> supports those targets with food guidance, recipe ideas and practical fuelling tools, rather than asking you to rebuild the same plan twice.
   </p>
-  <p class="lead" style="margin-top:.6rem;font-weight:600;color: mm var(--accent)">
-    100% free, fully personalised: your fuel, your way.
+  <p class="lead" style="margin-top:.6rem;font-weight:600;color:var(--accent)">
+    One plan, connected training, recovery and nutrition.
   </p>
 </section>
 
@@ -596,10 +594,10 @@ function updateLibraryBanner(){
   const text = document.getElementById('libraryModeText');
   if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){
     if(label) label.textContent = 'Showing the current build from My Plan';
-    if(text) text.textContent = 'Training type: ' + (LIBRARY_PAYLOAD.style || 'mixed') + '. These sessions came from your most recent build. Use this page to log the selected exercises and keep PBs, timers and backups in one place.';
+    if(text) text.textContent = 'Training focus: ' + (LIBRARY_PAYLOAD.style || 'mixed') + '. These sessions came from your most recent build. Use this page to log the selected exercises, keep PBs, use timers and connect with supporting recovery systems.';
   } else {
     if(label) label.textContent = 'Waiting for My Plan';
-    if(text) text.textContent = 'Open My Plan and build your week. This page will then show the selected sessions and exercises.';
+    if(text) text.textContent = 'Open My Plan and build your week. This page will then show the selected sessions, exercises and supporting systems.';
   }
 }
 function ytSearchURL(term){ return 'https://www.youtube.com/results?search_query='+encodeURIComponent(term); }

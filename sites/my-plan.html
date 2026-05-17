@@ -536,6 +536,48 @@
 
     code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
 
+    /* ===== AI-style adaptive system scoring ===== */
+    .system-score-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:.6rem 0 .2rem;
+    }
+    .score-pill{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(255,106,0,.28);
+      background:rgba(255,106,0,.08);
+      color:#ffd6bd;
+      border-radius:999px;
+      padding:.22rem .58rem;
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .score-pill.soft{
+      border-color:var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--inkdim);
+    }
+    .system-reason-list{
+      margin:.55rem 0 0 1rem;
+      padding:0;
+      color:var(--inkdim);
+      font-size:.92rem;
+    }
+    .system-reason-list li{
+      margin:.25rem 0;
+    }
+    .adaptive-systems-note{
+      border-left:4px solid var(--accent);
+      padding:.72rem .85rem;
+      background:rgba(255,106,0,.08);
+      border-radius:10px;
+      margin:.75rem 0 1rem;
+      color:var(--inkdim);
+    }
+
+
     /* Recommended FreeFitFuel systems */
     .systems-recommendation-grid{
       display:grid;
@@ -1487,6 +1529,7 @@
 
   </div>
 
+  <script src="/js/fff-systems.js"></script>
   <script src="js/engine/fff-state.js?v=1"></script>
   <script src="js/engine/fff-exercise-db.js?v=1"></script>
   <script src="js/engine/fff-recovery.js?v=1"></script>
@@ -5162,5 +5205,487 @@
 <script src="js/engine/fff-engine-bridge.js?v=1"></script>
 <script src="js/engine/fff-my-plan-persistence.js?v=1"></script>
 <script src="js/engine/fff-injury-profile.js?v=2"></script>
+
+  <script>
+  /*
+    FreeFitFuel adaptive system recommendation engine
+    Reads window.FFFSystems.all and scores systems from current My Plan state.
+    This is deliberately weighted and contextual, not simple one-rule matching.
+  */
+  (function(){
+    function fffReady(fn){
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', fn, { once:true });
+      }else{
+        fn();
+      }
+    }
+
+    function esc(value){
+      return String(value == null ? '' : value)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+
+    function readNumber(id, fallback){
+      var el = document.getElementById(id);
+      if(!el) return fallback;
+      var n = parseFloat(el.value || el.textContent || '');
+      return isNaN(n) ? fallback : n;
+    }
+
+    function readSelect(id, fallback){
+      var el = document.getElementById(id);
+      return el ? String(el.value || fallback || '') : String(fallback || '');
+    }
+
+    function readRadio(name, fallback){
+      var checked = document.querySelector('input[name="' + name + '"]:checked');
+      var n = checked ? parseInt(checked.value, 10) : fallback;
+      return isNaN(n) ? fallback : n;
+    }
+
+    function lower(value){
+      return String(value || '').toLowerCase();
+    }
+
+    function safeArr(value){
+      return Array.isArray(value) ? value : [];
+    }
+
+    function getCurrentRoadmap(){
+      try{
+        var raw = localStorage.getItem('fff.roadmap.plan.v1');
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function getLatestCheckin(){
+      try{
+        var raw = localStorage.getItem('fff.weekly.checkins.v1');
+        var arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) && arr.length ? arr[arr.length - 1] : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function getActiveNotes(){
+      var notes = [];
+      var checkinNotes = document.getElementById('checkinNotes');
+      if(checkinNotes && checkinNotes.value) notes.push(checkinNotes.value);
+      var latest = getLatestCheckin();
+      if(latest && latest.notes) notes.push(latest.notes);
+      return lower(notes.join(' '));
+    }
+
+    function getEquipmentState(){
+      try{
+        if(typeof getEquipmentProfileFromUI === 'function'){
+          return getEquipmentProfileFromUI();
+        }
+      }catch(err){}
+      try{
+        var raw = localStorage.getItem('fff.equipment.profile.v1');
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){}
+      return null;
+    }
+
+    function buildAdaptiveProfile(){
+      var roadmap = getCurrentRoadmap();
+      var latest = getLatestCheckin();
+      var currentStage = roadmap && roadmap.stages && roadmap.stages[0] ? roadmap.stages[0] : null;
+      var notes = getActiveNotes();
+      var equipment = getEquipmentState();
+
+      var recovery = latest && latest.recovery != null ? Number(latest.recovery) : readRadio('recoveryScore', 3);
+      var energy = latest && latest.energy != null ? Number(latest.energy) : readRadio('energyScore', 3);
+      var sleep = latest && latest.sleep != null ? Number(latest.sleep) : readRadio('sleepScore', 3);
+      var hunger = latest && latest.hunger != null ? Number(latest.hunger) : readRadio('hungerScore', 3);
+      var emotional = latest && latest.emotional_level ? latest.emotional_level : readSelect('emotionalLevel', 'steady');
+      var goal = roadmap && roadmap.goal ? roadmap.goal : (typeof GOAL !== 'undefined' ? GOAL : '');
+      var phase = currentStage && currentStage.id ? currentStage.id : '';
+      var trainingStatus = readSelect('trainingStatus', roadmap && roadmap.trainingStatus ? roadmap.trainingStatus : 'intermediate');
+      var wantsMuscle = readSelect('wantsMuscleGain', roadmap && roadmap.wantsMuscleGain ? 'yes' : 'no') === 'yes';
+      var environment = equipment && equipment.environment ? equipment.environment : readSelect('trainingEnvironment', 'home');
+
+      var flags = {
+        lowRecovery: recovery <= 2 || sleep <= 2,
+        moderateRecovery: recovery === 3 || sleep === 3,
+        highRecovery: recovery >= 4 && sleep >= 3,
+        lowEnergy: energy <= 2,
+        highEnergy: energy >= 4,
+        highHunger: hunger >= 4,
+        emotionallyDrained: emotional === 'drained' || emotional === 'flat',
+        cutPhase: phase === 'cut',
+        transformPhase: phase === 'transform',
+        maintainPhase: phase === 'maintain',
+        bulkPhase: phase === 'bulk',
+        muscleGoal: wantsMuscle || lower(goal).indexOf('build') > -1 || lower(goal).indexOf('bulk') > -1,
+        homeTraining: environment === 'home',
+        gymTraining: environment === 'gym',
+        beginner: lower(trainingStatus).indexOf('beginner') > -1,
+        advanced: lower(trainingStatus).indexOf('advanced') > -1,
+
+        kneePain: /knee|knees|patella|stairs|squat pain|lower body pain/.test(notes),
+        hipPain: /hip|groin|inside hip|glute|sciatic/.test(notes),
+        elbowPain: /elbow|tennis elbow|outer bicep|biceps pain|pressing pain|tendon/.test(notes),
+        stiffness: /stiff|tight|mobility|fascia|desk|sitting|sedentary|neck|posture/.test(notes),
+        cramp: /cramp|calf cramp|spasm/.test(notes),
+        pullUpGoal: /pull.?up|chin.?up|lat activation|scapular|calisthenics/.test(notes),
+        runningNeed: /run|running|10k|half marathon|marathon|ankle|lower leg|shin|calf/.test(notes),
+        stressSupport: /stress|burnout|overwhelmed|anxious|flat|drained|poor sleep|sleep/.test(notes)
+      };
+
+      return {
+        roadmap: roadmap,
+        latest: latest,
+        currentStage: currentStage,
+        notes: notes,
+        equipment: equipment,
+        recovery: recovery,
+        energy: energy,
+        sleep: sleep,
+        hunger: hunger,
+        emotional: emotional,
+        goal: goal,
+        phase: phase,
+        trainingStatus: trainingStatus,
+        wantsMuscle: wantsMuscle,
+        environment: environment,
+        flags: flags
+      };
+    }
+
+    function equipmentCompatibility(system, profile){
+      var equipment = safeArr(system.equipment).join(' ').toLowerCase();
+      var eq = profile.equipment && profile.equipment.equip ? profile.equipment.equip : {};
+      if(!equipment) return { score: 6, reason: 'No specialist equipment required.' };
+
+      var score = 0;
+      var reasons = [];
+
+      if(/chair|wall|bodyweight|none|walking|tai chi/.test(equipment)){
+        score += 12;
+        reasons.push('fits simple home setup');
+      }
+      if(/dumbbell/.test(equipment) && eq.db){
+        score += 8;
+        reasons.push('uses available dumbbells');
+      }
+      if(/band|resistance/.test(equipment) && eq.band){
+        score += 8;
+        reasons.push('uses available bands');
+      }
+      if(/step|stair/.test(equipment)){
+        score += 6;
+        reasons.push('uses a step or stair');
+      }
+      if(/bar|pull/.test(equipment) && (eq.rack || eq.gymAccess)){
+        score += 10;
+        reasons.push('pull-up equipment appears available');
+      }
+
+      if(score === 0){
+        score -= 8;
+        reasons.push('equipment fit is uncertain');
+      }
+
+      return { score: score, reason: reasons.join(', ') || 'equipment fit assessed' };
+    }
+
+    function phaseScore(system, profile){
+      var tags = lower(safeArr(system.tags).join(' '));
+      var category = lower(system.category);
+      var intensity = lower(system.intensity);
+      var flags = profile.flags;
+      var score = 0;
+      var reasons = [];
+
+      if(flags.lowRecovery){
+        if(category.indexOf('recovery') > -1 || tags.indexOf('recovery') > -1 || intensity.indexOf('low') > -1){
+          score += 30;
+          reasons.push('low recovery favours a recovery or low-intensity system');
+        }
+        if(intensity.indexOf('moderate') > -1 && category.indexOf('strength') > -1){
+          score -= 18;
+          reasons.push('moderate strength work is deprioritised while recovery is low');
+        }
+      }
+
+      if(flags.highRecovery && flags.highEnergy){
+        if(category.indexOf('strength') > -1 || tags.indexOf('strength') > -1 || tags.indexOf('calisthenics') > -1){
+          score += 18;
+          reasons.push('good recovery supports progression work');
+        }
+      }
+
+      if(flags.cutPhase){
+        if(tags.indexOf('recovery') > -1 || tags.indexOf('walking') > -1 || tags.indexOf('mobility') > -1){
+          score += 12;
+          reasons.push('cut phase benefits from recovery and movement support');
+        }
+      }
+
+      if(flags.transformPhase){
+        if(tags.indexOf('strength') > -1 || tags.indexOf('mobility') > -1 || category.indexOf('movement') > -1){
+          score += 14;
+          reasons.push('transform phase benefits from strength plus movement quality');
+        }
+      }
+
+      if(flags.bulkPhase || flags.muscleGoal){
+        if(tags.indexOf('strength') > -1 || category.indexOf('strength') > -1 || tags.indexOf('pull') > -1){
+          score += 16;
+          reasons.push('muscle-building context favours strength progression systems');
+        }
+      }
+
+      if(flags.emotionallyDrained || flags.stressSupport){
+        if(tags.indexOf('recovery') > -1 || tags.indexOf('tai chi') > -1 || tags.indexOf('low impact') > -1){
+          score += 18;
+          reasons.push('emotional load favours low-pressure recovery work');
+        }
+      }
+
+      return { score: score, reasons: reasons };
+    }
+
+    function issueScore(system, profile){
+      var id = lower(system.id);
+      var title = lower(system.title);
+      var tags = lower(safeArr(system.tags).join(' '));
+      var goals = lower(safeArr(system.goals).join(' '));
+      var hay = id + ' ' + title + ' ' + tags + ' ' + goals;
+      var flags = profile.flags;
+      var score = 0;
+      var reasons = [];
+
+      function add(condition, amount, reason){
+        if(condition){
+          score += amount;
+          reasons.push(reason);
+        }
+      }
+
+      add(flags.kneePain && /knee|joint control|lower body/.test(hay), 42, 'knee or lower-body signals match this system');
+      add(flags.hipPain && /hip|knee|walking|sitting stiffness|lower body/.test(hay), 34, 'hip or walking discomfort points towards this system');
+      add(flags.elbowPain && /elbow|biceps|tendon|pressing/.test(hay), 42, 'elbow or biceps pain signals match this protocol');
+      add(flags.stiffness && /fascia|mobility|deskbound|stiffness|posture|whole body/.test(hay), 36, 'stiffness or deskbound signals match this system');
+      add(flags.lowRecovery && /lymphatic|recovery|tai chi|walking|low impact|daily reset/.test(hay), 34, 'low recovery favours gentle recovery flow');
+      add(flags.pullUpGoal && /pull|scapular|lat|calisthenics/.test(hay), 46, 'pull-up or scapular-control goal matches this pathway');
+      add(flags.runningNeed && /lower-leg|ankle|calf|feet|balance|running/.test(hay), 32, 'running or lower-leg signals match this system');
+      add(flags.cramp && /calf|lower-leg|walking|recovery|circulation/.test(hay), 20, 'cramp signal favours calf, walking or recovery support');
+      add(flags.beginner && /foundation|control|recovery|capacity/.test(hay), 12, 'beginner status favours foundational systems');
+
+      return { score: score, reasons: reasons };
+    }
+
+    function planHookScore(system, profile){
+      var hooks = system.planHooks || {};
+      var suggested = safeArr(hooks.suggestedWhen);
+      var avoid = safeArr(hooks.avoidWhen);
+      var flags = profile.flags;
+      var score = 0;
+      var reasons = [];
+
+      var flagMap = {
+        kneePain: flags.kneePain,
+        lowerBodyPain: flags.kneePain || flags.hipPain,
+        hipPain: flags.hipPain,
+        walkingPain: flags.hipPain || flags.kneePain,
+        elbowPain: flags.elbowPain,
+        bicepsPain: flags.elbowPain,
+        pressingPain: flags.elbowPain,
+        stiffness: flags.stiffness,
+        deskbound: flags.stiffness,
+        recoveryNeed: flags.lowRecovery || flags.moderateRecovery || flags.stressSupport,
+        lowEnergy: flags.lowEnergy,
+        pullUpGoal: flags.pullUpGoal,
+        upperBodyStrength: flags.muscleGoal || flags.highEnergy,
+        beginner: flags.beginner,
+        over40Support: true,
+        returningAfterBreak: flags.lowRecovery || flags.beginner,
+        deconditioned: flags.beginner || flags.lowEnergy,
+        runningPlan: flags.runningNeed,
+        balanceNeed: flags.runningNeed || flags.kneePain,
+        lowerLegWeakness: flags.runningNeed || flags.cramp,
+        stressSupport: flags.stressSupport || flags.emotionallyDrained
+      };
+
+      suggested.forEach(function(flag){
+        if(flagMap[flag]){
+          score += 16;
+          reasons.push('plan hook matched: ' + flag);
+        }
+      });
+
+      avoid.forEach(function(flag){
+        if(flagMap[flag]){
+          score -= 35;
+          reasons.push('caution hook triggered: ' + flag);
+        }
+      });
+
+      if(hooks.myPlanDrawsFrom) score += 8;
+
+      return { score: score, reasons: reasons };
+    }
+
+    function scoreSystem(system, profile){
+      var total = 0;
+      var reasons = [];
+      var warnings = [];
+
+      if(!system || !system.planHooks || !system.planHooks.myPlanDrawsFrom){
+        total -= 25;
+        warnings.push('not currently marked for My Plan use');
+      }
+
+      if(system.status === 'ready') total += 12;
+      else total += 4;
+
+      var eq = equipmentCompatibility(system, profile);
+      total += eq.score;
+      if(eq.reason) reasons.push(eq.reason);
+
+      var phase = phaseScore(system, profile);
+      total += phase.score;
+      reasons = reasons.concat(phase.reasons);
+
+      var issue = issueScore(system, profile);
+      total += issue.score;
+      reasons = reasons.concat(issue.reasons);
+
+      var hook = planHookScore(system, profile);
+      total += hook.score;
+      reasons = reasons.concat(hook.reasons);
+
+      var intensity = lower(system.intensity);
+      if(profile.flags.lowRecovery && /moderate|high/.test(intensity)){
+        total -= 10;
+        warnings.push('kept lower because recovery is currently limited');
+      }
+
+      if(profile.flags.highRecovery && profile.flags.highEnergy && /low/.test(intensity) && lower(system.category).indexOf('recovery') === -1){
+        total -= 4;
+      }
+
+      total = Math.round(total);
+
+      var priority = 'support';
+      if(total >= 85) priority = 'high';
+      else if(total >= 55) priority = 'medium';
+
+      return {
+        system: system,
+        score: total,
+        priority: priority,
+        reasons: reasons.slice(0, 4),
+        warnings: warnings.slice(0, 2)
+      };
+    }
+
+    function renderAdaptiveSystems(){
+      var mount = document.getElementById('recommendedSystems');
+      if(!mount) return;
+
+      if(!window.FFFSystems || !Array.isArray(window.FFFSystems.all)){
+        mount.innerHTML = '<div class="card"><h3>Recommended Systems</h3><p class="meta">System registry is not loaded yet.</p></div>';
+        return;
+      }
+
+      var profile = buildAdaptiveProfile();
+      var scored = window.FFFSystems.all
+        .map(function(system){ return scoreSystem(system, profile); })
+        .filter(function(item){ return item.score > 12; })
+        .sort(function(a,b){ return b.score - a.score; })
+        .slice(0, 5);
+
+      if(!scored.length){
+        scored = window.FFFSystems.all
+          .filter(function(system){ return system.planHooks && system.planHooks.myPlanDrawsFrom; })
+          .slice(0, 3)
+          .map(function(system){ return scoreSystem(system, profile); });
+      }
+
+      var html = '<div class="adaptive-systems-note"><strong>Adaptive selection:</strong> systems are ranked from your current phase, recovery, energy, sleep, notes, equipment and system metadata. This is a contextual scoring layer rather than a fixed rule list.</div>';
+
+      html += '<div class="grid grid-3">';
+
+      scored.forEach(function(item){
+        var s = item.system;
+        var goals = safeArr(s.goals).slice(0, 2);
+        var tags = safeArr(s.tags).slice(0, 4);
+        var reasons = item.reasons.length ? item.reasons : ['general fit for the current My Plan context'];
+
+        html += '<article class="card">' +
+          '<h3>' + esc(s.title || 'System') + '</h3>' +
+          '<p class="meta">' + esc(goals.join(' • ') || 'Recommended support system.') + '</p>' +
+          '<div class="system-score-row">' +
+            '<span class="score-pill">Fit score ' + esc(item.score) + '</span>' +
+            '<span class="score-pill soft">' + esc(item.priority) + ' priority</span>' +
+            '<span class="score-pill soft">' + esc(s.durationMinutes || '?') + ' min</span>' +
+          '</div>' +
+          '<div class="tag-row">' + tags.map(function(tag){ return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' +
+          '<ul class="system-reason-list">' + reasons.map(function(reason){ return '<li>' + esc(reason) + '</li>'; }).join('') + '</ul>' +
+          (item.warnings.length ? '<p class="meta" style="margin-top:.55rem">' + esc(item.warnings.join(' • ')) + '</p>' : '') +
+          '<div class="tag-row" style="margin-top:.75rem">' +
+            '<a class="btn btn-primary" href="' + esc(s.standaloneUrl || '/recovery-training-hub.html') + '">Open system</a>' +
+            '<a class="btn" href="/recovery-training-hub.html">Hub</a>' +
+          '</div>' +
+        '</article>';
+      });
+
+      html += '</div>';
+      mount.innerHTML = html;
+    }
+
+    function attachAdaptiveSystemRefresh(){
+      var ids = [
+        'checkinNotes','emotionalLevel','trainingStatus','wantsMuscleGain','phaseAggression',
+        'trainingEnvironment','equipBw','equipDb','equipBand','equipRack','equipRings',
+        'equipBench','equipKb','equipCardio','equipGymAccess'
+      ];
+
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(!el) return;
+        el.addEventListener('change', renderAdaptiveSystems);
+        el.addEventListener('input', renderAdaptiveSystems);
+      });
+
+      ['nutritionAdherence','trainingAdherence','recoveryScore','energyScore','hungerScore','sleepScore'].forEach(function(name){
+        document.querySelectorAll('input[name="' + name + '"]').forEach(function(el){
+          el.addEventListener('change', renderAdaptiveSystems);
+        });
+      });
+
+      var originalRefresh = window.refreshAllCoachViews;
+      if(typeof originalRefresh === 'function' && !originalRefresh.__fffSystemWrapped){
+        var wrapped = function(){
+          originalRefresh.apply(this, arguments);
+          renderAdaptiveSystems();
+        };
+        wrapped.__fffSystemWrapped = true;
+        window.refreshAllCoachViews = wrapped;
+      }
+    }
+
+    fffReady(function(){
+      renderAdaptiveSystems();
+      attachAdaptiveSystemRefresh();
+      setTimeout(renderAdaptiveSystems, 350);
+      setTimeout(renderAdaptiveSystems, 1000);
+    });
+  })();
+  </script>
+
 </body>
 </html>

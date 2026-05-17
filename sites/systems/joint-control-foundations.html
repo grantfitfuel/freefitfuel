@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Joint Control Foundations | FreeFitFuel</title>
+
+<meta name="description" content="A FreeFitFuel movement-control system for coordination, balance, controlled range of motion and long-term joint resilience.">
+
+<link rel="stylesheet" href="/style.css?v=24">
+<link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
+
+<style>
+.wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+.lead{color:var(--inkdim);line-height:1.6}
+
+.hero-mini{position:relative;border-bottom:1px solid #1b1b22}
+.hero-mini figure{margin:0;position:relative}
+.hero-mini img{
+  width:100%;
+  height:42vh;
+  min-height:280px;
+  object-fit:cover;
+  display:block;
+  filter:brightness(.82) saturate(1.05)
+}
+.hero-mini .overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))
+}
+.hero-mini .content{
+  position:static;
+  padding:18px 20px 24px;
+  max-width:var(--maxw);
+  margin:0 auto
+}
+
+.section{
+  background:var(--glass);
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  margin:14px 0;
+  padding:16px
+}
+
+.grid{display:grid;gap:14px}
+@media(min-width:780px){
+  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+}
+
+.card{
+  background:#111418;
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  padding:14px
+}
+
+.card h3{
+  margin-top:0;
+  color:var(--accent)
+}
+
+.pill-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin:.8rem 0
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid var(--stroke);
+  border-radius:999px;
+  padding:.22rem .55rem;
+  background:rgba(255,255,255,.055);
+  color:var(--inkdim);
+  font-size:.9rem
+}
+
+.phase-list{
+  display:grid;
+  gap:14px
+}
+
+.phase{
+  background:#111418;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  padding:14px
+}
+
+.phase h3{
+  margin:.1rem 0 .45rem
+}
+
+.rx{
+  color:#ffd0ad;
+  font-weight:700;
+  margin:.25rem 0
+}
+
+.phase ul{
+  margin:.45rem 0 0 1.2rem
+}
+
+.phase li{
+  margin:.25rem 0
+}
+
+.note{
+  border-left:4px solid var(--accent);
+  padding:.75rem .9rem;
+  background:rgba(255,106,0,.08);
+  border-radius:10px;
+  margin:.8rem 0
+}
+
+.btn-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin-top:1rem
+}
+</style>
+</head>
+
+<body>
+
+<div id="site-header"></div>
+<script src="/js/header-loader.js" defer></script>
+
+<section class="hero-mini" role="banner" aria-label="Joint control foundations hero">
+  <figure>
+    <img src="/img/curl.jpg" alt="FreeFitFuel movement and control training">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+
+  <div class="content wrap">
+    <h1><span class="accent">Joint Control Foundations</span></h1>
+
+    <p class="lead">
+      A movement-control system focused on balance, coordination,
+      controlled range of motion and long-term joint resilience.
+    </p>
+
+    <div class="pill-row">
+      <span class="pill">Movement quality</span>
+      <span class="pill">Balance & coordination</span>
+      <span class="pill">Beginner friendly</span>
+      <span class="pill">Recovery compatible</span>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+<section class="section">
+  <h2>What This System Is For</h2>
+
+  <p class="lead">
+    Joint control is not just flexibility. It is the ability to move through
+    range with awareness, coordination and stability. Better joint control can
+    improve confidence, movement quality and long-term resilience across training and daily life.
+  </p>
+
+  <div class="grid cols-3">
+
+    <div class="card">
+      <h3>Useful For</h3>
+      <ul>
+        <li>Deskbound stiffness</li>
+        <li>Movement confidence</li>
+        <li>Ageing support</li>
+        <li>Beginner training foundations</li>
+        <li>Return from inactivity</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Pairs Well With</h3>
+      <ul>
+        <li>Fascia Flow Reset</li>
+        <li>Daily Recovery Flow</li>
+        <li>Pull-Up Progression Pathway</li>
+        <li>Hip & Knee Pain Reset</li>
+        <li>Tai chi and mobility work</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Pause If</h3>
+      <ul>
+        <li>Movement causes sharp pain</li>
+        <li>Dizziness develops</li>
+        <li>Joint locking occurs</li>
+        <li>Balance feels unsafe</li>
+        <li>Symptoms worsen rapidly</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <h2>Phase 1 — Controlled Awareness</h2>
+
+  <div class="note">
+    <strong>Move slowly enough to feel the movement.</strong>
+    Control usually develops through consistency and awareness rather than force.
+  </div>
+
+  <div class="phase-list">
+
+    <article class="phase">
+      <h3>Neck & Shoulder Control</h3>
+      <p class="rx">1–2 minutes</p>
+      <ul>
+        <li>Slow neck turns</li>
+        <li>Shoulder circles</li>
+        <li>Controlled shoulder blade movement</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h3>Spinal Segment Flow</h3>
+      <p class="rx">2 × 30–60 seconds</p>
+      <ul>
+        <li>Slow spinal rounding and extension</li>
+        <li>Move gradually through the torso.</li>
+        <li>Do not force end ranges.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h3>Hip & Ankle Circles</h3>
+      <p class="rx">2 × 30 seconds each</p>
+      <ul>
+        <li>Keep movements smooth.</li>
+        <li>Use support if needed.</li>
+        <li>Prioritise control over speed.</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<section class="section">
+  <h2>Phase 2 — Stability & Balance</h2>
+
+  <div class="phase-list">
+
+    <article class="phase">
+      <h3>Single-Leg Balance</h3>
+      <p class="rx">20–40 seconds each side</p>
+      <ul>
+        <li>Stand tall and relaxed.</li>
+        <li>Use support nearby if needed.</li>
+        <li>Keep breathing steady.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h3>Controlled Step Patterns</h3>
+      <p class="rx">2–3 × 6–10 each side</p>
+      <ul>
+        <li>Step forwards, backwards and sideways.</li>
+        <li>Control the lowering phase.</li>
+        <li>Stay balanced through the foot.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h3>Slow March Flow</h3>
+      <p class="rx">2–3 minutes</p>
+      <ul>
+        <li>Coordinate arms and legs.</li>
+        <li>Move rhythmically.</li>
+        <li>Maintain upright posture.</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<section class="section">
+  <h2>Phase 3 — Integrated Movement</h2>
+
+  <div class="phase-list">
+
+    <article class="phase">
+      <h3>Rotational Reach Patterns</h3>
+      <p class="rx">2–3 × 6–10</p>
+      <ul>
+        <li>Reach through different angles.</li>
+        <li>Move under control.</li>
+        <li>Maintain balance while rotating.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h3>Controlled Squat Patterns</h3>
+      <p class="rx">2–3 × 6–10</p>
+      <ul>
+        <li>Use manageable depth.</li>
+        <li>Keep the movement smooth.</li>
+        <li>Focus on alignment and rhythm.</li>
+      </ul>
+    </article>
+
+    <article class="phase">
+      <h3>Flow Linking</h3>
+      <p class="rx">2–5 minutes</p>
+      <ul>
+        <li>Link multiple movements together.</li>
+        <li>Move continuously without rushing.</li>
+        <li>Use breathing to regulate pace.</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+<section class="section">
+  <h2>Movement Principles</h2>
+
+  <div class="grid cols-2">
+
+    <div class="card">
+      <h3>Helpful Focus Areas</h3>
+      <ul>
+        <li>Slow controlled movement</li>
+        <li>Breathing rhythm</li>
+        <li>Posture awareness</li>
+        <li>Progressive confidence building</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Often Less Helpful</h3>
+      <ul>
+        <li>Forcing painful ranges</li>
+        <li>Rushing movement quality</li>
+        <li>Ignoring fatigue signals</li>
+        <li>Chasing intensity too early</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <h2>How My Plan Uses This</h2>
+
+  <p class="lead">
+    My Plan can prioritise Joint Control Foundations when stiffness,
+    balance needs, beginner status, ageing support, deskbound recovery
+    or movement-confidence goals are detected through adaptive scoring.
+  </p>
+
+  <div class="btn-row">
+    <a class="btn btn-primary" href="/recovery-training-hub.html">Back to Recovery Hub</a>
+    <a class="btn" href="/workouts.html">Open Workouts</a>
+    <a class="btn" href="/my-plan.html">Open My Plan</a>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Important Note</h2>
+
+  <p>
+    This content is for general fitness education only and is not a substitute
+    for medical assessment or treatment. Stop if symptoms worsen or if balance
+    and movement feel unsafe.
+  </p>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+</body>
+</html>

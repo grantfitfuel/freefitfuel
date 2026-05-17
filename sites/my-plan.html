@@ -535,6 +535,58 @@
     .physiology-list li{margin:.35rem 0}
 
     code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
+
+    /* Recommended FreeFitFuel systems */
+    .systems-recommendation-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .system-recommendation-card{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:13px;
+    }
+    .system-recommendation-card.featured{
+      border-color:rgba(255,106,0,.42);
+      background:linear-gradient(180deg,rgba(255,106,0,.11),rgba(255,255,255,.025));
+    }
+    .system-recommendation-card h3{
+      margin:.1rem 0 .35rem;
+      color:var(--ink);
+    }
+    .system-recommendation-card .system-reason{
+      color:var(--inkdim);
+      font-size:.92rem;
+      line-height:1.45;
+      margin:.35rem 0 .65rem;
+    }
+    .system-recommendation-card .system-meta-row{
+      display:flex;
+      gap:.4rem;
+      flex-wrap:wrap;
+      margin:.5rem 0 .7rem;
+    }
+    .system-recommendation-card .system-mini-pill{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.16rem .48rem;
+      background:rgba(255,255,255,.055);
+      color:var(--inkdim);
+      font-size:.8rem;
+    }
+    .system-recommendation-card .system-mini-pill.accent{
+      border-color:rgba(255,106,0,.35);
+      background:rgba(255,106,0,.10);
+      color:#ffd6bd;
+    }
+    .system-recommendation-empty{
+      color:var(--inkdim);
+      padding:10px 0 0;
+    }
+
   </style>
 </head>
 <body>
@@ -658,6 +710,21 @@
           </div>
         </section>
       </div>
+
+    <section class="section" id="recommendedSystemsSection">
+      <div class="section-head">
+        <div>
+          <h2>Recommended systems</h2>
+          <p>Recovery, mobility, physio and progression tools suggested from your current plan signals.</p>
+        </div>
+        <a class="btn" href="recovery-training-hub.html">Open Recovery Hub</a>
+      </div>
+
+      <div id="recommendedSystems" class="systems-recommendation-grid">
+        <div class="system-recommendation-empty">System recommendations will appear once the shared systems library has loaded.</div>
+      </div>
+    </section>
+
 
     <section class="section">
       <div class="section-head">
@@ -1430,6 +1497,7 @@
   <script src="js/engine/fff-training.js?v=1"></script>
   <script src="js/engine/fff-messaging.js?v=1"></script>
   <script src="js/engine/fff-core.js?v=81"></script>
+  <script src="/js/fff-systems.js?v=1"></script>
 
   <script>
     var ROADMAP_KEY = 'fff.roadmap.plan.v1';
@@ -3933,6 +4001,181 @@
       }catch(err){}
     }
 
+
+
+    function getSystemCategoryLabel(category){
+      var map = {
+        physio: 'Recovery & Pain Relief',
+        recovery: 'Recovery & Mobility',
+        'strength-skill': 'Strength & Skill',
+        'movement-foundation': 'Movement Foundations'
+      };
+      return map[category] || titleCase(category || 'System');
+    }
+
+    function getLatestCheckinSafe(){
+      try{
+        var raw = localStorage.getItem(CHECKIN_KEY);
+        var history = raw ? JSON.parse(raw) : [];
+        return Array.isArray(history) && history.length ? history[history.length - 1] : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function currentRoadmapTextSafe(){
+      try{
+        var raw = localStorage.getItem(ROADMAP_KEY);
+        var roadmap = raw ? JSON.parse(raw) : null;
+        return JSON.stringify(roadmap || {}).toLowerCase();
+      }catch(err){
+        return '';
+      }
+    }
+
+    function buildSystemRecommendationProfile(){
+      var profile = {};
+      var latest = getLatestCheckinSafe();
+      var roadmapText = currentRoadmapTextSafe();
+      var notes = String((latest && latest.notes) || '').toLowerCase();
+      var emotion = String((latest && latest.emotional_level) || ((document.getElementById('emotionalLevel') || {}).value) || 'steady').toLowerCase();
+      var recoveryScore = latest && latest.recovery != null ? Number(latest.recovery) : readRadioValueSafe('recoveryScore', 3);
+      var energyScore = latest && latest.energy != null ? Number(latest.energy) : readRadioValueSafe('energyScore', 3);
+      var sleepScore = latest && latest.sleep != null ? Number(latest.sleep) : readRadioValueSafe('sleepScore', 3);
+      var trainingAdherence = latest && latest.adherence_training != null ? Number(latest.adherence_training) : readRadioValueSafe('trainingAdherence', 3);
+      var age = parseInt((document.getElementById('bmrAge') || {}).value || '0', 10) || 0;
+      var trainingStatus = String((document.getElementById('trainingStatus') || {}).value || '').toLowerCase();
+      var goalText = String(GOAL || '').toLowerCase();
+      var equipment = loadEquipmentProfile ? loadEquipmentProfile() : null;
+
+      if(recoveryScore <= 3 || sleepScore <= 2) profile.recoveryNeed = true;
+      if(energyScore <= 2 || emotion === 'drained' || emotion === 'flat') profile.lowEnergy = true;
+      if(emotion === 'drained' || emotion === 'flat' || notes.indexOf('stress') > -1) profile.stressSupport = true;
+      if(trainingAdherence <= 2) profile.returningAfterBreak = true;
+      if(trainingStatus === 'beginner') profile.beginner = true;
+      if(age >= 40) profile.over40Support = true;
+      if(goalText.indexOf('build') > -1 || goalText.indexOf('transform') > -1 || roadmapText.indexOf('pull-up') > -1 || roadmapText.indexOf('pull up') > -1) profile.upperBodyStrength = true;
+
+      if(notes.match(/knee|patella|stairs|squat pain|lunge pain/)){ profile.kneePain = true; profile.lowerBodyPain = true; }
+      if(notes.match(/hip|groin|glute/)){ profile.hipPain = true; profile.lowerBodyPain = true; }
+      if(notes.match(/walk|walking pain|steps/)) profile.walkingPain = true;
+      if(notes.match(/run|running|10k|5k|half marathon|marathon/)) profile.runningPlan = true;
+      if(notes.match(/stiff|tight|mobility|restricted|fascia|sitting/)) profile.stiffness = true;
+      if(notes.match(/desk|sitting|sedentary|office/)) profile.deskbound = true;
+      if(notes.match(/pull.?up|chin.?up/) || roadmapText.indexOf('pull-up') > -1 || roadmapText.indexOf('pull up') > -1) profile.pullUpGoal = true;
+      if(notes.match(/elbow|tennis elbow/)) profile.elbowPain = true;
+      if(notes.match(/bicep|biceps/)) profile.bicepsPain = true;
+      if(notes.match(/press|bench|pressing pain/)) profile.pressingPain = true;
+      if(notes.match(/balance|ankle|calf|foot|feet/)) profile.balanceNeed = true;
+      if(notes.match(/lower leg|shin|ankle|calf|foot|feet/)) profile.lowerLegWeakness = true;
+      if(notes.match(/acute|severe|swelling|redness|locking|numbness|chest pain|dizzy|dizziness/)) profile.acuteInjury = true;
+      if(notes.match(/swelling|heat|redness|locking/)) profile.unexplainedSwelling = true;
+      if(notes.match(/red flag|medical|doctor|hospital|a&e|emergency/)) profile.medicalRedFlag = true;
+
+      if(equipment && equipment.equip){
+        if(equipment.equip.rack || equipment.equip.rings || equipment.equip.gymAccess) profile.pullUpGoal = profile.pullUpGoal || roadmapText.indexOf('pull') > -1;
+      }
+
+      return profile;
+    }
+
+    function readRadioValueSafe(name, fallback){
+      var checked = document.querySelector('input[name="' + name + '"]:checked');
+      if(!checked) return fallback;
+      var n = Number(checked.value);
+      return isNaN(n) ? fallback : n;
+    }
+
+    function reasonForSystem(system, profile){
+      var hooks = system.planHooks || {};
+      var matches = (hooks.suggestedWhen || []).filter(function(flag){ return !!profile[flag]; });
+      if(matches.length){
+        var friendly = matches.map(function(flag){
+          return titleCase(flag.replace(/([A-Z])/g, ' $1'));
+        }).join(', ');
+        return 'Suggested because your current plan signals include: ' + friendly + '.';
+      }
+      if(system.status === 'ready') return 'Ready to use now as a standalone support system.';
+      if(system.category === 'recovery') return 'Useful as a light recovery or movement-quality option.';
+      if(system.category === 'physio') return 'Useful when pain-management or movement confidence needs support.';
+      if(system.category === 'strength-skill') return 'Useful for structured strength or skill progression.';
+      return 'Available from the FreeFitFuel systems library.';
+    }
+
+    function scoreSystemForProfile(system, profile){
+      if(!system || !system.planHooks || !system.planHooks.myPlanDrawsFrom) return -999;
+      var hooks = system.planHooks || {};
+      var avoid = hooks.avoidWhen || [];
+      for(var i = 0; i < avoid.length; i++){
+        if(profile[avoid[i]]) return -999;
+      }
+      var score = 0;
+      (hooks.suggestedWhen || []).forEach(function(flag){
+        if(profile[flag]) score += 4;
+      });
+      if(system.status === 'ready') score += 2;
+      if(system.category === 'recovery' && (profile.recoveryNeed || profile.lowEnergy || profile.stiffness || profile.deskbound)) score += 2;
+      if(system.category === 'physio' && (profile.kneePain || profile.hipPain || profile.elbowPain || profile.bicepsPain || profile.lowerBodyPain)) score += 2;
+      if(system.category === 'strength-skill' && (profile.pullUpGoal || profile.upperBodyStrength || profile.runningPlan)) score += 2;
+      if(score === 0 && (system.id === 'daily-recovery-flow' || system.id === 'fascia-flow-reset')) score = 1;
+      return score;
+    }
+
+    function getRecommendedSystems(){
+      if(!window.FFFSystems || !Array.isArray(window.FFFSystems.all)) return [];
+      var profile = buildSystemRecommendationProfile();
+      return window.FFFSystems.all
+        .map(function(system){
+          return {
+            system: system,
+            score: scoreSystemForProfile(system, profile),
+            reason: reasonForSystem(system, profile)
+          };
+        })
+        .filter(function(item){ return item.score > 0; })
+        .sort(function(a,b){ return b.score - a.score; })
+        .slice(0, 4);
+    }
+
+    function renderRecommendedSystems(){
+      var mount = document.getElementById('recommendedSystems');
+      var textMount = document.getElementById('phaseRecommendationText');
+      if(!mount) return;
+
+      if(!window.FFFSystems || !Array.isArray(window.FFFSystems.all)){
+        mount.innerHTML = '<div class="system-recommendation-empty">The shared systems library has not loaded yet.</div>';
+        if(textMount) textMount.textContent = 'The shared systems library has not loaded yet.';
+        return;
+      }
+
+      var recommendations = getRecommendedSystems();
+      if(!recommendations.length){
+        mount.innerHTML = '<div class="system-recommendation-empty">No specific system recommendation yet. Use the Recovery Hub to browse all standalone systems.</div>';
+        if(textMount) textMount.textContent = 'No specific system recommendation yet. Browse the Recovery Hub if you want support options.';
+        return;
+      }
+
+      mount.innerHTML = recommendations.map(function(item, idx){
+        var system = item.system;
+        var tags = (system.tags || []).slice(0, 3).map(function(tag){
+          return '<span class="system-mini-pill">' + escapeHtml(tag) + '</span>';
+        }).join('');
+        var status = system.status === 'ready' ? 'Ready' : 'Planned';
+        return '<article class="system-recommendation-card' + (idx === 0 ? ' featured' : '') + '">' +
+          '<div class="system-meta-row"><span class="system-mini-pill accent">' + escapeHtml(getSystemCategoryLabel(system.category)) + '</span><span class="system-mini-pill">' + escapeHtml(status) + '</span></div>' +
+          '<h3>' + escapeHtml(system.title || 'FreeFitFuel System') + '</h3>' +
+          '<p class="system-reason">' + escapeHtml(item.reason) + '</p>' +
+          '<div class="system-meta-row"><span class="system-mini-pill">' + escapeHtml(system.durationMinutes ? (system.durationMinutes + ' mins') : 'Flexible') + '</span><span class="system-mini-pill">' + escapeHtml(system.intensity || 'Low') + '</span>' + tags + '</div>' +
+          '<a class="btn" href="' + escapeHtml(system.standaloneUrl || 'recovery-training-hub.html') + '">Open system</a>' +
+        '</article>';
+      }).join('');
+
+      if(textMount){
+        textMount.textContent = recommendations.map(function(item){ return item.system.title; }).join(' • ');
+      }
+    }
+
+
     function refreshAllCoachViews(){
       renderCoachSummary();
       renderIntervention();
@@ -3945,6 +4188,7 @@
       renderWeeklySnapshot();
       renderNextWeekPlan();
       renderAutomationStatus();
+      renderRecommendedSystems();
     }
 
     function wireWorkoutPlanLogsToEngine(){

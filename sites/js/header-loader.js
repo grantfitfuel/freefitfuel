@@ -29,6 +29,7 @@
     'guides.html':'guides',
 
     'workouts.html':'workouts',
+    'recovery-training-hub.html':'recovery-training',
     'endurance.html':'endurance',
 
     'nutrition.html':'nutrition',

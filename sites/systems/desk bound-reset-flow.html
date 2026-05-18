@@ -6,36 +6,41 @@
 
 <title>Deskbound Reset Flow | FreeFitFuel</title>
 
-<meta name="description" content="A FreeFitFuel deskbound recovery system for sitting stiffness, posture fatigue, neck and hip tightness, and low-movement workdays.">
+<meta name="description" content="A fully coached FreeFitFuel deskbound reset system for posture, stiffness reduction, circulation, hips, shoulders and movement breaks during long sitting periods.">
 
 <link rel="stylesheet" href="/style.css?v=24">
 <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
 <style>
 .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-.lead{color:var(--inkdim);line-height:1.6}
+.lead{color:var(--inkdim);line-height:1.7}
+
 .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 .hero-mini figure{margin:0;position:relative}
 .hero-mini img{width:100%;height:42vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05)}
 .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))}
 .hero-mini .content{position:static;padding:18px 20px 24px;max-width:var(--maxw);margin:0 auto}
+
 .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
 .grid{display:grid;gap:14px}
-@media(min-width:780px){
-.grid.cols-2{grid-template-columns:repeat(2,1fr)}
-.grid.cols-3{grid-template-columns:repeat(3,1fr)}
-}
-.card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
-.card h3{margin-top:0;color:var(--accent)}
+@media(min-width:780px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+
+.card,.move-card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+.card h3,.move-card h3{margin-top:0;color:var(--accent)}
+
 .pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.8rem 0}
 .pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);border-radius:999px;padding:.22rem .55rem;background:rgba(255,255,255,.055);color:var(--inkdim);font-size:.9rem}
-.flow-list{display:grid;gap:14px}
-.flow{background:#111418;border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:14px}
-.flow h3{margin:.1rem 0 .45rem}
-.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0}
-.flow ul{margin:.45rem 0 0 1.2rem}
-.flow li{margin:.25rem 0}
+
+.move-card{margin:14px 0}
+.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0 .75rem}
+.coach-grid{display:grid;gap:12px;margin-top:12px}
+@media(min-width:860px){.coach-grid{grid-template-columns:repeat(2,1fr)}}
+.coach-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.coach-box strong{display:block;color:#fff;margin-bottom:.35rem}
+.coach-box p{margin:.2rem 0;color:var(--inkdim);line-height:1.65}
+.coach-box ul{margin:.25rem 0 0 1.15rem;color:var(--inkdim);line-height:1.65}
 .note{border-left:4px solid var(--accent);padding:.75rem .9rem;background:rgba(255,106,0,.08);border-radius:10px;margin:.8rem 0}
+.warning{border-left-color:#ffb84d;background:rgba(255,184,77,.08)}
 .btn-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
 </style>
 </head>
@@ -45,9 +50,9 @@
 <div id="site-header"></div>
 <script src="/js/header-loader.js" defer></script>
 
-<section class="hero-mini" role="banner" aria-label="Deskbound reset flow hero">
+<section class="hero-mini" role="banner" aria-label="Deskbound Reset Flow hero">
   <figure>
-    <img src="/img/curl.jpg" alt="FreeFitFuel deskbound movement reset">
+    <img src="/img/curl.jpg" alt="FreeFitFuel deskbound recovery movement">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
 
@@ -55,15 +60,15 @@
     <h1><span class="accent">Deskbound Reset Flow</span></h1>
 
     <p class="lead">
-      A short movement reset for sitting stiffness, posture fatigue,
-      tight hips, stiff shoulders, neck tension and low-movement workdays.
+      A fully coached movement-break system for long sitting days,
+      posture reset, circulation, neck stiffness, hip tightness and deskbound fatigue.
     </p>
 
     <div class="pill-row">
-      <span class="pill">5–12 minutes</span>
-      <span class="pill">Desk-friendly</span>
-      <span class="pill">Low intensity</span>
-      <span class="pill">No equipment required</span>
+      <span class="pill">Deskbound support</span>
+      <span class="pill">Low impact</span>
+      <span class="pill">Posture reset</span>
+      <span class="pill">Circulation support</span>
     </div>
   </div>
 </section>
@@ -74,205 +79,257 @@
   <h2>What This System Is For</h2>
 
   <p class="lead">
-    Long periods of sitting can make the body feel tight, heavy and switched off.
-    This flow breaks up stiffness with small, practical movement blocks that can
-    be used during a workday without turning recovery into a full workout.
+    Long periods of sitting can increase stiffness, reduce circulation,
+    tighten the hips and chest, and leave the body feeling heavy or disconnected.
+    This system is designed to break up sedentary periods without turning the reset into another exhausting task.
   </p>
 
-  <div class="grid cols-3">
+  <div class="note warning">
+    <strong>Move little and often.</strong>
+    Five calm minutes repeated during the day usually works better than waiting until the body feels completely locked up.
+  </div>
 
+  <div class="grid cols-3">
     <div class="card">
       <h3>Useful For</h3>
       <ul>
-        <li>Deskbound stiffness</li>
-        <li>Hip tightness after sitting</li>
+        <li>Long office hours</li>
+        <li>Gaming or studying sessions</li>
+        <li>Remote working</li>
+        <li>Hip tightness</li>
         <li>Neck and shoulder tension</li>
-        <li>Low step-count days</li>
-        <li>Workday movement breaks</li>
       </ul>
     </div>
 
     <div class="card">
       <h3>Pairs Well With</h3>
       <ul>
-        <li>Fascia Flow Reset</li>
-        <li>Joint Control Foundations</li>
         <li>Daily Recovery Flow</li>
-        <li>Lymphatic Recovery Flow</li>
-        <li>Walking routines</li>
+        <li>Joint Control Foundations</li>
+        <li>Walking breaks</li>
+        <li>Tai chi walking</li>
+        <li>Lower-leg stability work</li>
       </ul>
     </div>
 
     <div class="card">
-      <h3>Pause If</h3>
+      <h3>Reduce Intensity If</h3>
       <ul>
         <li>Dizziness develops</li>
-        <li>Sharp pain appears</li>
-        <li>Numbness or weakness spreads</li>
+        <li>Back pain sharpens</li>
+        <li>Numbness increases</li>
         <li>Balance feels unsafe</li>
-        <li>Symptoms feel unusual for you</li>
+        <li>Symptoms worsen after movement</li>
       </ul>
     </div>
-
   </div>
 </section>
 
 <section class="section">
-  <h2>The 5-Minute Quick Reset</h2>
+  <h2>How To Use This Flow</h2>
 
-  <div class="note">
-    <strong>Use this when you do not have time for a full routine.</strong>
-    The aim is simply to change state and reduce stiffness.
-  </div>
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>Mini Breaks</h3>
+      <p>Use 3–5 minute resets every 45–90 minutes during long sitting periods.</p>
+    </div>
 
-  <div class="flow-list">
+    <div class="card">
+      <h3>After Work</h3>
+      <p>Use a longer calmer round to reduce accumulated stiffness and decompress.</p>
+    </div>
 
-    <article class="flow">
-      <h3>1. Stand & Breathe</h3>
-      <p class="rx">45–60 seconds</p>
-      <ul>
-        <li>Stand tall with feet grounded.</li>
-        <li>Relax the jaw and shoulders.</li>
-        <li>Take slow controlled breaths.</li>
-      </ul>
-    </article>
-
-    <article class="flow">
-      <h3>2. Shoulder Blade Reset</h3>
-      <p class="rx">60 seconds</p>
-      <ul>
-        <li>Roll shoulders slowly backwards.</li>
-        <li>Gently squeeze shoulder blades together.</li>
-        <li>Relax fully between reps.</li>
-      </ul>
-    </article>
-
-    <article class="flow">
-      <h3>3. Hip Opener March</h3>
-      <p class="rx">90 seconds</p>
-      <ul>
-        <li>March slowly on the spot.</li>
-        <li>Lift knees only as high as comfortable.</li>
-        <li>Let the arms swing naturally.</li>
-      </ul>
-    </article>
-
-    <article class="flow">
-      <h3>4. Desk or Wall Chest Opener</h3>
-      <p class="rx">60 seconds</p>
-      <ul>
-        <li>Place hands lightly on a desk or wall.</li>
-        <li>Step back and let the chest open gently.</li>
-        <li>Avoid forcing the shoulders.</li>
-      </ul>
-    </article>
-
-    <article class="flow">
-      <h3>5. Short Walk Finish</h3>
-      <p class="rx">1 minute</p>
-      <ul>
-        <li>Walk around the room or hallway.</li>
-        <li>Keep posture relaxed.</li>
-        <li>Return to the desk feeling reset rather than exhausted.</li>
-      </ul>
-    </article>
-
+    <div class="card">
+      <h3>Low Energy Days</h3>
+      <p>Prioritise circulation and posture rather than intensity or sweating.</p>
+    </div>
   </div>
 </section>
 
 <section class="section">
-  <h2>The 12-Minute Full Deskbound Reset</h2>
+  <h2>Phase 1 — Wake The Body Back Up</h2>
 
-  <div class="flow-list">
+  <article class="move-card">
+    <h3>Standing Posture Reset</h3>
+    <p class="rx">30–60 seconds</p>
 
-    <article class="flow">
-      <h3>1. Neck Turns & Chin Nods</h3>
-      <p class="rx">2 minutes</p>
-      <ul>
-        <li>Turn the head slowly side to side.</li>
-        <li>Add small chin nods.</li>
-        <li>Stay gentle and controlled.</li>
-      </ul>
-    </article>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Helps reverse the collapsed posture many people drift into during long sitting periods.</p></div>
 
-    <article class="flow">
-      <h3>2. Shoulder Circles & Wall Slides</h3>
-      <p class="rx">2 minutes</p>
-      <ul>
-        <li>Circle shoulders forwards and backwards.</li>
-        <li>Use wall slides if available.</li>
-        <li>Keep ribs from flaring excessively.</li>
-      </ul>
-    </article>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand tall with feet hip-width apart.</li><li>Keep knees soft.</li><li>Relax the jaw and shoulders.</li></ul></div>
 
-    <article class="flow">
-      <h3>3. Seated or Standing Spinal Wave</h3>
-      <p class="rx">2 minutes</p>
-      <ul>
-        <li>Round and lengthen the spine slowly.</li>
-        <li>Move like a wave rather than a forced stretch.</li>
-        <li>Keep breathing steady.</li>
-      </ul>
-    </article>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Lengthen gently through the crown of the head.</li><li>Open the chest slightly.</li><li>Let the shoulders settle down naturally.</li><li>Breathe calmly.</li></ul></div>
 
-    <article class="flow">
-      <h3>4. Hip Flexor Step-Back</h3>
-      <p class="rx">2 minutes</p>
-      <ul>
-        <li>Step one foot back gently.</li>
-        <li>Keep pelvis controlled.</li>
-        <li>Alternate sides smoothly.</li>
-      </ul>
-    </article>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>A lighter more open posture rather than rigid military tension.</p></div>
 
-    <article class="flow">
-      <h3>5. Calf Pump & Ankle Rolls</h3>
-      <p class="rx">2 minutes</p>
-      <ul>
-        <li>Rise gently onto toes.</li>
-        <li>Lower slowly.</li>
-        <li>Circle ankles in both directions.</li>
-      </ul>
-    </article>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Overarching the lower back.</li><li>Forcing the chest out aggressively.</li><li>Tensing shoulders upwards.</li><li>Holding breath.</li></ul></div>
 
-    <article class="flow">
-      <h3>6. Walk & Reset</h3>
-      <p class="rx">2 minutes</p>
-      <ul>
-        <li>Walk at an easy pace.</li>
-        <li>Let the arms swing naturally.</li>
-        <li>Finish with three slow breaths.</li>
-      </ul>
-    </article>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> lean lightly against a wall. <br><strong>Harder:</strong> hold the position while breathing slowly for longer.</p></div>
+    </div>
+  </article>
 
-  </div>
+  <article class="move-card">
+    <h3>Neck & Shoulder Decompression</h3>
+    <p class="rx">1–2 minutes</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Reduces tension and stiffness around the neck, upper traps and shoulders.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Turn head slowly side to side.</li><li>Roll shoulders gently forwards and backwards.</li><li>Open and close the chest slowly.</li><li>Keep movements relaxed and smooth.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle circulation and reduced tension. Not aggressive stretching discomfort.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Rolling the neck aggressively.</li><li>Moving too quickly.</li><li>Forcing range.</li><li>Shrugging shoulders upwards.</li></ul></div>
+
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> smaller movements. <br><strong>Harder:</strong> add short pauses in comfortable positions.</p></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Breathing Reset</h3>
+    <p class="rx">1–2 minutes</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Helps interrupt shallow stress breathing patterns that often build during focused desk work.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Breathe slowly through the nose if comfortable.</li><li>Allow ribs to expand gently.</li><li>Keep shoulders relaxed.</li><li>Exhale slowly without forcing.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Reduced tension and calmer breathing rhythm.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Overbreathing aggressively.</li><li>Trying too hard to relax.</li><li>Raising shoulders excessively.</li><li>Forcing huge breaths.</li></ul></div>
+
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> shorter breathing cycles. <br><strong>Harder:</strong> extend the exhale gently.</p></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
-  <h2>Workday Use</h2>
+  <h2>Phase 2 — Restore Mobility & Circulation</h2>
+
+  <article class="move-card">
+    <h3>Hip Mobility Flow</h3>
+    <p class="rx">1–2 minutes</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Helps reduce hip stiffness that builds during prolonged sitting.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Circle hips slowly in both directions.</li><li>Shift weight gently side to side.</li><li>Keep knees soft.</li><li>Use support if balance is uncertain.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle mobility and circulation through hips and pelvis.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Locking knees.</li><li>Forcing large circles.</li><li>Moving too fast.</li><li>Ignoring balance issues.</li></ul></div>
+
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> smaller ranges. <br><strong>Harder:</strong> slow the movement and add pauses.</p></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Slow Marching</h3>
+    <p class="rx">2–3 minutes</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Restores circulation and rhythm after prolonged inactivity.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>March slowly on the spot.</li><li>Place feet quietly.</li><li>Coordinate opposite arm and leg.</li><li>Stay relaxed.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle warmth and increased circulation. Not hard cardio effort.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Stomping heavily.</li><li>Rushing.</li><li>Tensing shoulders.</li><li>Trying to burn calories aggressively.</li></ul></div>
+
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> hold support. <br><strong>Harder:</strong> increase duration gradually.</p></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Calf & Foot Reset</h3>
+    <p class="rx">2–3 sets × 10–15 reps</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Supports circulation and reduces lower-leg heaviness from long sitting periods.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Rise gently onto the balls of the feet.</li><li>Pause briefly.</li><li>Lower slowly.</li><li>Add toe raises if comfortable.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Light calf and shin effort with circulation increase.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Bouncing aggressively.</li><li>Ignoring cramp.</li><li>Locking knees.</li><li>Holding breath.</li></ul></div>
+
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> use support. <br><strong>Harder:</strong> add pauses at the top.</p></div>
+    </div>
+  </article>
+</section>
+
+<section class="section">
+  <h2>Phase 3 — Reconnect & Downshift</h2>
+
+  <article class="move-card">
+    <h3>Tai Chi Walking Pattern</h3>
+    <p class="rx">2–5 minutes</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Encourages smoother movement rhythm and helps the nervous system shift away from prolonged stress mode.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Take slow deliberate steps.</li><li>Shift weight gradually.</li><li>Relax shoulders and jaw.</li><li>Keep breathing calm.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Calmer movement rhythm and reduced physical tension.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Rushing the steps.</li><li>Trying to move perfectly.</li><li>Holding tension.</li><li>Turning it into cardio.</li></ul></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Movement Linking</h3>
+    <p class="rx">2–4 minutes</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Links movements together smoothly so the reset feels fluid rather than robotic.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Choose several movements from this page.</li><li>Move calmly between them.</li><li>Keep transitions smooth.</li><li>Stop before fatigue rises sharply.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Looser movement, calmer breathing and reduced stiffness.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Rushing transitions.</li><li>Turning it into a workout.</li><li>Forcing mobility.</li><li>Ignoring discomfort signals.</li></ul></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Final Posture Check</h3>
+    <p class="rx">30–60 seconds</p>
+
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Helps finish the reset feeling more open, grounded and connected to posture rather than collapsing straight back into sitting tension.</p></div>
+
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Stand tall but relaxed.</li><li>Keep knees soft.</li><li>Relax shoulders naturally.</li><li>Take several calm breaths.</li></ul></div>
+
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Less compressed, less stiff and more physically awake.</p></div>
+
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Forcing rigid posture.</li><li>Tensing the lower back.</li><li>Holding breath.</li><li>Rushing back to sitting immediately.</li></ul></div>
+    </div>
+  </article>
+</section>
+
+<section class="section">
+  <h2>Deskbound Recovery Principles</h2>
 
   <div class="grid cols-2">
-
     <div class="card">
-      <h3>Simple Schedule</h3>
+      <h3>Helpful Habits</h3>
       <ul>
-        <li>Use the quick reset after long sitting blocks.</li>
-        <li>Use the full reset once daily if stiffness builds.</li>
-        <li>Pair with a short walk when possible.</li>
-        <li>Use before training if the body feels locked up.</li>
+        <li>Frequent movement breaks</li>
+        <li>Changing posture regularly</li>
+        <li>Walking during calls where possible</li>
+        <li>Hydration and sleep support</li>
       </ul>
     </div>
 
     <div class="card">
-      <h3>Helpful Cues</h3>
+      <h3>Often Less Helpful</h3>
       <ul>
-        <li>Change position before pain builds.</li>
-        <li>Move little and often.</li>
-        <li>Do not chase aggressive stretches at work.</li>
-        <li>Keep movement easy enough to repeat tomorrow.</li>
+        <li>Sitting for many hours uninterrupted</li>
+        <li>Trying to “fix posture” through tension</li>
+        <li>Ignoring stiffness until severe</li>
+        <li>Replacing movement with more screen time</li>
       </ul>
     </div>
-
   </div>
 </section>
 
@@ -280,9 +337,9 @@
   <h2>How My Plan Uses This</h2>
 
   <p class="lead">
-    My Plan can prioritise Deskbound Reset Flow when deskbound work,
-    stiffness, poor movement breaks, low step counts, neck tension or posture fatigue
-    are detected through adaptive scoring and check-in notes.
+    My Plan can prioritise Deskbound Reset Flow when prolonged sitting,
+    stiffness, posture fatigue, low activity levels or work-related movement issues
+    are identified through adaptive scoring and recovery check-ins.
   </p>
 
   <div class="btn-row">
@@ -297,8 +354,7 @@
 
   <p>
     This content is for general fitness education only and is not a substitute
-    for medical assessment or treatment. Stop if symptoms worsen or if movement
-    feels medically unsafe.
+    for medical assessment or treatment. Stop if symptoms worsen or if movement feels unsafe.
   </p>
 </section>
 

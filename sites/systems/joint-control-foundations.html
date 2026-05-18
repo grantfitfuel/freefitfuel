@@ -6,125 +6,42 @@
 
 <title>Joint Control Foundations | FreeFitFuel</title>
 
-<meta name="description" content="A FreeFitFuel movement-control system for coordination, balance, controlled range of motion and long-term joint resilience.">
+<meta name="description" content="A fully coached FreeFitFuel movement-control system for coordination, balance, controlled range of motion and long-term joint resilience.">
 
 <link rel="stylesheet" href="/style.css?v=24">
 <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
 <style>
 .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-.lead{color:var(--inkdim);line-height:1.6}
+.lead{color:var(--inkdim);line-height:1.7}
 
 .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 .hero-mini figure{margin:0;position:relative}
-.hero-mini img{
-  width:100%;
-  height:42vh;
-  min-height:280px;
-  object-fit:cover;
-  display:block;
-  filter:brightness(.82) saturate(1.05)
-}
-.hero-mini .overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))
-}
-.hero-mini .content{
-  position:static;
-  padding:18px 20px 24px;
-  max-width:var(--maxw);
-  margin:0 auto
-}
+.hero-mini img{width:100%;height:42vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05)}
+.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))}
+.hero-mini .content{position:static;padding:18px 20px 24px;max-width:var(--maxw);margin:0 auto}
 
-.section{
-  background:var(--glass);
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  margin:14px 0;
-  padding:16px
-}
-
+.section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
 .grid{display:grid;gap:14px}
-@media(min-width:780px){
-  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-}
+@media(min-width:780px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
 
-.card{
-  background:#111418;
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  padding:14px
-}
+.card,.move-card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+.card h3,.move-card h3{margin-top:0;color:var(--accent)}
 
-.card h3{
-  margin-top:0;
-  color:var(--accent)
-}
+.pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.8rem 0}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);border-radius:999px;padding:.22rem .55rem;background:rgba(255,255,255,.055);color:var(--inkdim);font-size:.9rem}
 
-.pill-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.45rem;
-  margin:.8rem 0
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  border:1px solid var(--stroke);
-  border-radius:999px;
-  padding:.22rem .55rem;
-  background:rgba(255,255,255,.055);
-  color:var(--inkdim);
-  font-size:.9rem
-}
-
-.phase-list{
-  display:grid;
-  gap:14px
-}
-
-.phase{
-  background:#111418;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  padding:14px
-}
-
-.phase h3{
-  margin:.1rem 0 .45rem
-}
-
-.rx{
-  color:#ffd0ad;
-  font-weight:700;
-  margin:.25rem 0
-}
-
-.phase ul{
-  margin:.45rem 0 0 1.2rem
-}
-
-.phase li{
-  margin:.25rem 0
-}
-
-.note{
-  border-left:4px solid var(--accent);
-  padding:.75rem .9rem;
-  background:rgba(255,106,0,.08);
-  border-radius:10px;
-  margin:.8rem 0
-}
-
-.btn-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.6rem;
-  margin-top:1rem
-}
+.move-card{margin:14px 0}
+.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0 .75rem}
+.coach-grid{display:grid;gap:12px;margin-top:12px}
+@media(min-width:860px){.coach-grid{grid-template-columns:repeat(2,1fr)}}
+.coach-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.coach-box strong{display:block;color:#fff;margin-bottom:.35rem}
+.coach-box p{margin:.2rem 0;color:var(--inkdim);line-height:1.65}
+.coach-box ul{margin:.25rem 0 0 1.15rem;color:var(--inkdim);line-height:1.65}
+.note{border-left:4px solid var(--accent);padding:.75rem .9rem;background:rgba(255,106,0,.08);border-radius:10px;margin:.8rem 0}
+.warning{border-left-color:#ffb84d;background:rgba(255,184,77,.08)}
+.btn-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
 </style>
 </head>
 
@@ -143,8 +60,8 @@
     <h1><span class="accent">Joint Control Foundations</span></h1>
 
     <p class="lead">
-      A movement-control system focused on balance, coordination,
-      controlled range of motion and long-term joint resilience.
+      A fully coached movement-control system focused on coordination,
+      balance, controlled range of motion, posture awareness and long-term joint resilience.
     </p>
 
     <div class="pill-row">
@@ -162,13 +79,18 @@
   <h2>What This System Is For</h2>
 
   <p class="lead">
-    Joint control is not just flexibility. It is the ability to move through
-    range with awareness, coordination and stability. Better joint control can
-    improve confidence, movement quality and long-term resilience across training and daily life.
+    Joint control is not just flexibility. It is the ability to move through range with awareness,
+    coordination and stability. This system helps users feel safer and more controlled before harder
+    strength work, calisthenics, running, recovery sessions or return-from-injury training.
   </p>
 
-  <div class="grid cols-3">
+  <div class="note warning">
+    <strong>Move slowly enough to own the range.</strong>
+    This is not a stretching competition. If a position feels sharp, unstable, dizzying or threatening,
+    reduce the range or stop.
+  </div>
 
+  <div class="grid cols-3">
     <div class="card">
       <h3>Useful For</h3>
       <ul>
@@ -201,134 +123,159 @@
         <li>Symptoms worsen rapidly</li>
       </ul>
     </div>
+  </div>
+</section>
 
+<section class="section">
+  <h2>How To Use This System</h2>
+
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>As A Warm-Up</h3>
+      <p>Use one round before strength training to improve awareness, balance and joint readiness.</p>
+    </div>
+    <div class="card">
+      <h3>As Recovery</h3>
+      <p>Move slowly, keep effort low and use the session to reduce stiffness without chasing fatigue.</p>
+    </div>
+    <div class="card">
+      <h3>As A Foundation</h3>
+      <p>Repeat 2–5 times weekly to build better control before harder progressions.</p>
+    </div>
   </div>
 </section>
 
 <section class="section">
   <h2>Phase 1 — Controlled Awareness</h2>
 
-  <div class="note">
-    <strong>Move slowly enough to feel the movement.</strong>
-    Control usually develops through consistency and awareness rather than force.
-  </div>
+  <article class="move-card">
+    <h3>Neck & Shoulder Control</h3>
+    <p class="rx">1–2 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Reduces upper-body stiffness and helps users notice tension around the neck, shoulders and upper back.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand or sit tall.</li><li>Relax jaw and shoulders.</li><li>Keep breathing easy.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Slowly turn head left and right.</li><li>Add small chin nods.</li><li>Circle shoulders forwards and backwards.</li><li>Finish with gentle shoulder blade squeezes.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle loosening through the neck and shoulders. Not dizziness, sharp pain or nerve symptoms.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Rolling the neck aggressively.</li><li>Forcing end range.</li><li>Shrugging hard.</li><li>Holding breath.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> make movements smaller. <br><strong>Harder:</strong> slow the movement and pause at comfortable end range.</p></div>
+    </div>
+  </article>
 
-  <div class="phase-list">
+  <article class="move-card">
+    <h3>Spinal Segment Flow</h3>
+    <p class="rx">2 rounds × 30–60 seconds</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Improves awareness through the spine and torso without forcing a hard stretch.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand with soft knees or sit tall.</li><li>Hands can rest lightly on thighs.</li><li>Keep the movement slow.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Round the upper back gently.</li><li>Then lengthen through the chest.</li><li>Let the motion travel gradually through the torso.</li><li>Stay within comfortable range.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>A slow wave-like movement through the back and ribs. No pinching or aggressive pulling.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Snapping between positions.</li><li>Forcing the lower back.</li><li>Moving only the neck.</li><li>Trying to make it look dramatic.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> perform seated. <br><strong>Harder:</strong> slow each wave to 5 seconds.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Neck & Shoulder Control</h3>
-      <p class="rx">1–2 minutes</p>
-      <ul>
-        <li>Slow neck turns</li>
-        <li>Shoulder circles</li>
-        <li>Controlled shoulder blade movement</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Spinal Segment Flow</h3>
-      <p class="rx">2 × 30–60 seconds</p>
-      <ul>
-        <li>Slow spinal rounding and extension</li>
-        <li>Move gradually through the torso.</li>
-        <li>Do not force end ranges.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Hip & Ankle Circles</h3>
-      <p class="rx">2 × 30 seconds each</p>
-      <ul>
-        <li>Keep movements smooth.</li>
-        <li>Use support if needed.</li>
-        <li>Prioritise control over speed.</li>
-      </ul>
-    </article>
-
-  </div>
+  <article class="move-card">
+    <h3>Hip & Ankle Circles</h3>
+    <p class="rx">2 rounds × 30 seconds each area</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Improves lower-body joint awareness and prepares hips, ankles and knees for walking or training.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand near a wall or chair.</li><li>Keep knees soft.</li><li>Use support if balance is uncertain.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Circle hips slowly in both directions.</li><li>Then circle each ankle slowly.</li><li>Keep range comfortable.</li><li>Focus on smoothness rather than size.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle mobility and control, not sharp pinching or forced stretching.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Rushing.</li><li>Locking knees.</li><li>Forcing big circles.</li><li>Losing balance because support is not used.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> smaller circles. <br><strong>Harder:</strong> slow the circles and reduce hand support.</p></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
   <h2>Phase 2 — Stability & Balance</h2>
 
-  <div class="phase-list">
+  <article class="move-card">
+    <h3>Single-Leg Balance</h3>
+    <p class="rx">20–40 seconds each side</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Builds foot, ankle, hip and core control for walking, stairs and lower-body confidence.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand beside a wall or chair.</li><li>Shift weight onto one foot.</li><li>Keep the lifted foot close to the floor.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Stand tall and breathe.</li><li>Use fingertip support if needed.</li><li>Keep hips level.</li><li>Stop before balance becomes unsafe.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Small corrections in the foot, ankle and hip. Controlled wobble is useful.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Locking the knee.</li><li>Holding breath.</li><li>Letting the arch collapse completely.</li><li>Trying eyes-closed too early.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> use fingertip support. <br><strong>Harder:</strong> turn the head slowly while balancing.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Single-Leg Balance</h3>
-      <p class="rx">20–40 seconds each side</p>
-      <ul>
-        <li>Stand tall and relaxed.</li>
-        <li>Use support nearby if needed.</li>
-        <li>Keep breathing steady.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Controlled Step Patterns</h3>
+    <p class="rx">2–3 sets × 6–10 each direction</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Teaches controlled weight shift forwards, backwards and sideways.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand tall with space around you.</li><li>Keep feet hip-width.</li><li>Use support nearby if needed.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Step forwards and return.</li><li>Step backwards and return.</li><li>Step sideways and return.</li><li>Move slowly enough to control the landing.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Foot placement, balance and hip control. No rushed stumbling.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Taking steps that are too large.</li><li>Dropping into the landing.</li><li>Knees collapsing inward.</li><li>Rushing the return step.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> smaller steps. <br><strong>Harder:</strong> add a 2-second pause after each step.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Controlled Step Patterns</h3>
-      <p class="rx">2–3 × 6–10 each side</p>
-      <ul>
-        <li>Step forwards, backwards and sideways.</li>
-        <li>Control the lowering phase.</li>
-        <li>Stay balanced through the foot.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Slow March Flow</h3>
-      <p class="rx">2–3 minutes</p>
-      <ul>
-        <li>Coordinate arms and legs.</li>
-        <li>Move rhythmically.</li>
-        <li>Maintain upright posture.</li>
-      </ul>
-    </article>
-
-  </div>
+  <article class="move-card">
+    <h3>Slow March Flow</h3>
+    <p class="rx">2–3 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Links balance, rhythm, posture and breathing into a simple whole-body control drill.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand tall.</li><li>Arms relaxed.</li><li>Use support nearby if needed.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>March slowly on the spot.</li><li>Place each foot quietly.</li><li>Coordinate opposite arm and leg.</li><li>Keep breathing steady.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle warmth, coordination and balance. It should not feel like hard cardio.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Stomping.</li><li>Leaning backwards.</li><li>Rushing the pace.</li><li>Tensing the shoulders.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> hold a wall. <br><strong>Harder:</strong> slow the lowering of each foot.</p></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
   <h2>Phase 3 — Integrated Movement</h2>
 
-  <div class="phase-list">
+  <article class="move-card">
+    <h3>Rotational Reach Patterns</h3>
+    <p class="rx">2–3 sets × 6–10 each side</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Teaches the body to rotate and reach without losing balance or forcing the spine.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand with feet grounded.</li><li>Knees soft.</li><li>Arms relaxed in front of you.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Reach across the body gently.</li><li>Let the torso rotate comfortably.</li><li>Return to centre.</li><li>Repeat to the other side.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Controlled rotation through ribs, hips and shoulders. Not twisting pain.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Forcing range.</li><li>Letting knees collapse.</li><li>Throwing the arm across aggressively.</li><li>Holding breath.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> keep reach smaller. <br><strong>Harder:</strong> add a slow pause at end range.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Rotational Reach Patterns</h3>
-      <p class="rx">2–3 × 6–10</p>
-      <ul>
-        <li>Reach through different angles.</li>
-        <li>Move under control.</li>
-        <li>Maintain balance while rotating.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Controlled Squat Patterns</h3>
+    <p class="rx">2–3 sets × 6–10 reps</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Builds controlled lower-body range and prepares the body for squats, stairs and lifting patterns.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Feet comfortable and grounded.</li><li>Use chair or wall support if needed.</li><li>Keep torso relaxed but tall.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Sit hips back slightly.</li><li>Bend knees through comfortable range.</li><li>Keep knees tracking over toes.</li><li>Stand smoothly.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Thigh and glute effort with controlled knees. Not sharp joint pain.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Diving too deep too soon.</li><li>Knees collapsing inward.</li><li>Heels lifting.</li><li>Rushing reps.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> use a chair. <br><strong>Harder:</strong> slow the lowering phase.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Controlled Squat Patterns</h3>
-      <p class="rx">2–3 × 6–10</p>
-      <ul>
-        <li>Use manageable depth.</li>
-        <li>Keep the movement smooth.</li>
-        <li>Focus on alignment and rhythm.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Flow Linking</h3>
-      <p class="rx">2–5 minutes</p>
-      <ul>
-        <li>Link multiple movements together.</li>
-        <li>Move continuously without rushing.</li>
-        <li>Use breathing to regulate pace.</li>
-      </ul>
-    </article>
-
-  </div>
+  <article class="move-card">
+    <h3>Flow Linking</h3>
+    <p class="rx">2–5 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Links several controlled movements together so the user learns smooth transitions, not isolated positions only.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Choose 3–4 movements from this page.</li><li>Move from one to the next slowly.</li><li>Keep breathing calm.</li><li>Stop before fatigue ruins control.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Coordination, warmth and smoother movement. Not exhaustion.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Turning it into cardio.</li><li>Forcing range.</li><li>Losing balance repeatedly.</li><li>Ignoring pain signals.</li></ul></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
   <h2>Movement Principles</h2>
 
   <div class="grid cols-2">
-
     <div class="card">
       <h3>Helpful Focus Areas</h3>
       <ul>
@@ -348,7 +295,6 @@
         <li>Chasing intensity too early</li>
       </ul>
     </div>
-
   </div>
 </section>
 

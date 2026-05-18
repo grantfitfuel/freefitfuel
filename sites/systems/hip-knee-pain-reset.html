@@ -6,124 +6,86 @@
 
 <title>Hip & Knee Pain Reset | FreeFitFuel</title>
 
-<meta name="description" content="A FreeFitFuel recovery and movement system for hip stiffness, knee pain, cramp and lower-body movement confidence.">
+<meta name="description" content="A fully coached FreeFitFuel recovery system for hip stiffness, knee pain, cramp, walking discomfort and lower-body movement confidence.">
 
 <link rel="stylesheet" href="/style.css?v=24">
 <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
 <style>
 .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-.lead{color:var(--inkdim);line-height:1.6}
+.lead{color:var(--inkdim);line-height:1.7}
 
 .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 .hero-mini figure{margin:0;position:relative}
-.hero-mini img{
-  width:100%;
-  height:42vh;
-  min-height:280px;
-  object-fit:cover;
-  display:block;
-  filter:brightness(.82) saturate(1.05)
-}
-.hero-mini .overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))
-}
-.hero-mini .content{
-  position:static;
-  padding:18px 20px 24px;
-  max-width:var(--maxw);
-  margin:0 auto
-}
+.hero-mini img{width:100%;height:42vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05)}
+.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))}
+.hero-mini .content{position:static;padding:18px 20px 24px;max-width:var(--maxw);margin:0 auto}
 
-.section{
-  background:var(--glass);
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  margin:14px 0;
-  padding:16px
-}
-
+.section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
 .grid{display:grid;gap:14px}
 @media(min-width:780px){
-  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
 }
 
-.card{
-  background:#111418;
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  padding:14px
+.card,.move-card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+.card h3,.move-card h3{margin-top:0;color:var(--accent)}
+
+.pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.8rem 0}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);border-radius:999px;padding:.22rem .55rem;background:rgba(255,255,255,.055);color:var(--inkdim);font-size:.9rem}
+
+.phase-shell{display:grid;gap:14px}
+.move-card{margin:14px 0}
+.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0 .75rem}
+
+.coach-grid{display:grid;gap:12px;margin-top:12px}
+@media(min-width:860px){
+.coach-grid{grid-template-columns:repeat(2,1fr)}
 }
 
-.card h3{
-  margin-top:0;
-  color:var(--accent)
+.coach-box{
+background:rgba(255,255,255,.035);
+border:1px solid rgba(255,255,255,.08);
+border-radius:12px;
+padding:12px
 }
 
-.pill-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.45rem;
-  margin:.8rem 0
+.coach-box strong{
+display:block;
+color:#fff;
+margin-bottom:.35rem
 }
 
-.pill{
-  display:inline-flex;
-  align-items:center;
-  border:1px solid var(--stroke);
-  border-radius:999px;
-  padding:.22rem .55rem;
-  background:rgba(255,255,255,.055);
-  color:var(--inkdim);
-  font-size:.9rem
+.coach-box p{
+margin:.2rem 0;
+color:var(--inkdim);
+line-height:1.65
 }
 
-.phase-list{
-  display:grid;
-  gap:14px
-}
-
-.phase{
-  background:#111418;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  padding:14px
-}
-
-.phase h3{
-  margin:.1rem 0 .45rem
-}
-
-.rx{
-  color:#ffd0ad;
-  font-weight:700;
-  margin:.25rem 0
-}
-
-.phase ul{
-  margin:.45rem 0 0 1.2rem
-}
-
-.phase li{
-  margin:.25rem 0
+.coach-box ul{
+margin:.25rem 0 0 1.15rem;
+color:var(--inkdim);
+line-height:1.65
 }
 
 .note{
-  border-left:4px solid var(--accent);
-  padding:.75rem .9rem;
-  background:rgba(255,106,0,.08);
-  border-radius:10px;
-  margin:.8rem 0
+border-left:4px solid var(--accent);
+padding:.75rem .9rem;
+background:rgba(255,106,0,.08);
+border-radius:10px;
+margin:.8rem 0
+}
+
+.warning{
+border-left-color:#ffb84d;
+background:rgba(255,184,77,.08)
 }
 
 .btn-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.6rem;
-  margin-top:1rem
+display:flex;
+flex-wrap:wrap;
+gap:.6rem;
+margin-top:1rem
 }
 </style>
 </head>
@@ -143,14 +105,14 @@
     <h1><span class="accent">Hip & Knee Pain Reset</span></h1>
 
     <p class="lead">
-      A lower-body reset system for hip stiffness, knee irritation,
-      cramp, walking discomfort and pain that worsens after inactivity.
+      A fully coached lower-body recovery system for hip stiffness,
+      knee irritation, walking discomfort, cramp and pain that worsens after inactivity.
     </p>
 
     <div class="pill-row">
       <span class="pill">Low-to-moderate intensity</span>
-      <span class="pill">Movement restoration</span>
       <span class="pill">Walking support</span>
+      <span class="pill">Movement restoration</span>
       <span class="pill">Recovery aware</span>
     </div>
   </div>
@@ -159,234 +121,568 @@
 <main class="wrap">
 
 <section class="section">
-  <h2>What This System Is For</h2>
 
-  <p class="lead">
-    Hip and knee discomfort often becomes worse when movement drops,
-    stiffness builds up and tissues lose confidence under load.
-    This system focuses on controlled movement, circulation,
-    mobility and gradual rebuilding rather than aggressive pushing.
-  </p>
+<h2>Understanding The Pattern</h2>
 
-  <div class="grid cols-3">
+<p class="lead">
+Hip and knee pain often becomes worse when movement drops,
+stiffness builds up and the body loses confidence under load.
+Many people notice symptoms are strongest after sitting still,
+getting out of bed, restarting movement or after long inactive periods.
+</p>
 
-    <div class="card">
-      <h3>Common Signs</h3>
-      <ul>
-        <li>Pain after sitting still</li>
-        <li>Hip stiffness when moving again</li>
-        <li>Walking discomfort</li>
-        <li>Deep aching around the hip or knee</li>
-        <li>Cramp and tightness</li>
-      </ul>
-    </div>
+<div class="note warning">
+<strong>Important:</strong>
+Pain does not always mean damage is worsening.
+Stiff, sensitive or deconditioned tissues often become more reactive after inactivity.
+Gentle consistent movement is usually more helpful than complete avoidance.
+</div>
 
-    <div class="card">
-      <h3>Can Pair With</h3>
-      <ul>
-        <li>Knee Capacity Reset</li>
-        <li>Fascia Flow Reset</li>
-        <li>Lymphatic Recovery Flow</li>
-        <li>Lower-Leg Stability System</li>
-        <li>Walking programmes</li>
-      </ul>
-    </div>
+<div class="grid cols-3">
 
-    <div class="card">
-      <h3>Seek Medical Advice If</h3>
-      <ul>
-        <li>Severe swelling develops</li>
-        <li>The joint locks or gives way repeatedly</li>
-        <li>Night pain becomes severe</li>
-        <li>Rapid weakness develops</li>
-        <li>You cannot weight-bear properly</li>
-      </ul>
-    </div>
+<div class="card">
+<h3>Common Signs</h3>
+<ul>
+<li>Pain after sitting still</li>
+<li>Hip stiffness when moving again</li>
+<li>Walking discomfort</li>
+<li>Deep aching around hip or knee</li>
+<li>Cramp and tightness</li>
+</ul>
+</div>
 
-  </div>
+<div class="card">
+<h3>Often Helpful</h3>
+<ul>
+<li>Frequent gentle movement</li>
+<li>Gradual walking exposure</li>
+<li>Hip and glute activation</li>
+<li>Controlled loading</li>
+<li>Mobility before long sitting periods</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Seek Medical Advice If</h3>
+<ul>
+<li>Severe swelling develops</li>
+<li>The joint locks repeatedly</li>
+<li>You cannot weight-bear properly</li>
+<li>Rapid weakness appears</li>
+<li>Night pain becomes severe</li>
+</ul>
+</div>
+
+</div>
+
 </section>
 
 <section class="section">
-  <h2>Phase 1 — Restore Comfortable Movement</h2>
 
-  <div class="note">
-    <strong>The goal is confidence under movement.</strong>
-    Gentle movement usually beats complete inactivity for stiffness-driven pain.
-  </div>
+<h2>How To Use This System</h2>
 
-  <div class="phase-list">
+<div class="grid cols-3">
 
-    <article class="phase">
-      <h3>Hip Circles</h3>
-      <p class="rx">2 × 30–45 seconds</p>
-      <ul>
-        <li>Move slowly and smoothly.</li>
-        <li>Use support if needed.</li>
-        <li>Keep the knees soft.</li>
-      </ul>
-    </article>
+<div class="card">
+<h3>During Flare Periods</h3>
+<p>
+Use Phase 1 only. Keep movement calm, frequent and manageable.
+</p>
+</div>
 
-    <article class="phase">
-      <h3>Supported Sit-to-Stand</h3>
-      <p class="rx">2–3 × 6–10</p>
-      <ul>
-        <li>Use a chair or bench.</li>
-        <li>Control the lowering phase.</li>
-        <li>Push through the floor smoothly.</li>
-      </ul>
-    </article>
+<div class="card">
+<h3>When Symptoms Ease</h3>
+<p>
+Move into Phase 2 to rebuild lower-body confidence and walking tolerance.
+</p>
+</div>
 
-    <article class="phase">
-      <h3>Gentle Walking Blocks</h3>
-      <p class="rx">5–10 minutes</p>
-      <ul>
-        <li>Keep pace comfortable.</li>
-        <li>Use shorter bouts if needed.</li>
-        <li>Focus on movement consistency.</li>
-      </ul>
-    </article>
+<div class="card">
+<h3>When Stable</h3>
+<p>
+Use Phase 3 to return gradually to more normal training and activity.
+</p>
+</div>
 
-  </div>
+</div>
+
 </section>
 
 <section class="section">
-  <h2>Phase 2 — Build Lower-Body Capacity</h2>
 
-  <div class="phase-list">
+<h2>Phase 1 — Restore Comfortable Movement</h2>
 
-    <article class="phase">
-      <h3>Step-Ups</h3>
-      <p class="rx">2–3 × 6–10 each side</p>
-      <ul>
-        <li>Use a low step initially.</li>
-        <li>Control the descent.</li>
-        <li>Do not rush the movement.</li>
-      </ul>
-    </article>
+<div class="note">
+<strong>The goal is movement confidence.</strong>
+Gentle consistent movement usually beats complete inactivity for stiffness-driven pain.
+</div>
 
-    <article class="phase">
-      <h3>Bridge Variations</h3>
-      <p class="rx">2–3 × 8–12</p>
-      <ul>
-        <li>Drive through the heels.</li>
-        <li>Keep the ribs controlled.</li>
-        <li>Pause briefly at the top.</li>
-      </ul>
-    </article>
+<div class="phase-shell">
 
-    <article class="phase">
-      <h3>Calf Raises</h3>
-      <p class="rx">2–3 × 12–15</p>
-      <ul>
-        <li>Rise and lower slowly.</li>
-        <li>Use support if necessary.</li>
-        <li>Do not bounce aggressively.</li>
-      </ul>
-    </article>
+<article class="move-card">
 
-  </div>
+<h3>Hip Circles</h3>
+<p class="rx">2 × 30–45 seconds</p>
+
+<div class="coach-grid">
+
+<div class="coach-box">
+<strong>Purpose</strong>
+<p>
+Helps reduce hip stiffness and restore comfortable movement after sitting or inactivity.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Starting Position</strong>
+<ul>
+<li>Stand tall near a wall or chair for support.</li>
+<li>Keep knees soft rather than locked.</li>
+<li>Relax the shoulders and jaw.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>How To Do It</strong>
+<ul>
+<li>Slowly circle the hips in one direction.</li>
+<li>Move through a comfortable range only.</li>
+<li>Reverse direction after 15–20 seconds.</li>
+<li>Keep breathing relaxed throughout.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>What You Should Feel</strong>
+<p>
+Gentle loosening around the hips and pelvis.
+You should not feel sharp pinching pain.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Common Mistakes</strong>
+<ul>
+<li>Moving too quickly.</li>
+<li>Forcing painful range.</li>
+<li>Locking the knees hard.</li>
+<li>Holding the breath.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Easier / Harder</strong>
+<p>
+<strong>Easier:</strong> make the circles smaller.<br>
+<strong>Harder:</strong> increase the range slightly while staying comfortable.
+</p>
+</div>
+
+</div>
+
+</article>
+
+<article class="move-card">
+
+<h3>Supported Sit-to-Stand</h3>
+<p class="rx">2–3 sets × 6–10 reps</p>
+
+<div class="coach-grid">
+
+<div class="coach-box">
+<strong>Purpose</strong>
+<p>
+Rebuilds confidence standing up from seated positions and improves hip and knee loading tolerance.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Starting Position</strong>
+<ul>
+<li>Sit on a stable chair or bench.</li>
+<li>Feet flat and roughly hip-width apart.</li>
+<li>Use arm support if necessary.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>How To Do It</strong>
+<ul>
+<li>Lean slightly forwards.</li>
+<li>Push through the floor smoothly.</li>
+<li>Stand without jerking upwards.</li>
+<li>Lower slowly back to the chair.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>What You Should Feel</strong>
+<p>
+Controlled effort through the hips, thighs and glutes rather than sharp knee pain.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Common Mistakes</strong>
+<ul>
+<li>Dropping quickly into the chair.</li>
+<li>Using momentum to stand.</li>
+<li>Knees collapsing inward aggressively.</li>
+<li>Holding the breath.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Easier / Harder</strong>
+<p>
+<strong>Easier:</strong> use a higher chair.<br>
+<strong>Harder:</strong> slow the lowering phase to 3 seconds.
+</p>
+</div>
+
+</div>
+
+</article>
+
+<article class="move-card">
+
+<h3>Gentle Walking Blocks</h3>
+<p class="rx">5–10 minutes</p>
+
+<div class="coach-grid">
+
+<div class="coach-box">
+<strong>Purpose</strong>
+<p>
+Walking helps restore circulation, joint confidence and lower-body rhythm without excessive complexity.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>How To Do It</strong>
+<ul>
+<li>Walk at a calm manageable pace.</li>
+<li>Use shorter bouts if symptoms flare easily.</li>
+<li>Keep steps relaxed rather than forceful.</li>
+<li>Stop before symptoms spike sharply.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Walking Progression Rule</strong>
+<p>
+Increase either time or distance gradually, not both aggressively at once.
+Consistency matters more than speed.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Important Guidance</strong>
+<p>
+Some stiffness when restarting movement can improve once circulation increases.
+Monitor how you feel later that day and the next morning.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Common Mistakes</strong>
+<ul>
+<li>Trying to “walk it off” aggressively.</li>
+<li>Large sudden step-count increases.</li>
+<li>Completely avoiding walking for days.</li>
+<li>Ignoring next-day symptom spikes.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Easier / Harder</strong>
+<p>
+<strong>Easier:</strong> split into several small walks.<br>
+<strong>Harder:</strong> gradually increase duration before pace.
+</p>
+</div>
+
+</div>
+
+</article>
+
+</div>
+
 </section>
 
 <section class="section">
-  <h2>Phase 3 — Return To More Normal Training</h2>
 
-  <div class="phase-list">
+<h2>Phase 2 — Build Lower-Body Capacity</h2>
 
-    <article class="phase">
-      <h3>Controlled Squat Patterns</h3>
-      <p class="rx">3 × 6–10</p>
-      <ul>
-        <li>Use manageable depth.</li>
-        <li>Keep knees tracking cleanly.</li>
-        <li>Progress gradually.</li>
-      </ul>
-    </article>
+<div class="phase-shell">
 
-    <article class="phase">
-      <h3>Walking Tolerance Progression</h3>
-      <p class="rx">Steady increases</p>
-      <ul>
-        <li>Add distance gradually.</li>
-        <li>Monitor next-day response.</li>
-        <li>Consistency matters more than speed.</li>
-      </ul>
-    </article>
+<article class="move-card">
 
-    <article class="phase">
-      <h3>Light Power Reintroduction</h3>
-      <p class="rx">Only if comfortable</p>
-      <ul>
-        <li>Mini pogo hops</li>
-        <li>Fast marching</li>
-        <li>Low-level dynamic movement</li>
-      </ul>
-    </article>
+<h3>Step-Ups</h3>
+<p class="rx">2–3 sets × 6–10 each side</p>
 
-  </div>
+<div class="coach-grid">
+
+<div class="coach-box">
+<strong>Purpose</strong>
+<p>
+Builds hip, knee and ankle coordination while improving confidence during stairs and walking.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Starting Position</strong>
+<ul>
+<li>Use a low step initially.</li>
+<li>Keep the whole foot on the step.</li>
+<li>Use wall support if necessary.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>How To Do It</strong>
+<ul>
+<li>Push through the stepping leg.</li>
+<li>Stand smoothly onto the step.</li>
+<li>Lower under control.</li>
+<li>Avoid dropping heavily.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>What You Should Feel</strong>
+<p>
+Hip and thigh effort with controlled balance work.
+Sharp joint pain is not the target.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Common Mistakes</strong>
+<ul>
+<li>Using a step that is too high.</li>
+<li>Dropping quickly on descent.</li>
+<li>Knee collapsing inward excessively.</li>
+<li>Rushing the movement.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Easier / Harder</strong>
+<p>
+<strong>Easier:</strong> reduce step height.<br>
+<strong>Harder:</strong> slow the lowering phase or add light load.
+</p>
+</div>
+
+</div>
+
+</article>
+
+<article class="move-card">
+
+<h3>Bridge Variations</h3>
+<p class="rx">2–3 sets × 8–12 reps</p>
+
+<div class="coach-grid">
+
+<div class="coach-box">
+<strong>Purpose</strong>
+<p>
+Improves glute contribution so hips and knees share load more effectively.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Starting Position</strong>
+<ul>
+<li>Lie on your back with knees bent.</li>
+<li>Feet flat and hip-width apart.</li>
+<li>Arms relaxed by your sides.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>How To Do It</strong>
+<ul>
+<li>Drive gently through the heels.</li>
+<li>Lift the hips smoothly.</li>
+<li>Pause briefly at the top.</li>
+<li>Lower under control.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>What You Should Feel</strong>
+<p>
+Glute and hip work more than lower-back strain.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Common Mistakes</strong>
+<ul>
+<li>Overarching the lower back.</li>
+<li>Pushing through the toes only.</li>
+<li>Rushing the lowering phase.</li>
+<li>Holding excessive tension in the neck.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Easier / Harder</strong>
+<p>
+<strong>Easier:</strong> reduce height.<br>
+<strong>Harder:</strong> add a longer pause at the top.
+</p>
+</div>
+
+</div>
+
+</article>
+
+<article class="move-card">
+
+<h3>Calf Raises</h3>
+<p class="rx">2–3 sets × 12–15 reps</p>
+
+<div class="coach-grid">
+
+<div class="coach-box">
+<strong>Purpose</strong>
+<p>
+Builds lower-leg support for walking, balance and general movement confidence.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>How To Do It</strong>
+<ul>
+<li>Hold a wall or chair if necessary.</li>
+<li>Rise slowly onto the balls of the feet.</li>
+<li>Pause briefly.</li>
+<li>Lower under control.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>What You Should Feel</strong>
+<p>
+Calf effort without cramping aggressively.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Cramp Guidance</strong>
+<p>
+If cramp appears repeatedly, reduce intensity, hydrate well and shorten the set temporarily.
+</p>
+</div>
+
+<div class="coach-box">
+<strong>Common Mistakes</strong>
+<ul>
+<li>Bouncing quickly.</li>
+<li>Using momentum.</li>
+<li>Holding the breath.</li>
+<li>Ignoring cramp escalation.</li>
+</ul>
+</div>
+
+<div class="coach-box">
+<strong>Easier / Harder</strong>
+<p>
+<strong>Easier:</strong> use both hands for support.<br>
+<strong>Harder:</strong> increase pause time at the top.
+</p>
+</div>
+
+</div>
+
+</article>
+
+</div>
+
 </section>
 
 <section class="section">
-  <h2>Recovery Principles</h2>
 
-  <div class="grid cols-2">
+<h2>Phase 3 — Return To More Normal Training</h2>
 
-    <div class="card">
-      <h3>Helpful Approaches</h3>
-      <ul>
-        <li>Frequent gentle movement</li>
-        <li>Hydration and sleep support</li>
-        <li>Gradual walking exposure</li>
-        <li>Mobility before long sitting periods</li>
-      </ul>
-    </div>
+<div class="grid cols-3">
 
-    <div class="card">
-      <h3>Often Unhelpful</h3>
-      <ul>
-        <li>Sudden huge activity spikes</li>
-        <li>Complete movement avoidance</li>
-        <li>Grinding through sharp pain</li>
-        <li>Ignoring recovery quality</li>
-      </ul>
-    </div>
+<div class="card">
+<h3>Controlled Squat Patterns</h3>
+<ul>
+<li>Use manageable depth.</li>
+<li>Progress range gradually.</li>
+<li>Keep the movement smooth and controlled.</li>
+<li>Monitor next-day response.</li>
+</ul>
+</div>
 
-  </div>
+<div class="card">
+<h3>Walking Tolerance Progression</h3>
+<ul>
+<li>Add distance gradually.</li>
+<li>Do not spike activity suddenly.</li>
+<li>Build consistency before intensity.</li>
+<li>Use recovery walks on flare days.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Light Power Reintroduction</h3>
+<ul>
+<li>Mini pogo hops</li>
+<li>Fast marching</li>
+<li>Low-level dynamic movement</li>
+<li>Only if symptoms remain stable</li>
+</ul>
+</div>
+
+</div>
+
 </section>
 
 <section class="section">
-  <h2>How My Plan Uses This</h2>
 
-  <p class="lead">
-    My Plan can prioritise Hip & Knee Pain Reset when hip pain,
-    walking discomfort, inactivity stiffness, cramp or lower-body recovery issues
-    are detected through check-ins and adaptive scoring.
-  </p>
+<h2>How My Plan Uses This</h2>
 
-  <div class="btn-row">
-    <a class="btn btn-primary" href="/recovery-training-hub.html">Back to Recovery Hub</a>
-    <a class="btn" href="/workouts.html">Open Workouts</a>
-    <a class="btn" href="/my-plan.html">Open My Plan</a>
-  </div>
+<p class="lead">
+My Plan can prioritise Hip & Knee Pain Reset when hip pain,
+walking discomfort, inactivity stiffness, cramp or lower-body recovery issues
+are detected through adaptive scoring and check-ins.
+</p>
+
+<div class="btn-row">
+<a class="btn btn-primary" href="/recovery-training-hub.html">Back to Recovery Hub</a>
+<a class="btn" href="/workouts.html">Open Workouts</a>
+<a class="btn" href="/my-plan.html">Open My Plan</a>
+</div>
+
 </section>
 
 <section class="section">
-  <h2>Important Note</h2>
 
-  <p>
-    This content is for general fitness education only and is not a substitute
-    for medical assessment or treatment. Stop if symptoms worsen rapidly or if
-    weight-bearing becomes difficult.
-  </p>
+<h2>Important Note</h2>
+
+<p>
+This content is for general fitness education only and is not a substitute
+for medical assessment or treatment. Stop if symptoms worsen rapidly
+or if weight-bearing becomes difficult.
+</p>
+
 </section>
 
 </main>
 
 <footer class="site-footer">
-  <div class="container">
-    <img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
-    <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
-    <p class="credit">Created by Grant Cameron Anthony</p>
-  </div>
+<div class="container">
+<img src="/img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+<p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+<p class="credit">Created by Grant Cameron Anthony</p>
+</div>
 </footer>
 
 </body>

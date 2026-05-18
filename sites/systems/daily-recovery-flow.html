@@ -6,36 +6,41 @@
 
 <title>Daily Recovery Flow | FreeFitFuel</title>
 
-<meta name="description" content="A FreeFitFuel daily recovery system combining breathing, mobility, walking and low-impact movement to support recovery and consistency.">
+<meta name="description" content="A fully coached FreeFitFuel recovery flow for stiffness reduction, nervous-system downshifting, gentle mobility and sustainable daily movement.">
 
 <link rel="stylesheet" href="/style.css?v=24">
 <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
 <style>
 .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-.lead{color:var(--inkdim);line-height:1.6}
+.lead{color:var(--inkdim);line-height:1.7}
+
 .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 .hero-mini figure{margin:0;position:relative}
 .hero-mini img{width:100%;height:42vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05)}
 .hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))}
 .hero-mini .content{position:static;padding:18px 20px 24px;max-width:var(--maxw);margin:0 auto}
+
 .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
 .grid{display:grid;gap:14px}
-@media(min-width:780px){
-.grid.cols-2{grid-template-columns:repeat(2,1fr)}
-.grid.cols-3{grid-template-columns:repeat(3,1fr)}
-}
-.card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
-.card h3{margin-top:0;color:var(--accent)}
+@media(min-width:780px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+
+.card,.move-card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+.card h3,.move-card h3{margin-top:0;color:var(--accent)}
+
 .pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.8rem 0}
 .pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);border-radius:999px;padding:.22rem .55rem;background:rgba(255,255,255,.055);color:var(--inkdim);font-size:.9rem}
-.flow-list{display:grid;gap:14px}
-.flow{background:#111418;border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:14px}
-.flow h3{margin:.1rem 0 .45rem}
-.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0}
-.flow ul{margin:.45rem 0 0 1.2rem}
-.flow li{margin:.25rem 0}
+
+.move-card{margin:14px 0}
+.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0 .75rem}
+.coach-grid{display:grid;gap:12px;margin-top:12px}
+@media(min-width:860px){.coach-grid{grid-template-columns:repeat(2,1fr)}}
+.coach-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.coach-box strong{display:block;color:#fff;margin-bottom:.35rem}
+.coach-box p{margin:.2rem 0;color:var(--inkdim);line-height:1.65}
+.coach-box ul{margin:.25rem 0 0 1.15rem;color:var(--inkdim);line-height:1.65}
 .note{border-left:4px solid var(--accent);padding:.75rem .9rem;background:rgba(255,106,0,.08);border-radius:10px;margin:.8rem 0}
+.warning{border-left-color:#ffb84d;background:rgba(255,184,77,.08)}
 .btn-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
 </style>
 </head>
@@ -45,9 +50,9 @@
 <div id="site-header"></div>
 <script src="/js/header-loader.js" defer></script>
 
-<section class="hero-mini" role="banner" aria-label="Daily recovery flow hero">
+<section class="hero-mini" role="banner" aria-label="Daily Recovery Flow hero">
   <figure>
-    <img src="/img/curl.jpg" alt="FreeFitFuel recovery and movement">
+    <img src="/img/curl.jpg" alt="FreeFitFuel daily recovery movement">
     <div class="overlay" aria-hidden="true"></div>
   </figure>
 
@@ -55,16 +60,15 @@
     <h1><span class="accent">Daily Recovery Flow</span></h1>
 
     <p class="lead">
-      A low-pressure recovery system combining breathing,
-      mobility, walking and gentle movement to support consistency,
-      recovery quality and movement confidence.
+      A fully coached daily movement and recovery flow for reducing stiffness,
+      restoring mobility, calming overload and maintaining consistency without overtraining.
     </p>
 
     <div class="pill-row">
-      <span class="pill">10–20 minutes</span>
-      <span class="pill">Daily friendly</span>
+      <span class="pill">Daily recovery</span>
       <span class="pill">Low impact</span>
-      <span class="pill">Recovery focused</span>
+      <span class="pill">Stress reduction</span>
+      <span class="pill">Whole-body reset</span>
     </div>
   </div>
 </section>
@@ -75,20 +79,24 @@
   <h2>What This System Is For</h2>
 
   <p class="lead">
-    Recovery is not just inactivity. Gentle consistent movement can improve
-    stiffness, circulation, recovery confidence and readiness for harder training.
-    This flow is designed to be sustainable rather than exhausting.
+    Recovery is not only about lying still. Most people recover better with gentle movement,
+    circulation, posture changes, breathing control and nervous-system downshifting.
+    This system is designed to keep the body moving without draining recovery resources.
   </p>
 
-  <div class="grid cols-3">
+  <div class="note warning">
+    <strong>This is not meant to feel exhausting.</strong>
+    If this flow becomes a hard workout, the user is probably pushing too aggressively.
+  </div>
 
+  <div class="grid cols-3">
     <div class="card">
       <h3>Useful For</h3>
       <ul>
+        <li>General stiffness</li>
+        <li>Deskbound fatigue</li>
         <li>Recovery days</li>
-        <li>Deskbound stiffness</li>
-        <li>Low-energy days</li>
-        <li>Post-training recovery</li>
+        <li>Stress management</li>
         <li>Movement consistency</li>
       </ul>
     </div>
@@ -96,117 +104,188 @@
     <div class="card">
       <h3>Pairs Well With</h3>
       <ul>
-        <li>Fascia Flow Reset</li>
-        <li>Lymphatic Recovery Flow</li>
-        <li>Joint Control Foundations</li>
-        <li>Walking routines</li>
         <li>Strength programmes</li>
+        <li>Running plans</li>
+        <li>Tai chi walking</li>
+        <li>Joint Control Foundations</li>
+        <li>Deskbound Reset Flow</li>
       </ul>
     </div>
 
     <div class="card">
-      <h3>Pause If</h3>
+      <h3>Reduce Intensity If</h3>
       <ul>
-        <li>Symptoms worsen sharply</li>
         <li>Dizziness develops</li>
-        <li>Chest pain appears</li>
-        <li>Balance becomes unsafe</li>
-        <li>Movement feels medically concerning</li>
+        <li>Pain escalates sharply</li>
+        <li>Fatigue worsens significantly</li>
+        <li>Breathing feels strained</li>
+        <li>Recovery quality drops</li>
       </ul>
     </div>
-
   </div>
 </section>
 
 <section class="section">
-  <h2>The Daily Flow</h2>
+  <h2>How To Use This Flow</h2>
 
-  <div class="note">
-    <strong>This is a recovery support system, not punishment cardio.</strong>
-    You should usually finish feeling better than when you started.
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>Morning Reset</h3>
+      <p>Use 5–10 minutes after waking to reduce stiffness and restart movement quality.</p>
+    </div>
+    <div class="card">
+      <h3>Post-Workout Recovery</h3>
+      <p>Use a calmer shorter version after harder sessions to bring the system back down.</p>
+    </div>
+    <div class="card">
+      <h3>Low-Energy Days</h3>
+      <p>Use the gentlest version possible rather than skipping movement completely.</p>
+    </div>
   </div>
+</section>
 
-  <div class="flow-list">
+<section class="section">
+  <h2>Phase 1 — Calm & Reset</h2>
 
-    <article class="flow">
-      <h3>1. Breathing Reset</h3>
-      <p class="rx">1–2 minutes</p>
-      <ul>
-        <li>Stand or sit comfortably.</li>
-        <li>Breathe slowly through the nose if comfortable.</li>
-        <li>Relax the shoulders and jaw.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Breathing Reset</h3>
+    <p class="rx">1–3 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Helps reduce tension, improve breathing rhythm and bring the nervous system into a calmer state.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Sit or stand comfortably.</li><li>Relax shoulders and jaw.</li><li>Keep the body supported.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Breathe in slowly through the nose.</li><li>Let the ribs expand gently.</li><li>Breathe out slowly without forcing.</li><li>Keep the pace calm and smooth.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Less tension through the chest, neck and shoulders. Breathing should become quieter and steadier.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Overbreathing aggressively.</li><li>Raising shoulders excessively.</li><li>Trying too hard to relax.</li><li>Forcing deep breaths.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> shorter sessions. <br><strong>Harder:</strong> extend the exhale slightly.</p></div>
+    </div>
+  </article>
 
-    <article class="flow">
-      <h3>2. Joint Circles</h3>
-      <p class="rx">2–3 minutes</p>
-      <ul>
-        <li>Neck circles</li>
-        <li>Shoulder circles</li>
-        <li>Hip circles</li>
-        <li>Ankle circles</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Neck & Shoulder Flow</h3>
+    <p class="rx">1–2 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Reduces deskbound stiffness and helps unload upper-body tension.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Turn head slowly side to side.</li><li>Roll shoulders gently forwards and backwards.</li><li>Open and close the chest slowly.</li><li>Move within comfortable range only.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle loosening and circulation through the upper body.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Moving too quickly.</li><li>Rolling the neck aggressively.</li><li>Forcing stretches.</li><li>Holding breath.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> smaller ranges. <br><strong>Harder:</strong> slow the tempo and add pauses.</p></div>
+    </div>
+  </article>
 
-    <article class="flow">
-      <h3>3. Slow March Flow</h3>
-      <p class="rx">2–4 minutes</p>
-      <ul>
-        <li>Move rhythmically.</li>
-        <li>Coordinate arms and legs.</li>
-        <li>Keep breathing controlled.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Spinal Mobility Wave</h3>
+    <p class="rx">2–3 rounds</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Encourages movement through the spine without aggressive stretching.</p></div>
+      <div class="coach-box"><strong>Starting Position</strong><ul><li>Stand or sit tall.</li><li>Keep knees soft if standing.</li><li>Relax shoulders.</li></ul></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Round the upper back gently.</li><li>Then open through the chest.</li><li>Move slowly like a wave.</li><li>Keep breathing steady.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle mobility through ribs and spine. Not sharp lower-back pain.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Forcing extension.</li><li>Rushing.</li><li>Moving only the neck.</li><li>Holding tension in the jaw.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> seated version. <br><strong>Harder:</strong> slower longer movement waves.</p></div>
+    </div>
+  </article>
+</section>
 
-    <article class="flow">
-      <h3>4. Gentle Mobility Reach</h3>
-      <p class="rx">2–3 minutes</p>
-      <ul>
-        <li>Reach overhead smoothly.</li>
-        <li>Rotate through comfortable ranges.</li>
-        <li>Avoid forcing stretches aggressively.</li>
-      </ul>
-    </article>
+<section class="section">
+  <h2>Phase 2 — Circulation & Mobility</h2>
 
-    <article class="flow">
-      <h3>5. Recovery Walk</h3>
-      <p class="rx">5–10 minutes</p>
-      <ul>
-        <li>Walk at a comfortable pace.</li>
-        <li>Keep posture relaxed.</li>
-        <li>Focus on rhythm rather than speed.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Slow Marching</h3>
+    <p class="rx">2–5 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Improves circulation, rhythm and lower-body movement without heavy loading.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>March slowly on the spot.</li><li>Place feet quietly.</li><li>Coordinate opposite arm and leg.</li><li>Stay relaxed.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Gentle warmth and circulation. It should not feel like hard cardio.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Stomping heavily.</li><li>Rushing the pace.</li><li>Tensing shoulders.</li><li>Trying to “burn calories”.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> hold support. <br><strong>Harder:</strong> extend duration gradually.</p></div>
+    </div>
+  </article>
 
-  </div>
+  <article class="move-card">
+    <h3>Hip & Ankle Flow</h3>
+    <p class="rx">1–2 minutes each area</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Reduces lower-body stiffness from inactivity and supports walking quality.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Circle hips slowly both directions.</li><li>Circle ankles gently.</li><li>Keep movement smooth.</li><li>Use support if balance is uncertain.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Mobility and circulation rather than deep stretching discomfort.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Locking knees.</li><li>Forcing big circles.</li><li>Moving too quickly.</li><li>Ignoring instability.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> smaller circles. <br><strong>Harder:</strong> reduce hand support.</p></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Calf & Foot Activation</h3>
+    <p class="rx">2–3 sets × 10–15 reps</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Supports circulation and lower-leg readiness without heavy loading.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Rise gently onto the balls of the feet.</li><li>Pause briefly.</li><li>Lower slowly.</li><li>Alternate with toe raises if comfortable.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Light calf and shin effort with circulation increase.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Bouncing aggressively.</li><li>Ignoring cramp.</li><li>Locking knees.</li><li>Holding breath.</li></ul></div>
+      <div class="coach-box"><strong>Easier / Harder</strong><p><strong>Easier:</strong> use support. <br><strong>Harder:</strong> add a pause at the top.</p></div>
+    </div>
+  </article>
+</section>
+
+<section class="section">
+  <h2>Phase 3 — Downshift & Finish</h2>
+
+  <article class="move-card">
+    <h3>Tai Chi Walking Pattern</h3>
+    <p class="rx">2–5 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Encourages calm rhythm, posture control and nervous-system downshifting.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Take slow deliberate steps.</li><li>Shift weight smoothly.</li><li>Keep breathing calm.</li><li>Relax shoulders and jaw.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Calmer movement rhythm and reduced tension.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Rushing.</li><li>Overthinking foot placement.</li><li>Holding unnecessary tension.</li><li>Turning it into a workout.</li></ul></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Gentle Flow Linking</h3>
+    <p class="rx">2–4 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Links movements together smoothly to create a relaxed recovery rhythm.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Choose 3–5 movements from this page.</li><li>Move slowly between them.</li><li>Keep transitions smooth.</li><li>Stop before fatigue rises sharply.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Looser movement, calmer breathing and improved body awareness.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Turning it into cardio.</li><li>Rushing transitions.</li><li>Forcing mobility.</li><li>Ignoring fatigue signals.</li></ul></div>
+    </div>
+  </article>
+
+  <article class="move-card">
+    <h3>Final Breathing Reset</h3>
+    <p class="rx">1–2 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Helps finish the session in a calmer state instead of remaining overactivated.</p></div>
+      <div class="coach-box"><strong>How To Do It</strong><ul><li>Sit or stand comfortably.</li><li>Breathe slowly through the nose.</li><li>Extend the exhale gently.</li><li>Allow shoulders to soften.</li></ul></div>
+      <div class="coach-box"><strong>What You Should Feel</strong><p>Reduced tension and a calmer physical state.</p></div>
+      <div class="coach-box"><strong>Common Mistakes</strong><ul><li>Forcing deep breaths.</li><li>Trying too hard to relax.</li><li>Holding tension in the jaw.</li><li>Ending abruptly without slowing down.</li></ul></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
   <h2>Recovery Principles</h2>
 
   <div class="grid cols-2">
-
     <div class="card">
-      <h3>Helpful Focus Areas</h3>
+      <h3>Helpful Recovery Habits</h3>
       <ul>
-        <li>Sleep quality</li>
-        <li>Hydration</li>
-        <li>Stress reduction</li>
-        <li>Movement consistency</li>
+        <li>Gentle consistent movement</li>
+        <li>Hydration and sleep support</li>
+        <li>Breaking up long sitting periods</li>
+        <li>Low-pressure movement days</li>
       </ul>
     </div>
 
     <div class="card">
-      <h3>Common Recovery Mistakes</h3>
+      <h3>Often Less Helpful</h3>
       <ul>
-        <li>Doing nothing for long periods</li>
-        <li>Training maximally every day</li>
-        <li>Ignoring fatigue signals</li>
-        <li>Using recovery as punishment cardio</li>
+        <li>Total inactivity for long periods</li>
+        <li>Turning recovery into punishment</li>
+        <li>Training through escalating fatigue</li>
+        <li>Ignoring stress and sleep quality</li>
       </ul>
     </div>
-
   </div>
 </section>
 
@@ -214,9 +293,9 @@
   <h2>How My Plan Uses This</h2>
 
   <p class="lead">
-    My Plan can prioritise Daily Recovery Flow when fatigue,
-    low recovery, emotional load, stiffness or reduced movement confidence
-    are detected through adaptive scoring.
+    My Plan can prioritise Daily Recovery Flow during high fatigue,
+    poor recovery periods, stress-heavy weeks, low-energy phases
+    and recovery-focused programme adjustments.
   </p>
 
   <div class="btn-row">
@@ -231,8 +310,7 @@
 
   <p>
     This content is for general fitness education only and is not a substitute
-    for medical assessment or treatment. Stop if symptoms worsen or if movement
-    feels medically unsafe.
+    for medical advice or treatment. Reduce intensity or stop if symptoms worsen significantly.
   </p>
 </section>
 

@@ -6,125 +6,37 @@
 
 <title>Lower-Leg Stability System | FreeFitFuel</title>
 
-<meta name="description" content="A FreeFitFuel system for calf strength, ankle stability, balance, walking tolerance and lower-leg resilience.">
+<meta name="description" content="A fully coached FreeFitFuel system for calf strength, ankle stability, balance, walking tolerance and lower-leg resilience.">
 
 <link rel="stylesheet" href="/style.css?v=24">
 <link rel="icon" type="image/svg+xml" href="/img/freefitfuel-logo.svg">
 
 <style>
 .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
-.lead{color:var(--inkdim);line-height:1.6}
-
+.lead{color:var(--inkdim);line-height:1.7}
 .hero-mini{position:relative;border-bottom:1px solid #1b1b22}
 .hero-mini figure{margin:0;position:relative}
-.hero-mini img{
-  width:100%;
-  height:42vh;
-  min-height:280px;
-  object-fit:cover;
-  display:block;
-  filter:brightness(.82) saturate(1.05)
-}
-.hero-mini .overlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))
-}
-.hero-mini .content{
-  position:static;
-  padding:18px 20px 24px;
-  max-width:var(--maxw);
-  margin:0 auto
-}
-
-.section{
-  background:var(--glass);
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  margin:14px 0;
-  padding:16px
-}
-
+.hero-mini img{width:100%;height:42vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05)}
+.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))}
+.hero-mini .content{position:static;padding:18px 20px 24px;max-width:var(--maxw);margin:0 auto}
+.section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:14px 0;padding:16px}
 .grid{display:grid;gap:14px}
-@media(min-width:780px){
-  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-}
-
-.card{
-  background:#111418;
-  border:1px solid var(--stroke);
-  border-radius:14px;
-  padding:14px
-}
-
-.card h3{
-  margin-top:0;
-  color:var(--accent)
-}
-
-.pill-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.45rem;
-  margin:.8rem 0
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  border:1px solid var(--stroke);
-  border-radius:999px;
-  padding:.22rem .55rem;
-  background:rgba(255,255,255,.055);
-  color:var(--inkdim);
-  font-size:.9rem
-}
-
-.phase-list{
-  display:grid;
-  gap:14px
-}
-
-.phase{
-  background:#111418;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:14px;
-  padding:14px
-}
-
-.phase h3{
-  margin:.1rem 0 .45rem
-}
-
-.rx{
-  color:#ffd0ad;
-  font-weight:700;
-  margin:.25rem 0
-}
-
-.phase ul{
-  margin:.45rem 0 0 1.2rem
-}
-
-.phase li{
-  margin:.25rem 0
-}
-
-.note{
-  border-left:4px solid var(--accent);
-  padding:.75rem .9rem;
-  background:rgba(255,106,0,.08);
-  border-radius:10px;
-  margin:.8rem 0
-}
-
-.btn-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.6rem;
-  margin-top:1rem
-}
+@media(min-width:780px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+.card,.move-card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+.card h3,.move-card h3{margin-top:0;color:var(--accent)}
+.pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.8rem 0}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);border-radius:999px;padding:.22rem .55rem;background:rgba(255,255,255,.055);color:var(--inkdim);font-size:.9rem}
+.move-card{margin:14px 0}
+.rx{color:#ffd0ad;font-weight:700;margin:.25rem 0 .75rem}
+.coach-grid{display:grid;gap:12px;margin-top:12px}
+@media(min-width:860px){.coach-grid{grid-template-columns:repeat(2,1fr)}}
+.coach-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.coach-box strong{display:block;color:#fff;margin-bottom:.35rem}
+.coach-box p{margin:.2rem 0;color:var(--inkdim);line-height:1.65}
+.coach-box ul{margin:.25rem 0 0 1.15rem;color:var(--inkdim);line-height:1.65}
+.note{border-left:4px solid var(--accent);padding:.75rem .9rem;background:rgba(255,106,0,.08);border-radius:10px;margin:.8rem 0}
+.warning{border-left-color:#ffb84d;background:rgba(255,184,77,.08)}
+.btn-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
 </style>
 </head>
 
@@ -143,7 +55,7 @@
     <h1><span class="accent">Lower-Leg Stability System</span></h1>
 
     <p class="lead">
-      A lower-leg resilience system focused on ankle stability,
+      A fully coached lower-leg resilience system focused on ankle stability,
       calf strength, balance, walking confidence and movement control.
     </p>
 
@@ -162,14 +74,17 @@
   <h2>What This System Is For</h2>
 
   <p class="lead">
-    Weakness and stiffness in the feet, calves and ankles can affect
-    walking tolerance, balance, running comfort and lower-body confidence.
-    This system gradually rebuilds lower-leg control and endurance without
-    excessive impact.
+    Weakness and stiffness in the feet, calves and ankles can affect walking tolerance,
+    balance, running comfort and lower-body confidence. This system gradually rebuilds lower-leg
+    control and endurance without excessive impact.
   </p>
 
-  <div class="grid cols-3">
+  <div class="note warning">
+    <strong>Use the next-day rule:</strong> mild effort is fine, but sharp pain, repeated cramp,
+    swelling or symptoms that are clearly worse the next day mean reduce range, volume or intensity.
+  </div>
 
+  <div class="grid cols-3">
     <div class="card">
       <h3>Common Signs</h3>
       <ul>
@@ -202,7 +117,6 @@
         <li>Walking becomes difficult</li>
       </ul>
     </div>
-
   </div>
 </section>
 
@@ -214,143 +128,118 @@
     Slow controlled movement builds resilience more effectively than rushed repetitions.
   </div>
 
-  <div class="phase-list">
+  <article class="move-card">
+    <h3>Ankle Circles</h3>
+    <p class="rx">2 × 30 seconds each side</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Restores comfortable ankle motion and helps you notice stiffness, restriction or side-to-side differences.</p></div>
+      <div class="coach-box"><strong>Starting position</strong><ul><li>Sit or stand with support.</li><li>Lift one foot slightly from the floor.</li><li>Keep the movement relaxed.</li></ul></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Draw slow circles with the foot.</li><li>Move through a comfortable range.</li><li>Reverse direction halfway through.</li><li>Keep the knee quiet rather than swinging the whole leg.</li></ul></div>
+      <div class="coach-box"><strong>What to feel</strong><p>Gentle movement around the ankle. No sharp pinching or forced stretching.</p></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Moving too fast.</li><li>Forcing end range.</li><li>Turning the whole hip instead of the ankle.</li><li>Holding the breath.</li></ul></div>
+      <div class="coach-box"><strong>Easier / harder</strong><p><strong>Easier:</strong> seated with smaller circles. <br><strong>Harder:</strong> standing supported with slower control.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Ankle Circles</h3>
-      <p class="rx">2 × 30 seconds each side</p>
-      <ul>
-        <li>Move slowly through comfortable ranges.</li>
-        <li>Keep the movement smooth.</li>
-        <li>Avoid aggressive forcing.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Toe Raise & Heel Raise Flow</h3>
+    <p class="rx">2–3 sets × 10–15 reps</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Builds control at both sides of the lower leg: shin muscles lifting the toes and calves lifting the heels.</p></div>
+      <div class="coach-box"><strong>Starting position</strong><ul><li>Stand near a wall or chair.</li><li>Feet hip-width apart.</li><li>Knees soft.</li></ul></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Lift toes while heels stay down.</li><li>Lower toes slowly.</li><li>Rise onto the balls of the feet.</li><li>Lower heels slowly.</li></ul></div>
+      <div class="coach-box"><strong>What to feel</strong><p>Shin and calf effort with control. Mild work is good; aggressive cramp is not.</p></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Bouncing through the heel raise.</li><li>Letting ankles roll outward.</li><li>Locking knees hard.</li><li>Using no support despite poor balance.</li></ul></div>
+      <div class="coach-box"><strong>Easier / harder</strong><p><strong>Easier:</strong> use more hand support. <br><strong>Harder:</strong> pause at the top of each heel raise.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Toe Raise & Heel Raise Flow</h3>
-      <p class="rx">2–3 × 10–15</p>
-      <ul>
-        <li>Lift toes under control.</li>
-        <li>Then rise onto the balls of the feet.</li>
-        <li>Use support if needed.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Single-Leg Balance</h3>
-      <p class="rx">20–40 seconds each side</p>
-      <ul>
-        <li>Stand near a wall or chair.</li>
-        <li>Keep posture relaxed.</li>
-        <li>Focus on quiet control.</li>
-      </ul>
-    </article>
-
-  </div>
+  <article class="move-card">
+    <h3>Single-Leg Balance</h3>
+    <p class="rx">20–40 seconds each side</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Improves ankle strategy, foot control and confidence when weight is on one leg.</p></div>
+      <div class="coach-box"><strong>Starting position</strong><ul><li>Stand beside a wall or chair.</li><li>Shift weight onto one foot.</li><li>Keep the lifted foot close to the floor.</li></ul></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Stand tall and breathe.</li><li>Use fingertip support if needed.</li><li>Keep hips level.</li><li>Stop before balance becomes unsafe.</li></ul></div>
+      <div class="coach-box"><strong>What to feel</strong><p>Small corrective movements in the foot, ankle and hip. That wobble is useful if controlled.</p></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Holding the breath.</li><li>Locking the knee.</li><li>Letting the arch collapse completely.</li><li>Trying eyes-closed too early.</li></ul></div>
+      <div class="coach-box"><strong>Easier / harder</strong><p><strong>Easier:</strong> use fingertip support. <br><strong>Harder:</strong> turn the head slowly while balancing.</p></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
   <h2>Phase 2 — Build Walking & Running Resilience</h2>
 
-  <div class="phase-list">
+  <article class="move-card">
+    <h3>Slow Marching</h3>
+    <p class="rx">2–3 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Restores rhythm, balance and foot placement without impact.</p></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>March slowly on the spot.</li><li>Lift knees only to a comfortable height.</li><li>Place each foot quietly.</li><li>Swing arms naturally.</li></ul></div>
+      <div class="coach-box"><strong>What to feel</strong><p>Warmth and coordination through hips, calves and feet.</p></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Stomping heavily.</li><li>Rushing the rhythm.</li><li>Leaning back.</li><li>Ignoring calf cramp.</li></ul></div>
+      <div class="coach-box"><strong>Easier / harder</strong><p><strong>Easier:</strong> hold a wall. <br><strong>Harder:</strong> slow the lowering of each foot.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Slow Marching</h3>
-      <p class="rx">2–3 minutes</p>
-      <ul>
-        <li>Coordinate arm and leg rhythm.</li>
-        <li>Keep foot placement controlled.</li>
-        <li>Maintain upright posture.</li>
-      </ul>
-    </article>
+  <article class="move-card">
+    <h3>Step-Up Progressions</h3>
+    <p class="rx">2–3 sets × 6–10 each side</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Builds lower-leg, knee and hip control for stairs, walking uphill and running preparation.</p></div>
+      <div class="coach-box"><strong>Starting position</strong><ul><li>Use a low step.</li><li>Place the full foot on the step.</li><li>Use support if needed.</li></ul></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Drive through the whole foot.</li><li>Stand smoothly.</li><li>Lower under control.</li><li>Keep the knee aligned with toes.</li></ul></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Pushing mainly from the back leg.</li><li>Dropping down quickly.</li><li>Using too high a step.</li><li>Letting foot collapse inward.</li></ul></div>
+      <div class="coach-box"><strong>Easier / harder</strong><p><strong>Easier:</strong> lower step height. <br><strong>Harder:</strong> slow the descent.</p></div>
+    </div>
+  </article>
 
-    <article class="phase">
-      <h3>Step-Up Progressions</h3>
-      <p class="rx">2–3 × 6–10 each side</p>
-      <ul>
-        <li>Use a low step initially.</li>
-        <li>Control the lowering phase.</li>
-        <li>Drive through the whole foot.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Walking Capacity Blocks</h3>
-      <p class="rx">5–20 minutes</p>
-      <ul>
-        <li>Increase duration gradually.</li>
-        <li>Prioritise consistency over pace.</li>
-        <li>Monitor next-day soreness.</li>
-      </ul>
-    </article>
-
-  </div>
+  <article class="move-card">
+    <h3>Walking Capacity Blocks</h3>
+    <p class="rx">5–20 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Builds real-world tolerance and confidence through manageable walking exposure.</p></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Choose a comfortable pace.</li><li>Start shorter than your limit.</li><li>Increase gradually.</li><li>Monitor how your legs feel the next day.</li></ul></div>
+      <div class="coach-box"><strong>Progression rule</strong><p>Add time before adding speed. Do not increase distance, hills and pace all at once.</p></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Huge sudden step-count jumps.</li><li>Walking through escalating cramp.</li><li>Only doing long walks and no strength work.</li><li>Ignoring next-day soreness patterns.</li></ul></div>
+      <div class="coach-box"><strong>Easier / harder</strong><p><strong>Easier:</strong> split into small walks. <br><strong>Harder:</strong> add 2–5 minutes when recovery is good.</p></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">
   <h2>Phase 3 — Dynamic Stability</h2>
 
-  <div class="phase-list">
-
-    <article class="phase">
-      <h3>Fast March Variations</h3>
-      <p class="rx">2–3 minutes</p>
-      <ul>
-        <li>Increase rhythm without losing control.</li>
-        <li>Keep steps quiet and balanced.</li>
-        <li>Maintain relaxed breathing.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Mini Hops or Pogo Steps</h3>
-      <p class="rx">Only if tolerated</p>
-      <ul>
-        <li>Stay light and controlled.</li>
-        <li>Use very small ranges initially.</li>
-        <li>Stop if pain spikes sharply.</li>
-      </ul>
-    </article>
-
-    <article class="phase">
-      <h3>Direction Change Drills</h3>
-      <p class="rx">Short low-intensity sets</p>
-      <ul>
-        <li>Small side steps</li>
-        <li>Controlled pivots</li>
-        <li>Balance-focused movement patterns</li>
-      </ul>
-    </article>
-
-  </div>
-</section>
-
-<section class="section">
-  <h2>Movement Principles</h2>
-
-  <div class="grid cols-2">
-
-    <div class="card">
-      <h3>Helpful Habits</h3>
-      <ul>
-        <li>Frequent gentle movement</li>
-        <li>Progressive walking exposure</li>
-        <li>Calf mobility work</li>
-        <li>Consistent hydration</li>
-      </ul>
+  <article class="move-card">
+    <h3>Fast March Variations</h3>
+    <p class="rx">2–3 minutes</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Prepares the lower leg for quicker rhythm without jumping.</p></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>March slightly faster.</li><li>Keep steps quiet.</li><li>Stay tall.</li><li>Keep breathing relaxed.</li></ul></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Stomping.</li><li>Losing balance.</li><li>Tensing shoulders.</li><li>Going too fast too soon.</li></ul></div>
     </div>
+  </article>
 
-    <div class="card">
-      <h3>Often Unhelpful</h3>
-      <ul>
-        <li>Huge sudden mileage jumps</li>
-        <li>Ignoring persistent cramp</li>
-        <li>Long immobile periods</li>
-        <li>Grinding through sharp pain</li>
-      </ul>
+  <article class="move-card">
+    <h3>Mini Hops or Pogo Steps</h3>
+    <p class="rx">Only if tolerated</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Introduces gentle spring and impact tolerance for running or athletic movement.</p></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Start with tiny bounces.</li><li>Stay light and quiet.</li><li>Use ankles more than deep knees.</li><li>Stop if pain spikes sharply.</li></ul></div>
+      <div class="coach-box"><strong>Progression rule</strong><p>Build time slowly. Do not add this if walking or calf raises are still flaring symptoms.</p></div>
     </div>
+  </article>
 
-  </div>
+  <article class="move-card">
+    <h3>Direction Change Drills</h3>
+    <p class="rx">Short low-intensity sets</p>
+    <div class="coach-grid">
+      <div class="coach-box"><strong>Purpose</strong><p>Improves confidence when the foot and ankle need to react to side steps, turns and pivots.</p></div>
+      <div class="coach-box"><strong>How to do it</strong><ul><li>Use small side steps.</li><li>Practise controlled pivots.</li><li>Keep speed low at first.</li><li>Stay balanced before adding pace.</li></ul></div>
+      <div class="coach-box"><strong>Common mistakes</strong><ul><li>Twisting aggressively.</li><li>Moving too fast.</li><li>Letting knees collapse inward.</li><li>Doing this during a flare.</li></ul></div>
+    </div>
+  </article>
 </section>
 
 <section class="section">

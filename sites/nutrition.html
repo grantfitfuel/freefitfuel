@@ -1,59 +1,762 @@
 <!DOCTYPE html>
-<html lang="en-GB" data-start-empty>
+<html lang="en-GB">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="style.css?v=26">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
+
+  <!-- jsPDF (load early so it's ready by click time) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- Nutrition page tweaks -->
+  <style>
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}
+    .section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}
+
+    /* Collapsible panels */
+    details.collapsible{
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      margin:12px 0;
+      background:var(--glass);
+      overflow:hidden;
+    }
+    details.collapsible > summary{
+      cursor:pointer;
+      font-weight:700;
+      padding:14px 16px;
+      list-style:none;
+    }
+    details.collapsible > summary::-webkit-details-marker{ display:none; }
+    details.collapsible > summary::after{
+      content:"▸";
+      float:right;
+      transition:transform .2s ease;
+    }
+    details.collapsible[open] > summary::after{ transform:rotate(90deg); }
+
+    /* Drawer content for collapsibles (renamed from .panel to avoid conflict) */
+    details.collapsible > .drawer { padding:0 16px 16px 16px; }
+
+    /* Start-empty state: hide recipe cards until a filter is chosen */
+    html[data-start-empty] #recipeGrid > * { display:none !important; }
+    html[data-start-empty] #clearFiltersBtn { display:none !important; }
+
+    /* Print: expand everything */
+    @media print{
+      details.collapsible > summary{ display:none; }
+      details.collapsible .drawer{ display:block !important; }
+      details.collapsible{ border:none; }
+    }
+
+    /* Recipe grid */
+    #recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    #recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}
+    #recipeGrid .card h3{font-size:1.05rem;margin:0}
+    #recipeGrid .card .meta{font-size:.9rem;color:var(--inkdim)}
+    #recipeGrid .card .mini-nav{display:flex;flex-wrap:wrap;gap:.3rem}
+    #recipeGrid .card .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;font-size:.78rem}
+    #recipeGrid .card .btn{font-size:.85rem;padding:.4rem .6rem}
+    #recipeGrid .card img, #recipeGrid img.card-img{display:none !important}
+
+    /* Filter chips */
+    #filterChips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}
+    #filterChips .chip{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);padding:.45rem .8rem;border-radius:999px;font-size:.92rem;cursor:pointer}
+    #filterChips .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}
+
+    /* Off-canvas panels (unchanged) */
+    .panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#0b0f14;color:var(--ink);
+      border-left:1px solid var(--stroke);transform:translateX(100%);transition:transform .25s ease;z-index:1000;overflow:auto}
+    .panel.open{transform:translateX(0)}
+    .panel .panel-header{position:sticky;top:0;background:#0b0f14;border-bottom:1px solid var(--stroke);padding:12px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}
+    .overlay.show{opacity:1;pointer-events:auto}
+
+    /* Dialog modal base */
+    dialog.recipe-modal{width:min(900px,96vw);max-height:90vh;border:0;border-radius:12px;padding:0;background:#0b0f14;color:var(--ink);z-index:3000}
+    dialog.recipe-modal::backdrop{background:rgba(0,0,0,.5)}
+    dialog.recipe-modal.fallback-open{
+      position:fixed; top:5vh; left:50%; transform:translateX(-50%);
+      width:min(900px,96vw); max-height:90vh; overflow:auto;
+      display:block; border:0; border-radius:12px; padding:0; background:#0b0f14; z-index:3000;
+    }
+    .recipe-modal .modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--stroke)}
+    .recipe-modal .modal-body{padding:14px 16px}
+    .recipe-modal h2{margin:.2rem 0}
+    .recipe-modal .meta{color:var(--inkdim)}
+    .recipe-modal .cols{display:grid;gap:12px;grid-template-columns:1fr 2fr}
+    @media (max-width:700px){ .recipe-modal .cols{grid-template-columns:1fr} }
+    .recipe-modal ul{margin:.4rem 0 .6rem .9rem}
+    .recipe-modal .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+
+    /* PDF download button */
+    .pdf-download { margin: 20px 0; text-align: center; }
+    .pdf-download a {
+      display: inline-block; padding: 12px 20px; background-color: #FF6A00;
+      color: #fff; text-decoration: none; font-weight: bold; border-radius: 6px;
+      transition: background 0.2s ease-in-out;
+    }
+    .pdf-download a:hover { background-color: #e55e00; }
+
+    /* --- Mobile tidy-up just for the calculator (overrides inline styles) --- */
+    @media (max-width: 600px){
+      #macro-calc .drawer{ padding:12px 12px 16px; }
+      #macro-calc .section{ padding:12px; }
+      #macro-calc .seg{ display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
+      #macro-calc .goal-chip{ margin:0; }
+      #macro-calc .grid{ display:grid !important; grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      #macro-calc label{ font-size:.95rem; }
+      #macro-calc .input, #macro-calc select{ font-size:.95rem; height:38px; padding:8px 10px; }
+      #macro-calc #bfWrap, #macro-calc #targetBfWrap{ grid-column:1 / -1; }
+      #macro-calc .btns-row{ display:grid !important; grid-template-columns:1fr 1fr; gap:10px !important; align-items:stretch !important; }
+      #macro-calc .btns-row #generatePDF{ grid-column:1 / -1; }
+      #macro-calc .btn{ padding:.55rem .8rem; font-size:.95rem; }
+    }
+    @media (max-width: 360px){
+      #macro-calc .grid{ grid-template-columns:1fr !important; }
+      #macro-calc .btns-row{ grid-template-columns:1fr; }
+    }
+
+    /* My Plan nutrition target reader */
+    .nutrition-command{
+      border:1px solid rgba(255,106,0,.32);
+      background:
+        radial-gradient(circle at top right, rgba(255,106,0,.16), transparent 32%),
+        linear-gradient(180deg, rgba(255,106,0,.10), rgba(255,255,255,.025));
+      border-radius:16px;
+      padding:16px;
+    }
+    .nutrition-command h2{margin:.1rem 0 .45rem}
+    .macro-target-grid{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+    .macro-target-grid .target-box{
+      background:rgba(255,255,255,.045);
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:11px;
+    }
+    .macro-target-grid .label{
+      color:var(--inkdim);
+      font-size:.84rem;
+      margin-bottom:.25rem;
+    }
+    .macro-target-grid .value{
+      font-size:1.28rem;
+      line-height:1.1;
+      font-weight:900;
+      color:var(--ink);
+    }
+    .myplan-note{
+      border-left:4px solid var(--accent);
+      background:rgba(255,106,0,.08);
+      border-radius:10px;
+      padding:.75rem .85rem;
+      margin:.8rem 0;
+      color:#ffd6bd;
+    }
+    .phase-guidance-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr .9fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    .phase-guidance-grid ul{margin:.35rem 0 0 1.1rem;padding:0}
+    .phase-guidance-grid li{margin:.32rem 0}
+    .pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.75rem 0}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.22rem .58rem;
+      background:rgba(255,255,255,.055);
+      color:var(--inkdim);
+      font-size:.86rem;
+    }
+    .pill.accent{
+      border-color:rgba(255,106,0,.38);
+      background:rgba(255,106,0,.1);
+      color:#ffd6bd;
+    }
+    @media(max-width:900px){
+      .macro-target-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .phase-guidance-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:520px){
+      .macro-target-grid{grid-template-columns:1fr}
+    }
+
+  </style>
+<style>
+@media print {
+  html, body {
+    background:#fff !important;
+    color:#000 !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  #site-header, .hero, .hero-mini, .overlay, nav, footer,
+  .cta-row, .cookie-banner { display:none !important; }
+
+  main, .wrap, .section, .card, .drawer {
+    background:#fff !important;
+    color:#000 !important;
+    position:static !important;
+    box-shadow:none !important;
+    border-color:#000 !important;
+  }
+
+  details.collapsible > summary { display:none !important; }
+  details.collapsible .drawer { display:block !important; }
+
+  html[data-start-empty] #recipeGrid > * {
+    display:block !important;
+  }
+}
+</style>
+  
   <title>FreeFitFuel Nutrition — Recipes, Macros & Hydration</title>
-  <meta name="description" content="FreeFitFuel nutrition hub for recipes, macro-aware meal building, hydration support and food guidance that reads calorie and macro targets from My Plan.">
+  <meta name="description" content="Free healthy recipes, macro-aware meal building, hydration support and meal ideas powered by FreeFitFuel My Plan.">
   <meta property="og:title" content="FreeFitFuel Nutrition — Recipes, Macros & Hydration">
-  <meta property="og:description" content="Budget-friendly recipes, pantry mode, hydration support and meal planning powered by your FreeFitFuel My Plan targets.">
+  <meta property="og:description" content="Budget-friendly recipes, pantry mode, meal planning and hydration support powered by your FreeFitFuel My Plan targets.">
   <meta property="og:image" content="https://www.freefitfuel.com/img/nutrition-hero.png">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.freefitfuel.com/nutrition.html">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FreeFitFuel Nutrition — Recipes, Macros & Hydration">
-  <meta name="twitter:description" content="Nutrition made simple: recipes, hydration support and macro-aware food execution from My Plan.">
+  <meta name="twitter:description" content="Nutrition made simple: recipes, hydration support and macro-aware meal execution from My Plan.">
   <meta name="twitter:image" content="https://www.freefitfuel.com/img/nutrition-hero.png">
-  <link rel="stylesheet" href="style.css?v=42">
-  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
-  <style>
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px}.section{background:var(--glass);border:1px solid var(--stroke);border-radius:14px;margin:12px 0;padding:14px}.lead{color:var(--inkdim);line-height:1.7}.meta{color:var(--inkdim)}
-    .hero-mini{position:relative;border-bottom:1px solid #1b1b22}.hero-mini figure{margin:0;position:relative}.hero-mini img{width:100%;height:42vh;min-height:280px;object-fit:cover;display:block;filter:brightness(.82) saturate(1.05)}.hero-mini .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),rgba(0,0,0,.72))}.hero-mini .content{position:static;padding:18px 20px 24px;max-width:var(--maxw);margin:0 auto}
-    .grid{display:grid;gap:12px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:860px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
-    .card{background:#111418;border:1px solid var(--stroke);border-radius:14px;padding:14px}.card h2,.card h3{margin-top:0}.accent-card{border-color:rgba(255,106,0,.38);background:linear-gradient(180deg,rgba(255,106,0,.12),rgba(255,255,255,.025))}.metric{font-size:1.45rem;font-weight:900;line-height:1.1}.metric-label{color:var(--inkdim);font-size:.9rem;margin-bottom:.25rem}
-    .btn-row,.cta-row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}.btn,.btn-sm{border:1px solid var(--stroke);background:var(--glass);color:var(--ink);padding:.7rem 1rem;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;font-weight:700}.btn-primary{background:var(--accent);border-color:#ff944a;color:#111}
-    .notice{border-left:4px solid var(--accent);background:rgba(255,106,0,.08);border-radius:10px;padding:.8rem .9rem;margin:.8rem 0;color:#ffd8c2}.tag-row,.pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin:.75rem 0}.tag,.pill{display:inline-flex;align-items:center;border:1px solid var(--stroke);border-radius:999px;padding:.22rem .58rem;background:rgba(255,255,255,.055);color:var(--inkdim);font-size:.86rem}.tag-accent,.pill.accent{border-color:rgba(255,106,0,.38);background:rgba(255,106,0,.1);color:#ffd6bd}
-    details.collapsible{border:1px solid var(--stroke);border-radius:14px;margin:12px 0;background:var(--glass);overflow:hidden}details.collapsible>summary{cursor:pointer;font-weight:800;padding:14px 16px;list-style:none}details.collapsible>summary::-webkit-details-marker{display:none}details.collapsible>summary::after{content:"▸";float:right;transition:transform .2s ease}details.collapsible[open]>summary::after{transform:rotate(90deg)}details.collapsible>.drawer{padding:0 16px 16px}
-    html[data-start-empty] #recipeGrid>*{display:none!important}html[data-start-empty] #clearFiltersBtn{display:none!important}#recipeGrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}#recipeGrid .card{padding:10px 12px;border:1px solid var(--stroke);border-radius:10px;background:var(--glass);display:flex;flex-direction:column;gap:.4rem}#recipeGrid .card h3{font-size:1.05rem;margin:0}#recipeGrid .card .meta{font-size:.9rem;color:var(--inkdim)}#recipeGrid .card .mini-nav{display:flex;flex-wrap:wrap;gap:.3rem}#recipeGrid .card .mini-nav .chip{background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:.2rem .5rem;font-size:.78rem}#recipeGrid .card .btn{font-size:.85rem;padding:.4rem .6rem}#recipeGrid .card img,#recipeGrid img.card-img{display:none!important}
-    #filterChips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0 1rem}#filterChips .chip{background:var(--glass);border:1px solid var(--stroke);color:var(--ink);padding:.45rem .8rem;border-radius:999px;font-size:.92rem;cursor:pointer}#filterChips .chip[aria-pressed="true"]{background:var(--accent);color:#111;font-weight:800}.input,select,textarea{background:#0c1118;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);padding:.6rem .65rem;width:100%;min-height:42px;font:inherit}
-    .panel{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#0b0f14;color:var(--ink);border-left:1px solid var(--stroke);transform:translateX(100%);transition:transform .25s ease;z-index:1000;overflow:auto}.panel.open{transform:translateX(0)}.panel .panel-header{position:sticky;top:0;background:#0b0f14;border-bottom:1px solid var(--stroke);padding:12px}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:900}.overlay.show{opacity:1;pointer-events:auto}
-    dialog.recipe-modal{width:min(900px,96vw);max-height:90vh;border:0;border-radius:12px;padding:0;background:#0b0f14;color:var(--ink);z-index:3000}dialog.recipe-modal::backdrop{background:rgba(0,0,0,.5)}dialog.recipe-modal.fallback-open{position:fixed;top:5vh;left:50%;transform:translateX(-50%);width:min(900px,96vw);max-height:90vh;overflow:auto;display:block;border:0;border-radius:12px;padding:0;background:#0b0f14;z-index:3000}.recipe-modal .modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--stroke)}.recipe-modal .modal-body{padding:14px 16px}.recipe-modal h2{margin:.2rem 0}.recipe-modal .meta{color:var(--inkdim)}.recipe-modal .cols{display:grid;gap:12px;grid-template-columns:1fr 2fr}@media(max-width:700px){.recipe-modal .cols{grid-template-columns:1fr}}.recipe-modal ul{margin:.4rem 0 .6rem .9rem}.recipe-modal .btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
-    .phase-panel{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:stretch}@media(max-width:900px){.phase-panel{grid-template-columns:1fr}}.macro-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px}@media(max-width:900px){.macro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.macro-grid{grid-template-columns:1fr}}
-    @media print{html,body{background:#fff!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}#site-header,.hero-mini,.overlay,nav,footer,.cta-row,.btn-row,.panel,.cookie-banner{display:none!important}main,.wrap,.section,.card,.drawer{background:#fff!important;color:#000!important;position:static!important;box-shadow:none!important;border-color:#000!important}details.collapsible>summary{display:none!important}details.collapsible .drawer{display:block!important}html[data-start-empty] #recipeGrid>*{display:block!important}}
-  </style>
 </head>
 <body>
+
+<!-- Shared header mount -->
 <div id="site-header"></div>
-<script src="/js/header-loader.js" defer></script>
-<header class="hero-mini" role="banner" aria-label="Nutrition hero"><figure><img src="img/nutrition-hero.png" alt="Fresh colourful food ingredients on a table"><div class="overlay" aria-hidden="true"></div></figure><div class="content wrap"><h1><span class="accent">Fuel That Fits Your Life</span></h1><p class="lead">Recipes, hydration and meal planning that follow your FreeFitFuel My Plan targets. My Plan creates the prescription. Nutrition helps you execute it.</p><div class="cta-row"><a class="btn btn-primary" href="my-plan.html">Open My Plan</a><a class="btn" href="#recipe-tools">Find Recipes</a><a class="btn" href="pdf/macro-cheatsheet.pdf">Macro Cheat Sheet</a></div></div></header>
+<script src="/js/header-loader.js"></script>
+
+<header class="hero-mini" role="banner" aria-label="Nutrition hero">
+  <figure>
+    <img src="img/nutrition-hero.png" alt="Fresh colourful food ingredients on a table">
+    <div class="overlay" aria-hidden="true"></div>
+  </figure>
+  <div class="content wrap">
+    <h1><span class="accent">Fuel That Fits Your Life</span></h1>
+    <p>Balanced macros, budget-friendly recipes, Pantry mode, and a simple planner powered by your My Plan targets.</p>
+    <div class="cta-row">
+      <a class="btn" href="my-plan.html">Open My Plan</a>
+      <a class="btn" href="#recipe-tools">Find Recipes</a>
+      <a class="btn" href="pdf/macro-cheatsheet.pdf">Macro Cheat Sheet (PDF)</a>
+    </div>
+  </div>
+</header>
+
 <main class="wrap">
-<section class="section accent-card" id="myPlanNutrition"><div class="phase-panel"><div><h2>Current nutrition prescription</h2><p class="lead" id="planSummary">Loading your saved FreeFitFuel My Plan targets.</p><div class="pill-row" id="planPills"><span class="pill">Checking My Plan</span></div><div class="notice" id="planNotice">Your calorie and macro targets now come from My Plan. This page no longer creates a separate plan, so targets do not compete or drift.</div><div class="btn-row"><a class="btn btn-primary" href="my-plan.html">Update targets in My Plan</a><a class="btn" href="nutrition-mealplan.html">Open Adaptive Meal Plan</a></div></div><div class="card"><h3>Today’s targets</h3><div class="macro-grid" style="grid-template-columns:1fr 1fr"><div><div class="metric-label">Calories</div><div class="metric" id="targetCalories">—</div></div><div><div class="metric-label">Protein</div><div class="metric" id="targetProtein">—</div></div><div><div class="metric-label">Carbs</div><div class="metric" id="targetCarbs">—</div></div><div><div class="metric-label">Fat</div><div class="metric" id="targetFat">—</div></div><div><div class="metric-label">Water</div><div class="metric" id="targetWater">—</div></div></div></div></div></section>
-<section class="section" id="phaseFoodGuidance"><h2>Food focus for your current phase</h2><div class="grid grid-3"><article class="card"><h3 id="phaseFocusTitle">Phase focus</h3><p id="phaseFocusText">Generate a roadmap in My Plan to unlock phase-specific nutrition guidance.</p></article><article class="card"><h3>Build meals around</h3><ul id="mealPriorityList"><li>Protein source</li><li>Colourful fruit or vegetables</li><li>Carbohydrate amount matched to training</li><li>Useful fats without letting calories creep unnoticed</li></ul></article><article class="card"><h3>Quick execution rule</h3><p id="executionRule">Hit protein first, then make carbs and fats fit the phase target from My Plan.</p></article></div></section>
-<details id="week-plan" class="collapsible"><summary>This Week’s Plan</summary><div class="drawer"><div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap"><h2 style="margin:0;font-size:1.1rem">Planner Summary</h2><div class="btn-row"><button id="weekAutoBtn" class="btn" type="button">Auto-plan Week</button><button id="weekClearBtn" class="btn" type="button">Clear Week</button></div></div><p class="meta" style="margin:.4rem 0">Swap any slot to rotate in a different recipe. This summary mirrors the planner panel.</p><div id="weekSummaryGrid" class="grid grid-4"></div></div></details>
-<section class="section" id="recipe-tools" aria-label="Recipe tools"><div class="grid grid-2"><div><label for="recipeSearch" class="visually-hidden">Search recipes</label><input id="recipeSearch" class="input" type="search" placeholder="Search recipes, ingredients, tags…"></div><div class="btn-row" style="justify-content:flex-end"><button id="pantryOpenBtn" class="btn" type="button">Pantry</button><button id="openPlannerBtn" class="btn" type="button">Open Meal Planner</button></div></div><div id="filterChips" role="toolbar" aria-label="Recipe filters"><button class="chip" data-filter="ALL" aria-pressed="false" type="button">ALL</button></div><p id="recipeCount" class="meta" aria-live="polite">Choose a filter to begin</p><div class="btn-row"><button id="phaseFilterBtn" class="btn btn-primary" type="button">Show recipes for my phase</button><button id="exportIndexBtn" class="btn" type="button">Export Index</button><button id="clearFiltersBtn" class="btn" type="button" style="display:none">Clear filters</button></div></section>
-<section class="section"><div id="recipeGrid" class="grid" aria-live="polite" aria-busy="false"></div></section>
-<section class="section"><h2>Hydration</h2><div class="grid grid-2"><article class="card"><h3>My Plan target</h3><p class="lead" id="hydrationFromPlan">Water target will appear if your current My Plan phase includes one.</p></article><article class="card"><h3>Simple hydration calculator</h3><p class="meta">This is a quick estimate only. My Plan remains the main target source.</p><div class="grid grid-2"><label>Your weight (kg)<input id="hydrWeight" type="number" value="75" class="input"></label><div><button id="hydrCalc" class="btn" type="button">Calculate</button></div></div><p class="meta" id="hydrOut">Daily target: — ml</p></article></div></section>
-<section class="section"><h2>Nutrition basics that still matter</h2><div class="grid grid-4"><article class="card"><h3>Protein</h3><p>Base most meals around a clear protein source to support muscle repair, satiety and recovery.</p></article><article class="card"><h3>Carbs</h3><p>Use carbohydrates to fuel training, walking, running and daily energy rather than fearing them automatically.</p></article><article class="card"><h3>Fats</h3><p>Include useful fats, but measure calorie-dense additions if weight loss is the current phase.</p></article><article class="card"><h3>Consistency</h3><p>The best plan is one you can repeat. Budget-friendly, familiar food is allowed.</p></article></div></section>
-<section class="section"><h2>The Core Four</h2><p class="lead">Four everyday habits that make the biggest difference for health, energy and strength.</p><div class="grid grid-4"><article class="card"><h3>1. Balanced Nutrition</h3><p>Use whole foods where possible: lean proteins, slow-digesting carbs, useful fats, fruit and veg.</p></article><article class="card"><h3>2. Regular Movement</h3><p>Strength work and aerobic movement support insulin sensitivity, heart health and everyday energy.</p></article><article class="card"><h3>3. Sleep & Recovery</h3><p>Recovery protects training quality. Food cannot fully compensate for consistently poor sleep.</p></article><article class="card"><h3>4. Stress Management</h3><p>Stress can affect appetite, energy and consistency. Use walks, gardening, stretching, yoga, tai chi, qi gong, art or photography as practical downshifts.</p></article></div></section>
-<section class="section"><h2>Injury Recovery & Physio</h2><p class="lead">Supporting training also means adjusting nutrition and recovery when injury, pain or fatigue are present.</p><div class="grid grid-2"><div><p>Common issues like plantar fasciitis, calf strains, tennis elbow or low back pain can derail progress. The Physio & Recovery page gives safe, practical progressions.</p><p class="meta">Educational only. If in doubt, seek professional review.</p><a class="btn" href="physio.html">Open Physio & Recovery</a></div><div><img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px"></div></div></section>
-<section class="section"><h2>Important Note</h2><p>The content on FreeFitFuel™ is for general fitness education only and is not a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have health conditions, diabetes, eating disorder history, pregnancy, significant injury or medically complex needs.</p></section>
+  <!-- MY PLAN NUTRITION TARGETS -->
+  <section id="my-plan-nutrition" class="section nutrition-command">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+      <div>
+        <h2>Current nutrition prescription</h2>
+        <p class="lead" id="planSummary">Loading your saved FreeFitFuel My Plan targets.</p>
+      </div>
+      <div class="btn-row" style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <a class="btn" href="my-plan.html">Update in My Plan</a>
+        <a class="btn" href="nutrition-mealplan.html">Open Adaptive Meal Plan</a>
+      </div>
+    </div>
+
+    <div class="pill-row" id="planPills">
+      <span class="pill">Checking My Plan</span>
+    </div>
+
+    <div class="macro-target-grid" aria-label="Current macro targets from My Plan">
+      <div class="target-box"><div class="label">Calories</div><div class="value" id="targetCalories">—</div></div>
+      <div class="target-box"><div class="label">Protein</div><div class="value" id="targetProtein">—</div></div>
+      <div class="target-box"><div class="label">Carbs</div><div class="value" id="targetCarbs">—</div></div>
+      <div class="target-box"><div class="label">Fat</div><div class="value" id="targetFat">—</div></div>
+      <div class="target-box"><div class="label">Water</div><div class="value" id="targetWater">—</div></div>
+    </div>
+
+    <div class="myplan-note" id="planNotice">
+      Your calorie and macro targets now come from My Plan. Nutrition is the food execution layer, not a second plan generator.
+    </div>
+
+    <div class="pdf-download">
+      <a href="/pdf/weight-loss-explained.pdf" target="_blank">📄 Download: How Weight Loss Works (PDF)</a>
+    </div>
+
+    <div class="pdf-download">
+      <a href="/pdf/bulk-cut-maintain-recomp.pdf" target="_blank">📄 Download: Bulk, Cut, Maintain and Recomposition Explained (PDF)</a>
+    </div>
+  </section>
+
+  <section class="section" id="phaseFoodGuidance">
+    <h2>Food focus for your current phase</h2>
+    <div class="phase-guidance-grid">
+      <article class="card">
+        <h3 id="phaseFocusTitle">Phase focus</h3>
+        <p id="phaseFocusText">Generate a roadmap in My Plan to unlock phase-specific nutrition guidance.</p>
+      </article>
+      <article class="card">
+        <h3>Build meals around</h3>
+        <ul id="mealPriorityList">
+          <li>Protein source</li>
+          <li>Colourful fruit or vegetables</li>
+          <li>Carbohydrate amount matched to training</li>
+          <li>Useful fats without letting calories creep unnoticed</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Quick execution rule</h3>
+        <p id="executionRule">Hit protein first, then make carbs and fats fit the phase target from My Plan.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- WEEK SUMMARY (collapsible) -->
+  <details id="week-plan" class="collapsible">
+    <summary>This Week’s Plan</summary>
+    <div class="drawer">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap">
+        <h2 style="margin:0;font-size:1.1rem">Planner Summary</h2>
+        <div>
+          <button id="weekAutoBtn" class="btn">Auto-plan Week (no duplicates)</button>
+          <button id="weekClearBtn" class="btn">Clear Week</button>
+        </div>
+      </div>
+
+      <p class="meta" style="margin:.4rem 0">Swap any slot to rotate in a different unique recipe. This summary mirrors the planner panel.</p>
+      <div id="weekSummaryGrid" class="grid" style="grid-template-columns:repeat(4,1fr)"></div>
+
+    </div>
+  </details>
+
+  <!-- TOOLS -->
+  <section class="section" id="recipe-tools" aria-label="Recipe tools">
+    <div class="grid" style="grid-template-columns:2fr 1fr">
+      <div>
+        <label for="recipeSearch" class="visually-hidden">Search recipes</label>
+        <input id="recipeSearch" class="input" type="search" placeholder="Search recipes, ingredients, tags…">
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end;align-items:center;">
+        <button id="pantryOpenBtn" class="btn">Pantry</button>
+        <button id="openPlannerBtn" class="btn">Open Meal Planner</button>
+      </div>
+    </div>
+
+    <div id="filterChips" role="toolbar" aria-label="Recipe filters">
+      <!-- No default selection; ALL is available but not pressed -->
+      <button class="chip" data-filter="ALL" aria-pressed="false">ALL</button>
+      <!-- JS appends the rest -->
+    </div>
+
+    <p id="recipeCount" class="meta" aria-live="polite">Choose a filter to begin</p>
+    <button id="phaseFilterBtn" class="btn">Show recipes for my phase</button>
+    <button id="exportIndexBtn" class="btn">Export Index</button>
+    <button id="clearFiltersBtn" class="btn" style="display:none">Clear filters</button>
+  </section>
+
+  <!-- GRID -->
+  <section class="section">
+    <div id="recipeGrid" class="grid" aria-live="polite" aria-busy="false"></div>
+  </section>
+
+  <!-- INFO -->
+  <section class="section">
+    <div class="grid">
+      <article class="card">
+        <h3>Macros 101</h3>
+        <p>Protein rebuilds muscle; carbs fuel effort; fats support hormones and vitamins.</p>
+      </article>
+      <article class="card">
+        <h3>Hydration</h3>
+        <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
+        <div class="calc" style="margin-top:.6rem">
+          <label>Your weight (kg)
+            <input id="hydrWeight" type="number" value="75" class="input" style="max-width:100px">
+          </label>
+          <button id="hydrCalc" class="btn">Calculate</button>
+        </div>
+        <p class="meta" id="hydrOut">Daily target: — ml</p>
+      </article>
+    </div>
+  </section>
+<section class="section">
+  <h2>The Core Four</h2>
+  <p class="lead">Four everyday habits that make the biggest difference for health, energy, and strength.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
+    
+    <article class="card">
+      <h3>1. Balanced Nutrition</h3>
+      <p>Fuel your body with whole foods: lean proteins, slow-digesting carbs, healthy fats, fruit and veg. 
+      This supports steady energy, stronger muscles, and lowers the risk of long-term conditions.</p>
+    </article>
+    
+    <article class="card">
+      <h3>2. Regular Movement</h3>
+      <p>Mix strength training with aerobic activity. Exercise improves insulin sensitivity, heart health, and 
+      helps your body feel more energetic day-to-day.</p>
+    </article>
+    
+    <article class="card">
+      <h3>3. Sleep & Recovery</h3>
+      <p>Quality rest reduces fatigue, sharpens focus, and helps muscles grow. Aim for 7–9 hours of consistent 
+      sleep and take rest days to recover fully.</p>
+    </article>
+    
+    <article class="card">
+  <h2>4. Stress Management</h2>
+  <p>
+    A calmer mind supports a stronger body. When stress is high, hormones that affect energy, 
+    appetite and weight can quickly fall out of balance. By lowering tension, you give your 
+    body the space to recover and perform at its best.
+  </p>
+  <p>
+    Stress relief isn’t one-size-fits-all. Some people unwind through 
+    <strong>photography</strong> or <strong>art</strong>, others find peace in 
+    <strong>gardening</strong>, <strong>meditation</strong>, or mindful movement like 
+    <strong>yoga</strong>, <strong>stretching for flexibility</strong>, 
+    <strong>Tai Chi</strong>, or <strong>Qi Gong</strong>. Even a gentle walk in nature 
+    can reset your mood and reduce strain on your body.
+  </p>
+  <p class="lead" style="margin-top:.6rem;font-weight:600;color:var(--accent)">
+    Find the practice that works for you. Lower stress, lift energy, and make every workout count.
+  </p>
+</article>
+
+  </div>
+  <p class="meta">The Core Four not only reduce the risk of conditions like type 2 diabetes and heart disease, they also 
+  cut fatigue, increase daily energy, and build lasting strength.</p>
+</section>
+
+<!-- PHYSIO PANEL LINK -->
+<section class="section">
+  <h2>Injury Recovery & Physio</h2>
+  <p class="lead">Supporting your training doesn’t just mean sets and reps — it also means guidance for when things go wrong.</p>
+  <div class="grid cols-2">
+    <div>
+      <p>
+        Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail your progress.  
+        Our <strong>Physio & Recovery</strong> page gives you safe, practical progressions: 
+        <em>Acute → Rebuild → Return</em>.
+      </p>
+      <p class="meta">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
+      <a class="btn" href="physio.html">Open Physio & Recovery</a>
+    </div>
+    <div>
+      <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px">
+    </div>
+  </div>
+</section>
+  
+  <section class="section">
+    <h2>Important Note</h2>
+    <p>The content on FreeFitFuel™ is for general fitness education only and isn’t a substitute for personalised medical advice. Consult a qualified professional before starting a new programme, especially if you have any health conditions or injuries. Stop any exercise that causes sharp pain, dizziness, chest pain, or unusual shortness of breath.</p>
+  </section>
+  
 </main>
-<footer class="site-footer"><div class="container"><img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64"><p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p><p class="credit">Created by Grant Cameron Anthony</p></div></footer>
-<aside id="pantryPanel" class="panel" aria-hidden="true"></aside><aside id="plannerPanel" class="panel" aria-hidden="true"></aside><dialog id="recipeModal" class="recipe-modal" aria-hidden="true"></dialog><div id="printArea" hidden></div><div id="overlay" class="overlay"></div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="img/freefitfuel-logo.svg" alt="FreeFitFuel Logo" height="64">
+    <p>&copy; 2025 FreeFitFuel™ · All rights reserved.</p>
+    <p class="credit">Created by Grant Cameron Anthony</p>
+  </div>
+</footer>
+
+<!-- Panels & modal shells -->
+<aside id="pantryPanel" class="panel" aria-hidden="true"></aside>
+<aside id="plannerPanel" class="panel" aria-hidden="true"></aside>
+
+<!-- Keep dialog present; JS fills its contents if empty -->
+<dialog id="recipeModal" class="recipe-modal" aria-hidden="true"></dialog>
+
+<div id="printArea" hidden></div>
+<div id="overlay" class="overlay"></div>
+
+<!-- Inline scripts: My Plan nutrition reader + hydration helper -->
 <script>
-(function(){'use strict';var ROADMAP_KEY='fff.roadmap.plan.v1';var CURRENT_PLAN_KEY='fff.currentPlan.v1';function safeParse(raw,fallback){try{return raw?JSON.parse(raw):fallback}catch(err){return fallback}}function escapeHtml(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}function titleCase(str){str=String(str||'').replace(/-/g,' ').trim();if(!str)return '—';return str.split(' ').map(function(part){return part?part.charAt(0).toUpperCase()+part.slice(1):''}).join(' ')}function getRoadmap(){return safeParse(localStorage.getItem(ROADMAP_KEY),null)}function getCurrentStage(){var roadmap=getRoadmap();if(!roadmap||!Array.isArray(roadmap.stages)||!roadmap.stages.length)return null;return roadmap.stages[0]}function getTargets(){var stage=getCurrentStage();if(stage&&stage.targets){return{source:'roadmap',stage:stage,kcal:stage.targets.kcal,protein:stage.targets.protein,carbs:stage.targets.carbs,fats:stage.targets.fats,water:stage.targets.hydration_l,mode:stage.targets.mode||'',regime:stage.targets.regime||''}}var current=safeParse(localStorage.getItem(CURRENT_PLAN_KEY),null);if(current&&current.targets){return{source:'currentPlan',stage:null,kcal:current.targets.kcal,protein:current.targets.protein,carbs:current.targets.carbs,fats:current.targets.fats,water:current.targets.hydration_l,mode:current.targets.mode||'',regime:current.targets.regime||''}}return null}function phaseId(){var stage=getCurrentStage();return stage&&stage.id?String(stage.id).toLowerCase():''}function phaseGuidance(id){var data={cut:{title:'Cut phase: high-satiety fuel',text:'Prioritise protein, vegetables, fibre and controlled portions. Keep food filling, simple and repeatable rather than tiny and miserable.',list:['Lean protein at each meal','High-volume vegetables','Carbs around training or walking','Measured fats and sauces'],rule:'Do not spend the whole calorie budget on foods that leave you hungry.'},transform:{title:'Transform phase: protein and performance',text:'Keep protein high, fuel training well and avoid extreme restriction. The aim is better body composition, not chaos.',list:['Protein at each meal','Carbs placed around training','Consistent hydration','Meals that support recovery'],rule:'Keep meals steady enough that training quality does not collapse.'},maintain:{title:'Maintain phase: repeatable balance',text:'Use flexible, familiar meals that keep weight, energy and appetite steady.',list:['Balanced plates','Consistent meal timing','Flexible treats without drift','Hydration consistency'],rule:'Maintain is not doing nothing. It is practising stability.'},bulk:{title:'Build phase: controlled surplus',text:'Increase calories with useful foods, extra carbs and enough protein while avoiding a careless surplus.',list:['Protein anchor','Extra carbs for training','Calorie-dense but useful additions','Monitor waist and appetite'],rule:'Add calories deliberately. Do not let the surplus become accidental overeating.'}};return data[id]||{title:'My Plan not active yet',text:'Create a roadmap in My Plan, then Nutrition will display the current phase and food priorities here.',list:['Protein source','Vegetables or fruit','Useful carbohydrates','Fats matched to target'],rule:'Use My Plan to create the targets, then use this page to execute them.'}}function renderTargets(){var targets=getTargets();var stage=getCurrentStage();var roadmap=getRoadmap();var summary=document.getElementById('planSummary');var notice=document.getElementById('planNotice');var pills=document.getElementById('planPills');if(!targets){document.getElementById('targetCalories').textContent='—';document.getElementById('targetProtein').textContent='—';document.getElementById('targetCarbs').textContent='—';document.getElementById('targetFat').textContent='—';document.getElementById('targetWater').textContent='—';summary.textContent='No active My Plan roadmap was found. Open My Plan, generate your roadmap, then return here for food execution.';notice.innerHTML='<strong>No separate calculator here:</strong> My Plan is now the single source for calories, macros and phase targets.';pills.innerHTML='<span class="pill">Waiting for My Plan</span>';renderPhaseGuidance('');return}document.getElementById('targetCalories').textContent=targets.kcal?targets.kcal+' kcal':'—';document.getElementById('targetProtein').textContent=targets.protein?targets.protein+' g':'—';document.getElementById('targetCarbs').textContent=targets.carbs?targets.carbs+' g':'—';document.getElementById('targetFat').textContent=targets.fats?targets.fats+' g':'—';document.getElementById('targetWater').textContent=targets.water?targets.water+' L':'—';var stageName=stage&&stage.name?stage.name:'Saved plan';var goal=roadmap&&roadmap.goal?roadmap.goal:'—';summary.textContent='Current phase: '+stageName+'. Goal: '+goal+'. These targets are read from My Plan, not recalculated here.';var pillHtml=[];pillHtml.push('<span class="pill accent">Source: My Plan</span>');if(stageName)pillHtml.push('<span class="pill">Phase: '+escapeHtml(stageName)+'</span>');if(goal)pillHtml.push('<span class="pill">Goal: '+escapeHtml(goal)+'</span>');if(targets.mode)pillHtml.push('<span class="pill">Mode: '+escapeHtml(titleCase(targets.mode))+'</span>');pills.innerHTML=pillHtml.join('');notice.textContent=targets.regime||'Use this page to turn the My Plan prescription into meals, hydration and recipe choices.';renderPhaseGuidance(phaseId())}function renderPhaseGuidance(id){var guide=phaseGuidance(id);document.getElementById('phaseFocusTitle').textContent=guide.title;document.getElementById('phaseFocusText').textContent=guide.text;document.getElementById('mealPriorityList').innerHTML=guide.list.map(function(item){return '<li>'+escapeHtml(item)+'</li>'}).join('');document.getElementById('executionRule').textContent=guide.rule;var hydration=document.getElementById('hydrationFromPlan');var targets=getTargets();if(targets&&targets.water){hydration.textContent='Your current My Plan hydration target is around '+targets.water+' L per day. Add more around long, sweaty or hot sessions as needed.'}else{hydration.textContent='If My Plan has not supplied a water target, use the simple calculator as a guide and adjust for sweat, heat and training.'}}function calcHydration(){var input=document.getElementById('hydrWeight');var out=document.getElementById('hydrOut');if(!input||!out)return;var kg=parseFloat(input.value||'0');if(!kg){out.textContent='Daily target: — ml';return}var low=Math.round(kg*30);var high=Math.round(kg*35);out.textContent='Daily target: '+low+'–'+high+' ml, about '+(low/1000).toFixed(1)+'–'+(high/1000).toFixed(1)+' L, plus extra if training or sweating.'}function phaseFilterTerms(id){if(id==='cut')return['high protein','low calorie','weight loss','lean','salad','soup','vegetables'];if(id==='transform')return['high protein','balanced','post workout','recovery','meal prep'];if(id==='bulk')return['high calorie','bulk','muscle gain','rice','pasta','oats','calorie dense'];if(id==='maintain')return['balanced','meal prep','family','budget','easy'];return['high protein']}function activatePhaseFilter(){var terms=phaseFilterTerms(phaseId());var search=document.getElementById('recipeSearch');if(search){search.value=terms.join(' ');search.dispatchEvent(new Event('input',{bubbles:true}))}document.documentElement.removeAttribute('data-start-empty');var allChip=document.querySelector('#filterChips .chip[data-filter="ALL"]');if(allChip){allChip.setAttribute('aria-pressed','true');allChip.click()}}document.addEventListener('DOMContentLoaded',function(){renderTargets();calcHydration();var hydrBtn=document.getElementById('hydrCalc');var hydrWeight=document.getElementById('hydrWeight');if(hydrBtn)hydrBtn.addEventListener('click',calcHydration);if(hydrWeight)hydrWeight.addEventListener('input',calcHydration);var phaseBtn=document.getElementById('phaseFilterBtn');if(phaseBtn)phaseBtn.addEventListener('click',activatePhaseFilter)})})();
+(function(){
+  'use strict';
+
+  var ROADMAP_KEY = 'fff.roadmap.plan.v1';
+  var CURRENT_PLAN_KEY = 'fff.currentPlan.v1';
+
+  function safeParse(raw, fallback){
+    try{ return raw ? JSON.parse(raw) : fallback; }
+    catch(err){ return fallback; }
+  }
+
+  function escapeHtml(str){
+    return String(str || '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
+
+  function titleCase(str){
+    str = String(str || '').replace(/-/g,' ').trim();
+    if(!str) return '—';
+    return str.split(' ').map(function(part){
+      return part ? part.charAt(0).toUpperCase() + part.slice(1) : '';
+    }).join(' ');
+  }
+
+  function getRoadmap(){
+    return safeParse(localStorage.getItem(ROADMAP_KEY), null);
+  }
+
+  function getCurrentStage(){
+    var roadmap = getRoadmap();
+    if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return null;
+    return roadmap.stages[0];
+  }
+
+  function getTargets(){
+    var stage = getCurrentStage();
+    if(stage && stage.targets){
+      return {
+        source:'roadmap',
+        stage:stage,
+        kcal:stage.targets.kcal,
+        protein:stage.targets.protein,
+        carbs:stage.targets.carbs,
+        fats:stage.targets.fats,
+        water:stage.targets.hydration_l,
+        mode:stage.targets.mode || '',
+        regime:stage.targets.regime || ''
+      };
+    }
+
+    var current = safeParse(localStorage.getItem(CURRENT_PLAN_KEY), null);
+    if(current && current.targets){
+      return {
+        source:'currentPlan',
+        stage:null,
+        kcal:current.targets.kcal,
+        protein:current.targets.protein,
+        carbs:current.targets.carbs,
+        fats:current.targets.fats,
+        water:current.targets.hydration_l,
+        mode:current.targets.mode || '',
+        regime:current.targets.regime || ''
+      };
+    }
+
+    return null;
+  }
+
+  function phaseId(){
+    var stage = getCurrentStage();
+    return stage && stage.id ? String(stage.id).toLowerCase() : '';
+  }
+
+  function phaseGuidance(id){
+    var data = {
+      cut:{
+        title:'Cut phase: high-satiety fuel',
+        text:'Prioritise protein, vegetables, fibre and controlled portions. Keep food filling, simple and repeatable rather than tiny and miserable.',
+        list:['Lean protein at each meal','High-volume vegetables','Carbs around training or walking','Measured fats and sauces'],
+        rule:'Do not spend the whole calorie budget on foods that leave you hungry.'
+      },
+      transform:{
+        title:'Transform phase: protein and performance',
+        text:'Keep protein high, fuel training well and avoid extreme restriction. The aim is better body composition, not chaos.',
+        list:['Protein at each meal','Carbs placed around training','Consistent hydration','Meals that support recovery'],
+        rule:'Keep meals steady enough that training quality does not collapse.'
+      },
+      maintain:{
+        title:'Maintain phase: repeatable balance',
+        text:'Use flexible, familiar meals that keep weight, energy and appetite steady.',
+        list:['Balanced plates','Consistent meal timing','Flexible treats without drift','Hydration consistency'],
+        rule:'Maintain is not doing nothing. It is practising stability.'
+      },
+      bulk:{
+        title:'Build phase: controlled surplus',
+        text:'Increase calories with useful foods, extra carbs and enough protein while avoiding a careless surplus.',
+        list:['Protein anchor','Extra carbs for training','Calorie-dense but useful additions','Monitor waist and appetite'],
+        rule:'Add calories deliberately. Do not let the surplus become accidental overeating.'
+      }
+    };
+    return data[id] || {
+      title:'My Plan not active yet',
+      text:'Create a roadmap in My Plan, then Nutrition will display the current phase and food priorities here.',
+      list:['Protein source','Vegetables or fruit','Useful carbohydrates','Fats matched to target'],
+      rule:'Use My Plan to create the targets, then use this page to execute them.'
+    };
+  }
+
+  function renderTargets(){
+    var targets = getTargets();
+    var stage = getCurrentStage();
+    var roadmap = getRoadmap();
+
+    var summary = document.getElementById('planSummary');
+    var notice = document.getElementById('planNotice');
+    var pills = document.getElementById('planPills');
+
+    if(!targets){
+      document.getElementById('targetCalories').textContent = '—';
+      document.getElementById('targetProtein').textContent = '—';
+      document.getElementById('targetCarbs').textContent = '—';
+      document.getElementById('targetFat').textContent = '—';
+      document.getElementById('targetWater').textContent = '—';
+
+      if(summary) summary.textContent = 'No active My Plan roadmap was found. Open My Plan, generate your roadmap, then return here for food execution.';
+      if(notice) notice.innerHTML = '<strong>No separate calculator here:</strong> My Plan is now the single source for calories, macros and phase targets.';
+      if(pills) pills.innerHTML = '<span class="pill">Waiting for My Plan</span>';
+
+      renderPhaseGuidance('');
+      return;
+    }
+
+    document.getElementById('targetCalories').textContent = targets.kcal ? targets.kcal + ' kcal' : '—';
+    document.getElementById('targetProtein').textContent = targets.protein ? targets.protein + ' g' : '—';
+    document.getElementById('targetCarbs').textContent = targets.carbs ? targets.carbs + ' g' : '—';
+    document.getElementById('targetFat').textContent = targets.fats ? targets.fats + ' g' : '—';
+    document.getElementById('targetWater').textContent = targets.water ? targets.water + ' L' : '—';
+
+    var stageName = stage && stage.name ? stage.name : 'Saved plan';
+    var goal = roadmap && roadmap.goal ? roadmap.goal : '—';
+
+    if(summary) summary.textContent = 'Current phase: ' + stageName + '. Goal: ' + goal + '. These targets are read from My Plan, not recalculated here.';
+
+    var pillHtml = [];
+    pillHtml.push('<span class="pill accent">Source: My Plan</span>');
+    if(stageName) pillHtml.push('<span class="pill">Phase: ' + escapeHtml(stageName) + '</span>');
+    if(goal) pillHtml.push('<span class="pill">Goal: ' + escapeHtml(goal) + '</span>');
+    if(targets.mode) pillHtml.push('<span class="pill">Mode: ' + escapeHtml(titleCase(targets.mode)) + '</span>');
+    if(pills) pills.innerHTML = pillHtml.join('');
+
+    if(notice){
+      notice.textContent = targets.regime || 'Use this page to turn the My Plan prescription into meals, hydration and recipe choices.';
+    }
+
+    renderPhaseGuidance(phaseId());
+  }
+
+  function renderPhaseGuidance(id){
+    var guide = phaseGuidance(id);
+    var title = document.getElementById('phaseFocusTitle');
+    var text = document.getElementById('phaseFocusText');
+    var list = document.getElementById('mealPriorityList');
+    var rule = document.getElementById('executionRule');
+
+    if(title) title.textContent = guide.title;
+    if(text) text.textContent = guide.text;
+    if(list){
+      list.innerHTML = guide.list.map(function(item){
+        return '<li>' + escapeHtml(item) + '</li>';
+      }).join('');
+    }
+    if(rule) rule.textContent = guide.rule;
+  }
+
+  function calcHydr(){
+    var hydrOut = document.getElementById('hydrOut');
+    var hydrW = document.getElementById('hydrWeight');
+    if(!hydrOut || !hydrW) return;
+
+    var kg = parseFloat(hydrW.value || 0);
+    if(!kg){
+      hydrOut.textContent = 'Daily target: — ml';
+      return;
+    }
+
+    var low = Math.round(kg * 30);
+    var high = Math.round(kg * 35);
+    var targets = getTargets();
+    var planText = targets && targets.water ? ' My Plan currently suggests about ' + targets.water + ' L.' : '';
+    hydrOut.textContent = 'Daily target: ' + low + ' – ' + high + ' ml, around ' + (low/1000).toFixed(1) + ' – ' + (high/1000).toFixed(1) + ' L, plus extra if training.' + planText;
+  }
+
+  function phaseFilterTerms(id){
+    if(id === 'cut') return ['high protein','low calorie','weight loss','lean','salad','soup','vegetables'];
+    if(id === 'transform') return ['high protein','balanced','post workout','recovery','meal prep'];
+    if(id === 'bulk') return ['high calorie','bulk','muscle gain','rice','pasta','oats','calorie dense'];
+    if(id === 'maintain') return ['balanced','meal prep','family','budget','easy'];
+    return ['high protein'];
+  }
+
+  function activatePhaseFilter(){
+    var terms = phaseFilterTerms(phaseId());
+    var search = document.getElementById('recipeSearch');
+    if(search){
+      search.value = terms.join(' ');
+      search.dispatchEvent(new Event('input', { bubbles:true }));
+    }
+
+    document.documentElement.removeAttribute('data-start-empty');
+
+    var allChip = document.querySelector('#filterChips .chip[data-filter="ALL"]');
+    if(allChip && allChip.getAttribute('aria-pressed') !== 'true'){
+      allChip.click();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    renderTargets();
+    calcHydr();
+
+    var hydrBtn = document.getElementById('hydrCalc');
+    var hydrW = document.getElementById('hydrWeight');
+    if(hydrBtn) hydrBtn.addEventListener('click', calcHydr);
+    if(hydrW) hydrW.addEventListener('input', calcHydr);
+
+    var phaseBtn = document.getElementById('phaseFilterBtn');
+    if(phaseBtn) phaseBtn.addEventListener('click', activatePhaseFilter);
+  });
+})();
 </script>
+
+<!-- Nutrition JS -->
 <script src="assets/js/nutrition.js?v=20250928b"></script>
-<script>(function(){function prepForPrint(){document.documentElement.removeAttribute('data-start-empty');document.querySelectorAll('details.collapsible').forEach(function(d){d.open=true});document.querySelectorAll('.panel, .overlay, [style*="position:fixed"]').forEach(function(el){el.dataset.prevDisplay=el.style.display||'';el.style.display='none'});var modal=document.getElementById('recipeModal');if(modal&&(modal.open||modal.classList.contains('fallback-open'))){modal.dataset.prevPos=modal.style.position||'';modal.style.position='static'}}window.addEventListener('beforeprint',prepForPrint)})();</script>
+<script>
+(function(){
+  function prepForPrint(){
+    // Show all recipe cards
+    document.documentElement.removeAttribute('data-start-empty');
+    // Open collapsibles
+    document.querySelectorAll('details.collapsible').forEach(d => d.open = true);
+    // Hide panels/overlays
+    document.querySelectorAll('.panel, .overlay, [style*="position:fixed"]').forEach(el => {
+      el.dataset.prevDisplay = el.style.display || '';
+      el.style.display = 'none';
+    });
+    // Make recipe modal printable if open
+    const modal = document.getElementById('recipeModal');
+    if (modal && (modal.open || modal.classList.contains('fallback-open'))) {
+      modal.dataset.prevPos = modal.style.position || '';
+      modal.dataset.prevDisp = modal.style.display || '';
+      modal.style.position = 'static';
+      modal.style.display = 'block';
+    }
+  }
+  function restoreAfterPrint(){
+    document.querySelectorAll('[data-prev-display]').forEach(el => {
+      el.style.display = el.dataset.prevDisplay;
+      el.removeAttribute('data-prev-display');
+    });
+    const modal = document.getElementById('recipeModal');
+    if (modal) {
+      if (modal.dataset.prevPos !== undefined) modal.style.position = modal.dataset.prevPos;
+      if (modal.dataset.prevDisp !== undefined) modal.style.display  = modal.dataset.prevDisp;
+      modal.removeAttribute('data-prev-pos');
+      modal.removeAttribute('data-prev-disp');
+    }
+  }
+  window.addEventListener('beforeprint', prepForPrint);
+  window.addEventListener('afterprint', restoreAfterPrint);
+})();
+</script>
+
 </body>
 </html>

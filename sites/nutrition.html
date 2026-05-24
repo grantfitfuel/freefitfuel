@@ -375,14 +375,8 @@
       </article>
       <article class="card">
         <h3>Hydration</h3>
-        <p>Guide: ~30–35 ml/kg/day. Add ~500–1000 ml around workouts depending on sweat and duration.</p>
-        <div class="calc" style="margin-top:.6rem">
-          <label>Your weight (kg)
-            <input id="hydrWeight" type="number" value="75" class="input" style="max-width:100px">
-          </label>
-          <button id="hydrCalc" class="btn">Calculate</button>
-        </div>
-        <p class="meta" id="hydrOut">Daily target: — ml</p>
+        <p id="hydrationGuidance">Hydration is now taken from My Plan where available, rather than recalculated on this page.</p>
+        <p class="meta">General guide: around 30–35 ml/kg/day, with extra fluid around hard sessions, hot weather, heavy sweating or longer walks/runs.</p>
       </article>
     </div>
   </section>
@@ -646,22 +640,17 @@
     if(rule) rule.textContent = guide.rule;
   }
 
-  function calcHydr(){
-    var hydrOut = document.getElementById('hydrOut');
-    var hydrW = document.getElementById('hydrWeight');
-    if(!hydrOut || !hydrW) return;
+  function renderHydrationGuidance(){
+    var el = document.getElementById('hydrationGuidance');
+    if(!el) return;
 
-    var kg = parseFloat(hydrW.value || 0);
-    if(!kg){
-      hydrOut.textContent = 'Daily target: — ml';
+    var targets = getTargets();
+    if(targets && targets.water){
+      el.textContent = 'Your current My Plan hydration target is about ' + targets.water + ' L per day. Add more around hard sessions, heat, heavy sweating or longer walks/runs.';
       return;
     }
 
-    var low = Math.round(kg * 30);
-    var high = Math.round(kg * 35);
-    var targets = getTargets();
-    var planText = targets && targets.water ? ' My Plan currently suggests about ' + targets.water + ' L.' : '';
-    hydrOut.textContent = 'Daily target: ' + low + ' – ' + high + ' ml, around ' + (low/1000).toFixed(1) + ' – ' + (high/1000).toFixed(1) + ' L, plus extra if training.' + planText;
+    el.textContent = 'Hydration is now controlled by My Plan where available. If no target is saved yet, use the general 30–35 ml/kg/day guide below.';
   }
 
   function phaseFilterTerms(id){
@@ -690,12 +679,7 @@
 
   document.addEventListener('DOMContentLoaded', function(){
     renderTargets();
-    calcHydr();
-
-    var hydrBtn = document.getElementById('hydrCalc');
-    var hydrW = document.getElementById('hydrWeight');
-    if(hydrBtn) hydrBtn.addEventListener('click', calcHydr);
-    if(hydrW) hydrW.addEventListener('input', calcHydr);
+    renderHydrationGuidance();
 
     var phaseBtn = document.getElementById('phaseFilterBtn');
     if(phaseBtn) phaseBtn.addEventListener('click', activatePhaseFilter);

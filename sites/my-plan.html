@@ -3136,6 +3136,138 @@
       return +(total / slice.length).toFixed(2);
     }
 
+
+    function formatKg(value){
+      var n = Number(value);
+      return isNaN(n) ? '—' : (Math.round(n * 10) / 10) + ' kg';
+    }
+
+    function renderWeightLog(){
+      var log = getWeightLog()
+        .filter(function(item){ return item && Number(item.weight) > 0; })
+        .sort(function(a,b){ return String(a.date || '').localeCompare(String(b.date || '')); });
+
+      var startEl = document.getElementById('journeyStartWeight');
+      var currentEl = document.getElementById('journeyCurrentWeight');
+      var changeEl = document.getElementById('journeyWeightChange');
+      var body = document.getElementById('weightHistoryBody');
+      var trendLine = document.getElementById('weightTrendLine');
+      var targetFeedback = document.getElementById('targetWeightFeedback');
+      var targetInput = document.getElementById('targetWeight');
+
+      var target = getTargetWeight();
+      if(targetInput && target != null && !targetInput.value){
+        targetInput.value = target;
+      }
+
+      if(!log.length){
+        if(startEl) startEl.textContent = '—';
+        if(currentEl) currentEl.textContent = '—';
+        if(changeEl) changeEl.textContent = '—';
+        if(body) body.innerHTML = '<tr><td colspan="3" class="meta">No weight entries saved yet.</td></tr>';
+        if(trendLine) trendLine.textContent = 'Add entries across the journey. The weekly check-in can then use a recent average rather than one isolated reading.';
+        if(targetFeedback) targetFeedback.textContent = target != null ? ('Target weight saved: ' + formatKg(target) + '.') : 'No target-weight assessment yet.';
+        renderWeightChart();
+        return;
+      }
+
+      var first = log[0];
+      var last = log[log.length - 1];
+      var startWeight = Number(first.weight) || 0;
+      var currentWeight = Number(last.weight) || 0;
+      var delta = currentWeight - startWeight;
+
+      if(startEl) startEl.textContent = formatKg(startWeight);
+      if(currentEl) currentEl.textContent = formatKg(currentWeight);
+      if(changeEl){
+        var sign = delta > 0 ? '+' : '';
+        changeEl.textContent = sign + (Math.round(delta * 10) / 10) + ' kg';
+        changeEl.classList.remove('feedback-good','feedback-caution','feedback-strong');
+        if(delta < 0) changeEl.classList.add('feedback-good');
+        else if(delta > 0) changeEl.classList.add('feedback-caution');
+      }
+
+      if(body){
+        body.innerHTML = log.slice().reverse().map(function(item){
+          return '<tr>' +
+            '<td>' + escapeHtml(item.date || '—') + '</td>' +
+            '<td>' + escapeHtml(formatKg(item.weight)) + '</td>' +
+            '<td>' + escapeHtml(item.note || '') + '</td>' +
+          '</tr>';
+        }).join('');
+      }
+
+      var recent = getRecentWeightAverage(7);
+      if(trendLine){
+        trendLine.textContent = recent != null
+          ? 'Recent average: ' + formatKg(recent) + '. Use this for the weekly check-in if you want a less jumpy reading.'
+          : 'Add more entries to build a useful recent average.';
+      }
+
+      if(targetFeedback){
+        if(target == null){
+          targetFeedback.textContent = 'No target-weight assessment yet.';
+          targetFeedback.className = 'sub';
+        } else {
+          var remaining = currentWeight - target;
+          targetFeedback.className = 'sub';
+          if(Math.abs(remaining) <= 0.25){
+            targetFeedback.textContent = 'You are essentially at the saved target weight: ' + formatKg(target) + '.';
+            targetFeedback.classList.add('feedback-good');
+          } else if(remaining > 0){
+            targetFeedback.textContent = 'Target weight: ' + formatKg(target) + '. Remaining: about ' + formatKg(remaining) + '.';
+          } else {
+            targetFeedback.textContent = 'Target weight: ' + formatKg(target) + '. You are about ' + formatKg(Math.abs(remaining)) + ' below that target.';
+            targetFeedback.classList.add('feedback-caution');
+          }
+        }
+      }
+
+      renderWeightChart();
+      if(typeof syncPolishMirrors === 'function') syncPolishMirrors();
+    }
+
+    function saveWeightEntryFromUI(){
+      var weightInput = document.getElementById('weightLogValue');
+      var targetInput = document.getElementById('targetWeight');
+      var noteInput = document.getElementById('weightLogNote');
+
+      var weight = parseFloat((weightInput && weightInput.value) || '');
+      if(isNaN(weight) || weight <= 0){
+        alert('Enter a valid weight before saving.');
+        return;
+      }
+
+      var target = parseFloat((targetInput && targetInput.value) || '');
+      if(!isNaN(target) && target > 0){
+        saveTargetWeight(target);
+      } else if(targetInput && String(targetInput.value || '').trim() === ''){
+        saveTargetWeight(null);
+      }
+
+      addWeightLogEntry(weight, noteInput ? noteInput.value : '');
+
+      if(weightInput) weightInput.value = '';
+      if(noteInput) noteInput.value = '';
+
+      renderWeightLog();
+      alert('Weight entry saved.');
+    }
+
+    function useRecentAverageForCheckin(){
+      var avg = getRecentWeightAverage(7);
+      if(avg == null){
+        alert('Add at least one weight entry first.');
+        return;
+      }
+
+      var checkin = document.getElementById('checkinWeight');
+      if(checkin){
+        checkin.value = avg;
+        alert('Recent average copied into the weekly check-in.');
+      }
+    }
+
     function getWeekKey(isoDate){
       var d = new Date(isoDate + 'T00:00:00');
       if(isNaN(d.getTime())) return isoDate;

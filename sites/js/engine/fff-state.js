@@ -321,6 +321,187 @@ window.FFFState = (function () {
     return true;
   }
 
+
+  function sanitiseArray(input) {
+    return Array.isArray(input) ? clone(input) : [];
+  }
+
+  function getCurrentPhase() {
+    const roadmap = getRoadmap();
+    if (!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return null;
+    return clone(roadmap.stages[0]);
+  }
+
+  function getNextPhase() {
+    const roadmap = getRoadmap();
+    if (!roadmap || !Array.isArray(roadmap.stages) || roadmap.stages.length < 2) return null;
+    return clone(roadmap.stages[1]);
+  }
+
+  function getTargets() {
+    const current = getCurrentPhase();
+    if (current && current.targets && typeof current.targets === 'object') {
+      return clone(current.targets);
+    }
+
+    try {
+      const raw = safeLocalGet('fff.currentPlan.v1');
+      const parsed = raw ? JSON.parse(raw) : null;
+      if (parsed && parsed.targets && typeof parsed.targets === 'object') {
+        return clone(parsed.targets);
+      }
+    } catch (err) {}
+
+    return null;
+  }
+
+  function syncCurrentPlanFromRoadmap() {
+    const roadmap = getRoadmap();
+    const current = getCurrentPhase();
+
+    if (!roadmap || !current) return null;
+
+    const payload = {
+      source: STORAGE_KEYS.roadmap,
+      updated: nowISO(),
+      goal: roadmap.goal || '',
+      roadmapMode: roadmap.roadmapMode || '',
+      aggression: roadmap.aggression || '',
+      phase: {
+        id: current.id || '',
+        name: current.name || ''
+      },
+      targets: current.targets || null
+    };
+
+    safeLocalSet('fff.currentPlan.v1', JSON.stringify(payload));
+    return clone(payload);
+  }
+
+  function getWeeklyCheckins() {
+    return sanitiseArray(safeParse('fff.weekly.checkins.v1', []));
+  }
+
+  function saveWeeklyCheckins(history) {
+    const clean = sanitiseArray(history);
+    safeLocalSet('fff.weekly.checkins.v1', JSON.stringify(clean));
+    return clone(clean);
+  }
+
+  function appendWeeklyCheckin(entry) {
+    const history = getWeeklyCheckins();
+    const clean = isPlainObject(entry) ? clone(entry) : {};
+    clean.date = clean.date || nowISO();
+    history.push(clean);
+    return saveWeeklyCheckins(history);
+  }
+
+  function getLatestWeeklyCheckin() {
+    const history = getWeeklyCheckins();
+    return history.length ? clone(history[history.length - 1]) : null;
+  }
+
+  function getWeightLog() {
+    return sanitiseArray(safeParse('fff.weight.log.v1', []));
+  }
+
+  function saveWeightLog(log) {
+    const clean = sanitiseArray(log);
+    safeLocalSet('fff.weight.log.v1', JSON.stringify(clean));
+    return clone(clean);
+  }
+
+  function appendWeightLog(entry) {
+    const log = getWeightLog();
+    const clean = isPlainObject(entry) ? clone(entry) : {};
+    clean.date = clean.date || nowISO();
+    clean.weight = Number(clean.weight) || 0;
+    clean.note = String(clean.note || '');
+    if (!clean.weight) return clone(log);
+    log.push(clean);
+    return saveWeightLog(log);
+  }
+
+  function getRecentWeightAverage(count) {
+    const log = getWeightLog();
+    const limit = Number(count) || 7;
+    const slice = log.slice(Math.max(0, log.length - limit));
+    const values = slice
+      .map(function (item) { return Number(item && item.weight) || 0; })
+      .filter(function (n) { return n > 0; });
+
+    if (!values.length) return null;
+
+    const total = values.reduce(function (sum, n) { return sum + n; }, 0);
+    return Math.round((total / values.length) * 100) / 100;
+  }
+
+  function getTargetWeight() {
+    const raw = safeLocalGet('fff.target.weight.v1');
+    if (raw == null || raw === '') return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function setTargetWeight(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n <= 0) {
+      safeLocalRemove('fff.target.weight.v1');
+      return null;
+    }
+    safeLocalSet('fff.target.weight.v1', String(n));
+    return n;
+  }
+
+  function getSystemsProfile() {
+    const roadmap = getRoadmap();
+    const latest = getLatestWeeklyCheckin();
+    const text = [
+      JSON.stringify(roadmap || {}),
+      latest && latest.notes ? latest.notes : ''
+    ].join(' ').toLowerCase();
+
+    const recovery = Number(latest && latest.recovery) || 3;
+    const energy = Number(latest && latest.energy) || 3;
+    const sleep = Number(latest && latest.sleep) || 3;
+    const training = Number(latest && latest.adherence_training) || 3;
+    const emotion = String(latest && latest.emotional_level || 'steady').toLowerCase();
+
+    return {
+      recoveryNeed: recovery <= 3 || sleep <= 2,
+      lowEnergy: energy <= 2 || emotion === 'drained' || emotion === 'flat',
+      stressSupport: emotion === 'drained' || emotion === 'flat' || text.indexOf('stress') > -1,
+      returningAfterBreak: training <= 2,
+      beginner: !!(roadmap && roadmap.trainingStatus === 'beginner'),
+      over40Support: false,
+
+      kneePain: /knee|patella|stairs|squat pain|lunge pain/.test(text),
+      hipPain: /hip|groin|glute/.test(text),
+      lowerBodyPain: /knee|hip|lower body|leg pain|stairs|squat pain|lunge pain/.test(text),
+      walkingPain: /walk|walking pain|steps/.test(text),
+      runningPlan: /run|running|10k|5k|half marathon|marathon/.test(text),
+      stiffness: /stiff|tight|mobility|restricted|fascia|sitting/.test(text),
+      deskbound: /desk|sitting|sedentary|office/.test(text),
+      pullUpGoal: /pull.?up|chin.?up/.test(text),
+      upperBodyStrength: /upper body|strength|build|bulk|transform/.test(text),
+      elbowPain: /elbow|tennis elbow/.test(text),
+      bicepsPain: /bicep|biceps/.test(text),
+      pressingPain: /press|bench|pressing pain/.test(text),
+      balanceNeed: /balance|ankle|calf|foot|feet/.test(text),
+      lowerLegWeakness: /lower leg|shin|ankle|calf|foot|feet/.test(text),
+
+      acuteInjury: /acute|severe|swelling|redness|locking|numbness|chest pain|dizzy|dizziness/.test(text),
+      unexplainedSwelling: /swelling|heat|redness|locking/.test(text),
+      medicalRedFlag: /red flag|medical|doctor|hospital|a&e|emergency/.test(text)
+    };
+  }
+
+  function getRecommendedSystems() {
+    if (!window.FFFSystems || typeof window.FFFSystems.getSystemsForPlan !== 'function') return [];
+    return window.FFFSystems.getSystemsForPlan(getSystemsProfile());
+  }
+
+
   function clearAllEngineData() {
     const roadmapBackup = safeLocalGet(STORAGE_KEYS.roadmap);
 
@@ -370,6 +551,25 @@ window.FFFState = (function () {
     save: save,
     getAll: getAll,
     getRoadmap: getRoadmap,
+    getCurrentPhase: getCurrentPhase,
+    getNextPhase: getNextPhase,
+    getTargets: getTargets,
+    syncCurrentPlanFromRoadmap: syncCurrentPlanFromRoadmap,
+
+    getWeeklyCheckins: getWeeklyCheckins,
+    saveWeeklyCheckins: saveWeeklyCheckins,
+    appendWeeklyCheckin: appendWeeklyCheckin,
+    getLatestWeeklyCheckin: getLatestWeeklyCheckin,
+
+    getWeightLog: getWeightLog,
+    saveWeightLog: saveWeightLog,
+    appendWeightLog: appendWeightLog,
+    getRecentWeightAverage: getRecentWeightAverage,
+    getTargetWeight: getTargetWeight,
+    setTargetWeight: setTargetWeight,
+
+    getSystemsProfile: getSystemsProfile,
+    getRecommendedSystems: getRecommendedSystems,
 
     setPB: setPB,
     getPB: getPB,

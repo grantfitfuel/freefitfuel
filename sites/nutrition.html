@@ -480,75 +480,61 @@
 <div id="printArea" hidden></div>
 <div id="overlay" class="overlay"></div>
 
+<script src="js/engine/fff-state.js?v=1"></script>
 <!-- Inline scripts: My Plan nutrition reader + hydration helper -->
 <script>
 (function(){
   'use strict';
 
-  var ROADMAP_KEY = 'fff.roadmap.plan.v1';
-  var CURRENT_PLAN_KEY = 'fff.currentPlan.v1';
-
-  function safeParse(raw, fallback){
-    try{ return raw ? JSON.parse(raw) : fallback; }
-    catch(err){ return fallback; }
-  }
-
-  function escapeHtml(str){
-    return String(str || '')
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;')
-      .replace(/'/g,'&#39;');
-  }
-
-  function titleCase(str){
-    str = String(str || '').replace(/-/g,' ').trim();
-    if(!str) return '—';
-    return str.split(' ').map(function(part){
-      return part ? part.charAt(0).toUpperCase() + part.slice(1) : '';
-    }).join(' ');
-  }
-
   function getRoadmap(){
-    return safeParse(localStorage.getItem(ROADMAP_KEY), null);
+    if(window.FFFState && typeof window.FFFState.getRoadmap === 'function'){
+      return window.FFFState.getRoadmap();
+    }
+    return safeParse(localStorage.getItem('fff.roadmap.plan.v1'), null);
   }
 
   function getCurrentStage(){
+    if(window.FFFState && typeof window.FFFState.getCurrentPhase === 'function'){
+      return window.FFFState.getCurrentPhase();
+    }
+
     var roadmap = getRoadmap();
     if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return null;
     return roadmap.stages[0];
   }
 
+  function normaliseTargets(raw, source, stage){
+    if(!raw || typeof raw !== 'object') return null;
+
+    return {
+      source: source || 'unknown',
+      stage: stage || null,
+      kcal: raw.kcal,
+      protein: raw.protein,
+      carbs: raw.carbs,
+      fats: raw.fats,
+      water: raw.hydration_l,
+      mode: raw.mode || '',
+      regime: raw.regime || ''
+    };
+  }
+
   function getTargets(){
     var stage = getCurrentStage();
-    if(stage && stage.targets){
-      return {
-        source:'roadmap',
-        stage:stage,
-        kcal:stage.targets.kcal,
-        protein:stage.targets.protein,
-        carbs:stage.targets.carbs,
-        fats:stage.targets.fats,
-        water:stage.targets.hydration_l,
-        mode:stage.targets.mode || '',
-        regime:stage.targets.regime || ''
-      };
+
+    if(window.FFFState && typeof window.FFFState.getTargets === 'function'){
+      var engineTargets = window.FFFState.getTargets();
+      var cleanEngineTargets = normaliseTargets(engineTargets, 'FFFState', stage);
+      if(cleanEngineTargets) return cleanEngineTargets;
     }
 
-    var current = safeParse(localStorage.getItem(CURRENT_PLAN_KEY), null);
+    if(stage && stage.targets){
+      return normaliseTargets(stage.targets, 'roadmap', stage);
+    }
+
+    var current = safeParse(localStorage.getItem('fff.currentPlan.v1'), null);
     if(current && current.targets){
-      return {
-        source:'currentPlan',
-        stage:null,
-        kcal:current.targets.kcal,
-        protein:current.targets.protein,
-        carbs:current.targets.carbs,
-        fats:current.targets.fats,
-        water:current.targets.hydration_l,
-        mode:current.targets.mode || '',
-        regime:current.targets.regime || ''
-      };
+      return normaliseTargets(current.targets, 'currentPlan', null);
     }
 
     return null;
@@ -627,10 +613,10 @@
     var stageName = stage && stage.name ? stage.name : 'Saved plan';
     var goal = roadmap && roadmap.goal ? roadmap.goal : '—';
 
-    if(summary) summary.textContent = 'Current phase: ' + stageName + '. Goal: ' + goal + '. These targets are read from My Plan, not recalculated here.';
+    if(summary) summary.textContent = 'Current phase: ' + stageName + '. Goal: ' + goal + '. These targets are read from the My Plan engine, not recalculated here.';
 
     var pillHtml = [];
-    pillHtml.push('<span class="pill accent">Source: My Plan</span>');
+    pillHtml.push('<span class="pill accent">Source: My Plan Engine</span>');
     if(stageName) pillHtml.push('<span class="pill">Phase: ' + escapeHtml(stageName) + '</span>');
     if(goal) pillHtml.push('<span class="pill">Goal: ' + escapeHtml(goal) + '</span>');
     if(targets.mode) pillHtml.push('<span class="pill">Mode: ' + escapeHtml(titleCase(targets.mode)) + '</span>');

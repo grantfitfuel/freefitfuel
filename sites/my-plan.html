@@ -5344,7 +5344,7 @@
               var meta = [];
               if(item.type) meta.push(item.type);
               if(item.equipment && item.equipment.length) meta.push(item.equipment.join(', '));
-              var watch = item.yt ? actionBtn(ytURL(item.yt), '&#9654; Watch Form', true) : '';
+              var watch = item.yt ? actionBtn(yt(item.yt), '&#9654; Watch Form', true) : '';
               var logBtn = '<button type="button" class="btn-sm" data-log-name="' + (item.name || '').replace(/"/g,'&quot;') + '">Log this</button>';
               var source = item.sourcePage ? '<a href="' + item.sourcePage + '" class="btn-sm">Open ' + (item.sourceLabel || 'source') + '</a>' : '';
               var why = item.why ? '<div class="meta" style="margin-top:8px;"><strong>Why this is here:</strong> ' + item.why + '</div>' : '';

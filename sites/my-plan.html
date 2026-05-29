@@ -1531,7 +1531,7 @@
 
   <script src="/js/fff-systems.js"></script>
   <script src="js/engine/fff-state.js?v=1"></script>
-  <script src="js/engine/fff-exercise-db.js?v=1"></script>
+  <script src="js/engine/fff-exercise-db.js?v=43"></script>
   <script src="js/engine/fff-recovery.js?v=1"></script>
   <script src="js/engine/fff-mind.js?v=1"></script>
   <script src="js/engine/fff-roadmap.js?v=1"></script>
@@ -1539,7 +1539,7 @@
   <script src="js/engine/fff-interventions.js?v=1"></script>
   <script src="js/engine/fff-training.js?v=1"></script>
   <script src="js/engine/fff-messaging.js?v=1"></script>
-  <script src="js/engine/fff-core.js?v=81"></script>
+  <script src="js/engine/fff-core.js?v=82"></script>
   <script src="/js/fff-systems.js?v=1"></script>
 
   <script>
@@ -2081,7 +2081,168 @@
       };
     }
 
+
+    function currentEquipmentArray(){
+      var profile = null;
+      try{
+        profile = (typeof getEquipmentProfileFromUI === 'function') ? getEquipmentProfileFromUI() : loadEquipmentProfile();
+      }catch(err){
+        profile = loadEquipmentProfile ? loadEquipmentProfile() : null;
+      }
+      var equip = (profile && profile.equip) ? profile.equip : {};
+      var arr = [];
+      Object.keys(equip).forEach(function(key){ if(equip[key]) arr.push(key); });
+      if(arr.indexOf('bw') === -1) arr.push('bw');
+      return arr;
+    }
+
+    function normaliseExerciseForPlan(exercise, role, rx){
+      exercise = exercise || {};
+      var name = exercise.name || exercise.key || 'Exercise';
+      var sourceModules = Array.isArray(exercise.sourceModules) ? exercise.sourceModules : [];
+      var primarySource = sourceModules.length ? sourceModules[0] : null;
+      var alts = [];
+
+      if(Array.isArray(exercise.alternatives)) alts = alts.concat(exercise.alternatives);
+      if(Array.isArray(exercise.regressions)) alts = alts.concat(exercise.regressions);
+      if(Array.isArray(exercise.progressions)) alts = alts.concat(exercise.progressions);
+      alts = alts.map(function(item){ return typeof item === 'string' ? titleCase(item) : (item && item.name ? item.name : ''); }).filter(Boolean).slice(0,4);
+
+      return {
+        key: exercise.key || '',
+        name: name,
+        type: role || exercise.type || 'compound',
+        sets: rx && rx.sets ? rx.sets : '3',
+        reps: rx && rx.reps ? rx.reps : (exercise.defaultRx || exercise.rx || 'controlled reps'),
+        rir: rx && rx.rir ? rx.rir : '2–3',
+        rest: rx && rx.rest ? rx.rest : 60,
+        equipment: exercise.equipment || [],
+        family: exercise.family || '',
+        domains: exercise.domains || [],
+        purposes: exercise.purposes || [],
+        cue: exercise.coachingCue || exercise.cue || 'Move with control and keep the effort repeatable.',
+        alts: alts,
+        sourcePage: exercise.sourcePage || (primarySource && primarySource.url) || 'workouts.html',
+        sourceLabel: exercise.sourceLabel || (primarySource && primarySource.label) || 'Workouts Library',
+        sourceModules: sourceModules,
+        why: exercise.why || ''
+      };
+    }
+
+    function stageRxProfile(stageId, role){
+      var base = {
+        cut:       { main:{sets:'2–3', reps:'6–10', rir:'2–3', rest:75}, acc:{sets:'2', reps:'10–15', rir:'2–3', rest:45} },
+        transform: { main:{sets:'3–4', reps:'6–10', rir:'1–2', rest:90}, acc:{sets:'2–3', reps:'8–12', rir:'1–2', rest:60} },
+        maintain:  { main:{sets:'3', reps:'6–10', rir:'1–2', rest:90}, acc:{sets:'2', reps:'8–12', rir:'1–2', rest:60} },
+        bulk:      { main:{sets:'4', reps:'5–8', rir:'1–2', rest:120}, acc:{sets:'3', reps:'8–12', rir:'1–2', rest:75} }
+      };
+      var pack = base[stageId] || base.transform;
+      return role === 'accessory' ? pack.acc : pack.main;
+    }
+
+    function dbPick(context, family, used, fallbackPurpose){
+      if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
+      var q = Object.assign({}, context || {}, { family: family });
+      if(fallbackPurpose) q.purpose = fallbackPurpose;
+      var list = window.FFFExerciseDB.filterExercises(q) || [];
+      for(var i=0;i<list.length;i++){
+        if(used.indexOf(list[i].key) === -1){ used.push(list[i].key); return list[i]; }
+      }
+      return list[0] || null;
+    }
+
+    function dbContextForStage(stageId){
+      var trainingStatus = getTrainingStatus ? getTrainingStatus() : 'intermediate';
+      var style = 'mixed';
+      if(stageId === 'bulk') style = 'strength-hypertrophy';
+      if(stageId === 'cut') style = 'fat-loss-conditioning';
+      if(trainingStatus === 'beginner') style = 'low-overwhelm';
+
+      return {
+        phase: stageId,
+        style: style,
+        trainingStyle: style,
+        difficulty: trainingStatus,
+        equipment: currentEquipmentArray(),
+        injuries: []
+      };
+    }
+
+    function explainChoice(stageId, exercise, role, dayLabel){
+      var source = exercise.sourceLabel || 'Workouts Library';
+      var family = exercise.family ? titleCase(exercise.family) : 'movement';
+      var base = 'Chosen from ' + source + ' as a ' + family + ' option for this ' + dayLabel + ' slot.';
+      if(stageId === 'cut') return base + ' The cut phase uses enough strength work to preserve muscle without burying recovery.';
+      if(stageId === 'transform') return base + ' The transform phase needs repeatable strength practice while body composition changes slowly.';
+      if(stageId === 'maintain') return base + ' Maintenance keeps the pattern trained without chasing novelty every week.';
+      if(stageId === 'bulk') return base + ' The build phase favours progressive overload and enough volume to support muscle gain.';
+      return base;
+    }
+
+    function buildProgramFromExerciseDB(stageId){
+      if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
+
+      var context = dbContextForStage(stageId);
+      var used = [];
+      var split = stageId === 'bulk'
+        ? ['Mon Push Strength','Tue Pull Strength','Wed Lower Strength','Thu Recovery / Mobility','Fri Upper Volume','Sat Optional Conditioning','Sun Rest']
+        : ['Mon Push + Pull','Tue Lower + Core','Wed Recovery / Mobility','Thu Upper + Pull','Fri Lower + Conditioning','Sat Optional Recovery','Sun Rest'];
+
+      function make(family, role, dayLabel, purpose){
+        var ex = dbPick(context, family, used, purpose);
+        if(!ex) return null;
+        var normalised = normaliseExerciseForPlan(ex, role === 'accessory' ? 'accessory' : 'compound', stageRxProfile(stageId, role));
+        normalised.why = explainChoice(stageId, normalised, role, dayLabel);
+        return normalised;
+      }
+
+      function moduleItem(name, type, sourcePage, sourceLabel, cue, why){
+        return {
+          name:name,
+          type:type || 'recovery',
+          sets:'—',
+          reps:'10–20 min',
+          rir:'easy',
+          rest:'—',
+          cue:cue || 'Keep this gentle and useful.',
+          sourcePage:sourcePage,
+          sourceLabel:sourceLabel,
+          sourceModules:[{label:sourceLabel,url:sourcePage}],
+          why:why || 'This support block is included because FreeFitFuel plans draw from recovery, physio and mobility pages as well as workouts.'
+        };
+      }
+
+      var programByDay = [];
+      if(stageId === 'bulk'){
+        programByDay[0] = [make('horizontal-push','main','push strength','push'), make('vertical-push','main','push strength','push'), make('arms','accessory','push strength','arms')].filter(Boolean);
+        programByDay[1] = [make('vertical-pull','main','pull strength','pull'), make('horizontal-pull','main','pull strength','pull'), make('arms','accessory','pull strength','arms')].filter(Boolean);
+        programByDay[2] = [make('squat','main','lower strength','legs'), make('hinge','main','lower strength','legs'), make('calf-ankle','accessory','lower strength','legs')].filter(Boolean);
+        programByDay[3] = [moduleItem('Daily Recovery Flow','recovery','/systems/daily-recovery-flow.html','Daily Recovery Flow','Move slowly, breathe steadily, leave fresher than you started.','Recovery is deliberately placed between heavier build sessions.')];
+        programByDay[4] = [make('horizontal-push','accessory','upper volume','push'), make('horizontal-pull','accessory','upper volume','pull'), make('core-anti-extension','accessory','upper volume','core')].filter(Boolean);
+        programByDay[5] = [make('conditioning','accessory','optional conditioning','conditioning')].filter(Boolean);
+        programByDay[6] = [];
+      } else {
+        programByDay[0] = [make('horizontal-push','main','push and pull','push'), make('horizontal-pull','main','push and pull','pull')].filter(Boolean);
+        programByDay[1] = [make('squat','main','lower and core','legs'), make('hinge','main','lower and core','legs'), make('core-anti-extension','accessory','lower and core','core')].filter(Boolean);
+        programByDay[2] = [moduleItem('Mobility / Recovery Reset','recovery','/stretching.html','Flexibility & Stretching','Stay easy. This is movement quality, not a workout.','This prevents the plan being only strength work and draws from the mobility pages.')];
+        programByDay[3] = [make('vertical-pull','main','upper and pull','pull'), make('vertical-push','main','upper and pull','push'), make('core-anti-rotation','accessory','upper and pull','core')].filter(Boolean);
+        programByDay[4] = [make('lunge-split','main','lower and conditioning','legs'), make('conditioning','accessory','lower and conditioning','conditioning')].filter(Boolean);
+        programByDay[5] = [moduleItem('Lymphatic Recovery Flow','recovery','/systems/lymphatic-recovery-flow.html','Lymphatic Recovery Flow','Keep it gentle and rhythmic.','Optional active recovery is included from the recovery systems, not invented inside My Plan.')];
+        programByDay[6] = [];
+      }
+
+      return {
+        split: split,
+        programByDay: programByDay,
+        source: 'fff-exercise-db',
+        sourceNote: 'Generated from FFFExerciseDB and linked FreeFitFuel source pages rather than hard-coded My Plan templates.'
+      };
+    }
+
     function buildProgram(stageId) {
+      var dbProgram = buildProgramFromExerciseDB(stageId);
+      if(dbProgram) return dbProgram;
+
       var R = {
         cut:       { mainSets:'3–4', accSets:'2–3', mainReps:'6–10', accReps:'10–15', mainRIR:'2–3', accRIR:'1–2', restMain:90,  restAcc:45 },
         transform: { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12',  mainRIR:'1–2', accRIR:'1–2', restMain:90,  restAcc:60 },
@@ -3028,6 +3189,11 @@
                           '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
                         '</div>' +
                         (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
+                        (it.why ? ('<div class="why-box"><strong>Why this is here:</strong> ' + escapeHtml(it.why) + '</div>') : '') +
+                        (it.sourcePage ? ('<div class="source-row"><a class="source-pill" href="' + escapeHtml(it.sourcePage) + '">Source: ' + escapeHtml(it.sourceLabel || 'FreeFitFuel') + '</a></div>') : '') +
+                        ((it.sourceModules && it.sourceModules.length > 1) ? ('<div class="source-row">' + it.sourceModules.slice(1,4).map(function(src){
+                          return '<a class="source-pill" href="' + escapeHtml(src.url || '#') + '">Also: ' + escapeHtml(src.label || 'Module') + '</a>';
+                        }).join('') + '</div>') : '') +
                         ((it.alts && it.alts.length) ? ('<div class="alt-chips">' + it.alts.map(function(alt){
                           return '<a class="alt-chip" href="' + yt(alt) + '" target="_blank" rel="noopener">' + escapeHtml(alt) + '</a>';
                         }).join('') + '</div>') : '') +
@@ -3134,138 +3300,6 @@
       var total = 0;
       for(var i = 0; i < slice.length; i++) total += Number(slice[i].weight || 0);
       return +(total / slice.length).toFixed(2);
-    }
-
-
-    function formatKg(value){
-      var n = Number(value);
-      return isNaN(n) ? '—' : (Math.round(n * 10) / 10) + ' kg';
-    }
-
-    function renderWeightLog(){
-      var log = getWeightLog()
-        .filter(function(item){ return item && Number(item.weight) > 0; })
-        .sort(function(a,b){ return String(a.date || '').localeCompare(String(b.date || '')); });
-
-      var startEl = document.getElementById('journeyStartWeight');
-      var currentEl = document.getElementById('journeyCurrentWeight');
-      var changeEl = document.getElementById('journeyWeightChange');
-      var body = document.getElementById('weightHistoryBody');
-      var trendLine = document.getElementById('weightTrendLine');
-      var targetFeedback = document.getElementById('targetWeightFeedback');
-      var targetInput = document.getElementById('targetWeight');
-
-      var target = getTargetWeight();
-      if(targetInput && target != null && !targetInput.value){
-        targetInput.value = target;
-      }
-
-      if(!log.length){
-        if(startEl) startEl.textContent = '—';
-        if(currentEl) currentEl.textContent = '—';
-        if(changeEl) changeEl.textContent = '—';
-        if(body) body.innerHTML = '<tr><td colspan="3" class="meta">No weight entries saved yet.</td></tr>';
-        if(trendLine) trendLine.textContent = 'Add entries across the journey. The weekly check-in can then use a recent average rather than one isolated reading.';
-        if(targetFeedback) targetFeedback.textContent = target != null ? ('Target weight saved: ' + formatKg(target) + '.') : 'No target-weight assessment yet.';
-        renderWeightChart();
-        return;
-      }
-
-      var first = log[0];
-      var last = log[log.length - 1];
-      var startWeight = Number(first.weight) || 0;
-      var currentWeight = Number(last.weight) || 0;
-      var delta = currentWeight - startWeight;
-
-      if(startEl) startEl.textContent = formatKg(startWeight);
-      if(currentEl) currentEl.textContent = formatKg(currentWeight);
-      if(changeEl){
-        var sign = delta > 0 ? '+' : '';
-        changeEl.textContent = sign + (Math.round(delta * 10) / 10) + ' kg';
-        changeEl.classList.remove('feedback-good','feedback-caution','feedback-strong');
-        if(delta < 0) changeEl.classList.add('feedback-good');
-        else if(delta > 0) changeEl.classList.add('feedback-caution');
-      }
-
-      if(body){
-        body.innerHTML = log.slice().reverse().map(function(item){
-          return '<tr>' +
-            '<td>' + escapeHtml(item.date || '—') + '</td>' +
-            '<td>' + escapeHtml(formatKg(item.weight)) + '</td>' +
-            '<td>' + escapeHtml(item.note || '') + '</td>' +
-          '</tr>';
-        }).join('');
-      }
-
-      var recent = getRecentWeightAverage(7);
-      if(trendLine){
-        trendLine.textContent = recent != null
-          ? 'Recent average: ' + formatKg(recent) + '. Use this for the weekly check-in if you want a less jumpy reading.'
-          : 'Add more entries to build a useful recent average.';
-      }
-
-      if(targetFeedback){
-        if(target == null){
-          targetFeedback.textContent = 'No target-weight assessment yet.';
-          targetFeedback.className = 'sub';
-        } else {
-          var remaining = currentWeight - target;
-          targetFeedback.className = 'sub';
-          if(Math.abs(remaining) <= 0.25){
-            targetFeedback.textContent = 'You are essentially at the saved target weight: ' + formatKg(target) + '.';
-            targetFeedback.classList.add('feedback-good');
-          } else if(remaining > 0){
-            targetFeedback.textContent = 'Target weight: ' + formatKg(target) + '. Remaining: about ' + formatKg(remaining) + '.';
-          } else {
-            targetFeedback.textContent = 'Target weight: ' + formatKg(target) + '. You are about ' + formatKg(Math.abs(remaining)) + ' below that target.';
-            targetFeedback.classList.add('feedback-caution');
-          }
-        }
-      }
-
-      renderWeightChart();
-      if(typeof syncPolishMirrors === 'function') syncPolishMirrors();
-    }
-
-    function saveWeightEntryFromUI(){
-      var weightInput = document.getElementById('weightLogValue');
-      var targetInput = document.getElementById('targetWeight');
-      var noteInput = document.getElementById('weightLogNote');
-
-      var weight = parseFloat((weightInput && weightInput.value) || '');
-      if(isNaN(weight) || weight <= 0){
-        alert('Enter a valid weight before saving.');
-        return;
-      }
-
-      var target = parseFloat((targetInput && targetInput.value) || '');
-      if(!isNaN(target) && target > 0){
-        saveTargetWeight(target);
-      } else if(targetInput && String(targetInput.value || '').trim() === ''){
-        saveTargetWeight(null);
-      }
-
-      addWeightLogEntry(weight, noteInput ? noteInput.value : '');
-
-      if(weightInput) weightInput.value = '';
-      if(noteInput) noteInput.value = '';
-
-      renderWeightLog();
-      alert('Weight entry saved.');
-    }
-
-    function useRecentAverageForCheckin(){
-      var avg = getRecentWeightAverage(7);
-      if(avg == null){
-        alert('Add at least one weight entry first.');
-        return;
-      }
-
-      var checkin = document.getElementById('checkinWeight');
-      if(checkin){
-        checkin.value = avg;
-        alert('Recent average copied into the weekly check-in.');
-      }
     }
 
     function getWeekKey(isoDate){
@@ -4888,27 +4922,30 @@
     }
 
     function loadLibrary(){
+      if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getMyPlanLibrary === 'function'){
+        var liveLib = window.FFFExerciseDB.getMyPlanLibrary();
+        if(liveLib && Array.isArray(liveLib.items) && liveLib.items.length){
+          try{ localStorage.setItem('fff.library.cache.v1', JSON.stringify(liveLib)); }catch(err){}
+          return liveLib;
+        }
+      }
+
       var lib = readJSON('fff.library.cache.v1', null);
       if(lib && Array.isArray(lib.items) && lib.items.length) return lib;
+
       return {
         version: 1,
+        source: 'my-plan-emergency-fallback',
         items: [
-          { key:'pushup', type:'exercise', name:'Push-up', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['push'], yt:'push up form' },
-          { key:'dbbench', type:'exercise', name:'Dumbbell Bench Press', equipment:['db'], styles:['mixed'], purposes:['push'], yt:'dumbbell bench press form' },
-          { key:'doorrow', type:'exercise', name:'Door/Table Row', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'bodyweight row at home form' },
-          { key:'bandrow', type:'exercise', name:'Band Row', equipment:['band'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'resistance band row form' },
-          { key:'stepup', type:'exercise', name:'Step-up', equipment:['db'], styles:['mixed'], purposes:['legs'], yt:'dumbbell step up form' },
-          { key:'sidepl', type:'exercise', name:'Side Plank', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['core'], yt:'side plank form' },
-          { key:'ringrow', type:'exercise', name:'Ring Row', equipment:['rings'], styles:['calisthenics'], purposes:['pull'], yt:'gymnastic ring row form' },
-          { key:'ringpush', type:'exercise', name:'Ring Push-up', equipment:['rings'], styles:['calisthenics'], purposes:['push'], yt:'ring push up form' },
-          { key:'amrap20-triplet', type:'circuit', name:'Triplet — AMRAP 20', equipment:['bw'], styles:['mixed','circuit'], purposes:['conditioning'], yt:'triplet amrap 20 workout form' },
-          { key:'emom30-triplet', type:'circuit', name:'Triplet — EMOM 30', equipment:['bw'], styles:['mixed','circuit'], purposes:['conditioning'], yt:'triplet emom 30 workout form' },
-          { key:'ladder-standard', type:'challenge', name:'Ladder Challenge', equipment:['bw'], styles:['mixed','circuit'], purposes:['challenge'], yt:'ladder challenge workout form' },
-          { key:'mobility-lower', type:'mobility', name:'Lower Body Mobility Flow', equipment:['bw'], styles:['mixed','calisthenics','circuit','reformer'], purposes:['mobility','recovery'], yt:'lower body mobility flow' },
-          { key:'stretch-reset', type:'mobility', name:'Daily Stretch Reset', equipment:['bw'], styles:['mixed','calisthenics','circuit','reformer'], purposes:['stretching','recovery'], yt:'full body stretch routine' },
-          { key:'physio-lower', type:'recovery', name:'Lower Body Recovery Block', equipment:['bw','band'], styles:['mixed','calisthenics','circuit'], purposes:['recovery','physio'], yt:'lower body recovery mobility' },
-          { key:'reformer-foundation', type:'session', name:'Reformer Foundation Session', equipment:['bw'], styles:['reformer'], purposes:['full'], yt:'reformer pilates foundation session' },
-          { key:'reformer-core', type:'session', name:'Reformer Core Session', equipment:['bw'], styles:['reformer'], purposes:['core'], yt:'reformer pilates core session' }
+          { key:'pushup', type:'exercise', name:'Push-up', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['push'], yt:'push up form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'dbbench', type:'exercise', name:'Dumbbell Bench Press', equipment:['db'], styles:['mixed'], purposes:['push'], yt:'dumbbell bench press form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'doorrow', type:'exercise', name:'Door/Table Row', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'bodyweight row at home form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'bandrow', type:'exercise', name:'Band Row', equipment:['band'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'resistance band row form', sourcePage:'physio.html', sourceLabel:'Physio & Recovery' },
+          { key:'stepup', type:'exercise', name:'Step-up', equipment:['db','bw'], styles:['mixed'], purposes:['legs'], yt:'dumbbell step up form', sourcePage:'physio.html', sourceLabel:'Physio & Recovery' },
+          { key:'sidepl', type:'exercise', name:'Side Plank', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['core'], yt:'side plank form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'amrap20-triplet', type:'circuit', name:'Triplet — AMRAP 20', equipment:['bw'], styles:['mixed','circuit'], purposes:['conditioning'], yt:'triplet amrap 20 workout form', sourcePage:'ladder-challenge.html', sourceLabel:'Ladder Challenge' },
+          { key:'stretch-reset', type:'mobility', name:'Daily Stretch Reset', equipment:['bw'], styles:['mixed','calisthenics','circuit','reformer'], purposes:['stretching','recovery'], yt:'full body stretch routine', sourcePage:'stretching.html', sourceLabel:'Flexibility & Stretching' },
+          { key:'physio-lower', type:'recovery', name:'Lower Body Recovery Block', equipment:['bw','band'], styles:['mixed','calisthenics','circuit'], purposes:['recovery','physio'], yt:'lower body recovery mobility', sourcePage:'physio.html', sourceLabel:'Physio & Recovery' }
         ]
       };
     }
@@ -5099,7 +5136,14 @@
                 yt: item.yt || '',
                 type: item.type || '',
                 equipment: item.equipment || item.eq || [],
-                purposes: item.purposes || []
+                purposes: item.purposes || [],
+                family: item.family || '',
+                domains: item.domains || [],
+                cue: item.cue || '',
+                why: item.why || '',
+                sourcePage: item.sourcePage || '',
+                sourceLabel: item.sourceLabel || '',
+                sourceModules: item.sourceModules || []
               };
             }),
             extras: session.extras || []

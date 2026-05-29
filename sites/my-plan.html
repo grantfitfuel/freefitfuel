@@ -5366,10 +5366,21 @@
                 + '</div>';
             }).join('');
 
+            var goal = session.subtitle || 'Build capacity, consistency and progress toward your current phase goal.';
             return ''
               + '<article class="section" style="margin-top:10px;">'
-              +   '<h3 style="margin:.1rem 0 .35rem;">Day ' + (idx+1) + ': ' + session.title + '</h3>'
-              +   '<p class="meta">' + (session.subtitle || '') + '</p>'
+              +   '<div class="panel-kicker">Session ' + (idx+1) + '</div>'
+              +   '<h3 style="margin:.1rem 0 .35rem;">' + session.title + '</h3>'
+              +   '<div class="card" style="margin-bottom:10px;">'
+              +     '<strong>Goal</strong><div class="meta">' + goal + '</div>'
+              +     '<div class="meta" style="margin-top:8px;"><strong>Why this session exists:</strong> Generated from your selected training style, available equipment, current phase and recovery profile.</div>'
+              +     '<div class="meta" style="margin-top:8px;"><strong>Estimated duration:</strong> 30–60 minutes depending on rest periods.</div>'
+              +   '</div>'
+              +   '<details class="legend"><summary>Training Terms Explained</summary>'
+              +   '<div class="row"><div class="term">EMOM</div><div class="def">Every Minute On the Minute. Start work at the beginning of each minute and rest in any remaining time.</div></div>'
+              +   '<div class="row"><div class="term">AMRAP</div><div class="def">As Many Rounds or Reps As Possible while maintaining good form.</div></div>'
+              +   '<div class="row"><div class="term">RPE</div><div class="def">Rate of Perceived Exertion. How hard the set feels from 1–10.</div></div>'
+              +   '</details>'
               +   itemsHtml + extrasHtml
               + '</article>';
           }).join('');

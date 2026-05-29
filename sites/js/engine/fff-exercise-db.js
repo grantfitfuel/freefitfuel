@@ -1,4 +1,4 @@
-// FreeFitFuel Engine — Exercise Knowledge Database v4.2
+// FreeFitFuel Engine — Exercise Knowledge Database v4.3
 // Drop-in replacement for /js/engine/fff-exercise-db.js
 // Built to feed the existing My Plan fallback cache, injury profile selector and Workouts payload.
 
@@ -1220,6 +1220,59 @@ window.FFFExerciseDB = (function () {
     ]
   }
 };
+  const PAGE_SOURCE_MODULES = {
+    workouts: { label:'Workouts Library', url:'/workouts.html', reason:'main strength, calisthenics, circuits and workout logging library' },
+    physio: { label:'Physio & Recovery', url:'/physio.html', reason:'injury-aware substitutions, rebuild progressions and return-to-training guidance' },
+    stretching: { label:'Flexibility & Stretching', url:'/stretching.html', reason:'mobility, flexibility and movement-prep work' },
+    yoga: { label:'Yoga & Meditation', url:'/yoga-meditation.html', reason:'downshift, breath-led recovery and lower-overwhelm movement' },
+    taiChi: { label:'Tai Chi / Qi Gong', url:'/tai-chi.html', reason:'gentle balance, breath, circulation and mindful recovery work' },
+    recoveryHub: { label:'Recovery Training Hub', url:'/recovery-training-hub.html', reason:'daily recovery flows, reset systems and active recovery options' },
+    tracker: { label:'Tracker', url:'/tracker.html', reason:'walking, running, cycling, GPS, pace and endurance tracking' },
+    ladder: { label:'Ladder Challenge', url:'/ladder-challenge.html', reason:'benchmarking, AMRAP-style progress checks and repeatable challenges' },
+    systems: { label:'FreeFitFuel Systems', url:'/systems/', reason:'standalone protocols such as knee reset, fascia flow, pull-up pathway and recovery flows' }
+  };
+
+  function inferSourceModules(ex) {
+    ex = ex || {};
+    const domains = ex.domains || [];
+    const purposes = ex.purposes || [];
+    const tags = ex.tags || [];
+    const family = ex.family || '';
+    const modules = [];
+
+    function add(key) {
+      if (PAGE_SOURCE_MODULES[key] && modules.indexOf(key) === -1) modules.push(key);
+    }
+
+    if (hasAny(domains, ['rehab','longevity']) || hasAny(purposes, ['recovery','physio']) || hasAny(tags, ['supported','reduced-range','isometric','scapular-control','pelvic-control'])) add('physio');
+    if (hasAny(domains, ['pilates','reformer','mobility']) || hasAny(purposes, ['mobility','stretching']) || family === 'mobility-recovery' || family === 'movement-restoration') add('stretching');
+    if (hasAny(domains, ['pilates','mobility','recovery']) && hasAny(tags, ['breathing','low-cognitive-load','pelvic-control'])) add('yoga');
+    if (hasAny(purposes, ['conditioning']) || family === 'conditioning') add('tracker');
+    if (hasAny(purposes, ['challenge']) || hasAny(tags, ['amrap','emom'])) add('ladder');
+    if (hasAny(domains, ['recovery','rehab','low-impact']) || hasAny(purposes, ['recovery']) || family === 'rehab-return') add('recoveryHub');
+    if (hasAny(domains, ['calisthenics','weights','strength','hypertrophy','bodyweight','hybrid']) || !modules.length) add('workouts');
+    if (hasAny(tags, ['pull-up','scapular-control','controlled-step-up','calf-control','foot-intrinsic','fascia','deskbound']) || hasAny(domains, ['rehab','recovery'])) add('systems');
+
+    return modules.map(function (key) {
+      return Object.assign({ key:key }, PAGE_SOURCE_MODULES[key]);
+    });
+  }
+
+  function primarySourceForExercise(ex) {
+    const modules = inferSourceModules(ex);
+    return modules[0] || PAGE_SOURCE_MODULES.workouts;
+  }
+
+  function enrichExerciseForPlanner(ex) {
+    const primary = primarySourceForExercise(ex);
+    return Object.assign({}, ex, {
+      sourcePage: primary.url,
+      sourceLabel: primary.label,
+      sourceReason: primary.reason,
+      sourceModules: inferSourceModules(ex)
+    });
+  }
+
   const EXERCISES = [
   {
     "key": "pushup",
@@ -5454,9 +5507,9 @@ window.FFFExerciseDB = (function () {
   function buildTemplate(context) { const styleKey=contextStyle(context||{})||'mixed'; const fams=(STYLE_PROFILES[styleKey]||STYLE_PROFILES.mixed).preferFamilies; return fams.slice(0,7).map(family=>{ const opts=filterExercises(Object.assign({}, context||{}, {family})).slice(0,5); const fam=familyByKey(family); return {family, label:fam?fam.label:family, recommended:opts[0]||null, alternatives:opts.slice(1)}; }); }
   function buildHybridSession(context) { const template=buildTemplate(context); return { title:'FreeFitFuel Adaptive Session', style:contextStyle(context||{})||'mixed', items:template.map(t=>t.recommended).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,equipment:x.equipment,rx:x.defaultRx,cue:x.coachingCue,alternatives:suggestAlternatives(x.key,context,3).map(a=>a.name)})) }; }
   function buildCircuit(context) { const fams=['conditioning','horizontal-push','horizontal-pull','squat','core-anti-extension']; return { title:'Adaptive Conditioning Circuit', format:'AMRAP or EMOM at recoverable pace', items:fams.map(f=>filterExercises(Object.assign({},context||{},{family:f}))[0]).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,rx:x.defaultRx,cue:x.coachingCue})) }; }
-  function getMyPlanLibrary() { return { version:'4.2', source:'fff-exercise-db', items:EXERCISES.map(ex=>({ key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[] })) }; }
+  function getMyPlanLibrary() { return { version:'4.3', source:'fff-exercise-db', sourceModules: Object.keys(PAGE_SOURCE_MODULES).map(function(key){ return Object.assign({key:key}, PAGE_SOURCE_MODULES[key]); }), items:EXERCISES.map(function(ex){ var enriched=enrichExerciseForPlanner(ex); return { key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[], sourcePage: enriched.sourcePage, sourceLabel: enriched.sourceLabel, sourceReason: enriched.sourceReason, sourceModules: enriched.sourceModules, rx: ex.defaultRx, cue: ex.coachingCue, regressions: ex.regressions||[], progressions: ex.progressions||[], alternatives: ex.alternatives||[] }; }) }; }
   function seedMyPlanCache() { try { localStorage.setItem('fff.library.cache.v1', JSON.stringify(getMyPlanLibrary())); return true; } catch(err) { return false; } }
   function getLibraryStats() { const byFamily={}, byInjury={}; EXERCISES.forEach(ex=>{ byFamily[ex.family]=(byFamily[ex.family]||0)+1; (ex.cautionIf||[]).forEach(i=>byInjury[i]=(byInjury[i]||0)+1); }); return { totalExercises:EXERCISES.length, familyCount:FAMILY_DB.length, injuryProfiles:Object.keys(INJURY_RULES).length, styleProfiles:Object.keys(STYLE_PROFILES).length, progressionTrees:Object.keys(PROGRESSION_TREES).length, byFamily, byInjury }; }
 
-  return { getExerciseProfile, getFamilySummary, areRelatedExercises, analyseGroup, getAllExercises:()=>clone(EXERCISES), findExercise, filterExercises, suggestAlternatives, buildMovementMenu, getInjuryRules:()=>clone(INJURY_RULES), scoreExerciseForContext, buildTemplate, getLibraryStats, getStyleProfiles:()=>clone(STYLE_PROFILES), buildHybridSession, buildCircuit, getProgressionTree, getMyPlanLibrary, seedMyPlanCache };
+  return { getExerciseProfile, getFamilySummary, areRelatedExercises, analyseGroup, getAllExercises:()=>clone(EXERCISES), findExercise, filterExercises, suggestAlternatives, buildMovementMenu, getInjuryRules:()=>clone(INJURY_RULES), scoreExerciseForContext, buildTemplate, getLibraryStats, getStyleProfiles:()=>clone(STYLE_PROFILES), buildHybridSession, buildCircuit, getProgressionTree, getMyPlanLibrary, getPageSourceModules:()=>clone(PAGE_SOURCE_MODULES), inferSourceModules:function(ex){return clone(inferSourceModules(ex));}, enrichExerciseForPlanner:function(ex){return clone(enrichExerciseForPlanner(ex));}, seedMyPlanCache };
 })();

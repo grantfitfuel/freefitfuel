@@ -1,5515 +1,6023 @@
-// FreeFitFuel Engine — Exercise Knowledge Database v4.3
-// Drop-in replacement for /js/engine/fff-exercise-db.js
-// Built to feed the existing My Plan fallback cache, injury profile selector and Workouts payload.
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Plan — FreeFitFuel</title>
 
-window.FFFExerciseDB = (function () {
-  'use strict';
-  const FAMILY_DB = [
-  {
-    "key": "horizontal-push",
-    "label": "Horizontal Push",
-    "patterns": [
-      "horizontal-push"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "vertical-push",
-    "label": "Vertical Push",
-    "patterns": [
-      "vertical-push"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "horizontal-pull",
-    "label": "Horizontal Pull",
-    "patterns": [
-      "horizontal-pull"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "vertical-pull",
-    "label": "Vertical Pull",
-    "patterns": [
-      "vertical-pull"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "squat",
-    "label": "Squat / Knee Dominant",
-    "patterns": [
-      "squat"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "lunge-split",
-    "label": "Lunge / Split Stance",
-    "patterns": [
-      "lunge-split"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "hinge",
-    "label": "Hinge / Posterior Chain",
-    "patterns": [
-      "hinge"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "hip-extension",
-    "label": "Hip Extension / Glutes",
-    "patterns": [
-      "hip-extension"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "calf-ankle",
-    "label": "Calf / Ankle",
-    "patterns": [
-      "calf-ankle"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "core-anti-extension",
-    "label": "Core Anti-Extension",
-    "patterns": [
-      "core-anti-extension"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "core-anti-rotation",
-    "label": "Core Anti-Rotation",
-    "patterns": [
-      "core-anti-rotation"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "carry",
-    "label": "Loaded Carry",
-    "patterns": [
-      "carry"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "arms",
-    "label": "Arms",
-    "patterns": [
-      "arms"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "conditioning",
-    "label": "Conditioning",
-    "patterns": [
-      "conditioning"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "mobility-recovery",
-    "label": "Mobility / Recovery",
-    "patterns": [
-      "mobility-recovery"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "rehab-return",
-    "label": "Rehab / Return",
-    "patterns": [
-      "rehab-return"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "calisthenics-skill",
-    "label": "Calisthenics Skill",
-    "patterns": [
-      "calisthenics-skill"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "pilates-core",
-    "label": "Pilates Core / Control",
-    "patterns": [
-      "pilates-core"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  },
-  {
-    "key": "movement-restoration",
-    "label": "Movement Restoration",
-    "patterns": [
-      "movement-restoration"
-    ],
-    "primaryJoints": [
-      "varied"
-    ],
-    "tissues": [
-      "varied"
-    ],
-    "riskZones": [
-      "varied"
-    ],
-    "commonFailurePoints": [
-      "load or leverage outpacing control",
-      "range exceeding tolerance",
-      "too much volume too soon",
-      "ignoring pain or recovery signals"
-    ]
-  }
-];
-  const STYLE_PROFILES = {
-  "mixed": {
-    "label": "Mixed / Balanced",
-    "preferFamilies": [
-      "horizontal-push",
-      "horizontal-pull",
-      "squat",
-      "hinge",
-      "core-anti-extension",
-      "conditioning",
-      "mobility-recovery"
-    ],
-    "preferDomains": [
-      "weights",
-      "calisthenics",
-      "hybrid",
-      "mobility"
-    ]
-  },
-  "balanced": {
-    "label": "Balanced",
-    "preferFamilies": [
-      "horizontal-push",
-      "horizontal-pull",
-      "squat",
-      "hinge",
-      "core-anti-extension",
-      "conditioning",
-      "mobility-recovery"
-    ],
-    "preferDomains": [
-      "weights",
-      "calisthenics",
-      "hybrid",
-      "mobility"
-    ]
-  },
-  "strength-hypertrophy": {
-    "label": "Strength & Hypertrophy",
-    "preferFamilies": [
-      "horizontal-push",
-      "horizontal-pull",
-      "vertical-push",
-      "vertical-pull",
-      "squat",
-      "hinge",
-      "arms"
-    ],
-    "preferDomains": [
-      "weights",
-      "hypertrophy",
-      "strength"
-    ]
-  },
-  "calisthenics": {
-    "label": "Calisthenics & Movement",
-    "preferFamilies": [
-      "horizontal-push",
-      "vertical-pull",
-      "horizontal-pull",
-      "calisthenics-skill",
-      "core-anti-extension",
-      "core-anti-rotation"
-    ],
-    "preferDomains": [
-      "calisthenics",
-      "skill",
-      "bodyweight"
-    ]
-  },
-  "movement-calisthenics": {
-    "label": "Calisthenics & Movement",
-    "preferFamilies": [
-      "horizontal-push",
-      "vertical-pull",
-      "horizontal-pull",
-      "calisthenics-skill",
-      "core-anti-extension",
-      "core-anti-rotation"
-    ],
-    "preferDomains": [
-      "calisthenics",
-      "skill",
-      "bodyweight"
-    ]
-  },
-  "reformer": {
-    "label": "Reformer / Pilates",
-    "preferFamilies": [
-      "pilates-core",
-      "mobility-recovery",
-      "hip-extension",
-      "core-anti-extension",
-      "core-anti-rotation",
-      "movement-restoration"
-    ],
-    "preferDomains": [
-      "reformer",
-      "pilates",
-      "mobility",
-      "control"
-    ]
-  },
-  "pilates-mobility": {
-    "label": "Pilates & Mobility",
-    "preferFamilies": [
-      "pilates-core",
-      "mobility-recovery",
-      "hip-extension",
-      "core-anti-extension",
-      "core-anti-rotation",
-      "movement-restoration"
-    ],
-    "preferDomains": [
-      "pilates",
-      "mobility",
-      "recovery"
-    ]
-  },
-  "circuits": {
-    "label": "Circuits",
-    "preferFamilies": [
-      "conditioning",
-      "carry",
-      "squat",
-      "lunge-split",
-      "horizontal-push",
-      "horizontal-pull",
-      "mobility-recovery"
-    ],
-    "preferDomains": [
-      "conditioning",
-      "circuit",
-      "low-impact"
-    ]
-  },
-  "fat-loss-conditioning": {
-    "label": "Fat-loss Conditioning",
-    "preferFamilies": [
-      "conditioning",
-      "carry",
-      "squat",
-      "lunge-split",
-      "horizontal-push",
-      "horizontal-pull",
-      "mobility-recovery"
-    ],
-    "preferDomains": [
-      "conditioning",
-      "circuit",
-      "low-impact"
-    ]
-  },
-  "hybrid-athlete": {
-    "label": "Hybrid Athlete",
-    "preferFamilies": [
-      "horizontal-push",
-      "horizontal-pull",
-      "squat",
-      "hinge",
-      "conditioning",
-      "carry",
-      "calisthenics-skill"
-    ],
-    "preferDomains": [
-      "hybrid",
-      "strength",
-      "conditioning",
-      "calisthenics"
-    ]
-  },
-  "joint-longevity": {
-    "label": "Joint Longevity",
-    "preferFamilies": [
-      "mobility-recovery",
-      "rehab-return",
-      "movement-restoration",
-      "calf-ankle",
-      "core-anti-rotation",
-      "hip-extension"
-    ],
-    "preferDomains": [
-      "longevity",
-      "rehab",
-      "mobility"
-    ]
-  },
-  "low-overwhelm": {
-    "label": "Low-overwhelm Mode",
-    "preferFamilies": [
-      "mobility-recovery",
-      "pilates-core",
-      "horizontal-push",
-      "horizontal-pull",
-      "hip-extension",
-      "conditioning"
-    ],
-    "preferDomains": [
-      "simple",
-      "low-cognitive-load",
-      "recovery"
-    ]
-  },
-  "rebuild-recovery": {
-    "label": "Rebuild & Recovery",
-    "preferFamilies": [
-      "rehab-return",
-      "movement-restoration",
-      "mobility-recovery",
-      "pilates-core",
-      "hip-extension",
-      "calf-ankle"
-    ],
-    "preferDomains": [
-      "rehab",
-      "recovery",
-      "low-impact"
-    ]
-  }
-};
-  const INJURY_RULES = {
-  "tennis-elbow": {
-    "label": "Tennis elbow / lateral elbow tendon pain",
-    "region": "outer elbow",
-    "avoidPatterns": [
-      "heavy-gripping",
-      "straight-bar-curl",
-      "high-volume-pull-up",
-      "jerky-row",
-      "heavy-wrist-extension",
-      "explosive-pull",
-      "pelican-curl"
-    ],
-    "cautionPatterns": [
-      "vertical-pull",
-      "horizontal-pull",
-      "arms",
-      "carry"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "supported-row",
-      "banded-light",
-      "isometric",
-      "eccentric-wrist-extensor",
-      "reduced-grip",
-      "scapular-control"
-    ],
-    "notes": [
-      "Reduce gripping and straight-bar curling volume.",
-      "Prefer neutral-grip rows, band rows, supported rows and controlled tendon loading."
-    ]
-  },
-  "golfers-elbow": {
-    "label": "Golfer\u2019s elbow / inner elbow tendon pain",
-    "region": "inner elbow",
-    "avoidPatterns": [
-      "heavy-gripping",
-      "heavy-supinated-curl",
-      "high-volume-pull-up",
-      "heavy-wrist-flexion",
-      "explosive-pull"
-    ],
-    "cautionPatterns": [
-      "vertical-pull",
-      "horizontal-pull",
-      "arms",
-      "carry"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "banded-light",
-      "supported-row",
-      "isometric",
-      "reduced-grip"
-    ],
-    "notes": [
-      "Avoid hard gripping and heavy curls during flares.",
-      "Use neutral grips, lighter bands and progressive forearm loading."
-    ]
-  },
-  "outer-biceps-left-pain": {
-    "label": "Outer left biceps / brachialis pain",
-    "region": "left upper arm",
-    "avoidPatterns": [
-      "heavy-supinated-curl",
-      "aggressive-vertical-pull",
-      "straight-bar-curl",
-      "pelican-curl",
-      "jerky-row",
-      "deep-fly"
-    ],
-    "cautionPatterns": [
-      "vertical-pull",
-      "horizontal-pull",
-      "horizontal-push",
-      "arms"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "hammer-grip",
-      "supported-row",
-      "left-first",
-      "right-matches-left",
-      "banded-light",
-      "tempo-control"
-    ],
-    "notes": [
-      "Bias neutral or hammer grips and supported pulling.",
-      "For left-sided weakness, let the left side set the load and reps."
-    ]
-  },
-  "distal-biceps-tendon-irritation": {
-    "label": "Distal biceps tendon irritation",
-    "region": "front elbow / lower biceps",
-    "avoidPatterns": [
-      "heavy-supinated-curl",
-      "aggressive-vertical-pull",
-      "heavy-gripping",
-      "jerky-row"
-    ],
-    "cautionPatterns": [
-      "vertical-pull",
-      "horizontal-pull",
-      "arms",
-      "carry"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "banded-light",
-      "supported-row",
-      "tempo-control",
-      "reduced-volume"
-    ],
-    "notes": [
-      "Avoid heavy supinated pulling or curling when symptomatic.",
-      "Return with neutral-grip rows and very controlled curls."
-    ]
-  },
-  "shoulder-impingement": {
-    "label": "Shoulder impingement / painful arc",
-    "region": "shoulder",
-    "avoidPatterns": [
-      "deep-fly",
-      "upright-row",
-      "behind-neck",
-      "dip-deep",
-      "overhead-heavy",
-      "handstand",
-      "planche-load",
-      "unstable-heavy"
-    ],
-    "cautionPatterns": [
-      "vertical-push",
-      "horizontal-push",
-      "vertical-pull",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "floor-press",
-      "scapular-control",
-      "reduced-range",
-      "supported",
-      "banded-light",
-      "external-rotation"
-    ],
-    "notes": [
-      "Avoid forcing deep or overhead ranges.",
-      "Prefer neutral-grip pressing, floor press, wall slides and cuff/scapular work."
-    ]
-  },
-  "rotator-cuff-irritation": {
-    "label": "Rotator cuff irritation",
-    "region": "shoulder",
-    "avoidPatterns": [
-      "deep-fly",
-      "unstable-heavy",
-      "overhead-heavy",
-      "dip-deep",
-      "handstand"
-    ],
-    "cautionPatterns": [
-      "vertical-push",
-      "horizontal-push",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "scapular-control",
-      "external-rotation",
-      "banded-light",
-      "reduced-range"
-    ],
-    "notes": [
-      "Prioritise low-load cuff, face pulls and scapular control before heavier pressing."
-    ]
-  },
-  "wrist-pain": {
-    "label": "Wrist pain / loaded extension sensitivity",
-    "region": "wrist",
-    "avoidPatterns": [
-      "loaded-wrist-extension",
-      "flat-palm-push-up",
-      "front-rack",
-      "handstand",
-      "planche-load"
-    ],
-    "cautionPatterns": [
-      "horizontal-push",
-      "vertical-push",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "neutral-grip",
-      "handles",
-      "dumbbell-grip",
-      "forearm-support"
-    ],
-    "notes": [
-      "Use handles, dumbbells or forearm-supported variations where possible."
-    ]
-  },
-  "hip-flexor-tendon-pain": {
-    "label": "Hip flexor tendon pain / front hip pain",
-    "region": "front hip",
-    "avoidPatterns": [
-      "high-knee",
-      "sprinting",
-      "deep-hip-flexion",
-      "hanging-leg-raise",
-      "mountain-climber-fast",
-      "pistol"
-    ],
-    "cautionPatterns": [
-      "lunge-split",
-      "squat",
-      "pilates-core",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "glute-dominant",
-      "hip-flexor-isometric",
-      "reduced-range",
-      "supported",
-      "pelvic-control",
-      "mobility-gentle"
-    ],
-    "notes": [
-      "Reduce high-knee drills, sprinting and aggressive hip-flexion work.",
-      "Use hip flexor isometrics, glute bridges, controlled split squats and gentle mobility."
-    ]
-  },
-  "hip-tendon-pain-reduced-rom": {
-    "label": "Hip tendon pain with reduced movement",
-    "region": "hip",
-    "avoidPatterns": [
-      "deep-hip-flexion",
-      "wide-stance-deep",
-      "twist-loaded",
-      "pistol",
-      "sprinting",
-      "high-impact"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "hinge",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "reduced-range",
-      "glute-bridge",
-      "supported",
-      "step-up-low",
-      "glute-dominant",
-      "pelvic-control",
-      "mobility-gentle"
-    ],
-    "notes": [
-      "Keep range pain-free and controlled.",
-      "Use glute bridges, low step-ups, supported split squats and Pilates-style pelvic control."
-    ]
-  },
-  "glute-med-tendinopathy": {
-    "label": "Outer hip / glute med tendon irritation",
-    "region": "outer hip",
-    "avoidPatterns": [
-      "side-lying-compression",
-      "deep-side-lunge",
-      "high-impact",
-      "cross-leg-stretch-aggressive"
-    ],
-    "cautionPatterns": [
-      "lunge-split",
-      "conditioning",
-      "core-anti-rotation"
-    ],
-    "preferPatterns": [
-      "glute-dominant",
-      "supported",
-      "isometric",
-      "pelvic-control",
-      "reduced-range"
-    ],
-    "notes": [
-      "Avoid compressive side-lying positions if painful.",
-      "Use controlled glute bridge work, supported balance and gradual lateral hip loading."
-    ]
-  },
-  "hip-clicking-painful": {
-    "label": "Clicking hip with pain or catching",
-    "region": "hip",
-    "avoidPatterns": [
-      "deep-hip-flexion",
-      "fast-leg-circles",
-      "hanging-leg-raise",
-      "pistol",
-      "twist-loaded"
-    ],
-    "cautionPatterns": [
-      "pilates-core",
-      "squat",
-      "lunge-split"
-    ],
-    "preferPatterns": [
-      "reduced-range",
-      "pelvic-control",
-      "mobility-gentle",
-      "glute-dominant"
-    ],
-    "notes": [
-      "Keep circles and hip-flexion range small and controlled.",
-      "Painful clicking, locking or catching should be assessed."
-    ]
-  },
-  "clicky-knees-painless": {
-    "label": "Clicky knees, painless",
-    "region": "knee",
-    "avoidPatterns": [
-      "jumping-fatigued",
-      "fast-squat"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "controlled-step-up",
-      "box-range",
-      "tempo-control",
-      "quad-control",
-      "glute-dominant",
-      "calf-control"
-    ],
-    "notes": [
-      "Painless clicking often needs better control rather than complete avoidance.",
-      "Build step-ups, box squats, glute and calf control gradually."
-    ]
-  },
-  "clicky-knees-painful": {
-    "label": "Clicky knees with pain, swelling or catching",
-    "region": "knee",
-    "avoidPatterns": [
-      "jumping",
-      "deep-knee-flexion-fast",
-      "pistol",
-      "sissy-squat",
-      "high-impact",
-      "twist-loaded"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "step-up",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "box-range",
-      "supported",
-      "isometric",
-      "spanish-squat",
-      "reduced-range",
-      "low-impact"
-    ],
-    "notes": [
-      "Painful clicking, swelling, locking or giving way needs caution.",
-      "Use reduced range, supported work and low-impact conditioning."
-    ]
-  },
-  "patellar-tendon-pain": {
-    "label": "Patellar tendon pain",
-    "region": "front knee",
-    "avoidPatterns": [
-      "jumping",
-      "fast-squat",
-      "deep-knee-flexion-fast",
-      "plyometric",
-      "sissy-squat"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "step-up"
-    ],
-    "preferPatterns": [
-      "spanish-squat",
-      "isometric",
-      "controlled-step-up",
-      "box-range"
-    ],
-    "notes": [
-      "Avoid ballistic knee-dominant work during flares.",
-      "Use Spanish squat holds, wall sits and gradual loading."
-    ]
-  },
-  "knee-pain-general": {
-    "label": "General knee pain",
-    "region": "knee",
-    "avoidPatterns": [
-      "jumping",
-      "deep-knee-flexion-fast",
-      "high-impact",
-      "pistol",
-      "plyometric"
-    ],
-    "cautionPatterns": [
-      "squat",
-      "lunge-split",
-      "step-up",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "box-range",
-      "supported",
-      "glute-dominant",
-      "isometric",
-      "low-impact",
-      "reduced-range"
-    ],
-    "notes": [
-      "Prefer controlled range, step height and tempo."
-    ]
-  },
-  "low-back-non-specific": {
-    "label": "Low back, non-specific",
-    "region": "low back",
-    "avoidPatterns": [
-      "loaded-spinal-flexion",
-      "heavy-unsupported-hinge",
-      "ballistic-hinge",
-      "twist-loaded",
-      "unsupported-heavy-row"
-    ],
-    "cautionPatterns": [
-      "hinge",
-      "carry",
-      "squat",
-      "pilates-core"
-    ],
-    "preferPatterns": [
-      "supported",
-      "core-bracing",
-      "reduced-range",
-      "anti-extension",
-      "anti-rotation",
-      "neutral-spine"
-    ],
-    "notes": [
-      "Keep moving within comfort and avoid maxing out during rebuild.",
-      "Use dead bug, bird dog, side plank, glute bridge and controlled RDL progressions."
-    ]
-  },
-  "disc-sensitivity": {
-    "label": "Disc sensitivity",
-    "region": "low back",
-    "avoidPatterns": [
-      "loaded-spinal-flexion",
-      "twist-loaded",
-      "ballistic-hinge",
-      "sit-up-loaded",
-      "rollover"
-    ],
-    "cautionPatterns": [
-      "hinge",
-      "rotation",
-      "carry",
-      "pilates-core"
-    ],
-    "preferPatterns": [
-      "anti-extension",
-      "anti-rotation",
-      "supported",
-      "neutral-spine"
-    ],
-    "notes": [
-      "Prioritise neutral spine and avoid loaded flexion/twisting under fatigue."
-    ]
-  },
-  "plantar-fasciitis": {
-    "label": "Plantar fasciitis / heel pain",
-    "region": "foot",
-    "avoidPatterns": [
-      "jumping",
-      "running-impact",
-      "sprint",
-      "long-walk-spike"
-    ],
-    "cautionPatterns": [
-      "conditioning",
-      "calf-ankle",
-      "lunge-split"
-    ],
-    "preferPatterns": [
-      "controlled-calf",
-      "foot-intrinsic",
-      "low-impact",
-      "isometric",
-      "gradual-walk"
-    ],
-    "notes": [
-      "Avoid sudden walking/running spikes.",
-      "Use calf control, foot strength and low-impact conditioning."
-    ]
-  },
-  "achilles-calf-sensitivity": {
-    "label": "Achilles / calf sensitivity",
-    "region": "achilles/calf",
-    "avoidPatterns": [
-      "jumping",
-      "running-impact",
-      "sprint",
-      "plyometric"
-    ],
-    "cautionPatterns": [
-      "calf-ankle",
-      "conditioning"
-    ],
-    "preferPatterns": [
-      "isometric",
-      "low-impact",
-      "controlled-calf"
-    ],
-    "notes": [
-      "Avoid sudden spikes in jumping or running."
-    ]
-  },
-  "beginner-low-confidence": {
-    "label": "Beginner / low confidence",
-    "region": "whole body",
-    "avoidPatterns": [
-      "advanced",
-      "complex",
-      "plyometric",
-      "unstable-heavy"
-    ],
-    "cautionPatterns": [
-      "conditioning",
-      "calisthenics-skill"
-    ],
-    "preferPatterns": [
-      "simple",
-      "supported",
-      "bodyweight",
-      "clear-progression",
-      "low-cognitive-load"
-    ],
-    "notes": [
-      "Use simple repeatable movements with clear success criteria."
-    ]
-  },
-  "older-adult": {
-    "label": "Older adult / deconditioned",
-    "region": "whole body",
-    "avoidPatterns": [
-      "high-impact",
-      "advanced",
-      "plyometric",
-      "max-effort"
-    ],
-    "cautionPatterns": [
-      "floor-transition",
-      "balance-demand"
-    ],
-    "preferPatterns": [
-      "supported",
-      "low-impact",
-      "chair-friendly",
-      "balance-regression",
-      "simple"
-    ],
-    "notes": [
-      "Prefer supported, low-impact and chair-friendly options."
-    ]
-  }
-};
-  const PAGE_SOURCE_MODULES = {
-    workouts: { label:'Workouts Library', url:'/workouts.html', reason:'main strength, calisthenics, circuits and workout logging library' },
-    physio: { label:'Physio & Recovery', url:'/physio.html', reason:'injury-aware substitutions, rebuild progressions and return-to-training guidance' },
-    stretching: { label:'Flexibility & Stretching', url:'/stretching.html', reason:'mobility, flexibility and movement-prep work' },
-    yoga: { label:'Yoga & Meditation', url:'/yoga-meditation.html', reason:'downshift, breath-led recovery and lower-overwhelm movement' },
-    taiChi: { label:'Tai Chi / Qi Gong', url:'/tai-chi.html', reason:'gentle balance, breath, circulation and mindful recovery work' },
-    recoveryHub: { label:'Recovery Training Hub', url:'/recovery-training-hub.html', reason:'daily recovery flows, reset systems and active recovery options' },
-    tracker: { label:'Tracker', url:'/tracker.html', reason:'walking, running, cycling, GPS, pace and endurance tracking' },
-    ladder: { label:'Ladder Challenge', url:'/ladder-challenge.html', reason:'benchmarking, AMRAP-style progress checks and repeatable challenges' },
-    systems: { label:'FreeFitFuel Systems', url:'/systems/', reason:'standalone protocols such as knee reset, fascia flow, pull-up pathway and recovery flows' }
-  };
+  <link rel="stylesheet" href="style.css?v=42">
+  <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
-  function inferSourceModules(ex) {
-    ex = ex || {};
-    const domains = ex.domains || [];
-    const purposes = ex.purposes || [];
-    const tags = ex.tags || [];
-    const family = ex.family || '';
-    const modules = [];
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    function add(key) {
-      if (PAGE_SOURCE_MODULES[key] && modules.indexOf(key) === -1) modules.push(key);
+  <style>
+
+    .activation-banner{
+      border:1px solid rgba(255,106,0,.25);
+      background:rgba(255,106,0,.08);
+      padding:12px 14px;
+      border-radius:12px;
+      margin-bottom:14px;
+      font-weight:700;
+      color:#ffd6bd;
+    }
+    .activation-steps{
+      margin-top:8px;
+      color:var(--inkdim);
+      font-weight:600;
+      font-size:.92rem;
+    }
+    .empty-soft{
+      color:var(--inkdim);
+      opacity:.9;
     }
 
-    if (hasAny(domains, ['rehab','longevity']) || hasAny(purposes, ['recovery','physio']) || hasAny(tags, ['supported','reduced-range','isometric','scapular-control','pelvic-control'])) add('physio');
-    if (hasAny(domains, ['pilates','reformer','mobility']) || hasAny(purposes, ['mobility','stretching']) || family === 'mobility-recovery' || family === 'movement-restoration') add('stretching');
-    if (hasAny(domains, ['pilates','mobility','recovery']) && hasAny(tags, ['breathing','low-cognitive-load','pelvic-control'])) add('yoga');
-    if (hasAny(purposes, ['conditioning']) || family === 'conditioning') add('tracker');
-    if (hasAny(purposes, ['challenge']) || hasAny(tags, ['amrap','emom'])) add('ladder');
-    if (hasAny(domains, ['recovery','rehab','low-impact']) || hasAny(purposes, ['recovery']) || family === 'rehab-return') add('recoveryHub');
-    if (hasAny(domains, ['calisthenics','weights','strength','hypertrophy','bodyweight','hybrid']) || !modules.length) add('workouts');
-    if (hasAny(tags, ['pull-up','scapular-control','controlled-step-up','calf-control','foot-intrinsic','fascia','deskbound']) || hasAny(domains, ['rehab','recovery'])) add('systems');
+    .equip-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width:860px){
+      .equip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:560px){
+      .equip-grid{grid-template-columns:1fr}
+    }
+    .equip-pill{
+      display:flex;
+      align-items:center;
+      gap:.55rem;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      padding:.7rem .8rem;
+      font-weight:600;
+    }
+    .equip-pill input{accent-color:var(--accent);transform:scale(1.08)}
+    .equip-note{margin-top:10px}
 
-    return modules.map(function (key) {
-      return Object.assign({ key:key }, PAGE_SOURCE_MODULES[key]);
-    });
-  }
+    .global-header{
+      margin:0 0 16px;
+      padding:14px 16px;
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      background:
+        radial-gradient(circle at top right, rgba(255,106,0,.14), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .global-header h1{margin:.1rem 0 .35rem;font-size:2rem}
+    .global-header .subline{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--inkdim);
+      font-weight:600;
+    }
+    .today-command{
+      border:2px solid rgba(255,106,0,.35);
+      border-radius:16px;
+      padding:16px;
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.16), rgba(255,106,0,.06)),
+        var(--glass2);
+    }
+    .today-command .main-call{
+      font-size:1.8rem;
+      font-weight:900;
+      line-height:1.05;
+      margin-bottom:8px;
+    }
+    .today-command .today-meta{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .today-command .today-meta span{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.28rem .55rem;
+      background:rgba(255,255,255,.06);
+      font-size:.92rem;
+    }
+    .today-command .today-reason{
+      color:var(--inkdim);
+      font-size:.93rem;
+    }
+    .summary-card{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:12px;
+    }
+    .summary-card ul{
+      margin:.35rem 0 0 1rem;
+      padding:0;
+    }
+    .summary-card li{margin:.25rem 0}
+    .progress-chart-card{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:14px;
+    }
+    .section.compact{padding:14px}
 
-  function primarySourceForExercise(ex) {
-    const modules = inferSourceModules(ex);
-    return modules[0] || PAGE_SOURCE_MODULES.workouts;
-  }
+    .mode-panel{
+      transition:opacity .22s ease, transform .22s ease;
+    }
+    .mode-panel:not(.is-active){
+      opacity:0;
+      transform:translateY(4px);
+      pointer-events:none;
+    }
+    .mode-panel.is-active{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
+    .emotion-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      border:1px solid rgba(255,106,0,.18);
+      background:rgba(255,106,0,.08);
+      color:#ffd6bd;
+      border-radius:999px;
+      padding:.28rem .6rem;
+      font-size:.9rem;
+      font-weight:700;
+    }
+    .tone-line{
+      margin-top:10px;
+      color:#f0d7c4;
+      font-weight:600;
+      font-size:.92rem;
+      opacity:.95;
+    }
 
-  function enrichExerciseForPlanner(ex) {
-    const primary = primarySourceForExercise(ex);
-    return Object.assign({}, ex, {
-      sourcePage: primary.url,
-      sourceLabel: primary.label,
-      sourceReason: primary.reason,
-      sourceModules: inferSourceModules(ex)
-    });
-  }
 
-  const EXERCISES = [
-  {
-    "key": "pushup",
-    "name": "Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics"
-    ],
-    "purposes": [
-      "push"
-    ],
-    "muscles": [
-      "chest",
-      "triceps",
-      "core"
-    ],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "wrist-pain"
-    ],
-    "tags": [
-      "push-up",
-      "core-bracing"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "incline-push-up"
-    ],
-    "progressions": [
-      "tempo-push-up",
-      "ring-push-up"
-    ],
-    "aliases": [
-      "Push-up",
-      "pushup"
-    ],
-    "yt": "Push-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "bodyweight"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "incline-push-up",
-    "name": "Incline Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bw",
-      "bench"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics"
-    ],
-    "purposes": [
-      "push"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "wrist-pain"
-    ],
-    "tags": [
-      "supported",
-      "reduced-range",
-      "simple"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "wall-push-up"
-    ],
-    "progressions": [
-      "pushup"
-    ],
-    "aliases": [
-      "Incline Push-up",
-      "incline push up"
-    ],
-    "yt": "Incline Push-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "wall-push-up",
-    "name": "Wall Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics"
-    ],
-    "purposes": [
-      "push",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement"
-    ],
-    "tags": [
-      "supported",
-      "simple",
-      "low-cognitive-load"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [
-      "incline-push-up"
-    ],
-    "aliases": [
-      "Wall Push-up",
-      "wall push up"
-    ],
-    "yt": "Wall Push-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "calisthenics"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "dbbench",
-    "name": "Dumbbell Bench Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "db",
-      "bench"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "purposes": [
-      "push"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "neutral-grip",
-      "tempo-control"
-    ],
-    "alternatives": [
-      "dumbbell-floor-press",
-      "incline-push-up"
-    ],
-    "regressions": [
-      "dumbbell-floor-press"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Dumbbell Bench Press",
-      "dbbench"
-    ],
-    "yt": "Dumbbell Bench Press form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength",
-      "hypertrophy"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "dumbbell-floor-press",
-    "name": "Dumbbell Floor Press",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "db"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "push",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "neutral-grip",
-      "floor-press",
-      "reduced-range"
-    ],
-    "alternatives": [
-      "incline-push-up"
-    ],
-    "regressions": [],
-    "progressions": [
-      "dbbench"
-    ],
-    "aliases": [
-      "Dumbbell Floor Press",
-      "dumbbell floor press"
-    ],
-    "yt": "Dumbbell Floor Press form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "ringpush",
-    "name": "Ring Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "rings"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "push"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "wrist-pain"
-    ],
-    "tags": [
-      "unstable",
-      "skill",
-      "push-up"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "pushup"
-    ],
-    "progressions": [
-      "pseudo-planche-push-up"
-    ],
-    "aliases": [
-      "Ring Push-up",
-      "ringpush"
-    ],
-    "yt": "Ring Push-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 4,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "pseudo-planche-push-up",
-    "name": "Pseudo Planche Push-up",
-    "family": "horizontal-push",
-    "movement": "horizontal-push",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "push",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "wrist-pain",
-      "tennis-elbow"
-    ],
-    "tags": [
-      "planche-load",
-      "loaded-wrist-extension",
-      "advanced"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "planche-lean",
-      "pushup"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Pseudo Planche Push-up",
-      "pseudo planche push up"
-    ],
-    "yt": "Pseudo Planche Push-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 5,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "doorrow",
-    "name": "Door/Table Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics"
-    ],
-    "purposes": [
-      "pull"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "bodyweight-row",
-      "simple",
-      "reduced-grip"
-    ],
-    "alternatives": [
-      "bandrow",
-      "ringrow"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Door/Table Row",
-      "doorrow"
-    ],
-    "yt": "Door/Table Row form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "bandrow",
-    "name": "Band Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "band"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "pull",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "banded-light",
-      "neutral-grip",
-      "supported-row",
-      "reduced-grip"
-    ],
-    "alternatives": [
-      "chest-supported-row"
-    ],
-    "regressions": [],
-    "progressions": [
-      "ringrow"
-    ],
-    "aliases": [
-      "Band Row",
-      "bandrow"
-    ],
-    "yt": "Band Row form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "ringrow",
-    "name": "Ring Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "rings"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "pull"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "bodyweight-row",
-      "scapular-control",
-      "neutral-grip"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "bandrow"
-    ],
-    "progressions": [
-      "feet-elevated-ring-row"
-    ],
-    "aliases": [
-      "Ring Row",
-      "ringrow"
-    ],
-    "yt": "Ring Row form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "chest-supported-row",
-    "name": "Chest-supported Dumbbell Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "db",
-      "bench"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "pull"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain",
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "supported-row",
-      "neutral-grip"
-    ],
-    "alternatives": [
-      "bandrow"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Chest-supported Dumbbell Row",
-      "chest supported row"
-    ],
-    "yt": "Chest-supported Dumbbell Row form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "pull-up",
-    "name": "Pull-up",
-    "family": "vertical-pull",
-    "movement": "vertical-pull",
-    "equipment": [
-      "rack"
-    ],
-    "styles": [
-      "calisthenics",
-      "strength-hypertrophy"
-    ],
-    "purposes": [
-      "pull",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain",
-      "shoulder-impingement"
-    ],
-    "tags": [
-      "aggressive-vertical-pull",
-      "heavy-gripping"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "assisted-pull-up",
-      "band-lat-pulldown"
-    ],
-    "progressions": [
-      "weighted-pull-up"
-    ],
-    "aliases": [
-      "Pull-up",
-      "pull up"
-    ],
-    "yt": "Pull-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "strength"
-    ],
-    "styleBias": [
-      "calisthenics",
-      "strength-hypertrophy"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 4,
-    "skillDemand": 3,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "assisted-pull-up",
-    "name": "Assisted Pull-up",
-    "family": "vertical-pull",
-    "movement": "vertical-pull",
-    "equipment": [
-      "rack",
-      "band"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "pull"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "aggressive-vertical-pull",
-      "scapular-control"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "band-lat-pulldown"
-    ],
-    "progressions": [
-      "pull-up"
-    ],
-    "aliases": [
-      "Assisted Pull-up",
-      "assisted pull up"
-    ],
-    "yt": "Assisted Pull-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 2,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "scapular-pull-up",
-    "name": "Scapular Pull-up",
-    "family": "vertical-pull",
-    "movement": "vertical-pull",
-    "equipment": [
-      "rack"
-    ],
-    "styles": [
-      "calisthenics",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "pull",
-      "skill",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement"
-    ],
-    "tags": [
-      "scapular-control"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "band-lat-pulldown"
-    ],
-    "progressions": [
-      "assisted-pull-up"
-    ],
-    "aliases": [
-      "Scapular Pull-up",
-      "scapular pull up"
-    ],
-    "yt": "Scapular Pull-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "rehab"
-    ],
-    "styleBias": [
-      "calisthenics",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 3,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "face-pull",
-    "name": "Band Face Pull",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "band"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "pull",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement"
-    ],
-    "tags": [
-      "scapular-control",
-      "banded-light",
-      "external-rotation"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Band Face Pull",
-      "face pull"
-    ],
-    "yt": "Band Face Pull form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "kneeling-arm-series",
-    "name": "Kneeling Arm Series / Band Row",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "band",
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "pull",
-      "core",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "pelvic-control",
-      "scapular-control",
-      "banded-light"
-    ],
-    "alternatives": [
-      "bandrow",
-      "prone-wt-lifts"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Kneeling Arm Series / Band Row",
-      "kneeling arm series"
-    ],
-    "yt": "Kneeling Arm Series / Band Row form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "reformer",
-      "pilates",
-      "rehab"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Tall kneel, ribs stacked, scapulae glide.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "prone-wt-lifts",
-    "name": "Prone W/T Lifts",
-    "family": "horizontal-pull",
-    "movement": "horizontal-pull",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "pull",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement"
-    ],
-    "tags": [
-      "scapular-control",
-      "low-cognitive-load"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Prone W/T Lifts",
-      "prone wt lifts"
-    ],
-    "yt": "Prone W/T Lifts form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "rehab"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Squeeze shoulder blades gently, keep ribs heavy and neck long.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "stepup",
-    "name": "Step-up",
-    "family": "lunge-split",
-    "movement": "lunge-split",
-    "equipment": [
-      "db",
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "purposes": [
-      "legs"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "knee-pain-general",
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "controlled-step-up",
-      "unilateral",
-      "left-first"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "step-up-low",
-      "sit-to-stand"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Step-up",
-      "stepup"
-    ],
-    "yt": "Step-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "step-up-low",
-    "name": "Low Step-up",
-    "family": "lunge-split",
-    "movement": "lunge-split",
-    "equipment": [
-      "bw",
-      "db"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "purposes": [
-      "legs",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "controlled-step-up",
-      "step-up-low",
-      "unilateral",
-      "reduced-range"
-    ],
-    "alternatives": [
-      "supported-split-squat"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Low Step-up",
-      "step up low"
-    ],
-    "yt": "Low Step-up form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "sit-to-stand",
-    "name": "Sit-to-Stand",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "bw",
-      "chair"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "purposes": [
-      "legs",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "chair-friendly",
-      "supported",
-      "simple",
-      "box-range"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [
-      "box-squat"
-    ],
-    "aliases": [
-      "Sit-to-Stand",
-      "sit to stand"
-    ],
-    "yt": "Sit-to-Stand form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "longevity"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "box-squat",
-    "name": "Box Squat",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "bw",
-      "db"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "legs"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "knee-pain-general",
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "box-range",
-      "reduced-range",
-      "tempo-control"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "sit-to-stand"
-    ],
-    "progressions": [
-      "goblet-squat"
-    ],
-    "aliases": [
-      "Box Squat",
-      "box squat"
-    ],
-    "yt": "Box Squat form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "goblet-squat",
-    "name": "Goblet Squat",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "db"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "purposes": [
-      "legs"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "knee-pain-general",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "squat",
-      "tempo-control"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "box-squat"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Goblet Squat",
-      "goblet squat"
-    ],
-    "yt": "Goblet Squat form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights",
-      "strength"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "spanish-squat-hold",
-    "name": "Spanish Squat Hold",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "band"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "purposes": [
-      "legs",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "patellar-tendon-pain"
-    ],
-    "tags": [
-      "spanish-squat",
-      "isometric",
-      "quad-control"
-    ],
-    "alternatives": [
-      "wall-sit"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Spanish Squat Hold",
-      "spanish squat hold"
-    ],
-    "yt": "Spanish Squat Hold form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "wall-sit",
-    "name": "Wall Sit",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "legs",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "patellar-tendon-pain",
-      "clicky-knees-painful"
-    ],
-    "tags": [
-      "isometric",
-      "quad-control",
-      "simple"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [
-      "spanish-squat-hold"
-    ],
-    "aliases": [
-      "Wall Sit",
-      "wall sit"
-    ],
-    "yt": "Wall Sit form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "supported-split-squat",
-    "name": "Supported Split Squat",
-    "family": "lunge-split",
-    "movement": "lunge-split",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "legs",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-tendon-pain-reduced-rom",
-      "clicky-knees-painful"
-    ],
-    "tags": [
-      "supported",
-      "unilateral",
-      "reduced-range",
-      "left-first"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [
-      "split-squat"
-    ],
-    "aliases": [
-      "Supported Split Squat",
-      "supported split squat"
-    ],
-    "yt": "Supported Split Squat form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "shrimp-squat-regression",
-    "name": "Shrimp Squat Regression",
-    "family": "lunge-split",
-    "movement": "lunge-split",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "legs",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "unilateral",
-      "balance-demand",
-      "advanced"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "supported-split-squat"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Shrimp Squat Regression",
-      "shrimp squat regression"
-    ],
-    "yt": "Shrimp Squat Regression form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 4,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "sissy-squat-regression",
-    "name": "Sissy Squat Regression",
-    "family": "squat",
-    "movement": "squat",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "legs",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "patellar-tendon-pain",
-      "clicky-knees-painful"
-    ],
-    "tags": [
-      "sissy-squat",
-      "deep-knee-flexion-fast",
-      "advanced"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "spanish-squat-hold"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Sissy Squat Regression",
-      "sissy squat regression"
-    ],
-    "yt": "Sissy Squat Regression form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 4,
-    "skillDemand": 4,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "glute-bridge",
-    "name": "Glute Bridge",
-    "family": "hip-extension",
-    "movement": "hip-extension",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "reformer",
-      "rebuild-recovery",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "legs",
-      "core",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-tendon-pain-reduced-rom",
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "glute-dominant",
-      "simple",
-      "pelvic-control"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [
-      "weighted-glute-bridge"
-    ],
-    "aliases": [
-      "Glute Bridge",
-      "glute bridge"
-    ],
-    "yt": "Glute Bridge form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "pilates"
-    ],
-    "styleBias": [
-      "mixed",
-      "reformer",
-      "rebuild-recovery",
-      "pilates-mobility"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "hip-flexor-isometric",
-    "name": "Hip Flexor Isometric Press",
-    "family": "rehab-return",
-    "movement": "rehab-return",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "purposes": [
-      "recovery",
-      "physio"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-flexor-tendon-pain"
-    ],
-    "tags": [
-      "hip-flexor-isometric",
-      "isometric",
-      "mobility-gentle"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Hip Flexor Isometric Press",
-      "hip flexor isometric"
-    ],
-    "yt": "Hip Flexor Isometric Press form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "physio"
-    ],
-    "styleBias": [
-      "rebuild-recovery",
-      "joint-longevity"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Press knee gently into hand, hold 20 to 30 seconds, stay pain-free.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "marches-with-band",
-    "name": "Marches with Band",
-    "family": "rehab-return",
-    "movement": "rehab-return",
-    "equipment": [
-      "band"
-    ],
-    "styles": [
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "legs",
-      "recovery",
-      "physio"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-flexor-tendon-pain"
-    ],
-    "tags": [
-      "hip-flexor-isometric",
-      "pelvic-control",
-      "banded-light"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "hip-flexor-isometric"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Marches with Band",
-      "marches with band"
-    ],
-    "yt": "Marches with Band form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "physio"
-    ],
-    "styleBias": [
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "leg-circles-frogs",
-    "name": "Leg Circles & Frogs",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw",
-      "band"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "core",
-      "mobility",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-clicking-painful",
-      "hip-flexor-tendon-pain"
-    ],
-    "tags": [
-      "pelvic-control",
-      "mobility-gentle"
-    ],
-    "alternatives": [
-      "mat-leg-circles",
-      "frog-with-miniband"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Leg Circles & Frogs",
-      "leg circles frogs"
-    ],
-    "yt": "Leg Circles & Frogs form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "reformer",
-      "pilates"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Control circle size, keep pelvis steady, no rib flare.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "mat-leg-circles",
-    "name": "Mat Leg Circles",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "core",
-      "mobility"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-clicking-painful"
-    ],
-    "tags": [
-      "pelvic-control",
-      "mobility-gentle",
-      "reduced-range"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Mat Leg Circles",
-      "mat leg circles"
-    ],
-    "yt": "Mat Leg Circles form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "rehab"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Small smooth circles, pelvis steady.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "frog-with-miniband",
-    "name": "Frog with Mini-band",
-    "family": "hip-extension",
-    "movement": "hip-extension",
-    "equipment": [
-      "band"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "legs",
-      "mobility"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "glute-dominant",
-      "pelvic-control",
-      "banded-light"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Frog with Mini-band",
-      "frog with miniband"
-    ],
-    "yt": "Frog with Mini-band form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "rehab"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "sidepl",
-    "name": "Side Plank",
-    "family": "core-anti-rotation",
-    "movement": "core-anti-rotation",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "core"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "anti-rotation",
-      "lateral-core"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "side-plank-knees"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Side Plank",
-      "sidepl"
-    ],
-    "yt": "Side Plank form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "calisthenics"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics",
-      "pilates-mobility"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "dead-bug",
-    "name": "Dead Bug",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "core",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-non-specific",
-      "disc-sensitivity"
-    ],
-    "tags": [
-      "anti-extension",
-      "core-bracing",
-      "neutral-spine"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Dead Bug",
-      "dead bug"
-    ],
-    "yt": "Dead Bug form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "pilates"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery",
-      "pilates-mobility"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "bird-dog",
-    "name": "Bird Dog",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "core",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "neutral-spine",
-      "core-bracing"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Bird Dog",
-      "bird dog"
-    ],
-    "yt": "Bird Dog form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "pelvic-curl",
-    "name": "Pelvic Curl",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "core",
-      "mobility",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-non-specific",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "pelvic-control",
-      "spinal-articulation",
-      "glute-dominant"
-    ],
-    "alternatives": [
-      "glute-bridge"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Pelvic Curl",
-      "pelvic curl"
-    ],
-    "yt": "Pelvic Curl form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "rehab"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Peel spine off mat one vertebra at a time.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "pilates-hundred-prep",
-    "name": "Pilates Hundred Prep",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "core"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-flexor-tendon-pain",
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "pilates",
-      "breathing",
-      "pelvic-control"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Pilates Hundred Prep",
-      "pilates hundred prep"
-    ],
-    "yt": "Pilates Hundred Prep form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "long-stretch-plank",
-    "name": "Long Stretch / Plank Series",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility",
-      "calisthenics"
-    ],
-    "purposes": [
-      "core",
-      "push"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "wrist-pain",
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "plank",
-      "core-bracing",
-      "skill"
-    ],
-    "alternatives": [
-      "forearm-plank"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Long Stretch / Plank Series",
-      "long stretch plank"
-    ],
-    "yt": "Long Stretch / Plank Series form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "reformer",
-      "pilates"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility",
-      "calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 3,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Strong plank, move shoulders and hips as one piece.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "mermaid",
-    "name": "Mermaid Stretch",
-    "family": "mobility-recovery",
-    "movement": "mobility-recovery",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "mobility",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility-gentle",
-      "breathing"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Mermaid Stretch",
-      "mermaid"
-    ],
-    "yt": "Mermaid Stretch form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "mobility"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Sit tall, reach long, breathe into the side body.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "elephant-pike-stretch",
-    "name": "Elephant / Box Pike Stretch",
-    "family": "mobility-recovery",
-    "movement": "mobility-recovery",
-    "equipment": [
-      "bw",
-      "bench"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-non-specific",
-      "hamstring-pain"
-    ],
-    "tags": [
-      "mobility-gentle",
-      "posterior-chain"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Elephant / Box Pike Stretch",
-      "elephant pike stretch"
-    ],
-    "yt": "Elephant / Box Pike Stretch form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "pilates",
-      "mobility"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Hips high, gently pulse heels, do not force range.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "mobility-lower",
-    "name": "Lower Body Mobility Flow",
-    "family": "mobility-recovery",
-    "movement": "mobility-recovery",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics",
-      "circuits",
-      "reformer",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "mobility",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-tendon-pain-reduced-rom",
-      "clicky-knees-painful"
-    ],
-    "tags": [
-      "mobility-gentle",
-      "reduced-range"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Lower Body Mobility Flow",
-      "mobility lower"
-    ],
-    "yt": "Lower Body Mobility Flow form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "mobility",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics",
-      "circuits",
-      "reformer",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "stretch-reset",
-    "name": "Daily Stretch Reset",
-    "family": "mobility-recovery",
-    "movement": "mobility-recovery",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics",
-      "circuits",
-      "reformer"
-    ],
-    "purposes": [
-      "stretching",
-      "recovery",
-      "mobility"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility-gentle",
-      "low-cognitive-load"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Daily Stretch Reset",
-      "stretch reset"
-    ],
-    "yt": "Daily Stretch Reset form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "mobility",
-      "recovery"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics",
-      "circuits",
-      "reformer"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "physio-lower",
-    "name": "Lower Body Recovery Block",
-    "family": "rehab-return",
-    "movement": "rehab-return",
-    "equipment": [
-      "bw",
-      "band"
-    ],
-    "styles": [
-      "mixed",
-      "calisthenics",
-      "circuits",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "recovery",
-      "physio",
-      "legs"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-tendon-pain-reduced-rom",
-      "clicky-knees-painful",
-      "patellar-tendon-pain"
-    ],
-    "tags": [
-      "reduced-range",
-      "glute-dominant",
-      "isometric",
-      "mobility-gentle"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Lower Body Recovery Block",
-      "physio lower"
-    ],
-    "yt": "Lower Body Recovery Block form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "physio"
-    ],
-    "styleBias": [
-      "mixed",
-      "calisthenics",
-      "circuits",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "hammer-curl",
-    "name": "Hammer Curl",
-    "family": "arms",
-    "movement": "arms",
-    "equipment": [
-      "db"
-    ],
-    "styles": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "purposes": [
-      "arms"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "neutral-grip",
-      "hammer-grip"
-    ],
-    "alternatives": [
-      "band-curl"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Hammer Curl",
-      "hammer curl"
-    ],
-    "yt": "Hammer Curl form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "weights"
-    ],
-    "styleBias": [
-      "mixed",
-      "strength-hypertrophy"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "band-curl",
-    "name": "Band Curl",
-    "family": "arms",
-    "movement": "arms",
-    "equipment": [
-      "band"
-    ],
-    "styles": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "arms",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "outer-biceps-left-pain"
-    ],
-    "tags": [
-      "banded-light",
-      "reduced-grip"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Band Curl",
-      "band curl"
-    ],
-    "yt": "Band Curl form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "weights"
-    ],
-    "styleBias": [
-      "mixed",
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "wrist-extensor-eccentric",
-    "name": "Wrist Extensor Eccentric",
-    "family": "rehab-return",
-    "movement": "rehab-return",
-    "equipment": [
-      "db",
-      "band"
-    ],
-    "styles": [
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "recovery",
-      "physio"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow"
-    ],
-    "tags": [
-      "eccentric-wrist-extensor",
-      "tendon-loading",
-      "banded-light"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Wrist Extensor Eccentric",
-      "wrist extensor eccentric"
-    ],
-    "yt": "Wrist Extensor Eccentric form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "physio"
-    ],
-    "styleBias": [
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Assist up, slowly lower through comfortable range.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "isometric-grip-light",
-    "name": "Light Grip Isometric",
-    "family": "rehab-return",
-    "movement": "rehab-return",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "recovery",
-      "physio"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "tennis-elbow",
-      "golfers-elbow"
-    ],
-    "tags": [
-      "isometric",
-      "reduced-grip",
-      "tendon-loading"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Light Grip Isometric",
-      "isometric grip light"
-    ],
-    "yt": "Light Grip Isometric form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "rehab",
-      "physio"
-    ],
-    "styleBias": [
-      "rebuild-recovery"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "ring-dip",
-    "name": "Ring Dip",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "rings"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "push",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "tennis-elbow"
-    ],
-    "tags": [
-      "dip-deep",
-      "unstable",
-      "advanced"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "ring-support-hold"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Ring Dip",
-      "ring dip"
-    ],
-    "yt": "Ring Dip form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 5,
-    "fatigueCost": 5,
-    "skillDemand": 5,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "ring-support-hold",
-    "name": "Ring Support Hold",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "rings"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "push",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "shoulder-impingement",
-      "wrist-pain"
-    ],
-    "tags": [
-      "support-hold",
-      "skill"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Ring Support Hold",
-      "ring support hold"
-    ],
-    "yt": "Ring Support Hold form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 2,
-    "skillDemand": 4,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "hollow-hold",
-    "name": "Hollow Hold",
-    "family": "core-anti-extension",
-    "movement": "core-anti-extension",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "core",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "hollow-body",
-      "skill-transfer",
-      "anti-extension"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "dead-bug"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Hollow Hold",
-      "hollow hold"
-    ],
-    "yt": "Hollow Hold form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 3,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "l-sit-tuck",
-    "name": "Tuck L-Sit",
-    "family": "calisthenics-skill",
-    "movement": "calisthenics-skill",
-    "equipment": [
-      "bw",
-      "rings"
-    ],
-    "styles": [
-      "calisthenics"
-    ],
-    "purposes": [
-      "core",
-      "skill"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-flexor-tendon-pain",
-      "wrist-pain"
-    ],
-    "tags": [
-      "l-sit",
-      "support-hold",
-      "skill"
-    ],
-    "alternatives": [],
-    "regressions": [
-      "hollow-hold"
-    ],
-    "progressions": [],
-    "aliases": [
-      "Tuck L-Sit",
-      "l sit tuck"
-    ],
-    "yt": "Tuck L-Sit form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "calisthenics",
-      "skill"
-    ],
-    "styleBias": [
-      "calisthenics"
-    ],
-    "jointStress": 4,
-    "fatigueCost": 2,
-    "skillDemand": 4,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "amrap20-triplet",
-    "name": "Triplet \u2014 AMRAP 20",
-    "family": "conditioning",
-    "movement": "conditioning",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "circuits"
-    ],
-    "purposes": [
-      "conditioning"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "circuit",
-      "amrap",
-      "conditioning"
-    ],
-    "alternatives": [
-      "low-impact-circuit"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Triplet \u2014 AMRAP 20",
-      "amrap20 triplet"
-    ],
-    "yt": "Triplet \u2014 AMRAP 20 form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "conditioning",
-      "circuit"
-    ],
-    "styleBias": [
-      "mixed",
-      "circuits"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 4,
-    "skillDemand": 2,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "emom30-triplet",
-    "name": "Triplet \u2014 EMOM 30",
-    "family": "conditioning",
-    "movement": "conditioning",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "circuits"
-    ],
-    "purposes": [
-      "conditioning"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "circuit",
-      "emom",
-      "conditioning"
-    ],
-    "alternatives": [
-      "low-impact-circuit"
-    ],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Triplet \u2014 EMOM 30",
-      "emom30 triplet"
-    ],
-    "yt": "Triplet \u2014 EMOM 30 form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "conditioning",
-      "circuit"
-    ],
-    "styleBias": [
-      "mixed",
-      "circuits"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 4,
-    "skillDemand": 2,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "low-impact-circuit",
-    "name": "Low-impact Conditioning Circuit",
-    "family": "conditioning",
-    "movement": "conditioning",
-    "equipment": [
-      "bw",
-      "db",
-      "band"
-    ],
-    "styles": [
-      "mixed",
-      "circuits",
-      "rebuild-recovery"
-    ],
-    "purposes": [
-      "conditioning",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "low-impact",
-      "simple",
-      "circuit"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Low-impact Conditioning Circuit",
-      "low impact circuit"
-    ],
-    "yt": "Low-impact Conditioning Circuit form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "conditioning",
-      "rehab"
-    ],
-    "styleBias": [
-      "mixed",
-      "circuits",
-      "rebuild-recovery"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 3,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "ladder-standard",
-    "name": "Ladder Challenge",
-    "family": "conditioning",
-    "movement": "conditioning",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "circuits",
-      "calisthenics"
-    ],
-    "purposes": [
-      "challenge",
-      "conditioning"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "shoulder-impingement"
-    ],
-    "tags": [
-      "ladder",
-      "circuit",
-      "challenge"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Ladder Challenge",
-      "ladder standard"
-    ],
-    "yt": "Ladder Challenge form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "conditioning",
-      "calisthenics"
-    ],
-    "styleBias": [
-      "mixed",
-      "circuits",
-      "calisthenics"
-    ],
-    "jointStress": 3,
-    "fatigueCost": 4,
-    "skillDemand": 2,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 3,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "walk",
-    "name": "Walk",
-    "family": "conditioning",
-    "movement": "conditioning",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "joint-longevity",
-      "low-overwhelm"
-    ],
-    "purposes": [
-      "conditioning",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "low-impact",
-      "simple",
-      "recovery"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Walk",
-      "walk"
-    ],
-    "yt": "Walk form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "endurance",
-      "recovery"
-    ],
-    "styleBias": [
-      "mixed",
-      "joint-longevity",
-      "low-overwhelm"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "tai-chi-walk",
-    "name": "Tai Chi Walk",
-    "family": "movement-restoration",
-    "movement": "movement-restoration",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "mixed",
-      "joint-longevity",
-      "low-overwhelm"
-    ],
-    "purposes": [
-      "mobility",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "clicky-knees-painful",
-      "hip-tendon-pain-reduced-rom"
-    ],
-    "tags": [
-      "low-impact",
-      "balance-regression",
-      "recovery"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Tai Chi Walk",
-      "tai chi walk"
-    ],
-    "yt": "Tai Chi Walk form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "mobility",
-      "recovery"
-    ],
-    "styleBias": [
-      "mixed",
-      "joint-longevity",
-      "low-overwhelm"
-    ],
-    "jointStress": 1,
-    "fatigueCost": 1,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 5,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "reformer-foundation",
-    "name": "Reformer Foundation Session",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "full",
-      "core",
-      "recovery"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "pilates",
-      "pelvic-control",
-      "controlled-load"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Reformer Foundation Session",
-      "reformer foundation"
-    ],
-    "yt": "Reformer Foundation Session form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "reformer",
-      "pilates"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  },
-  {
-    "key": "reformer-core",
-    "name": "Reformer Core Session",
-    "family": "pilates-core",
-    "movement": "pilates-core",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "purposes": [
-      "core"
-    ],
-    "muscles": [],
-    "difficulty": [
-      "beginner",
-      "intermediate"
-    ],
-    "cautionIf": [
-      "hip-flexor-tendon-pain",
-      "low-back-non-specific"
-    ],
-    "tags": [
-      "pilates",
-      "core-bracing",
-      "pelvic-control"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Reformer Core Session",
-      "reformer core"
-    ],
-    "yt": "Reformer Core Session form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recomp",
-      "build"
-    ],
-    "domains": [
-      "reformer",
-      "pilates"
-    ],
-    "styleBias": [
-      "reformer",
-      "pilates-mobility"
-    ],
-    "jointStress": 2,
-    "fatigueCost": 2,
-    "skillDemand": 1,
-    "cognitiveLoad": 1,
-    "recoveryFriendliness": 4,
-    "movementQuality": 3,
-    "defaultRx": "3 sets of controlled reps",
-    "tempo": "controlled",
-    "rest": "60-120 sec",
-    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
-    "source": "fff-exercise-db-v4.2"
-  }
-];
-  const PROGRESSION_TREES = {
-  "push-up": [
-    "wall-push-up",
-    "incline-push-up",
-    "pushup",
-    "ringpush",
-    "pseudo-planche-push-up"
-  ],
-  "pull-up": [
-    "bandrow",
-    "scapular-pull-up",
-    "assisted-pull-up",
-    "pull-up"
-  ],
-  "tennis-elbow-rebuild": [
-    "isometric-grip-light",
-    "wrist-extensor-eccentric",
-    "bandrow",
-    "chest-supported-row",
-    "ringrow"
-  ],
-  "outer-biceps-left-rebuild": [
-    "bandrow",
-    "hammer-curl",
-    "chest-supported-row",
-    "assisted-pull-up",
-    "pull-up"
-  ],
-  "hip-tendon-rebuild": [
-    "hip-flexor-isometric",
-    "glute-bridge",
-    "mat-leg-circles",
-    "step-up-low",
-    "supported-split-squat",
-    "stepup"
-  ],
-  "clicky-knee-control": [
-    "sit-to-stand",
-    "wall-sit",
-    "box-squat",
-    "step-up-low",
-    "spanish-squat-hold",
-    "goblet-squat"
-  ],
-  "low-back-rebuild": [
-    "dead-bug",
-    "bird-dog",
-    "sidepl",
-    "glute-bridge",
-    "dumbbell-rdl"
-  ],
-  "pilates-core": [
-    "breathing-reset",
-    "posterior-pelvic-tilt-drill",
-    "dead-bug",
-    "pilates-hundred-prep",
-    "pelvic-curl"
-  ],
-  "calisthenics-core": [
-    "dead-bug",
-    "hollow-hold",
-    "l-sit-tuck"
-  ]
-};
+    .mode-switch{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:0 0 16px;
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(11,15,20,.95);
+      padding:8px 0 4px;
+      backdrop-filter:blur(6px);
+    }
+    .mode-tab{
+      border:2px solid var(--stroke);
+      background:var(--glass2);
+      color:var(--ink);
+      padding:.75rem 1rem;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+    .mode-tab.is-active{
+      background:var(--accent);
+      border-color:#ff944a;
+      color:#111;
+    }
+    .mode-helper{
+      color:var(--inkdim);
+      margin:-2px 0 14px;
+      font-size:.95rem;
+    }
+    .mode-panel{display:none}
+    .mode-panel.is-active{display:block}
+    .today-hero{
+      display:grid;
+      gap:12px;
+      grid-template-columns:1.15fr .85fr;
+      align-items:stretch;
+    }
+    @media (max-width:980px){
+      .today-hero{grid-template-columns:1fr}
+    }
+    .today-callout{
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.16), rgba(255,106,0,.07)),
+        var(--glass2);
+      border:2px solid rgba(255,106,0,.28);
+    }
+    .today-callout .metric{font-size:1.65rem}
+    .panel-kicker{
+      color:var(--accent);
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-size:.8rem;
+      margin-bottom:6px;
+    }
+    :root{
+      --bg:#0b0f14; --ink:#e6e6ea; --inkdim:#b7b7c2;
+      --glass:#0f131a; --glass2:#111418; --stroke:#1f2630; --accent:#ff6a00;
+      --accentsoft:rgba(255,106,0,.12); --maxw:1180px;
+      --ok:#90ee90; --warn:#ffd580; --bad:#ff9898;
+    }
+    *{box-sizing:border-box}
+    body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,Arial,sans-serif;margin:0}
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:18px 20px 40px}
 
-  function normalise(str) { return String(str || '').toLowerCase().replace(/[–—−]/g,'-').replace(/&/g,'and').replace(/[^a-z0-9+\- ]+/g,' ').replace(/\s+/g,' ').trim(); }
-  function slug(str) { return normalise(str).replace(/\s+/g,'-'); }
-  function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
-  function safeArray(v) { return Array.isArray(v) ? v : []; }
-  function unique(arr) { const seen={}, out=[]; (arr||[]).forEach(v=>{const k=normalise(v); if(k&&!seen[k]){seen[k]=true; out.push(v);}}); return out; }
-  function hasAny(arr, vals) { arr=arr||[]; vals=vals||[]; return vals.some(v=>arr.indexOf(v)>-1); }
+    h1{margin:.1rem 0 .45rem;font-size:2rem}
+    h2{margin:.1rem 0 .45rem;font-size:1.08rem;font-weight:700;color:var(--ink)}
+    h3{margin:.1rem 0 .45rem}
+    .lead{color:var(--inkdim)}
+    .meta{color:var(--inkdim);opacity:.82}
 
-  const BY_KEY = {};
-  const BY_NAME = {};
-  EXERCISES.forEach(ex => {
-    BY_KEY[ex.key] = ex;
-    BY_NAME[normalise(ex.name)] = ex;
-    (ex.aliases || []).forEach(a => BY_NAME[normalise(a)] = ex);
-  });
+    .hero{
+      background:
+        radial-gradient(circle at top right, rgba(255,106,0,.16), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:18px;
+    }
+    .hero-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid rgba(255,106,0,.35);
+      background:rgba(255,106,0,.08);
+      color:var(--accent);
+      border-radius:999px;
+      padding:.3rem .7rem;
+      font-size:.82rem;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
 
-  function familyByKey(key) { return FAMILY_DB.find(f => f.key === key) || null; }
+    .section{background:var(--glass);border:1px solid rgba(255,255,255,.05);border-radius:18px;margin:22px 0;padding:16px}
+    .section-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+    .section-head p{margin:0;color:var(--inkdim)}
 
-  function findExercise(nameOrKey) {
-    if(!nameOrKey) return null;
-    const direct = BY_KEY[slug(nameOrKey)];
-    if(direct) return clone(direct);
-    const exact = BY_NAME[normalise(nameOrKey)];
-    if(exact) return clone(exact);
-    const n = normalise(nameOrKey); let best=null, score=0;
-    EXERCISES.forEach(ex => {
-      let s=0;
-      if(normalise(ex.name).indexOf(n)>-1 || n.indexOf(normalise(ex.name))>-1) s+=4;
-      (ex.aliases||[]).forEach(a=>{ if(normalise(a).indexOf(n)>-1 || n.indexOf(normalise(a))>-1) s+=2; });
-      if(s>score){best=ex; score=s;}
-    });
-    return best ? clone(best) : null;
-  }
+    .card{background:rgba(255,255,255,.03);border:none;border-radius:14px;padding:12px}
+    .grid{display:grid;gap:12px}
+    .grid-2{grid-template-columns:1.25fr .75fr}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .grid-5{grid-template-columns:repeat(5,1fr)}
+    @media (max-width:980px){
+      .grid-2,.grid-3,.grid-4,.grid-5{grid-template-columns:1fr}
+    }
 
-  function labelForKey(key) { const found = BY_KEY[key] || findExercise(key); return found ? found.name : key; }
+    .btn,.btn-sm,.goal-chip{
+      border:1px solid var(--stroke);
+      background:var(--glass);
+      color:var(--ink);
+      padding:.42rem .78rem;
+      border-radius:10px;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-family:inherit;
+    }
+    .btn{padding:.72rem 1rem;font-weight:700}
+    .btn-primary{background:var(--accent);border-color:#ff944a;color:#111}
+    .btn:hover,.btn-sm:hover,.goal-chip:hover{border-color:rgba(255,106,0,.45)}
 
-  function fallbackProfile(name) { return { name:name||'Unknown Exercise', key:slug(name), family:'general', patterns:['general'], primaryJoints:['general'], tissues:['general'], riskZones:['general'], commonFailurePoints:['load outpacing control','rushing reps','ignoring recovery context'], regressions:[], progressions:[], alternatives:[], aliases:[], confidence:'low' }; }
+    .metric{font-size:1.42rem;font-weight:800;line-height:1.06}
+    .sub{font-size:.85rem;color:var(--inkdim);margin-top:.35rem;opacity:.82}
 
-  function getExerciseProfile(name) {
-    const ex = findExercise(name); if(!ex) return fallbackProfile(name);
-    const fam = familyByKey(ex.family);
-    return {
-      name:ex.name, key:ex.key, family:ex.family, movement:ex.movement || ex.family,
-      patterns:fam ? fam.patterns.slice() : [ex.family], primaryJoints:fam ? fam.primaryJoints.slice() : [],
-      tissues:unique((fam ? fam.tissues : []).concat(ex.muscles || [])), riskZones:fam ? fam.riskZones.slice() : [],
-      commonFailurePoints:fam ? fam.commonFailurePoints.slice() : [],
-      regressions:(ex.regressions || []).map(labelForKey), progressions:(ex.progressions || []).map(labelForKey), alternatives:(ex.alternatives || []).map(labelForKey),
-      equipment:(ex.equipment || []).slice(), styles:(ex.styles || []).slice(), purposes:(ex.purposes || []).slice(), muscles:(ex.muscles || []).slice(), cautionIf:(ex.cautionIf || []).slice(), tags:(ex.tags || []).slice(), aliases:(ex.aliases || []).slice(), phaseUse:(ex.phaseUse || []).slice(), domains:(ex.domains || []).slice(), styleBias:(ex.styleBias || []).slice(),
-      jointStress:ex.jointStress, fatigueCost:ex.fatigueCost, skillDemand:ex.skillDemand, cognitiveLoad:ex.cognitiveLoad, recoveryFriendliness:ex.recoveryFriendliness, movementQuality:ex.movementQuality, yt:ex.yt, defaultRx:ex.defaultRx, tempo:ex.tempo, rest:ex.rest, coachingCue:ex.coachingCue, confidence:'high'
+    .setup-shell{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
+    @media (max-width:980px){ .setup-shell{grid-template-columns:1fr } }
+
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .seg{display:flex;gap:8px;flex-wrap:wrap}
+    .goal-chip{
+      border-radius:999px;
+      font-weight:700;
+      background:rgba(255,255,255,.04);
+      padding:.55rem .9rem;
+    }
+    .goal-chip[aria-pressed="true"]{background:var(--accent);border-color:#ff944a;color:#111}
+
+    .form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    @media (max-width:980px){ .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media (max-width:560px){ .form-grid{grid-template-columns:1fr} }
+
+    label.field{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.95rem}
+    .input, select, textarea{
+      background:#0c1118;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);
+      padding:.6rem .65rem;width:100%;min-height:42px;font:inherit
+    }
+    textarea{min-height:90px;resize:vertical}
+
+    .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .tag{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.2rem .6rem;
+      background:rgba(255,255,255,.05);
+      font-size:.82rem;
+    }
+    .tag-accent{
+      border-color:rgba(255,106,0,.35);
+      background:var(--accentsoft);
+      color:#ffd6bd;
+    }
+
+    .weight-shell{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:980px){ .weight-shell{grid-template-columns:1fr} }
+    .weight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    @media (max-width:980px){ .weight-grid{grid-template-columns:1fr} }
+    .weight-feedback{margin-top:10px}
+    .weight-history-table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:8px}
+    .weight-history-table th,.weight-history-table td{border-bottom:1px solid var(--stroke);padding:.55rem .45rem;text-align:left;vertical-align:top}
+    .weight-history-table th{color:var(--inkdim);font-weight:600}
+    .feedback-good{color:var(--ok)}
+    .feedback-caution{color:var(--warn)}
+    .feedback-strong{color:var(--bad)}
+
+    .graph-shell{display:grid;grid-template-columns:1fr .9fr;gap:14px}
+    @media (max-width:980px){ .graph-shell{grid-template-columns:1fr} }
+    .graph-wrap{position:relative;min-height:320px}
+    .graph-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .toggle-btn{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--ink);
+      padding:.45rem .8rem;
+      border-radius:999px;
+      cursor:pointer;
+      font:inherit;
+    }
+    .toggle-btn[aria-pressed="true"]{
+      background:var(--accent);
+      border-color:#ff944a;
+      color:#111;
+      font-weight:700;
+    }
+    .graph-detail{margin-top:10px}
+    .graph-note{font-size:.88rem;color:var(--inkdim)}
+
+    .phase-shell{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:980px){ .phase-shell{grid-template-columns:1fr} }
+
+    .phase-card{
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.12), rgba(255,106,0,.05)),
+        var(--glass2);
+      border:1px solid rgba(255,106,0,.24);
+    }
+
+    .checkin-shell{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:980px){ .checkin-shell{grid-template-columns:1fr} }
+
+    .checkin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    @media (max-width:980px){ .checkin-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media (max-width:560px){ .checkin-grid{grid-template-columns:1fr} }
+
+    .scale-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+    .scale-row label{
+      display:flex;align-items:center;justify-content:center;
+      padding:.45rem .4rem;
+      border:1px solid var(--stroke);
+      border-radius:10px;
+      background:rgba(255,255,255,.03);
+      font-size:.85rem;
+      cursor:pointer;
+    }
+    .scale-row input{display:none}
+    .scale-row input:checked + span{
+      color:#111;
+      background:var(--accent);
+      border-radius:8px;
+      padding:.2rem .45rem;
+      font-weight:700;
+    }
+
+    .checkin-result{
+      border-left:4px solid var(--accent);
+      padding-left:12px;
+    }
+    .checkin-history-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.92rem;
+      margin-top:8px;
+    }
+    .checkin-history-table th,
+    .checkin-history-table td{
+      border-bottom:1px solid var(--stroke);
+      padding:.55rem .45rem;
+      text-align:left;
+      vertical-align:top;
+    }
+    .checkin-history-table th{color:var(--inkdim);font-weight:600}
+    .table-wrap{overflow:auto}
+
+    .coach-banner{
+      margin-top:12px;
+      background:
+        linear-gradient(180deg, rgba(255,106,0,.12), rgba(255,106,0,.06)),
+        var(--glass2);
+      border:1px solid rgba(255,106,0,.24);
+      border-radius:14px;
+      padding:14px 15px;
+    }
+    .coach-banner strong{display:block;color:#ffd6bd;margin-bottom:4px}
+
+    .wellness-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    @media (max-width:860px){ .wellness-grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:520px){ .wellness-grid{grid-template-columns:1fr} }
+    .wellness-item{
+      display:flex;gap:10px;align-items:flex-start;
+      background:rgba(255,255,255,.03);border:1px solid var(--stroke);border-radius:12px;padding:10px 12px;
+    }
+    .wellness-item input[type="checkbox"]{accent-color:var(--accent);transform:scale(1.15);margin-top:2px}
+    .w-title{font-weight:700}
+    .w-sub{font-size:.85rem;color:var(--inkdim);margin-top:2px}
+
+    .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
+    @media (max-width:980px){ .two-col{grid-template-columns:1fr} }
+
+    .intervention{border-left:4px solid var(--accent);padding-left:12px}
+    .intervention ul{margin:.55rem 0 0 1rem;padding:0}
+    .intervention li{margin:.35rem 0}
+
+    .status-grid{display:grid;gap:10px;grid-template-columns:repeat(5,1fr);margin-top:10px}
+    @media (max-width:980px){ .status-grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:560px){ .status-grid{grid-template-columns:1fr} }
+    .status-box{background:rgba(255,255,255,.03);border:1px solid var(--stroke);border-radius:12px;padding:10px}
+    .status-title{font-size:.8rem;color:var(--inkdim)}
+    .status-value{font-size:1.1rem;font-weight:700;margin-top:4px}
+    .status-strong{color:var(--ok)}
+    .status-building{color:var(--warn)}
+    .status-weak{color:var(--bad)}
+
+    .plan-line{
+      border:1px solid var(--stroke);
+      border-radius:10px;
+      padding:.6rem .7rem;
+      background:rgba(255,255,255,.03);
+      margin:.35rem 0;
+    }
+
+    .days{display:grid;gap:12px}
+    @media (min-width:780px){ .days{grid-template-columns:repeat(2,1fr)} }
+
+    .mov{border:1px dashed var(--stroke);border-radius:10px;padding:.55rem .6rem;margin:.45rem 0}
+    .mov-head{display:flex;gap:.6rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .mov-title a{color:var(--ink);text-decoration:underline dotted}
+    .mov-title a:hover{color:var(--accent)}
+    .rx{opacity:.9}
+    .mov-tools{display:flex;gap:.4rem;align-items:center}
+
+    .drawer{display:none;margin:.45rem 0 0}
+    .drawer.open{display:block}
+    .log-grid{display:grid;gap:.35rem}
+    .log-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr auto;gap:.35rem;align-items:center}
+    .log-row input{
+      background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.38rem .45rem
+    }
+    .meta-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.35rem}
+    .pb{color:#90ee90}
+    .badge{
+      border:1px solid var(--accent);border-radius:999px;padding:.15rem .55rem;
+      background:rgba(255,106,0,.15);color:var(--accent);font-size:.8rem;font-weight:600;margin-left:.4rem;
+    }
+    .quote{font-size:.92rem;color:var(--inkdim);margin-top:.25rem}
+
+    .restbar{display:flex;align-items:center;gap:.4rem;margin:.45rem 0 .1rem;flex-wrap:wrap}
+    .restbar .left{opacity:.9;min-width:44px}
+    .restbar input[type="number"]{
+      width:84px;background:#0b0f14;border:1px solid var(--stroke);border-radius:8px;color:var(--ink);padding:.34rem .45rem
+    }
+
+    @media (max-width:520px){
+      .log-row{grid-template-columns:60px 1fr 1fr;grid-auto-rows:auto}
+      .log-row input[placeholder="kg"]{grid-column:1 / span 1}
+      .log-row input[placeholder="reps"]{grid-column:2 / span 1}
+      .log-row input[placeholder="notes"]{grid-column:1 / span 2}
+    }
+
+    .accordion{border:1px solid var(--stroke);border-radius:12px;background:#111418;padding:12px;margin-bottom:1rem}
+    .acc-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;cursor:pointer}
+    .acc-toggle{all:unset;cursor:pointer;color:var(--accent);font-size:1.05rem;font-weight:700}
+    .accordion .acc-toggle::after{content:"▸";margin-left:.45rem;opacity:.8}
+    .accordion.open .acc-toggle::after{content:"▾";margin-left:.45rem;opacity:.8}
+    .acc-body{margin-top:.5rem}
+    [hidden]{display:none !important;}
+
+    .alt-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.25rem}
+    .alt-chip{
+      border:1px solid var(--stroke);border-radius:999px;padding:.15rem .55rem;background:rgba(255,255,255,.06);font-size:.85rem;color:var(--ink);text-decoration:none
+    }
+
+    .legend{background:#0f131a;border:1px solid var(--stroke);border-radius:12px;padding:10px;margin:.6rem 0}
+    .legend summary{cursor:pointer;color:var(--accent);font-weight:600;list-style:none}
+    .legend summary::-webkit-details-marker{display:none}
+    .legend .row{display:grid;grid-template-columns:140px 1fr;gap:.6rem;margin-top:.5rem}
+    .legend .term{color:var(--ink);font-weight:600}
+    .legend .def{color:var(--inkdim)}
+    @media (max-width:520px){
+      .legend .row{grid-template-columns:1fr}
+      .legend .term{opacity:.9}
+    }
+
+
+    .physiology-shell{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+    @media (max-width:980px){ .physiology-shell{grid-template-columns:1fr} }
+    .physiology-list{margin:.55rem 0 0 1rem;padding:0}
+    .physiology-list li{margin:.35rem 0}
+
+    code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
+
+    /* ===== AI-style adaptive system scoring ===== */
+    .system-score-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:.6rem 0 .2rem;
+    }
+    .score-pill{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid rgba(255,106,0,.28);
+      background:rgba(255,106,0,.08);
+      color:#ffd6bd;
+      border-radius:999px;
+      padding:.22rem .58rem;
+      font-size:.82rem;
+      font-weight:700;
+    }
+    .score-pill.soft{
+      border-color:var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:var(--inkdim);
+    }
+    .system-reason-list{
+      margin:.55rem 0 0 1rem;
+      padding:0;
+      color:var(--inkdim);
+      font-size:.92rem;
+    }
+    .system-reason-list li{
+      margin:.25rem 0;
+    }
+    .adaptive-systems-note{
+      border-left:4px solid var(--accent);
+      padding:.72rem .85rem;
+      background:rgba(255,106,0,.08);
+      border-radius:10px;
+      margin:.75rem 0 1rem;
+      color:var(--inkdim);
+    }
+
+
+    /* Recommended FreeFitFuel systems */
+    .systems-recommendation-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .system-recommendation-card{
+      background:#111418;
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:13px;
+    }
+    .system-recommendation-card.featured{
+      border-color:rgba(255,106,0,.42);
+      background:linear-gradient(180deg,rgba(255,106,0,.11),rgba(255,255,255,.025));
+    }
+    .system-recommendation-card h3{
+      margin:.1rem 0 .35rem;
+      color:var(--ink);
+    }
+    .system-recommendation-card .system-reason{
+      color:var(--inkdim);
+      font-size:.92rem;
+      line-height:1.45;
+      margin:.35rem 0 .65rem;
+    }
+    .system-recommendation-card .system-meta-row{
+      display:flex;
+      gap:.4rem;
+      flex-wrap:wrap;
+      margin:.5rem 0 .7rem;
+    }
+    .system-recommendation-card .system-mini-pill{
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:.16rem .48rem;
+      background:rgba(255,255,255,.055);
+      color:var(--inkdim);
+      font-size:.8rem;
+    }
+    .system-recommendation-card .system-mini-pill.accent{
+      border-color:rgba(255,106,0,.35);
+      background:rgba(255,106,0,.10);
+      color:#ffd6bd;
+    }
+    .system-recommendation-empty{
+      color:var(--inkdim);
+      padding:10px 0 0;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+  <script src="js/header-loader.js" defer></script>
+
+  <div class="wrap">
+    <div class="mode-switch" aria-label="Page mode">
+      <button class="mode-tab is-active" type="button" data-mode="today">Today</button>
+      <button class="mode-tab" type="button" data-mode="progress">Progress</button>
+      <button class="mode-tab" type="button" data-mode="plan">Plan</button>
+    </div>
+    <div class="global-header">
+      <h1>My Plan</h1>
+      <div class="subline">
+        <span id="globalPhaseText">Phase: —</span>
+        <span id="globalTargetText">Target: —</span>
+        <span id="globalStatusText">Status: —</span>
+      </div>
+    </div>
+
+    <p class="mode-helper">Use Today for the immediate call, Progress for trend and momentum, and Plan for the full structure.</p>
+
+    <div class="activation-banner" id="activationBanner" style="display:none">
+      <div id="activationHeadline">Start here: complete your first weekly check-in to activate your plan.</div>
+      <div class="activation-steps">Step 1 → Set your target • Step 2 → Complete your first weekly check-in • Step 3 → Follow your daily call</div>
+    </div>
+
+    <div class="mode-panel is-active" id="modeToday">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">FreeFitFuel™ • My Plan</div>
+          <h1>Recovery & Training Hub</h1>
+          <p class="lead">Build your roadmap. Review progress weekly. Follow today’s coaching.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="workouts.html">Workouts</a>
+          <a class="btn" href="nutrition.html">Nutrition</a>
+          <a class="btn" href="wellbeing.html">Wellbeing</a>
+        </div>
+      </div>
+
+      <div class="coach-banner" id="coachSummary">
+        <strong>Loading coaching…</strong>
+        <p>Pulling together roadmap, recovery, mindset, and training signals.</p>
+      </div>
+    </section>
+
+      <div class="today-hero">
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Current phase</h2>
+          <p>Where you are now, what matters most, and what moves you forward.</p>
+        </div>
+      </div>
+
+      <div class="phase-shell">
+        <div class="card phase-card">
+          <div class="sub">You are currently in</div>
+          <div class="metric" id="currentPhaseName">—</div>
+          <div class="sub" id="currentPhaseFocus">—</div>
+
+          <div class="tag-row" id="currentPhaseTargets"></div>
+
+          <div class="plan-line" style="margin-top:12px">
+            <strong>Estimated transition condition</strong>
+            <div class="sub" id="currentPhaseTransition">—</div>
+          </div>
+
+          <div class="plan-line">
+            <strong>Likely next phase</strong>
+            <div class="sub" id="nextPhasePreview">—</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Phase status</h3>
+          <div class="grid grid-2">
+            <div>
+              <div class="sub">Current roadmap mode</div>
+              <div class="metric" style="font-size:1.05rem" id="currentRoadmapMode">—</div>
+            </div>
+            <div>
+              <div class="sub">Aggressiveness</div>
+              <div class="metric" style="font-size:1.05rem" id="currentAggressionMode">—</div>
+            </div>
+          </div>
+          <div class="plan-line" style="margin-top:12px">
+            <strong>What success looks like here</strong>
+            <div class="sub" id="phaseSuccessSignal">—</div>
+          </div>
+          <div class="plan-line">
+            <strong>Do not move on just because time passed</strong>
+            <div class="sub">Move on when the phase goal is genuinely being met with tolerable recovery and solid adherence.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+        <section class="section compact">
+          <div class="panel-kicker">Do this now</div>
+          <h2 style="margin-top:0">Today</h2>
+          <p class="lead" style="margin-top:0">One clear command block first. The rest of the detail stays out of the way until you need it.</p>
+          <div class="today-command" style="margin-top:10px">
+            <div class="main-call" id="todayDecisionMirror">—</div>
+            <div class="today-meta">
+              <span id="todayCaloriesMirror">Calories: —</span>
+              <span id="todayWaterMirror">Water: —</span>
+              <span id="todayStatusMirror">Status: —</span>
+              <span class="emotion-chip" id="todayEmotionMirror">Emotional level: Steady</span>
+            </div>
+            <div class="today-reason" id="todayReasonMirror">Your daily guidance will appear once your first check-in is saved.</div>
+            <div class="tone-line" id="todayToneMirror">Keep it steady today.</div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <h3>Next session</h3>
+            <div class="metric" style="font-size:1.05rem" id="nextSessionTitleMirror">Next session will appear after setup</div>
+            <div class="sub" id="nextSessionActionMirror">Complete your first check-in to generate the next-session guidance.</div>
+            <div class="tag-row" id="nextSessionMetaMirror"></div>
+          </div>
+        </section>
+      </div>
+
+    <section class="section" id="recommendedSystemsSection">
+      <div class="section-head">
+        <div>
+          <h2>Recommended systems</h2>
+          <p>Recovery, mobility, physio and progression tools suggested from your current plan signals.</p>
+        </div>
+        <a class="btn" href="recovery-training-hub.html">Open Recovery Hub</a>
+      </div>
+
+      <div id="recommendedSystems" class="systems-recommendation-grid">
+        <div class="system-recommendation-empty">System recommendations will appear once the shared systems library has loaded.</div>
+      </div>
+    </section>
+
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Weekly check-in</h2>
+          <p>One review point each week to guide calories, recovery, and phase progression.</p>
+        </div>
+      </div>
+
+      <div class="checkin-shell">
+        <div class="card">
+          <div class="checkin-grid">
+            <label class="field">Weekly average weight (kg)
+              <input id="checkinWeight" class="input" type="number" min="35" max="250" step="0.1" placeholder="e.g. 84.6">
+            </label>
+
+            <label class="field">Waist (cm) optional
+              <input id="checkinWaist" class="input" type="number" min="40" max="200" step="0.1" placeholder="e.g. 92">
+            </label>
+
+            <label class="field">Body fat % optional
+              <input id="checkinBodyFat" class="input" type="number" min="1" max="70" step="0.1" placeholder="e.g. 22.5">
+            </label>
+
+            <label class="field">Emotional level
+              <select id="emotionalLevel" class="input">
+                <option value="drained">Drained</option>
+                <option value="flat">Flat</option>
+                <option value="steady" selected>Steady</option>
+                <option value="positive">Positive</option>
+                <option value="strong">Strong</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="checkin-grid" style="margin-top:12px">
+            <div>
+              <div class="sub" style="margin-bottom:6px">Nutrition adherence</div>
+              <div class="scale-row" data-scale="nutrition">
+                <label><input type="radio" name="nutritionAdherence" value="1"><span>1</span></label>
+                <label><input type="radio" name="nutritionAdherence" value="2"><span>2</span></label>
+                <label><input type="radio" name="nutritionAdherence" value="3" checked><span>3</span></label>
+                <label><input type="radio" name="nutritionAdherence" value="4"><span>4</span></label>
+                <label><input type="radio" name="nutritionAdherence" value="5"><span>5</span></label>
+              </div>
+            </div>
+
+            <div>
+              <div class="sub" style="margin-bottom:6px">Training adherence</div>
+              <div class="scale-row" data-scale="training">
+                <label><input type="radio" name="trainingAdherence" value="1"><span>1</span></label>
+                <label><input type="radio" name="trainingAdherence" value="2"><span>2</span></label>
+                <label><input type="radio" name="trainingAdherence" value="3" checked><span>3</span></label>
+                <label><input type="radio" name="trainingAdherence" value="4"><span>4</span></label>
+                <label><input type="radio" name="trainingAdherence" value="5"><span>5</span></label>
+              </div>
+            </div>
+
+            <div>
+              <div class="sub" style="margin-bottom:6px">Recovery</div>
+              <div class="scale-row" data-scale="recovery">
+                <label><input type="radio" name="recoveryScore" value="1"><span>1</span></label>
+                <label><input type="radio" name="recoveryScore" value="2"><span>2</span></label>
+                <label><input type="radio" name="recoveryScore" value="3" checked><span>3</span></label>
+                <label><input type="radio" name="recoveryScore" value="4"><span>4</span></label>
+                <label><input type="radio" name="recoveryScore" value="5"><span>5</span></label>
+              </div>
+            </div>
+
+            <div>
+              <div class="sub" style="margin-bottom:6px">Energy</div>
+              <div class="scale-row" data-scale="energy">
+                <label><input type="radio" name="energyScore" value="1"><span>1</span></label>
+                <label><input type="radio" name="energyScore" value="2"><span>2</span></label>
+                <label><input type="radio" name="energyScore" value="3" checked><span>3</span></label>
+                <label><input type="radio" name="energyScore" value="4"><span>4</span></label>
+                <label><input type="radio" name="energyScore" value="5"><span>5</span></label>
+              </div>
+            </div>
+
+            <div>
+              <div class="sub" style="margin-bottom:6px">Hunger</div>
+              <div class="scale-row" data-scale="hunger">
+                <label><input type="radio" name="hungerScore" value="1"><span>1</span></label>
+                <label><input type="radio" name="hungerScore" value="2"><span>2</span></label>
+                <label><input type="radio" name="hungerScore" value="3" checked><span>3</span></label>
+                <label><input type="radio" name="hungerScore" value="4"><span>4</span></label>
+                <label><input type="radio" name="hungerScore" value="5"><span>5</span></label>
+              </div>
+            </div>
+
+            <div>
+              <div class="sub" style="margin-bottom:6px">Sleep quality</div>
+              <div class="scale-row" data-scale="sleep">
+                <label><input type="radio" name="sleepScore" value="1"><span>1</span></label>
+                <label><input type="radio" name="sleepScore" value="2"><span>2</span></label>
+                <label><input type="radio" name="sleepScore" value="3" checked><span>3</span></label>
+                <label><input type="radio" name="sleepScore" value="4"><span>4</span></label>
+                <label><input type="radio" name="sleepScore" value="5"><span>5</span></label>
+              </div>
+            </div>
+          </div>
+
+          <label class="field" style="margin-top:12px">Notes
+            <textarea id="checkinNotes" placeholder="Illness, travel, poor sleep, high stress, injury flare, or anything else useful."></textarea>
+          </label>
+
+          <div class="tag-row">
+            <button class="btn btn-primary" id="btnSaveCheckin" type="button">Save weekly check-in</button>
+          </div>
+        </div>
+
+        <div class="card checkin-result">
+          <h3>Check-in result</h3>
+          <div class="metric" style="font-size:1.15rem" id="checkinDecision">No check-in yet</div>
+          <div class="sub" id="checkinReason">Complete your first weekly check-in to activate your weekly recommendation.</div>
+
+          <div class="plan-line" style="margin-top:12px">
+            <strong>Nutrition adjustment</strong>
+            <div class="sub" id="checkinNutritionAction">—</div>
+          </div>
+
+          <div class="plan-line">
+            <strong>Training adjustment</strong>
+            <div class="sub" id="checkinTrainingAction">—</div>
+          </div>
+
+          <div class="plan-line">
+            <strong>Phase action</strong>
+            <div class="sub" id="checkinPhaseAction">—</div>
+          </div>
+
+          <div class="plan-line">
+            <strong>Why this decision was made</strong>
+            <div class="sub" id="checkinReasoning">—</div>
+          </div>
+
+          <div class="tag-row" id="checkinTags"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3>Check-in history</h3>
+        <div class="table-wrap">
+          <table class="checkin-history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Phase</th>
+                <th>Weight</th>
+                <th>Waist</th>
+                <th>Decision</th>
+              </tr>
+            </thead>
+            <tbody id="checkinHistoryBody">
+              <tr><td colspan="5" class="meta">Your weekly history will appear after your first saved check-in.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Daily wellness check</h2>
+          <p>These signals feed directly into the coaching engine.</p>
+        </div>
+      </div>
+
+      <div class="wellness-grid">
+        <label class="wellness-item"><input type="checkbox" id="hydrDone"><span><span class="w-title">Hydration hit</span><span class="w-sub">Basic fluid intake in place</span></span></label>
+        <label class="wellness-item"><input type="checkbox" id="sleepDone"><span><span class="w-title">Sleep goal met</span><span class="w-sub">Enough rest to support recovery</span></span></label>
+        <label class="wellness-item"><input type="checkbox" id="macroDone"><span><span class="w-title">Macros on target</span><span class="w-sub">Fuelling broadly matched the plan</span></span></label>
+        <label class="wellness-item"><input type="checkbox" id="activityCardio" aria-label="Did you walk, cycle or run today?"><span><span class="w-title">Walk / Bike / Run</span><span class="w-sub">General movement and circulation done</span></span></label>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div class="section">
+        <div class="section-head">
+          <div>
+            <h2>Mental reset</h2>
+            <p>When mental state is off, the system should help you get back on track usefully.</p>
+          </div>
+        </div>
+
+        <div class="card intervention">
+          <div class="metric" id="interventionHeadline">Your guidance will appear once your plan has started.</div>
+          <div class="sub" id="interventionMessage">Mental reset guidance will appear once your plan has started.</div>
+          <ul id="interventionActions"></ul>
+        </div>
+
+        <div class="tag-row" id="interventionTags"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <div>
+            <h2>Today</h2>
+            <p>The system’s practical call for right now.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Today’s decision</h3>
+          <div class="metric" id="todayDecision">—</div>
+          <div class="sub" id="todayReason">—</div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Next session</h3>
+          <div class="metric" style="font-size:1.05rem" id="nextSessionTitle">—</div>
+          <div class="sub" id="nextSessionAction">—</div>
+          <div class="tag-row" id="nextSessionMeta"></div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <div class="mode-panel" id="modeProgress">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">FreeFitFuel™ • My Plan</div>
+          <h1>Recovery & Training Hub</h1>
+          <p class="lead">Build your roadmap. Review progress weekly. Follow today’s coaching.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="workouts.html">Workouts</a>
+          <a class="btn" href="nutrition.html">Nutrition</a>
+          <a class="btn" href="wellbeing.html">Wellbeing</a>
+        </div>
+      </div>
+
+      <div class="coach-banner" id="coachSummary">
+        <strong>Loading coaching…</strong>
+        <p>Pulling together roadmap, recovery, mindset, and training signals.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Journey weight log</h2>
+          <p>Track the full journey from start to current and use it to keep long-term progress visible.</p>
+        </div>
+      </div>
+
+      <div class="weight-shell">
+        <div class="card">
+          <div class="weight-grid">
+            <div>
+              <div class="sub">Start weight</div>
+              <div class="metric" id="journeyStartWeight">—</div>
+            </div>
+            <div>
+              <div class="sub">Current weight</div>
+              <div class="metric" id="journeyCurrentWeight">—</div>
+            </div>
+            <div>
+              <div class="sub">Total change</div>
+              <div class="metric" id="journeyWeightChange">—</div>
+            </div>
+          </div>
+
+          <div class="checkin-grid" style="margin-top:12px">
+            <label class="field">Log weight (kg)
+              <input id="weightLogValue" class="input" type="number" min="35" max="250" step="0.1" placeholder="e.g. 84.4">
+            </label>
+
+            <label class="field">Target weight (kg)
+              <input id="targetWeight" class="input" type="number" min="35" max="250" step="0.1" placeholder="e.g. 78">
+            </label>
+
+            <label class="field">Optional note
+              <input id="weightLogNote" class="input" type="text" maxlength="120" placeholder="e.g. salty meal, poor sleep, travel">
+            </label>
+          </div>
+
+          <div class="tag-row">
+            <button class="btn btn-primary" id="btnSaveWeightLog" type="button">Save weight entry</button>
+            <button class="btn" id="btnUseWeightAvg" type="button">Use recent average for weekly check-in</button>
+          </div>
+
+          <div class="weight-feedback">
+            <div class="sub" id="weightTrendLine">Add entries across the journey. The weekly check-in can then use a recent average rather than one isolated reading.</div>
+            <div class="sub" id="targetWeightFeedback">No target-weight assessment yet.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Recent weight history</h3>
+          <div class="table-wrap">
+            <table class="weight-history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Weight</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody id="weightHistoryBody">
+                <tr><td colspan="3" class="meta">No weight entries saved yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Progress graph</h2>
+          <p>View weight as daily entries or weekly averages. Tap or click any point to inspect the rate of change at that point.</p>
+        </div>
+      </div>
+
+      <div class="graph-shell">
+        <div class="card">
+          <div class="graph-toolbar" role="group" aria-label="Weight graph mode">
+            <button class="toggle-btn" id="graphModeDaily" type="button" aria-pressed="true">Daily</button>
+            <button class="toggle-btn" id="graphModeWeekly" type="button" aria-pressed="false">Weekly average</button>
+          </div>
+          <div class="graph-wrap">
+            <canvas id="weightChart" aria-label="Weight progress graph"></canvas>
+          </div>
+          <div class="graph-detail">
+            <div class="sub" id="graphPointTitle">No point selected yet.</div>
+            <div class="sub" id="graphPointStats">Add at least two weight entries to see a meaningful rate of change.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Automation status</h3>
+          <div class="plan-line">
+            <strong>Current auto-progression rule</strong>
+            <div class="sub" id="phaseAutomationRule">No active roadmap loaded yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>Last automation event</strong>
+            <div class="sub" id="phaseAutomationLast">No phase automation event yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>Why automation will or will not move you</strong>
+            <div class="sub" id="phaseAutomationReasoning">No automation reasoning available yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>System recommendation</strong>
+            <div class="sub" id="phaseRecommendationText">No recommendation available yet.</div>
+          </div>
+          <div class="plan-line">
+            <strong>Override status</strong>
+            <div class="sub" id="phaseOverrideStatus">No override active.</div>
+          </div>
+          <div class="tag-row" style="margin-top:10px">
+            <button class="btn btn-primary" id="btnAdvancePhase" type="button">Move to next phase</button>
+            <button class="btn" id="btnStayPhase" type="button">Stay in current phase</button>
+            <button class="btn" id="btnClearPhaseOverride" type="button">Clear override</button>
+          </div>
+          <div class="tag-row" style="margin-top:10px">
+            <select id="phaseOverrideSelect" class="input" style="min-width:220px"></select>
+            <button class="btn" id="btnApplyPhaseOverride" type="button">Apply manual phase selection</button>
+          </div>
+          <div class="graph-note">Automation checks run during the weekly check-in. When the current phase goal is clearly reached, the roadmap can advance to the next relevant phase automatically, but you can override that if needed.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Performance & recovery</h2>
+          <p>Quick scan of risk, pressure, movement quality, and weekly trend.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-4">
+        <div class="card">
+          <h3>Strain risk</h3>
+          <div class="metric" id="cockpitStrain">—</div>
+          <div class="sub">Accumulated load, density, and fatigue picture</div>
+        </div>
+        <div class="card">
+          <h3>Pain risk</h3>
+          <div class="metric" id="cockpitPain">—</div>
+          <div class="sub">Risk inferred from notes and wider pattern stress</div>
+        </div>
+        <div class="card">
+          <h3>Progression pressure</h3>
+          <div class="metric" id="cockpitPressure">—</div>
+          <div class="sub">Risk of pushing harder than the week supports</div>
+        </div>
+        <div class="card">
+          <h3>Deload flag</h3>
+          <div class="metric" id="cockpitDeload">—</div>
+          <div class="sub">Whether a lighter week is now advised</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3>Movement status</h3>
+        <div class="status-grid">
+          <div class="status-box" data-family="push"><div class="status-title">Pressing</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="pull"><div class="status-title">Pulling</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="legs"><div class="status-title">Lower Body</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="core"><div class="status-title">Core</div><div class="status-value">—</div></div>
+          <div class="status-box" data-family="cardio"><div class="status-title">Cardio</div><div class="status-value">—</div></div>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:12px">
+        <div class="card"><h3>Sessions Logged</h3><div class="metric" id="weekSessions">—</div><div class="sub">Distinct training days in the last 7 days</div></div>
+        <div class="card"><h3>Adherence</h3><div class="metric" id="weekAdherence">—</div><div class="sub">Consistency score for the week</div></div>
+        <div class="card"><h3>Training Quality</h3><div class="metric" id="weekQuality">—</div><div class="sub">Quality signal after strain and pain penalties</div></div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:12px">
+        <div class="card"><h3>Strongest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekStrongest">—</div><div class="sub">Area showing the best recent signal</div></div>
+        <div class="card"><h3>Weakest Pattern</h3><div class="metric" style="font-size:1.05rem" id="weekWeakest">—</div><div class="sub">Area most likely to need caution or refinement</div></div>
+        <div class="card"><h3>Weekly Mode</h3><div class="metric" style="font-size:1.05rem" id="weekMode">—</div><div class="sub">The current weekly coaching stance</div></div>
+      </div>
+
+      <div class="tag-row" id="weekSwaps"></div>
+
+      <details class="legend" style="margin-top:14px">
+        <summary>Next week adjustments</summary>
+        <div id="nextWeekChanges" style="margin-top:8px"></div>
+      </details>
+    </section>
+    </div>
+
+    <div class="mode-panel" id="modePlan">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">FreeFitFuel™ • My Plan</div>
+          <h1>Recovery & Training Hub</h1>
+          <p class="lead">Build your roadmap. Review progress weekly. Follow today’s coaching.</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="workouts.html">Workouts</a>
+          <a class="btn" href="nutrition.html">Nutrition</a>
+          <a class="btn" href="wellbeing.html">Wellbeing</a>
+        </div>
+      </div>
+
+      <div class="coach-banner" id="coachSummary">
+        <strong>Loading coaching…</strong>
+        <p>Pulling together roadmap, recovery, mindset, and training signals.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Goal & body setup</h2>
+          <p>Build your plan here.</p>
+        </div>
+      </div>
+
+      <div class="setup-shell">
+        <div class="card">
+          <div class="toolbar" aria-label="Goal selector">
+            <div class="seg" role="tablist" aria-label="Goal">
+              <button type="button" class="goal-chip" aria-pressed="false" data-goal="Maintain">Maintain</button>
+              <button type="button" class="goal-chip" aria-pressed="false" data-goal="Cut">Cut</button>
+              <button type="button" class="goal-chip" aria-pressed="false" data-goal="Build/Bulk">Build/Bulk</button>
+              <button type="button" class="goal-chip" aria-pressed="false" data-goal="Transform">Transform</button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">Sex
+              <select id="bmrSex" class="input">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </label>
+
+            <label class="field">Age (years)
+              <input id="bmrAge" class="input" type="number" min="13" max="90" value="30">
+            </label>
+
+            <label class="field">Height (cm)
+              <input id="bmrHeight" class="input" type="number" min="120" max="220" value="175">
+            </label>
+
+            <label class="field">Weight (kg)
+              <input id="bmrWeight" class="input" type="number" min="35" max="250" value="75">
+            </label>
+
+            <label class="field">Activity
+              <select id="bmrActivity" class="input">
+                <option value="1.2">Sedentary (x1.2)</option>
+                <option value="1.375">Light (x1.375)</option>
+                <option value="1.55" selected>Moderate (x1.55)</option>
+                <option value="1.725">Very active (x1.725)</option>
+                <option value="1.9">Athlete (x1.9)</option>
+              </select>
+            </label>
+
+            <label class="field">Use body fat %
+              <select id="useBodyFatSelect" class="input">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </label>
+
+            <label class="field" id="bfWrap" style="display:none;">
+              Body fat %
+              <input id="bodyFat" class="input" type="number" min="1" max="70" step="0.1">
+            </label>
+
+            <label class="field">
+              Target body fat %
+              <input id="targetBodyFat" class="input" type="number" min="6" max="40" step="0.5" value="10">
+            </label>
+
+            <label class="field">
+              Training status
+              <select id="trainingStatus" class="input">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate" selected>Intermediate</option>
+                <option value="advanced">Advanced / already muscular</option>
+              </select>
+            </label>
+
+            <label class="field">
+              After leaning out, build more muscle?
+              <select id="wantsMuscleGain" class="input">
+                <option value="no" selected>No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </label>
+
+            <label class="field">
+              Aggressiveness
+              <select id="phaseAggression" class="input">
+                <option value="conservative">Conservative (slower, easier)</option>
+                <option value="moderate" selected>Moderate (recommended)</option>
+                <option value="aggressive">Aggressive (faster, harder)</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="meta" style="margin-top:10px">
+            Conservative = easier recovery and sustainability. Aggressive = faster results but higher fatigue and risk.
+          </p>
+
+
+          <div class="card" style="margin-top:14px">
+            <h3>Equipment & training environment</h3>
+            <p class="meta">Your plan should only use what you actually have. These choices are now shared with Workouts so both pages stay in sync.</p>
+
+            <div class="form-grid" style="margin-top:10px">
+              <label class="field">Primary environment
+                <select id="trainingEnvironment" class="input">
+                  <option value="home" selected>Home</option>
+                  <option value="gym">Gym</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="equip-grid" aria-label="Available equipment">
+              <label class="equip-pill"><input type="checkbox" id="equipBw" checked> <span>Bodyweight</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipDb" checked> <span>Dumbbells</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipBand" checked> <span>Bands</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipRack"> <span>Bar / Door anchor</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipRings"> <span>Rings</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipBench"> <span>Bench</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipKb"> <span>Kettlebells</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipCardio"> <span>Cardio equipment</span></label>
+              <label class="equip-pill"><input type="checkbox" id="equipGymAccess"> <span>Gym access</span></label>
+            </div>
+
+            <p class="meta equip-note" id="equipmentSummary">Current profile: Bodyweight, Dumbbells, Bands • Environment: Home</p>
+          </div>
+
+          <div class="tag-row" style="margin-top:12px">
+            <button class="btn btn-primary" id="btnGenerateRoadmap" type="button">Generate my roadmap</button>
+            <button class="btn" id="btnGenerateStaged" type="button">Generate full staged roadmap</button>
+            <button class="btn" id="generatePDF" type="button">Download roadmap PDF</button>
+          </div>
+
+          <div class="meta" style="margin-top:10px">
+            “Generate my roadmap” gives the leanest correct path for your inputs. “Generate full staged roadmap” gives the fullest relevant path for your inputs.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Your starting targets</h3>
+          <div class="grid grid-2" style="gap:10px">
+            <div>
+              <div class="sub">Calories</div>
+              <div class="metric" id="outKcal">—</div>
+            </div>
+            <div>
+              <div class="sub">Protein</div>
+              <div class="metric" id="outProtein">—</div>
+            </div>
+            <div>
+              <div class="sub">Carbs</div>
+              <div class="metric" id="outCarbs">—</div>
+            </div>
+            <div>
+              <div class="sub">Fat</div>
+              <div class="metric" id="outFat">—</div>
+            </div>
+          </div>
+          <p class="meta" id="goalLine" style="margin-top:12px">Goal: <strong>Maintain</strong> — based on Mifflin–St Jeor + activity</p>
+          <div class="tag-row" id="roadmapMeta"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Physiology modifiers</h2>
+          <p>Use these when biology or blood-sugar needs should shape macros, hydration, and coaching emphasis.</p>
+        </div>
+      </div>
+
+      <div class="physiology-shell">
+        <div class="card">
+          <div class="form-grid">
+            <label class="field">Circadian rhythm / sleep state
+              <select id="circadianState" class="input">
+                <option value="aligned" selected>Aligned / sleep broadly okay</option>
+                <option value="disrupted">Disrupted / poor sleep</option>
+                <option value="shift">Shift work / circadian disruption</option>
+              </select>
+            </label>
+
+            <label class="field">Hormone / cycle context
+              <select id="hormoneState" class="input">
+                <option value="none" selected>None / not applied</option>
+                <option value="follicular">Follicular phase</option>
+                <option value="luteal">Luteal phase</option>
+                <option value="perimenopause">Perimenopause</option>
+                <option value="menopause">Menopause</option>
+              </select>
+            </label>
+
+            <label class="field">Blood sugar focus
+              <select id="bloodSugarState" class="input">
+                <option value="none" selected>No special adjustment</option>
+                <option value="blood-sugar">Blood-sugar support</option>
+                <option value="diabetes">Diabetes / tighter glucose control</option>
+              </select>
+            </label>
+
+            <label class="field">Extra sweat / heat load
+              <select id="hydrationLoad" class="input">
+                <option value="normal" selected>Normal</option>
+                <option value="high">High sweat / hot weather</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="meta" style="margin-top:10px">
+            These are modifier inputs, not diagnoses. They gently adjust the plan rather than overriding it completely.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Adjusted prescription</h3>
+          <div class="grid grid-5" style="gap:10px">
+            <div>
+              <div class="sub">Calories</div>
+              <div class="metric" id="physOutKcal">—</div>
+            </div>
+            <div>
+              <div class="sub">Protein</div>
+              <div class="metric" id="physOutProtein">—</div>
+            </div>
+            <div>
+              <div class="sub">Carbs</div>
+              <div class="metric" id="physOutCarbs">—</div>
+            </div>
+            <div>
+              <div class="sub">Fat</div>
+              <div class="metric" id="physOutFat">—</div>
+            </div>
+            <div>
+              <div class="sub">Water</div>
+              <div class="metric" id="physOutWater">—</div>
+            </div>
+          </div>
+
+          <div class="plan-line" style="margin-top:12px">
+            <strong>Applied reasoning</strong>
+            <ul class="physiology-list" id="physiologyReasons"></ul>
+          </div>
+
+          <div class="plan-line">
+            <strong>Hydration breakdown</strong>
+            <div class="sub" id="physiologyHydrationBreakdown">—</div>
+          </div>
+
+          <div class="plan-line">
+            <strong>Regime emphasis</strong>
+            <div class="sub" id="physiologyRegime">—</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Your personalised plan</h2>
+          <p>The roadmap and workout engine meet here.</p>
+        </div>
+      </div>
+
+      <div id="progressGuide"></div>
+      <div id="legendMount"></div>
+      <div id="plan"></div>
+      <p id="planMsg" class="meta"></p>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Backup / Reset</h2>
+          <p>Reset clears logs, PBs, and wellness only. Roadmap stays intact.</p>
+        </div>
+      </div>
+
+      <div class="tag-row">
+        <button class="btn-sm" id="btnExport" type="button">Export all workout data (.json)</button>
+        <label class="btn-sm" for="importFile" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center">Import data</label>
+        <input id="importFile" type="file" accept="application/json" style="display:none">
+        <button class="btn-sm" id="btnReset" type="button">Reset (logs + PBs + wellness only)</button>
+      </div>
+      <p class="meta">Roadmap is read from <code>localStorage["fff.roadmap.plan.v1"]</code>.</p>
+    </section>
+
+    <section class="section">
+      <h2>Injury Recovery & Physio</h2>
+      <p class="lead">Supporting your training doesn’t just mean sets and reps — it also means guidance for when things go wrong.</p>
+      <div class="grid grid-2">
+        <div>
+          <p>
+            Common injuries like plantar fasciitis, calf strains, tennis elbow or low back pain can derail your progress.
+            Our <strong>Physio & Recovery</strong> page gives you safe, practical progressions:
+            <em>Acute → Rebuild → Return</em>.
+          </p>
+          <p class="meta">Educational only — not a substitute for medical care. If in doubt, seek professional review.</p>
+          <a class="btn" href="physio.html">Open Physio & Recovery</a>
+        </div>
+        <div>
+          <img src="img/physio-preview.png" alt="Stretch band, foam roller and physio tools on a mat" style="width:100%;border-radius:10px">
+        </div>
+      </div>
+    </section>
+    </div>
+
+  </div>
+
+  <script src="/js/fff-systems.js"></script>
+  <script src="js/engine/fff-state.js?v=1"></script>
+  <script src="js/engine/fff-exercise-db.js?v=43"></script>
+  <script src="js/engine/fff-recovery.js?v=1"></script>
+  <script src="js/engine/fff-mind.js?v=1"></script>
+  <script src="js/engine/fff-roadmap.js?v=1"></script>
+  <script src="js/engine/fff-memory.js?v=1"></script>
+  <script src="js/engine/fff-interventions.js?v=1"></script>
+  <script src="js/engine/fff-training.js?v=1"></script>
+  <script src="js/engine/fff-messaging.js?v=1"></script>
+  <script src="js/engine/fff-core.js?v=82"></script>
+  <script src="/js/fff-systems.js?v=1"></script>
+
+  <script>
+    var ROADMAP_KEY = 'fff.roadmap.plan.v1';
+
+    var EQUIPMENT_KEY = 'fff.equipment.profile.v1';
+    var CURRENT_PLAN_KEY = 'fff.currentPlan.v1';
+
+    function defaultEquipmentProfile(){
+      return {
+        environment: 'home',
+        equip: {
+          bw: true,
+          db: true,
+          band: true,
+          rack: false,
+          rings: false,
+          bench: false,
+          kb: false,
+          cardio: false,
+          gymAccess: false
+        }
+      };
+    }
+
+    function loadLegacyWorkoutPrefs(){
+      try{
+        var old = JSON.parse(localStorage.getItem('fff.workouts.v1.prefs') || '{}');
+        if(!old || !old.equip) return null;
+        return {
+          environment: 'home',
+          equip: {
+            bw: !!old.equip.bw,
+            db: !!old.equip.db,
+            band: !!old.equip.band,
+            rack: !!old.equip.rack,
+            rings: !!old.equip.rings,
+            bench: false,
+            kb: false,
+            cardio: false,
+            gymAccess: false
+          }
+        };
+      }catch(err){
+        return null;
+      }
+    }
+
+    function loadEquipmentProfile(){
+      try{
+        var saved = JSON.parse(localStorage.getItem(EQUIPMENT_KEY) || 'null');
+        if(saved && saved.equip){
+          var d = defaultEquipmentProfile();
+          return {
+            environment: saved.environment || d.environment,
+            equip: Object.assign({}, d.equip, saved.equip || {})
+          };
+        }
+      }catch(err){}
+      return loadLegacyWorkoutPrefs() || defaultEquipmentProfile();
+    }
+
+    function saveEquipmentProfile(profile){
+      try{
+        localStorage.setItem(EQUIPMENT_KEY, JSON.stringify(profile));
+      }catch(err){}
+    }
+
+    function getEquipmentProfileFromUI(){
+      return {
+        environment: String(document.getElementById('trainingEnvironment').value || 'home'),
+        equip: {
+          bw: !!document.getElementById('equipBw').checked,
+          db: !!document.getElementById('equipDb').checked,
+          band: !!document.getElementById('equipBand').checked,
+          rack: !!document.getElementById('equipRack').checked,
+          rings: !!document.getElementById('equipRings').checked,
+          bench: !!document.getElementById('equipBench').checked,
+          kb: !!document.getElementById('equipKb').checked,
+          cardio: !!document.getElementById('equipCardio').checked,
+          gymAccess: !!document.getElementById('equipGymAccess').checked
+        }
+      };
+    }
+
+    function applyEquipmentProfileToUI(profile){
+      profile = profile || defaultEquipmentProfile();
+      document.getElementById('trainingEnvironment').value = profile.environment || 'home';
+      document.getElementById('equipBw').checked = !!profile.equip.bw;
+      document.getElementById('equipDb').checked = !!profile.equip.db;
+      document.getElementById('equipBand').checked = !!profile.equip.band;
+      document.getElementById('equipRack').checked = !!profile.equip.rack;
+      document.getElementById('equipRings').checked = !!profile.equip.rings;
+      document.getElementById('equipBench').checked = !!profile.equip.bench;
+      document.getElementById('equipKb').checked = !!profile.equip.kb;
+      document.getElementById('equipCardio').checked = !!profile.equip.cardio;
+      document.getElementById('equipGymAccess').checked = !!profile.equip.gymAccess;
+      updateEquipmentSummary();
+    }
+
+    function equipmentListFromProfile(profile){
+      profile = profile || defaultEquipmentProfile();
+      var names = [];
+      if(profile.equip.bw) names.push('Bodyweight');
+      if(profile.equip.db) names.push('Dumbbells');
+      if(profile.equip.band) names.push('Bands');
+      if(profile.equip.rack) names.push('Bar / Door anchor');
+      if(profile.equip.rings) names.push('Rings');
+      if(profile.equip.bench) names.push('Bench');
+      if(profile.equip.kb) names.push('Kettlebells');
+      if(profile.equip.cardio) names.push('Cardio equipment');
+      if(profile.equip.gymAccess) names.push('Gym access');
+      return names.length ? names : ['Bodyweight'];
+    }
+
+    function updateEquipmentSummary(){
+      var el = document.getElementById('equipmentSummary');
+      if(!el) return;
+      var profile = getEquipmentProfileFromUI();
+      el.textContent = 'Current profile: ' + equipmentListFromProfile(profile).join(', ') + ' • Environment: ' + titleCase(profile.environment);
+    }
+
+    function saveEquipmentProfileFromUI(){
+      var profile = getEquipmentProfileFromUI();
+      saveEquipmentProfile(profile);
+      updateEquipmentSummary();
+      return profile;
+    }
+    var CHECKIN_KEY = 'fff.weekly.checkins.v1';
+    var WEIGHT_LOG_KEY = 'fff.weight.log.v1';
+    var TARGET_WEIGHT_KEY = 'fff.target.weight.v1';
+    var GOAL = 'Maintain';
+    var WEIGHT_CHART = null;
+    var WEIGHT_CHART_MODE = 'daily';
+    var AUTOMATION_EVENT_KEY = 'fff.phase.automation.last.v1';
+    var OVERRIDE_KEY = 'fff.phase.override.v1';
+
+    function yt(q){
+      return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(String(q || 'exercise') + ' form');
+    }
+
+    function pick(arr){
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function escapeHtml(str){
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function titleCase(str){
+      str = String(str || '').replace(/-/g, ' ').trim();
+      if(!str) return '—';
+      return str.split(' ').map(function(part){
+        return part ? part.charAt(0).toUpperCase() + part.slice(1) : '';
+      }).join(' ');
+    }
+
+    function compactLabel(str){
+      str = String(str || '').toLowerCase();
+      if(!str) return '—';
+      if(str.indexOf('press') > -1 || str.indexOf('push') > -1) return 'Pressing';
+      if(str.indexOf('pull') > -1 || str.indexOf('row') > -1) return 'Pulling';
+      if(str.indexOf('squat') > -1 || str.indexOf('lower') > -1 || str.indexOf('posterior') > -1 || str.indexOf('hinge') > -1) return 'Lower Body';
+      if(str.indexOf('core') > -1) return 'Core';
+      if(str.indexOf('cardio') > -1) return 'Cardio';
+      return titleCase(str);
+    }
+
+    var QUOTES = [
+      "Small wins compound. Log the set, own the day.",
+      "Perfect form, steady breath, then add a little.",
+      "Consistency beats intensity when intensity is inconsistent.",
+      "One clean rep beats five messy ones.",
+      "Show up. Scale smart. Keep going."
+    ];
+
+    function ensureJsPDF() {
+      return new Promise(function(resolve, reject) {
+        if (window.jspdf && window.jspdf.jsPDF) return resolve(true);
+        var s = document.createElement('script');
+        s.src = 'assets/js/jspdf.umd.min.js';
+        s.onload = function(){ resolve(!!(window.jspdf && window.jspdf.jsPDF)); };
+        s.onerror = function(){ reject(new Error('jsPDF failed to load')); };
+        document.head.appendChild(s);
+      });
+    }
+
+    function clamp(n,a,b){ return Math.max(a, Math.min(b, n)); }
+    function approxWeeks(min, max, adherence){
+      adherence = adherence || 1;
+      function adj(w){ return Math.round(clamp(w / adherence, 1, 40)); }
+      return { min: adj(min), max: adj(max) };
+    }
+
+    function todayISO(){
+      var d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function useBodyFatEnabled(){
+      return document.getElementById('useBodyFatSelect').value === 'yes';
+    }
+
+    function getTrainingStatus() {
+      return String(document.getElementById('trainingStatus').value || 'intermediate').toLowerCase();
+    }
+
+    function wantsMuscleGain() {
+      return String(document.getElementById('wantsMuscleGain').value || 'no').toLowerCase() === 'yes';
+    }
+
+    function getPhaseAggression() {
+      return String(document.getElementById('phaseAggression').value || 'moderate').toLowerCase();
+    }
+
+    function getPhysiologyInputs(){
+      return {
+        circadian: String((document.getElementById('circadianState') || {}).value || 'aligned').toLowerCase(),
+        hormone: String((document.getElementById('hormoneState') || {}).value || 'none').toLowerCase(),
+        bloodSugar: String((document.getElementById('bloodSugarState') || {}).value || 'none').toLowerCase(),
+        hydrationLoad: String((document.getElementById('hydrationLoad') || {}).value || 'normal').toLowerCase()
+      };
+    }
+
+    function applyPhysiologyModifiers(baseTargets, stageKey){
+      var adjusted = {
+        kcal: Number(baseTargets.kcal || 0),
+        protein: Number(baseTargets.protein || 0),
+        carbs: Number(baseTargets.carbs || 0),
+        fats: Number(baseTargets.fats || 0),
+        mode: baseTargets.mode || getPhaseAggression(),
+        hydration_l: 0,
+        hydration_breakdown: '',
+        reasons: [],
+        regime: ''
+      };
+
+      var inputs = getPhysiologyInputs();
+      var kg = parseFloat(document.getElementById('bmrWeight').value || 0) || 0;
+      var actMult = parseFloat(document.getElementById('bmrActivity').value || 1.55) || 1.55;
+      var trainingToday = !!((document.getElementById('activityCardio') || {}).checked);
+      var baseWaterMl = kg * 35;
+      var waterMl = baseWaterMl;
+      var waterNotes = ['Base: ' + (Math.round(baseWaterMl / 100) / 10).toFixed(1) + 'L from body weight at 35ml/kg'];
+
+      if(actMult >= 1.725){
+        waterMl += 700;
+        waterNotes.push('+0.7L for very high activity');
+      } else if(actMult >= 1.55){
+        waterMl += 400;
+        waterNotes.push('+0.4L for moderate activity');
+      } else if(actMult <= 1.2){
+        waterMl -= 150;
+        waterNotes.push('-0.2L because baseline activity is low');
+      }
+
+      if(trainingToday){
+        waterMl += 300;
+        waterNotes.push('+0.3L for today’s extra movement / cardio');
+      }
+
+      if(stageKey === 'cut'){
+        waterMl += 250;
+        waterNotes.push('+0.3L for cut phase support');
+      } else if(stageKey === 'transform'){
+        waterMl += 150;
+        waterNotes.push('+0.2L for transform phase support');
+      }
+
+      if(inputs.circadian === 'disrupted'){
+        adjusted.carbs *= 0.94;
+        adjusted.fats *= 1.06;
+        waterMl += 300;
+        waterNotes.push('+0.3L for poor sleep');
+        adjusted.reasons.push('Poor sleep or circadian disruption detected: slightly steadier carbs, slightly higher fat for satiety, and slightly higher hydration.');
+      }
+
+      if(inputs.circadian === 'shift'){
+        adjusted.carbs *= 0.90;
+        adjusted.fats *= 1.08;
+        waterMl += 400;
+        waterNotes.push('+0.4L for shift-work style disruption');
+        adjusted.reasons.push('Shift-work style disruption applied: keep fuel steadier, avoid overly aggressive deficit behaviour, and increase hydration modestly.');
+      }
+
+      if(inputs.hormone === 'follicular'){
+        adjusted.carbs *= 1.04;
+        adjusted.kcal *= 1.01;
+        adjusted.reasons.push('Follicular phase applied: slightly more carbohydrate support is reasonable when performance and tolerance are often better.');
+      }
+
+      if(inputs.hormone === 'luteal'){
+        adjusted.kcal *= 1.03;
+        adjusted.carbs *= 1.03;
+        waterMl += 250;
+        waterNotes.push('+0.3L for luteal phase');
+        adjusted.reasons.push('Luteal phase applied: allow slightly more intake and hydration to support higher hunger, poorer sleep, and water retention.');
+      }
+
+      if(inputs.hormone === 'perimenopause'){
+        adjusted.protein *= 1.08;
+        adjusted.carbs *= 0.94;
+        waterMl += 300;
+        waterNotes.push('+0.3L for perimenopause');
+        adjusted.reasons.push('Perimenopause applied: slightly higher protein, more controlled carbohydrate, and more hydration to support recovery and body-composition control.');
+      }
+
+      if(inputs.hormone === 'menopause'){
+        adjusted.protein *= 1.10;
+        adjusted.carbs *= 0.92;
+        waterMl += 350;
+        waterNotes.push('+0.4L for menopause');
+        adjusted.reasons.push('Menopause applied: keep protein higher, avoid overly loose carbohydrate intake, and support hydration and strength retention.');
+      }
+
+      if(inputs.bloodSugar === 'blood-sugar'){
+        adjusted.carbs *= 0.90;
+        adjusted.protein *= 1.05;
+        waterMl += 200;
+        waterNotes.push('+0.2L for steadier blood-sugar support');
+        adjusted.reasons.push('Blood-sugar support applied: slightly lower carbohydrate load and slightly higher protein to support steadier energy.');
+      }
+
+      if(inputs.bloodSugar === 'diabetes'){
+        adjusted.carbs *= 0.85;
+        adjusted.protein *= 1.08;
+        waterMl += 300;
+        waterNotes.push('+0.3L for diabetes / tighter glucose control');
+        adjusted.reasons.push('Diabetes / tighter glucose control applied: carbohydrate reduced modestly, protein raised slightly, and hydration increased.');
+      }
+
+      if(inputs.hydrationLoad === 'high'){
+        waterMl += 500;
+        waterNotes.push('+0.5L for high sweat / heat');
+        adjusted.reasons.push('High sweat or heat load applied: hydration target increased.');
+      }
+
+      waterMl = Math.max(1800, Math.min(5500, waterMl));
+
+      adjusted.kcal = Math.round(Math.max(1200, adjusted.kcal));
+      adjusted.protein = Math.round(Math.max(0, adjusted.protein));
+      adjusted.carbs = Math.round(Math.max(0, adjusted.carbs));
+      adjusted.fats = Math.round(Math.max(0, adjusted.fats));
+      adjusted.hydration_l = Math.round((waterMl / 1000) * 10) / 10;
+      adjusted.hydration_breakdown = waterNotes.join(' • ');
+
+      if(!adjusted.reasons.length){
+        adjusted.reasons.push('No physiology modifiers applied: using standard phase-based prescription with a practical hydration target based on weight and activity.');
+      }
+
+      if(stageKey === 'cut'){
+        adjusted.regime = 'Prioritise protein, preserve recovery, and keep hydration steady rather than taking things to extremes.';
+      } else if(stageKey === 'transform'){
+        adjusted.regime = 'Keep body-composition changes slow and steady, with recovery, hydration, and training quality kept intact.';
+      } else if(stageKey === 'maintain'){
+        adjusted.regime = 'Hold a steady routine, predictable hydration, and stable intake rather than constant adjustment.';
+      } else {
+        adjusted.regime = 'Support performance and muscle gain while keeping hydration sensible, steady, and not excessive.';
+      }
+
+      return adjusted;
+    }
+
+    function renderPhysiologyPanel(adjusted){
+      var reasonsEl = document.getElementById('physiologyReasons');
+      if(!adjusted){
+        document.getElementById('physOutKcal').textContent = '—';
+        document.getElementById('physOutProtein').textContent = '—';
+        document.getElementById('physOutCarbs').textContent = '—';
+        document.getElementById('physOutFat').textContent = '—';
+        document.getElementById('physOutWater').textContent = '—';
+        if(reasonsEl) reasonsEl.innerHTML = '<li>No physiology adjustment calculated yet.</li>';
+        document.getElementById('physiologyHydrationBreakdown').textContent = '—';
+        document.getElementById('physiologyRegime').textContent = '—';
+        return;
+      }
+
+      document.getElementById('physOutKcal').textContent = adjusted.kcal;
+      document.getElementById('physOutProtein').textContent = adjusted.protein + ' g';
+      document.getElementById('physOutCarbs').textContent = adjusted.carbs + ' g';
+      document.getElementById('physOutFat').textContent = adjusted.fats + ' g';
+      document.getElementById('physOutWater').textContent = adjusted.hydration_l + ' L';
+
+      if(reasonsEl){
+        reasonsEl.innerHTML = adjusted.reasons.map(function(reason){
+          return '<li>' + escapeHtml(reason) + '</li>';
+        }).join('');
+      }
+      document.getElementById('physiologyHydrationBreakdown').textContent = adjusted.hydration_breakdown || '—';
+      document.getElementById('physiologyRegime').textContent = adjusted.regime || '—';
+    }
+
+    function inferStartBF() {
+      if (useBodyFatEnabled()) {
+        var bf = parseFloat(document.getElementById('bodyFat').value || 0);
+        if (!isNaN(bf) && bf > 0) return bf;
+      }
+
+      var kg = parseFloat(document.getElementById('bmrWeight').value || 0);
+      var cm = parseFloat(document.getElementById('bmrHeight').value || 0);
+      var A  = parseFloat(document.getElementById('bmrAge').value || 0);
+      var BMI = (kg && cm) ? kg / Math.pow(cm/100, 2) : NaN;
+      if (isNaN(BMI) || !isFinite(BMI)) return NaN;
+
+      var s = (document.getElementById('bmrSex').value === 'male') ? 1 : 0;
+      return Math.round((1.20*BMI + 0.23*A - 10.8*s - 5.4) * 10) / 10;
+    }
+
+    function getEffectiveStartBF() {
+      var bf = inferStartBF();
+      return isNaN(bf) ? null : bf;
+    }
+
+    function classifyBodyFatBand(startBF, sex) {
+      if (startBF == null) return 'unknown';
+      var isMale = String(sex || '').toLowerCase() === 'male';
+
+      if (isMale) {
+        if (startBF >= 25) return 'high';
+        if (startBF >= 18) return 'moderate';
+        return 'lean';
+      } else {
+        if (startBF >= 32) return 'high';
+        if (startBF >= 25) return 'moderate';
+        return 'lean';
+      }
+    }
+
+    function chooseRoadmapFlow(goal, startBF, sex, trainingStatus, wantsGain, mode) {
+      var bodyFatBand = classifyBodyFatBand(startBF, sex);
+      var trained = (trainingStatus === 'advanced');
+      var fullMode = mode === 'full';
+
+      if (goal === 'Maintain') return ['maintain'];
+
+      if (goal === 'Build/Bulk') {
+        return fullMode ? ['maintain','bulk'] : ['bulk'];
+      }
+
+      if (goal === 'Cut') {
+        if (trained) {
+          if (wantsGain) return fullMode ? ['cut', 'maintain', 'bulk'] : ['cut', 'bulk'];
+          return ['cut', 'maintain'];
+        }
+        if (wantsGain) return fullMode ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'bulk'];
+        return fullMode ? ['cut', 'transform', 'maintain'] : ['cut', 'transform'];
+      }
+
+      if (goal === 'Transform') {
+        if (bodyFatBand === 'high') {
+          if (trained) {
+            if (wantsGain) return fullMode ? ['cut', 'maintain', 'bulk'] : ['cut', 'bulk'];
+            return ['cut', 'maintain'];
+          }
+          if (wantsGain) return fullMode ? ['cut', 'transform', 'maintain', 'bulk'] : ['cut', 'transform', 'bulk'];
+          return fullMode ? ['cut', 'transform', 'maintain'] : ['cut', 'transform'];
+        }
+
+        if (bodyFatBand === 'moderate') {
+          if (trained) {
+            if (wantsGain) return fullMode ? ['transform', 'maintain', 'bulk'] : ['transform', 'bulk'];
+            return ['transform', 'maintain'];
+          }
+          if (wantsGain) return fullMode ? ['transform', 'maintain', 'bulk'] : ['transform', 'bulk'];
+          return ['transform', 'maintain'];
+        }
+
+        if (bodyFatBand === 'lean') {
+          if (wantsGain) return fullMode ? ['maintain', 'bulk'] : ['bulk'];
+          return ['maintain'];
+        }
+
+        if (wantsGain) return fullMode ? ['transform', 'maintain', 'bulk'] : ['transform', 'bulk'];
+        return ['transform', 'maintain'];
+      }
+
+      return ['maintain'];
+    }
+
+    function calcBMR(s, kg, cm, yrs) {
+      if (useBodyFatEnabled()) {
+        var bf = parseFloat(document.getElementById('bodyFat').value || 0);
+        if (bf > 0 && bf < 70 && kg > 0) {
+          var lbm = kg * (1 - bf/100);
+          return 370 + (21.6 * lbm);
+        }
+      }
+
+      return s === 'male'
+        ? 10 * kg + 6.25 * cm - 5 * yrs + 5
+        : 10 * kg + 6.25 * cm - 5 * yrs - 161;
+    }
+
+    function targetsFromTDEE(tdee, stage) {
+      var mode = getPhaseAggression();
+
+      var multipliers = {
+        cut: { conservative: 0.85, moderate: 0.80, aggressive: 0.75 },
+        transform: { conservative: 0.97, moderate: 0.92, aggressive: 0.90 },
+        maintain: { conservative: 1.00, moderate: 1.00, aggressive: 1.00 },
+        bulk: { conservative: 1.08, moderate: 1.12, aggressive: 1.15 }
+      };
+
+      var stageKey = String(stage || '').toLowerCase();
+      var kcal = tdee * ((multipliers[stageKey] && multipliers[stageKey][mode]) || 1);
+
+      var kg = parseFloat(document.getElementById('bmrWeight').value || 0);
+
+      var protein_perkg = 1.6;
+      if (stageKey === 'cut') protein_perkg = 2.2;
+      if (stageKey === 'transform') protein_perkg = 2.2;
+      if (stageKey === 'maintain') protein_perkg = 1.8;
+      if (stageKey === 'bulk') protein_perkg = 1.8;
+
+      var protein = Math.round(protein_perkg * kg);
+
+      var carbs_pct = 0.50;
+      var fat_pct = 0.30;
+
+      if (stageKey === 'cut') { carbs_pct = 0.40; fat_pct = 0.30; }
+      if (stageKey === 'transform') { carbs_pct = 0.45; fat_pct = 0.30; }
+      if (stageKey === 'maintain') { carbs_pct = 0.45; fat_pct = 0.30; }
+      if (stageKey === 'bulk') { carbs_pct = 0.55; fat_pct = 0.25; }
+
+      var carbs = Math.round((kcal * carbs_pct) / 4);
+      var fats = Math.round((kcal * fat_pct) / 9);
+
+      return {
+        kcal: Math.round(kcal),
+        protein: protein,
+        carbs: carbs,
+        fats: fats,
+        mode: mode
+      };
+    }
+
+
+    function currentEquipmentArray(){
+      var profile = null;
+      try{
+        profile = (typeof getEquipmentProfileFromUI === 'function') ? getEquipmentProfileFromUI() : loadEquipmentProfile();
+      }catch(err){
+        profile = loadEquipmentProfile ? loadEquipmentProfile() : null;
+      }
+      var equip = (profile && profile.equip) ? profile.equip : {};
+      var arr = [];
+      Object.keys(equip).forEach(function(key){ if(equip[key]) arr.push(key); });
+      if(arr.indexOf('bw') === -1) arr.push('bw');
+      return arr;
+    }
+
+    function normaliseExerciseForPlan(exercise, role, rx){
+      exercise = exercise || {};
+      var name = exercise.name || exercise.key || 'Exercise';
+      var sourceModules = Array.isArray(exercise.sourceModules) ? exercise.sourceModules : [];
+      var primarySource = sourceModules.length ? sourceModules[0] : null;
+      var alts = [];
+
+      if(Array.isArray(exercise.alternatives)) alts = alts.concat(exercise.alternatives);
+      if(Array.isArray(exercise.regressions)) alts = alts.concat(exercise.regressions);
+      if(Array.isArray(exercise.progressions)) alts = alts.concat(exercise.progressions);
+      alts = alts.map(function(item){ return typeof item === 'string' ? titleCase(item) : (item && item.name ? item.name : ''); }).filter(Boolean).slice(0,4);
+
+      return {
+        key: exercise.key || '',
+        name: name,
+        type: role || exercise.type || 'compound',
+        sets: rx && rx.sets ? rx.sets : '3',
+        reps: rx && rx.reps ? rx.reps : (exercise.defaultRx || exercise.rx || 'controlled reps'),
+        rir: rx && rx.rir ? rx.rir : '2–3',
+        rest: rx && rx.rest ? rx.rest : 60,
+        equipment: exercise.equipment || [],
+        family: exercise.family || '',
+        domains: exercise.domains || [],
+        purposes: exercise.purposes || [],
+        cue: exercise.coachingCue || exercise.cue || 'Move with control and keep the effort repeatable.',
+        alts: alts,
+        sourcePage: exercise.sourcePage || (primarySource && primarySource.url) || 'workouts.html',
+        sourceLabel: exercise.sourceLabel || (primarySource && primarySource.label) || 'Workouts Library',
+        sourceModules: sourceModules,
+        why: exercise.why || ''
+      };
+    }
+
+    function stageRxProfile(stageId, role){
+      var base = {
+        cut:       { main:{sets:'2–3', reps:'6–10', rir:'2–3', rest:75}, acc:{sets:'2', reps:'10–15', rir:'2–3', rest:45} },
+        transform: { main:{sets:'3–4', reps:'6–10', rir:'1–2', rest:90}, acc:{sets:'2–3', reps:'8–12', rir:'1–2', rest:60} },
+        maintain:  { main:{sets:'3', reps:'6–10', rir:'1–2', rest:90}, acc:{sets:'2', reps:'8–12', rir:'1–2', rest:60} },
+        bulk:      { main:{sets:'4', reps:'5–8', rir:'1–2', rest:120}, acc:{sets:'3', reps:'8–12', rir:'1–2', rest:75} }
+      };
+      var pack = base[stageId] || base.transform;
+      return role === 'accessory' ? pack.acc : pack.main;
+    }
+
+    function dbPick(context, family, used, fallbackPurpose){
+      if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
+      var q = Object.assign({}, context || {}, { family: family });
+      if(fallbackPurpose) q.purpose = fallbackPurpose;
+      var list = window.FFFExerciseDB.filterExercises(q) || [];
+      for(var i=0;i<list.length;i++){
+        if(used.indexOf(list[i].key) === -1){ used.push(list[i].key); return list[i]; }
+      }
+      return list[0] || null;
+    }
+
+    function dbContextForStage(stageId){
+      var trainingStatus = getTrainingStatus ? getTrainingStatus() : 'intermediate';
+      var style = 'mixed';
+      if(stageId === 'bulk') style = 'strength-hypertrophy';
+      if(stageId === 'cut') style = 'fat-loss-conditioning';
+      if(trainingStatus === 'beginner') style = 'low-overwhelm';
+
+      return {
+        phase: stageId,
+        style: style,
+        trainingStyle: style,
+        difficulty: trainingStatus,
+        equipment: currentEquipmentArray(),
+        injuries: []
+      };
+    }
+
+    function explainChoice(stageId, exercise, role, dayLabel){
+      var source = exercise.sourceLabel || 'Workouts Library';
+      var family = exercise.family ? titleCase(exercise.family) : 'movement';
+      var base = 'Chosen from ' + source + ' as a ' + family + ' option for this ' + dayLabel + ' slot.';
+      if(stageId === 'cut') return base + ' The cut phase uses enough strength work to preserve muscle without burying recovery.';
+      if(stageId === 'transform') return base + ' The transform phase needs repeatable strength practice while body composition changes slowly.';
+      if(stageId === 'maintain') return base + ' Maintenance keeps the pattern trained without chasing novelty every week.';
+      if(stageId === 'bulk') return base + ' The build phase favours progressive overload and enough volume to support muscle gain.';
+      return base;
+    }
+
+    function buildProgramFromExerciseDB(stageId){
+      if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
+
+      var context = dbContextForStage(stageId);
+      var used = [];
+      var split = stageId === 'bulk'
+        ? ['Mon Push Strength','Tue Pull Strength','Wed Lower Strength','Thu Recovery / Mobility','Fri Upper Volume','Sat Optional Conditioning','Sun Rest']
+        : ['Mon Push + Pull','Tue Lower + Core','Wed Recovery / Mobility','Thu Upper + Pull','Fri Lower + Conditioning','Sat Optional Recovery','Sun Rest'];
+
+      function make(family, role, dayLabel, purpose){
+        var ex = dbPick(context, family, used, purpose);
+        if(!ex) return null;
+        var normalised = normaliseExerciseForPlan(ex, role === 'accessory' ? 'accessory' : 'compound', stageRxProfile(stageId, role));
+        normalised.why = explainChoice(stageId, normalised, role, dayLabel);
+        return normalised;
+      }
+
+      function moduleItem(name, type, sourcePage, sourceLabel, cue, why){
+        return {
+          name:name,
+          type:type || 'recovery',
+          sets:'—',
+          reps:'10–20 min',
+          rir:'easy',
+          rest:'—',
+          cue:cue || 'Keep this gentle and useful.',
+          sourcePage:sourcePage,
+          sourceLabel:sourceLabel,
+          sourceModules:[{label:sourceLabel,url:sourcePage}],
+          why:why || 'This support block is included because FreeFitFuel plans draw from recovery, physio and mobility pages as well as workouts.'
+        };
+      }
+
+      var programByDay = [];
+      if(stageId === 'bulk'){
+        programByDay[0] = [make('horizontal-push','main','push strength','push'), make('vertical-push','main','push strength','push'), make('arms','accessory','push strength','arms')].filter(Boolean);
+        programByDay[1] = [make('vertical-pull','main','pull strength','pull'), make('horizontal-pull','main','pull strength','pull'), make('arms','accessory','pull strength','arms')].filter(Boolean);
+        programByDay[2] = [make('squat','main','lower strength','legs'), make('hinge','main','lower strength','legs'), make('calf-ankle','accessory','lower strength','legs')].filter(Boolean);
+        programByDay[3] = [moduleItem('Daily Recovery Flow','recovery','/systems/daily-recovery-flow.html','Daily Recovery Flow','Move slowly, breathe steadily, leave fresher than you started.','Recovery is deliberately placed between heavier build sessions.')];
+        programByDay[4] = [make('horizontal-push','accessory','upper volume','push'), make('horizontal-pull','accessory','upper volume','pull'), make('core-anti-extension','accessory','upper volume','core')].filter(Boolean);
+        programByDay[5] = [make('conditioning','accessory','optional conditioning','conditioning')].filter(Boolean);
+        programByDay[6] = [];
+      } else {
+        programByDay[0] = [make('horizontal-push','main','push and pull','push'), make('horizontal-pull','main','push and pull','pull')].filter(Boolean);
+        programByDay[1] = [make('squat','main','lower and core','legs'), make('hinge','main','lower and core','legs'), make('core-anti-extension','accessory','lower and core','core')].filter(Boolean);
+        programByDay[2] = [moduleItem('Mobility / Recovery Reset','recovery','/stretching.html','Flexibility & Stretching','Stay easy. This is movement quality, not a workout.','This prevents the plan being only strength work and draws from the mobility pages.')];
+        programByDay[3] = [make('vertical-pull','main','upper and pull','pull'), make('vertical-push','main','upper and pull','push'), make('core-anti-rotation','accessory','upper and pull','core')].filter(Boolean);
+        programByDay[4] = [make('lunge-split','main','lower and conditioning','legs'), make('conditioning','accessory','lower and conditioning','conditioning')].filter(Boolean);
+        programByDay[5] = [moduleItem('Lymphatic Recovery Flow','recovery','/systems/lymphatic-recovery-flow.html','Lymphatic Recovery Flow','Keep it gentle and rhythmic.','Optional active recovery is included from the recovery systems, not invented inside My Plan.')];
+        programByDay[6] = [];
+      }
+
+      return {
+        split: split,
+        programByDay: programByDay,
+        source: 'fff-exercise-db',
+        sourceNote: 'Generated from FFFExerciseDB and linked FreeFitFuel source pages rather than hard-coded My Plan templates.'
+      };
+    }
+
+    function buildProgram(stageId) {
+      var dbProgram = buildProgramFromExerciseDB(stageId);
+      if(dbProgram) return dbProgram;
+
+      var R = {
+        cut:       { mainSets:'3–4', accSets:'2–3', mainReps:'6–10', accReps:'10–15', mainRIR:'2–3', accRIR:'1–2', restMain:90,  restAcc:45 },
+        transform: { mainSets:'3–4', accSets:'3',   mainReps:'6–10', accReps:'8–12',  mainRIR:'1–2', accRIR:'1–2', restMain:90,  restAcc:60 },
+        maintain:  { mainSets:'3–4', accSets:'2–3', mainReps:'6–10', accReps:'8–12',  mainRIR:'1–2', accRIR:'1–2', restMain:90,  restAcc:60 },
+        bulk:      { mainSets:'4–5', accSets:'3–4', mainReps:'5–8',  accReps:'8–12',  mainRIR:'0–2', accRIR:'1–2', restMain:120, restAcc:75 }
+      }[stageId];
+
+      function ex(name, type, kind, alts){
+        kind = kind || 'main';
+        alts = alts || [];
+        var sets = kind === 'main' ? R.mainSets : R.accSets;
+        var reps = kind === 'main' ? R.mainReps : R.accReps;
+        var rir  = kind === 'main' ? R.mainRIR  : R.accRIR;
+        var rest = kind === 'main' ? R.restMain : R.restAcc;
+        return { name:name, type:type, sets:sets, reps:reps, rir:rir, rest:rest, alts:alts };
+      }
+
+      if (stageId === 'cut') {
+        return {
+          split:["Mon Push","Tue Pull","Wed Rest / Easy Cardio","Thu Legs","Fri Core & Conditioning","Sat Optional LISS","Sun Rest"],
+          programByDay:{
+            0:[ ex('Push-up (hands elevated if needed)','compound','main',['DB Floor Press','Kneeling Push-up','Band Press']),
+                ex('Pike Push-up','compound','main',['DB Strict Press','Elevated Pike','Wall HS Hold']),
+                ex('Dip (bench/box)','accessory','acc',['Close-grip Push-up','Band OH Triceps']),
+                ex('Lateral Raise (DB/band)','accessory','acc',['Y-Raise','Wall Slides']) ],
+            1:[ ex('Inverted Row (table/TRX)','compound','main',['One-arm DB Row','Band Row']),
+                ex('Chin-up / Band-assist','compound','main',['Negative Chin-up','Mixed-grip Inverted Row']),
+                ex('Rear-delt Fly (DB/band)','accessory','acc',['Face Pull (band)']),
+                ex('Curl (DB/band)','accessory','acc',['Hammer Curl','Zottman Curl']) ],
+            2:[ { name:'LISS (walk/easy bike/row)', type:'cardio', duration_min:30, cue:'Conversational pace' } ],
+            3:[ ex('Goblet Squat','compound','main',['Split Squat','Box Squat (BW)']),
+                ex('Romanian Deadlift (DB)','compound','main',['Band Hip Hinge','Good Morning (band)']),
+                ex('Reverse Lunge','accessory','acc',['Step-back Lunge','Split Squat']),
+                ex('Calf Raise (single-leg)','accessory','acc',['Seated Calf Raise']) ],
+            4:[ ex('Ab-Wheel / Walk-outs','accessory','acc',['Plank (3×30–45s)','Dead Bug']),
+                { name:'Carry (farmer/one-side)', type:'accessory', sets:4, reps:'20–40m', rir:'—', rest:60, alts:['Suitcase Hold 20–40s/side'] },
+                { name:'Intervals (bike/run/row)', type:'cardio', work_s:30, rest_s:60, rounds:8, cue:'Leave 2–3 RIR (not all-out)' } ],
+            5:[ { name:'Optional LISS', type:'cardio', duration_min:35, cue:'Nasal breathing only' } ],
+            6:[]
+          }
+        };
+      }
+
+      if (stageId === 'transform') {
+        return {
+          split:["Mon Push","Tue Pull","Wed Rest / Easy Cardio","Thu Legs","Fri Core & Conditioning","Sat Optional LISS","Sun Rest"],
+          programByDay:{
+            0:[ ex('Deficit Push-up (feet elevated)','compound','main',['Standard Push-up','DB Bench on Floor']),
+                ex('DB Shoulder Press (standing)','compound','main',['Pike Push-up','Half-kneeling Press']),
+                ex('Close-grip Push-up','accessory','acc',['Diamond Push-up','Band Press-down']),
+                ex('Lateral Raise (DB/band)','accessory','acc',['Lean-away Raise','Y-Raise']) ],
+            1:[ ex('Pull-up (band as needed)','compound','main',['Chin-up','Chest-to-bar Eccentrics']),
+                ex('Chest-supported DB Row','compound','main',['One-arm DB Row','Band Row']),
+                ex('Rear-delt Fly (high reps)','accessory','acc',['Face Pull (band)']),
+                ex('Curl (alternating DB)','accessory','acc',['Hammer Curl']) ],
+            2:[ { name:'LISS or Brisk Walk', type:'cardio', duration_min:25, cue:'Easy-moderate' } ],
+            3:[ ex('Front-loaded Squat (goblet)','compound','main',['Tempo Squat (3s down)','Split Squat']),
+                ex('DB RDL (pause 1s bottom)','compound','main',['B-Stance RDL','Hip Hinge (band)']),
+                ex('Walking Lunge','accessory','acc',['Reverse Lunge']),
+                ex('Calf Raise (tempo 2–1–2)','accessory','acc',['Single-leg Raise']) ],
+            4:[ ex('Hanging Knee Raise','accessory','acc',['Dead Bug','RKC Plank 3×20–30s']),
+                { name:'Intervals (moderate)', type:'cardio', work_s:30, rest_s:60, rounds:6, cue:'Finish with 1–2 RIR' },
+                { name:'Carry (suitcase)', type:'accessory', sets:3, reps:'20–40m/side', rir:'—', rest:60, alts:['Front Rack Carry (DB)'] } ],
+            5:[ { name:'Optional LISS', type:'cardio', duration_min:25, cue:'Very easy' } ],
+            6:[]
+          }
+        };
+      }
+
+      if (stageId === 'maintain') {
+        return {
+          split:["Mon Push","Tue Pull","Wed Rest","Thu Legs","Fri Core","Sat Optional LISS","Sun Rest"],
+          programByDay:{
+            0:[ ex('Push-up (weighted/backpack)','compound','main',['Feet-elevated Push-up']),
+                ex('DB Strict Press','compound','main',['Pike Push-up']),
+                ex('Dips (bench)','accessory','acc',['Close-grip Push-up']),
+                ex('Lateral Raise','accessory','acc',['Band Lateral Raise']) ],
+            1:[ ex('Pull-up (bodyweight)','compound','main',['Chin-up','Band Assist']),
+                ex('One-arm DB Row (heavy)','compound','main',['Chest-supported DB Row']),
+                ex('Rear-delt Fly','accessory','acc',['Face Pull (band)']),
+                ex('Curl','accessory','acc',['Hammer Curl']) ],
+            2:[],
+            3:[ ex('Goblet Squat (heavier)','compound','main',['Tempo Squat']),
+                ex('RDL (DB)','compound','main',['Hip Thrust (DB)','Good Morning (band)']),
+                ex('Reverse Lunge','accessory','acc',['Walking Lunge']),
+                ex('Calf Raise','accessory','acc',['Single-leg Raise']) ],
+            4:[ ex('Ab-Wheel / Walk-outs','accessory','acc',['Plank','Dead Bug']),
+                { name:'Carry (farmer/one-side)', type:'accessory', sets:3, reps:'20–40m', rir:'—', rest:60, alts:['Suitcase Hold 20–40s'] },
+                { name:'Optional Intervals (easy)', type:'cardio', work_s:20, rest_s:60, rounds:6, cue:'Stay fresh' } ],
+            5:[ { name:'Optional LISS', type:'cardio', duration_min:20, cue:'Easy' } ],
+            6:[]
+          }
+        };
+      }
+
+      return {
+        split:["Mon Push","Tue Pull","Wed Legs","Thu Push (strength)","Fri Pull (strength)","Sat Optional Arms/Core","Sun Rest"],
+        programByDay:{
+          0:[ ex('Weighted Push-up (backpack)','compound','main',['DB Floor Press']),
+              ex('DB Shoulder Press (standing)','compound','main',['Half-kneeling Press']),
+              ex('Dip (bench)','accessory','acc',['Close-grip Push-up']),
+              ex('Lateral Raise (high volume)','accessory','acc',['Lean-away Raise']) ],
+          1:[ ex('Pull-up (added load if ready)','compound','main',['Chin-up']),
+              ex('Chest-supported DB Row (heavy)','compound','main',['One-arm DB Row']),
+              ex('Rear-delt Fly (slow)','accessory','acc',['Face Pull (band)']),
+              ex('Curl (strict)','accessory','acc',['Hammer Curl']) ],
+          2:[ ex('Goblet Squat (heavy)','compound','main',['Front Rack DB Squat']),
+              ex('DB RDL (heavy)','compound','main',['B-Stance RDL']),
+              ex('Split Squat (rear foot elevated)','accessory','acc',['Reverse Lunge']),
+              ex('Calf Raise (heavy)','accessory','acc',['Single-leg Raise']) ],
+          3:[ ex('Push-up (deficit or weight)','compound','main',['DB Floor Press']),
+              ex('DB Shoulder Press (top set + back-offs)','compound','main',['Pike Push-up']),
+              ex('Dips','accessory','acc',['Close-grip Push-up']),
+              ex('Lateral Raise (rest-pause)','accessory','acc',['Band Ladder Raise']) ],
+          4:[ ex('Pull-up (top set + back-offs)','compound','main',['Chin-up']),
+              ex('Row (heavy strict)','compound','main',['One-arm DB Row']),
+              ex('Rear-delt Fly','accessory','acc',['Face Pull']),
+              ex('Curl (slow eccentrics)','accessory','acc',['Hammer Curl']) ],
+          5:[ ex('Curls (variety superset)','accessory','acc',['Alt. DB Curl / Band Curl']),
+              ex('Triceps OH Extension (DB/band)','accessory','acc',['Diamond Push-up']),
+              ex('Ab-Wheel / Walk-outs','accessory','acc',['Plank']),
+              { name:'Optional Easy LISS', type:'cardio', duration_min:15, cue:'Stay easy, recovery focus' } ],
+          6:[]
+        }
+      };
+    }
+
+    function buildStagesFlow(startBF, userTargetBF, actMult, tdee, userOverrideFlow) {
+      var stages = [];
+      var youtubeTip = 'For exercise form, search YouTube: exercise name + “form”.';
+      var restPresets = [10,30,45,60,90];
+
+      var adherence = 1.0;
+      if      (actMult <= 1.25) adherence = 0.8;
+      else if (actMult <= 1.45) adherence = 0.9;
+      else if (actMult >= 1.75) adherence = 1.1;
+
+      var flow = userOverrideFlow || ['cut', 'transform', 'maintain', 'bulk'];
+
+      var bfTargets = {
+        cut: function(s,t){ return '~' + Math.max(t || 24, s ? Math.ceil(s - 4) : 26) + '%'; },
+        transform: function(s,t){ return '~' + Math.max(t || 20, 20) + '%'; },
+        maintain: function(){ return 'Hold current'; },
+        bulk: function(s,t){ return t ? ('+1–2% from ' + t + '% end') : '+1–2% from end'; }
+      };
+
+      var baseDur = {
+        cut:       { min:6, max:14 },
+        transform: { min:8, max:16 },
+        maintain:  { min:2, max:4 },
+        bulk:      { min:8, max:16 }
+      };
+
+      for (var i = 0; i < flow.length; i++) {
+        var id = flow[i];
+        var bw = approxWeeks(baseDur[id].min, baseDur[id].max, adherence);
+        var program = buildProgram(id);
+        var stageTargets = applyPhysiologyModifiers(targetsFromTDEE(tdee, id), id);
+
+        stages.push({
+          id:id,
+          name: id==='cut' ? 'Cutting' : id==='transform' ? 'Transform (Recomp)' : id==='maintain' ? 'Maintenance (Hold)' : 'Lean Bulk',
+          bf_target: bfTargets[id](startBF, userTargetBF),
+          weeks_min: bw.min,
+          weeks_max: bw.max,
+          blurb:
+            id==='cut' ? 'Calorie deficit, protein priority, progressive overload. LISS 2–4×/week; optional short intervals.' :
+            id==='transform' ? 'Moderate deficit near maintenance. Keep lifts progressing. Add steps or easy cycling.' :
+            id==='maintain' ? 'Calories at or near TDEE; maintain strength. Low-stress conditioning.' :
+            'Slight surplus. Progressive overload focus; keep conditioning easy.',
+          targets: stageTargets,
+          split: program.split,
+          programByDay: program.programByDay
+        });
+      }
+
+      return { stages: stages, meta: { youtubeTip: youtubeTip, restPresets: restPresets } };
+    }
+
+    function buildGoalRoadmap() {
+      var kg  = parseFloat(document.getElementById('bmrWeight').value || 0);
+      var cm  = parseFloat(document.getElementById('bmrHeight').value || 0);
+      var yrs = parseFloat(document.getElementById('bmrAge').value || 0);
+      var sx  = document.getElementById('bmrSex').value;
+      var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
+      var bmr = calcBMR(sx, kg, cm, yrs);
+      var tdee = bmr * actMult;
+
+      var sex = document.getElementById('bmrSex').value;
+      var currentBF = getEffectiveStartBF();
+      var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
+      var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
+      var trainingStatus = getTrainingStatus();
+      var wantsGain = wantsMuscleGain();
+
+      var flow = chooseRoadmapFlow(GOAL, currentBF, sex, trainingStatus, wantsGain, 'smart');
+      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, tdee, flow);
+
+      return {
+        goal: GOAL,
+        startBF: currentBF == null ? null : Math.round(currentBF * 10) / 10,
+        endBF: userTargetBF,
+        trainingStatus: trainingStatus,
+        wantsMuscleGain: wantsGain,
+        aggression: getPhaseAggression(),
+        roadmapMode: 'smart',
+        chosenFlow: flow,
+        stages: flowData.stages,
+        meta: flowData.meta
+      };
+    }
+
+    function buildStagedRoadmap() {
+      var kg  = parseFloat(document.getElementById('bmrWeight').value || 0);
+      var cm  = parseFloat(document.getElementById('bmrHeight').value || 0);
+      var yrs = parseFloat(document.getElementById('bmrAge').value || 0);
+      var sx  = document.getElementById('bmrSex').value;
+      var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
+      var bmr = calcBMR(sx, kg, cm, yrs);
+      var tdee = bmr * actMult;
+
+      var sex = document.getElementById('bmrSex').value;
+      var currentBF = getEffectiveStartBF();
+      var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
+      var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
+      var trainingStatus = getTrainingStatus();
+      var wantsGain = wantsMuscleGain();
+
+      var flow = chooseRoadmapFlow(GOAL, currentBF, sex, trainingStatus, wantsGain, 'full');
+      var flowData = buildStagesFlow(currentBF, userTargetBF, actMult, tdee, flow);
+
+      return {
+        goal: GOAL,
+        startBF: currentBF == null ? null : Math.round(currentBF * 10) / 10,
+        endBF: userTargetBF,
+        trainingStatus: trainingStatus,
+        wantsMuscleGain: wantsGain,
+        aggression: getPhaseAggression(),
+        roadmapMode: 'full',
+        chosenFlow: flow,
+        stages: flowData.stages,
+        meta: flowData.meta
+      };
+    }
+
+    function saveRoadmap(roadmap) {
+      localStorage.setItem(ROADMAP_KEY, JSON.stringify(roadmap));
+    }
+
+    function getPhaseOverride(){
+      try{
+        var raw = localStorage.getItem(OVERRIDE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function savePhaseOverride(data){
+      localStorage.setItem(OVERRIDE_KEY, JSON.stringify(data));
+    }
+
+    function clearPhaseOverride(){
+      localStorage.removeItem(OVERRIDE_KEY);
+    }
+
+    function getPreviewFlow(){
+      return chooseRoadmapFlow(
+        GOAL,
+        getEffectiveStartBF(),
+        document.getElementById('bmrSex').value,
+        getTrainingStatus(),
+        wantsMuscleGain(),
+        'smart'
+      );
+    }
+
+    function updateMacroTargets() {
+      var kg  = parseFloat(document.getElementById('bmrWeight').value || 0);
+      var cm  = parseFloat(document.getElementById('bmrHeight').value || 0);
+      var yrs = parseFloat(document.getElementById('bmrAge').value || 0);
+      var sx  = document.getElementById('bmrSex').value;
+      var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
+
+      var bmr = calcBMR(sx, kg, cm, yrs);
+      var tdee = bmr * actMult;
+      var stageKey = GOAL === 'Cut' ? 'cut' : GOAL === 'Build/Bulk' ? 'bulk' : GOAL === 'Transform' ? 'transform' : 'maintain';
+      var baseTargets = targetsFromTDEE(tdee, stageKey);
+      var t = applyPhysiologyModifiers(baseTargets, stageKey);
+
+      document.getElementById('outKcal').textContent = t.kcal;
+      document.getElementById('outProtein').textContent = t.protein + ' g';
+      document.getElementById('outCarbs').textContent = t.carbs + ' g';
+      document.getElementById('outFat').textContent = t.fats + ' g';
+      renderPhysiologyPanel(t);
+
+      var used = (useBodyFatEnabled() && parseFloat(document.getElementById('bodyFat').value || 0) > 0)
+        ? 'Katch–McArdle'
+        : 'Mifflin–St Jeor';
+      document.getElementById('goalLine').innerHTML = 'Goal: <strong>' + escapeHtml(GOAL) + '</strong> — based on ' + used + ' + activity';
+
+      var tags = [];
+      var startBF = getEffectiveStartBF();
+      var targetBF = parseFloat(document.getElementById('targetBodyFat').value || '');
+      if (startBF != null) tags.push('<span class="tag tag-accent">Start BF ~' + escapeHtml(String(startBF)) + '%</span>');
+      if (!isNaN(targetBF) && targetBF > 0) tags.push('<span class="tag">Target BF ' + escapeHtml(String(targetBF)) + '%</span>');
+      tags.push('<span class="tag">TDEE ~' + Math.round(tdee) + ' kcal</span>');
+      tags.push('<span class="tag">' + escapeHtml(titleCase(getTrainingStatus())) + '</span>');
+      tags.push('<span class="tag">' + (wantsMuscleGain() ? 'Muscle gain later: yes' : 'Muscle gain later: no') + '</span>');
+      tags.push('<span class="tag">Equipment: ' + escapeHtml(equipmentListFromProfile(getEquipmentProfileFromUI()).slice(0,3).join(', ')) + (equipmentListFromProfile(getEquipmentProfileFromUI()).length > 3 ? '…' : '') + '</span>');
+      tags.push('<span class="tag">' + escapeHtml(titleCase(getPhaseAggression())) + '</span>');
+      tags.push('<span class="tag">Water ~' + escapeHtml(String(t.hydration_l)) + ' L</span>');
+      var phys = getPhysiologyInputs();
+      if(phys.circadian !== 'aligned') tags.push('<span class="tag">' + escapeHtml(titleCase(phys.circadian)) + '</span>');
+      if(phys.hormone !== 'none') tags.push('<span class="tag">' + escapeHtml(titleCase(phys.hormone)) + '</span>');
+      if(phys.bloodSugar !== 'none') tags.push('<span class="tag">' + escapeHtml(titleCase(phys.bloodSugar)) + '</span>');
+      tags.push('<span class="tag tag-accent">Preview path: ' + escapeHtml(getPreviewFlow().join(' → ')) + '</span>');
+      document.getElementById('roadmapMeta').innerHTML = tags.join('');
+      if (typeof renderWeightLog === 'function') renderWeightLog();
+    }
+
+    function generateRoadmapWithoutPDF(staged) {
+      var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
+      saveRoadmap(roadmap);
+      renderCurrentPhase();
+      renderPlan();
+      refreshAllCoachViews();
+      renderActivationLayer();
+      syncPolishMirrors();
+      wireWorkoutPlanLogsToEngine();
+      return roadmap;
+    }
+
+    async function generatePDFAndSaveRoadmap(staged) {
+      var ok = (window.jspdf && window.jspdf.jsPDF) ? true : await ensureJsPDF();
+      if (!ok) {
+        alert('PDF library could not be loaded. Please refresh and try again.');
+        return;
+      }
+
+      var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
+      saveRoadmap(roadmap);
+
+      var kg  = parseFloat(document.getElementById('bmrWeight').value || 0);
+      var cm  = parseFloat(document.getElementById('bmrHeight').value || 0);
+      var yrs = parseFloat(document.getElementById('bmrAge').value || 0);
+      var sx  = document.getElementById('bmrSex').value;
+      var actMult = parseFloat(document.getElementById('bmrActivity').value || 1);
+      var currentBF = getEffectiveStartBF();
+      var tBFraw = parseFloat(document.getElementById('targetBodyFat').value || '');
+      var userTargetBF = !isNaN(tBFraw) && tBFraw > 0 ? tBFraw : null;
+      var bmr = calcBMR(sx, kg, cm, yrs);
+      var tdee = bmr * actMult;
+      var lbm  = (currentBF != null) ? (kg * (1 - currentBF/100)) : null;
+
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({ unit:'pt', format:'a4', compress:true });
+
+      var marginX = 56;
+      var y = 72;
+      var wrapW = 460;
+
+      function line(yy) {
+        doc.setDrawColor(255,106,0);
+        doc.setLineWidth(1);
+        doc.line(marginX, yy, 539, yy);
+      }
+      function addWrapped(text, step) {
+        step = step || 16;
+        var lines = doc.splitTextToSize(text, wrapW);
+        for (var i = 0; i < lines.length; i++) {
+          if (y > 770) { doc.addPage(); y = 72; }
+          doc.text(lines[i], marginX, y); y += step;
+        }
+      }
+      function newSection(pad) {
+        pad = pad || 10;
+        y += pad;
+        if (y > 730) { doc.addPage(); y = 72; }
+      }
+
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(18);
+      doc.setTextColor(255,106,0);
+      doc.text('Personalised Body Recomposition Roadmap', marginX, y);
+      y += 18;
+
+      doc.setTextColor(60);
+      doc.setFontSize(12);
+      doc.setFont('helvetica','normal');
+      doc.text(userTargetBF ? ('End target: ~' + userTargetBF + '% body fat') : ('Goal: ' + GOAL), marginX, y);
+      y += 12;
+      line(y+8);
+      y += 24;
+
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(13);
+      doc.setTextColor(0);
+      doc.text('Baseline (Your Starting Point)', marginX, y);
+      y += 16;
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(11);
+      doc.setTextColor(0);
+
+      [
+        'Weight: ' + (kg || '—') + ' kg',
+        'Height: ' + (cm || '—') + ' cm',
+        'Age: ' + (yrs || '—') + ' years',
+        'Sex: ' + (sx==='male' ? 'Male' : 'Female'),
+        'Body fat (approx.): ' + (currentBF != null ? currentBF + '%' : '—'),
+        'Target Body Fat: ' + (userTargetBF || '—'),
+        'Lean Body Mass: ' + (lbm!==null ? (Math.round(lbm*10)/10)+' kg' : '—'),
+        'BMR: ~' + Math.round(bmr) + ' kcal/day',
+        'Estimated TDEE (activity x' + actMult + '): ~' + Math.round(tdee) + ' kcal/day',
+        'Goal: ' + GOAL,
+        'Training status: ' + titleCase(getTrainingStatus()),
+        'Muscle gain later: ' + (wantsMuscleGain() ? 'Yes' : 'No'),
+        'Aggressiveness: ' + titleCase(getPhaseAggression())
+      ].forEach(function(t){ addWrapped('• ' + t); });
+
+      newSection(8);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(13);
+      doc.text('Roadmap', marginX, y);
+      y += 16;
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(11);
+
+      roadmap.stages.forEach(function(s, i){
+        addWrapped((i+1) + '. ' + s.name + ' — BF target: ' + s.bf_target + '; Estimated duration: ' + s.weeks_min + '–' + s.weeks_max + ' weeks');
+        if (s.targets) {
+          addWrapped('   Calories: ' + s.targets.kcal + ' • Protein: ' + s.targets.protein + 'g • Carbs: ' + s.targets.carbs + 'g • Fat: ' + s.targets.fats + 'g');
+        }
+      });
+
+      doc.save('freefitfuel-roadmap.pdf');
+
+      renderCurrentPhase();
+      renderPlan();
+      refreshAllCoachViews();
+      wireWorkoutPlanLogsToEngine();
+    }
+
+    function restControlsHTML(id){
+      return '' +
+        '<div class="restbar" data-rest="' + id + '" data-bound="0">' +
+          '<span>⏱ Rest:</span>' +
+          '<input type="number" min="5" step="5" value="90" aria-label="Rest seconds">' +
+          '<button class="btn-sm" data-act="rest-start" type="button">Start</button>' +
+          '<button class="btn-sm" data-act="rest-stop" type="button">Stop</button>' +
+          '<span class="left" aria-live="polite">90s</span>' +
+        '</div>';
+    }
+
+    function hookRestTimers(scope){
+      var bars = scope.querySelectorAll('.restbar');
+      for(var b = 0; b < bars.length; b++){
+        (function(bar){
+          if(bar.getAttribute('data-bound') === '1') return;
+          bar.setAttribute('data-bound', '1');
+
+          var input = bar.querySelector('input[type="number"]');
+          var left  = bar.querySelector('.left');
+          var start = bar.querySelector('[data-act="rest-start"]');
+          var stop  = bar.querySelector('[data-act="rest-stop"]');
+          var t = null;
+
+          function fmt(s){
+            s = Math.max(0, Math.floor(Number(s) || 0));
+            var m = Math.floor(s / 60), r = s % 60;
+            return m ? (m + ':' + String(r).padStart(2, '0')) : (r + 's');
+          }
+          function show(s){ left.textContent = fmt(s); }
+
+          show(parseInt((input && input.value) || '0', 10));
+
+          if(start){
+            start.addEventListener('click', function(){
+              var total = Math.max(5, parseInt((input && input.value) || '0', 10) || 0);
+              clearInterval(t);
+              var remain = total;
+              show(remain);
+
+              t = setInterval(function(){
+                remain--;
+                show(remain);
+                if(remain <= 0){
+                  clearInterval(t);
+                  left.textContent = 'Go!';
+                }
+              }, 1000);
+            });
+          }
+
+          if(stop){
+            stop.addEventListener('click', function(){
+              clearInterval(t);
+              show(parseInt((input && input.value) || '0', 10));
+            });
+          }
+        })(bars[b]);
+      }
+    }
+
+    function normaliseStageName(name){
+      return String(name || '').trim().toLowerCase();
+    }
+
+    function stageGuidanceText(stageName, blurb){
+      var n = normaliseStageName(stageName);
+      var b = String(blurb || '').toLowerCase();
+
+      if(n.indexOf('cut') > -1 || b.indexOf('fat loss') > -1 || b.indexOf('cut') > -1){
+        return 'Stay here while fat loss is steady, sustainable, and recovery still feels manageable.';
+      }
+      if(n.indexOf('transform') > -1 || b.indexOf('transform') > -1){
+        return 'Stay here while strength, fitness, and consistency are clearly improving.';
+      }
+      if(n.indexOf('maintain') > -1 || b.indexOf('maintenance') > -1){
+        return 'Stay here while body weight, energy, and routine feel stable and repeatable.';
+      }
+      if(n.indexOf('bulk') > -1 || b.indexOf('bulk') > -1 || b.indexOf('muscle gain') > -1){
+        return 'Stay here while calories are increasing in a controlled way without excessive fat gain.';
+      }
+      return 'Stay here until the goal of this stage feels established and repeatable before moving on.';
+    }
+
+    function renderProgressGuide(stages){
+      var mount = document.getElementById('progressGuide');
+      if(!mount) return;
+
+      if(!Array.isArray(stages) || !stages.length){
+        mount.innerHTML = '';
+        return;
+      }
+
+      var html = '';
+      if(stages.length === 1){
+        var only = stages[0] || {};
+        html += '<div class="card" style="margin-bottom:10px">' +
+                  '<h3>Phase guide</h3>' +
+                  '<div class="sub"><strong>This plan has one stage:</strong> ' + escapeHtml(only.name || 'Current Stage') + '</div>' +
+                  '<div class="sub" style="margin-top:8px">' + stageGuidanceText(only.name, only.blurb) + '</div>' +
+                '</div>';
+      } else {
+        html += '<div class="card" style="margin-bottom:10px">' +
+                  '<h3>Phase guide</h3>' +
+                  '<div class="sub">This roadmap uses a phased structure rather than a fixed timeline. Move on when progress is established, not merely because time has passed.</div>';
+        for(var i = 0; i < stages.length; i++){
+          var stage = stages[i] || {};
+          html += '<div class="plan-line" style="margin-top:8px"><strong>' + escapeHtml(stage.name || ('Stage ' + (i + 1))) + '</strong> → ' + stageGuidanceText(stage.name, stage.blurb) + '</div>';
+        }
+        html += '</div>';
+      }
+
+      mount.innerHTML = html;
+    }
+
+    function getCurrentAndNextPhase(){
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return {roadmap:null,current:null,next:null};
+      return { roadmap:roadmap, current:roadmap.stages[0] || null, next:roadmap.stages[1] || null };
+    }
+
+    function buildPhaseCompletionReason(current, next, entry, ctx, roadmap){
+      var targetWeight = getTargetWeight();
+      var targetBF = roadmap && roadmap.endBF != null ? roadmap.endBF : null;
+
+      if((current.id === 'cut' || current.id === 'transform') && targetBF != null && entry.bodyfat_est != null && entry.bodyfat_est <= targetBF){
+        if(ctx.waistStableOrDown || ctx.trendLooksReal){
+          return current.id === 'cut'
+            ? 'the target body-fat level was reached with acceptable adherence, recovery, and confirming body-composition signals'
+            : 'the target body-fat level was reached with confirming body-composition context';
+        }
+      }
+
+      if(current.id === 'cut' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
+        if(ctx.waistStableOrDown && ctx.trendLooksReal){
+          return 'the cut target weight was reached and waist / check-in context supported moving on';
+        }
+      }
+
+      if(current.id === 'transform' && targetWeight != null && entry.weight_avg != null && entry.weight_avg <= targetWeight){
+        if(ctx.waistStableOrDown && ctx.trendLooksReal){
+          return 'the transform target weight was reached and the wider check-in context supported progression';
+        }
+      }
+
+      if(current.id === 'maintain' && next && next.id === 'bulk'){
+        if(ctx.scaleStable && ctx.waistStableOrDown && ctx.decentRecovery && ctx.adequateAdherence){
+          return 'weight and waist were stable enough, with decent adherence and recovery, to begin the next planned build phase';
+        }
+      }
+
+      if(current.id === 'bulk' && targetWeight != null && entry.weight_avg != null && entry.weight_avg >= targetWeight){
+        if(ctx.waistNotRising && ctx.decentRecovery && ctx.trendLooksReal){
+          return 'the build target was reached without a clear waist warning and recovery remained acceptable';
+        }
+      }
+
+      return null;
+    }
+
+    function evaluatePhaseRecommendation(){
+      var pair = getCurrentAndNextPhase();
+      if(!pair.roadmap || !pair.current){
+        return { ready:false, text:'No active roadmap loaded yet.', reason:null };
+      }
+      if(!pair.next){
+        return { ready:false, text:'No later phase is currently planned, so there is nothing to advance to yet.', reason:null };
+      }
+
+      var history = getCheckinHistory();
+      var latestEntry = history.length ? history[history.length - 1] : null;
+      if(!latestEntry){
+        return { ready:false, text:'Save a weekly check-in first so the system has enough context to judge progression.', reason:null };
+      }
+
+      var ctx = getAutomationContext(history.slice(0, -1), latestEntry);
+      if(!ctx.adequateAdherence){
+        return { ready:false, text:'Hold the current phase for now because adherence is not yet strong enough to trust progression.', reason:null, ctx:ctx, entry:latestEntry };
+      }
+      if(ctx.poorRecovery){
+        return { ready:false, text:'Hold the current phase for now because recovery is not yet strong enough to progress safely.', reason:null, ctx:ctx, entry:latestEntry };
+      }
+
+      var reason = buildPhaseCompletionReason(pair.current, pair.next, latestEntry, ctx, pair.roadmap);
+      if(reason){
+        return { ready:true, text:'Ready to move from ' + pair.current.name + ' to ' + pair.next.name + '.', reason:reason, ctx:ctx, entry:latestEntry };
+      }
+
+      return { ready:false, text:'Stay in ' + pair.current.name + ' for now. The phase goal is not clearly completed yet.', reason:null, ctx:ctx, entry:latestEntry };
+    }
+
+    function advanceRoadmapToNext(reason, sourceLabel){
+      var pair = getCurrentAndNextPhase();
+      if(!pair.roadmap || !pair.current || !pair.next) return null;
+
+      var roadmap = pair.roadmap;
+      roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
+      roadmap.completedStages.push({
+        id: pair.current.id,
+        name: pair.current.name,
+        completed_on: todayISO(),
+        reason: reason,
+        source: sourceLabel || 'automatic'
+      });
+      roadmap.stages = roadmap.stages.slice(1);
+      saveRoadmap(roadmap);
+      clearPhaseOverride();
+
+      var event = {
+        date: todayISO(),
+        message: 'Moved from ' + pair.current.name + ' to ' + pair.next.name + ' because ' + reason + '.',
+        source: sourceLabel || 'automatic'
+      };
+      saveLastAutomationEvent(event);
+      return event.message;
+    }
+
+    function jumpRoadmapToPhase(targetId, sourceLabel){
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length) return null;
+      var idx = roadmap.stages.findIndex(function(s){ return s && s.id === targetId; });
+      if(idx < 0) return null;
+      if(idx === 0){
+        savePhaseOverride({ type:'stay', phaseId:targetId, date:todayISO(), source:sourceLabel || 'manual' });
+        return 'Staying in ' + (roadmap.stages[0].name || 'current phase') + ' by user override.';
+      }
+
+      roadmap.completedStages = Array.isArray(roadmap.completedStages) ? roadmap.completedStages : [];
+      for(var i = 0; i < idx; i++){
+        var stage = roadmap.stages[i];
+        roadmap.completedStages.push({
+          id: stage.id,
+          name: stage.name,
+          completed_on: todayISO(),
+          reason: 'manual override to ' + roadmap.stages[idx].name,
+          source: sourceLabel || 'manual override'
+        });
+      }
+      roadmap.stages = roadmap.stages.slice(idx);
+      saveRoadmap(roadmap);
+      clearPhaseOverride();
+
+      var current = roadmap.stages[0];
+      var event = {
+        date: todayISO(),
+        message: 'Manual override moved the roadmap to ' + current.name + '.',
+        source: sourceLabel || 'manual override'
+      };
+      saveLastAutomationEvent(event);
+      return event.message;
+    }
+
+    function populatePhaseOverrideSelect(){
+      var select = document.getElementById('phaseOverrideSelect');
+      if(!select) return;
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length){
+        select.innerHTML = '<option value="">No active roadmap</option>';
+        select.disabled = true;
+        return;
+      }
+      select.disabled = false;
+      select.innerHTML = roadmap.stages.map(function(stage, idx){
+        var label = (idx === 0 ? 'Current: ' : 'Jump to: ') + (stage.name || stage.id || ('Phase ' + (idx + 1)));
+        return '<option value="' + escapeHtml(stage.id) + '">' + escapeHtml(label) + '</option>';
+      }).join('');
+    }
+
+    function renderCurrentPhase(){
+      var raw = localStorage.getItem(ROADMAP_KEY);
+      if(!raw){
+        document.getElementById('currentPhaseName').textContent = 'No roadmap yet';
+        document.getElementById('currentPhaseFocus').textContent = 'Generate a roadmap above first.';
+        document.getElementById('currentPhaseTargets').innerHTML = '';
+        document.getElementById('currentPhaseTransition').textContent = '—';
+        document.getElementById('nextPhasePreview').textContent = '—';
+        document.getElementById('currentRoadmapMode').textContent = '—';
+        document.getElementById('currentAggressionMode').textContent = '—';
+        document.getElementById('phaseSuccessSignal').textContent = '—';
+        return;
+      }
+
+      try{
+        var roadmap = JSON.parse(raw);
+        var stages = Array.isArray(roadmap.stages) ? roadmap.stages : [];
+        var current = stages[0] || null;
+        var next = stages.length > 1 ? stages[1] : null;
+
+        if(!current){
+          document.getElementById('currentPhaseName').textContent = 'No roadmap yet';
+          return;
+        }
+
+        document.getElementById('currentPhaseName').textContent = current.name || 'Current Phase';
+        document.getElementById('currentPhaseFocus').textContent = current.blurb || 'Focus on executing this phase well.';
+
+        var tags = [];
+        if(current.targets){
+          tags.push('<span class="tag tag-accent">Calories: ' + escapeHtml(String(current.targets.kcal)) + '</span>');
+          tags.push('<span class="tag">Protein: ' + escapeHtml(String(current.targets.protein)) + 'g</span>');
+          tags.push('<span class="tag">Carbs: ' + escapeHtml(String(current.targets.carbs)) + 'g</span>');
+          tags.push('<span class="tag">Fat: ' + escapeHtml(String(current.targets.fats)) + 'g</span>');
+          if(current.targets.hydration_l != null) tags.push('<span class="tag">Water: ' + escapeHtml(String(current.targets.hydration_l)) + ' L</span>');
+        }
+        if(current.weeks_min != null && current.weeks_max != null){
+          tags.push('<span class="tag">Estimated block: ' + escapeHtml(String(current.weeks_min)) + '–' + escapeHtml(String(current.weeks_max)) + ' weeks</span>');
+        }
+        document.getElementById('currentPhaseTargets').innerHTML = tags.join('');
+
+        var transitionText = '';
+        if(current.id === 'cut'){
+          transitionText = 'Move on when body fat / waist trend is clearly improving, or when progress stalls for 2–3 weeks despite good adherence.';
+        } else if(current.id === 'transform'){
+          transitionText = 'Move on when body composition progress slows meaningfully or you have reached the body-fat zone you wanted.';
+        } else if(current.id === 'maintain'){
+          transitionText = 'Move on when body weight and recovery are stable and you are ready either to hold or to build.';
+        } else {
+          transitionText = 'Move on when gain rate exceeds target, body fat creeps up too fast, or your planned bulk block is complete.';
+        }
+
+        document.getElementById('currentPhaseTransition').textContent = transitionText;
+        document.getElementById('nextPhasePreview').textContent = next ? next.name : 'No later phase planned at the moment.';
+        document.getElementById('currentRoadmapMode').textContent = titleCase(String(roadmap.roadmapMode || 'smart'));
+        document.getElementById('currentAggressionMode').textContent = titleCase(String(roadmap.aggression || 'moderate'));
+
+        var override = getPhaseOverride();
+        if(override && override.phaseId && override.phaseId !== current.id && override.type === 'stay'){
+          clearPhaseOverride();
+        }
+
+        var successSignal = '';
+        if(current.id === 'cut'){
+          successSignal = 'Weight and or waist trending down without recovery falling apart.';
+        } else if(current.id === 'transform'){
+          successSignal = 'Strength stable or rising while body composition still improves.';
+        } else if(current.id === 'maintain'){
+          successSignal = 'Body weight, recovery, and training quality all feel steady and repeatable.';
+        } else {
+          successSignal = 'Weight increasing slowly, strength rising, and waist gain staying controlled.';
+        }
+        document.getElementById('phaseSuccessSignal').textContent = successSignal;
+      }catch(err){}
+    }
+
+    var LEGEND_DEFS = {
+      "Compound": "Big multi-joint lifts. Shown as an orange badge next to the exercise name.",
+      "Accessory": "Support or isolation work to build weak links or useful volume.",
+      "RIR": "Reps In Reserve — how many reps you could still do at the end of a set.",
+      "LISS": "Low-Intensity Steady State cardio — easy pace, conversational, longer duration.",
+      "MISS": "Moderate-Intensity Steady State cardio — comfortably hard, steady.",
+      "HIIT": "High-Intensity Interval Training — short hard efforts with recovery intervals.",
+      "AMRAP": "As Many Reps or Rounds As Possible within the target.",
+      "EMOM": "Every Minute On the Minute — start a set each minute.",
+      "RPE": "Rate of Perceived Exertion — 1 to 10 effort scale.",
+      "ROM": "Range of Motion — how far a joint moves during the exercise.",
+      "SS": "Superset — perform two exercises back-to-back with minimal rest.",
+      "Tempo": "Numbers like 3-1-3 indicate eccentric–pause–concentric seconds for each rep."
     };
-  }
 
-  function getFamilySummary(name) { const p=getExerciseProfile(name); return { family:p.family, patterns:p.patterns, riskZones:p.riskZones, likelySwapTargets:p.regressions.concat(p.alternatives), likelyProgressions:p.progressions }; }
-  function areRelatedExercises(a,b) { const pa=getExerciseProfile(a), pb=getExerciseProfile(b); return !!(pa&&pb&&(pa.family===pb.family || pa.patterns.some(p=>pb.patterns.indexOf(p)>-1))); }
-  function analyseGroup(names) { const profiles=(Array.isArray(names)?names:[]).map(getExerciseProfile); return { count:profiles.length, families:unique(profiles.map(p=>p.family)), riskZones:unique([].concat.apply([], profiles.map(p=>p.riskZones||[]))), tissues:unique([].concat.apply([], profiles.map(p=>p.tissues||[]))) }; }
+    function detectLegendTerms(data){
+      var found = {};
+      function pushTerm(t){ found[t] = true; }
 
-  function contextStyle(context) { const s=slug((context||{}).trainingStyle || (context||{}).stylePreference || (context||{}).style || ''); return STYLE_PROFILES[s] ? s : ''; }
+      var stages = (data && data.stages) ? data.stages : [];
+      for(var si = 0; si < stages.length; si++){
+        var prog = stages[si].programByDay || [];
+        for(var di = 0; di < prog.length; di++){
+          var day = prog[di] || [];
+          for(var ei = 0; ei < day.length; ei++){
+            var it = day[ei] || {};
+            var name = String(it.name || '');
+            var cue  = String(it.cue || '');
+            var extras = (name + ' ' + cue).toUpperCase();
 
-  function scoreExerciseForContext(exercise, context) {
-    exercise = typeof exercise === 'string' ? findExercise(exercise) : exercise; if(!exercise) return -999; context=context||{};
-    const injuries=safeArray(context.injuries||[]).map(slug);
-    const equipment=safeArray(context.equipment||[]).map(slug);
-    const styleKey=contextStyle(context); const style=styleKey ? STYLE_PROFILES[styleKey] : null;
-    const phase=normalise(context.phase || context.goal || ''); const level=normalise(context.level || context.experience || '');
-    const painLevel=Number(context.painLevel || context.maxPain || 0); const recovery=normalise(context.recovery || context.readiness || '');
-    let score=0;
-    if(!equipment.length) score+=1; else if((exercise.equipment||[]).indexOf('bw')>-1 || (exercise.equipment||[]).indexOf('bodyweight')>-1 || (exercise.equipment||[]).some(e=>equipment.indexOf(slug(e))>-1)) score+=5; else score-=8;
-    if(style) { if(style.preferFamilies.indexOf(exercise.family)>-1) score+=4; if(hasAny(exercise.domains||[], style.preferDomains||[])) score+=4; if(hasAny(exercise.styles||[], [styleKey])) score+=4; }
-    if(level && (exercise.difficulty||[]).indexOf(level)>-1) score+=2; if(level==='beginner' && (exercise.difficulty||[]).indexOf('advanced')>-1) score-=8; if(level==='rebuild' && exercise.jointStress>=4) score-=8;
-    if(phase.indexOf('cut')>-1 || phase.indexOf('transform')>-1 || phase.indexOf('recomp')>-1) { if(hasAny(exercise.tags||[], ['tempo-control','supported','simple','low-impact'])) score+=2; if(exercise.fatigueCost>=5) score-=3; }
-    if(phase.indexOf('bulk')>-1 || phase.indexOf('build')>-1 || phase.indexOf('hypertrophy')>-1) { if(hasAny(exercise.domains||[], ['strength','hypertrophy','weights'])) score+=2; }
-    if(['poor','low','fragile','flare','overloaded'].indexOf(recovery)>-1) { score += exercise.recoveryFriendliness || 0; score -= exercise.fatigueCost || 0; if(hasAny(exercise.tags||[], ['recovery','simple','low-cognitive-load'])) score+=3; }
-    injuries.forEach(injury => { const rule=INJURY_RULES[injury]; if(!rule) return; if((exercise.cautionIf||[]).indexOf(injury)>-1) score -= painLevel>=3 ? 10 : 5; if(hasAny(exercise.tags||[], rule.avoidPatterns||[])) score -= painLevel>=3 ? 12 : 5; if(hasAny(exercise.tags||[], rule.preferPatterns||[])) score += 8; if((rule.cautionPatterns||[]).indexOf(exercise.family)>-1) score -= painLevel>=3 ? 5 : 2; });
-    if(context.lowOverwhelm || styleKey==='low-overwhelm') score -= exercise.cognitiveLoad || 0;
-    return score;
-  }
+            if(it.type && String(it.type).toLowerCase() === 'compound') pushTerm('Compound');
+            if(it.type && String(it.type).toLowerCase() === 'accessory') pushTerm('Accessory');
 
-  function filterExercises(query) {
-    query=query||{}; let list=EXERCISES.slice();
-    if(query.family) { const fams=Array.isArray(query.family)?query.family:[query.family]; list=list.filter(ex=>fams.indexOf(ex.family)>-1); }
-    if(query.purpose) { const ps=Array.isArray(query.purpose)?query.purpose:[query.purpose]; list=list.filter(ex=>hasAny(ex.purposes||[], ps)); }
-    if(query.style || query.trainingStyle) { const s=slug(query.style || query.trainingStyle); if(s && s!=='mixed') list=list.filter(ex=>hasAny(ex.styles||[], [s,'mixed'])); }
-    if(query.equipment && query.equipment.length) { const eq=query.equipment.map(slug); list=list.filter(ex=>(ex.equipment||[]).indexOf('bw')>-1 || (ex.equipment||[]).some(e=>eq.indexOf(slug(e))>-1)); }
-    list=list.map(ex=>{ const copy=clone(ex); copy.contextScore=scoreExerciseForContext(ex, query); return copy; });
-    if(query.injuries && query.injuries.length) list=list.filter(ex=>ex.contextScore>-12);
-    return clone(list.sort((a,b)=>b.contextScore-a.contextScore));
-  }
+            var ABBR = ['LISS','MISS','HIIT','AMRAP','EMOM','RPE','ROM','SS'];
+            for(var a = 0; a < ABBR.length; a++){
+              if(extras.indexOf(ABBR[a]) > -1) pushTerm(ABBR[a]);
+            }
 
-  function suggestAlternatives(nameOrKey, context, limit) {
-    context=context||{}; limit=limit||8; const original=findExercise(nameOrKey); if(!original) return [];
-    const direct=(original.regressions||[]).concat(original.alternatives||[]).map(findExercise).filter(Boolean);
-    const same=EXERCISES.filter(ex=>ex.family===original.family && ex.key!==original.key);
-    const keys=unique(direct.concat(same).map(x=>x.key));
-    return keys.map(findExercise).filter(Boolean).map(ex=>{ex.contextScore=scoreExerciseForContext(ex, context); return ex;}).filter(ex=>ex.contextScore>-12).sort((a,b)=>b.contextScore-a.contextScore).slice(0,limit);
-  }
+            if(it.rir !== undefined && String(it.rir).trim() !== '') pushTerm('RIR');
+            if(/\b\d-\d-\d\b/.test(name) || /\b\d-\d-\d\b/.test(cue)) pushTerm('Tempo');
+          }
+        }
+      }
+      return Object.keys(found);
+    }
 
-  function buildMovementMenu(context) { return FAMILY_DB.map(fam=>({ key:fam.key, label:fam.label, options:filterExercises(Object.assign({}, context||{}, {family:fam.key})).slice(0,12) })); }
-  function getProgressionTree(key) { const k=slug(key); let tree=PROGRESSION_TREES[k]; if(!tree) { const holder=Object.keys(PROGRESSION_TREES).find(name=>PROGRESSION_TREES[name].indexOf(k)>-1); if(holder) tree=PROGRESSION_TREES[holder]; } return tree ? tree.map(findExercise).filter(Boolean) : []; }
-  function buildTemplate(context) { const styleKey=contextStyle(context||{})||'mixed'; const fams=(STYLE_PROFILES[styleKey]||STYLE_PROFILES.mixed).preferFamilies; return fams.slice(0,7).map(family=>{ const opts=filterExercises(Object.assign({}, context||{}, {family})).slice(0,5); const fam=familyByKey(family); return {family, label:fam?fam.label:family, recommended:opts[0]||null, alternatives:opts.slice(1)}; }); }
-  function buildHybridSession(context) { const template=buildTemplate(context); return { title:'FreeFitFuel Adaptive Session', style:contextStyle(context||{})||'mixed', items:template.map(t=>t.recommended).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,equipment:x.equipment,rx:x.defaultRx,cue:x.coachingCue,alternatives:suggestAlternatives(x.key,context,3).map(a=>a.name)})) }; }
-  function buildCircuit(context) { const fams=['conditioning','horizontal-push','horizontal-pull','squat','core-anti-extension']; return { title:'Adaptive Conditioning Circuit', format:'AMRAP or EMOM at recoverable pace', items:fams.map(f=>filterExercises(Object.assign({},context||{},{family:f}))[0]).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,rx:x.defaultRx,cue:x.coachingCue})) }; }
-  function getMyPlanLibrary() { return { version:'4.3', source:'fff-exercise-db', sourceModules: Object.keys(PAGE_SOURCE_MODULES).map(function(key){ return Object.assign({key:key}, PAGE_SOURCE_MODULES[key]); }), items:EXERCISES.map(function(ex){ var enriched=enrichExerciseForPlanner(ex); return { key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[], sourcePage: enriched.sourcePage, sourceLabel: enriched.sourceLabel, sourceReason: enriched.sourceReason, sourceModules: enriched.sourceModules, rx: ex.defaultRx, cue: ex.coachingCue, regressions: ex.regressions||[], progressions: ex.progressions||[], alternatives: ex.alternatives||[] }; }) }; }
-  function seedMyPlanCache() { try { localStorage.setItem('fff.library.cache.v1', JSON.stringify(getMyPlanLibrary())); return true; } catch(err) { return false; } }
-  function getLibraryStats() { const byFamily={}, byInjury={}; EXERCISES.forEach(ex=>{ byFamily[ex.family]=(byFamily[ex.family]||0)+1; (ex.cautionIf||[]).forEach(i=>byInjury[i]=(byInjury[i]||0)+1); }); return { totalExercises:EXERCISES.length, familyCount:FAMILY_DB.length, injuryProfiles:Object.keys(INJURY_RULES).length, styleProfiles:Object.keys(STYLE_PROFILES).length, progressionTrees:Object.keys(PROGRESSION_TREES).length, byFamily, byInjury }; }
+    function renderLegend(terms){
+      var mount = document.getElementById('legendMount');
+      if(!mount) return;
+      if(!terms.length){
+        mount.innerHTML = '';
+        return;
+      }
 
-  return { getExerciseProfile, getFamilySummary, areRelatedExercises, analyseGroup, getAllExercises:()=>clone(EXERCISES), findExercise, filterExercises, suggestAlternatives, buildMovementMenu, getInjuryRules:()=>clone(INJURY_RULES), scoreExerciseForContext, buildTemplate, getLibraryStats, getStyleProfiles:()=>clone(STYLE_PROFILES), buildHybridSession, buildCircuit, getProgressionTree, getMyPlanLibrary, getPageSourceModules:()=>clone(PAGE_SOURCE_MODULES), inferSourceModules:function(ex){return clone(inferSourceModules(ex));}, enrichExerciseForPlanner:function(ex){return clone(enrichExerciseForPlanner(ex));}, seedMyPlanCache };
-})();
+      var rows = '';
+      for(var i = 0; i < terms.length; i++){
+        var t = terms[i];
+        var def = LEGEND_DEFS[t] || '';
+        rows += '<div class="row"><div class="term">' + t + '</div><div class="def">' + def + '</div></div>';
+      }
+
+      mount.innerHTML = '<details class="legend" open><summary>Legend & abbreviations</summary>' + rows + '</details>';
+    }
+
+    function setupAccordions(){
+      var accs = document.querySelectorAll('.accordion');
+      for(var i = 0; i < accs.length; i++){
+        (function(acc){
+          var btn = acc.querySelector('.acc-toggle');
+          var body = acc.querySelector('.acc-body');
+          if(!btn || !body) return;
+
+          acc.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          body.hidden = true;
+
+          btn.addEventListener('click', function(){
+            var isOpen = acc.classList.contains('open');
+            acc.classList.toggle('open', !isOpen);
+            btn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+            body.hidden = isOpen;
+          });
+        })(accs[i]);
+      }
+    }
+
+    function renderPlan(){
+      var wrap = document.getElementById('plan');
+      var msg = document.getElementById('planMsg');
+      if(!wrap) return;
+
+      try{
+        var raw = localStorage.getItem(ROADMAP_KEY);
+
+        if(!raw){
+          wrap.innerHTML = '<div class="card">No roadmap found. Create one above.</div>';
+          renderLegend([]);
+          renderProgressGuide([]);
+          if(msg) msg.textContent = 'Set up your plan in Plan mode to activate this section.';
+          return;
+        }
+
+        var data = JSON.parse(raw);
+        var stages = Array.isArray(data.stages) ? data.stages : [];
+        if(!stages.length){
+          wrap.innerHTML = '<div class="card">Your roadmap will appear here once your plan is generated.</div>';
+          renderLegend([]);
+          renderProgressGuide([]);
+          if(msg) msg.textContent = 'Your roadmap will appear here once your plan is generated.';
+          return;
+        }
+
+        renderLegend(detectLegendTerms(data));
+        renderProgressGuide(stages);
+
+        var html = '';
+        for(var si = 0; si < stages.length; si++){
+          var stage = stages[si] || {};
+          html += '<div class="accordion">' +
+                    '<div class="acc-head"><button class="acc-toggle" aria-expanded="false" type="button">' + escapeHtml(stage.name || ('Stage ' + (si + 1))) + '</button></div>' +
+                    '<div class="acc-body" hidden>' +
+                      (stage.blurb ? ('<p class="meta">' + escapeHtml(stage.blurb) + '</p>') : '');
+
+          if (stage.targets) {
+            html += '<div class="tag-row" style="margin-bottom:10px">' +
+                      '<span class="tag tag-accent">Calories: ' + escapeHtml(String(stage.targets.kcal)) + '</span>' +
+                      '<span class="tag">Protein: ' + escapeHtml(String(stage.targets.protein)) + 'g</span>' +
+                      '<span class="tag">Carbs: ' + escapeHtml(String(stage.targets.carbs)) + 'g</span>' +
+                      '<span class="tag">Fat: ' + escapeHtml(String(stage.targets.fats)) + 'g</span>' +
+                      '<span class="tag">' + escapeHtml(titleCase(stage.targets.mode || 'moderate')) + '</span>' +
+                    '</div>';
+          }
+
+          html += '<div class="days">';
+
+          var days = stage.split || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+          for(var di = 0; di < 7; di++){
+            var label = days[di] || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][di];
+            var items = (stage.programByDay && stage.programByDay[di]) ? stage.programByDay[di] : [];
+
+            html += '<div class="mov"><div class="mov-head"><div class="mov-title"><strong>' + escapeHtml(label) + '</strong></div></div>';
+
+            for(var ei = 0; ei < items.length; ei++){
+              var it = items[ei] || {};
+              var presc = (it.type === 'cardio')
+                ? [it.duration_min ? (it.duration_min + ' min') : null, it.work_s ? ('work ' + it.work_s + 's') : null, it.rest_s ? ('rest ' + it.rest_s + 's') : null, it.rounds ? (it.rounds + ' rounds') : null].filter(Boolean).join(' · ')
+                : ((it.sets || '—') + '×' + (it.reps || '—') + ' · ' + (it.rir || '—') + ' RIR · ' + (it.rest || 60) + 's rest');
+
+              html += '<div class="mov exercise-item">' +
+                        '<div class="mov-head">' +
+                          '<div class="mov-title">' +
+                            '<a href="' + yt(it.name || 'exercise') + '" target="_blank" rel="noopener">' + escapeHtml(it.name || 'Exercise') + '</a>' +
+                            ((it.type && it.type !== 'cardio') ? (' <span class="badge">' + escapeHtml(it.type) + '</span>') : '') +
+                          '</div>' +
+                          '<div class="rx">' + escapeHtml(presc) + '</div>' +
+                          '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
+                        '</div>' +
+                        (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
+                        (it.why ? ('<div class="why-box"><strong>Why this is here:</strong> ' + escapeHtml(it.why) + '</div>') : '') +
+                        (it.sourcePage ? ('<div class="source-row"><a class="source-pill" href="' + escapeHtml(it.sourcePage) + '">Source: ' + escapeHtml(it.sourceLabel || 'FreeFitFuel') + '</a></div>') : '') +
+                        ((it.sourceModules && it.sourceModules.length > 1) ? ('<div class="source-row">' + it.sourceModules.slice(1,4).map(function(src){
+                          return '<a class="source-pill" href="' + escapeHtml(src.url || '#') + '">Also: ' + escapeHtml(src.label || 'Module') + '</a>';
+                        }).join('') + '</div>') : '') +
+                        ((it.alts && it.alts.length) ? ('<div class="alt-chips">' + it.alts.map(function(alt){
+                          return '<a class="alt-chip" href="' + yt(alt) + '" target="_blank" rel="noopener">' + escapeHtml(alt) + '</a>';
+                        }).join('') + '</div>') : '') +
+                        '<div class="drawer" data-drawer>' +
+                          '<div class="log-grid" data-log>' +
+                            [1,2,3,4,5].map(function(i){
+                              return '<div class="log-row">' +
+                                       '<strong>Set ' + i + '</strong>' +
+                                       '<input inputmode="decimal" placeholder="kg" data-field="w' + i + '">' +
+                                       '<input inputmode="numeric" placeholder="reps" data-field="r' + i + '">' +
+                                       '<input placeholder="notes" data-field="n' + i + '">' +
+                                       '<button class="btn-sm" data-save type="button">Save</button>' +
+                                     '</div>' +
+                                     (it.type === 'cardio' ? '' : restControlsHTML('s' + si + 'd' + di + 'e' + ei + '.s' + i));
+                            }).join('') +
+                          '</div>' +
+                          '<div class="meta-row">' +
+                            '<span class="pb" data-pb></span>' +
+                            '<span class="badge" data-badge></span>' +
+                          '</div>' +
+                          '<div class="quote" data-quote></div>' +
+                        '</div>' +
+                      '</div>';
+            }
+
+            html += '</div>';
+          }
+
+          html += '</div></div></div>';
+        }
+
+        wrap.innerHTML = html;
+        if(msg) msg.textContent = 'Loaded ' + stages.length + ' stage' + (stages.length > 1 ? 's' : '') + ' from local roadmap.';
+        setupAccordions();
+
+        var openBtns = wrap.querySelectorAll('[data-open]');
+        for(var ob = 0; ob < openBtns.length; ob++){
+          (function(btn){
+            btn.addEventListener('click', function(){
+              var exerciseItem = btn.closest('.exercise-item');
+              if(!exerciseItem) return;
+              var drawer = exerciseItem.querySelector('[data-drawer]');
+              if(!drawer) return;
+              drawer.classList.toggle('open');
+              if(drawer.classList.contains('open')) hookRestTimers(drawer);
+            });
+          })(openBtns[ob]);
+        }
+      }catch(err){
+        wrap.innerHTML = '<div class="card">An error occurred while rendering the plan.</div>';
+        renderLegend([]);
+        renderProgressGuide([]);
+        if(msg) msg.textContent = 'Error: ' + (err && err.message ? err.message : String(err));
+      }
+    }
+
+
+
+    function getWeightLog(){
+      try{
+        var raw = localStorage.getItem(WEIGHT_LOG_KEY);
+        var arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      }catch(err){
+        return [];
+      }
+    }
+
+    function saveWeightLog(log){
+      localStorage.setItem(WEIGHT_LOG_KEY, JSON.stringify(log));
+    }
+
+    function addWeightLogEntry(weight, note){
+      var log = getWeightLog();
+      log.push({
+        date: todayISO(),
+        weight: weight,
+        note: String(note || '').trim()
+      });
+      saveWeightLog(log);
+      return log;
+    }
+
+    function getTargetWeight(){
+      var raw = localStorage.getItem(TARGET_WEIGHT_KEY);
+      if(raw == null || raw === '') return null;
+      var n = parseFloat(raw);
+      return isNaN(n) ? null : n;
+    }
+
+    function saveTargetWeight(value){
+      if(value == null || value === '' || isNaN(value)){
+        localStorage.removeItem(TARGET_WEIGHT_KEY);
+        return;
+      }
+      localStorage.setItem(TARGET_WEIGHT_KEY, String(value));
+    }
+
+    function getRecentWeightAverage(days){
+      var log = getWeightLog();
+      if(!log.length) return null;
+      var slice = log.slice(Math.max(0, log.length - (days || 7)));
+      if(!slice.length) return null;
+      var total = 0;
+      for(var i = 0; i < slice.length; i++) total += Number(slice[i].weight || 0);
+      return +(total / slice.length).toFixed(2);
+    }
+
+    function getWeekKey(isoDate){
+      var d = new Date(isoDate + 'T00:00:00');
+      if(isNaN(d.getTime())) return isoDate;
+      var day = d.getDay();
+      var diff = d.getDate() - day + (day === 0 ? -6 : 1);
+      d.setDate(diff);
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function buildWeightSeries(mode){
+      var log = getWeightLog();
+      if(!log.length) return [];
+
+      if(mode === 'weekly'){
+        var grouped = {};
+        for(var i = 0; i < log.length; i++){
+          var item = log[i];
+          var key = getWeekKey(item.date);
+          if(!grouped[key]) grouped[key] = [];
+          grouped[key].push(Number(item.weight || 0));
+        }
+        var keys = Object.keys(grouped).sort();
+        return keys.map(function(key){
+          var arr = grouped[key];
+          var total = 0;
+          for(var j = 0; j < arr.length; j++) total += arr[j];
+          return {
+            label: key,
+            value: +(total / arr.length).toFixed(2),
+            count: arr.length
+          };
+        });
+      }
+
+      return log.map(function(item){
+        return {
+          label: item.date,
+          value: +Number(item.weight || 0).toFixed(2),
+          count: 1
+        };
+      });
+    }
+
+    function renderGraphPointDetail(series, index){
+      var title = document.getElementById('graphPointTitle');
+      var stats = document.getElementById('graphPointStats');
+      if(!title || !stats) return;
+
+      if(!series.length || index == null || !series[index]){
+        title.textContent = 'No point selected yet.';
+        stats.textContent = 'Add at least two weight entries to see a meaningful rate of change.';
+        return;
+      }
+
+      var point = series[index];
+      title.textContent = point.label + ' — ' + point.value + ' kg';
+
+      if(index === 0 || !series[index - 1]){
+        stats.textContent = 'This is the first point in the visible series, so there is no prior rate to compare.';
+        return;
+      }
+
+      var prev = series[index - 1];
+      var delta = +(point.value - prev.value).toFixed(2);
+      var pct = prev.value ? +(((point.value - prev.value) / prev.value) * 100).toFixed(2) : 0;
+      var unit = WEIGHT_CHART_MODE === 'weekly' ? 'kg/week' : 'kg/day';
+      stats.textContent =
+        'Change from previous point: ' +
+        (delta > 0 ? '+' : '') + delta + ' ' + unit +
+        ' (' + (pct > 0 ? '+' : '') + pct + '%).';
+    }
+
+    function renderWeightChart(){
+      var canvas = document.getElementById('weightChart');
+      if(!canvas) return;
+
+      var dailyBtn = document.getElementById('graphModeDaily');
+      var weeklyBtn = document.getElementById('graphModeWeekly');
+      if(dailyBtn) dailyBtn.setAttribute('aria-pressed', WEIGHT_CHART_MODE === 'daily' ? 'true' : 'false');
+      if(weeklyBtn) weeklyBtn.setAttribute('aria-pressed', WEIGHT_CHART_MODE === 'weekly' ? 'true' : 'false');
+
+      var series = buildWeightSeries(WEIGHT_CHART_MODE);
+      renderGraphPointDetail(series, series.length ? series.length - 1 : null);
+
+      if(!(window.Chart && canvas.getContext)){
+        return;
+      }
+
+      if(WEIGHT_CHART){
+        WEIGHT_CHART.destroy();
+        WEIGHT_CHART = null;
+      }
+
+      var ctx = canvas.getContext('2d');
+      WEIGHT_CHART = new window.Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: series.map(function(point){ return point.label; }),
+          datasets: [{
+            label: WEIGHT_CHART_MODE === 'weekly' ? 'Weekly average weight' : 'Daily weight',
+            data: series.map(function(point){ return point.value; }),
+            tension: 0.25,
+            borderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx){
+                  return ctx.parsed.y + ' kg';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#b7b7c2', maxRotation: 0, autoSkip: true },
+              grid: { color: 'rgba(255,255,255,.06)' }
+            },
+            y: {
+              ticks: {
+                color: '#b7b7c2',
+                callback: function(value){ return value + ' kg'; }
+              },
+              grid: { color: 'rgba(255,255,255,.06)' }
+            }
+          },
+          onClick: function(evt, elements){
+            if(!elements || !elements.length) return;
+            var index = elements[0].index;
+            renderGraphPointDetail(series, index);
+          }
+        }
+      });
+    }
+
+    function getLastAutomationEvent(){
+      try{
+        var raw = localStorage.getItem(AUTOMATION_EVENT_KEY);
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function saveLastAutomationEvent(event){
+      localStorage.setItem(AUTOMATION_EVENT_KEY, JSON.stringify(event));
+    }
+
+    
+    function getAutomationContext(history, entry){
+      var prev = history.length ? history[history.length - 1] : null;
+      var prev2 = history.length > 1 ? history[history.length - 2] : null;
+
+      var ctx = {
+        prev: prev,
+        prev2: prev2,
+        highAdherence: entry.adherence_nutrition >= 4 && entry.adherence_training >= 4,
+        adequateAdherence: entry.adherence_nutrition >= 3 && entry.adherence_training >= 3,
+        poorRecovery: entry.recovery <= 2 || entry.sleep <= 2,
+        decentRecovery: entry.recovery >= 3 && entry.sleep >= 3,
+        strongRecovery: entry.recovery >= 4 && entry.sleep >= 3,
+        weightAtOrBeyondTarget: false,
+        waistNotRising: true,
+        waistDropping: false,
+        waistStableOrDown: true,
+        scaleStable: false,
+        confirmedByTwoCheckins: false,
+        trendLooksReal: false
+      };
+
+      if(prev && entry.weight_avg != null && prev.weight_avg != null){
+        ctx.scaleStable = Math.abs(entry.weight_avg - prev.weight_avg) <= 0.4;
+      }
+
+      if(prev && entry.waist_cm != null && prev.waist_cm != null){
+        ctx.waistDropping = entry.waist_cm <= prev.waist_cm - 0.3;
+        ctx.waistNotRising = entry.waist_cm <= prev.waist_cm + 0.2;
+        ctx.waistStableOrDown = entry.waist_cm <= prev.waist_cm + 0.2;
+      }
+
+      if(prev2 && prev && entry.weight_avg != null && prev.weight_avg != null && prev2.weight_avg != null){
+        var delta1 = Math.abs(entry.weight_avg - prev.weight_avg);
+        var delta2 = Math.abs(prev.weight_avg - prev2.weight_avg);
+        ctx.confirmedByTwoCheckins = delta1 <= 0.5 || delta2 <= 0.5;
+      } else {
+        ctx.confirmedByTwoCheckins = !!prev;
+      }
+
+      ctx.trendLooksReal = ctx.confirmedByTwoCheckins;
+
+      return ctx;
+    }
+
+    function renderAutomationStatus(){
+      var ruleEl = document.getElementById('phaseAutomationRule');
+      var lastEl = document.getElementById('phaseAutomationLast');
+      var reasoningEl = document.getElementById('phaseAutomationReasoning');
+      var recommendationEl = document.getElementById('phaseRecommendationText');
+      var overrideStatusEl = document.getElementById('phaseOverrideStatus');
+      var advanceBtn = document.getElementById('btnAdvancePhase');
+      var stayBtn = document.getElementById('btnStayPhase');
+      var clearBtn = document.getElementById('btnClearPhaseOverride');
+
+      var pair = getCurrentAndNextPhase();
+      var roadmap = pair.roadmap;
+      var current = pair.current;
+      var next = pair.next;
+
+      populatePhaseOverrideSelect();
+
+      if(!roadmap || !current){
+        ruleEl.textContent = 'No active roadmap loaded yet.';
+        lastEl.textContent = 'No phase automation event yet.';
+        reasoningEl.textContent = 'No automation reasoning available yet.';
+        recommendationEl.textContent = 'No recommendation available yet.';
+        overrideStatusEl.textContent = 'No override active.';
+        if(advanceBtn) advanceBtn.disabled = true;
+        if(stayBtn) stayBtn.disabled = true;
+        if(clearBtn) clearBtn.disabled = true;
+        return;
+      }
+
+      var targetWeight = getTargetWeight();
+      var endBF = roadmap.endBF != null ? roadmap.endBF : null;
+      var rule = 'Current phase: ' + current.name + '. ';
+
+      if(current.id === 'cut'){
+        rule += 'Automation watches weight trend, waist trend, adherence and recovery before moving to ' + (next ? next.name : 'the next phase') + '.';
+      } else if(current.id === 'transform'){
+        rule += 'Automation looks for confirmed body-composition progress with acceptable adherence and recovery before moving to ' + (next ? next.name : 'the next phase') + '.';
+      } else if(current.id === 'maintain'){
+        rule += 'Automation wants stable weight, stable waist, and decent adherence / recovery before progressing to ' + (next ? next.name : 'the next phase') + '.';
+      } else {
+        rule += 'Automation watches gain trend, waist trend, adherence and recovery before moving to ' + (next ? next.name : 'the next phase') + '.';
+      }
+
+      if(targetWeight != null){
+        rule += ' Target weight in use: ' + targetWeight + ' kg.';
+      }
+      if(endBF != null){
+        rule += ' Target body fat in use: ' + endBF + '%.';
+      }
+
+      ruleEl.textContent = rule;
+
+      var event = getLastAutomationEvent();
+      if(event && event.date){
+        lastEl.textContent = event.date + ' — ' + event.message;
+      } else {
+        lastEl.textContent = 'No phase automation event yet.';
+      }
+
+      var recommendation = evaluatePhaseRecommendation();
+      recommendationEl.textContent = recommendation.text;
+
+      var override = getPhaseOverride();
+      if(override && override.type === 'stay' && override.phaseId === current.id){
+        overrideStatusEl.textContent = 'User override active: staying in ' + current.name + ' until you clear the override.';
+      } else {
+        overrideStatusEl.textContent = 'No override active.';
+      }
+
+      var history = getCheckinHistory();
+      var latestEntry = history.length ? history[history.length - 1] : null;
+      var ctx = latestEntry ? getAutomationContext(history.slice(0, -1), latestEntry) : null;
+      var reasoning = latestEntry && ctx ? buildAutomationReasoning(current, ctx, latestEntry, roadmap) : ['Save a weekly check-in to see exactly why automation will or will not move you.'];
+      if(override && override.type === 'stay' && override.phaseId === current.id){
+        reasoning.push('A user override is currently blocking automatic progression out of this phase.');
+      }
+      if(recommendation.ready && recommendation.reason){
+        reasoning.push('System recommendation reason: ' + recommendation.reason + '.');
+      }
+      reasoningEl.innerHTML = reasoning.map(function(line){ return '• ' + escapeHtml(line); }).join('<br>');
+
+      if(advanceBtn) advanceBtn.disabled = !next;
+      if(stayBtn) stayBtn.disabled = !current;
+      if(clearBtn) clearBtn.disabled = !(override && override.type === 'stay' && override.phaseId === current.id);
+    }
+
+    function buildDecisionReasoning(entry, prev){
+      var reasons = [];
+      var highAdherence = entry.adherence_nutrition >= 4 && entry.adherence_training >= 4;
+      var adequateAdherence = entry.adherence_nutrition >= 3 && entry.adherence_training >= 3;
+      var poorRecovery = entry.recovery <= 2 || entry.sleep <= 2;
+
+      if(prev && entry.weight_avg != null && prev.weight_avg != null){
+        var deltaW = entry.weight_avg - prev.weight_avg;
+        if(deltaW <= -0.15) reasons.push('Weight trend is moving down.');
+        else if(deltaW >= 0.2) reasons.push('Weight trend is moving up.');
+        else reasons.push('Weight trend is broadly flat.');
+      } else {
+        reasons.push('Weight trend is not fully established yet.');
+      }
+
+      if(prev && entry.waist_cm != null && prev.waist_cm != null){
+        var deltaWaist = entry.waist_cm - prev.waist_cm;
+        if(deltaWaist <= -0.5) reasons.push('Waist trend is moving down.');
+        else if(deltaWaist >= 0.5) reasons.push('Waist trend is moving up.');
+        else reasons.push('Waist trend is broadly stable.');
+      } else if(entry.waist_cm != null) {
+        reasons.push('Waist is logged, but trend is not established yet.');
+      } else {
+        reasons.push('No waist trend is available.');
+      }
+
+      if(highAdherence) reasons.push('Adherence looks strong enough to trust the signal.');
+      else if(adequateAdherence) reasons.push('Adherence looks fair but not strong.');
+      else reasons.push('Adherence is too weak to trust the data fully.');
+
+      reasons.push(poorRecovery ? 'Recovery is currently too weak to push harder.' : 'Recovery is acceptable.');
+
+      if(entry.emotional_level){
+        if(entry.emotional_level === 'drained') reasons.push('Emotional level is drained, so the plan should stay supportive rather than pushy.');
+        else if(entry.emotional_level === 'flat') reasons.push('Emotional level is flat, so a steadier week is sensible.');
+        else if(entry.emotional_level === 'positive') reasons.push('Emotional level is positive, which supports a steadier push if recovery also agrees.');
+        else if(entry.emotional_level === 'strong') reasons.push('Emotional level is strong, which supports progress if the rest of the signals agree.');
+        else reasons.push('Emotional level is steady.');
+      }
+
+      return reasons;
+    }
+
+    function buildAutomationReasoning(current, ctx, entry, roadmap){
+      var targetWeight = getTargetWeight();
+      var targetBF = roadmap && roadmap.endBF != null ? roadmap.endBF : null;
+      var reasons = [];
+
+      if(entry){
+        if(entry.weight_avg != null){
+          reasons.push('Weekly average weight is ' + entry.weight_avg + ' kg.');
+        } else {
+          reasons.push('No weekly average weight is logged yet.');
+        }
+
+        if(entry.waist_cm != null){
+          reasons.push(ctx.waistStableOrDown ? 'Waist is stable or moving down.' : 'Waist is rising, so automation will hold.');
+        } else {
+          reasons.push('No waist entry is available, so automation leans more heavily on the rest of the check-in.');
+        }
+
+        reasons.push(ctx.adequateAdherence ? 'Adherence is good enough for automation to trust the check-in.' : 'Adherence is not yet good enough for automation to trust the check-in.');
+        reasons.push(ctx.poorRecovery ? 'Recovery is too weak for automation to move the phase on.' : 'Recovery is acceptable for automation.');
+      } else {
+        reasons.push('No weekly check-in has been saved yet.');
+      }
+
+      if(current){
+        if(targetWeight != null) reasons.push('Target weight is set to ' + targetWeight + ' kg.');
+        if(targetBF != null) reasons.push('Target body fat is set to ' + targetBF + '%.');
+
+        if(current.id === 'cut'){
+          reasons.push('Cut automation needs the target to be reached with acceptable adherence, acceptable recovery, and no waist warning.');
+        } else if(current.id === 'transform'){
+          reasons.push('Transform automation needs the target to be reached with confirming body-composition context.');
+        } else if(current.id === 'maintain'){
+          reasons.push('Maintain automation only moves on when weight and waist are stable and recovery / adherence are decent.');
+        } else if(current.id === 'bulk'){
+          reasons.push('Bulk automation only moves on when the build target is reached without a waist warning and with acceptable recovery.');
+        }
+      }
+
+      return reasons;
+    }
+
+    function evaluateCheckin(entry, prev){
+      var phase = String(entry.phase || '');
+      var decision = 'Stay in phase';
+      var reason = 'Not enough data yet to justify changing the phase.';
+      var nutrition = 'No nutrition change.';
+      var training = 'Keep training pressure steady.';
+      var phaseAction = 'Remain in the current phase.';
+      var tags = ['Hold steady'];
+
+      var highAdherence = entry.adherence_nutrition >= 4 && entry.adherence_training >= 4;
+      var poorRecovery = entry.recovery <= 2 || entry.sleep <= 2;
+      var weightDrop = prev && entry.weight_avg && prev.weight_avg ? (entry.weight_avg < prev.weight_avg - 0.15) : false;
+      var weightFlat = prev && entry.weight_avg && prev.weight_avg ? Math.abs(entry.weight_avg - prev.weight_avg) <= 0.15 : false;
+      var waistDrop = prev && entry.waist_cm && prev.waist_cm ? (entry.waist_cm < prev.waist_cm - 0.5) : false;
+      var weightGain = prev && entry.weight_avg && prev.weight_avg ? (entry.weight_avg > prev.weight_avg + 0.2) : false;
+      var waistGain = prev && entry.waist_cm && prev.waist_cm ? (entry.waist_cm > prev.waist_cm + 0.5) : false;
+
+      if (phase === 'cut') {
+        if (poorRecovery) {
+          decision = 'Protect recovery';
+          reason = 'Your recovery signals are poor, so tightening the cut harder would likely backfire.';
+          nutrition = 'Hold calories where they are for now.';
+          training = 'Reduce volume slightly or keep one session easier this week.';
+          phaseAction = 'Stay in cut, but reduce pressure.';
+          tags = ['Recovery first', 'Do not tighten'];
+        } else if (weightDrop || waistDrop) {
+          decision = 'Stay in cut';
+          reason = 'Body-composition trend is moving in the right direction.';
+          nutrition = 'No calorie change needed.';
+          training = 'Keep training quality high and recovery honest.';
+          phaseAction = 'Remain in cut.';
+          tags = ['Progressing', 'Stay the course'];
+        } else if (weightFlat && highAdherence) {
+          decision = 'Tighten slightly';
+          reason = 'Progress looks flat despite decent adherence, so a small calorie adjustment is justified.';
+          nutrition = 'Reduce daily intake slightly, around 100–150 kcal.';
+          training = 'Keep training steady rather than adding lots more cardio.';
+          phaseAction = 'Stay in cut and review again next week.';
+          tags = ['Small reduction', 'Watch trend'];
+        } else if (!highAdherence) {
+          decision = 'Fix adherence first';
+          reason = 'The data does not yet suggest the phase is wrong. It suggests execution needs tightening first.';
+          nutrition = 'Keep calories the same and improve consistency.';
+          training = 'Aim to complete the planned sessions before changing the phase.';
+          phaseAction = 'Remain in cut.';
+          tags = ['Adherence issue', 'Do not overreact'];
+        }
+      }
+
+      if (phase === 'transform') {
+        if (poorRecovery) {
+          decision = 'Protect recovery';
+          reason = 'Recovery is too weak to force progress harder this week.';
+          nutrition = 'Keep calories steady.';
+          training = 'Reduce pressure slightly and keep quality high.';
+          phaseAction = 'Stay in transform.';
+          tags = ['Recovery first'];
+        } else if (waistDrop || weightFlat) {
+          decision = 'Stay in transform';
+          reason = 'This still looks compatible with recomposition progress.';
+          nutrition = 'No calorie change needed.';
+          training = 'Keep progressing lifts carefully.';
+          phaseAction = 'Remain in transform.';
+          tags = ['Recomp still working'];
+        } else if (highAdherence && !waistDrop && !weightFlat) {
+          decision = 'Nudge calories down';
+          reason = 'Body-composition signals are not moving enough for transform.';
+          nutrition = 'Reduce daily intake slightly, around 75–125 kcal.';
+          training = 'Keep lifts progressing rather than slashing effort.';
+          phaseAction = 'Stay in transform and reassess next week.';
+          tags = ['Small nudge', 'Reassess'];
+        } else if (!highAdherence) {
+          decision = 'Fix adherence first';
+          reason = 'A transform phase is easy to misread when execution is inconsistent.';
+          nutrition = 'Keep calories the same and improve consistency.';
+          training = 'Focus on completing the planned sessions well.';
+          phaseAction = 'Remain in transform.';
+          tags = ['Adherence issue'];
+        }
+      }
+
+      if (phase === 'maintain') {
+        if (weightFlat && !waistGain) {
+          decision = 'Stay in maintain';
+          reason = 'Stability is exactly what this phase is for.';
+          nutrition = 'No calorie change needed.';
+          training = 'Keep training quality steady.';
+          phaseAction = 'Remain in maintain.';
+          tags = ['Stable', 'On target'];
+        } else if (waistGain && highAdherence) {
+          decision = 'Tighten slightly';
+          reason = 'Body-fat drift may be starting to creep in.';
+          nutrition = 'Reduce daily intake slightly, around 75–125 kcal.';
+          training = 'Keep activity consistent and monitor next week.';
+          phaseAction = 'Stay in maintain for now.';
+          tags = ['Small correction'];
+        } else if (wantsMuscleGain() && entry.recovery >= 4 && highAdherence) {
+          decision = 'Bulk readiness looks good';
+          reason = 'Recovery and stability both look good enough to consider a build phase.';
+          nutrition = 'No immediate change until you choose to move.';
+          training = 'Continue building momentum.';
+          phaseAction = 'Next phase could be Lean Bulk.';
+          tags = ['Ready to build'];
+        }
+      }
+
+      if (phase === 'bulk') {
+        if (poorRecovery) {
+          decision = 'Ease off slightly';
+          reason = 'Recovery is not keeping up with the build phase right now.';
+          nutrition = 'Hold or reduce by around 100 kcal if appetite or recovery feels poor.';
+          training = 'Reduce pressure slightly and keep execution clean.';
+          phaseAction = 'Remain in bulk, but manage fatigue better.';
+          tags = ['Bulk fatigue'];
+        } else if (weightGain && !waistGain) {
+          decision = 'Stay in bulk';
+          reason = 'Gain rate looks productive without obvious overspill.';
+          nutrition = 'No calorie change needed.';
+          training = 'Keep progressive overload careful and steady.';
+          phaseAction = 'Remain in bulk.';
+          tags = ['Productive gain'];
+        } else if (waistGain) {
+          decision = 'Trim the surplus';
+          reason = 'Waist gain is suggesting the surplus may be a bit too aggressive.';
+          nutrition = 'Reduce daily intake by around 100–150 kcal.';
+          training = 'Keep performance high but avoid unnecessary junk volume.';
+          phaseAction = 'Stay in bulk and reassess next week.';
+          tags = ['Surplus too high'];
+        }
+      }
+
+      return {
+        decision: decision,
+        reason: reason,
+        nutrition: nutrition,
+        training: training,
+        phaseAction: phaseAction,
+        tags: tags,
+        reasoning: buildDecisionReasoning(entry, prev)
+      };
+    }
+
+    function renderCheckinResult(result){
+      document.getElementById('checkinDecision').textContent = result ? result.decision : 'No check-in yet';
+      document.getElementById('checkinReason').textContent = result ? result.reason : 'Complete your first weekly check-in to activate your weekly recommendation.';
+      document.getElementById('checkinNutritionAction').textContent = result ? result.nutrition : '—';
+      document.getElementById('checkinTrainingAction').textContent = result ? result.training : '—';
+      document.getElementById('checkinPhaseAction').textContent = result ? result.phaseAction : '—';
+      document.getElementById('checkinReasoning').innerHTML = result && Array.isArray(result.reasoning) && result.reasoning.length
+        ? result.reasoning.map(function(line){ return '• ' + escapeHtml(line); }).join('<br>')
+        : '—';
+      var latestHistory = getCheckinHistory();
+      var latestEmotion = latestHistory.length ? latestHistory[latestHistory.length - 1].emotional_level : '';
+      document.getElementById('checkinTags').innerHTML = result ? result.tags.concat(latestEmotion ? ['Emotion: ' + titleCase(latestEmotion)] : []).map(function(t){
+        return '<span class="tag tag-accent">' + escapeHtml(t) + '</span>';
+      }).join('') : '';
+    }
+
+    function renderCheckinHistory(){
+      var body = document.getElementById('checkinHistoryBody');
+      var history = getCheckinHistory();
+
+      if(!history.length){
+        body.innerHTML = '<tr><td colspan="5" class="meta">Your weekly history will appear after your first saved check-in.</td></tr>';
+        renderCheckinResult(null);
+        return;
+      }
+
+      body.innerHTML = history.slice().reverse().map(function(item){
+        return '<tr>' +
+          '<td>' + escapeHtml(item.date || '—') + '</td>' +
+          '<td>' + escapeHtml(titleCase(item.phase || '—')) + '</td>' +
+          '<td>' + (item.weight_avg != null ? escapeHtml(String(item.weight_avg)) + ' kg' : '—') + '</td>' +
+          '<td>' + (item.waist_cm != null && item.waist_cm !== '' ? escapeHtml(String(item.waist_cm)) + ' cm' : '—') + '</td>' +
+          '<td>' + escapeHtml(item.result && item.result.decision ? item.result.decision : '—') + '</td>' +
+        '</tr>';
+      }).join('');
+
+      var latest = history[history.length - 1];
+      renderCheckinResult(latest.result || null);
+    }
+
+    function saveWeeklyCheckin(){
+      var roadmap = getActiveRoadmap();
+      if(!roadmap || !Array.isArray(roadmap.stages) || !roadmap.stages.length){
+        alert('Create a roadmap first so the check-in knows which phase you are in.');
+        return;
+      }
+
+      var history = getCheckinHistory();
+      var prev = history.length ? history[history.length - 1] : null;
+
+      var entry = {
+        date: todayISO(),
+        phase: roadmap.stages[0].id || '',
+        weight_avg: (function(){ var manual = parseFloat(document.getElementById('checkinWeight').value || ''); if(!isNaN(manual) && manual > 0) return manual; var avg = getRecentWeightAverage(7); return avg == null ? null : avg; })(),
+        waist_cm: parseFloat(document.getElementById('checkinWaist').value || '') || null,
+        bodyfat_est: parseFloat(document.getElementById('checkinBodyFat').value || '') || null,
+        adherence_nutrition: readRadioValue('nutritionAdherence'),
+        adherence_training: readRadioValue('trainingAdherence'),
+        recovery: readRadioValue('recoveryScore'),
+        energy: readRadioValue('energyScore'),
+        hunger: readRadioValue('hungerScore'),
+        sleep: readRadioValue('sleepScore'),
+        emotional_level: String(document.getElementById('emotionalLevel').value || 'steady'),
+        notes: String(document.getElementById('checkinNotes').value || '').trim()
+      };
+
+      entry.result = evaluateCheckin(entry, prev);
+      history.push(entry);
+
+      var automationMessage = maybeAutoAdvanceRoadmap(entry);
+      if(automationMessage){
+        entry.result.phaseAction = automationMessage;
+        entry.result.decision = 'Phase completed';
+        entry.result.tags = (entry.result.tags || []).concat(['Auto-advanced']);
+      }
+
+      saveCheckinHistory(history);
+      renderCurrentPhase();
+      renderPlan();
+      renderCheckinHistory();
+      renderAutomationStatus();
+      renderActivationLayer();
+      syncPolishMirrors();
+
+      if(automationMessage){
+        alert('Weekly check-in saved. ' + automationMessage);
+      } else {
+        alert('Weekly check-in saved.');
+      }
+    }
+
+    function exportAll(){
+      var dump = {};
+      var allow = [
+        'fff.roadmap.plan.v1',
+        'fff.pb.v1',
+        'fff.logs.v1',
+        'fff.checks.v1',
+        'fff.coaching.v1',
+        'fff.weekly.checkins.v1',
+        'fff.weight.log.v1',
+        'fff.target.weight.v1',
+        'fff.phase.automation.last.v1'
+      ];
+
+      for(var i = 0; i < localStorage.length; i++){
+        var k = localStorage.key(i);
+        if(k && allow.indexOf(k) > -1){
+          dump[k] = localStorage.getItem(k);
+        }
+      }
+
+      var blob = new Blob([JSON.stringify(dump, null, 2)], {type:'application/json'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'freefitfuel-my-plan-backup.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importAll(file){
+      var r = new FileReader();
+      r.onload = function(){
+        try{
+          var obj = JSON.parse(String(r.result || '{}'));
+          for(var k in obj){
+            if(Object.prototype.hasOwnProperty.call(obj, k)){
+              localStorage.setItem(k, obj[k]);
+            }
+          }
+          alert('Import complete. Reloading My Plan.');
+          location.reload();
+        }catch(e){
+          alert('Import failed — invalid file.');
+        }
+      };
+      r.readAsText(file);
+    }
+
+    function resetPBsAndWellness(){
+      try{
+        var roadmapBefore = localStorage.getItem(ROADMAP_KEY);
+        if(!roadmapBefore){
+          alert('No roadmap is currently saved. Reset cancelled.');
+          return;
+        }
+
+        if(window.FFF && typeof window.FFF.resetWellnessAndLogs === 'function'){
+          window.FFF.resetWellnessAndLogs();
+        } else {
+          localStorage.removeItem('fff.pb.v1');
+          localStorage.removeItem('fff.logs.v1');
+          localStorage.removeItem('fff.checks.v1');
+          localStorage.removeItem('fff.coaching.v1');
+        }
+
+        if(!localStorage.getItem(ROADMAP_KEY) && roadmapBefore){
+          localStorage.setItem(ROADMAP_KEY, roadmapBefore);
+        }
+
+        if(window.FFF && typeof window.FFF.ready === 'function'){
+          window.FFF.ready();
+        }
+
+        ['hydrDone','sleepDone','macroDone','activityCardio'].forEach(function(id){
+          var box = document.getElementById(id);
+          if(box) box.checked = false;
+        });
+
+        renderCurrentPhase();
+        renderPlan();
+        refreshAllCoachViews();
+        wireWorkoutPlanLogsToEngine();
+
+        alert('Cleared workout logs, PBs and wellness checks. Roadmap left intact.');
+      }catch(e){
+        alert('Reset failed. Please try again.');
+      }
+    }
+
+    function renderCoachSummary(){
+      var el = document.getElementById('coachSummary');
+      if(!el) return;
+
+      if(!window.FFF){
+        el.innerHTML = '<strong>Coaching not active yet</strong><p>Coaching will activate once your first week of data is in place.</p>';
+        return;
+      }
+
+      try{
+        var summary = window.FFF.getGlobalCoachingSummary();
+        el.innerHTML = '<strong>' + escapeHtml(summary.headline || 'Coaching') + '</strong><p>' + escapeHtml(summary.message || '') + '</p>';
+      }catch(err){
+        el.innerHTML = '<strong>Coach unavailable</strong><p>' + escapeHtml(err && err.message ? err.message : 'Engine could not produce a coaching summary.') + '</p>';
+      }
+    }
+
+    function renderIntervention(){
+      var headline = 'Keep moving gently';
+      var message = 'If the day feels heavy, lower the ask and make the next step easier rather than trying to force intensity.';
+      var actions = [
+        'Strip the next session back to the first useful block instead of the whole thing.',
+        'Swap one hard exercise for a friendlier version and still log the win.',
+        'Use a two-minute reset before training: slower breathing, loosen shoulders, start small.'
+      ];
+      var tags = ['Reset mode', 'Low friction', 'Stay in the game'];
+
+      try{
+        if(window.FFF){
+          var summary = window.FFF.getGlobalCoachingSummary();
+          var mode = String(summary.mode || '').toLowerCase();
+          var risk = summary.mind && summary.mind.risk ? String(summary.mind.risk).toLowerCase() : 'low';
+          var pressure = summary.mind && typeof summary.mind.pressure === 'number' ? summary.mind.pressure : 20;
+          var confidence = summary.mind && typeof summary.mind.confidence === 'number' ? summary.mind.confidence : 50;
+
+          if(mode === 'deload' || mode === 'protect' || mode === 'pain-risk'){
+            headline = 'Reduce pressure, keep momentum';
+            message = 'The system is not asking for heroics. Keep the plan alive with a lower-irritation version rather than proving a point today.';
+            actions = [
+              'Cut one main movement back and keep reps clean.',
+              'Choose the least provocative variation and stop while form is still tidy.',
+              'Finish the session feeling steadier than when you started.'
+            ];
+            tags = ['Protect mode', 'Lower irritation', 'Preserve momentum'];
+          } else if(mode === 'steady' || pressure >= 70){
+            headline = 'Bring the emotional temperature down';
+            message = 'This looks more like a pressure problem than a laziness problem. Make the next action smaller and more definite.';
+            actions = [
+              'Do the first work set only, then reassess.',
+              'Swap outcome language for task language: just complete the next block.',
+              'If focus is scattered, use a short timer and work inside it.'
+            ];
+            tags = ['Steady mode', 'Reduce pressure', 'Task focus'];
+          } else if(risk === 'high' || confidence < 40){
+            headline = 'Re-entry beats retreat';
+            message = 'Confidence looks dented. The aim is not perfection. The aim is to get a useful signal back into the system.';
+            actions = [
+              'Start with the easiest valid version of the first exercise.',
+              'Log the session even if it is scaled down.',
+              'End with one clear success rather than one missed standard.'
+            ];
+            tags = ['Re-entry', 'Confidence rebuild', 'Useful signal'];
+          } else if(mode === 'push'){
+            headline = 'Good day to progress carefully';
+            message = 'Conditions are supportive enough for a measured push, but keep the standard high and do not let enthusiasm turn sloppy.';
+            actions = [
+              'Progress one lever only: load, reps, or execution.',
+              'Keep recovery honest between sets.',
+              'Stop while the session is still high quality.'
+            ];
+            tags = ['Measured push', 'Quality first', 'Use the window'];
+          }
+        }
+      }catch(err){}
+
+      document.getElementById('interventionHeadline').textContent = headline;
+      document.getElementById('interventionMessage').textContent = message;
+
+      var ul = document.getElementById('interventionActions');
+      ul.innerHTML = '';
+      actions.forEach(function(item){
+        var li = document.createElement('li');
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+
+      document.getElementById('interventionTags').innerHTML = tags.map(function(t){
+        return '<span class="tag tag-accent">' + escapeHtml(t) + '</span>';
+      }).join('');
+    }
+
+    function renderTodayCoach(){
+      if(!window.FFF) return;
+      try{
+        var summary = window.FFF.getGlobalCoachingSummary();
+        var today = summary.todayDecision || {};
+        var nextSession = summary.nextSession || {};
+
+        document.getElementById('todayDecision').textContent = titleCase(String(today.decision || '—').replace(/-/g, ' '));
+        document.getElementById('todayReason').textContent = today.reason || '—';
+
+        document.getElementById('nextSessionTitle').textContent = nextSession.title || '—';
+        document.getElementById('nextSessionAction').textContent = nextSession.action || '—';
+
+        var meta = [];
+        if(nextSession.target) meta.push('<span class="tag tag-accent">' + escapeHtml(nextSession.target) + '</span>');
+        if(today.sessionType) meta.push('<span class="tag">' + escapeHtml(titleCase(String(today.sessionType).replace(/-/g, ' '))) + '</span>');
+        if(Array.isArray(nextSession.swaps)){
+          nextSession.swaps.slice(0,3).forEach(function(item){
+            meta.push('<span class="tag">' + escapeHtml(item) + '</span>');
+          });
+        }
+        document.getElementById('nextSessionMeta').innerHTML = meta.join('');
+      }catch(err){}
+    }
+
+    function renderAdaptiveCockpit(){
+      if(!window.FFF) return;
+      try{
+        var summary = window.FFF.getGlobalCoachingSummary();
+        document.getElementById('cockpitStrain').textContent =
+          (summary.strain && summary.strain.strainRisk != null ? summary.strain.strainRisk : 0) + '/100';
+        document.getElementById('cockpitPain').textContent =
+          summary.painRisk && summary.painRisk.state ? titleCase(summary.painRisk.state) : '—';
+        document.getElementById('cockpitPressure').textContent =
+          (summary.progressionPressure && summary.progressionPressure.score != null ? summary.progressionPressure.score : 0) + '/100';
+        document.getElementById('cockpitDeload').textContent =
+          summary.deload && summary.deload.suggested ? 'YES' : 'NO';
+      }catch(err){}
+    }
+
+    function renderMovementStatus(){
+      if(!window.FFF || !window.FFF.getWeeklySummary) return;
+      try{
+        var weekly = window.FFF.getWeeklySummary();
+        var families = weekly.familyBreakdown || {};
+
+        ['push','pull','legs','core','cardio'].forEach(function(groupKey){
+          var holder = document.querySelector('[data-family="' + groupKey + '"] .status-value');
+          if(!holder) return;
+
+          var data = families[groupKey];
+          holder.classList.remove('status-strong', 'status-building', 'status-weak');
+
+          if(!data){
+            holder.textContent = '—';
+            return;
+          }
+
+          if(data.state === 'strong'){
+            holder.textContent = 'STRONG';
+            holder.classList.add('status-strong');
+            return;
+          }
+
+          if(data.state === 'weak'){
+            holder.textContent = 'NEEDS ATTENTION';
+            holder.classList.add('status-weak');
+            return;
+          }
+
+          holder.textContent = 'BUILDING';
+          holder.classList.add('status-building');
+        });
+      }catch(err){}
+    }
+
+    function renderWeeklySnapshot(){
+      if(!window.FFF || !window.FFF.getWeeklySummary) return;
+      try{
+        var weekly = window.FFF.getWeeklySummary();
+
+        document.getElementById('weekSessions').textContent = String(weekly.sessionsLogged != null ? weekly.sessionsLogged : 0);
+        document.getElementById('weekAdherence').textContent = String(weekly.adherence != null ? weekly.adherence : 0) + '/100';
+        document.getElementById('weekQuality').textContent = String(weekly.quality != null ? weekly.quality : 0) + '/100';
+
+        document.getElementById('weekStrongest').textContent = compactLabel(
+          window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
+            ? window.FFFTraining.familyLabel(weekly.strongestFamily || '')
+            : (weekly.strongestFamily || '—')
+        );
+
+        document.getElementById('weekWeakest').textContent = compactLabel(
+          window.FFFTraining && typeof window.FFFTraining.familyLabel === 'function'
+            ? window.FFFTraining.familyLabel(weekly.weakestFamily || '')
+            : (weekly.weakestFamily || '—')
+        );
+
+        document.getElementById('weekMode').textContent = titleCase(String(weekly.weeklyMode || 'steady').replace(/-/g, ' '));
+
+        var swapsEl = document.getElementById('weekSwaps');
+        var swaps = Array.isArray(weekly.swapSuggestions) ? weekly.swapSuggestions : [];
+        swapsEl.innerHTML = swaps.map(function(item){
+          return '<span class="tag">' + escapeHtml(item) + '</span>';
+        }).join('');
+      }catch(err){}
+    }
+
+    function renderNextWeekPlan(){
+      if(!window.FFF) return;
+      try{
+        var summary = window.FFF.getGlobalCoachingSummary();
+        var nextWeek = summary.nextWeek || {};
+        var changesEl = document.getElementById('nextWeekChanges');
+        var changes = Array.isArray(nextWeek.changes) ? nextWeek.changes : [];
+        changesEl.innerHTML = changes.map(function(line){
+          return '<div class="plan-line">' + escapeHtml(line) + '</div>';
+        }).join('');
+      }catch(err){}
+    }
+
+
+
+    function getSystemCategoryLabel(category){
+      var map = {
+        physio: 'Recovery & Pain Relief',
+        recovery: 'Recovery & Mobility',
+        'strength-skill': 'Strength & Skill',
+        'movement-foundation': 'Movement Foundations'
+      };
+      return map[category] || titleCase(category || 'System');
+    }
+
+    function getLatestCheckinSafe(){
+      try{
+        var raw = localStorage.getItem(CHECKIN_KEY);
+        var history = raw ? JSON.parse(raw) : [];
+        return Array.isArray(history) && history.length ? history[history.length - 1] : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function currentRoadmapTextSafe(){
+      try{
+        var raw = localStorage.getItem(ROADMAP_KEY);
+        var roadmap = raw ? JSON.parse(raw) : null;
+        return JSON.stringify(roadmap || {}).toLowerCase();
+      }catch(err){
+        return '';
+      }
+    }
+
+    function buildSystemRecommendationProfile(){
+      var profile = {};
+      var latest = getLatestCheckinSafe();
+      var roadmapText = currentRoadmapTextSafe();
+      var notes = String((latest && latest.notes) || '').toLowerCase();
+      var emotion = String((latest && latest.emotional_level) || ((document.getElementById('emotionalLevel') || {}).value) || 'steady').toLowerCase();
+      var recoveryScore = latest && latest.recovery != null ? Number(latest.recovery) : readRadioValueSafe('recoveryScore', 3);
+      var energyScore = latest && latest.energy != null ? Number(latest.energy) : readRadioValueSafe('energyScore', 3);
+      var sleepScore = latest && latest.sleep != null ? Number(latest.sleep) : readRadioValueSafe('sleepScore', 3);
+      var trainingAdherence = latest && latest.adherence_training != null ? Number(latest.adherence_training) : readRadioValueSafe('trainingAdherence', 3);
+      var age = parseInt((document.getElementById('bmrAge') || {}).value || '0', 10) || 0;
+      var trainingStatus = String((document.getElementById('trainingStatus') || {}).value || '').toLowerCase();
+      var goalText = String(GOAL || '').toLowerCase();
+      var equipment = loadEquipmentProfile ? loadEquipmentProfile() : null;
+
+      if(recoveryScore <= 3 || sleepScore <= 2) profile.recoveryNeed = true;
+      if(energyScore <= 2 || emotion === 'drained' || emotion === 'flat') profile.lowEnergy = true;
+      if(emotion === 'drained' || emotion === 'flat' || notes.indexOf('stress') > -1) profile.stressSupport = true;
+      if(trainingAdherence <= 2) profile.returningAfterBreak = true;
+      if(trainingStatus === 'beginner') profile.beginner = true;
+      if(age >= 40) profile.over40Support = true;
+      if(goalText.indexOf('build') > -1 || goalText.indexOf('transform') > -1 || roadmapText.indexOf('pull-up') > -1 || roadmapText.indexOf('pull up') > -1) profile.upperBodyStrength = true;
+
+      if(notes.match(/knee|patella|stairs|squat pain|lunge pain/)){ profile.kneePain = true; profile.lowerBodyPain = true; }
+      if(notes.match(/hip|groin|glute/)){ profile.hipPain = true; profile.lowerBodyPain = true; }
+      if(notes.match(/walk|walking pain|steps/)) profile.walkingPain = true;
+      if(notes.match(/run|running|10k|5k|half marathon|marathon/)) profile.runningPlan = true;
+      if(notes.match(/stiff|tight|mobility|restricted|fascia|sitting/)) profile.stiffness = true;
+      if(notes.match(/desk|sitting|sedentary|office/)) profile.deskbound = true;
+      if(notes.match(/pull.?up|chin.?up/) || roadmapText.indexOf('pull-up') > -1 || roadmapText.indexOf('pull up') > -1) profile.pullUpGoal = true;
+      if(notes.match(/elbow|tennis elbow/)) profile.elbowPain = true;
+      if(notes.match(/bicep|biceps/)) profile.bicepsPain = true;
+      if(notes.match(/press|bench|pressing pain/)) profile.pressingPain = true;
+      if(notes.match(/balance|ankle|calf|foot|feet/)) profile.balanceNeed = true;
+      if(notes.match(/lower leg|shin|ankle|calf|foot|feet/)) profile.lowerLegWeakness = true;
+      if(notes.match(/acute|severe|swelling|redness|locking|numbness|chest pain|dizzy|dizziness/)) profile.acuteInjury = true;
+      if(notes.match(/swelling|heat|redness|locking/)) profile.unexplainedSwelling = true;
+      if(notes.match(/red flag|medical|doctor|hospital|a&e|emergency/)) profile.medicalRedFlag = true;
+
+      if(equipment && equipment.equip){
+        if(equipment.equip.rack || equipment.equip.rings || equipment.equip.gymAccess) profile.pullUpGoal = profile.pullUpGoal || roadmapText.indexOf('pull') > -1;
+      }
+
+      return profile;
+    }
+
+    function readRadioValueSafe(name, fallback){
+      var checked = document.querySelector('input[name="' + name + '"]:checked');
+      if(!checked) return fallback;
+      var n = Number(checked.value);
+      return isNaN(n) ? fallback : n;
+    }
+
+    function reasonForSystem(system, profile){
+      var hooks = system.planHooks || {};
+      var matches = (hooks.suggestedWhen || []).filter(function(flag){ return !!profile[flag]; });
+      if(matches.length){
+        var friendly = matches.map(function(flag){
+          return titleCase(flag.replace(/([A-Z])/g, ' $1'));
+        }).join(', ');
+        return 'Suggested because your current plan signals include: ' + friendly + '.';
+      }
+      if(system.status === 'ready') return 'Ready to use now as a standalone support system.';
+      if(system.category === 'recovery') return 'Useful as a light recovery or movement-quality option.';
+      if(system.category === 'physio') return 'Useful when pain-management or movement confidence needs support.';
+      if(system.category === 'strength-skill') return 'Useful for structured strength or skill progression.';
+      return 'Available from the FreeFitFuel systems library.';
+    }
+
+    function scoreSystemForProfile(system, profile){
+      if(!system || !system.planHooks || !system.planHooks.myPlanDrawsFrom) return -999;
+      var hooks = system.planHooks || {};
+      var avoid = hooks.avoidWhen || [];
+      for(var i = 0; i < avoid.length; i++){
+        if(profile[avoid[i]]) return -999;
+      }
+      var score = 0;
+      (hooks.suggestedWhen || []).forEach(function(flag){
+        if(profile[flag]) score += 4;
+      });
+      if(system.status === 'ready') score += 2;
+      if(system.category === 'recovery' && (profile.recoveryNeed || profile.lowEnergy || profile.stiffness || profile.deskbound)) score += 2;
+      if(system.category === 'physio' && (profile.kneePain || profile.hipPain || profile.elbowPain || profile.bicepsPain || profile.lowerBodyPain)) score += 2;
+      if(system.category === 'strength-skill' && (profile.pullUpGoal || profile.upperBodyStrength || profile.runningPlan)) score += 2;
+      if(score === 0 && (system.id === 'daily-recovery-flow' || system.id === 'fascia-flow-reset')) score = 1;
+      return score;
+    }
+
+    function getRecommendedSystems(){
+      if(!window.FFFSystems || !Array.isArray(window.FFFSystems.all)) return [];
+      var profile = buildSystemRecommendationProfile();
+      return window.FFFSystems.all
+        .map(function(system){
+          return {
+            system: system,
+            score: scoreSystemForProfile(system, profile),
+            reason: reasonForSystem(system, profile)
+          };
+        })
+        .filter(function(item){ return item.score > 0; })
+        .sort(function(a,b){ return b.score - a.score; })
+        .slice(0, 4);
+    }
+
+    function renderRecommendedSystems(){
+      var mount = document.getElementById('recommendedSystems');
+      var textMount = document.getElementById('phaseRecommendationText');
+      if(!mount) return;
+
+      if(!window.FFFSystems || !Array.isArray(window.FFFSystems.all)){
+        mount.innerHTML = '<div class="system-recommendation-empty">The shared systems library has not loaded yet.</div>';
+        if(textMount) textMount.textContent = 'The shared systems library has not loaded yet.';
+        return;
+      }
+
+      var recommendations = getRecommendedSystems();
+      if(!recommendations.length){
+        mount.innerHTML = '<div class="system-recommendation-empty">No specific system recommendation yet. Use the Recovery Hub to browse all standalone systems.</div>';
+        if(textMount) textMount.textContent = 'No specific system recommendation yet. Browse the Recovery Hub if you want support options.';
+        return;
+      }
+
+      mount.innerHTML = recommendations.map(function(item, idx){
+        var system = item.system;
+        var tags = (system.tags || []).slice(0, 3).map(function(tag){
+          return '<span class="system-mini-pill">' + escapeHtml(tag) + '</span>';
+        }).join('');
+        var status = system.status === 'ready' ? 'Ready' : 'Planned';
+        return '<article class="system-recommendation-card' + (idx === 0 ? ' featured' : '') + '">' +
+          '<div class="system-meta-row"><span class="system-mini-pill accent">' + escapeHtml(getSystemCategoryLabel(system.category)) + '</span><span class="system-mini-pill">' + escapeHtml(status) + '</span></div>' +
+          '<h3>' + escapeHtml(system.title || 'FreeFitFuel System') + '</h3>' +
+          '<p class="system-reason">' + escapeHtml(item.reason) + '</p>' +
+          '<div class="system-meta-row"><span class="system-mini-pill">' + escapeHtml(system.durationMinutes ? (system.durationMinutes + ' mins') : 'Flexible') + '</span><span class="system-mini-pill">' + escapeHtml(system.intensity || 'Low') + '</span>' + tags + '</div>' +
+          '<a class="btn" href="' + escapeHtml(system.standaloneUrl || 'recovery-training-hub.html') + '">Open system</a>' +
+        '</article>';
+      }).join('');
+
+      if(textMount){
+        textMount.textContent = recommendations.map(function(item){ return item.system.title; }).join(' • ');
+      }
+    }
+
+
+    function refreshAllCoachViews(){
+      renderCoachSummary();
+      renderIntervention();
+      renderTodayCoach();
+      syncTodayMirrors();
+      syncPolishMirrors();
+      renderActivationLayer();
+      renderAdaptiveCockpit();
+      renderMovementStatus();
+      renderWeeklySnapshot();
+      renderNextWeekPlan();
+      renderAutomationStatus();
+      renderRecommendedSystems();
+    }
+
+    function wireWorkoutPlanLogsToEngine(){
+      if(!window.FFF) return;
+
+      var planRoot = document.getElementById('plan');
+      if(!planRoot) return;
+
+      var stageAccordions = planRoot.querySelectorAll('.accordion');
+
+      Array.prototype.forEach.call(stageAccordions, function(accordion, stageIndex){
+        var stageTitleBtn = accordion.querySelector('.acc-toggle');
+        var stageName = stageTitleBtn ? stageTitleBtn.textContent.trim() : ('Stage ' + (stageIndex + 1));
+        var dayBlocks = accordion.querySelectorAll('.days > .mov');
+
+        Array.prototype.forEach.call(dayBlocks, function(dayBlock, dayIndex){
+          var dayTitleEl = dayBlock.querySelector('.mov-head strong');
+          var dayName = dayTitleEl ? dayTitleEl.textContent.trim() : ('Day ' + (dayIndex + 1));
+          var exerciseBlocks = dayBlock.querySelectorAll(':scope > .exercise-item');
+
+          Array.prototype.forEach.call(exerciseBlocks, function(exerciseBlock){
+            var titleLink = exerciseBlock.querySelector('.mov-title a');
+            if(!titleLink) return;
+
+            var exerciseName = titleLink.textContent.trim();
+            var engineKey = stageName + ' | ' + dayName + ' | ' + exerciseName;
+            var openBtn = exerciseBlock.querySelector('[data-open]');
+            var drawer = exerciseBlock.querySelector('[data-drawer]');
+            var logArea = drawer ? drawer.querySelector('[data-log]') : null;
+            var pbEl = drawer ? drawer.querySelector('[data-pb]') : null;
+            var badgeEl = drawer ? drawer.querySelector('[data-badge]') : null;
+            var quoteEl = drawer ? drawer.querySelector('[data-quote]') : null;
+
+            if(!drawer || !logArea) return;
+
+            function milestoneText(n){
+              if(n >= 200) return 'Milestone: 200 logs saved';
+              if(n >= 100) return 'Milestone: 100 logs saved';
+              if(n >= 50) return 'Milestone: 50 logs saved';
+              if(n >= 25) return 'Milestone: 25 logs saved';
+              if(n >= 10) return 'Milestone: 10 logs saved';
+              if(n >= 5) return 'Milestone: 5 logs saved';
+              return '';
+            }
+
+            function refreshFeedback(){
+              try{
+                var pb = window.FFF.getPB(engineKey);
+                var totalLogs = window.FFF.getTotalLogCount();
+                var coaching = window.FFF.analyseExercise(engineKey);
+
+                if(pbEl){
+                  pbEl.textContent = pb ? ('PB score: ' + Number(pb.score || 0).toFixed(1) + ' (best w×r)') : '';
+                }
+
+                if(badgeEl){
+                  badgeEl.textContent = milestoneText(totalLogs);
+                }
+
+                if(quoteEl && coaching){
+                  quoteEl.textContent = (coaching.headline || '') + ' — ' + (coaching.message || '');
+                }
+              }catch(err){
+                if(quoteEl){
+                  quoteEl.textContent = 'Coach unavailable for this exercise right now.';
+                }
+              }
+            }
+
+            function populateLatestValues(){
+              var latest = window.FFF.getLatestLog(engineKey);
+              if(!latest){
+                refreshFeedback();
+                return;
+              }
+
+              var w1 = logArea.querySelector('[data-field="w1"]');
+              var r1 = logArea.querySelector('[data-field="r1"]');
+              var n1 = logArea.querySelector('[data-field="n1"]');
+
+              if(w1 && !w1.value) w1.value = latest.weight != null ? latest.weight : '';
+              if(r1 && !r1.value) r1.value = latest.reps != null ? latest.reps : '';
+              if(n1 && !n1.value) n1.value = latest.notes != null ? latest.notes : '';
+
+              refreshFeedback();
+            }
+
+            populateLatestValues();
+
+            var saveButtons = logArea.querySelectorAll('[data-save]');
+            Array.prototype.forEach.call(saveButtons, function(btn){
+              btn.addEventListener('click', function(){
+                var rowEl = btn.closest('.log-row');
+                if(!rowEl) return;
+
+                var inputs = rowEl.querySelectorAll('[data-field]');
+                var weight = 0;
+                var reps = 0;
+                var notes = '';
+
+                Array.prototype.forEach.call(inputs, function(input){
+                  var field = input.getAttribute('data-field');
+                  var val = (input.value || '').trim();
+
+                  if(field.indexOf('w') === 0) weight = parseFloat(val) || 0;
+                  if(field.indexOf('r') === 0) reps = parseFloat(val) || 0;
+                  if(field.indexOf('n') === 0) notes = val;
+                });
+
+                var result = window.FFF.logSet(engineKey, weight, reps, notes);
+                refreshAllCoachViews();
+                refreshFeedback();
+
+                if(pbEl && result && result.isNewPB){
+                  pbEl.textContent = 'New PB! ' + weight + ' × ' + reps;
+                }
+
+                if(quoteEl){
+                  quoteEl.textContent = pick(QUOTES);
+                }
+              });
+            });
+
+            if(openBtn){
+              openBtn.addEventListener('click', function(){
+                setTimeout(refreshFeedback, 0);
+              });
+            }
+          });
+        });
+      });
+    }
+
+    function setGoalChip(goalText){
+      GOAL = goalText;
+      var chips = document.querySelectorAll('.goal-chip');
+      Array.prototype.forEach.call(chips, function(btn){
+        btn.setAttribute('aria-pressed', btn.dataset.goal === goalText ? 'true' : 'false');
+      });
+      updateMacroTargets();
+    }
+
+    function loadExistingRoadmapInputs(){
+      try{
+        var raw = localStorage.getItem(ROADMAP_KEY);
+        if(!raw) return;
+        var roadmap = JSON.parse(raw);
+
+        if(roadmap && roadmap.goal){
+          setGoalChip(roadmap.goal);
+        }
+        if(roadmap && roadmap.startBF != null){
+          document.getElementById('useBodyFatSelect').value = 'yes';
+          document.getElementById('bfWrap').style.display = 'block';
+          document.getElementById('bodyFat').value = roadmap.startBF;
+        }
+        if(roadmap && roadmap.endBF != null){
+          document.getElementById('targetBodyFat').value = roadmap.endBF;
+        }
+        if(roadmap && roadmap.trainingStatus){
+          document.getElementById('trainingStatus').value = roadmap.trainingStatus;
+        }
+        if(roadmap && typeof roadmap.wantsMuscleGain === 'boolean'){
+          document.getElementById('wantsMuscleGain').value = roadmap.wantsMuscleGain ? 'yes' : 'no';
+        }
+        if(roadmap && roadmap.equipmentProfile){
+          applyEquipmentProfileToUI(roadmap.equipmentProfile);
+        } else {
+          applyEquipmentProfileToUI(loadEquipmentProfile());
+        }
+        if(roadmap && roadmap.aggression){
+          document.getElementById('phaseAggression').value = roadmap.aggression;
+        }
+      }catch(err){}
+    }
+
+
+    function setMode(mode){
+      var tabs = document.querySelectorAll('.mode-tab');
+      var panels = document.querySelectorAll('.mode-panel');
+      Array.prototype.forEach.call(tabs, function(tab){
+        tab.classList.toggle('is-active', tab.getAttribute('data-mode') === mode);
+      });
+      Array.prototype.forEach.call(panels, function(panel){
+        panel.classList.toggle('is-active', panel.id === ('mode' + mode.charAt(0).toUpperCase() + mode.slice(1)));
+      });
+      try{ localStorage.setItem('fff.myplan.mode.v3', mode); }catch(err){}
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function loadSavedMode(){
+      try{
+        var saved = localStorage.getItem('fff.myplan.mode.v3') || 'today';
+        return /^(today|progress|plan)$/.test(saved) ? saved : 'today';
+      }catch(err){
+        return 'today';
+      }
+    }
+
+
+    function syncPolishMirrors(){
+      var srcDecision = document.getElementById('todayDecision');
+      var dstDecision = document.getElementById('todayDecisionMirror');
+      if(srcDecision && dstDecision) dstDecision.textContent = srcDecision.textContent || '—';
+
+      var srcReason = document.getElementById('todayReason');
+      var dstReason = document.getElementById('todayReasonMirror');
+      if(srcReason && dstReason) dstReason.textContent = srcReason.textContent || '—';
+
+      var srcTitle = document.getElementById('nextSessionTitle');
+      var dstTitle = document.getElementById('nextSessionTitleMirror');
+      if(srcTitle && dstTitle) dstTitle.textContent = srcTitle.textContent || '—';
+
+      var srcAction = document.getElementById('nextSessionAction');
+      var dstAction = document.getElementById('nextSessionActionMirror');
+      if(srcAction && dstAction) dstAction.textContent = srcAction.textContent || '—';
+
+      var srcMeta = document.getElementById('nextSessionMeta');
+      var dstMeta = document.getElementById('nextSessionMetaMirror');
+      if(srcMeta && dstMeta) dstMeta.innerHTML = srcMeta.innerHTML;
+
+      var kcal = document.getElementById('physOutKcal');
+      var water = document.getElementById('physOutWater');
+      var mode = document.getElementById('weekMode');
+      var status = document.getElementById('automationStatusHeadline');
+      var phase = document.getElementById('currentPhaseName');
+      var targetWeight = document.getElementById('targetWeight');
+      var targetBf = document.getElementById('targetBodyFat');
+
+      var todayCalories = document.getElementById('todayCaloriesMirror');
+      var todayWater = document.getElementById('todayWaterMirror');
+      var todayStatus = document.getElementById('todayStatusMirror');
+
+      if(todayCalories) todayCalories.textContent = 'Calories: ' + ((kcal && kcal.textContent) ? kcal.textContent : '—');
+      if(todayWater) todayWater.textContent = 'Water: ' + ((water && water.textContent) ? water.textContent : '—');
+      if(todayStatus) todayStatus.textContent = 'Status: ' + ((mode && mode.textContent && mode.textContent !== '—') ? mode.textContent : ((status && status.textContent) ? status.textContent : '—'));
+
+      var emotionMirror = document.getElementById('todayEmotionMirror');
+      var toneMirror = document.getElementById('todayToneMirror');
+      var emotionSel = document.getElementById('emotionalLevel');
+      var emotion = emotionSel ? emotionSel.value : 'steady';
+      if(emotionMirror) emotionMirror.textContent = 'Emotional level: ' + titleCase(emotion);
+
+      var tone = 'Keep it steady today.';
+      if(emotion === 'drained') tone = 'Go gently today. A lighter win still counts.';
+      else if(emotion === 'flat') tone = 'Keep the ask modest and focus on follow-through.';
+      else if(emotion === 'positive') tone = 'Good momentum today. Stay controlled and clean.';
+      else if(emotion === 'strong') tone = 'You have a good window today. Push with control, not chaos.';
+      if(toneMirror) toneMirror.textContent = tone;
+
+      var gp = document.getElementById('globalPhaseText');
+      var gt = document.getElementById('globalTargetText');
+      var gs = document.getElementById('globalStatusText');
+      if(gp) gp.textContent = 'Phase: ' + ((phase && phase.textContent) ? phase.textContent : '—');
+      if(gt){
+        var t = '—';
+        if(targetWeight && targetWeight.value) t = targetWeight.value + ' kg';
+        else if(targetBf && targetBf.value) t = targetBf.value + '% BF';
+        gt.textContent = 'Target: ' + t;
+      }
+      if(gs) gs.textContent = 'Status: ' + ((mode && mode.textContent && mode.textContent !== '—') ? mode.textContent : '—');
+
+      var ws = document.getElementById('weekSessions');
+      var wa = document.getElementById('weekAdherence');
+      var wq = document.getElementById('weekQuality');
+      var wm = document.getElementById('weekMode');
+      var wsi = document.getElementById('weekSessionsInline');
+      var wai = document.getElementById('weekAdherenceInline');
+      var wqi = document.getElementById('weekQualityInline');
+      var wmi = document.getElementById('weekModeInline');
+      if(wsi && ws) wsi.textContent = ws.textContent;
+      if(wai && wa) wai.textContent = wa.textContent;
+      if(wqi && wq) wqi.textContent = wq.textContent;
+      if(wmi && wm) wmi.textContent = wm.textContent;
+    }
+
+
+    function syncTodayMirrors(){
+      var ids = [
+        ['todayDecision','todayDecisionMirror'],
+        ['todayReason','todayReasonMirror'],
+        ['nextSessionTitle','nextSessionTitleMirror'],
+        ['nextSessionAction','nextSessionActionMirror']
+      ];
+      ids.forEach(function(pair){
+        var src = document.getElementById(pair[0]);
+        var dst = document.getElementById(pair[1]);
+        if(src && dst) dst.textContent = src.textContent;
+      });
+      var srcMeta = document.getElementById('nextSessionMeta');
+      var dstMeta = document.getElementById('nextSessionMetaMirror');
+      if(srcMeta && dstMeta) dstMeta.innerHTML = srcMeta.innerHTML;
+    }
+
+
+
+    function hasActivationData(){
+      try{
+        return getCheckinHistory().length > 0 || getWeightLog().length > 0;
+      }catch(err){
+        return false;
+      }
+    }
+
+    function renderActivationLayer(){
+      var banner = document.getElementById('activationBanner');
+      if(!banner) return;
+
+      var hasRoadmap = false;
+      try{
+        var roadmap = getActiveRoadmap();
+        hasRoadmap = !!(roadmap && Array.isArray(roadmap.stages) && roadmap.stages.length);
+      }catch(err){}
+
+      var active = hasActivationData();
+      banner.style.display = active ? 'none' : 'block';
+
+      var headline = document.getElementById('activationHeadline');
+      if(!headline) return;
+
+      if(!hasRoadmap){
+        headline.textContent = 'Start here: go to Plan mode, set your target, and generate your roadmap.';
+      } else {
+        headline.textContent = 'Start here: complete your first weekly check-in to activate your daily guidance and coaching.';
+      }
+
+      var graphMsg = document.getElementById('chartEmpty');
+      if(graphMsg && !active){
+        graphMsg.textContent = 'Your graph will appear after you log your first few weights or save your first weekly check-in.';
+      }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function(){
+      var modeTabs = document.querySelectorAll('.mode-tab');
+      Array.prototype.forEach.call(modeTabs, function(btn){
+        btn.addEventListener('click', function(){
+          setMode(btn.getAttribute('data-mode'));
+        });
+      });
+      setMode(loadSavedMode());
+
+      var goalButtons = document.querySelectorAll('.goal-chip');
+      Array.prototype.forEach.call(goalButtons, function(btn){
+        btn.addEventListener('click', function(){
+          setGoalChip(btn.dataset.goal);
+        });
+      });
+      setGoalChip('Maintain');
+
+      document.getElementById('useBodyFatSelect').addEventListener('change', function(){
+        document.getElementById('bfWrap').style.display = useBodyFatEnabled() ? 'block' : 'none';
+        updateMacroTargets();
+      });
+
+      ['bmrSex','bmrAge','bmrHeight','bmrWeight','bmrActivity','bodyFat','targetBodyFat','trainingStatus','wantsMuscleGain','phaseAggression','circadianState','hormoneState','bloodSugarState','hydrationLoad'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(el){
+          el.addEventListener('input', updateMacroTargets);
+          el.addEventListener('change', updateMacroTargets);
+        }
+      });
+
+
+      ['trainingEnvironment','equipBw','equipDb','equipBand','equipRack','equipRings','equipBench','equipKb','equipCardio','equipGymAccess'].forEach(function(id){
+        var el = document.getElementById(id);
+        if(!el) return;
+        el.addEventListener('change', function(){
+          saveEquipmentProfileFromUI();
+        });
+      });
+
+      document.getElementById('btnGenerateRoadmap').addEventListener('click', function(){
+        generateRoadmapWithoutPDF(false);
+      });
+
+      document.getElementById('btnGenerateStaged').addEventListener('click', function(){
+        generateRoadmapWithoutPDF(true);
+      });
+
+      document.getElementById('generatePDF').addEventListener('click', async function(){
+        var full = confirm('Press OK for the fullest relevant staged roadmap PDF.\nPress Cancel for the leanest smart roadmap PDF.');
+        await generatePDFAndSaveRoadmap(full);
+      });
+
+      document.getElementById('btnSaveCheckin').addEventListener('click', saveWeeklyCheckin);
+      document.getElementById('btnSaveWeightLog').addEventListener('click', saveWeightEntryFromUI);
+      document.getElementById('btnUseWeightAvg').addEventListener('click', useRecentAverageForCheckin);
+      document.getElementById('targetWeight').addEventListener('input', function(){
+        var target = parseFloat(this.value || '');
+        if(!isNaN(target)) saveTargetWeight(target);
+        else if((this.value || '').trim() === '') saveTargetWeight(null);
+        renderWeightLog();
+      });
+
+      document.getElementById('btnExport').addEventListener('click', exportAll);
+      document.getElementById('importFile').addEventListener('change', function(e){
+        var f = (e.target && e.target.files && e.target.files[0]) || null;
+        if(f) importAll(f);
+        e.target.value = '';
+      });
+      document.getElementById('btnReset').addEventListener('click', resetPBsAndWellness);
+
+      document.getElementById('btnAdvancePhase').addEventListener('click', function(){
+        var recommendation = evaluatePhaseRecommendation();
+        var pair = getCurrentAndNextPhase();
+        if(!pair.current || !pair.next){
+          alert('There is no later phase to move to.');
+          return;
+        }
+        var reason = recommendation.reason || ('the user manually chose to move from ' + pair.current.name + ' to ' + pair.next.name);
+        var message = advanceRoadmapToNext(reason, 'manual');
+        if(message){
+          renderCurrentPhase();
+          renderPlan();
+          renderAutomationStatus();
+          refreshAllCoachViews();
+          wireWorkoutPlanLogsToEngine();
+          alert(message);
+        }
+      });
+
+      document.getElementById('btnStayPhase').addEventListener('click', function(){
+        var pair = getCurrentAndNextPhase();
+        if(!pair.current){
+          alert('No active phase to hold.');
+          return;
+        }
+        savePhaseOverride({ type:'stay', phaseId:pair.current.id, date:todayISO(), source:'manual stay' });
+        renderAutomationStatus();
+        alert('Override saved. Automation will keep you in ' + pair.current.name + ' until you clear the override.');
+      });
+
+      document.getElementById('btnClearPhaseOverride').addEventListener('click', function(){
+        clearPhaseOverride();
+        renderAutomationStatus();
+        alert('Phase override cleared.');
+      });
+
+      document.getElementById('btnApplyPhaseOverride').addEventListener('click', function(){
+        var select = document.getElementById('phaseOverrideSelect');
+        var target = select ? select.value : '';
+        if(!target){
+          alert('Choose a phase first.');
+          return;
+        }
+        var message = jumpRoadmapToPhase(target, 'manual override');
+        if(message){
+          renderCurrentPhase();
+          renderPlan();
+          renderAutomationStatus();
+          refreshAllCoachViews();
+          wireWorkoutPlanLogsToEngine();
+          alert(message);
+        }
+      });
+
+      loadExistingRoadmapInputs();
+      applyEquipmentProfileToUI(loadEquipmentProfile());
+      saveEquipmentProfileFromUI();
+      updateMacroTargets();
+      renderCurrentPhase();
+      renderPlan();
+      renderCheckinHistory();
+      renderWeightLog();
+
+      if(window.FFF){
+        try{ window.FFF.ready(); }catch(err){}
+      }
+
+      var checkboxMap = {
+        hydrDone: 'hydration',
+        sleepDone: 'sleep',
+        macroDone: 'macros',
+        activityCardio: 'cardio'
+      };
+
+      Object.keys(checkboxMap).forEach(function(id){
+        var key = checkboxMap[id];
+        var box = document.getElementById(id);
+        if(!box || !window.FFF) return;
+
+        try{
+          box.checked = window.FFF.getCheck(key);
+        }catch(err){
+          box.checked = false;
+        }
+
+        box.addEventListener('change', function(){
+          try{
+            window.FFF.setCheck(key, box.checked);
+            refreshAllCoachViews();
+          }catch(err){}
+        });
+      });
+
+      refreshAllCoachViews();
+      wireWorkoutPlanLogsToEngine();
+    });
+  </script>
+
+  <script>
+  (function(){
+    function ready(fn){
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', fn, { once:true });
+      }else{
+        fn();
+      }
+    }
+
+    function byId(id){ return document.getElementById(id); }
+
+    function readJSON(key, fallback){
+      try{
+        var raw = localStorage.getItem(key);
+        if(!raw) return fallback;
+        return JSON.parse(raw);
+      }catch(err){
+        return fallback;
+      }
+    }
+
+    function loadLibrary(){
+      if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getMyPlanLibrary === 'function'){
+        var liveLib = window.FFFExerciseDB.getMyPlanLibrary();
+        if(liveLib && Array.isArray(liveLib.items) && liveLib.items.length){
+          try{ localStorage.setItem('fff.library.cache.v1', JSON.stringify(liveLib)); }catch(err){}
+          return liveLib;
+        }
+      }
+
+      var lib = readJSON('fff.library.cache.v1', null);
+      if(lib && Array.isArray(lib.items) && lib.items.length) return lib;
+
+      return {
+        version: 1,
+        source: 'my-plan-emergency-fallback',
+        items: [
+          { key:'pushup', type:'exercise', name:'Push-up', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['push'], yt:'push up form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'dbbench', type:'exercise', name:'Dumbbell Bench Press', equipment:['db'], styles:['mixed'], purposes:['push'], yt:'dumbbell bench press form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'doorrow', type:'exercise', name:'Door/Table Row', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'bodyweight row at home form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'bandrow', type:'exercise', name:'Band Row', equipment:['band'], styles:['mixed','calisthenics'], purposes:['pull'], yt:'resistance band row form', sourcePage:'physio.html', sourceLabel:'Physio & Recovery' },
+          { key:'stepup', type:'exercise', name:'Step-up', equipment:['db','bw'], styles:['mixed'], purposes:['legs'], yt:'dumbbell step up form', sourcePage:'physio.html', sourceLabel:'Physio & Recovery' },
+          { key:'sidepl', type:'exercise', name:'Side Plank', equipment:['bw'], styles:['mixed','calisthenics'], purposes:['core'], yt:'side plank form', sourcePage:'workouts.html', sourceLabel:'Workouts Library' },
+          { key:'amrap20-triplet', type:'circuit', name:'Triplet — AMRAP 20', equipment:['bw'], styles:['mixed','circuit'], purposes:['conditioning'], yt:'triplet amrap 20 workout form', sourcePage:'ladder-challenge.html', sourceLabel:'Ladder Challenge' },
+          { key:'stretch-reset', type:'mobility', name:'Daily Stretch Reset', equipment:['bw'], styles:['mixed','calisthenics','circuit','reformer'], purposes:['stretching','recovery'], yt:'full body stretch routine', sourcePage:'stretching.html', sourceLabel:'Flexibility & Stretching' },
+          { key:'physio-lower', type:'recovery', name:'Lower Body Recovery Block', equipment:['bw','band'], styles:['mixed','calisthenics','circuit'], purposes:['recovery','physio'], yt:'lower body recovery mobility', sourcePage:'physio.html', sourceLabel:'Physio & Recovery' }
+        ]
+      };
+    }
+
+    function loadEquipment(){
+      var profile = readJSON('fff.equipment.profile.v1', null);
+      var equip = (profile && profile.equip) ? profile.equip : {};
+      return {
+        bw: !!equip.bw || equip.bw === undefined,
+        db: !!equip.db,
+        band: !!equip.band,
+        rack: !!equip.rack,
+        rings: !!equip.rings,
+        bench: !!equip.bench,
+        cardio: !!equip.cardio,
+        gymAccess: !!equip.gymAccess
+      };
+    }
+
+    function itemAllowed(item, style, equip){
+      if(!item) return false;
+
+      var itemStyles = item.styles || [];
+      var itemDomains = item.domains || [];
+      var itemPurposes = item.purposes || [];
+      var broadStyle = style === 'mixed' || style === 'balanced';
+
+      var styleOk = broadStyle
+        ? itemStyles.indexOf('reformer') === -1
+        : itemStyles.indexOf(style) > -1 || itemDomains.indexOf(style) > -1;
+
+      if(style === 'circuits'){
+        styleOk = item.type === 'circuit' || itemPurposes.indexOf('conditioning') > -1 || itemDomains.indexOf('conditioning') > -1 || itemDomains.indexOf('circuit') > -1;
+      }
+
+      if(style === 'calisthenics'){
+        styleOk = itemStyles.indexOf('calisthenics') > -1 || itemDomains.indexOf('calisthenics') > -1 || itemDomains.indexOf('bodyweight') > -1;
+      }
+
+      if(style === 'reformer'){
+        styleOk = itemStyles.indexOf('reformer') > -1 || itemDomains.indexOf('reformer') > -1 || itemDomains.indexOf('pilates') > -1;
+      }
+
+      if(!styleOk) return false;
+
+      if(!Array.isArray(item.equipment) || !item.equipment.length) return true;
+      for(var i=0;i<item.equipment.length;i++){
+        if(equip[item.equipment[i]]) return true;
+      }
+      return false;
+    }
+
+    function itemMatches(item, opts){
+      opts = opts || {};
+      if(!item) return false;
+
+      var purposes = item.purposes || [];
+      var family = item.family || '';
+      var domains = item.domains || [];
+      var tags = item.tags || [];
+      var type = item.type || '';
+
+      if(opts.family && family !== opts.family) return false;
+
+      if(opts.purposes && opts.purposes.length){
+        var purposeHit = opts.purposes.some(function(p){ return purposes.indexOf(p) > -1; });
+        if(!purposeHit) return false;
+      }
+
+      if(opts.domains && opts.domains.length){
+        var domainHit = opts.domains.some(function(d){ return domains.indexOf(d) > -1 || tags.indexOf(d) > -1 || type === d; });
+        if(!domainHit) return false;
+      }
+
+      if(opts.type && type !== opts.type) return false;
+      return true;
+    }
+
+    function scoreBuilderItem(item, opts, used, sourceUse){
+      opts = opts || {};
+      used = used || [];
+      sourceUse = sourceUse || {};
+
+      var score = 0;
+      var styles = item.styles || [];
+      var domains = item.domains || [];
+      var purposes = item.purposes || [];
+      var tags = item.tags || [];
+      var source = item.sourceLabel || 'Unknown';
+
+      if(used.indexOf(item.key) === -1) score += 40;
+      else score -= 35;
+
+      if(opts.style && styles.indexOf(opts.style) > -1) score += 14;
+      if((opts.style === 'mixed' || opts.style === 'balanced') && styles.indexOf('mixed') > -1) score += 8;
+      if(opts.family && item.family === opts.family) score += 18;
+
+      (opts.purposes || []).forEach(function(p){ if(purposes.indexOf(p) > -1) score += 12; });
+      (opts.domains || []).forEach(function(d){ if(domains.indexOf(d) > -1 || tags.indexOf(d) > -1) score += 8; });
+
+      if(item.type === 'recovery' && (opts.purposes || []).indexOf('recovery') > -1) score += 12;
+      if(item.type === 'circuit' && (opts.purposes || []).indexOf('conditioning') > -1) score += 12;
+      if(item.sourcePage) score += 4;
+      if(item.why) score += 3;
+
+      score -= Math.min(20, (sourceUse[source] || 0) * 7);
+      score += Math.random() * 9;
+      return score;
+    }
+
+    function chooseWeighted(items, opts, used, sourceUse){
+      items = (items || []).filter(Boolean);
+      if(!items.length) return null;
+      var ranked = items.slice().sort(function(a,b){
+        return scoreBuilderItem(b, opts, used, sourceUse) - scoreBuilderItem(a, opts, used, sourceUse);
+      });
+      var pool = ranked.slice(0, Math.min(5, ranked.length));
+      var chosen = pool[Math.floor(Math.random() * pool.length)] || ranked[0];
+      if(chosen && chosen.key) used.push(chosen.key);
+      if(chosen){
+        var source = chosen.sourceLabel || 'Unknown';
+        sourceUse[source] = (sourceUse[source] || 0) + 1;
+      }
+      return chosen || null;
+    }
+
+    function selectFromLibrary(lib, style, equip, opts, used, sourceUse){
+      opts = opts || {};
+      var candidates = (lib.items || []).filter(function(item){
+        return itemAllowed(item, style, equip) && itemMatches(item, opts);
+      });
+
+      if(!candidates.length && opts.family){
+        var softer = Object.assign({}, opts);
+        delete softer.family;
+        candidates = (lib.items || []).filter(function(item){
+          return itemAllowed(item, style, equip) && itemMatches(item, softer);
+        });
+      }
+
+      if(!candidates.length && opts.purposes && opts.purposes.length){
+        candidates = (lib.items || []).filter(function(item){
+          return itemAllowed(item, style, equip) && (item.purposes || []).some(function(p){ return opts.purposes.indexOf(p) > -1; });
+        });
+      }
+
+      return chooseWeighted(candidates, Object.assign({style:style}, opts), used, sourceUse);
+    }
+
+    function makeBuiltItem(item, fallbackWhy){
+      if(!item) return null;
+      var copy = Object.assign({}, item);
+      copy.why = copy.why || copy.sourceReason || fallbackWhy || 'Chosen because it fits your selected training style, equipment and weekly balance.';
+      copy.sourceLabel = copy.sourceLabel || 'FreeFitFuel Library';
+      copy.sourcePage = copy.sourcePage || 'workouts.html';
+      return copy;
+    }
+
+    function moduleItem(title, subtitle, page, label, why){
+      return {
+        key: 'module-' + String(title || '').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+        type: 'module',
+        name: title,
+        equipment: [],
+        styles: ['mixed','balanced','calisthenics','circuits','reformer'],
+        purposes: ['recovery','mobility'],
+        family: 'mobility-recovery',
+        domains: ['recovery','mobility'],
+        sourcePage: page,
+        sourceLabel: label,
+        sourceModules: [{label:label,url:page}],
+        cue: subtitle || '',
+        why: why || 'Included so My Plan draws from the wider FreeFitFuel ecosystem, not only the workout page.'
+      };
+    }
+
+    function buildAutoPlan(style, days){
+      var lib = loadLibrary();
+      var equip = loadEquipment();
+      var used = [];
+      var sourceUse = {};
+      var sessions = [];
+
+      function pick(opts, why){
+        return makeBuiltItem(selectFromLibrary(lib, style, equip, opts, used, sourceUse), why);
+      }
+
+      function pushSession(title, subtitle, items, extras){
+        items = (items || []).filter(Boolean);
+        sessions.push({ title:title, subtitle:subtitle, items:items, extras:extras||[] });
+      }
+
+      var recoveryBlock = moduleItem('Daily Recovery Flow', 'Breathing, rhythm and low-friction movement', 'recovery-training-hub.html', 'Recovery Training Hub', 'Active recovery is placed deliberately so the week is not just strength sessions.');
+      var stretchingBlock = moduleItem('Flexibility & Stretching Reset', 'Mobility, range and soft tissue tolerance', 'stretching.html', 'Flexibility & Stretching', 'Mobility is pulled from FreeFitFuel support pages to protect consistency and movement quality.');
+      var physioBlock = moduleItem('Physio Return-to-Training Block', 'Controlled rebuild work from the physio system', 'physio.html', 'Physio & Recovery', 'Physio support is included because pain, confidence and return-to-training matter as much as sets and reps.');
+      var yogaBlock = moduleItem('Yoga / Tai Chi / Qi Gong Reset', 'Gentle downshift and control work', 'yoga-meditation.html', 'Yoga, Tai Chi & Qi Gong', 'Mindful movement is part of the FreeFitFuel recovery layer.');
+
+      if(style === 'reformer'){
+        pushSession('Pilates Control', 'Core, breath and alignment', [
+          pick({family:'pilates-core', purposes:['core','recovery'], domains:['pilates','reformer']}, 'Chosen from the Pilates/Reformer layer for trunk control and low-impact strength.'),
+          pick({family:'core-anti-extension', purposes:['core'], domains:['pilates','reformer','mobility']}, 'Adds trunk control without turning this into a heavy strength day.')
+        ], ['Use the Pilates/Reformer page where available']);
+        pushSession('Glutes & Hips', 'Controlled lower-body support', [
+          pick({family:'hip-extension', purposes:['legs','recovery'], domains:['pilates','rehab']}, 'Hip extension supports posture, glutes and lower-body control.'),
+          pick({family:'movement-restoration', purposes:['recovery'], domains:['mobility','rehab']}, 'Movement restoration keeps the session joint-friendly.')
+        ], []);
+        pushSession('Mobility Reset', 'Restore movement quality', [stretchingBlock, yogaBlock], []);
+      } else if(style === 'circuits'){
+        pushSession('Circuit A', 'Conditioning without random punishment', [
+          pick({family:'conditioning', purposes:['conditioning'], domains:['conditioning','circuit']}, 'Conditioning is selected from the circuit/conditioning library.'),
+          pick({family:'horizontal-push', purposes:['push'], domains:['bodyweight','conditioning']}, 'Push work balances the circuit without needing complex equipment.'),
+          pick({family:'core-anti-extension', purposes:['core'], domains:['conditioning','bodyweight']}, 'Core control keeps conditioning useful rather than sloppy.')
+        ], ['AMRAP means as many quality rounds or reps as possible in the time, not all-out chaos.']);
+        pushSession('Circuit B', 'Lower-body and engine', [
+          pick({family:'squat', purposes:['legs'], domains:['conditioning','low-impact','weights']}, 'A knee-dominant pattern gives the circuit lower-body value.'),
+          pick({family:'hinge', purposes:['legs'], domains:['conditioning','weights']}, 'A hinge balances the squat pattern and protects the week from being too quad-dominant.'),
+          pick({family:'carry', purposes:['core','conditioning'], domains:['conditioning']}, 'Carries add trunk and grip work without needing complicated coaching.')
+        ], []);
+        pushSession('Recovery Flow', 'Undo stiffness and keep momentum', [recoveryBlock, stretchingBlock], []);
+      } else if(style === 'calisthenics'){
+        pushSession('Calisthenics Push + Core', 'Bodyweight pressing and trunk control', [
+          pick({family:'horizontal-push', purposes:['push'], domains:['calisthenics','bodyweight']}, 'Selected from the calisthenics push pool.'),
+          pick({family:'vertical-push', purposes:['push','skill'], domains:['calisthenics','bodyweight']}, 'Adds a vertical or shoulder-control pathway where equipment and level allow.'),
+          pick({family:'core-anti-extension', purposes:['core'], domains:['calisthenics','bodyweight']}, 'Core work supports bodyweight skill control.')
+        ], []);
+        pushSession('Calisthenics Pull + Skill', 'Pulling, scapular control and progression', [
+          pick({family:'vertical-pull', purposes:['pull','skill'], domains:['calisthenics']}, 'Pulling is taken from the pull-up/progression pathway where available.'),
+          pick({family:'horizontal-pull', purposes:['pull'], domains:['calisthenics','bodyweight']}, 'Rows build the base for stronger vertical pulling.'),
+          pick({family:'calisthenics-skill', purposes:['skill'], domains:['calisthenics']}, 'Skill work gives the week a genuine calisthenics identity.')
+        ], ['Pull-up progression should be scaled. It is not assumed you can already do full pull-ups.']);
+        pushSession('Legs + Mobility', 'Lower-body control and range', [
+          pick({family:'lunge-split', purposes:['legs'], domains:['bodyweight','calisthenics']}, 'Single-leg control prevents calisthenics from becoming only upper-body work.'),
+          pick({family:'squat', purposes:['legs'], domains:['bodyweight','calisthenics']}, 'Squat pattern keeps the lower body trained.'),
+          stretchingBlock
+        ], []);
+      } else if(style === 'balanced' || style === 'mixed'){
+        pushSession('Upper Foundation', 'Push and pull balance', [
+          pick({family:'horizontal-push', purposes:['push'], domains:['weights','calisthenics','bodyweight']}, 'Upper-body push is paired with a pull so the day is balanced.'),
+          pick({family:'horizontal-pull', purposes:['pull'], domains:['weights','calisthenics','rehab']}, 'Horizontal pulling protects posture and balances pressing.'),
+          pick({family:'core-anti-rotation', purposes:['core'], domains:['mobility','weights','bodyweight']}, 'Anti-rotation gives trunk control without turning the session into random abs.')
+        ], []);
+        pushSession('Lower Foundation', 'Squat, hinge and trunk', [
+          pick({family:'squat', purposes:['legs'], domains:['weights','bodyweight','rehab']}, 'The squat/knee-dominant pattern builds everyday lower-body capacity.'),
+          pick({family:'hinge', purposes:['legs'], domains:['weights','rehab']}, 'The hinge pattern balances the week with posterior-chain work.'),
+          pick({family:'hip-extension', purposes:['legs','recovery'], domains:['rehab','pilates','weights']}, 'Hip extension supports glutes, hips and lower-back tolerance.')
+        ], []);
+        pushSession('Conditioning / Engine', 'Useful fitness without burying recovery', [
+          pick({family:'conditioning', purposes:['conditioning'], domains:['conditioning','low-impact','circuit']}, 'Conditioning is selected from the wider FreeFitFuel conditioning pool.'),
+          pick({family:'carry', purposes:['core','conditioning'], domains:['conditioning','weights']}, 'Carries add practical strength and trunk work.')
+        ], ['Use tracker.html for walks, runs, bike sessions, GPS and splits.']);
+        pushSession('Recovery + Mobility', 'Keep the system moving', [recoveryBlock, stretchingBlock], []);
+      } else {
+        pushSession('Upper Push', 'Mixed strength', [
+          pick({family:'horizontal-push', purposes:['push'], domains:['weights','calisthenics']}),
+          pick({family:'vertical-push', purposes:['push'], domains:['weights','calisthenics']}),
+          pick({family:'arms', purposes:['arms'], domains:['weights','hypertrophy']})
+        ], []);
+        pushSession('Upper Pull', 'Back and biceps support', [
+          pick({family:'horizontal-pull', purposes:['pull'], domains:['weights','calisthenics','rehab']}),
+          pick({family:'vertical-pull', purposes:['pull'], domains:['calisthenics','strength']}),
+          pick({family:'arms', purposes:['arms'], domains:['weights','hypertrophy']})
+        ], []);
+        pushSession('Lower Body', 'Squat, hinge and calves', [
+          pick({family:'squat', purposes:['legs'], domains:['weights']}),
+          pick({family:'hinge', purposes:['legs'], domains:['weights']}),
+          pick({family:'calf-ankle', purposes:['legs','recovery'], domains:['rehab','running']})
+        ], []);
+        pushSession('Recovery / Conditioning', 'Engine or reset depending on readiness', [
+          pick({family:'conditioning', purposes:['conditioning'], domains:['conditioning','circuit']}),
+          recoveryBlock
+        ], []);
+      }
+
+      if(days >= 5){
+        pushSession('Physio / Movement Quality', 'Protect joints and rebuild weak links', [physioBlock, pick({family:'rehab-return', purposes:['recovery'], domains:['rehab','mobility']}, 'A rehab-return movement widens the plan beyond standard workouts.')], []);
+      }
+      if(days >= 6){
+        pushSession('Mindful Recovery', 'Yoga, tai chi, qi gong or easy walk', [yogaBlock], ['Use this as active recovery, not another hard workout.']);
+      }
+
+      return sessions.slice(0, Math.max(1, days));
+    }
+
+    function buildGuidedPlan(style, days, toggles){
+      var sessions = buildAutoPlan(style, days);
+      if(!toggles.ladder){
+        sessions = sessions.filter(function(s){ return s.title !== 'Benchmark'; });
+      }
+      if(!toggles.stretching){
+        sessions = sessions.filter(function(s){ return s.title !== 'Flexibility'; });
+      }
+      if(!toggles.physio){
+        sessions = sessions.filter(function(s){ return s.title !== 'Recovery'; });
+      }
+      if(toggles.endurance){
+        sessions.push({ title:'Endurance', subtitle:'Cardio session using the tracker', items:[], extras:['Open tracker.html for GPS, pace, splits and PBs'] });
+      }
+      if(toggles.yoga){
+        sessions.push({ title:'Yoga & Meditation', subtitle:'Nervous system downshift', items:[], extras:['Use yoga-meditation.html'] });
+      }
+      if(toggles.nutrition){
+        sessions.push({ title:'Nutrition', subtitle:'Fuel your week', items:[], extras:['Use nutrition.html and nutrition-mealplan.html'] });
+      }
+      if(toggles.hormones){
+        sessions.push({ title:'Physiology', subtitle:'Hormones, cortisol, vagus context', items:[], extras:['Use hormones.html as context layer'] });
+      }
+      return sessions;
+    }
+
+    function goLog(exName){
+      try{ localStorage.setItem('fff.quickLog', exName || ''); }catch(err){}
+      window.location.href = 'workouts.html';
+    }
+
+    function buildLibraryPayload(style, sessions, equip){
+      return {
+        source:'my-plan',
+        style: style || 'mixed',
+        equip: equip || {},
+        sessions: (sessions || []).map(function(session, idx){
+          return {
+            day: idx + 1,
+            title: session.title || ('Day ' + (idx + 1)),
+            subtitle: session.subtitle || '',
+            items: (session.items || []).filter(Boolean).map(function(item){
+              return {
+                name: item.name || '',
+                key: item.key || item.k || '',
+                yt: item.yt || '',
+                type: item.type || '',
+                equipment: item.equipment || item.eq || [],
+                purposes: item.purposes || [],
+                family: item.family || '',
+                domains: item.domains || [],
+                cue: item.cue || '',
+                why: item.why || '',
+                sourcePage: item.sourcePage || '',
+                sourceLabel: item.sourceLabel || '',
+                sourceModules: item.sourceModules || []
+              };
+            }),
+            extras: session.extras || []
+          };
+        }),
+        requestedAt: Date.now()
+      };
+    }
+
+    function openWorkoutLibrary(payload, quickName){
+      try{
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        if(quickName) localStorage.setItem('fff.quickLog', quickName);
+      }catch(err){}
+      window.location.href = 'workouts.html';
+    }
+
+    function renderCards(mount, sessions){
+      if(!mount) return;
+      if(!sessions.length){
+        mount.innerHTML = '<p class="meta">No sessions generated. Check training type and equipment.</p>';
+        return;
+      }
+
+      function actionBtn(href, label, primary){
+        return '<a href="' + href + '" target="_blank" rel="noopener" class="' + (primary ? 'btn btn-primary' : 'btn-sm') + '">' + label + '</a>';
+      }
+
+      function moduleAction(text){
+        var lower = String(text || '').toLowerCase();
+        if(lower.indexOf('tracker') > -1 || lower.indexOf('gps') > -1) return actionBtn('tracker.html', 'Open Tracker', false);
+        if(lower.indexOf('stretch') > -1) return actionBtn('stretching.html', 'Open Stretching', false);
+        if(lower.indexOf('physio') > -1) return actionBtn('physio.html', 'Open Physio', false);
+        if(lower.indexOf('yoga') > -1) return actionBtn('yoga-meditation.html', 'Open Yoga', false);
+        if(lower.indexOf('nutrition') > -1 || lower.indexOf('meal') > -1) return actionBtn('nutrition.html', 'Open Nutrition', false);
+        if(lower.indexOf('hormone') > -1 || lower.indexOf('physiology') > -1 || lower.indexOf('cortisol') > -1 || lower.indexOf('vagus') > -1) return actionBtn('hormones.html', 'Open Physiology', false);
+        if(lower.indexOf('ladder') > -1) return actionBtn('ladder-challenge.html', 'Open Ladder', false);
+        return '';
+      }
+
+      var style = document.getElementById('mpx-style') ? document.getElementById('mpx-style').value : 'mixed';
+      var daysEl = document.getElementById('mpx-days');
+      var equip = loadEquipment();
+      var payload = buildLibraryPayload(style, sessions, equip);
+
+      try{
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        localStorage.setItem(CURRENT_PLAN_KEY, JSON.stringify({
+          style: style,
+          days: daysEl ? String(daysEl.value || '4') : '4',
+          payload: payload
+        }));
+      }catch(err){}
+
+      mount.innerHTML = sessions.map(function(session, idx){
+            var itemsHtml = (session.items||[]).filter(Boolean).map(function(item){
+              var meta = [];
+              if(item.type) meta.push(item.type);
+              if(item.equipment && item.equipment.length) meta.push(item.equipment.join(', '));
+              var watch = item.yt ? actionBtn(yt(item.yt), '&#9654; Watch Form', true) : '';
+              var logBtn = '<button type="button" class="btn-sm" data-log-name="' + (item.name || '').replace(/"/g,'&quot;') + '">Log this</button>';
+              var source = item.sourcePage ? '<a href="' + item.sourcePage + '" class="btn-sm">Open ' + (item.sourceLabel || 'source') + '</a>' : '';
+              var why = item.why ? '<div class="meta" style="margin-top:8px;"><strong>Why this is here:</strong> ' + item.why + '</div>' : '';
+              return ''
+                + '<div class="card" style="margin-top:10px;">'
+                +   '<div style="font-weight:800;font-size:1.05rem;">' + (item.name || '') + '</div>'
+                +   (meta.length ? '<div class="meta" style="margin-top:4px;">' + meta.join(' • ') + '</div>' : '')
+                +   (item.sourceLabel ? '<div class="meta" style="margin-top:4px;">Source: ' + item.sourceLabel + '</div>' : '')
+                +   why
+                +   '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:10px;">' + watch + logBtn + source + '</div>'
+                + '</div>';
+          }).join('');
+
+            var extrasHtml = (session.extras||[]).map(function(x){
+              return ''
+                + '<div class="card" style="margin-top:10px;">'
+                +   '<div class="meta" style="margin-bottom:8px;">' + x + '</div>'
+                +   moduleAction(x)
+                + '</div>';
+            }).join('');
+
+            var goal = session.subtitle || 'Build capacity, consistency and progress toward your current phase goal.';
+            return ''
+              + '<article class="section" style="margin-top:10px;">'
+              +   '<div class="panel-kicker">Session ' + (idx+1) + '</div>'
+              +   '<h3 style="margin:.1rem 0 .35rem;">' + session.title + '</h3>'
+              +   '<div class="card" style="margin-bottom:10px;">'
+              +     '<strong>Goal</strong><div class="meta">' + goal + '</div>'
+              +     '<div class="meta" style="margin-top:8px;"><strong>Why this session exists:</strong> Generated from your selected training style, available equipment, current phase and recovery profile.</div>'
+              +     '<div class="meta" style="margin-top:8px;"><strong>Estimated duration:</strong> 30–60 minutes depending on rest periods.</div>'
+              +   '</div>'
+              +   '<details class="legend"><summary>Training Terms Explained</summary>'
+              +   '<div class="row"><div class="term">EMOM</div><div class="def">Every Minute On the Minute. Start work at the beginning of each minute and rest in any remaining time.</div></div>'
+              +   '<div class="row"><div class="term">AMRAP</div><div class="def">As Many Rounds or Reps As Possible while maintaining good form.</div></div>'
+              +   '<div class="row"><div class="term">RPE</div><div class="def">Rate of Perceived Exertion. How hard the set feels from 1–10.</div></div>'
+              +   '</details>'
+              +   itemsHtml + extrasHtml
+              + '</article>';
+          }).join('');
+
+      mount.querySelectorAll('[data-log-name]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var exName = btn.getAttribute('data-log-name') || '';
+          openWorkoutLibrary(payload, exName);
+        });
+      });
+    }
+
+    function mountBuilder(){
+      if(byId('mpx-builder')) return;
+
+      var host = document.querySelector('main') || document.querySelector('.wrap') || document.body;
+      var footer = document.querySelector('footer');
+      var wrap = document.createElement('section');
+      wrap.id = 'mpx-builder';
+      wrap.className = 'section';
+      wrap.style.marginTop = '14px';
+      wrap.innerHTML = '' +
+        '<h2>Build Your Week</h2>' +
+        '<p class="meta">Use Auto Plan to generate a broader week from Workouts, Physio, Recovery, Stretching, Yoga/Tai Chi/Qi Gong and the exercise database, or Guided Build to shape it while staying within your saved equipment and training options.</p>' +
+        '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0;">' +
+          '<button type="button" id="mpx-mode-auto" class="btn">Auto Plan</button>' +
+          '<button type="button" id="mpx-mode-guided" class="btn" style="background:var(--glass);color:var(--ink);border:1px solid var(--stroke);">Guided Build</button>' +
+        '</div>' +
+        '<div class="grid" style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">' +
+          '<label>Training type<select id="mpx-style" class="input"><option value="mixed">Mixed</option><option value="balanced">Balanced</option><option value="calisthenics">Calisthenics</option><option value="circuits">Circuits</option><option value="reformer">Reformer</option></select></label>' +
+          '<label>Days this week<select id="mpx-days" class="input"><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option></select></label>' +
+        '</div>' +
+        '<div id="mpx-guided" style="display:none;margin-top:10px;">' +
+          '<div style="display:flex;gap:.7rem;flex-wrap:wrap;">' +
+            '<label><input type="checkbox" id="mpx-ladder" checked> Ladder</label>' +
+            '<label><input type="checkbox" id="mpx-stretching" checked> Stretching</label>' +
+            '<label><input type="checkbox" id="mpx-physio" checked> Physio</label>' +
+            '<label><input type="checkbox" id="mpx-endurance"> Endurance</label>' +
+            '<label><input type="checkbox" id="mpx-yoga"> Yoga</label>' +
+            '<label><input type="checkbox" id="mpx-nutrition" checked> Nutrition</label>' +
+            '<label><input type="checkbox" id="mpx-hormones"> Physiology</label>' +
+          '</div>' +
+        '</div>' +
+        '<div style="margin-top:12px;display:flex;gap:.6rem;flex-wrap:wrap;">' +
+          '<button type="button" id="mpx-build" class="btn">Build this week</button>' +
+        '</div>' +
+        '<p id="mpx-status" class="meta" style="margin-top:10px;">Waiting for your weekly build.</p>' +
+        '<div id="mpx-output"></div>';
+
+      if(footer && footer.parentNode){
+        footer.parentNode.insertBefore(wrap, footer);
+      } else {
+        host.appendChild(wrap);
+      }
+    }
+
+    function bindBuilder(){
+      var currentMode = 'auto';
+      var btnAuto = byId('mpx-mode-auto');
+      var btnGuided = byId('mpx-mode-guided');
+      var guided = byId('mpx-guided');
+      var build = byId('mpx-build');
+      var status = byId('mpx-status');
+      var out = byId('mpx-output');
+      var styleEl = byId('mpx-style');
+      var daysEl = byId('mpx-days');
+      if(!btnAuto || !btnGuided || !guided || !build || !status || !out || !styleEl || !daysEl) return;
+
+      function setMode(mode){
+        currentMode = mode;
+        guided.style.display = mode === 'guided' ? 'block' : 'none';
+        if(mode === 'auto'){
+          btnAuto.style.background = 'var(--accent)';
+          btnAuto.style.color = '#111';
+          btnAuto.style.border = '0';
+          btnGuided.style.background = 'var(--glass)';
+          btnGuided.style.color = 'var(--ink)';
+          btnGuided.style.border = '1px solid var(--stroke)';
+        } else {
+          btnGuided.style.background = 'var(--accent)';
+          btnGuided.style.color = '#111';
+          btnGuided.style.border = '0';
+          btnAuto.style.background = 'var(--glass)';
+          btnAuto.style.color = 'var(--ink)';
+          btnAuto.style.border = '1px solid var(--stroke)';
+        }
+      }
+
+      function restorePersistedPlan(){
+        try{
+          var raw = localStorage.getItem(CURRENT_PLAN_KEY);
+          if(!raw) return false;
+
+          var saved = JSON.parse(raw);
+          if(!saved || !saved.payload || !saved.payload.sessions || !saved.payload.sessions.length) return false;
+
+          if(saved.style) styleEl.value = saved.style;
+          if(saved.days) daysEl.value = String(saved.days);
+
+          setMode('auto');
+          renderCards(out, saved.payload.sessions);
+          status.textContent = 'Restored your last built plan';
+          return true;
+        }catch(err){
+          return false;
+        }
+      }
+
+      btnAuto.addEventListener('click', function(){ setMode('auto'); });
+      btnGuided.addEventListener('click', function(){ setMode('guided'); });
+
+      build.addEventListener('click', function(){
+        try{
+          var style = styleEl.value;
+          var days = parseInt(daysEl.value || '4', 10);
+          var sessions;
+          if(currentMode === 'guided'){
+            sessions = buildGuidedPlan(style, days, {
+              ladder: !!byId('mpx-ladder').checked,
+              stretching: !!byId('mpx-stretching').checked,
+              physio: !!byId('mpx-physio').checked,
+              endurance: !!byId('mpx-endurance').checked,
+              yoga: !!byId('mpx-yoga').checked,
+              nutrition: !!byId('mpx-nutrition').checked,
+              hormones: !!byId('mpx-hormones').checked
+            });
+          } else {
+            sessions = buildAutoPlan(style, days);
+          }
+
+          renderCards(out, sessions);
+          var equip = loadEquipment();
+          var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });
+          status.textContent = 'Built ' + sessions.length + ' sessions using ' + style + ' mode and your saved equipment: ' + (eqList.length ? eqList.join(', ') : 'none found');
+        }catch(err){
+          status.textContent = 'Build failed: ' + (err && err.message ? err.message : 'unknown error');
+        }
+      });
+
+      if(!restorePersistedPlan()){
+        setMode('auto');
+      }
+    }
+
+    ready(function(){
+      try{
+        mountBuilder();
+        bindBuilder();
+      }catch(err){}
+    });
+  })();
+  </script>
+<script src="js/engine/fff-exercise-db.js?v=42"></script>
+<script src="js/engine/fff-engine-bridge.js?v=1"></script>
+<script src="js/engine/fff-my-plan-persistence.js?v=1"></script>
+<script src="js/engine/fff-injury-profile.js?v=2"></script>
+
+  <script>
+  /*
+    FreeFitFuel adaptive system recommendation engine
+    Reads window.FFFSystems.all and scores systems from current My Plan state.
+    This is deliberately weighted and contextual, not simple one-rule matching.
+  */
+  (function(){
+    function fffReady(fn){
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', fn, { once:true });
+      }else{
+        fn();
+      }
+    }
+
+    function esc(value){
+      return String(value == null ? '' : value)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+
+    function readNumber(id, fallback){
+      var el = document.getElementById(id);
+      if(!el) return fallback;
+      var n = parseFloat(el.value || el.textContent || '');
+      return isNaN(n) ? fallback : n;
+    }
+
+    function readSelect(id, fallback){
+      var el = document.getElementById(id);
+      return el ? String(el.value || fallback || '') : String(fallback || '');
+    }
+
+    function readRadio(name, fallback){
+      var checked = document.querySelector('input[name="' + name + '"]:checked');
+      var n = checked ? parseInt(checked.value, 10) : fallback;
+      return isNaN(n) ? fallback : n;
+    }
+
+    function lower(value){
+      return String(value || '').toLowerCase();
+    }
+
+    function safeArr(value){
+      return Array.isArray(value) ? value : [];
+    }
+
+    function getCurrentRoadmap(){
+      try{
+        var raw = localStorage.getItem('fff.roadmap.plan.v1');
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function getLatestCheckin(){
+      try{
+        var raw = localStorage.getItem('fff.weekly.checkins.v1');
+        var arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) && arr.length ? arr[arr.length - 1] : null;
+      }catch(err){
+        return null;
+      }
+    }
+
+    function getActiveNotes(){
+      var notes = [];
+      var checkinNotes = document.getElementById('checkinNotes');
+      if(checkinNotes && checkinNotes.value) notes.push(checkinNotes.value);
+      var latest = getLatestCheckin();
+      if(latest && latest.notes) notes.push(latest.notes);
+      return lower(notes.join(' '));
+    }
+
+    function getEquipmentState(){
+      try{
+        if(typeof getEquipmentProfileFromUI === 'function'){
+          return getEquipmentProfileFromUI();
+        }
+      }catch(err){}
+      try{
+        var raw = localStorage.getItem('fff.equipment.profile.v1');
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){}
+      return null;
+    }
+
+    function buildAdaptiveProfile(){
+      var roadmap = getCurrentRoadmap();
+      var latest = getLatestCheckin();
+      var currentStage = roadmap && roadmap.stages && roadmap.stages[0] ? roadmap.stages[0] : null;
+      var notes = getActiveNotes();
+      var equipment = getEquipmentState();
+
+      var recovery = latest && latest.recovery != null ? Number(latest.recovery) : readRadio('recoveryScore', 3);
+      var energy = latest && latest.energy != null ? Number(latest.energy) : readRadio('energyScore', 3);
+      var sleep = latest && latest.sleep != null ? Number(latest.sleep) : readRadio('sleepScore', 3);
+      var hunger = latest && latest.hunger != null ? Number(latest.hunger) : readRadio('hungerScore', 3);
+      var emotional = latest && latest.emotional_level ? latest.emotional_level : readSelect('emotionalLevel', 'steady');
+      var goal = roadmap && roadmap.goal ? roadmap.goal : (typeof GOAL !== 'undefined' ? GOAL : '');
+      var phase = currentStage && currentStage.id ? currentStage.id : '';
+      var trainingStatus = readSelect('trainingStatus', roadmap && roadmap.trainingStatus ? roadmap.trainingStatus : 'intermediate');
+      var wantsMuscle = readSelect('wantsMuscleGain', roadmap && roadmap.wantsMuscleGain ? 'yes' : 'no') === 'yes';
+      var environment = equipment && equipment.environment ? equipment.environment : readSelect('trainingEnvironment', 'home');
+
+      var flags = {
+        lowRecovery: recovery <= 2 || sleep <= 2,
+        moderateRecovery: recovery === 3 || sleep === 3,
+        highRecovery: recovery >= 4 && sleep >= 3,
+        lowEnergy: energy <= 2,
+        highEnergy: energy >= 4,
+        highHunger: hunger >= 4,
+        emotionallyDrained: emotional === 'drained' || emotional === 'flat',
+        cutPhase: phase === 'cut',
+        transformPhase: phase === 'transform',
+        maintainPhase: phase === 'maintain',
+        bulkPhase: phase === 'bulk',
+        muscleGoal: wantsMuscle || lower(goal).indexOf('build') > -1 || lower(goal).indexOf('bulk') > -1,
+        homeTraining: environment === 'home',
+        gymTraining: environment === 'gym',
+        beginner: lower(trainingStatus).indexOf('beginner') > -1,
+        advanced: lower(trainingStatus).indexOf('advanced') > -1,
+
+        kneePain: /knee|knees|patella|stairs|squat pain|lower body pain/.test(notes),
+        hipPain: /hip|groin|inside hip|glute|sciatic/.test(notes),
+        elbowPain: /elbow|tennis elbow|outer bicep|biceps pain|pressing pain|tendon/.test(notes),
+        stiffness: /stiff|tight|mobility|fascia|desk|sitting|sedentary|neck|posture/.test(notes),
+        cramp: /cramp|calf cramp|spasm/.test(notes),
+        pullUpGoal: /pull.?up|chin.?up|lat activation|scapular|calisthenics/.test(notes),
+        runningNeed: /run|running|10k|half marathon|marathon|ankle|lower leg|shin|calf/.test(notes),
+        stressSupport: /stress|burnout|overwhelmed|anxious|flat|drained|poor sleep|sleep/.test(notes)
+      };
+
+      return {
+        roadmap: roadmap,
+        latest: latest,
+        currentStage: currentStage,
+        notes: notes,
+        equipment: equipment,
+        recovery: recovery,
+        energy: energy,
+        sleep: sleep,
+        hunger: hunger,
+        emotional: emotional,
+        goal: goal,
+        phase: phase,
+        trainingStatus: trainingStatus,
+        wantsMuscle: wantsMuscle,
+        environment: environment,
+        flags: flags
+      };
+    }
+
+    function equipmentCompatibility(system, profile){
+      var equipment = safeArr(system.equipment).join(' ').toLowerCase();
+      var eq = profile.equipment && profile.equipment.equip ? profile.equipment.equip : {};
+      if(!equipment) return { score: 6, reason: 'No specialist equipment required.' };
+
+      var score = 0;
+      var reasons = [];
+
+      if(/chair|wall|bodyweight|none|walking|tai chi/.test(equipment)){
+        score += 12;
+        reasons.push('fits simple home setup');
+      }
+      if(/dumbbell/.test(equipment) && eq.db){
+        score += 8;
+        reasons.push('uses available dumbbells');
+      }
+      if(/band|resistance/.test(equipment) && eq.band){
+        score += 8;
+        reasons.push('uses available bands');
+      }
+      if(/step|stair/.test(equipment)){
+        score += 6;
+        reasons.push('uses a step or stair');
+      }
+      if(/bar|pull/.test(equipment) && (eq.rack || eq.gymAccess)){
+        score += 10;
+        reasons.push('pull-up equipment appears available');
+      }
+
+      if(score === 0){
+        score -= 8;
+        reasons.push('equipment fit is uncertain');
+      }
+
+      return { score: score, reason: reasons.join(', ') || 'equipment fit assessed' };
+    }
+
+    function phaseScore(system, profile){
+      var tags = lower(safeArr(system.tags).join(' '));
+      var category = lower(system.category);
+      var intensity = lower(system.intensity);
+      var flags = profile.flags;
+      var score = 0;
+      var reasons = [];
+
+      if(flags.lowRecovery){
+        if(category.indexOf('recovery') > -1 || tags.indexOf('recovery') > -1 || intensity.indexOf('low') > -1){
+          score += 30;
+          reasons.push('low recovery favours a recovery or low-intensity system');
+        }
+        if(intensity.indexOf('moderate') > -1 && category.indexOf('strength') > -1){
+          score -= 18;
+          reasons.push('moderate strength work is deprioritised while recovery is low');
+        }
+      }
+
+      if(flags.highRecovery && flags.highEnergy){
+        if(category.indexOf('strength') > -1 || tags.indexOf('strength') > -1 || tags.indexOf('calisthenics') > -1){
+          score += 18;
+          reasons.push('good recovery supports progression work');
+        }
+      }
+
+      if(flags.cutPhase){
+        if(tags.indexOf('recovery') > -1 || tags.indexOf('walking') > -1 || tags.indexOf('mobility') > -1){
+          score += 12;
+          reasons.push('cut phase benefits from recovery and movement support');
+        }
+      }
+
+      if(flags.transformPhase){
+        if(tags.indexOf('strength') > -1 || tags.indexOf('mobility') > -1 || category.indexOf('movement') > -1){
+          score += 14;
+          reasons.push('transform phase benefits from strength plus movement quality');
+        }
+      }
+
+      if(flags.bulkPhase || flags.muscleGoal){
+        if(tags.indexOf('strength') > -1 || category.indexOf('strength') > -1 || tags.indexOf('pull') > -1){
+          score += 16;
+          reasons.push('muscle-building context favours strength progression systems');
+        }
+      }
+
+      if(flags.emotionallyDrained || flags.stressSupport){
+        if(tags.indexOf('recovery') > -1 || tags.indexOf('tai chi') > -1 || tags.indexOf('low impact') > -1){
+          score += 18;
+          reasons.push('emotional load favours low-pressure recovery work');
+        }
+      }
+
+      return { score: score, reasons: reasons };
+    }
+
+    function issueScore(system, profile){
+      var id = lower(system.id);
+      var title = lower(system.title);
+      var tags = lower(safeArr(system.tags).join(' '));
+      var goals = lower(safeArr(system.goals).join(' '));
+      var hay = id + ' ' + title + ' ' + tags + ' ' + goals;
+      var flags = profile.flags;
+      var score = 0;
+      var reasons = [];
+
+      function add(condition, amount, reason){
+        if(condition){
+          score += amount;
+          reasons.push(reason);
+        }
+      }
+
+      add(flags.kneePain && /knee|joint control|lower body/.test(hay), 42, 'knee or lower-body signals match this system');
+      add(flags.hipPain && /hip|knee|walking|sitting stiffness|lower body/.test(hay), 34, 'hip or walking discomfort points towards this system');
+      add(flags.elbowPain && /elbow|biceps|tendon|pressing/.test(hay), 42, 'elbow or biceps pain signals match this protocol');
+      add(flags.stiffness && /fascia|mobility|deskbound|stiffness|posture|whole body/.test(hay), 36, 'stiffness or deskbound signals match this system');
+      add(flags.lowRecovery && /lymphatic|recovery|tai chi|walking|low impact|daily reset/.test(hay), 34, 'low recovery favours gentle recovery flow');
+      add(flags.pullUpGoal && /pull|scapular|lat|calisthenics/.test(hay), 46, 'pull-up or scapular-control goal matches this pathway');
+      add(flags.runningNeed && /lower-leg|ankle|calf|feet|balance|running/.test(hay), 32, 'running or lower-leg signals match this system');
+      add(flags.cramp && /calf|lower-leg|walking|recovery|circulation/.test(hay), 20, 'cramp signal favours calf, walking or recovery support');
+      add(flags.beginner && /foundation|control|recovery|capacity/.test(hay), 12, 'beginner status favours foundational systems');
+
+      return { score: score, reasons: reasons };
+    }
+
+    function planHookScore(system, profile){
+      var hooks = system.planHooks || {};
+      var suggested = safeArr(hooks.suggestedWhen);
+      var avoid = safeArr(hooks.avoidWhen);
+      var flags = profile.flags;
+      var score = 0;
+      var reasons = [];
+
+      var flagMap = {
+        kneePain: flags.kneePain,
+        lowerBodyPain: flags.kneePain || flags.hipPain,
+        hipPain: flags.hipPain,
+        walkingPain: flags.hipPain || flags.kneePain,
+        elbowPain: flags.elbowPain,
+        bicepsPain: flags.elbowPain,
+        pressingPain: flags.elbowPain,
+        stiffness: flags.stiffness,
+        deskbound: flags.stiffness,
+        recoveryNeed: flags.lowRecovery || flags.moderateRecovery || flags.stressSupport,
+        lowEnergy: flags.lowEnergy,
+        pullUpGoal: flags.pullUpGoal,
+        upperBodyStrength: flags.muscleGoal || flags.highEnergy,
+        beginner: flags.beginner,
+        over40Support: true,
+        returningAfterBreak: flags.lowRecovery || flags.beginner,
+        deconditioned: flags.beginner || flags.lowEnergy,
+        runningPlan: flags.runningNeed,
+        balanceNeed: flags.runningNeed || flags.kneePain,
+        lowerLegWeakness: flags.runningNeed || flags.cramp,
+        stressSupport: flags.stressSupport || flags.emotionallyDrained
+      };
+
+      suggested.forEach(function(flag){
+        if(flagMap[flag]){
+          score += 16;
+          reasons.push('plan hook matched: ' + flag);
+        }
+      });
+
+      avoid.forEach(function(flag){
+        if(flagMap[flag]){
+          score -= 35;
+          reasons.push('caution hook triggered: ' + flag);
+        }
+      });
+
+      if(hooks.myPlanDrawsFrom) score += 8;
+
+      return { score: score, reasons: reasons };
+    }
+
+    function scoreSystem(system, profile){
+      var total = 0;
+      var reasons = [];
+      var warnings = [];
+
+      if(!system || !system.planHooks || !system.planHooks.myPlanDrawsFrom){
+        total -= 25;
+        warnings.push('not currently marked for My Plan use');
+      }
+
+      if(system.status === 'ready') total += 12;
+      else total += 4;
+
+      var eq = equipmentCompatibility(system, profile);
+      total += eq.score;
+      if(eq.reason) reasons.push(eq.reason);
+
+      var phase = phaseScore(system, profile);
+      total += phase.score;
+      reasons = reasons.concat(phase.reasons);
+
+      var issue = issueScore(system, profile);
+      total += issue.score;
+      reasons = reasons.concat(issue.reasons);
+
+      var hook = planHookScore(system, profile);
+      total += hook.score;
+      reasons = reasons.concat(hook.reasons);
+
+      var intensity = lower(system.intensity);
+      if(profile.flags.lowRecovery && /moderate|high/.test(intensity)){
+        total -= 10;
+        warnings.push('kept lower because recovery is currently limited');
+      }
+
+      if(profile.flags.highRecovery && profile.flags.highEnergy && /low/.test(intensity) && lower(system.category).indexOf('recovery') === -1){
+        total -= 4;
+      }
+
+      total = Math.round(total);
+
+      var priority = 'support';
+      if(total >= 85) priority = 'high';
+      else if(total >= 55) priority = 'medium';
+
+      return {
+        system: system,
+        score: total,
+        priority: priority,
+        reasons: reasons.slice(0, 4),
+        warnings: warnings.slice(0, 2)
+      };
+    }
+
+    function renderAdaptiveSystems(){
+      var mount = document.getElementById('recommendedSystems');
+      if(!mount) return;
+
+      if(!window.FFFSystems || !Array.isArray(window.FFFSystems.all)){
+        mount.innerHTML = '<div class="card"><h3>Recommended Systems</h3><p class="meta">System registry is not loaded yet.</p></div>';
+        return;
+      }
+
+      var profile = buildAdaptiveProfile();
+      var scored = window.FFFSystems.all
+        .map(function(system){ return scoreSystem(system, profile); })
+        .filter(function(item){ return item.score > 12; })
+        .sort(function(a,b){ return b.score - a.score; })
+        .slice(0, 5);
+
+      if(!scored.length){
+        scored = window.FFFSystems.all
+          .filter(function(system){ return system.planHooks && system.planHooks.myPlanDrawsFrom; })
+          .slice(0, 3)
+          .map(function(system){ return scoreSystem(system, profile); });
+      }
+
+      var html = '<div class="adaptive-systems-note"><strong>Adaptive selection:</strong> systems are ranked from your current phase, recovery, energy, sleep, notes, equipment and system metadata. This is a contextual scoring layer rather than a fixed rule list.</div>';
+
+      html += '<div class="grid grid-3">';
+
+      scored.forEach(function(item){
+        var s = item.system;
+        var goals = safeArr(s.goals).slice(0, 2);
+        var tags = safeArr(s.tags).slice(0, 4);
+        var reasons = item.reasons.length ? item.reasons : ['general fit for the current My Plan context'];
+
+        html += '<article class="card">' +
+          '<h3>' + esc(s.title || 'System') + '</h3>' +
+          '<p class="meta">' + esc(goals.join(' • ') || 'Recommended support system.') + '</p>' +
+          '<div class="system-score-row">' +
+            '<span class="score-pill">Fit score ' + esc(item.score) + '</span>' +
+            '<span class="score-pill soft">' + esc(item.priority) + ' priority</span>' +
+            '<span class="score-pill soft">' + esc(s.durationMinutes || '?') + ' min</span>' +
+          '</div>' +
+          '<div class="tag-row">' + tags.map(function(tag){ return '<span class="tag">' + esc(tag) + '</span>'; }).join('') + '</div>' +
+          '<ul class="system-reason-list">' + reasons.map(function(reason){ return '<li>' + esc(reason) + '</li>'; }).join('') + '</ul>' +
+          (item.warnings.length ? '<p class="meta" style="margin-top:.55rem">' + esc(item.warnings.join(' • ')) + '</p>' : '') +
+          '<div class="tag-row" style="margin-top:.75rem">' +
+            '<a class="btn btn-primary" href="' + esc(s.standaloneUrl || '/recovery-training-hub.html') + '">Open system</a>' +
+            '<a class="btn" href="/recovery-training-hub.html">Hub</a>' +
+          '</div>' +
+        '</article>';
+      });
+
+      html += '</div>';
+      mount.innerHTML = html;
+    }
+
+    function attachAdaptiveSystemRefresh(){
+      var ids = [
+        'checkinNotes','emotionalLevel','trainingStatus','wantsMuscleGain','phaseAggression',
+        'trainingEnvironment','equipBw','equipDb','equipBand','equipRack','equipRings',
+        'equipBench','equipKb','equipCardio','equipGymAccess'
+      ];
+
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(!el) return;
+        el.addEventListener('change', renderAdaptiveSystems);
+        el.addEventListener('input', renderAdaptiveSystems);
+      });
+
+      ['nutritionAdherence','trainingAdherence','recoveryScore','energyScore','hungerScore','sleepScore'].forEach(function(name){
+        document.querySelectorAll('input[name="' + name + '"]').forEach(function(el){
+          el.addEventListener('change', renderAdaptiveSystems);
+        });
+      });
+
+      var originalRefresh = window.refreshAllCoachViews;
+      if(typeof originalRefresh === 'function' && !originalRefresh.__fffSystemWrapped){
+        var wrapped = function(){
+          originalRefresh.apply(this, arguments);
+          renderAdaptiveSystems();
+        };
+        wrapped.__fffSystemWrapped = true;
+        window.refreshAllCoachViews = wrapped;
+      }
+    }
+
+    fffReady(function(){
+      renderAdaptiveSystems();
+      attachAdaptiveSystemRefresh();
+      setTimeout(renderAdaptiveSystems, 350);
+      setTimeout(renderAdaptiveSystems, 1000);
+    });
+  })();
+  </script>
+
+</body>
+</html>

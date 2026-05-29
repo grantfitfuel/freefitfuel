@@ -4967,10 +4967,30 @@
 
     function itemAllowed(item, style, equip){
       if(!item) return false;
-      var styleOk = style === 'mixed'
-        ? (item.styles||[]).indexOf('reformer') === -1 || (item.styles||[]).indexOf('mixed') > -1
-        : (item.styles||[]).indexOf(style) > -1;
+
+      var itemStyles = item.styles || [];
+      var itemDomains = item.domains || [];
+      var itemPurposes = item.purposes || [];
+      var broadStyle = style === 'mixed' || style === 'balanced';
+
+      var styleOk = broadStyle
+        ? itemStyles.indexOf('reformer') === -1
+        : itemStyles.indexOf(style) > -1 || itemDomains.indexOf(style) > -1;
+
+      if(style === 'circuits'){
+        styleOk = item.type === 'circuit' || itemPurposes.indexOf('conditioning') > -1 || itemDomains.indexOf('conditioning') > -1 || itemDomains.indexOf('circuit') > -1;
+      }
+
+      if(style === 'calisthenics'){
+        styleOk = itemStyles.indexOf('calisthenics') > -1 || itemDomains.indexOf('calisthenics') > -1 || itemDomains.indexOf('bodyweight') > -1;
+      }
+
+      if(style === 'reformer'){
+        styleOk = itemStyles.indexOf('reformer') > -1 || itemDomains.indexOf('reformer') > -1 || itemDomains.indexOf('pilates') > -1;
+      }
+
       if(!styleOk) return false;
+
       if(!Array.isArray(item.equipment) || !item.equipment.length) return true;
       for(var i=0;i<item.equipment.length;i++){
         if(equip[item.equipment[i]]) return true;
@@ -4978,31 +4998,127 @@
       return false;
     }
 
-    function pickByPurpose(lib, style, equip, purposes){
-      return lib.items.filter(function(item){
-        if(!itemAllowed(item, style, equip)) return false;
-        var p = item.purposes || [];
-        return purposes.some(function(x){ return p.indexOf(x) > -1; });
-      });
-    }
+    function itemMatches(item, opts){
+      opts = opts || {};
+      if(!item) return false;
 
-    function choose(arr, used){
-      for(var i=0;i<arr.length;i++){
-        if(used.indexOf(arr[i].key) === -1) return arr[i];
+      var purposes = item.purposes || [];
+      var family = item.family || '';
+      var domains = item.domains || [];
+      var tags = item.tags || [];
+      var type = item.type || '';
+
+      if(opts.family && family !== opts.family) return false;
+
+      if(opts.purposes && opts.purposes.length){
+        var purposeHit = opts.purposes.some(function(p){ return purposes.indexOf(p) > -1; });
+        if(!purposeHit) return false;
       }
-      return arr[0] || null;
+
+      if(opts.domains && opts.domains.length){
+        var domainHit = opts.domains.some(function(d){ return domains.indexOf(d) > -1 || tags.indexOf(d) > -1 || type === d; });
+        if(!domainHit) return false;
+      }
+
+      if(opts.type && type !== opts.type) return false;
+      return true;
     }
 
-    function ytURL(term){
-      return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(term || '');
+    function scoreBuilderItem(item, opts, used, sourceUse){
+      opts = opts || {};
+      used = used || [];
+      sourceUse = sourceUse || {};
+
+      var score = 0;
+      var styles = item.styles || [];
+      var domains = item.domains || [];
+      var purposes = item.purposes || [];
+      var tags = item.tags || [];
+      var source = item.sourceLabel || 'Unknown';
+
+      if(used.indexOf(item.key) === -1) score += 40;
+      else score -= 35;
+
+      if(opts.style && styles.indexOf(opts.style) > -1) score += 14;
+      if((opts.style === 'mixed' || opts.style === 'balanced') && styles.indexOf('mixed') > -1) score += 8;
+      if(opts.family && item.family === opts.family) score += 18;
+
+      (opts.purposes || []).forEach(function(p){ if(purposes.indexOf(p) > -1) score += 12; });
+      (opts.domains || []).forEach(function(d){ if(domains.indexOf(d) > -1 || tags.indexOf(d) > -1) score += 8; });
+
+      if(item.type === 'recovery' && (opts.purposes || []).indexOf('recovery') > -1) score += 12;
+      if(item.type === 'circuit' && (opts.purposes || []).indexOf('conditioning') > -1) score += 12;
+      if(item.sourcePage) score += 4;
+      if(item.why) score += 3;
+
+      score -= Math.min(20, (sourceUse[source] || 0) * 7);
+      score += Math.random() * 9;
+      return score;
     }
 
-    function roadmapMeta(){
-      var map = readJSON('fff.roadmap.plan.v1', {});
+    function chooseWeighted(items, opts, used, sourceUse){
+      items = (items || []).filter(Boolean);
+      if(!items.length) return null;
+      var ranked = items.slice().sort(function(a,b){
+        return scoreBuilderItem(b, opts, used, sourceUse) - scoreBuilderItem(a, opts, used, sourceUse);
+      });
+      var pool = ranked.slice(0, Math.min(5, ranked.length));
+      var chosen = pool[Math.floor(Math.random() * pool.length)] || ranked[0];
+      if(chosen && chosen.key) used.push(chosen.key);
+      if(chosen){
+        var source = chosen.sourceLabel || 'Unknown';
+        sourceUse[source] = (sourceUse[source] || 0) + 1;
+      }
+      return chosen || null;
+    }
+
+    function selectFromLibrary(lib, style, equip, opts, used, sourceUse){
+      opts = opts || {};
+      var candidates = (lib.items || []).filter(function(item){
+        return itemAllowed(item, style, equip) && itemMatches(item, opts);
+      });
+
+      if(!candidates.length && opts.family){
+        var softer = Object.assign({}, opts);
+        delete softer.family;
+        candidates = (lib.items || []).filter(function(item){
+          return itemAllowed(item, style, equip) && itemMatches(item, softer);
+        });
+      }
+
+      if(!candidates.length && opts.purposes && opts.purposes.length){
+        candidates = (lib.items || []).filter(function(item){
+          return itemAllowed(item, style, equip) && (item.purposes || []).some(function(p){ return opts.purposes.indexOf(p) > -1; });
+        });
+      }
+
+      return chooseWeighted(candidates, Object.assign({style:style}, opts), used, sourceUse);
+    }
+
+    function makeBuiltItem(item, fallbackWhy){
+      if(!item) return null;
+      var copy = Object.assign({}, item);
+      copy.why = copy.why || copy.sourceReason || fallbackWhy || 'Chosen because it fits your selected training style, equipment and weekly balance.';
+      copy.sourceLabel = copy.sourceLabel || 'FreeFitFuel Library';
+      copy.sourcePage = copy.sourcePage || 'workouts.html';
+      return copy;
+    }
+
+    function moduleItem(title, subtitle, page, label, why){
       return {
-        goal: map.stage || map.goal || '',
-        level: map.level || '',
-        phase: map.currentPhaseId || ''
+        key: 'module-' + String(title || '').toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+        type: 'module',
+        name: title,
+        equipment: [],
+        styles: ['mixed','balanced','calisthenics','circuits','reformer'],
+        purposes: ['recovery','mobility'],
+        family: 'mobility-recovery',
+        domains: ['recovery','mobility'],
+        sourcePage: page,
+        sourceLabel: label,
+        sourceModules: [{label:label,url:page}],
+        cue: subtitle || '',
+        why: why || 'Included so My Plan draws from the wider FreeFitFuel ecosystem, not only the workout page.'
       };
     }
 
@@ -5010,80 +5126,105 @@
       var lib = loadLibrary();
       var equip = loadEquipment();
       var used = [];
+      var sourceUse = {};
       var sessions = [];
 
-      function pushSession(title, subtitle, items, extras){
-        sessions.push({ title:title, subtitle:subtitle, items:items||[], extras:extras||[] });
-        items.forEach(function(it){ if(it && it.key) used.push(it.key); });
+      function pick(opts, why){
+        return makeBuiltItem(selectFromLibrary(lib, style, equip, opts, used, sourceUse), why);
       }
+
+      function pushSession(title, subtitle, items, extras){
+        items = (items || []).filter(Boolean);
+        sessions.push({ title:title, subtitle:subtitle, items:items, extras:extras||[] });
+      }
+
+      var recoveryBlock = moduleItem('Daily Recovery Flow', 'Breathing, rhythm and low-friction movement', 'recovery-training-hub.html', 'Recovery Training Hub', 'Active recovery is placed deliberately so the week is not just strength sessions.');
+      var stretchingBlock = moduleItem('Flexibility & Stretching Reset', 'Mobility, range and soft tissue tolerance', 'stretching.html', 'Flexibility & Stretching', 'Mobility is pulled from FreeFitFuel support pages to protect consistency and movement quality.');
+      var physioBlock = moduleItem('Physio Return-to-Training Block', 'Controlled rebuild work from the physio system', 'physio.html', 'Physio & Recovery', 'Physio support is included because pain, confidence and return-to-training matter as much as sets and reps.');
+      var yogaBlock = moduleItem('Yoga / Tai Chi / Qi Gong Reset', 'Gentle downshift and control work', 'yoga-meditation.html', 'Yoga, Tai Chi & Qi Gong', 'Mindful movement is part of the FreeFitFuel recovery layer.');
 
       if(style === 'reformer'){
-        var reformerFull = choose(pickByPurpose(lib, 'reformer', equip, ['full','control']), used);
-        var reformerCore = choose(pickByPurpose(lib, 'reformer', equip, ['core']), used);
-        var mobility = choose(pickByPurpose(lib, 'reformer', equip, ['mobility','stretching','recovery']), used);
-        pushSession('Reformer Full Body', 'Controlled strength and alignment', [reformerFull], ['Tracker not required']);
-        pushSession('Reformer Core', 'Core control and breathing', [reformerCore], []);
-        pushSession('Mobility & Reset', 'Flexibility and recovery', [mobility], ['Stretching module']);
+        pushSession('Pilates Control', 'Core, breath and alignment', [
+          pick({family:'pilates-core', purposes:['core','recovery'], domains:['pilates','reformer']}, 'Chosen from the Pilates/Reformer layer for trunk control and low-impact strength.'),
+          pick({family:'core-anti-extension', purposes:['core'], domains:['pilates','reformer','mobility']}, 'Adds trunk control without turning this into a heavy strength day.')
+        ], ['Use the Pilates/Reformer page where available']);
+        pushSession('Glutes & Hips', 'Controlled lower-body support', [
+          pick({family:'hip-extension', purposes:['legs','recovery'], domains:['pilates','rehab']}, 'Hip extension supports posture, glutes and lower-body control.'),
+          pick({family:'movement-restoration', purposes:['recovery'], domains:['mobility','rehab']}, 'Movement restoration keeps the session joint-friendly.')
+        ], []);
+        pushSession('Mobility Reset', 'Restore movement quality', [stretchingBlock, yogaBlock], []);
       } else if(style === 'circuits'){
-        var circuitA = choose(lib.items.filter(function(it){ return itemAllowed(it, 'circuit', equip) && it.type === 'circuit'; }), used);
-        var circuitB = choose(lib.items.filter(function(it){ return itemAllowed(it, 'circuit', equip) && it.type === 'circuit' && used.indexOf(it.key) === -1; }), used);
-        var mobilityC = choose(pickByPurpose(lib, 'circuit', equip, ['mobility','recovery','stretching']), used);
-        pushSession('Circuit A', 'Conditioning block', [circuitA], ['Use your tracker for endurance if outdoors']);
-        pushSession('Circuit B', 'Repeatable conditioning benchmark', [circuitB], []);
-        pushSession('Recovery Flow', 'Mobility and cooldown', [mobilityC], ['Stretching module']);
+        pushSession('Circuit A', 'Conditioning without random punishment', [
+          pick({family:'conditioning', purposes:['conditioning'], domains:['conditioning','circuit']}, 'Conditioning is selected from the circuit/conditioning library.'),
+          pick({family:'horizontal-push', purposes:['push'], domains:['bodyweight','conditioning']}, 'Push work balances the circuit without needing complex equipment.'),
+          pick({family:'core-anti-extension', purposes:['core'], domains:['conditioning','bodyweight']}, 'Core control keeps conditioning useful rather than sloppy.')
+        ], ['AMRAP means as many quality rounds or reps as possible in the time, not all-out chaos.']);
+        pushSession('Circuit B', 'Lower-body and engine', [
+          pick({family:'squat', purposes:['legs'], domains:['conditioning','low-impact','weights']}, 'A knee-dominant pattern gives the circuit lower-body value.'),
+          pick({family:'hinge', purposes:['legs'], domains:['conditioning','weights']}, 'A hinge balances the squat pattern and protects the week from being too quad-dominant.'),
+          pick({family:'carry', purposes:['core','conditioning'], domains:['conditioning']}, 'Carries add trunk and grip work without needing complicated coaching.')
+        ], []);
+        pushSession('Recovery Flow', 'Undo stiffness and keep momentum', [recoveryBlock, stretchingBlock], []);
       } else if(style === 'calisthenics'){
-        pushSession('Calisthenics Push', 'Bodyweight / rings push', [
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['push']), used),
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
+        pushSession('Calisthenics Push + Core', 'Bodyweight pressing and trunk control', [
+          pick({family:'horizontal-push', purposes:['push'], domains:['calisthenics','bodyweight']}, 'Selected from the calisthenics push pool.'),
+          pick({family:'vertical-push', purposes:['push','skill'], domains:['calisthenics','bodyweight']}, 'Adds a vertical or shoulder-control pathway where equipment and level allow.'),
+          pick({family:'core-anti-extension', purposes:['core'], domains:['calisthenics','bodyweight']}, 'Core work supports bodyweight skill control.')
         ], []);
-        pushSession('Calisthenics Pull', 'Bodyweight / rings pull', [
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['pull']), used),
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
+        pushSession('Calisthenics Pull + Skill', 'Pulling, scapular control and progression', [
+          pick({family:'vertical-pull', purposes:['pull','skill'], domains:['calisthenics']}, 'Pulling is taken from the pull-up/progression pathway where available.'),
+          pick({family:'horizontal-pull', purposes:['pull'], domains:['calisthenics','bodyweight']}, 'Rows build the base for stronger vertical pulling.'),
+          pick({family:'calisthenics-skill', purposes:['skill'], domains:['calisthenics']}, 'Skill work gives the week a genuine calisthenics identity.')
+        ], ['Pull-up progression should be scaled. It is not assumed you can already do full pull-ups.']);
+        pushSession('Legs + Mobility', 'Lower-body control and range', [
+          pick({family:'lunge-split', purposes:['legs'], domains:['bodyweight','calisthenics']}, 'Single-leg control prevents calisthenics from becoming only upper-body work.'),
+          pick({family:'squat', purposes:['legs'], domains:['bodyweight','calisthenics']}, 'Squat pattern keeps the lower body trained.'),
+          stretchingBlock
         ], []);
-        pushSession('Calisthenics Legs', 'Legs and trunk', [
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['legs']), used),
-          choose(pickByPurpose(lib, 'calisthenics', equip, ['core']), used)
-        ], ['Stretching module']);
-      } else if(style === 'balanced'){
-        pushSession('Upper Balance', 'Push and pull balance', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['push']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['pull']), used)
+      } else if(style === 'balanced' || style === 'mixed'){
+        pushSession('Upper Foundation', 'Push and pull balance', [
+          pick({family:'horizontal-push', purposes:['push'], domains:['weights','calisthenics','bodyweight']}, 'Upper-body push is paired with a pull so the day is balanced.'),
+          pick({family:'horizontal-pull', purposes:['pull'], domains:['weights','calisthenics','rehab']}, 'Horizontal pulling protects posture and balances pressing.'),
+          pick({family:'core-anti-rotation', purposes:['core'], domains:['mobility','weights','bodyweight']}, 'Anti-rotation gives trunk control without turning the session into random abs.')
         ], []);
-        pushSession('Lower Balance', 'Legs and trunk', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['legs']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['core']), used)
+        pushSession('Lower Foundation', 'Squat, hinge and trunk', [
+          pick({family:'squat', purposes:['legs'], domains:['weights','bodyweight','rehab']}, 'The squat/knee-dominant pattern builds everyday lower-body capacity.'),
+          pick({family:'hinge', purposes:['legs'], domains:['weights','rehab']}, 'The hinge pattern balances the week with posterior-chain work.'),
+          pick({family:'hip-extension', purposes:['legs','recovery'], domains:['rehab','pilates','weights']}, 'Hip extension supports glutes, hips and lower-back tolerance.')
         ], []);
-        pushSession('Conditioning', 'Engine and athletic balance', [
-          choose(lib.items.filter(function(it){ return itemAllowed(it, 'mixed', equip) && (it.type === 'circuit' || (it.purposes||[]).indexOf('conditioning')>-1); }), used)
-        ], ['Use tracker for run, walk or cycle']);
-        pushSession('Mobility & Reset', 'Recovery and movement quality', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['mobility','stretching','recovery']), used)
-        ], ['Stretching module']);
+        pushSession('Conditioning / Engine', 'Useful fitness without burying recovery', [
+          pick({family:'conditioning', purposes:['conditioning'], domains:['conditioning','low-impact','circuit']}, 'Conditioning is selected from the wider FreeFitFuel conditioning pool.'),
+          pick({family:'carry', purposes:['core','conditioning'], domains:['conditioning','weights']}, 'Carries add practical strength and trunk work.')
+        ], ['Use tracker.html for walks, runs, bike sessions, GPS and splits.']);
+        pushSession('Recovery + Mobility', 'Keep the system moving', [recoveryBlock, stretchingBlock], []);
       } else {
         pushSession('Upper Push', 'Mixed strength', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['push']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['push']), used)
+          pick({family:'horizontal-push', purposes:['push'], domains:['weights','calisthenics']}),
+          pick({family:'vertical-push', purposes:['push'], domains:['weights','calisthenics']}),
+          pick({family:'arms', purposes:['arms'], domains:['weights','hypertrophy']})
         ], []);
-        pushSession('Upper Pull', 'Mixed strength', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['pull']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['pull']), used)
+        pushSession('Upper Pull', 'Back and biceps support', [
+          pick({family:'horizontal-pull', purposes:['pull'], domains:['weights','calisthenics','rehab']}),
+          pick({family:'vertical-pull', purposes:['pull'], domains:['calisthenics','strength']}),
+          pick({family:'arms', purposes:['arms'], domains:['weights','hypertrophy']})
         ], []);
-        pushSession('Lower Body', 'Strength and trunk', [
-          choose(pickByPurpose(lib, 'mixed', equip, ['legs']), used),
-          choose(pickByPurpose(lib, 'mixed', equip, ['core']), used)
+        pushSession('Lower Body', 'Squat, hinge and calves', [
+          pick({family:'squat', purposes:['legs'], domains:['weights']}),
+          pick({family:'hinge', purposes:['legs'], domains:['weights']}),
+          pick({family:'calf-ankle', purposes:['legs','recovery'], domains:['rehab','running']})
         ], []);
-        pushSession('Conditioning', 'Optional engine work', [
-          choose(lib.items.filter(function(it){ return itemAllowed(it, 'mixed', equip) && (it.type === 'circuit' || (it.purposes||[]).indexOf('conditioning')>-1); }), used)
-        ], ['Use tracker for run, walk or cycle']);
+        pushSession('Recovery / Conditioning', 'Engine or reset depending on readiness', [
+          pick({family:'conditioning', purposes:['conditioning'], domains:['conditioning','circuit']}),
+          recoveryBlock
+        ], []);
       }
 
-      var ladder = lib.items.filter(function(it){ return it.key === 'ladder-standard'; })[0];
-      var stretch = lib.items.filter(function(it){ return it.key === 'stretch-reset'; })[0];
-      var physio = lib.items.filter(function(it){ return it.key === 'physio-lower'; })[0];
-
-      if(days >= 4 && ladder) sessions.push({ title:'Benchmark', subtitle:'Ladder challenge', items:[ladder], extras:['Ladder module'] });
-      if(stretch) sessions.push({ title:'Flexibility', subtitle:'Stretching and mobility', items:[stretch], extras:['Stretching page'] });
-      if(physio) sessions.push({ title:'Recovery', subtitle:'Physio and return-to-training', items:[physio], extras:['Physio page'] });
+      if(days >= 5){
+        pushSession('Physio / Movement Quality', 'Protect joints and rebuild weak links', [physioBlock, pick({family:'rehab-return', purposes:['recovery'], domains:['rehab','mobility']}, 'A rehab-return movement widens the plan beyond standard workouts.')], []);
+      }
+      if(days >= 6){
+        pushSession('Mindful Recovery', 'Yoga, tai chi, qi gong or easy walk', [yogaBlock], ['Use this as active recovery, not another hard workout.']);
+      }
 
       return sessions.slice(0, Math.max(1, days));
     }
@@ -5205,11 +5346,15 @@
               if(item.equipment && item.equipment.length) meta.push(item.equipment.join(', '));
               var watch = item.yt ? actionBtn(ytURL(item.yt), '&#9654; Watch Form', true) : '';
               var logBtn = '<button type="button" class="btn-sm" data-log-name="' + (item.name || '').replace(/"/g,'&quot;') + '">Log this</button>';
+              var source = item.sourcePage ? '<a href="' + item.sourcePage + '" class="btn-sm">Open ' + (item.sourceLabel || 'source') + '</a>' : '';
+              var why = item.why ? '<div class="meta" style="margin-top:8px;"><strong>Why this is here:</strong> ' + item.why + '</div>' : '';
               return ''
                 + '<div class="card" style="margin-top:10px;">'
                 +   '<div style="font-weight:800;font-size:1.05rem;">' + (item.name || '') + '</div>'
                 +   (meta.length ? '<div class="meta" style="margin-top:4px;">' + meta.join(' • ') + '</div>' : '')
-                +   '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:10px;">' + watch + logBtn + '</div>'
+                +   (item.sourceLabel ? '<div class="meta" style="margin-top:4px;">Source: ' + item.sourceLabel + '</div>' : '')
+                +   why
+                +   '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:10px;">' + watch + logBtn + source + '</div>'
                 + '</div>';
           }).join('');
 
@@ -5248,7 +5393,7 @@
       wrap.style.marginTop = '14px';
       wrap.innerHTML = '' +
         '<h2>Build Your Week</h2>' +
-        '<p class="meta">Use Auto Plan to generate a balanced week, or Guided Build to shape it while staying within your saved equipment and training options.</p>' +
+        '<p class="meta">Use Auto Plan to generate a broader week from Workouts, Physio, Recovery, Stretching, Yoga/Tai Chi/Qi Gong and the exercise database, or Guided Build to shape it while staying within your saved equipment and training options.</p>' +
         '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0;">' +
           '<button type="button" id="mpx-mode-auto" class="btn">Auto Plan</button>' +
           '<button type="button" id="mpx-mode-guided" class="btn" style="background:var(--glass);color:var(--ink);border:1px solid var(--stroke);">Guided Build</button>' +

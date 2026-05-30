@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Plan — FreeFitFuel</title>
 
-  <link rel="stylesheet" href="style.css?v=42">
+  <link rel="stylesheet" href="style.css?v=43">
   <link rel="icon" type="image/svg+xml" href="img/freefitfuel-logo.svg">
 
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -535,6 +535,53 @@
     .physiology-list li{margin:.35rem 0}
 
     code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
+
+
+    .exercise-intel{
+      margin-top:.55rem;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+    @media (max-width:720px){.exercise-intel{grid-template-columns:1fr}}
+    .intel-box{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.035);
+      border-radius:10px;
+      padding:.55rem .65rem;
+    }
+    .intel-box strong{
+      display:block;
+      color:#ffd6bd;
+      margin-bottom:.22rem;
+      font-size:.88rem;
+    }
+    .intel-box .mini{
+      color:var(--inkdim);
+      font-size:.88rem;
+      line-height:1.35;
+    }
+    .why-box{
+      margin-top:.5rem;
+      border-left:4px solid var(--accent);
+      background:rgba(255,106,0,.07);
+      border-radius:8px;
+      padding:.55rem .65rem;
+      color:var(--inkdim);
+      font-size:.9rem;
+      line-height:1.4;
+    }
+    .source-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+    .source-pill{
+      border:1px solid rgba(255,106,0,.26);
+      background:rgba(255,106,0,.08);
+      color:#ffd6bd;
+      border-radius:999px;
+      padding:.16rem .52rem;
+      font-size:.8rem;
+      text-decoration:none;
+      font-weight:700;
+    }
 
     /* ===== AI-style adaptive system scoring ===== */
     .system-score-row{
@@ -1531,7 +1578,7 @@
 
   <script src="/js/fff-systems.js"></script>
   <script src="js/engine/fff-state.js?v=1"></script>
-  <script src="js/engine/fff-exercise-db.js?v=43"></script>
+  <script src="js/engine/fff-exercise-db.js?v=44"></script>
   <script src="js/engine/fff-recovery.js?v=1"></script>
   <script src="js/engine/fff-mind.js?v=1"></script>
   <script src="js/engine/fff-roadmap.js?v=1"></script>
@@ -2118,6 +2165,10 @@
         rest: rx && rx.rest ? rx.rest : 60,
         equipment: exercise.equipment || [],
         family: exercise.family || '',
+        movement: exercise.movement || exercise.movementPattern || exercise.family || '',
+        muscles: exercise.muscles || [],
+        primaryMuscles: exercise.primaryMuscles || [],
+        secondaryMuscles: exercise.secondaryMuscles || [],
         domains: exercise.domains || [],
         purposes: exercise.purposes || [],
         cue: exercise.coachingCue || exercise.cue || 'Move with control and keep the effort repeatable.',
@@ -3116,6 +3167,103 @@
       }
     }
 
+
+    function friendlyList(value){
+      var arr = Array.isArray(value) ? value : [];
+      return arr.map(function(item){ return titleCase(String(item || '').replace(/_/g,'-')); }).filter(Boolean).join(', ');
+    }
+
+    function inferPrimaryMuscles(item){
+      item = item || {};
+      if(Array.isArray(item.primaryMuscles) && item.primaryMuscles.length) return item.primaryMuscles;
+      var family = String(item.family || item.movement || '').toLowerCase();
+      var muscles = Array.isArray(item.muscles) ? item.muscles : [];
+      var map = {
+        'horizontal-push':['mid-chest','front-delts','triceps'],
+        'vertical-push':['front-delts','side-delts','triceps'],
+        'horizontal-pull':['rhomboids','mid-traps','rear-delts'],
+        'vertical-pull':['lats','biceps','lower-traps'],
+        'squat':['quads','glutes'],
+        'lunge-split':['quads','glutes','adductors'],
+        'hinge':['hamstrings','glutes','spinal-erectors'],
+        'hip-extension':['glutes','hamstrings'],
+        'calf-ankle':['calves','tibialis'],
+        'core-anti-extension':['rectus-abdominis','transverse-abdominis'],
+        'core-anti-rotation':['obliques','transverse-abdominis'],
+        'arms':['biceps','triceps','forearms'],
+        'conditioning':['heart-lungs','work-capacity'],
+        'mobility-recovery':['movement-quality','joint-control'],
+        'rehab-return':['tissue-tolerance','joint-control']
+      };
+      return map[family] || muscles || [];
+    }
+
+    function inferSecondaryMuscles(item){
+      item = item || {};
+      if(Array.isArray(item.secondaryMuscles) && item.secondaryMuscles.length) return item.secondaryMuscles;
+      var family = String(item.family || item.movement || '').toLowerCase();
+      var map = {
+        'horizontal-push':['serratus-anterior','core-bracing'],
+        'vertical-push':['upper-chest','core-bracing'],
+        'horizontal-pull':['lats','biceps','spinal-erectors'],
+        'vertical-pull':['rhomboids','rear-delts','forearms'],
+        'squat':['core','adductors','calves'],
+        'lunge-split':['calves','core','balance'],
+        'hinge':['lats','core','grip'],
+        'hip-extension':['core','hip-stabilisers'],
+        'calf-ankle':['foot-intrinsics','balance'],
+        'conditioning':['full-body','recovery-between-efforts'],
+        'mobility-recovery':['circulation','recovery'],
+        'rehab-return':['movement-confidence','recovery']
+      };
+      return map[family] || [];
+    }
+
+    function movementExplanation(item){
+      var family = String((item && (item.family || item.movement)) || '').toLowerCase();
+      var map = {
+        'horizontal-push':'Horizontal push: pressing away from the body. Builds chest, shoulders and triceps.',
+        'vertical-push':'Vertical push: pressing overhead. Builds shoulders, triceps and trunk control.',
+        'horizontal-pull':'Horizontal pull: rowing towards the body. Builds mid-back, rear delts and pulling balance.',
+        'vertical-pull':'Vertical pull: pulling down or up. Builds lats, biceps and shoulder control.',
+        'squat':'Squat pattern: knee-dominant lower-body strength for quads, glutes and everyday leg capacity.',
+        'lunge-split':'Split stance: single-leg strength, balance and hip / knee control.',
+        'hinge':'Hinge pattern: posterior-chain strength for hamstrings, glutes and back control.',
+        'hip-extension':'Hip extension: glute-focused work to support hips, knees and lower back.',
+        'calf-ankle':'Calf and ankle work: lower-leg capacity, balance and walking/running resilience.',
+        'core-anti-extension':'Anti-extension core: resisting back arching and building trunk stiffness.',
+        'core-anti-rotation':'Anti-rotation core: resisting twisting and improving real-world trunk control.',
+        'conditioning':'Conditioning: heart, lungs and repeat-effort capacity.',
+        'mobility-recovery':'Mobility and recovery: range, circulation and lower-stress movement quality.',
+        'rehab-return':'Rehab / return: controlled loading to rebuild confidence and tissue tolerance.'
+      };
+      return map[family] || (family ? titleCase(family) + ': selected as part of the weekly movement balance.' : '');
+    }
+
+    function progressionText(item){
+      item = item || {};
+      var parts = [];
+      if(Array.isArray(item.alts) && item.alts.length) parts.push('Options: ' + item.alts.slice(0,4).join(' → '));
+      if(item.rir && item.rir !== '—') parts.push('Progress when all sets are clean with about ' + item.rir + ' reps in reserve.');
+      if(!parts.length) parts.push('Progress slowly: cleaner reps first, then more reps, then more load.');
+      return parts.join(' ');
+    }
+
+    function renderExerciseIntel(item){
+      var primary = friendlyList(inferPrimaryMuscles(item));
+      var secondary = friendlyList(inferSecondaryMuscles(item));
+      var movement = movementExplanation(item);
+      var progress = progressionText(item);
+      var html = '<div class="exercise-intel">';
+      if(primary) html += '<div class="intel-box"><strong>Primary muscles</strong><div class="mini">' + escapeHtml(primary) + '</div></div>';
+      if(secondary) html += '<div class="intel-box"><strong>Secondary / support</strong><div class="mini">' + escapeHtml(secondary) + '</div></div>';
+      if(movement) html += '<div class="intel-box"><strong>Movement pattern</strong><div class="mini">' + escapeHtml(movement) + '</div></div>';
+      html += '<div class="intel-box"><strong>Progression</strong><div class="mini">' + escapeHtml(progress) + '</div></div>';
+      html += '</div>';
+      return html;
+    }
+
+
     function renderPlan(){
       var wrap = document.getElementById('plan');
       var msg = document.getElementById('planMsg');
@@ -3189,6 +3337,7 @@
                           '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
                         '</div>' +
                         (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
+                        renderExerciseIntel(it) +
                         (it.why ? ('<div class="why-box"><strong>Why this is here:</strong> ' + escapeHtml(it.why) + '</div>') : '') +
                         (it.sourcePage ? ('<div class="source-row"><a class="source-pill" href="' + escapeHtml(it.sourcePage) + '">Source: ' + escapeHtml(it.sourceLabel || 'FreeFitFuel') + '</a></div>') : '') +
                         ((it.sourceModules && it.sourceModules.length > 1) ? ('<div class="source-row">' + it.sourceModules.slice(1,4).map(function(src){

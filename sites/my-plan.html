@@ -3249,6 +3249,14 @@
       return parts.join(' ');
     }
 
+    function safeRenderExerciseIntel(item){
+      try{
+        return renderExerciseIntel(item);
+      }catch(err){
+        return '';
+      }
+    }
+
     function renderExerciseIntel(item){
       var primary = friendlyList(inferPrimaryMuscles(item));
       var secondary = friendlyList(inferSecondaryMuscles(item));
@@ -3337,7 +3345,7 @@
                           '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
                         '</div>' +
                         (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
-                        renderExerciseIntel(it) +
+                        safeRenderExerciseIntel(it) +
                         (it.why ? ('<div class="why-box"><strong>Why this is here:</strong> ' + escapeHtml(it.why) + '</div>') : '') +
                         (it.sourcePage ? ('<div class="source-row"><a class="source-pill" href="' + escapeHtml(it.sourcePage) + '">Source: ' + escapeHtml(it.sourceLabel || 'FreeFitFuel') + '</a></div>') : '') +
                         ((it.sourceModules && it.sourceModules.length > 1) ? ('<div class="source-row">' + it.sourceModules.slice(1,4).map(function(src){
@@ -3378,11 +3386,37 @@
         if(msg) msg.textContent = 'Loaded ' + stages.length + ' stage' + (stages.length > 1 ? 's' : '') + ' from local roadmap.';
         setupAccordions();
 
+        if(!wrap.getAttribute('data-myPlanLogDelegatedFallback')){
+          wrap.setAttribute('data-myPlanLogDelegatedFallback', '1');
+          wrap.addEventListener('click', function(evt){
+            var target = evt.target;
+            if(!target || !target.matches || !target.matches('[data-open]')) return;
+            var exerciseItem = target.closest ? target.closest('.exercise-item') : null;
+            if(!exerciseItem) return;
+            var drawer = exerciseItem.querySelector('[data-drawer]');
+            if(!drawer) return;
+            drawer.classList.toggle('open');
+            if(drawer.classList.contains('open')) hookRestTimers(drawer);
+          });
+        }
+
         var openBtns = wrap.querySelectorAll('[data-open]');
         for(var ob = 0; ob < openBtns.length; ob++){
           (function(btn){
+            if(btn.getAttribute('data-log-bound') === '1') return;
+            btn.setAttribute('data-log-bound', '1');
             btn.addEventListener('click', function(){
-              var exerciseItem = btn.closest('.exercise-item');
+              var exerciseItem = btn.closest ? btn.closest('.exercise-item') : null;
+              if(!exerciseItem){
+                var node = btn.parentNode;
+                while(node && node !== wrap){
+                  if(node.classList && node.classList.contains('exercise-item')){
+                    exerciseItem = node;
+                    break;
+                  }
+                  node = node.parentNode;
+                }
+              }
               if(!exerciseItem) return;
               var drawer = exerciseItem.querySelector('[data-drawer]');
               if(!drawer) return;

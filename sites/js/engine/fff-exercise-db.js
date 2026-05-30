@@ -1,4 +1,4 @@
-// FreeFitFuel Engine — Exercise Knowledge Database v4.3
+// FreeFitFuel Engine — Exercise Knowledge Database v4.4
 // Drop-in replacement for /js/engine/fff-exercise-db.js
 // Built to feed the existing My Plan fallback cache, injury profile selector and Workouts payload.
 
@@ -5507,7 +5507,34 @@ window.FFFExerciseDB = (function () {
   function buildTemplate(context) { const styleKey=contextStyle(context||{})||'mixed'; const fams=(STYLE_PROFILES[styleKey]||STYLE_PROFILES.mixed).preferFamilies; return fams.slice(0,7).map(family=>{ const opts=filterExercises(Object.assign({}, context||{}, {family})).slice(0,5); const fam=familyByKey(family); return {family, label:fam?fam.label:family, recommended:opts[0]||null, alternatives:opts.slice(1)}; }); }
   function buildHybridSession(context) { const template=buildTemplate(context); return { title:'FreeFitFuel Adaptive Session', style:contextStyle(context||{})||'mixed', items:template.map(t=>t.recommended).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,equipment:x.equipment,rx:x.defaultRx,cue:x.coachingCue,alternatives:suggestAlternatives(x.key,context,3).map(a=>a.name)})) }; }
   function buildCircuit(context) { const fams=['conditioning','horizontal-push','horizontal-pull','squat','core-anti-extension']; return { title:'Adaptive Conditioning Circuit', format:'AMRAP or EMOM at recoverable pace', items:fams.map(f=>filterExercises(Object.assign({},context||{},{family:f}))[0]).filter(Boolean).map(x=>({key:x.key,name:x.name,family:x.family,rx:x.defaultRx,cue:x.coachingCue})) }; }
-  function getMyPlanLibrary() { return { version:'4.3', source:'fff-exercise-db', sourceModules: Object.keys(PAGE_SOURCE_MODULES).map(function(key){ return Object.assign({key:key}, PAGE_SOURCE_MODULES[key]); }), items:EXERCISES.map(function(ex){ var enriched=enrichExerciseForPlanner(ex); return { key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[], sourcePage: enriched.sourcePage, sourceLabel: enriched.sourceLabel, sourceReason: enriched.sourceReason, sourceModules: enriched.sourceModules, rx: ex.defaultRx, cue: ex.coachingCue, regressions: ex.regressions||[], progressions: ex.progressions||[], alternatives: ex.alternatives||[] }; }) }; }
+
+  function inferMuscleMetadata(ex) {
+    ex = ex || {};
+    const family = String(ex.family || ex.movement || '').toLowerCase();
+    const existingPrimary = Array.isArray(ex.primaryMuscles) ? ex.primaryMuscles : [];
+    const existingSecondary = Array.isArray(ex.secondaryMuscles) ? ex.secondaryMuscles : [];
+    if (existingPrimary.length || existingSecondary.length) return { primaryMuscles: existingPrimary, secondaryMuscles: existingSecondary };
+    const map = {
+      'horizontal-push': { primaryMuscles:['mid-chest','front-delts','triceps'], secondaryMuscles:['serratus-anterior','core-bracing'] },
+      'vertical-push': { primaryMuscles:['front-delts','side-delts','triceps'], secondaryMuscles:['upper-chest','core-bracing'] },
+      'horizontal-pull': { primaryMuscles:['rhomboids','mid-traps','rear-delts'], secondaryMuscles:['lats','biceps','spinal-erectors'] },
+      'vertical-pull': { primaryMuscles:['lats','biceps','lower-traps'], secondaryMuscles:['rhomboids','rear-delts','forearms'] },
+      'squat': { primaryMuscles:['quads','glutes'], secondaryMuscles:['core','adductors','calves'] },
+      'lunge-split': { primaryMuscles:['quads','glutes','adductors'], secondaryMuscles:['calves','core','balance'] },
+      'hinge': { primaryMuscles:['hamstrings','glutes','spinal-erectors'], secondaryMuscles:['lats','core','grip'] },
+      'hip-extension': { primaryMuscles:['glutes','hamstrings'], secondaryMuscles:['core','hip-stabilisers'] },
+      'calf-ankle': { primaryMuscles:['calves','tibialis'], secondaryMuscles:['foot-intrinsics','balance'] },
+      'core-anti-extension': { primaryMuscles:['rectus-abdominis','transverse-abdominis'], secondaryMuscles:['hip-flexors','shoulder-stabilisers'] },
+      'core-anti-rotation': { primaryMuscles:['obliques','transverse-abdominis'], secondaryMuscles:['glutes','shoulder-stabilisers'] },
+      'arms': { primaryMuscles:['biceps','triceps','forearms'], secondaryMuscles:['brachialis','brachioradialis'] },
+      'conditioning': { primaryMuscles:['heart-lungs','work-capacity'], secondaryMuscles:['full-body','recovery-between-efforts'] },
+      'mobility-recovery': { primaryMuscles:['movement-quality','joint-control'], secondaryMuscles:['circulation','recovery'] },
+      'rehab-return': { primaryMuscles:['tissue-tolerance','joint-control'], secondaryMuscles:['movement-confidence','recovery'] }
+    };
+    return map[family] || { primaryMuscles: Array.isArray(ex.muscles) ? ex.muscles : [], secondaryMuscles: [] };
+  }
+
+  function getMyPlanLibrary() { return { version:'4.4', source:'fff-exercise-db-v4.4', sourceModules: Object.keys(PAGE_SOURCE_MODULES).map(function(key){ return Object.assign({key:key}, PAGE_SOURCE_MODULES[key]); }), items:EXERCISES.map(function(ex){ var enriched=enrichExerciseForPlanner(ex); var muscles=inferMuscleMetadata(ex); return { key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, muscles:ex.muscles||[], primaryMuscles:muscles.primaryMuscles||[], secondaryMuscles:muscles.secondaryMuscles||[], movement:ex.movement||ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[], sourcePage: enriched.sourcePage, sourceLabel: enriched.sourceLabel, sourceReason: enriched.sourceReason, sourceModules: enriched.sourceModules, rx: ex.defaultRx, cue: ex.coachingCue, regressions: ex.regressions||[], progressions: ex.progressions||[], alternatives: ex.alternatives||[] }; }) }; }
   function seedMyPlanCache() { try { localStorage.setItem('fff.library.cache.v1', JSON.stringify(getMyPlanLibrary())); return true; } catch(err) { return false; } }
   function getLibraryStats() { const byFamily={}, byInjury={}; EXERCISES.forEach(ex=>{ byFamily[ex.family]=(byFamily[ex.family]||0)+1; (ex.cautionIf||[]).forEach(i=>byInjury[i]=(byInjury[i]||0)+1); }); return { totalExercises:EXERCISES.length, familyCount:FAMILY_DB.length, injuryProfiles:Object.keys(INJURY_RULES).length, styleProfiles:Object.keys(STYLE_PROFILES).length, progressionTrees:Object.keys(PROGRESSION_TREES).length, byFamily, byInjury }; }
 

@@ -227,7 +227,13 @@
 <body>
   <!-- Shared header -->
   <div id="site-header"></div>
-  <script src="/js/header-loader.js" defer></script>
+  <script src="/js/header-loader.js" defer>
+    const LIBRARY_PAYLOAD_ACTIVE_KEY = 'fff.libraryPayload';
+    const LIBRARY_PAYLOAD_PERSONALISED_KEY = 'fff.libraryPayload.personalised-plan';
+    const LIBRARY_PAYLOAD_BUILD_WEEK_KEY = 'fff.libraryPayload.build-your-week';
+    const LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY = 'fff.libraryPayload.activeBuilder';
+
+</script>
 
   <!-- HERO -->
   <header class="hero-mini" role="banner" aria-label="Workouts hero">
@@ -401,10 +407,50 @@
     </div>
   </footer>
 
+
+      <div class="card" id="myPlanBuilderSwitcher" style="margin:12px 0;">
+        <h3>My Plan workout source</h3>
+        <p class="meta">Switch between the two exercise builders from the My Plan hub.</p>
+        <div class="tag-row">
+          <button class="btn-sm" type="button" data-builder-switch="personalised-plan">Personalised Plan</button>
+          <button class="btn-sm" type="button" data-builder-switch="build-your-week">Build Your Week</button>
+        </div>
+        <p class="meta" id="builderSwitchStatus">Current source will appear here once a My Plan workout has been sent across.</p>
+      </div>
 <script>
 /* ========= NAMESPACE / PREFS ========= */
 const NS = 'fff.workouts.v1.';
 const PREFS_KEY = NS + 'prefs';
+
+
+    function getNamedPayloadKey(builderKey){
+      return builderKey === 'personalised-plan' ? LIBRARY_PAYLOAD_PERSONALISED_KEY : LIBRARY_PAYLOAD_BUILD_WEEK_KEY;
+    }
+    function readPayloadByBuilder(builderKey){
+      try{
+        var raw = localStorage.getItem(getNamedPayloadKey(builderKey));
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){ return null; }
+    }
+    function readActiveLibraryPayload(){
+      try{
+        var active = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY) || '';
+        var named = active ? readPayloadByBuilder(active) : null;
+        if(named) return named;
+        var raw = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      }catch(err){ return null; }
+    }
+    function activateLibraryPayload(builderKey){
+      var payload = readPayloadByBuilder(builderKey);
+      if(!payload) return false;
+      try{
+        localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY, builderKey);
+        localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_KEY, JSON.stringify(payload));
+      }catch(err){}
+      location.reload();
+      return true;
+    }
 
 function defaultPrefs(){
   return { level:'beginner', goal:'maintain',
@@ -1317,6 +1363,32 @@ renderCircuits();
 })();
 </script>
 <script src="/js/fff-systems.js"></script>
-<script src="/js/fff-system-renderer.js"></script>
+<script src="/js/fff-system-renderer.js">
+    function refreshBuilderSwitcher(){
+      var status = document.getElementById('builderSwitchStatus');
+      if(!status) return;
+      var active = '';
+      try{ active = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY) || ''; }catch(err){}
+      var personal = !!readPayloadByBuilder('personalised-plan');
+      var build = !!readPayloadByBuilder('build-your-week');
+      var label = active === 'personalised-plan' ? 'Personalised Plan' : active === 'build-your-week' ? 'Build Your Week' : 'Legacy active payload';
+      status.textContent = 'Active: ' + label + ' • Personalised saved: ' + (personal ? 'yes' : 'no') + ' • Build Your Week saved: ' + (build ? 'yes' : 'no');
+    }
+    function wireBuilderSwitcher(){
+      var buttons = document.querySelectorAll('[data-builder-switch]');
+      Array.prototype.forEach.call(buttons, function(btn){
+        btn.addEventListener('click', function(){
+          var key = btn.getAttribute('data-builder-switch');
+          if(!activateLibraryPayload(key)){
+            alert(key === 'personalised-plan' ? 'No Personalised Plan workout has been sent to Workouts yet.' : 'No Build Your Week workout has been sent to Workouts yet.');
+          }
+        });
+      });
+      refreshBuilderSwitcher();
+    }
+
+
+    document.addEventListener('DOMContentLoaded', wireBuilderSwitcher);
+</script>
 </body>
 </html>

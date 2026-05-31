@@ -536,32 +536,6 @@
 
     code{background:rgba(255,255,255,.05);padding:.08rem .28rem;border-radius:6px}
 
-
-    .exercise-intel{
-      margin-top:.55rem;
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:8px;
-    }
-    @media (max-width:720px){.exercise-intel{grid-template-columns:1fr}}
-    .intel-box{
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.035);
-      border-radius:10px;
-      padding:.55rem .65rem;
-    }
-    .intel-box strong{
-      display:block;
-      color:#ffd6bd;
-      margin-bottom:.22rem;
-      font-size:.88rem;
-    }
-    .intel-box .mini{
-      color:var(--inkdim);
-      font-size:.88rem;
-      line-height:1.35;
-    }
-
     /* ===== AI-style adaptive system scoring ===== */
     .system-score-row{
       display:flex;
@@ -1557,7 +1531,7 @@
 
   <script src="/js/fff-systems.js"></script>
   <script src="js/engine/fff-state.js?v=1"></script>
-  <script src="js/engine/fff-exercise-db.js?v=44"></script>
+  <script src="js/engine/fff-exercise-db.js?v=43"></script>
   <script src="js/engine/fff-recovery.js?v=1"></script>
   <script src="js/engine/fff-mind.js?v=1"></script>
   <script src="js/engine/fff-roadmap.js?v=1"></script>
@@ -3212,7 +3186,7 @@
                             ((it.type && it.type !== 'cardio') ? (' <span class="badge">' + escapeHtml(it.type) + '</span>') : '') +
                           '</div>' +
                           '<div class="rx">' + escapeHtml(presc) + '</div>' +
-                          '<div class="mov-tools"><button class="btn-sm" data-plan-log-name="' + escapeHtml(it.name || 'Exercise') + '" type="button">Log</button></div>' +
+                          '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
                         '</div>' +
                         (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
                         (it.why ? ('<div class="why-box"><strong>Why this is here:</strong> ' + escapeHtml(it.why) + '</div>') : '') +
@@ -3255,38 +3229,19 @@
         if(msg) msg.textContent = 'Loaded ' + stages.length + ' stage' + (stages.length > 1 ? 's' : '') + ' from local roadmap.';
         setupAccordions();
 
-        if(!wrap.getAttribute('data-personalisedPlanLogRouter')){
-          wrap.setAttribute('data-personalisedPlanLogRouter', '1');
-          wrap.addEventListener('click', function(evt){
-            var target = evt.target;
-            if(!target || !target.getAttribute) return;
-            var exName = target.getAttribute('data-plan-log-name');
-            if(!exName) return;
-            evt.preventDefault();
-
-            try{
-              var payload = {
-                source:'my-plan',
-                style:'personalised-plan',
-                generated_at:new Date().toISOString(),
-                exercise: exName
-              };
-
-              if(typeof openWorkoutLibrary === 'function'){
-                openWorkoutLibrary(payload, exName);
-                return;
-              }
-
-              localStorage.setItem('fff.workouts.payload.v1', JSON.stringify(payload));
-              localStorage.setItem('fff.workouts.focusExercise.v1', exName);
-            }catch(err){}
-
-            window.location.href = 'workouts.html';
-          });
+        var openBtns = wrap.querySelectorAll('[data-open]');
+        for(var ob = 0; ob < openBtns.length; ob++){
+          (function(btn){
+            btn.addEventListener('click', function(){
+              var exerciseItem = btn.closest('.exercise-item');
+              if(!exerciseItem) return;
+              var drawer = exerciseItem.querySelector('[data-drawer]');
+              if(!drawer) return;
+              drawer.classList.toggle('open');
+              if(drawer.classList.contains('open')) hookRestTimers(drawer);
+            });
+          })(openBtns[ob]);
         }
-
-
-        // Personalised-plan Log buttons now route to Workouts, not inline drawers.
       }catch(err){
         wrap.innerHTML = '<div class="card">An error occurred while rendering the plan.</div>';
         renderLegend([]);
@@ -5305,102 +5260,6 @@
       window.location.href = 'workouts.html';
     }
 
-
-    function friendlyList(value){
-      var arr = Array.isArray(value) ? value : [];
-      return arr.map(function(item){
-        return titleCase(String(item || '').replace(/_/g,'-'));
-      }).filter(Boolean).join(', ');
-    }
-
-    function inferPrimaryMusclesForBuiltItem(item){
-      item = item || {};
-      if(Array.isArray(item.primaryMuscles) && item.primaryMuscles.length) return item.primaryMuscles;
-      var family = String(item.family || item.movement || '').toLowerCase();
-      var muscles = Array.isArray(item.muscles) ? item.muscles : [];
-      var map = {
-        'horizontal-push':['mid-chest','front-delts','triceps'],
-        'vertical-push':['front-delts','side-delts','triceps'],
-        'horizontal-pull':['rhomboids','mid-traps','rear-delts'],
-        'vertical-pull':['lats','biceps','lower-traps'],
-        'squat':['quads','glutes'],
-        'lunge-split':['quads','glutes','adductors'],
-        'hinge':['hamstrings','glutes','spinal-erectors'],
-        'hip-extension':['glutes','hamstrings'],
-        'calf-ankle':['calves','tibialis'],
-        'core-anti-extension':['rectus-abdominis','transverse-abdominis'],
-        'core-anti-rotation':['obliques','transverse-abdominis'],
-        'arms':['biceps','triceps','forearms'],
-        'conditioning':['heart-lungs','work-capacity'],
-        'mobility-recovery':['movement-quality','joint-control'],
-        'rehab-return':['tissue-tolerance','joint-control']
-      };
-      return map[family] || muscles || [];
-    }
-
-    function inferSecondaryMusclesForBuiltItem(item){
-      item = item || {};
-      if(Array.isArray(item.secondaryMuscles) && item.secondaryMuscles.length) return item.secondaryMuscles;
-      var family = String(item.family || item.movement || '').toLowerCase();
-      var map = {
-        'horizontal-push':['serratus-anterior','core-bracing'],
-        'vertical-push':['upper-chest','core-bracing'],
-        'horizontal-pull':['lats','biceps','spinal-erectors'],
-        'vertical-pull':['rhomboids','rear-delts','forearms'],
-        'squat':['core','adductors','calves'],
-        'lunge-split':['calves','core','balance'],
-        'hinge':['lats','core','grip'],
-        'hip-extension':['core','hip-stabilisers'],
-        'calf-ankle':['foot-intrinsics','balance'],
-        'core-anti-extension':['hip-flexors','shoulder-stabilisers'],
-        'core-anti-rotation':['glutes','shoulder-stabilisers'],
-        'conditioning':['full-body','recovery-between-efforts'],
-        'mobility-recovery':['circulation','recovery'],
-        'rehab-return':['movement-confidence','recovery']
-      };
-      return map[family] || [];
-    }
-
-    function movementExplanationForBuiltItem(item){
-      var family = String((item && (item.family || item.movement)) || '').toLowerCase();
-      var map = {
-        'horizontal-push':'Horizontal push: pressing away from the body.',
-        'vertical-push':'Vertical push: pressing overhead.',
-        'horizontal-pull':'Horizontal pull: rowing towards the body.',
-        'vertical-pull':'Vertical pull: pulling down or pulling yourself up.',
-        'squat':'Squat pattern: knee-dominant lower-body strength.',
-        'lunge-split':'Split stance: single-leg strength, balance and control.',
-        'hinge':'Hinge pattern: posterior-chain strength.',
-        'hip-extension':'Hip extension: glute-focused strength.',
-        'calf-ankle':'Calf and ankle capacity.',
-        'core-anti-extension':'Anti-extension core: resisting back arching.',
-        'core-anti-rotation':'Anti-rotation core: resisting twisting.',
-        'conditioning':'Conditioning: heart, lungs and repeat-effort capacity.',
-        'mobility-recovery':'Mobility and recovery: range, circulation and movement quality.',
-        'rehab-return':'Rehab / return: controlled loading and confidence.'
-      };
-      return map[family] || '';
-    }
-
-    function renderBuiltExerciseIntel(item){
-      try{
-        var primary = friendlyList(inferPrimaryMusclesForBuiltItem(item));
-        var secondary = friendlyList(inferSecondaryMusclesForBuiltItem(item));
-        var movement = movementExplanationForBuiltItem(item);
-        if(!primary && !secondary && !movement) return '';
-        var html = '<div class="exercise-intel">';
-        if(primary) html += '<div class="intel-box"><strong>Primary muscles</strong><div class="mini">' + escapeHtml(primary) + '</div></div>';
-        if(secondary) html += '<div class="intel-box"><strong>Secondary / support</strong><div class="mini">' + escapeHtml(secondary) + '</div></div>';
-        if(movement) html += '<div class="intel-box"><strong>Movement pattern</strong><div class="mini">' + escapeHtml(movement) + '</div></div>';
-        html += '<div class="intel-box"><strong>Progression</strong><div class="mini">Progress when reps are clean and controlled. Add reps first, then load or a harder variation.</div></div>';
-        html += '</div>';
-        return html;
-      }catch(err){
-        return '';
-      }
-    }
-
-
     function buildLibraryPayload(style, sessions, equip){
       return {
         source:'my-plan',
@@ -5420,10 +5279,6 @@
                 equipment: item.equipment || item.eq || [],
                 purposes: item.purposes || [],
                 family: item.family || '',
-                movement: item.movement || item.family || '',
-                muscles: item.muscles || [],
-                primaryMuscles: item.primaryMuscles || [],
-                secondaryMuscles: item.secondaryMuscles || [],
                 domains: item.domains || [],
                 cue: item.cue || '',
                 why: item.why || '',
@@ -5498,7 +5353,6 @@
                 +   '<div style="font-weight:800;font-size:1.05rem;">' + (item.name || '') + '</div>'
                 +   (meta.length ? '<div class="meta" style="margin-top:4px;">' + meta.join(' • ') + '</div>' : '')
                 +   (item.sourceLabel ? '<div class="meta" style="margin-top:4px;">Source: ' + item.sourceLabel + '</div>' : '')
-                +   renderBuiltExerciseIntel(item)
                 +   why
                 +   '<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:10px;">' + watch + logBtn + source + '</div>'
                 + '</div>';

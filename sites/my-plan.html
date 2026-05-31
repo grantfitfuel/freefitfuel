@@ -2686,6 +2686,67 @@
       wireWorkoutPlanLogsToEngine();
     }
 
+
+    function buildWorkoutPayloadFromRoadmapStage(stage, stageIndex){
+      stage = stage || {};
+      var days = Array.isArray(stage.split) ? stage.split : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      var program = stage.programByDay || [];
+      var sessions = [];
+
+      for(var di = 0; di < 7; di++){
+        var items = program[di] || [];
+        if(!Array.isArray(items)) items = [];
+        sessions.push({
+          day: di + 1,
+          title: (days[di] || ('Day ' + (di + 1))),
+          subtitle: (stage.name ? stage.name + ' • ' : '') + (stage.blurb || ''),
+          items: items.filter(Boolean).map(function(item){
+            return {
+              name: item.name || '',
+              key: item.key || item.k || '',
+              yt: item.yt || item.name || '',
+              type: item.type || '',
+              equipment: item.equipment || item.eq || [],
+              purposes: item.purposes || [],
+              family: item.family || '',
+              domains: item.domains || [],
+              cue: item.cue || '',
+              why: item.why || '',
+              sourcePage: item.sourcePage || '',
+              sourceLabel: item.sourceLabel || '',
+              sourceModules: item.sourceModules || []
+            };
+          }),
+          extras: []
+        });
+      }
+
+      return {
+        source: 'my-plan',
+        style: 'personalised-plan',
+        stageIndex: stageIndex || 0,
+        stageName: stage.name || 'Personalised Plan',
+        equip: (typeof getEquipmentProfileFromUI === 'function' ? getEquipmentProfileFromUI().equip : {}),
+        sessions: sessions,
+        requestedAt: Date.now()
+      };
+    }
+
+    function openPersonalisedPlanInWorkouts(stage, stageIndex, exerciseName){
+      var payload = buildWorkoutPayloadFromRoadmapStage(stage, stageIndex);
+      try{
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        localStorage.setItem(CURRENT_PLAN_KEY, JSON.stringify({
+          style: 'personalised-plan',
+          days: String((payload.sessions || []).length || 7),
+          payload: payload
+        }));
+        if(exerciseName) localStorage.setItem('fff.quickLog', exerciseName);
+      }catch(err){}
+      window.location.href = 'workouts.html';
+    }
+
+
     function restControlsHTML(id){
       return '' +
         '<div class="restbar" data-rest="' + id + '" data-bound="0">' +
@@ -3186,7 +3247,7 @@
                             ((it.type && it.type !== 'cardio') ? (' <span class="badge">' + escapeHtml(it.type) + '</span>') : '') +
                           '</div>' +
                           '<div class="rx">' + escapeHtml(presc) + '</div>' +
-                          '<div class="mov-tools"><button class="btn-sm" data-open type="button">Log</button></div>' +
+                          '<div class="mov-tools"><button class="btn-sm" data-personal-log-stage="' + si + '" data-personal-log-name="' + escapeHtml(it.name || 'Exercise') + '" type="button">Log</button></div>' +
                         '</div>' +
                         (it.cue ? ('<p class="meta" style="margin:.3rem 0 0">' + escapeHtml(it.cue) + '</p>') : '') +
                         (it.why ? ('<div class="why-box"><strong>Why this is here:</strong> ' + escapeHtml(it.why) + '</div>') : '') +
@@ -3229,19 +3290,19 @@
         if(msg) msg.textContent = 'Loaded ' + stages.length + ' stage' + (stages.length > 1 ? 's' : '') + ' from local roadmap.';
         setupAccordions();
 
-        var openBtns = wrap.querySelectorAll('[data-open]');
-        for(var ob = 0; ob < openBtns.length; ob++){
-          (function(btn){
-            btn.addEventListener('click', function(){
-              var exerciseItem = btn.closest('.exercise-item');
-              if(!exerciseItem) return;
-              var drawer = exerciseItem.querySelector('[data-drawer]');
-              if(!drawer) return;
-              drawer.classList.toggle('open');
-              if(drawer.classList.contains('open')) hookRestTimers(drawer);
-            });
-          })(openBtns[ob]);
-        }
+        wrap.querySelectorAll('[data-personal-log-name]').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            var exName = btn.getAttribute('data-personal-log-name') || '';
+            var stageIndex = parseInt(btn.getAttribute('data-personal-log-stage') || '0', 10);
+            if(isNaN(stageIndex)) stageIndex = 0;
+            var stage = stages[stageIndex] || stages[0] || null;
+            if(!stage) return;
+            openPersonalisedPlanInWorkouts(stage, stageIndex, exName);
+          });
+        });
+
+
+        // Personalised plan Log buttons hand off to workouts.html with the actual roadmap payload.
       }catch(err){
         wrap.innerHTML = '<div class="card">An error occurred while rendering the plan.</div>';
         renderLegend([]);

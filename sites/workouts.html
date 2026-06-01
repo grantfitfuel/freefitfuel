@@ -587,84 +587,80 @@ let LIBRARY_PAYLOAD = null;
 
 /* ========= DOM + UTIL HELPERS ========= */
 
+
 function getNamedPayloadKey(builderKey){
   return builderKey === 'personalised-plan' ? LIBRARY_PAYLOAD_PERSONALISED_KEY : LIBRARY_PAYLOAD_BUILD_WEEK_KEY;
 }
-
 function readPayloadByBuilder(builderKey){
   try{
     var raw = localStorage.getItem(getNamedPayloadKey(builderKey));
     return raw ? JSON.parse(raw) : null;
-  }catch(err){
-    return null;
-  }
+  }catch(err){ return null; }
 }
-
 function readActiveLibraryPayload(){
   try{
     var active = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY) || '';
     var named = active ? readPayloadByBuilder(active) : null;
-    if(named) return named;
+    if(named){
+      LIBRARY_PAYLOAD = named;
+      return named;
+    }
 
     var raw = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_KEY);
     var legacy = raw ? JSON.parse(raw) : null;
-
     if(legacy && Array.isArray(legacy.sessions)){
       var key = legacy.builderKey || legacy.source || '';
-      if(key === 'personalised-plan'){
-        localStorage.setItem(LIBRARY_PAYLOAD_PERSONALISED_KEY, JSON.stringify(legacy));
-        localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY, 'personalised-plan');
-      }else{
-        localStorage.setItem(LIBRARY_PAYLOAD_BUILD_WEEK_KEY, JSON.stringify(legacy));
-        localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY, 'build-your-week');
-      }
+      key = key === 'personalised-plan' ? 'personalised-plan' : 'build-your-week';
+      legacy.builderKey = key;
+      legacy.builderLabel = key === 'personalised-plan' ? 'Personalised Plan' : 'Build Your Week';
+      localStorage.setItem(getNamedPayloadKey(key), JSON.stringify(legacy));
+      localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY, key);
+      LIBRARY_PAYLOAD = legacy;
+      return legacy;
     }
 
-    return legacy;
+    LIBRARY_PAYLOAD = null;
+    return null;
   }catch(err){
+    LIBRARY_PAYLOAD = null;
     return null;
   }
 }
-
 function activateLibraryPayload(builderKey){
   var payload = readPayloadByBuilder(builderKey);
   if(!payload) return false;
   try{
+    payload.builderKey = builderKey;
+    payload.builderLabel = builderKey === 'personalised-plan' ? 'Personalised Plan' : 'Build Your Week';
     localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY, builderKey);
     localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_KEY, JSON.stringify(payload));
+    LIBRARY_PAYLOAD = payload;
   }catch(err){}
-  location.reload();
+
+  if(typeof updateLibraryBanner === 'function') updateLibraryBanner();
+  if(typeof renderPlan === 'function') renderPlan();
+  if(typeof renderCal === 'function') renderCal();
+  if(typeof renderCircuits === 'function') renderCircuits();
+  if(typeof refreshBuilderSwitcher === 'function') refreshBuilderSwitcher();
   return true;
 }
-
 function refreshBuilderSwitcher(){
   var status = document.getElementById('builderSwitchStatus');
   if(!status) return;
-
   var active = '';
   try{ active = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY) || ''; }catch(err){}
-
   var personal = !!readPayloadByBuilder('personalised-plan');
   var build = !!readPayloadByBuilder('build-your-week');
-
-  var label = active === 'personalised-plan'
-    ? 'Personalised Plan'
-    : active === 'build-your-week'
-      ? 'Build Your Week'
-      : 'Current active workout';
-
+  var label = active === 'personalised-plan' ? 'Personalised Plan' : active === 'build-your-week' ? 'Build Your Week' : 'Current active workout';
   status.textContent = 'Active: ' + label + ' • Personalised saved: ' + (personal ? 'yes' : 'no') + ' • Build Your Week saved: ' + (build ? 'yes' : 'no');
 }
-
 function wireBuilderSwitcher(){
   var buttons = document.querySelectorAll('[data-builder-switch]');
   Array.prototype.forEach.call(buttons, function(btn){
     btn.addEventListener('click', function(){
       var key = btn.getAttribute('data-builder-switch');
       if(!activateLibraryPayload(key)){
-        alert(key === 'personalised-plan'
-          ? 'No Personalised Plan workout has been sent to Workouts yet.'
-          : 'No Build Your Week workout has been sent to Workouts yet.');
+        alert(key === 'personalised-plan' ? 'No Personalised Plan workout has been sent to Workouts yet.' : 'No Build Your Week workout has been sent to Workouts yet.');
       }
     });
   });

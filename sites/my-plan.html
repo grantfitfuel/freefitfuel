@@ -2735,12 +2735,18 @@
     function openPersonalisedPlanInWorkouts(stage, stageIndex, exerciseName){
       var payload = buildWorkoutPayloadFromRoadmapStage(stage, stageIndex);
       try{
+        payload = payload || {};
+        payload.builderKey = payload.builderKey || 'build-your-week';
+        payload.builderLabel = payload.builderLabel || 'Build Your Week';
+        payload.savedAt = new Date().toISOString();
         payload.builderKey = 'personalised-plan';
         payload.builderLabel = 'Personalised Plan';
         payload.savedAt = new Date().toISOString();
         localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
         localStorage.setItem('fff.libraryPayload.personalised-plan', JSON.stringify(payload));
         localStorage.setItem('fff.libraryPayload.activeBuilder', 'personalised-plan');
+        localStorage.setItem('fff.libraryPayload.build-your-week', JSON.stringify(payload));
+        localStorage.setItem('fff.libraryPayload.activeBuilder', 'build-your-week');
         localStorage.setItem(CURRENT_PLAN_KEY, JSON.stringify({
           style: 'personalised-plan',
           days: String((payload.sessions || []).length || 7),

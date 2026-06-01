@@ -5332,6 +5332,22 @@
       window.location.href = 'workouts.html';
     }
 
+
+    function saveBuildYourWeekNamedPayload(payload){
+      try{
+        payload = payload || {};
+        payload.source = 'build-your-week';
+        payload.builderKey = 'build-your-week';
+        payload.builderLabel = 'Build Your Week';
+        payload.savedAt = new Date().toISOString();
+
+        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        localStorage.setItem('fff.libraryPayload.build-your-week', JSON.stringify(payload));
+        localStorage.setItem('fff.libraryPayload.activeBuilder', 'build-your-week');
+      }catch(err){}
+      return payload;
+    }
+
     function buildLibraryPayload(style, sessions, equip){
       return {
         source:'build-your-week',
@@ -5370,7 +5386,7 @@
 
     function openWorkoutLibrary(payload, quickName){
       try{
-        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        saveBuildYourWeekNamedPayload(payload);
         if(quickName) localStorage.setItem('fff.quickLog', quickName);
       }catch(err){}
       window.location.href = 'workouts.html';
@@ -5405,7 +5421,7 @@
       var payload = buildLibraryPayload(style, sessions, equip);
 
       try{
-        localStorage.setItem('fff.libraryPayload', JSON.stringify(payload));
+        saveBuildYourWeekNamedPayload(payload);
         localStorage.setItem(CURRENT_PLAN_KEY, JSON.stringify({
           style: style,
           days: daysEl ? String(daysEl.value || '4') : '4',

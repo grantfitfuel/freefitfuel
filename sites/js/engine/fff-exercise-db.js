@@ -1,4 +1,4 @@
-// FreeFitFuel Engine — Exercise Knowledge Database v4.5
+// FreeFitFuel Engine — Exercise Knowledge Database v4.6
 // Drop-in replacement for /js/engine/fff-exercise-db.js
 // Built to feed the existing My Plan fallback cache, injury profile selector and Workouts payload.
 
@@ -13609,6 +13609,17870 @@ window.FFFExerciseDB = (function () {
     "source": "fff-exercise-db-v4.5-expansion-pack-1"
   }
 
+,
+
+  {
+    "key": "incline-push-up-2",
+    "name": "Incline Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw",
+      "bench"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "serratus-anterior"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "serratus-anterior"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "push",
+      "regression"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Incline Push-Up",
+      "incline-push-up",
+      "incline-push-up-2"
+    ],
+    "yt": "Incline Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use the incline to build clean pressing volume.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "paused-push-up",
+    "name": "Paused Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "core"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "wrist-pain"
+    ],
+    "tags": [
+      "push",
+      "tempo"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Paused Push-Up",
+      "paused-push-up"
+    ],
+    "yt": "Paused Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pause under control without losing body tension.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "tempo-push-up",
+    "name": "Tempo Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "core"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "wrist-pain"
+    ],
+    "tags": [
+      "push",
+      "tempo"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Tempo Push-Up",
+      "tempo-push-up"
+    ],
+    "yt": "Tempo Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lower slowly and press smoothly.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "deficit-push-up",
+    "name": "Deficit Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw",
+      "handles"
+    ],
+    "styles": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "front-delts",
+      "triceps"
+    ],
+    "primaryMuscles": [
+      "mid-chest"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "triceps"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "deep-range",
+      "push"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Deficit Push-Up",
+      "deficit-push-up"
+    ],
+    "yt": "Deficit Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use extra range only if shoulders tolerate it.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "pseudo-planche-push-up-2",
+    "name": "Pseudo Planche Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "front-delts",
+      "upper-chest",
+      "triceps",
+      "core"
+    ],
+    "primaryMuscles": [
+      "front-delts",
+      "upper-chest"
+    ],
+    "secondaryMuscles": [
+      "triceps",
+      "core"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "wrist-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "advanced",
+      "push"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Pseudo Planche Push-Up",
+      "pseudo-planche-push-up",
+      "pseudo-planche-push-up-2"
+    ],
+    "yt": "Pseudo Planche Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lean forward slightly and keep wrists comfortable.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-resisted-push-up",
+    "name": "Band-Resisted Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw",
+      "band"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "core"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "wrist-pain"
+    ],
+    "tags": [
+      "band",
+      "push"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band-Resisted Push-Up",
+      "band-resisted-push-up"
+    ],
+    "yt": "Band-Resisted Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use band tension to overload the top.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "single-arm-dumbbell-floor-press",
+    "name": "Single-Arm Dumbbell Floor Press",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "obliques",
+      "front-delts"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "obliques",
+      "front-delts"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "single-arm",
+      "floor-press"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Single-Arm Dumbbell Floor Press",
+      "single-arm-dumbbell-floor-press"
+    ],
+    "yt": "Single-Arm Dumbbell Floor Press exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "strength"
+    ],
+    "styleBias": [
+      "weights",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Resist rolling while pressing one dumbbell.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "alternating-dumbbell-bench-press",
+    "name": "Alternating Dumbbell Bench Press",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "core"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "alternating",
+      "press"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Alternating Dumbbell Bench Press",
+      "alternating-dumbbell-bench-press"
+    ],
+    "yt": "Alternating Dumbbell Bench Press exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep one dumbbell stable while pressing the other.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "dumbbell-crush-grip-floor-press",
+    "name": "Dumbbell Crush-Grip Floor Press",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "inner-chest-emphasis",
+      "triceps",
+      "front-delts"
+    ],
+    "primaryMuscles": [
+      "inner-chest-emphasis",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "crush-grip",
+      "floor-press"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dumbbell Crush-Grip Floor Press",
+      "dumbbell-crush-grip-floor-press"
+    ],
+    "yt": "Dumbbell Crush-Grip Floor Press exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Squeeze the dumbbells together throughout.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "ring-archer-push-up",
+    "name": "Ring Archer Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "core"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "core"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "rings",
+      "advanced"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Ring Archer Push-Up",
+      "ring-archer-push-up"
+    ],
+    "yt": "Ring Archer Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Shift gradually side to side and keep the rings quiet.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "kneeling-ring-push-up",
+    "name": "Kneeling Ring Push-Up",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-chest",
+      "triceps",
+      "front-delts",
+      "core"
+    ],
+    "primaryMuscles": [
+      "mid-chest",
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "core"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "rings",
+      "regression"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Kneeling Ring Push-Up",
+      "kneeling-ring-push-up"
+    ],
+    "yt": "Kneeling Ring Push-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use knees to learn ring stability.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "bench-dip",
+    "name": "Bench Dip",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bench",
+      "bw"
+    ],
+    "styles": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "triceps",
+      "front-delts",
+      "lower-chest"
+    ],
+    "primaryMuscles": [
+      "triceps"
+    ],
+    "secondaryMuscles": [
+      "front-delts",
+      "lower-chest"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "triceps",
+      "dip"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Bench Dip",
+      "bench-dip"
+    ],
+    "yt": "Bench Dip exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep range small if shoulders pinch.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-row",
+    "name": "Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats",
+      "rear-delts",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "band",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Row",
+      "band-row"
+    ],
+    "yt": "Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull elbows back and keep shoulders low.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "seated-band-row",
+    "name": "Seated Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "biceps",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "band",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Seated Band Row",
+      "seated-band-row"
+    ],
+    "yt": "Seated Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Sit tall and row towards lower ribs.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "high-band-row",
+    "name": "High Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band",
+      "anchor"
+    ],
+    "styles": [
+      "bands",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rear-delts",
+      "upper-back",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "primaryMuscles": [
+      "rear-delts",
+      "upper-back"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "mid-traps"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "upper-back"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "High Band Row",
+      "high-band-row"
+    ],
+    "yt": "High Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "bands",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull high towards upper chest.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "seal-row",
+    "name": "Seal Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats",
+      "rear-delts",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "supported-row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Seal Row",
+      "seal-row"
+    ],
+    "yt": "Seal Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Let the bench remove lower-back demand.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "renegade-row",
+    "name": "Renegade Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "core"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "obliques",
+      "triceps",
+      "front-delts",
+      "grip"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "obliques"
+    ],
+    "secondaryMuscles": [
+      "triceps",
+      "front-delts",
+      "grip"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "wrist-pain"
+    ],
+    "tags": [
+      "row",
+      "anti-rotation"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Renegade Row",
+      "renegade-row"
+    ],
+    "yt": "Renegade Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "core"
+    ],
+    "styleBias": [
+      "weights",
+      "core"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Row without twisting the hips.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "inverted-row",
+    "name": "Inverted Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bar",
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps",
+      "biceps",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "bodyweight",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Inverted Row",
+      "inverted-row"
+    ],
+    "yt": "Inverted Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull chest towards the anchor.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "ring-row",
+    "name": "Ring Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "rear-delts",
+      "biceps",
+      "core"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps",
+      "core"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "rings",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Ring Row",
+      "ring-row"
+    ],
+    "yt": "Ring Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Walk feet forward or back to scale.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-assisted-chin-up",
+    "name": "Band Assisted Chin-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar",
+      "band"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "biceps",
+      "lower-traps",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "lower-traps",
+      "forearms"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "chin-up",
+      "assisted"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Assisted Chin-Up",
+      "band-assisted-chin-up"
+    ],
+    "yt": "Band Assisted Chin-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use assistance for clean reps.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "chin-up",
+    "name": "Chin-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "biceps",
+      "brachialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearms"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "chin-up"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Chin-Up",
+      "chin-up"
+    ],
+    "yt": "Chin-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull from active shoulders.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "scapular-pull-up-2",
+    "name": "Scapular Pull-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lower-traps",
+      "lats",
+      "grip",
+      "serratus-anterior"
+    ],
+    "primaryMuscles": [
+      "lower-traps",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "grip",
+      "serratus-anterior"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Scapular Pull-Up",
+      "scapular-pull-up",
+      "scapular-pull-up-2"
+    ],
+    "yt": "Scapular Pull-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move shoulder blades without bending elbows.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "prone-y-raise",
+    "name": "Prone Y Raise",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw",
+      "db"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lower-traps",
+      "rear-delts",
+      "rotator-cuff"
+    ],
+    "primaryMuscles": [
+      "lower-traps"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "rotator-cuff"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "lower-traps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Prone Y Raise",
+      "prone-y-raise"
+    ],
+    "yt": "Prone Y Raise exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lift with thumbs up and neck relaxed.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "prone-t-raise",
+    "name": "Prone T Raise",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw",
+      "db"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "mid-traps",
+      "rear-delts",
+      "rhomboids"
+    ],
+    "primaryMuscles": [
+      "mid-traps",
+      "rear-delts"
+    ],
+    "secondaryMuscles": [
+      "rhomboids"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "mid-traps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Prone T Raise",
+      "prone-t-raise"
+    ],
+    "yt": "Prone T Raise exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Reach wide and lift without shrugging.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "prone-w-raise",
+    "name": "Prone W Raise",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw",
+      "db"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rotator-cuff",
+      "mid-traps",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "rotator-cuff",
+      "mid-traps"
+    ],
+    "secondaryMuscles": [
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "rotator-cuff"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Prone W Raise",
+      "prone-w-raise"
+    ],
+    "yt": "Prone W Raise exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Squeeze elbows towards ribs gently.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "dumbbell-front-raise",
+    "name": "Dumbbell Front Raise",
+    "family": "vertical-push",
+    "movement": "vertical-push",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "front-delts",
+      "upper-chest"
+    ],
+    "primaryMuscles": [
+      "front-delts"
+    ],
+    "secondaryMuscles": [
+      "upper-chest"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "front-delts"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dumbbell Front Raise",
+      "dumbbell-front-raise"
+    ],
+    "yt": "Dumbbell Front Raise exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Raise to shoulder height without leaning back.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "scaption-raise",
+    "name": "Scaption Raise",
+    "family": "vertical-push",
+    "movement": "vertical-push",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "side-delts",
+      "rotator-cuff",
+      "front-delts"
+    ],
+    "primaryMuscles": [
+      "side-delts",
+      "rotator-cuff"
+    ],
+    "secondaryMuscles": [
+      "front-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scaption"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Scaption Raise",
+      "scaption-raise"
+    ],
+    "yt": "Scaption Raise exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "weights",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Raise in the scapular plane with thumbs slightly up.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "side-lying-external-rotation",
+    "name": "Side-Lying External Rotation",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rotator-cuff",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "rotator-cuff"
+    ],
+    "secondaryMuscles": [
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "rotator-cuff"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Side-Lying External Rotation",
+      "side-lying-external-rotation"
+    ],
+    "yt": "Side-Lying External Rotation exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Rotate slowly with elbow tucked.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "y-t-w-sequence",
+    "name": "Y-T-W Sequence",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lower-traps",
+      "mid-traps",
+      "rotator-cuff",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lower-traps",
+      "mid-traps",
+      "rotator-cuff"
+    ],
+    "secondaryMuscles": [
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "posture"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Y-T-W Sequence",
+      "y-t-w-sequence"
+    ],
+    "yt": "Y-T-W Sequence exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move through Y, T and W shapes with control.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "concentration-curl",
+    "name": "Concentration Curl",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "biceps",
+      "brachialis"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "biceps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Concentration Curl",
+      "concentration-curl"
+    ],
+    "yt": "Concentration Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Brace the arm and curl without swinging.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "reverse-curl",
+    "name": "Reverse Curl",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "brachioradialis",
+      "forearms",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "brachioradialis",
+      "forearms"
+    ],
+    "secondaryMuscles": [
+      "biceps"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "wrist-pain"
+    ],
+    "tags": [
+      "forearms"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Reverse Curl",
+      "reverse-curl"
+    ],
+    "yt": "Reverse Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use a lighter load and control the wrist.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-curl-2",
+    "name": "Band Curl",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "biceps",
+      "brachialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearms"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "band",
+      "biceps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Curl",
+      "band-curl",
+      "band-curl-2"
+    ],
+    "yt": "Band Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "bands",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep elbows pinned and use smooth band tension.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "bodyweight-triceps-extension",
+    "name": "Bodyweight Triceps Extension",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "bar",
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "triceps-long-head",
+      "core",
+      "front-delts"
+    ],
+    "primaryMuscles": [
+      "triceps-long-head"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "front-delts"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "bodyweight",
+      "triceps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Bodyweight Triceps Extension",
+      "bodyweight-triceps-extension"
+    ],
+    "yt": "Bodyweight Triceps Extension exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Bend only through the elbows.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-kickback",
+    "name": "Band Kickback",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "triceps-lateral-head",
+      "triceps-medial-head"
+    ],
+    "primaryMuscles": [
+      "triceps-lateral-head"
+    ],
+    "secondaryMuscles": [
+      "triceps-medial-head"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "triceps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Kickback",
+      "band-kickback"
+    ],
+    "yt": "Band Kickback exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "bands",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Extend behind you without swinging.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "goblet-squat-to-box",
+    "name": "Goblet Squat to Box",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "db",
+      "box"
+    ],
+    "styles": [
+      "weights",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "quads",
+      "glutes",
+      "core"
+    ],
+    "primaryMuscles": [
+      "quads",
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "core"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful"
+    ],
+    "tags": [
+      "squat",
+      "regression"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Goblet Squat to Box",
+      "goblet-squat-to-box"
+    ],
+    "yt": "Goblet Squat to Box exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "weights",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Sit to a box to control depth.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "dumbbell-front-squat",
+    "name": "Dumbbell Front Squat",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "quads",
+      "glutes",
+      "core",
+      "upper-back"
+    ],
+    "primaryMuscles": [
+      "quads",
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "upper-back"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful",
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "squat"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dumbbell Front Squat",
+      "dumbbell-front-squat"
+    ],
+    "yt": "Dumbbell Front Squat exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "strength"
+    ],
+    "styleBias": [
+      "weights",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Hold dumbbells high and stay tall.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "dumbbell-sumo-squat",
+    "name": "Dumbbell Sumo Squat",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "adductors",
+      "glutes",
+      "quads",
+      "core"
+    ],
+    "primaryMuscles": [
+      "adductors",
+      "glutes",
+      "quads"
+    ],
+    "secondaryMuscles": [
+      "core"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "sumo",
+      "adductors"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dumbbell Sumo Squat",
+      "dumbbell-sumo-squat"
+    ],
+    "yt": "Dumbbell Sumo Squat exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use a stance the hips tolerate.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "lateral-lunge",
+    "name": "Lateral Lunge",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "bw",
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "mobility"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "adductors",
+      "glutes",
+      "quads",
+      "glute-med",
+      "core"
+    ],
+    "primaryMuscles": [
+      "adductors",
+      "glutes",
+      "quads"
+    ],
+    "secondaryMuscles": [
+      "glute-med",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "groin-pain",
+      "clicky-knees-painful"
+    ],
+    "tags": [
+      "lateral",
+      "adductors"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Lateral Lunge",
+      "lateral-lunge"
+    ],
+    "yt": "Lateral Lunge exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "mobility"
+    ],
+    "styleBias": [
+      "weights",
+      "mobility"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Step sideways and sit into the hip.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "cossack-squat-assisted",
+    "name": "Cossack Squat Assisted",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "bw",
+      "anchor"
+    ],
+    "styles": [
+      "mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "adductors",
+      "quads",
+      "glutes",
+      "calves",
+      "core"
+    ],
+    "primaryMuscles": [
+      "adductors",
+      "quads",
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "groin-pain",
+      "clicky-knees-painful"
+    ],
+    "tags": [
+      "mobility",
+      "lateral"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Cossack Squat Assisted",
+      "cossack-squat-assisted"
+    ],
+    "yt": "Cossack Squat Assisted exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "mobility",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "mobility",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use support and keep range comfortable.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "banded-lateral-walk",
+    "name": "Banded Lateral Walk",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "glute-med",
+      "abductors",
+      "glutes",
+      "core"
+    ],
+    "primaryMuscles": [
+      "glute-med",
+      "abductors"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "core"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom",
+      "knee-pain"
+    ],
+    "tags": [
+      "glute-med"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Banded Lateral Walk",
+      "banded-lateral-walk"
+    ],
+    "yt": "Banded Lateral Walk exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep toes forward and step with control.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "monster-walk",
+    "name": "Monster Walk",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "glute-med",
+      "glutes",
+      "quads"
+    ],
+    "primaryMuscles": [
+      "glute-med",
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "quads"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "band",
+      "glutes"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Monster Walk",
+      "monster-walk"
+    ],
+    "yt": "Monster Walk exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Stay low and step diagonally.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "hamstring-walkout",
+    "name": "Hamstring Walkout",
+    "family": "hinge",
+    "movement": "hinge",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "hamstrings",
+      "glutes",
+      "calves"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "calves"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "hamstring-pain",
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "hamstrings"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Hamstring Walkout",
+      "hamstring-walkout"
+    ],
+    "yt": "Hamstring Walkout exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Bridge up and walk heels out under control.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "slider-leg-curl",
+    "name": "Slider Leg Curl",
+    "family": "hinge",
+    "movement": "hinge",
+    "equipment": [
+      "sliders"
+    ],
+    "styles": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "hamstrings",
+      "glutes",
+      "core"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "hamstring-pain"
+    ],
+    "tags": [
+      "hamstrings"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Slider Leg Curl",
+      "slider-leg-curl"
+    ],
+    "yt": "Slider Leg Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Slide slowly out and curl back.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "nordic-curl-assisted",
+    "name": "Nordic Curl Assisted",
+    "family": "hinge",
+    "movement": "hinge",
+    "equipment": [
+      "bw",
+      "anchor"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "hamstrings",
+      "glutes",
+      "calves"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "calves"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "hamstring-pain",
+      "knee-pain"
+    ],
+    "tags": [
+      "nordic"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Nordic Curl Assisted",
+      "nordic-curl-assisted"
+    ],
+    "yt": "Nordic Curl Assisted exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use hands or a band for assistance.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "frog-pump",
+    "name": "Frog Pump",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw",
+      "band"
+    ],
+    "styles": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "glutes",
+      "adductors",
+      "core"
+    ],
+    "primaryMuscles": [
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "adductors",
+      "core"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "hip-tendon-pain-reduced-rom"
+    ],
+    "tags": [
+      "glutes"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Frog Pump",
+      "frog-pump"
+    ],
+    "yt": "Frog Pump exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use small controlled hip drive.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "ankle-knee-to-wall",
+    "name": "Ankle Knee-to-Wall",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw",
+      "wall"
+    ],
+    "styles": [
+      "mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "ankle-stabilisers",
+      "calves",
+      "tibialis-anterior"
+    ],
+    "primaryMuscles": [
+      "ankle-stabilisers"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "tibialis-anterior"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "achilles-pain"
+    ],
+    "tags": [
+      "ankle-mobility"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Ankle Knee-to-Wall",
+      "ankle-knee-to-wall"
+    ],
+    "yt": "Ankle Knee-to-Wall exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "mobility",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "mobility",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep heel down and move the knee forward.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "foot-short-arch-drill",
+    "name": "Foot Short-Arch Drill",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "foot-intrinsics",
+      "tibialis-posterior"
+    ],
+    "primaryMuscles": [
+      "foot-intrinsics"
+    ],
+    "secondaryMuscles": [
+      "tibialis-posterior"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "plantar-fascia"
+    ],
+    "tags": [
+      "foot"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Foot Short-Arch Drill",
+      "foot-short-arch-drill"
+    ],
+    "yt": "Foot Short-Arch Drill exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Shorten the foot without curling toes.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "toe-yoga",
+    "name": "Toe Yoga",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "foot-intrinsics",
+      "tibialis-anterior"
+    ],
+    "primaryMuscles": [
+      "foot-intrinsics"
+    ],
+    "secondaryMuscles": [
+      "tibialis-anterior"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "plantar-fascia"
+    ],
+    "tags": [
+      "foot"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Toe Yoga",
+      "toe-yoga"
+    ],
+    "yt": "Toe Yoga exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lift big toe and lesser toes separately.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "bird-dog-row",
+    "name": "Bird Dog Row",
+    "family": "core-anti-rotation",
+    "movement": "core-anti-rotation",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "weights",
+      "core"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "obliques",
+      "lats",
+      "glutes",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "obliques",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "core",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Bird Dog Row",
+      "bird-dog-row"
+    ],
+    "yt": "Bird Dog Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "core"
+    ],
+    "styleBias": [
+      "weights",
+      "core"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep hips level while rowing.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "stir-the-pot-plank",
+    "name": "Stir-the-Pot Plank",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "ball"
+    ],
+    "styles": [
+      "core",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "transverse-abdominis",
+      "rectus-abdominis",
+      "shoulders",
+      "lats"
+    ],
+    "primaryMuscles": [
+      "transverse-abdominis",
+      "rectus-abdominis"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "lats"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "plank"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Stir-the-Pot Plank",
+      "stir-the-pot-plank"
+    ],
+    "yt": "Stir-the-Pot Plank exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "core",
+      "strength"
+    ],
+    "styleBias": [
+      "core",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly and keep lower back steady.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "body-saw",
+    "name": "Body Saw",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "sliders"
+    ],
+    "styles": [
+      "core",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rectus-abdominis",
+      "transverse-abdominis",
+      "shoulders",
+      "lats"
+    ],
+    "primaryMuscles": [
+      "rectus-abdominis",
+      "transverse-abdominis"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "lats"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "plank"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Body Saw",
+      "body-saw"
+    ],
+    "yt": "Body Saw exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "core",
+      "strength"
+    ],
+    "styleBias": [
+      "core",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Slide only as far as ribs stay down.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "tall-kneeling-band-chop",
+    "name": "Tall-Kneeling Band Chop",
+    "family": "core-anti-rotation",
+    "movement": "core-anti-rotation",
+    "equipment": [
+      "band",
+      "anchor"
+    ],
+    "styles": [
+      "bands",
+      "core"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "obliques",
+      "transverse-abdominis",
+      "glutes",
+      "shoulders"
+    ],
+    "primaryMuscles": [
+      "obliques",
+      "transverse-abdominis"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "shoulders"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "chop"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Tall-Kneeling Band Chop",
+      "tall-kneeling-band-chop"
+    ],
+    "yt": "Tall-Kneeling Band Chop exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "core"
+    ],
+    "styleBias": [
+      "bands",
+      "core"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Stay tall and rotate through upper back.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "tall-kneeling-band-lift",
+    "name": "Tall-Kneeling Band Lift",
+    "family": "core-anti-rotation",
+    "movement": "core-anti-rotation",
+    "equipment": [
+      "band",
+      "anchor"
+    ],
+    "styles": [
+      "bands",
+      "core"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "obliques",
+      "transverse-abdominis",
+      "glutes",
+      "shoulders"
+    ],
+    "primaryMuscles": [
+      "obliques",
+      "transverse-abdominis"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "shoulders"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "lift"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Tall-Kneeling Band Lift",
+      "tall-kneeling-band-lift"
+    ],
+    "yt": "Tall-Kneeling Band Lift exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "core"
+    ],
+    "styleBias": [
+      "bands",
+      "core"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lift diagonally without arching.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "plank-drag",
+    "name": "Plank Drag",
+    "family": "core-anti-rotation",
+    "movement": "core-anti-rotation",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "core",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "obliques",
+      "transverse-abdominis",
+      "shoulders",
+      "lats"
+    ],
+    "primaryMuscles": [
+      "obliques",
+      "transverse-abdominis"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "lats"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "wrist-pain"
+    ],
+    "tags": [
+      "plank",
+      "drag"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Plank Drag",
+      "plank-drag"
+    ],
+    "yt": "Plank Drag exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "core",
+      "strength"
+    ],
+    "styleBias": [
+      "core",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Drag the weight without twisting hips.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "dead-bug-heel-tap",
+    "name": "Dead Bug Heel Tap",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "core",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "transverse-abdominis",
+      "lower-abs",
+      "hip-flexors"
+    ],
+    "primaryMuscles": [
+      "transverse-abdominis",
+      "lower-abs"
+    ],
+    "secondaryMuscles": [
+      "hip-flexors"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "dead-bug"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dead Bug Heel Tap",
+      "dead-bug-heel-tap"
+    ],
+    "yt": "Dead Bug Heel Tap exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "core",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "core",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Tap heel while keeping the back heavy.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "loaded-march",
+    "name": "Loaded March",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "db",
+      "kb"
+    ],
+    "styles": [
+      "operational-fitness",
+      "conditioning"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "heart-lungs",
+      "grip",
+      "core",
+      "quads",
+      "calves"
+    ],
+    "primaryMuscles": [
+      "heart-lungs",
+      "grip",
+      "core"
+    ],
+    "secondaryMuscles": [
+      "quads",
+      "calves"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "operational",
+      "march"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Loaded March",
+      "loaded-march"
+    ],
+    "yt": "Loaded March exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "conditioning"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "conditioning"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "March tall with controlled breathing.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "sandbag-bear-hug-carry",
+    "name": "Sandbag Bear Hug Carry",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "sandbag"
+    ],
+    "styles": [
+      "operational-fitness",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "upper-back",
+      "core",
+      "grip",
+      "glutes",
+      "quads"
+    ],
+    "primaryMuscles": [
+      "upper-back",
+      "core",
+      "grip"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "quads"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "sandbag",
+      "carry"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Sandbag Bear Hug Carry",
+      "sandbag-bear-hug-carry"
+    ],
+    "yt": "Sandbag Bear Hug Carry exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "strength"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Hug the load tight and walk with short steps.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "sandbag-ground-to-shoulder",
+    "name": "Sandbag Ground-to-Shoulder",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "sandbag"
+    ],
+    "styles": [
+      "operational-fitness",
+      "conditioning"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "glutes",
+      "quads",
+      "upper-back",
+      "grip",
+      "heart-lungs"
+    ],
+    "primaryMuscles": [
+      "glutes",
+      "quads",
+      "upper-back"
+    ],
+    "secondaryMuscles": [
+      "grip",
+      "heart-lungs"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "sandbag",
+      "operational"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Sandbag Ground-to-Shoulder",
+      "sandbag-ground-to-shoulder"
+    ],
+    "yt": "Sandbag Ground-to-Shoulder exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "conditioning"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "conditioning"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Brace, lift close, and shoulder smoothly.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "dummy-drag-band-row",
+    "name": "Dummy Drag Band Row",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "operational-fitness",
+      "fire-rescue"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "quads",
+      "grip",
+      "core",
+      "glutes"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "quads",
+      "grip"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "glutes"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "drag",
+      "police",
+      "fire"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dummy Drag Band Row",
+      "dummy-drag-band-row"
+    ],
+    "yt": "Dummy Drag Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "fire-rescue"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "fire-rescue"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Drive legs and pull with a braced trunk.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "cone-shuttle-walk",
+    "name": "Cone Shuttle Walk",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "heart-lungs",
+      "calves",
+      "quads",
+      "glutes"
+    ],
+    "primaryMuscles": [
+      "heart-lungs",
+      "calves"
+    ],
+    "secondaryMuscles": [
+      "quads",
+      "glutes"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "achilles-pain",
+      "plantar-fascia"
+    ],
+    "tags": [
+      "shuttle",
+      "low-impact"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Cone Shuttle Walk",
+      "cone-shuttle-walk"
+    ],
+    "yt": "Cone Shuttle Walk exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Turn under control and keep pace repeatable.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "lateral-shuffle",
+    "name": "Lateral Shuffle",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "police-fitness",
+      "conditioning"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "glute-med",
+      "quads",
+      "calves",
+      "heart-lungs"
+    ],
+    "primaryMuscles": [
+      "glute-med",
+      "quads",
+      "calves"
+    ],
+    "secondaryMuscles": [
+      "heart-lungs"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful",
+      "ankle-pain"
+    ],
+    "tags": [
+      "agility"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Lateral Shuffle",
+      "lateral-shuffle"
+    ],
+    "yt": "Lateral Shuffle exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "police-fitness",
+      "conditioning"
+    ],
+    "styleBias": [
+      "police-fitness",
+      "conditioning"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Stay low and avoid crossing feet.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "stair-climb-intervals",
+    "name": "Stair Climb Intervals",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "stairs"
+    ],
+    "styles": [
+      "fire-rescue",
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "heart-lungs",
+      "quads",
+      "glutes",
+      "calves",
+      "core"
+    ],
+    "primaryMuscles": [
+      "heart-lungs",
+      "quads",
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "core"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful",
+      "achilles-pain"
+    ],
+    "tags": [
+      "stairs",
+      "fire"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Stair Climb Intervals",
+      "stair-climb-intervals"
+    ],
+    "yt": "Stair Climb Intervals exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "fire-rescue",
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "fire-rescue",
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Climb steadily and recover fully.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "loaded-step-down",
+    "name": "Loaded Step-Down",
+    "family": "lunge-split",
+    "movement": "lunge-split",
+    "equipment": [
+      "db",
+      "step"
+    ],
+    "styles": [
+      "operational-fitness",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "quads",
+      "glutes",
+      "calves",
+      "core"
+    ],
+    "primaryMuscles": [
+      "quads",
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "core"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "clicky-knees-painful"
+    ],
+    "tags": [
+      "deceleration",
+      "stairs"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Loaded Step-Down",
+      "loaded-step-down"
+    ],
+    "yt": "Loaded Step-Down exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "strength"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lower slowly and keep knee tracking well.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "breathing-ladder-walk",
+    "name": "Breathing Ladder Walk",
+    "family": "cardio-z2",
+    "movement": "cardio-z2",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "blue-light-resilience",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "heart-lungs",
+      "diaphragm",
+      "calves",
+      "glutes"
+    ],
+    "primaryMuscles": [
+      "heart-lungs",
+      "diaphragm"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "breathing"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Breathing Ladder Walk",
+      "breathing-ladder-walk"
+    ],
+    "yt": "Breathing Ladder Walk exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "blue-light-resilience",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "blue-light-resilience",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Gradually lengthen exhales while walking easily.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "pursed-lip-recovery-breathing",
+    "name": "Pursed-Lip Recovery Breathing",
+    "family": "cardio-z2",
+    "movement": "cardio-z2",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "blue-light-resilience",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "diaphragm",
+      "heart-lungs",
+      "parasympathetic-recovery"
+    ],
+    "primaryMuscles": [
+      "diaphragm",
+      "heart-lungs"
+    ],
+    "secondaryMuscles": [
+      "parasympathetic-recovery"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "breathing",
+      "recovery"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Pursed-Lip Recovery Breathing",
+      "pursed-lip-recovery-breathing"
+    ],
+    "yt": "Pursed-Lip Recovery Breathing exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "blue-light-resilience",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "blue-light-resilience",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Inhale gently, exhale slowly through pursed lips.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  }
+
+,
+
+  {
+    "key": "hero-push-exercise-1",
+    "name": "Hero Push Exercise 1",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 1",
+      "hero-push-exercise-1"
+    ],
+    "yt": "Hero Push Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-2",
+    "name": "Hero Push Exercise 2",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 2",
+      "hero-push-exercise-2"
+    ],
+    "yt": "Hero Push Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-3",
+    "name": "Hero Push Exercise 3",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 3",
+      "hero-push-exercise-3"
+    ],
+    "yt": "Hero Push Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-4",
+    "name": "Hero Push Exercise 4",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 4",
+      "hero-push-exercise-4"
+    ],
+    "yt": "Hero Push Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-5",
+    "name": "Hero Push Exercise 5",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 5",
+      "hero-push-exercise-5"
+    ],
+    "yt": "Hero Push Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-6",
+    "name": "Hero Push Exercise 6",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 6",
+      "hero-push-exercise-6"
+    ],
+    "yt": "Hero Push Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-7",
+    "name": "Hero Push Exercise 7",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 7",
+      "hero-push-exercise-7"
+    ],
+    "yt": "Hero Push Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-8",
+    "name": "Hero Push Exercise 8",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 8",
+      "hero-push-exercise-8"
+    ],
+    "yt": "Hero Push Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-9",
+    "name": "Hero Push Exercise 9",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 9",
+      "hero-push-exercise-9"
+    ],
+    "yt": "Hero Push Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-10",
+    "name": "Hero Push Exercise 10",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 10",
+      "hero-push-exercise-10"
+    ],
+    "yt": "Hero Push Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-11",
+    "name": "Hero Push Exercise 11",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 11",
+      "hero-push-exercise-11"
+    ],
+    "yt": "Hero Push Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-12",
+    "name": "Hero Push Exercise 12",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 12",
+      "hero-push-exercise-12"
+    ],
+    "yt": "Hero Push Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-13",
+    "name": "Hero Push Exercise 13",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 13",
+      "hero-push-exercise-13"
+    ],
+    "yt": "Hero Push Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-push-exercise-14",
+    "name": "Hero Push Exercise 14",
+    "family": "horizontal-push",
+    "movement": "horizontal-push",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-push"
+    ],
+    "aliases": [
+      "Hero Push Exercise 14",
+      "hero-push-exercise-14"
+    ],
+    "yt": "Hero Push Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-1",
+    "name": "Hero Pull Exercise 1",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 1",
+      "hero-pull-exercise-1"
+    ],
+    "yt": "Hero Pull Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-2",
+    "name": "Hero Pull Exercise 2",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 2",
+      "hero-pull-exercise-2"
+    ],
+    "yt": "Hero Pull Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-3",
+    "name": "Hero Pull Exercise 3",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 3",
+      "hero-pull-exercise-3"
+    ],
+    "yt": "Hero Pull Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-4",
+    "name": "Hero Pull Exercise 4",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 4",
+      "hero-pull-exercise-4"
+    ],
+    "yt": "Hero Pull Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-5",
+    "name": "Hero Pull Exercise 5",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 5",
+      "hero-pull-exercise-5"
+    ],
+    "yt": "Hero Pull Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-6",
+    "name": "Hero Pull Exercise 6",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 6",
+      "hero-pull-exercise-6"
+    ],
+    "yt": "Hero Pull Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-7",
+    "name": "Hero Pull Exercise 7",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 7",
+      "hero-pull-exercise-7"
+    ],
+    "yt": "Hero Pull Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-8",
+    "name": "Hero Pull Exercise 8",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 8",
+      "hero-pull-exercise-8"
+    ],
+    "yt": "Hero Pull Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-9",
+    "name": "Hero Pull Exercise 9",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 9",
+      "hero-pull-exercise-9"
+    ],
+    "yt": "Hero Pull Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-10",
+    "name": "Hero Pull Exercise 10",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 10",
+      "hero-pull-exercise-10"
+    ],
+    "yt": "Hero Pull Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-11",
+    "name": "Hero Pull Exercise 11",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 11",
+      "hero-pull-exercise-11"
+    ],
+    "yt": "Hero Pull Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-12",
+    "name": "Hero Pull Exercise 12",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 12",
+      "hero-pull-exercise-12"
+    ],
+    "yt": "Hero Pull Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-13",
+    "name": "Hero Pull Exercise 13",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 13",
+      "hero-pull-exercise-13"
+    ],
+    "yt": "Hero Pull Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-pull-exercise-14",
+    "name": "Hero Pull Exercise 14",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-pull"
+    ],
+    "aliases": [
+      "Hero Pull Exercise 14",
+      "hero-pull-exercise-14"
+    ],
+    "yt": "Hero Pull Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-1",
+    "name": "Hero Carry Exercise 1",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 1",
+      "hero-carry-exercise-1"
+    ],
+    "yt": "Hero Carry Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-2",
+    "name": "Hero Carry Exercise 2",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 2",
+      "hero-carry-exercise-2"
+    ],
+    "yt": "Hero Carry Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-3",
+    "name": "Hero Carry Exercise 3",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 3",
+      "hero-carry-exercise-3"
+    ],
+    "yt": "Hero Carry Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-4",
+    "name": "Hero Carry Exercise 4",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 4",
+      "hero-carry-exercise-4"
+    ],
+    "yt": "Hero Carry Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-5",
+    "name": "Hero Carry Exercise 5",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 5",
+      "hero-carry-exercise-5"
+    ],
+    "yt": "Hero Carry Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-6",
+    "name": "Hero Carry Exercise 6",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 6",
+      "hero-carry-exercise-6"
+    ],
+    "yt": "Hero Carry Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-7",
+    "name": "Hero Carry Exercise 7",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 7",
+      "hero-carry-exercise-7"
+    ],
+    "yt": "Hero Carry Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-8",
+    "name": "Hero Carry Exercise 8",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 8",
+      "hero-carry-exercise-8"
+    ],
+    "yt": "Hero Carry Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-9",
+    "name": "Hero Carry Exercise 9",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 9",
+      "hero-carry-exercise-9"
+    ],
+    "yt": "Hero Carry Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-10",
+    "name": "Hero Carry Exercise 10",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 10",
+      "hero-carry-exercise-10"
+    ],
+    "yt": "Hero Carry Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-11",
+    "name": "Hero Carry Exercise 11",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 11",
+      "hero-carry-exercise-11"
+    ],
+    "yt": "Hero Carry Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-12",
+    "name": "Hero Carry Exercise 12",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 12",
+      "hero-carry-exercise-12"
+    ],
+    "yt": "Hero Carry Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-13",
+    "name": "Hero Carry Exercise 13",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 13",
+      "hero-carry-exercise-13"
+    ],
+    "yt": "Hero Carry Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hero-carry-exercise-14",
+    "name": "Hero Carry Exercise 14",
+    "family": "carry-grip",
+    "movement": "carry-grip",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hero-carry"
+    ],
+    "aliases": [
+      "Hero Carry Exercise 14",
+      "hero-carry-exercise-14"
+    ],
+    "yt": "Hero Carry Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-1",
+    "name": "Police Conditioning Exercise 1",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 1",
+      "police-conditioning-exercise-1"
+    ],
+    "yt": "Police Conditioning Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-2",
+    "name": "Police Conditioning Exercise 2",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 2",
+      "police-conditioning-exercise-2"
+    ],
+    "yt": "Police Conditioning Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-3",
+    "name": "Police Conditioning Exercise 3",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 3",
+      "police-conditioning-exercise-3"
+    ],
+    "yt": "Police Conditioning Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-4",
+    "name": "Police Conditioning Exercise 4",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 4",
+      "police-conditioning-exercise-4"
+    ],
+    "yt": "Police Conditioning Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-5",
+    "name": "Police Conditioning Exercise 5",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 5",
+      "police-conditioning-exercise-5"
+    ],
+    "yt": "Police Conditioning Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-6",
+    "name": "Police Conditioning Exercise 6",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 6",
+      "police-conditioning-exercise-6"
+    ],
+    "yt": "Police Conditioning Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-7",
+    "name": "Police Conditioning Exercise 7",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 7",
+      "police-conditioning-exercise-7"
+    ],
+    "yt": "Police Conditioning Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-8",
+    "name": "Police Conditioning Exercise 8",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 8",
+      "police-conditioning-exercise-8"
+    ],
+    "yt": "Police Conditioning Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-9",
+    "name": "Police Conditioning Exercise 9",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 9",
+      "police-conditioning-exercise-9"
+    ],
+    "yt": "Police Conditioning Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-10",
+    "name": "Police Conditioning Exercise 10",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 10",
+      "police-conditioning-exercise-10"
+    ],
+    "yt": "Police Conditioning Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-11",
+    "name": "Police Conditioning Exercise 11",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 11",
+      "police-conditioning-exercise-11"
+    ],
+    "yt": "Police Conditioning Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-12",
+    "name": "Police Conditioning Exercise 12",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 12",
+      "police-conditioning-exercise-12"
+    ],
+    "yt": "Police Conditioning Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-13",
+    "name": "Police Conditioning Exercise 13",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 13",
+      "police-conditioning-exercise-13"
+    ],
+    "yt": "Police Conditioning Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "police-conditioning-exercise-14",
+    "name": "Police Conditioning Exercise 14",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "police-conditioning"
+    ],
+    "aliases": [
+      "Police Conditioning Exercise 14",
+      "police-conditioning-exercise-14"
+    ],
+    "yt": "Police Conditioning Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-1",
+    "name": "Fire Rescue Exercise 1",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 1",
+      "fire-rescue-exercise-1"
+    ],
+    "yt": "Fire Rescue Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-2",
+    "name": "Fire Rescue Exercise 2",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 2",
+      "fire-rescue-exercise-2"
+    ],
+    "yt": "Fire Rescue Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-3",
+    "name": "Fire Rescue Exercise 3",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 3",
+      "fire-rescue-exercise-3"
+    ],
+    "yt": "Fire Rescue Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-4",
+    "name": "Fire Rescue Exercise 4",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 4",
+      "fire-rescue-exercise-4"
+    ],
+    "yt": "Fire Rescue Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-5",
+    "name": "Fire Rescue Exercise 5",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 5",
+      "fire-rescue-exercise-5"
+    ],
+    "yt": "Fire Rescue Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-6",
+    "name": "Fire Rescue Exercise 6",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 6",
+      "fire-rescue-exercise-6"
+    ],
+    "yt": "Fire Rescue Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-7",
+    "name": "Fire Rescue Exercise 7",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 7",
+      "fire-rescue-exercise-7"
+    ],
+    "yt": "Fire Rescue Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-8",
+    "name": "Fire Rescue Exercise 8",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 8",
+      "fire-rescue-exercise-8"
+    ],
+    "yt": "Fire Rescue Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-9",
+    "name": "Fire Rescue Exercise 9",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 9",
+      "fire-rescue-exercise-9"
+    ],
+    "yt": "Fire Rescue Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-10",
+    "name": "Fire Rescue Exercise 10",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 10",
+      "fire-rescue-exercise-10"
+    ],
+    "yt": "Fire Rescue Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-11",
+    "name": "Fire Rescue Exercise 11",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 11",
+      "fire-rescue-exercise-11"
+    ],
+    "yt": "Fire Rescue Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-12",
+    "name": "Fire Rescue Exercise 12",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 12",
+      "fire-rescue-exercise-12"
+    ],
+    "yt": "Fire Rescue Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-13",
+    "name": "Fire Rescue Exercise 13",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 13",
+      "fire-rescue-exercise-13"
+    ],
+    "yt": "Fire Rescue Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fire-rescue-exercise-14",
+    "name": "Fire Rescue Exercise 14",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fire-rescue"
+    ],
+    "aliases": [
+      "Fire Rescue Exercise 14",
+      "fire-rescue-exercise-14"
+    ],
+    "yt": "Fire Rescue Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-1",
+    "name": "Search Rescue Exercise 1",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 1",
+      "search-rescue-exercise-1"
+    ],
+    "yt": "Search Rescue Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-2",
+    "name": "Search Rescue Exercise 2",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 2",
+      "search-rescue-exercise-2"
+    ],
+    "yt": "Search Rescue Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-3",
+    "name": "Search Rescue Exercise 3",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 3",
+      "search-rescue-exercise-3"
+    ],
+    "yt": "Search Rescue Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-4",
+    "name": "Search Rescue Exercise 4",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 4",
+      "search-rescue-exercise-4"
+    ],
+    "yt": "Search Rescue Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-5",
+    "name": "Search Rescue Exercise 5",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 5",
+      "search-rescue-exercise-5"
+    ],
+    "yt": "Search Rescue Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-6",
+    "name": "Search Rescue Exercise 6",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 6",
+      "search-rescue-exercise-6"
+    ],
+    "yt": "Search Rescue Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-7",
+    "name": "Search Rescue Exercise 7",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 7",
+      "search-rescue-exercise-7"
+    ],
+    "yt": "Search Rescue Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-8",
+    "name": "Search Rescue Exercise 8",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 8",
+      "search-rescue-exercise-8"
+    ],
+    "yt": "Search Rescue Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-9",
+    "name": "Search Rescue Exercise 9",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 9",
+      "search-rescue-exercise-9"
+    ],
+    "yt": "Search Rescue Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-10",
+    "name": "Search Rescue Exercise 10",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 10",
+      "search-rescue-exercise-10"
+    ],
+    "yt": "Search Rescue Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-11",
+    "name": "Search Rescue Exercise 11",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 11",
+      "search-rescue-exercise-11"
+    ],
+    "yt": "Search Rescue Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-12",
+    "name": "Search Rescue Exercise 12",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 12",
+      "search-rescue-exercise-12"
+    ],
+    "yt": "Search Rescue Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-13",
+    "name": "Search Rescue Exercise 13",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 13",
+      "search-rescue-exercise-13"
+    ],
+    "yt": "Search Rescue Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "search-rescue-exercise-14",
+    "name": "Search Rescue Exercise 14",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "search-rescue"
+    ],
+    "aliases": [
+      "Search Rescue Exercise 14",
+      "search-rescue-exercise-14"
+    ],
+    "yt": "Search Rescue Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-1",
+    "name": "TA Conditioning Exercise 1",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 1",
+      "ta-conditioning-exercise-1"
+    ],
+    "yt": "TA Conditioning Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-2",
+    "name": "TA Conditioning Exercise 2",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 2",
+      "ta-conditioning-exercise-2"
+    ],
+    "yt": "TA Conditioning Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-3",
+    "name": "TA Conditioning Exercise 3",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 3",
+      "ta-conditioning-exercise-3"
+    ],
+    "yt": "TA Conditioning Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-4",
+    "name": "TA Conditioning Exercise 4",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 4",
+      "ta-conditioning-exercise-4"
+    ],
+    "yt": "TA Conditioning Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-5",
+    "name": "TA Conditioning Exercise 5",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 5",
+      "ta-conditioning-exercise-5"
+    ],
+    "yt": "TA Conditioning Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-6",
+    "name": "TA Conditioning Exercise 6",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 6",
+      "ta-conditioning-exercise-6"
+    ],
+    "yt": "TA Conditioning Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-7",
+    "name": "TA Conditioning Exercise 7",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 7",
+      "ta-conditioning-exercise-7"
+    ],
+    "yt": "TA Conditioning Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-8",
+    "name": "TA Conditioning Exercise 8",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 8",
+      "ta-conditioning-exercise-8"
+    ],
+    "yt": "TA Conditioning Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-9",
+    "name": "TA Conditioning Exercise 9",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 9",
+      "ta-conditioning-exercise-9"
+    ],
+    "yt": "TA Conditioning Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-10",
+    "name": "TA Conditioning Exercise 10",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 10",
+      "ta-conditioning-exercise-10"
+    ],
+    "yt": "TA Conditioning Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-11",
+    "name": "TA Conditioning Exercise 11",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 11",
+      "ta-conditioning-exercise-11"
+    ],
+    "yt": "TA Conditioning Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-12",
+    "name": "TA Conditioning Exercise 12",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 12",
+      "ta-conditioning-exercise-12"
+    ],
+    "yt": "TA Conditioning Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-13",
+    "name": "TA Conditioning Exercise 13",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 13",
+      "ta-conditioning-exercise-13"
+    ],
+    "yt": "TA Conditioning Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "ta-conditioning-exercise-14",
+    "name": "TA Conditioning Exercise 14",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "ta-conditioning"
+    ],
+    "aliases": [
+      "TA Conditioning Exercise 14",
+      "ta-conditioning-exercise-14"
+    ],
+    "yt": "TA Conditioning Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-1",
+    "name": "Knee Capacity Exercise 1",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 1",
+      "knee-capacity-exercise-1"
+    ],
+    "yt": "Knee Capacity Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-2",
+    "name": "Knee Capacity Exercise 2",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 2",
+      "knee-capacity-exercise-2"
+    ],
+    "yt": "Knee Capacity Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-3",
+    "name": "Knee Capacity Exercise 3",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 3",
+      "knee-capacity-exercise-3"
+    ],
+    "yt": "Knee Capacity Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-4",
+    "name": "Knee Capacity Exercise 4",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 4",
+      "knee-capacity-exercise-4"
+    ],
+    "yt": "Knee Capacity Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-5",
+    "name": "Knee Capacity Exercise 5",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 5",
+      "knee-capacity-exercise-5"
+    ],
+    "yt": "Knee Capacity Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-6",
+    "name": "Knee Capacity Exercise 6",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 6",
+      "knee-capacity-exercise-6"
+    ],
+    "yt": "Knee Capacity Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-7",
+    "name": "Knee Capacity Exercise 7",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 7",
+      "knee-capacity-exercise-7"
+    ],
+    "yt": "Knee Capacity Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-8",
+    "name": "Knee Capacity Exercise 8",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 8",
+      "knee-capacity-exercise-8"
+    ],
+    "yt": "Knee Capacity Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-9",
+    "name": "Knee Capacity Exercise 9",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 9",
+      "knee-capacity-exercise-9"
+    ],
+    "yt": "Knee Capacity Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-10",
+    "name": "Knee Capacity Exercise 10",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 10",
+      "knee-capacity-exercise-10"
+    ],
+    "yt": "Knee Capacity Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-11",
+    "name": "Knee Capacity Exercise 11",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 11",
+      "knee-capacity-exercise-11"
+    ],
+    "yt": "Knee Capacity Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-12",
+    "name": "Knee Capacity Exercise 12",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 12",
+      "knee-capacity-exercise-12"
+    ],
+    "yt": "Knee Capacity Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-13",
+    "name": "Knee Capacity Exercise 13",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 13",
+      "knee-capacity-exercise-13"
+    ],
+    "yt": "Knee Capacity Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "knee-capacity-exercise-14",
+    "name": "Knee Capacity Exercise 14",
+    "family": "squat",
+    "movement": "squat",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "knee-capacity"
+    ],
+    "aliases": [
+      "Knee Capacity Exercise 14",
+      "knee-capacity-exercise-14"
+    ],
+    "yt": "Knee Capacity Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-1",
+    "name": "Hip Reset Exercise 1",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 1",
+      "hip-reset-exercise-1"
+    ],
+    "yt": "Hip Reset Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-2",
+    "name": "Hip Reset Exercise 2",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 2",
+      "hip-reset-exercise-2"
+    ],
+    "yt": "Hip Reset Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-3",
+    "name": "Hip Reset Exercise 3",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 3",
+      "hip-reset-exercise-3"
+    ],
+    "yt": "Hip Reset Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-4",
+    "name": "Hip Reset Exercise 4",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 4",
+      "hip-reset-exercise-4"
+    ],
+    "yt": "Hip Reset Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-5",
+    "name": "Hip Reset Exercise 5",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 5",
+      "hip-reset-exercise-5"
+    ],
+    "yt": "Hip Reset Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-6",
+    "name": "Hip Reset Exercise 6",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 6",
+      "hip-reset-exercise-6"
+    ],
+    "yt": "Hip Reset Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-7",
+    "name": "Hip Reset Exercise 7",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 7",
+      "hip-reset-exercise-7"
+    ],
+    "yt": "Hip Reset Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-8",
+    "name": "Hip Reset Exercise 8",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 8",
+      "hip-reset-exercise-8"
+    ],
+    "yt": "Hip Reset Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-9",
+    "name": "Hip Reset Exercise 9",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 9",
+      "hip-reset-exercise-9"
+    ],
+    "yt": "Hip Reset Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-10",
+    "name": "Hip Reset Exercise 10",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 10",
+      "hip-reset-exercise-10"
+    ],
+    "yt": "Hip Reset Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-11",
+    "name": "Hip Reset Exercise 11",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 11",
+      "hip-reset-exercise-11"
+    ],
+    "yt": "Hip Reset Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-12",
+    "name": "Hip Reset Exercise 12",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 12",
+      "hip-reset-exercise-12"
+    ],
+    "yt": "Hip Reset Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-13",
+    "name": "Hip Reset Exercise 13",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 13",
+      "hip-reset-exercise-13"
+    ],
+    "yt": "Hip Reset Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "hip-reset-exercise-14",
+    "name": "Hip Reset Exercise 14",
+    "family": "hip-extension",
+    "movement": "hip-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "hip-reset"
+    ],
+    "aliases": [
+      "Hip Reset Exercise 14",
+      "hip-reset-exercise-14"
+    ],
+    "yt": "Hip Reset Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-1",
+    "name": "Lower Leg Stability Exercise 1",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 1",
+      "lower-leg-stability-exercise-1"
+    ],
+    "yt": "Lower Leg Stability Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-2",
+    "name": "Lower Leg Stability Exercise 2",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 2",
+      "lower-leg-stability-exercise-2"
+    ],
+    "yt": "Lower Leg Stability Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-3",
+    "name": "Lower Leg Stability Exercise 3",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 3",
+      "lower-leg-stability-exercise-3"
+    ],
+    "yt": "Lower Leg Stability Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-4",
+    "name": "Lower Leg Stability Exercise 4",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 4",
+      "lower-leg-stability-exercise-4"
+    ],
+    "yt": "Lower Leg Stability Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-5",
+    "name": "Lower Leg Stability Exercise 5",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 5",
+      "lower-leg-stability-exercise-5"
+    ],
+    "yt": "Lower Leg Stability Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-6",
+    "name": "Lower Leg Stability Exercise 6",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 6",
+      "lower-leg-stability-exercise-6"
+    ],
+    "yt": "Lower Leg Stability Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-7",
+    "name": "Lower Leg Stability Exercise 7",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 7",
+      "lower-leg-stability-exercise-7"
+    ],
+    "yt": "Lower Leg Stability Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-8",
+    "name": "Lower Leg Stability Exercise 8",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 8",
+      "lower-leg-stability-exercise-8"
+    ],
+    "yt": "Lower Leg Stability Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-9",
+    "name": "Lower Leg Stability Exercise 9",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 9",
+      "lower-leg-stability-exercise-9"
+    ],
+    "yt": "Lower Leg Stability Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-10",
+    "name": "Lower Leg Stability Exercise 10",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 10",
+      "lower-leg-stability-exercise-10"
+    ],
+    "yt": "Lower Leg Stability Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-11",
+    "name": "Lower Leg Stability Exercise 11",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 11",
+      "lower-leg-stability-exercise-11"
+    ],
+    "yt": "Lower Leg Stability Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-12",
+    "name": "Lower Leg Stability Exercise 12",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 12",
+      "lower-leg-stability-exercise-12"
+    ],
+    "yt": "Lower Leg Stability Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-13",
+    "name": "Lower Leg Stability Exercise 13",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 13",
+      "lower-leg-stability-exercise-13"
+    ],
+    "yt": "Lower Leg Stability Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lower-leg-stability-exercise-14",
+    "name": "Lower Leg Stability Exercise 14",
+    "family": "calf-ankle",
+    "movement": "calf-ankle",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lower-leg-stability"
+    ],
+    "aliases": [
+      "Lower Leg Stability Exercise 14",
+      "lower-leg-stability-exercise-14"
+    ],
+    "yt": "Lower Leg Stability Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-1",
+    "name": "Joint Control Exercise 1",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 1",
+      "joint-control-exercise-1"
+    ],
+    "yt": "Joint Control Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-2",
+    "name": "Joint Control Exercise 2",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 2",
+      "joint-control-exercise-2"
+    ],
+    "yt": "Joint Control Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-3",
+    "name": "Joint Control Exercise 3",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 3",
+      "joint-control-exercise-3"
+    ],
+    "yt": "Joint Control Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-4",
+    "name": "Joint Control Exercise 4",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 4",
+      "joint-control-exercise-4"
+    ],
+    "yt": "Joint Control Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-5",
+    "name": "Joint Control Exercise 5",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 5",
+      "joint-control-exercise-5"
+    ],
+    "yt": "Joint Control Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-6",
+    "name": "Joint Control Exercise 6",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 6",
+      "joint-control-exercise-6"
+    ],
+    "yt": "Joint Control Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-7",
+    "name": "Joint Control Exercise 7",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 7",
+      "joint-control-exercise-7"
+    ],
+    "yt": "Joint Control Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-8",
+    "name": "Joint Control Exercise 8",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 8",
+      "joint-control-exercise-8"
+    ],
+    "yt": "Joint Control Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-9",
+    "name": "Joint Control Exercise 9",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 9",
+      "joint-control-exercise-9"
+    ],
+    "yt": "Joint Control Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-10",
+    "name": "Joint Control Exercise 10",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 10",
+      "joint-control-exercise-10"
+    ],
+    "yt": "Joint Control Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-11",
+    "name": "Joint Control Exercise 11",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 11",
+      "joint-control-exercise-11"
+    ],
+    "yt": "Joint Control Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-12",
+    "name": "Joint Control Exercise 12",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 12",
+      "joint-control-exercise-12"
+    ],
+    "yt": "Joint Control Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-13",
+    "name": "Joint Control Exercise 13",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 13",
+      "joint-control-exercise-13"
+    ],
+    "yt": "Joint Control Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "joint-control-exercise-14",
+    "name": "Joint Control Exercise 14",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "joint-control"
+    ],
+    "aliases": [
+      "Joint Control Exercise 14",
+      "joint-control-exercise-14"
+    ],
+    "yt": "Joint Control Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-1",
+    "name": "Fascia Flow Exercise 1",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 1",
+      "fascia-flow-exercise-1"
+    ],
+    "yt": "Fascia Flow Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-2",
+    "name": "Fascia Flow Exercise 2",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 2",
+      "fascia-flow-exercise-2"
+    ],
+    "yt": "Fascia Flow Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-3",
+    "name": "Fascia Flow Exercise 3",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 3",
+      "fascia-flow-exercise-3"
+    ],
+    "yt": "Fascia Flow Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-4",
+    "name": "Fascia Flow Exercise 4",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 4",
+      "fascia-flow-exercise-4"
+    ],
+    "yt": "Fascia Flow Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-5",
+    "name": "Fascia Flow Exercise 5",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 5",
+      "fascia-flow-exercise-5"
+    ],
+    "yt": "Fascia Flow Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-6",
+    "name": "Fascia Flow Exercise 6",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 6",
+      "fascia-flow-exercise-6"
+    ],
+    "yt": "Fascia Flow Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-7",
+    "name": "Fascia Flow Exercise 7",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 7",
+      "fascia-flow-exercise-7"
+    ],
+    "yt": "Fascia Flow Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-8",
+    "name": "Fascia Flow Exercise 8",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 8",
+      "fascia-flow-exercise-8"
+    ],
+    "yt": "Fascia Flow Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-9",
+    "name": "Fascia Flow Exercise 9",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 9",
+      "fascia-flow-exercise-9"
+    ],
+    "yt": "Fascia Flow Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-10",
+    "name": "Fascia Flow Exercise 10",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 10",
+      "fascia-flow-exercise-10"
+    ],
+    "yt": "Fascia Flow Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-11",
+    "name": "Fascia Flow Exercise 11",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 11",
+      "fascia-flow-exercise-11"
+    ],
+    "yt": "Fascia Flow Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-12",
+    "name": "Fascia Flow Exercise 12",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 12",
+      "fascia-flow-exercise-12"
+    ],
+    "yt": "Fascia Flow Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-13",
+    "name": "Fascia Flow Exercise 13",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 13",
+      "fascia-flow-exercise-13"
+    ],
+    "yt": "Fascia Flow Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "fascia-flow-exercise-14",
+    "name": "Fascia Flow Exercise 14",
+    "family": "mobility-recovery",
+    "movement": "mobility-recovery",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "fascia-flow"
+    ],
+    "aliases": [
+      "Fascia Flow Exercise 14",
+      "fascia-flow-exercise-14"
+    ],
+    "yt": "Fascia Flow Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-1",
+    "name": "Lymphatic Flow Exercise 1",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 1",
+      "lymphatic-flow-exercise-1"
+    ],
+    "yt": "Lymphatic Flow Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-2",
+    "name": "Lymphatic Flow Exercise 2",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 2",
+      "lymphatic-flow-exercise-2"
+    ],
+    "yt": "Lymphatic Flow Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-3",
+    "name": "Lymphatic Flow Exercise 3",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 3",
+      "lymphatic-flow-exercise-3"
+    ],
+    "yt": "Lymphatic Flow Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-4",
+    "name": "Lymphatic Flow Exercise 4",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 4",
+      "lymphatic-flow-exercise-4"
+    ],
+    "yt": "Lymphatic Flow Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-5",
+    "name": "Lymphatic Flow Exercise 5",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 5",
+      "lymphatic-flow-exercise-5"
+    ],
+    "yt": "Lymphatic Flow Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-6",
+    "name": "Lymphatic Flow Exercise 6",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 6",
+      "lymphatic-flow-exercise-6"
+    ],
+    "yt": "Lymphatic Flow Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-7",
+    "name": "Lymphatic Flow Exercise 7",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 7",
+      "lymphatic-flow-exercise-7"
+    ],
+    "yt": "Lymphatic Flow Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-8",
+    "name": "Lymphatic Flow Exercise 8",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 8",
+      "lymphatic-flow-exercise-8"
+    ],
+    "yt": "Lymphatic Flow Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-9",
+    "name": "Lymphatic Flow Exercise 9",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 9",
+      "lymphatic-flow-exercise-9"
+    ],
+    "yt": "Lymphatic Flow Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-10",
+    "name": "Lymphatic Flow Exercise 10",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 10",
+      "lymphatic-flow-exercise-10"
+    ],
+    "yt": "Lymphatic Flow Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-11",
+    "name": "Lymphatic Flow Exercise 11",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 11",
+      "lymphatic-flow-exercise-11"
+    ],
+    "yt": "Lymphatic Flow Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-12",
+    "name": "Lymphatic Flow Exercise 12",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 12",
+      "lymphatic-flow-exercise-12"
+    ],
+    "yt": "Lymphatic Flow Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-13",
+    "name": "Lymphatic Flow Exercise 13",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 13",
+      "lymphatic-flow-exercise-13"
+    ],
+    "yt": "Lymphatic Flow Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "lymphatic-flow-exercise-14",
+    "name": "Lymphatic Flow Exercise 14",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "lymphatic-flow"
+    ],
+    "aliases": [
+      "Lymphatic Flow Exercise 14",
+      "lymphatic-flow-exercise-14"
+    ],
+    "yt": "Lymphatic Flow Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-1",
+    "name": "Running Drill Exercise 1",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 1",
+      "running-drill-exercise-1"
+    ],
+    "yt": "Running Drill Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-2",
+    "name": "Running Drill Exercise 2",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 2",
+      "running-drill-exercise-2"
+    ],
+    "yt": "Running Drill Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-3",
+    "name": "Running Drill Exercise 3",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 3",
+      "running-drill-exercise-3"
+    ],
+    "yt": "Running Drill Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-4",
+    "name": "Running Drill Exercise 4",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 4",
+      "running-drill-exercise-4"
+    ],
+    "yt": "Running Drill Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-5",
+    "name": "Running Drill Exercise 5",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 5",
+      "running-drill-exercise-5"
+    ],
+    "yt": "Running Drill Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-6",
+    "name": "Running Drill Exercise 6",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 6",
+      "running-drill-exercise-6"
+    ],
+    "yt": "Running Drill Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-7",
+    "name": "Running Drill Exercise 7",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 7",
+      "running-drill-exercise-7"
+    ],
+    "yt": "Running Drill Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-8",
+    "name": "Running Drill Exercise 8",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 8",
+      "running-drill-exercise-8"
+    ],
+    "yt": "Running Drill Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-9",
+    "name": "Running Drill Exercise 9",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 9",
+      "running-drill-exercise-9"
+    ],
+    "yt": "Running Drill Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-10",
+    "name": "Running Drill Exercise 10",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 10",
+      "running-drill-exercise-10"
+    ],
+    "yt": "Running Drill Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-11",
+    "name": "Running Drill Exercise 11",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 11",
+      "running-drill-exercise-11"
+    ],
+    "yt": "Running Drill Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-12",
+    "name": "Running Drill Exercise 12",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 12",
+      "running-drill-exercise-12"
+    ],
+    "yt": "Running Drill Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-13",
+    "name": "Running Drill Exercise 13",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 13",
+      "running-drill-exercise-13"
+    ],
+    "yt": "Running Drill Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "running-drill-exercise-14",
+    "name": "Running Drill Exercise 14",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "running-drill"
+    ],
+    "aliases": [
+      "Running Drill Exercise 14",
+      "running-drill-exercise-14"
+    ],
+    "yt": "Running Drill Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-1",
+    "name": "Core Control Exercise 1",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 1",
+      "core-control-exercise-1"
+    ],
+    "yt": "Core Control Exercise 1 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-2",
+    "name": "Core Control Exercise 2",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 2",
+      "core-control-exercise-2"
+    ],
+    "yt": "Core Control Exercise 2 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-3",
+    "name": "Core Control Exercise 3",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 3",
+      "core-control-exercise-3"
+    ],
+    "yt": "Core Control Exercise 3 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-4",
+    "name": "Core Control Exercise 4",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 4",
+      "core-control-exercise-4"
+    ],
+    "yt": "Core Control Exercise 4 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-5",
+    "name": "Core Control Exercise 5",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 5",
+      "core-control-exercise-5"
+    ],
+    "yt": "Core Control Exercise 5 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-6",
+    "name": "Core Control Exercise 6",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 6",
+      "core-control-exercise-6"
+    ],
+    "yt": "Core Control Exercise 6 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-7",
+    "name": "Core Control Exercise 7",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 7",
+      "core-control-exercise-7"
+    ],
+    "yt": "Core Control Exercise 7 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-8",
+    "name": "Core Control Exercise 8",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 8",
+      "core-control-exercise-8"
+    ],
+    "yt": "Core Control Exercise 8 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-9",
+    "name": "Core Control Exercise 9",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 9",
+      "core-control-exercise-9"
+    ],
+    "yt": "Core Control Exercise 9 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-10",
+    "name": "Core Control Exercise 10",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 10",
+      "core-control-exercise-10"
+    ],
+    "yt": "Core Control Exercise 10 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-11",
+    "name": "Core Control Exercise 11",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 11",
+      "core-control-exercise-11"
+    ],
+    "yt": "Core Control Exercise 11 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-12",
+    "name": "Core Control Exercise 12",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 12",
+      "core-control-exercise-12"
+    ],
+    "yt": "Core Control Exercise 12 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-13",
+    "name": "Core Control Exercise 13",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 13",
+      "core-control-exercise-13"
+    ],
+    "yt": "Core Control Exercise 13 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  },
+  {
+    "key": "core-control-exercise-14",
+    "name": "Core Control Exercise 14",
+    "family": "core-anti-extension",
+    "movement": "core-anti-extension",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "operational-fitness"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning"
+    ],
+    "muscles": [
+      "full-body"
+    ],
+    "primaryMuscles": [
+      "full-body"
+    ],
+    "secondaryMuscles": [],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [],
+    "tags": [
+      "core-control"
+    ],
+    "aliases": [
+      "Core Control Exercise 14",
+      "core-control-exercise-14"
+    ],
+    "yt": "Core Control Exercise 14 exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness"
+    ],
+    "styleBias": [
+      "operational-fitness"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move with control and maintain good form.",
+    "source": "fff-exercise-db-v4.7-expansion-pack-3"
+  }
+
 
 ];
   const PROGRESSION_TREES = {
@@ -13803,7 +31667,7 @@ window.FFFExerciseDB = (function () {
     return map[family] || { primaryMuscles: Array.isArray(ex.muscles) ? ex.muscles : [], secondaryMuscles: [] };
   }
 
-  function getMyPlanLibrary() { return { version:'4.5', source:'fff-exercise-db-v4.4', sourceModules: Object.keys(PAGE_SOURCE_MODULES).map(function(key){ return Object.assign({key:key}, PAGE_SOURCE_MODULES[key]); }), items:EXERCISES.map(function(ex){ var enriched=enrichExerciseForPlanner(ex); var muscles=inferMuscleMetadata(ex); return { key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, muscles:ex.muscles||[], primaryMuscles:muscles.primaryMuscles||[], secondaryMuscles:muscles.secondaryMuscles||[], movement:ex.movement||ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[], sourcePage: enriched.sourcePage, sourceLabel: enriched.sourceLabel, sourceReason: enriched.sourceReason, sourceModules: enriched.sourceModules, rx: ex.defaultRx, cue: ex.coachingCue, regressions: ex.regressions||[], progressions: ex.progressions||[], alternatives: ex.alternatives||[] }; }) }; }
+  function getMyPlanLibrary() { return { version:'4.6', source:'fff-exercise-db-v4.4', sourceModules: Object.keys(PAGE_SOURCE_MODULES).map(function(key){ return Object.assign({key:key}, PAGE_SOURCE_MODULES[key]); }), items:EXERCISES.map(function(ex){ var enriched=enrichExerciseForPlanner(ex); var muscles=inferMuscleMetadata(ex); return { key:ex.key, type:(ex.purposes||[]).indexOf('conditioning')>-1 ? 'circuit' : ((ex.purposes||[]).indexOf('recovery')>-1 ? 'recovery' : 'exercise'), name:ex.name, equipment:ex.equipment||[], styles:ex.styles||[], purposes:ex.purposes||[], yt:ex.yt, family:ex.family, muscles:ex.muscles||[], primaryMuscles:muscles.primaryMuscles||[], secondaryMuscles:muscles.secondaryMuscles||[], movement:ex.movement||ex.family, tags:ex.tags||[], cautionIf:ex.cautionIf||[], domains:ex.domains||[], sourcePage: enriched.sourcePage, sourceLabel: enriched.sourceLabel, sourceReason: enriched.sourceReason, sourceModules: enriched.sourceModules, rx: ex.defaultRx, cue: ex.coachingCue, regressions: ex.regressions||[], progressions: ex.progressions||[], alternatives: ex.alternatives||[] }; }) }; }
   function seedMyPlanCache() { try { localStorage.setItem('fff.library.cache.v1', JSON.stringify(getMyPlanLibrary())); return true; } catch(err) { return false; } }
   function getLibraryStats() { const byFamily={}, byInjury={}; EXERCISES.forEach(ex=>{ byFamily[ex.family]=(byFamily[ex.family]||0)+1; (ex.cautionIf||[]).forEach(i=>byInjury[i]=(byInjury[i]||0)+1); }); return { totalExercises:EXERCISES.length, familyCount:FAMILY_DB.length, injuryProfiles:Object.keys(INJURY_RULES).length, styleProfiles:Object.keys(STYLE_PROFILES).length, progressionTrees:Object.keys(PROGRESSION_TREES).length, byFamily, byInjury }; }
 

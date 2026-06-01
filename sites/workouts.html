@@ -599,6 +599,12 @@ function readPayloadByBuilder(builderKey){
 }
 function readActiveLibraryPayload(){
   try{
+    var urlBuilder = '';
+    try{ urlBuilder = new URLSearchParams(window.location.search).get('builder') || ''; }catch(e){}
+    if(urlBuilder === 'personalised-plan' || urlBuilder === 'build-your-week'){
+      localStorage.setItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY, urlBuilder);
+    }
+
     var active = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY) || '';
     var named = active ? readPayloadByBuilder(active) : null;
     if(named){
@@ -626,9 +632,11 @@ function readActiveLibraryPayload(){
     return null;
   }
 }
+
 function activateLibraryPayload(builderKey){
   var payload = readPayloadByBuilder(builderKey);
   if(!payload) return false;
+
   try{
     payload.builderKey = builderKey;
     payload.builderLabel = builderKey === 'personalised-plan' ? 'Personalised Plan' : 'Build Your Week';
@@ -637,13 +645,10 @@ function activateLibraryPayload(builderKey){
     LIBRARY_PAYLOAD = payload;
   }catch(err){}
 
-  if(typeof updateLibraryBanner === 'function') updateLibraryBanner();
-  if(typeof renderPlan === 'function') renderPlan();
-  if(typeof renderCal === 'function') renderCal();
-  if(typeof renderCircuits === 'function') renderCircuits();
-  if(typeof refreshBuilderSwitcher === 'function') refreshBuilderSwitcher();
+  window.location.href = 'workouts.html?builder=' + encodeURIComponent(builderKey) + '&t=' + Date.now();
   return true;
 }
+
 function refreshBuilderSwitcher(){
   var status = document.getElementById('builderSwitchStatus');
   if(!status) return;
@@ -680,7 +685,15 @@ function updateLibraryBanner(){
   const label = document.getElementById('libraryModeLabel');
   const text = document.getElementById('libraryModeText');
   if(LIBRARY_PAYLOAD && Array.isArray(LIBRARY_PAYLOAD.sessions) && LIBRARY_PAYLOAD.sessions.length){
-    if(label) label.textContent = 'Showing the current build from My Plan';
+    if(label){
+      var activeBuilder = '';
+      try{ activeBuilder = localStorage.getItem(LIBRARY_PAYLOAD_ACTIVE_BUILDER_KEY) || ''; }catch(e){}
+      label.textContent = activeBuilder === 'personalised-plan'
+        ? 'Showing Personalised Plan from My Plan'
+        : activeBuilder === 'build-your-week'
+          ? 'Showing Build Your Week from My Plan'
+          : 'Showing the current build from My Plan';
+    }
     if(text) text.textContent = 'Training focus: ' + (LIBRARY_PAYLOAD.style || 'mixed') + '. These sessions came from your most recent build. Use this page to log the selected exercises, keep PBs, use timers and connect with supporting recovery systems.';
   } else {
     if(label) label.textContent = 'Waiting for My Plan';

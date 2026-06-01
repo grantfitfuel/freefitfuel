@@ -2748,7 +2748,7 @@
         localStorage.setItem('fff.libraryPayload.personalised-plan', JSON.stringify(payload));
         localStorage.setItem('fff.libraryPayload.activeBuilder', 'personalised-plan');
 
-        localStorage.setItem(CURRENT_PLAN_KEY, JSON.stringify({
+        localStorage.setItem('fff.personalisedPlan.payload.v1', JSON.stringify({
           style: 'personalised-plan',
           days: String((payload.sessions || []).length || 7),
           payload: payload

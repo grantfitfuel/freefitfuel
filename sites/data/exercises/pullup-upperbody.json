@@ -1,0 +1,3138 @@
+[
+  {
+    "key": "assisted-pull-up",
+    "name": "Assisted Pull-up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "rack",
+      "band"
+    ],
+    "styles": [
+      "calisthenics"
+    ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "aggressive-vertical-pull",
+      "scapular-control"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "band-lat-pulldown"
+    ],
+    "progressions": [
+      "pull-up"
+    ],
+    "aliases": [
+      "Assisted Pull-up",
+      "assisted pull up"
+    ],
+    "yt": "Assisted Pull-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics"
+    ],
+    "styleBias": [
+      "calisthenics"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 2,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "band-assisted-chin-up",
+    "name": "Band Assisted Chin-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar",
+      "band"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "biceps",
+      "lower-traps",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "lower-traps",
+      "forearms"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "chin-up",
+      "assisted"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Assisted Chin-Up",
+      "band-assisted-chin-up"
+    ],
+    "yt": "Band Assisted Chin-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use assistance for clean reps.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-curl-2",
+    "name": "Band Curl",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "biceps",
+      "brachialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearms"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "band",
+      "biceps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Curl",
+      "band-curl",
+      "band-curl-2"
+    ],
+    "yt": "Band Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "bands",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep elbows pinned and use smooth band tension.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "band-face-pull-to-external-rotation",
+    "name": "Band Face Pull to External Rotation",
+    "family": "horizontal-pull",
+    "movement": "scapular-control",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "rebuild-recovery",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [
+      "rear-delts",
+      "rotator-cuff",
+      "lower-traps",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "primaryMuscles": [
+      "rear-delts",
+      "rotator-cuff",
+      "lower-traps"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "mid-traps"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "rear-delts",
+      "rotator-cuff"
+    ],
+    "alternatives": [
+      "face-pull"
+    ],
+    "regressions": [
+      "bandrow"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Band Face Pull to External Rotation",
+      "band-face-pull-to-external-rotation"
+    ],
+    "yt": "Band Face Pull to External Rotation exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rehab",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "rebuild-recovery",
+      "hypertrophy"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull towards the face, rotate gently, and keep shoulders low.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "band-pull-apart",
+    "name": "Band Pull-Apart",
+    "family": "horizontal-pull",
+    "movement": "scapular-retraction",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "rebuild-recovery",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [
+      "rear-delts",
+      "rhomboids",
+      "mid-traps",
+      "rotator-cuff"
+    ],
+    "primaryMuscles": [
+      "rear-delts",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "secondaryMuscles": [
+      "rotator-cuff"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "posture",
+      "band"
+    ],
+    "alternatives": [
+      "face-pull"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Pull-Apart",
+      "band-pull-apart"
+    ],
+    "yt": "Band Pull-Apart exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rehab"
+    ],
+    "styleBias": [
+      "rebuild-recovery",
+      "hypertrophy"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 1,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull the band apart at chest height and keep ribs quiet.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "band-row",
+    "name": "Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats",
+      "rear-delts",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "band",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Row",
+      "band-row"
+    ],
+    "yt": "Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull elbows back and keep shoulders low.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "bandrow",
+    "name": "Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "banded-light",
+      "neutral-grip",
+      "supported-row",
+      "reduced-grip"
+    ],
+    "alternatives": [
+      "chest-supported-row"
+    ],
+    "regressions": [],
+    "progressions": [
+      "ringrow"
+    ],
+    "aliases": [
+      "Band Row",
+      "bandrow"
+    ],
+    "yt": "Band Row form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "weights"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "bird-dog-row",
+    "name": "Bird Dog Row",
+    "family": "core-anti-rotation",
+    "movement": "core-anti-rotation",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "weights",
+      "core"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "obliques",
+      "lats",
+      "glutes",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "obliques",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "core",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Bird Dog Row",
+      "bird-dog-row"
+    ],
+    "yt": "Bird Dog Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "core"
+    ],
+    "styleBias": [
+      "weights",
+      "core"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep hips level while rowing.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "chest-supported-row",
+    "name": "Chest-supported Dumbbell Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain",
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "supported-row",
+      "neutral-grip"
+    ],
+    "alternatives": [
+      "bandrow"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Chest-supported Dumbbell Row",
+      "chest supported row"
+    ],
+    "yt": "Chest-supported Dumbbell Row form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "rehab"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "chin-up",
+    "name": "Chin-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "biceps",
+      "brachialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearms"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "chin-up"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Chin-Up",
+      "chin-up"
+    ],
+    "yt": "Chin-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull from active shoulders.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "concentration-curl",
+    "name": "Concentration Curl",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "biceps",
+      "brachialis"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "biceps"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Concentration Curl",
+      "concentration-curl"
+    ],
+    "yt": "Concentration Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Brace the arm and curl without swinging.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "cross-body-hammer-curl",
+    "name": "Cross-Body Hammer Curl",
+    "family": "arms",
+    "movement": "elbow-flexion",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "hypertrophy"
+    ],
+    "purposes": [
+      "arms",
+      "hypertrophy"
+    ],
+    "muscles": [
+      "brachialis",
+      "brachioradialis",
+      "biceps",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "brachialis",
+      "brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "forearms"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "hammer-curl",
+      "forearms"
+    ],
+    "alternatives": [
+      "hammer-curl"
+    ],
+    "regressions": [
+      "band-curl"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Cross-Body Hammer Curl",
+      "cross-body-hammer-curl"
+    ],
+    "yt": "Cross-Body Hammer Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Curl across the body with a neutral wrist.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "dead-hang",
+    "name": "Dead Hang",
+    "family": "vertical-pull",
+    "movement": "hang",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "mobility",
+      "grip"
+    ],
+    "muscles": [
+      "grip",
+      "forearms",
+      "lats",
+      "shoulder-capsule"
+    ],
+    "primaryMuscles": [
+      "grip",
+      "forearms"
+    ],
+    "secondaryMuscles": [
+      "lats",
+      "shoulder-capsule"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement",
+      "elbow-tendon-pain"
+    ],
+    "tags": [
+      "hang",
+      "grip"
+    ],
+    "alternatives": [
+      "scapular-pull-up"
+    ],
+    "regressions": [],
+    "progressions": [
+      "scapular-pull-up"
+    ],
+    "aliases": [
+      "Dead Hang",
+      "dead-hang"
+    ],
+    "yt": "Dead Hang exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "mobility"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Hang within comfortable shoulder range and breathe steadily.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "doorrow",
+    "name": "Door/Table Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "mixed",
+      "calisthenics"
+    ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "bodyweight-row",
+      "simple",
+      "reduced-grip"
+    ],
+    "alternatives": [
+      "bandrow",
+      "ringrow"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Door/Table Row",
+      "doorrow"
+    ],
+    "yt": "Door/Table Row form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics"
+    ],
+    "styleBias": [
+      "mixed",
+      "calisthenics"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "dumbbell-curl",
+    "name": "Dumbbell Curl",
+    "family": "arms",
+    "movement": "elbow-flexion",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "mixed",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "arms",
+      "hypertrophy"
+    ],
+    "muscles": [
+      "biceps",
+      "brachialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearms"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "biceps"
+    ],
+    "alternatives": [
+      "hammer-curl"
+    ],
+    "regressions": [
+      "band-curl"
+    ],
+    "progressions": [
+      "incline-dumbbell-curl"
+    ],
+    "aliases": [
+      "Dumbbell Curl",
+      "dumbbell-curl"
+    ],
+    "yt": "Dumbbell Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "mixed",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep elbows still and curl without swinging.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "dummy-drag-band-row",
+    "name": "Dummy Drag Band Row",
+    "family": "conditioning",
+    "movement": "conditioning",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "operational-fitness",
+      "fire-rescue"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "quads",
+      "grip",
+      "core",
+      "glutes"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "quads",
+      "grip"
+    ],
+    "secondaryMuscles": [
+      "core",
+      "glutes"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "drag",
+      "police",
+      "fire"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Dummy Drag Band Row",
+      "dummy-drag-band-row"
+    ],
+    "yt": "Dummy Drag Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "operational-fitness",
+      "fire-rescue"
+    ],
+    "styleBias": [
+      "operational-fitness",
+      "fire-rescue"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Drive legs and pull with a braced trunk.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "face-pull",
+    "name": "Band Face Pull",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control",
+      "banded-light",
+      "external-rotation"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Band Face Pull",
+      "face pull"
+    ],
+    "yt": "Band Face Pull form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "weights"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength-hypertrophy",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "high-band-row",
+    "name": "High Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band",
+      "anchor"
+    ],
+    "styles": [
+      "bands",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rear-delts",
+      "upper-back",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "primaryMuscles": [
+      "rear-delts",
+      "upper-back"
+    ],
+    "secondaryMuscles": [
+      "rhomboids",
+      "mid-traps"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "upper-back"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "High Band Row",
+      "high-band-row"
+    ],
+    "yt": "High Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "bands",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull high towards upper chest.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "incline-chest-supported-dumbbell-row",
+    "name": "Incline Chest-Supported Dumbbell Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "mixed",
+      "hypertrophy",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "hypertrophy"
+    ],
+    "muscles": [
+      "rhomboids",
+      "mid-traps",
+      "rear-delts",
+      "lats",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "rhomboids",
+      "mid-traps",
+      "rear-delts"
+    ],
+    "secondaryMuscles": [
+      "lats",
+      "biceps"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "supported-row",
+      "upper-back"
+    ],
+    "alternatives": [
+      "chest-supported-row"
+    ],
+    "regressions": [
+      "bandrow"
+    ],
+    "progressions": [
+      "two-arm-dumbbell-row"
+    ],
+    "aliases": [
+      "Incline Chest-Supported Dumbbell Row",
+      "incline-chest-supported-dumbbell-row"
+    ],
+    "yt": "Incline Chest-Supported Dumbbell Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy",
+      "rehab"
+    ],
+    "styleBias": [
+      "mixed",
+      "hypertrophy",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 3,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Let the bench support you so the upper back does the work.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "incline-dumbbell-curl",
+    "name": "Incline Dumbbell Curl",
+    "family": "arms",
+    "movement": "elbow-flexion",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "hypertrophy"
+    ],
+    "purposes": [
+      "arms",
+      "hypertrophy"
+    ],
+    "muscles": [
+      "biceps-long-head",
+      "brachialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "biceps-long-head"
+    ],
+    "secondaryMuscles": [
+      "brachialis",
+      "forearms"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "biceps",
+      "lengthened"
+    ],
+    "alternatives": [
+      "dumbbell-curl"
+    ],
+    "regressions": [
+      "band-curl"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Incline Dumbbell Curl",
+      "incline-dumbbell-curl"
+    ],
+    "yt": "Incline Dumbbell Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "hypertrophy"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Let the arm hang behind the body and curl without shoulder drift.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "inverted-row",
+    "name": "Inverted Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bar",
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps",
+      "biceps",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "bodyweight",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Inverted Row",
+      "inverted-row"
+    ],
+    "yt": "Inverted Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull chest towards the anchor.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "negative-pull-up",
+    "name": "Negative Pull-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics"
+    ],
+    "purposes": [
+      "pull",
+      "strength"
+    ],
+    "muscles": [
+      "lats",
+      "biceps",
+      "lower-traps",
+      "forearms",
+      "rhomboids"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "biceps",
+      "lower-traps"
+    ],
+    "secondaryMuscles": [
+      "forearms",
+      "rhomboids"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "eccentric",
+      "pull-up"
+    ],
+    "alternatives": [
+      "assisted-pull-up"
+    ],
+    "regressions": [
+      "scapular-pull-up"
+    ],
+    "progressions": [
+      "pull-up"
+    ],
+    "aliases": [
+      "Negative Pull-Up",
+      "negative-pull-up"
+    ],
+    "yt": "Negative Pull-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Step to the top, lower slowly, and stop before elbows complain.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "neutral-grip-pull-up",
+    "name": "Neutral-Grip Pull-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "pull",
+      "strength"
+    ],
+    "muscles": [
+      "lats",
+      "biceps",
+      "brachialis",
+      "lower-traps",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "biceps",
+      "brachialis"
+    ],
+    "secondaryMuscles": [
+      "lower-traps",
+      "forearms"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "pull-up",
+      "neutral-grip"
+    ],
+    "alternatives": [
+      "pull-up"
+    ],
+    "regressions": [
+      "assisted-pull-up"
+    ],
+    "progressions": [
+      "weighted-pull-up"
+    ],
+    "aliases": [
+      "Neutral-Grip Pull-Up",
+      "neutral-grip-pull-up"
+    ],
+    "yt": "Neutral-Grip Pull-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 2,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Start from active shoulders and pull the chest up.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "one-arm-dumbbell-row",
+    "name": "One-Arm Dumbbell Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "mixed",
+      "strength",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "pull",
+      "strength"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps",
+      "rear-delts",
+      "biceps",
+      "grip"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps",
+      "grip"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "dumbbell-row",
+      "lat"
+    ],
+    "alternatives": [
+      "chest-supported-row"
+    ],
+    "regressions": [
+      "bandrow"
+    ],
+    "progressions": [
+      "renegade-row"
+    ],
+    "aliases": [
+      "One-Arm Dumbbell Row",
+      "one-arm-dumbbell-row"
+    ],
+    "yt": "One-Arm Dumbbell Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "strength",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Pull elbow towards the hip and keep the torso quiet.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "prone-cobra-hold",
+    "name": "Prone Cobra Hold",
+    "family": "mobility-recovery",
+    "movement": "scapular-control",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "rebuild-recovery",
+      "mobility"
+    ],
+    "purposes": [
+      "recovery",
+      "posture"
+    ],
+    "muscles": [
+      "lower-traps",
+      "spinal-erectors",
+      "rear-delts",
+      "glutes"
+    ],
+    "primaryMuscles": [
+      "lower-traps",
+      "spinal-erectors",
+      "rear-delts"
+    ],
+    "secondaryMuscles": [
+      "glutes"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "neck-pain"
+    ],
+    "tags": [
+      "posture",
+      "extension"
+    ],
+    "alternatives": [
+      "prone-wt-lifts"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Prone Cobra Hold",
+      "prone-cobra-hold"
+    ],
+    "yt": "Prone Cobra Hold exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "mobility"
+    ],
+    "styleBias": [
+      "rebuild-recovery",
+      "mobility"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 1,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Lift gently, thumbs out, neck long, and avoid pinching the lower back.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "prone-wt-lifts",
+    "name": "Prone W/T Lifts",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "bw"
+    ],
+    "styles": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control",
+      "low-cognitive-load"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Prone W/T Lifts",
+      "prone wt lifts"
+    ],
+    "yt": "Prone W/T Lifts form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "pilates",
+      "rehab"
+    ],
+    "styleBias": [
+      "reformer",
+      "pilates-mobility",
+      "rebuild-recovery"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 2,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Squeeze shoulder blades gently, keep ribs heavy and neck long.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "pull-up",
+    "name": "Pull-up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "rack"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength-hypertrophy"
+    ],
+    "purposes": [
+      "pull",
+      "skill"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "aggressive-vertical-pull",
+      "heavy-gripping"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "assisted-pull-up",
+      "band-lat-pulldown"
+    ],
+    "progressions": [
+      "weighted-pull-up"
+    ],
+    "aliases": [
+      "Pull-up",
+      "pull up"
+    ],
+    "yt": "Pull-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength-hypertrophy"
+    ],
+    "jointStress": 4,
+    "fatigueCost": 4,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "renegade-row",
+    "name": "Renegade Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "core"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "obliques",
+      "triceps",
+      "front-delts",
+      "grip"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "obliques"
+    ],
+    "secondaryMuscles": [
+      "triceps",
+      "front-delts",
+      "grip"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific",
+      "wrist-pain"
+    ],
+    "tags": [
+      "row",
+      "anti-rotation"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Renegade Row",
+      "renegade-row"
+    ],
+    "yt": "Renegade Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "core"
+    ],
+    "styleBias": [
+      "weights",
+      "core"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Row without twisting the hips.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "reverse-curl",
+    "name": "Reverse Curl",
+    "family": "arms",
+    "movement": "arms",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "brachioradialis",
+      "forearms",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "brachioradialis",
+      "forearms"
+    ],
+    "secondaryMuscles": [
+      "biceps"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "wrist-pain"
+    ],
+    "tags": [
+      "forearms"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Reverse Curl",
+      "reverse-curl"
+    ],
+    "yt": "Reverse Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use a lighter load and control the wrist.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "ring-row",
+    "name": "Ring Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "rings"
+    ],
+    "styles": [
+      "calisthenics",
+      "strength"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "rear-delts",
+      "biceps",
+      "core"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps",
+      "core"
+    ],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "rings",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Ring Row",
+      "ring-row"
+    ],
+    "yt": "Ring Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "strength"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "strength"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Walk feet forward or back to scale.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "ringrow",
+    "name": "Ring Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "rings"
+    ],
+    "styles": [
+      "calisthenics"
+    ],
+    "purposes": [
+      "pull"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "tennis-elbow",
+      "outer-biceps-left-pain"
+    ],
+    "tags": [
+      "bodyweight-row",
+      "scapular-control",
+      "neutral-grip"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "bandrow"
+    ],
+    "progressions": [
+      "feet-elevated-ring-row"
+    ],
+    "aliases": [
+      "Ring Row",
+      "ringrow"
+    ],
+    "yt": "Ring Row form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics"
+    ],
+    "styleBias": [
+      "calisthenics"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 2,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "scapular-pull-up",
+    "name": "Scapular Pull-up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "rack"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "pull",
+      "skill",
+      "recovery"
+    ],
+    "muscles": [],
+    "difficulty": [
+      "beginner",
+      "intermediate"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control"
+    ],
+    "alternatives": [],
+    "regressions": [
+      "band-lat-pulldown"
+    ],
+    "progressions": [
+      "assisted-pull-up"
+    ],
+    "aliases": [
+      "Scapular Pull-up",
+      "scapular pull up"
+    ],
+    "yt": "Scapular Pull-up form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rehab"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 2,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 3,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move slowly, stay controlled, and keep symptoms calm.",
+    "source": "fff-exercise-db-v4.2"
+  },
+  {
+    "key": "scapular-pull-up-2",
+    "name": "Scapular Pull-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar"
+    ],
+    "styles": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lower-traps",
+      "lats",
+      "grip",
+      "serratus-anterior"
+    ],
+    "primaryMuscles": [
+      "lower-traps",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "grip",
+      "serratus-anterior"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "scapular-control"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Scapular Pull-Up",
+      "scapular-pull-up",
+      "scapular-pull-up-2"
+    ],
+    "yt": "Scapular Pull-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Move shoulder blades without bending elbows.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "scapular-wall-slide",
+    "name": "Scapular Wall Slide",
+    "family": "vertical-push",
+    "movement": "scapular-control",
+    "equipment": [
+      "bw",
+      "wall"
+    ],
+    "styles": [
+      "rebuild-recovery",
+      "mobility"
+    ],
+    "purposes": [
+      "recovery",
+      "mobility"
+    ],
+    "muscles": [
+      "lower-traps",
+      "serratus-anterior",
+      "rotator-cuff",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lower-traps",
+      "serratus-anterior",
+      "rotator-cuff"
+    ],
+    "secondaryMuscles": [
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "shoulder-control",
+      "wall"
+    ],
+    "alternatives": [
+      "face-pull"
+    ],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Scapular Wall Slide",
+      "scapular-wall-slide"
+    ],
+    "yt": "Scapular Wall Slide exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "rehab",
+      "mobility"
+    ],
+    "styleBias": [
+      "rebuild-recovery",
+      "mobility"
+    ],
+    "jointStress": 1,
+    "fatigueCost": 1,
+    "skillDemand": 1,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 5,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Keep ribs down and slide arms without forcing range.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "seal-row",
+    "name": "Seal Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db",
+      "bench"
+    ],
+    "styles": [
+      "weights",
+      "hypertrophy"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats",
+      "rear-delts",
+      "biceps"
+    ],
+    "primaryMuscles": [
+      "rhomboids",
+      "mid-traps",
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps"
+    ],
+    "difficulty": [
+      "intermediate"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "supported-row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Seal Row",
+      "seal-row"
+    ],
+    "yt": "Seal Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "weights",
+      "hypertrophy"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Let the bench remove lower-back demand.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "seated-band-row",
+    "name": "Seated Band Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "band"
+    ],
+    "styles": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "purposes": [
+      "strength",
+      "conditioning",
+      "hypertrophy",
+      "recovery"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "biceps",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "beginner"
+    ],
+    "cautionIf": [
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "band",
+      "row"
+    ],
+    "alternatives": [],
+    "regressions": [],
+    "progressions": [],
+    "aliases": [
+      "Seated Band Row",
+      "seated-band-row"
+    ],
+    "yt": "Seated Band Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "styleBias": [
+      "bands",
+      "rebuild-recovery"
+    ],
+    "jointStress": 2,
+    "fatigueCost": 3,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 4,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Sit tall and row towards lower ribs.",
+    "source": "fff-exercise-db-v4.6-expansion-pack-2"
+  },
+  {
+    "key": "towel-grip-row",
+    "name": "Towel Grip Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "towel",
+      "anchor"
+    ],
+    "styles": [
+      "calisthenics",
+      "operational-fitness"
+    ],
+    "purposes": [
+      "pull",
+      "grip"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "grip",
+      "biceps",
+      "forearms",
+      "rear-delts"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "grip"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "forearms",
+      "rear-delts"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "grip",
+      "row"
+    ],
+    "alternatives": [
+      "doorrow"
+    ],
+    "regressions": [
+      "bandrow"
+    ],
+    "progressions": [
+      "towel-pull-up"
+    ],
+    "aliases": [
+      "Towel Grip Row",
+      "towel-grip-row"
+    ],
+    "yt": "Towel Grip Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "operational"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "operational-fitness"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Grip the towel hard and row without jerking the elbows.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "towel-pull-up",
+    "name": "Towel Pull-Up",
+    "family": "vertical-pull",
+    "movement": "vertical-pull",
+    "equipment": [
+      "bar",
+      "towel"
+    ],
+    "styles": [
+      "calisthenics",
+      "operational-fitness"
+    ],
+    "purposes": [
+      "pull",
+      "grip"
+    ],
+    "muscles": [
+      "lats",
+      "grip",
+      "biceps",
+      "forearms",
+      "lower-traps"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "grip",
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "forearms",
+      "lower-traps"
+    ],
+    "difficulty": [
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "shoulder-impingement"
+    ],
+    "tags": [
+      "grip",
+      "pull-up"
+    ],
+    "alternatives": [
+      "neutral-grip-pull-up"
+    ],
+    "regressions": [
+      "towel-grip-row"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Towel Pull-Up",
+      "towel-pull-up"
+    ],
+    "yt": "Towel Pull-Up exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "calisthenics",
+      "operational"
+    ],
+    "styleBias": [
+      "calisthenics",
+      "operational-fitness"
+    ],
+    "jointStress": 4,
+    "fatigueCost": 5,
+    "skillDemand": 4,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 2,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Use only if grip and elbows tolerate it.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "two-arm-dumbbell-row",
+    "name": "Two-Arm Dumbbell Row",
+    "family": "horizontal-pull",
+    "movement": "horizontal-pull",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "mixed",
+      "strength"
+    ],
+    "purposes": [
+      "pull",
+      "strength"
+    ],
+    "muscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps",
+      "rear-delts",
+      "biceps",
+      "spinal-erectors"
+    ],
+    "primaryMuscles": [
+      "lats",
+      "rhomboids",
+      "mid-traps"
+    ],
+    "secondaryMuscles": [
+      "rear-delts",
+      "biceps",
+      "spinal-erectors"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "low-back-non-specific"
+    ],
+    "tags": [
+      "dumbbell-row",
+      "hinged"
+    ],
+    "alternatives": [
+      "chest-supported-row"
+    ],
+    "regressions": [
+      "bandrow"
+    ],
+    "progressions": [
+      "renegade-row"
+    ],
+    "aliases": [
+      "Two-Arm Dumbbell Row",
+      "two-arm-dumbbell-row"
+    ],
+    "yt": "Two-Arm Dumbbell Row exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "strength"
+    ],
+    "styleBias": [
+      "mixed",
+      "strength"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 4,
+    "skillDemand": 2,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 2,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Hinge cleanly, brace, and row both elbows back.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  },
+  {
+    "key": "zottman-curl",
+    "name": "Zottman Curl",
+    "family": "arms",
+    "movement": "elbow-flexion-pronation",
+    "equipment": [
+      "db"
+    ],
+    "styles": [
+      "hypertrophy"
+    ],
+    "purposes": [
+      "arms",
+      "hypertrophy"
+    ],
+    "muscles": [
+      "biceps",
+      "brachioradialis",
+      "forearms"
+    ],
+    "primaryMuscles": [
+      "biceps",
+      "brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "difficulty": [
+      "intermediate",
+      "advanced"
+    ],
+    "cautionIf": [
+      "elbow-tendon-pain",
+      "wrist-pain"
+    ],
+    "tags": [
+      "biceps",
+      "forearms"
+    ],
+    "alternatives": [
+      "dumbbell-curl"
+    ],
+    "regressions": [
+      "hammer-curl"
+    ],
+    "progressions": [],
+    "aliases": [
+      "Zottman Curl",
+      "zottman-curl"
+    ],
+    "yt": "Zottman Curl exercise form",
+    "phaseUse": [
+      "cut",
+      "transform",
+      "maintain",
+      "bulk",
+      "recomp",
+      "build"
+    ],
+    "domains": [
+      "weights",
+      "hypertrophy"
+    ],
+    "styleBias": [
+      "hypertrophy"
+    ],
+    "jointStress": 3,
+    "fatigueCost": 3,
+    "skillDemand": 3,
+    "cognitiveLoad": 1,
+    "recoveryFriendliness": 3,
+    "movementQuality": 4,
+    "defaultRx": "3 sets of controlled reps",
+    "tempo": "controlled",
+    "rest": "60-120 sec",
+    "coachingCue": "Curl palms up, rotate at the top, and lower slowly palms down.",
+    "source": "fff-exercise-db-v4.5-expansion-pack-1"
+  }
+]

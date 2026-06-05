@@ -2917,10 +2917,66 @@
       doc.setFont('helvetica','normal');
       doc.setFontSize(11);
 
+      function exerciseLine(item, idx){
+        item = item || {};
+        var bits = [];
+        var name = item.name || item.key || ('Exercise ' + (idx + 1));
+        bits.push(name);
+        if(item.sets || item.reps){
+          bits.push((item.sets || '—') + ' x ' + (item.reps || 'controlled reps'));
+        }
+        if(item.rir) bits.push('RIR ' + item.rir);
+        if(item.rest) bits.push('Rest ' + item.rest + (String(item.rest).indexOf('s') === -1 ? 's' : ''));
+        return bits.join(' • ');
+      }
+
+      function addExerciseDetail(item){
+        item = item || {};
+        if(item.cue) addWrapped('      Cue: ' + item.cue, 13);
+        if(item.why) addWrapped('      Why: ' + item.why, 13);
+        if(item.sourceLabel) addWrapped('      Source: ' + item.sourceLabel, 13);
+        if(Array.isArray(item.alts) && item.alts.length){
+          addWrapped('      Alternatives: ' + item.alts.join(', '), 13);
+        }
+      }
+
       roadmap.stages.forEach(function(s, i){
+        newSection(10);
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(12);
+        doc.setTextColor(0);
         addWrapped((i+1) + '. ' + s.name + ' — BF target: ' + s.bf_target + '; Estimated duration: ' + s.weeks_min + '–' + s.weeks_max + ' weeks');
+
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(10.5);
+
         if (s.targets) {
-          addWrapped('   Calories: ' + s.targets.kcal + ' • Protein: ' + s.targets.protein + 'g • Carbs: ' + s.targets.carbs + 'g • Fat: ' + s.targets.fats + 'g');
+          addWrapped('   Calories: ' + s.targets.kcal + ' • Protein: ' + s.targets.protein + 'g • Carbs: ' + s.targets.carbs + 'g • Fat: ' + s.targets.fats + 'g', 14);
+        }
+
+        var split = Array.isArray(s.split) ? s.split : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+        var program = s.programByDay || [];
+
+        if(program && (Array.isArray(program) || typeof program === 'object')){
+          addWrapped('   Training week:', 14);
+
+          for(var di = 0; di < 7; di++){
+            var dayItems = program[di] || [];
+            if(!Array.isArray(dayItems)) dayItems = [];
+
+            doc.setFont('helvetica','bold');
+            addWrapped('   ' + (split[di] || ('Day ' + (di + 1))), 14);
+            doc.setFont('helvetica','normal');
+
+            if(!dayItems.length){
+              addWrapped('      Rest / recovery / optional easy movement', 13);
+            }else{
+              dayItems.forEach(function(item, exIndex){
+                addWrapped('      ' + (exIndex + 1) + ') ' + exerciseLine(item, exIndex), 13);
+                addExerciseDetail(item);
+              });
+            }
+          }
         }
       });
 

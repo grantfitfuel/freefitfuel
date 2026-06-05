@@ -629,6 +629,88 @@
       padding:10px 0 0;
     }
 
+    /* ===== My Plan orchestrator cards ===== */
+    .orchestrator-section{
+      border-color:rgba(255,106,0,.18);
+      background:
+        radial-gradient(circle at top right, rgba(255,106,0,.10), transparent 30%),
+        var(--glass);
+    }
+    .orchestrator-summary{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin:14px 0;
+    }
+    @media (max-width:760px){
+      .orchestrator-summary{grid-template-columns:1fr}
+    }
+    .orchestrator-grid{
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+    .orchestrator-card{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:250px;
+      border:1px solid var(--stroke);
+      background:#111418;
+      border-radius:16px;
+      padding:14px;
+    }
+    .orchestrator-card.featured{
+      border-color:rgba(255,106,0,.55);
+      background:
+        linear-gradient(180deg,rgba(255,106,0,.13),rgba(255,255,255,.025)),
+        #111418;
+    }
+    .orchestrator-card h3{
+      margin:0;
+      font-size:1.08rem;
+    }
+    .orchestrator-card p{
+      margin:.1rem 0;
+    }
+    .orchestrator-score{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .orchestrator-pill{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.045);
+      border-radius:999px;
+      padding:.22rem .55rem;
+      color:var(--inkdim);
+      font-size:.8rem;
+      font-weight:700;
+    }
+    .orchestrator-pill.accent{
+      border-color:rgba(255,106,0,.38);
+      background:rgba(255,106,0,.10);
+      color:#ffd6bd;
+    }
+    .orchestrator-reasons{
+      margin:.1rem 0 0 1rem;
+      padding:0;
+      color:var(--inkdim);
+      font-size:.92rem;
+      line-height:1.42;
+    }
+    .orchestrator-reasons li{margin:.25rem 0}
+    .orchestrator-actions{
+      margin-top:auto;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .orchestrator-actions .btn,
+    .orchestrator-actions .btn-sm{
+      min-height:40px;
+    }
+
   </style>
 <!-- FFF two-builder storage fix: personalised and build-your-week slots separated v2 -->
 </head>
@@ -753,18 +835,34 @@
           </div>
         </section>
       </div>
-
-    <section class="section" id="recommendedSystemsSection">
+    <section class="section orchestrator-section" id="recommendedSystemsSection">
       <div class="section-head">
         <div>
+          <div class="panel-kicker">Personal hub</div>
           <h2>Recommended systems</h2>
-          <p>Recovery, mobility, physio and progression tools suggested from your current plan signals.</p>
+          <p>My Plan does not list individual exercises here. It points you to the systems most relevant to your current phase, injuries, recovery and goals. Exercises and sessions remain on Workouts and the standalone system pages.</p>
         </div>
-        <a class="btn" href="recovery-training-hub.html">Open Recovery Hub</a>
+        <div class="cta-row">
+          <a class="btn" href="workouts.html">Open Workouts</a>
+          <a class="btn" href="recovery-training-hub.html">Open Systems Hub</a>
+        </div>
       </div>
 
-      <div id="recommendedSystems" class="systems-recommendation-grid">
-        <div class="system-recommendation-empty">System recommendations will appear once the shared systems library has loaded.</div>
+      <div class="orchestrator-summary" id="orchestratorSummary">
+        <div class="summary-card">
+          <div class="panel-kicker">Current role</div>
+          <div class="metric" style="font-size:1.1rem">My Plan is your organiser</div>
+          <div class="sub">It uses your profile to suggest the right systems, not to bury you in exercise lists.</div>
+        </div>
+        <div class="summary-card">
+          <div class="panel-kicker">Where exercises live</div>
+          <div class="metric" style="font-size:1.1rem">Workouts + system pages</div>
+          <div class="sub">Open the recommended system when you want the exercises, progressions and instructions.</div>
+        </div>
+      </div>
+
+      <div id="recommendedSystems" class="systems-recommendation-grid orchestrator-grid">
+        <div class="system-recommendation-empty">System recommendations will appear once your plan signals have loaded.</div>
       </div>
     </section>
 
@@ -2735,11 +2833,10 @@
       };
     }
 
-    function openPersonalisedPlanInWorkouts(stage, stageIndex, exerciseName){
-      var payload = buildWorkoutPayloadFromRoadmapStage(stage, stageIndex);
+    function savePersonalisedWorkoutPayload(payload, exerciseName){
       try{
         payload = payload || {};
-        payload.source = 'personalised-plan';
+        payload.source = payload.source || 'personalised-plan';
         payload.builderKey = 'personalised-plan';
         payload.builderLabel = 'Personalised Plan';
         payload.savedAt = new Date().toISOString();
@@ -2755,7 +2852,72 @@
         }));
         if(exerciseName) localStorage.setItem('fff.quickLog', exerciseName);
       }catch(err){}
-      window.location.href = 'workouts.html';
+    }
+
+    function buildPersonalisedPlanOptions(stage, stageIndex){
+      stage = stage || {};
+      var equipProfile = (typeof getEquipmentProfileFromUI === 'function') ? getEquipmentProfileFromUI() : {};
+      var notes = [
+        stage.name || '',
+        stage.blurb || '',
+        stage.focus || '',
+        stage.goal || '',
+        GOAL || '',
+        getTrainingStatus ? getTrainingStatus() : '',
+        wantsMuscleGain && wantsMuscleGain() ? 'muscle gain' : '',
+        getPhaseAggression ? getPhaseAggression() : ''
+      ].join(' ');
+
+      return {
+        mode: 'personalised',
+        style: 'personalised-plan',
+        phase: stage.id || stage.name || '',
+        goal: notes,
+        focus: notes,
+        notes: notes,
+        days: Array.isArray(stage.split) ? stage.split.length : 7,
+        equip: equipProfile || {},
+        injuries: (function(){
+          try{
+            return JSON.parse(localStorage.getItem('fff.myplan.injuries.v2') || localStorage.getItem('fff.injury.profile.v1') || '{}');
+          }catch(err){ return {}; }
+        })(),
+        varietySalt: 'personalised-' + (stageIndex || 0) + '-' + Date.now() + '-' + Math.random()
+      };
+    }
+
+    function openPersonalisedPlanInWorkouts(stage, stageIndex, exerciseName){
+      var fallbackPayload = buildWorkoutPayloadFromRoadmapStage(stage, stageIndex);
+
+      function finish(payload){
+        savePersonalisedWorkoutPayload(payload || fallbackPayload, exerciseName);
+        window.location.href = 'workouts.html';
+      }
+
+      try{
+        if(window.FFFPlanner && typeof window.FFFPlanner.readyBuildPayload === 'function'){
+          window.FFFPlanner.readyBuildPayload(buildPersonalisedPlanOptions(stage, stageIndex))
+            .then(function(payload){
+              if(payload && Array.isArray(payload.sessions) && payload.sessions.length){
+                finish(payload);
+              }else{
+                finish(fallbackPayload);
+              }
+            })
+            .catch(function(){
+              finish(fallbackPayload);
+            });
+          return;
+        }
+
+        if(window.FFFPlanner && typeof window.FFFPlanner.buildPersonalisedPlan === 'function'){
+          var directPayload = window.FFFPlanner.buildPersonalisedPlan(buildPersonalisedPlanOptions(stage, stageIndex));
+          finish(directPayload || fallbackPayload);
+          return;
+        }
+      }catch(err){}
+
+      finish(fallbackPayload);
     }
 
 
@@ -6107,6 +6269,310 @@ function buildLibraryPayload(style, sessions, equip){
       setTimeout(renderAdaptiveSystems, 350);
       setTimeout(renderAdaptiveSystems, 1000);
     });
+  })();
+  </script>
+
+  <script>
+  /* FFF My Plan orchestrator layer: My Plan recommends systems only. Exercises stay on Workouts/system pages. */
+  (function(){
+    function esc(v){
+      return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+    function arr(v){ return Array.isArray(v) ? v : []; }
+    function lower(v){ return String(v || '').toLowerCase(); }
+    function byId(id){ return document.getElementById(id); }
+    function checked(id){ var el = byId(id); return !!(el && el.checked); }
+    function value(id){ var el = byId(id); return el ? String(el.value || '') : ''; }
+    function getLS(key){
+      try{return localStorage.getItem(key) || '';}catch(e){return '';}
+    }
+    function parseLS(key){
+      try{return JSON.parse(localStorage.getItem(key) || 'null');}catch(e){return null;}
+    }
+
+    var FALLBACK_SYSTEMS = [
+      {
+        id:'operational-fitness',
+        title:'Operational Fitness™',
+        url:'operational-fitness.html',
+        category:'performance',
+        durationMinutes:30,
+        tags:['work capacity','police','fire','army','search and rescue'],
+        summary:'For practical conditioning, loaded carries, pursuit work, rescue-style capacity and blue-light resilience.',
+        triggers:['operational','police','fire','army','reserve','ta','search','rescue','ruck','tactical','work capacity','blue light','military']
+      },
+      {
+        id:'knee-capacity-reset',
+        title:'Knee Capacity Reset™',
+        url:'knee-capacity-reset.html',
+        category:'physio',
+        durationMinutes:20,
+        tags:['knee support','pain-aware','capacity'],
+        summary:'For rebuilding knee tolerance, controlled strength and pain-aware lower-body confidence.',
+        triggers:['knee','patella','squat pain','stairs','step down','leg pain']
+      },
+      {
+        id:'lower-leg-stability',
+        title:'Lower-Leg Stability System™',
+        url:'lower-leg-stability.html',
+        category:'physio',
+        durationMinutes:20,
+        tags:['ankle','calf','shin','balance'],
+        summary:'For ankles, calves, shins, foot control, balance and return-to-running resilience.',
+        triggers:['ankle','calf','shin','achilles','foot','balance','running','run']
+      },
+      {
+        id:'pullup-upperbody',
+        title:'Pull-Up Progression Pathway™',
+        url:'pullup-progression.html',
+        category:'strength-skill',
+        durationMinutes:25,
+        tags:['pull-ups','upper body','grip'],
+        summary:'For building pulling strength, grip, scapular control and pull-up confidence.',
+        triggers:['pull up','pull-up','chin up','upper body','back','grip','biceps']
+      },
+      {
+        id:'recovery-mobility',
+        title:'Recovery & Mobility™',
+        url:'recovery-training-hub.html',
+        category:'recovery',
+        durationMinutes:15,
+        tags:['recovery','mobility','low fatigue'],
+        summary:'For low-energy days, stiffness, stress, poor sleep and keeping momentum without overreaching.',
+        triggers:['recovery','mobility','stiff','sleep','stress','tired','fatigue','sore']
+      },
+      {
+        id:'running-conditioning',
+        title:'Running & Conditioning™',
+        url:'running.html',
+        category:'endurance',
+        durationMinutes:30,
+        tags:['running','conditioning','endurance'],
+        summary:'For walking, running, aerobic conditioning and structured endurance progression.',
+        triggers:['running','run','5k','10k','half marathon','marathon','conditioning','endurance']
+      },
+      {
+        id:'daily-recovery-flow',
+        title:'Daily Recovery Flow™',
+        url:'recovery-training-hub.html',
+        category:'recovery',
+        durationMinutes:10,
+        tags:['daily reset','deskbound','gentle'],
+        summary:'For simple daily resets when you need movement without a full workout.',
+        triggers:['desk','stiff','recovery','tired','stress','low energy']
+      },
+      {
+        id:'joint-control-foundations',
+        title:'Joint Control Foundations™',
+        url:'recovery-training-hub.html',
+        category:'physio',
+        durationMinutes:15,
+        tags:['joint control','movement quality','injury-aware'],
+        summary:'For controlled movement, proprioception and cleaner mechanics before harder training.',
+        triggers:['joint','mobility','control','pain','injury','balance','stability']
+      }
+    ];
+
+    function getRegistrySystems(){
+      var systems = [];
+      if(window.FFFSystems && Array.isArray(window.FFFSystems.all)){
+        systems = window.FFFSystems.all.map(function(s){
+          return {
+            id: s.id || s.key || lower(s.title).replace(/[^a-z0-9]+/g,'-'),
+            title: s.title || s.name || 'FreeFitFuel system',
+            url: s.standaloneUrl || s.url || s.href || 'recovery-training-hub.html',
+            category: s.category || '',
+            durationMinutes: s.durationMinutes || s.duration || '',
+            tags: arr(s.tags).concat(arr(s.goals)).slice(0,5),
+            summary: s.summary || s.description || 'Standalone FreeFitFuel system recommended from your current plan context.',
+            triggers: arr(s.tags).concat(arr(s.goals), arr(s.keywords), [s.title, s.id, s.category]).map(lower)
+          };
+        });
+      }
+      var by = {};
+      FALLBACK_SYSTEMS.concat(systems).forEach(function(s){
+        if(!s || !s.id) return;
+        by[s.id] = Object.assign({}, by[s.id] || {}, s);
+      });
+      return Object.keys(by).map(function(k){return by[k];});
+    }
+
+    function buildHubProfile(){
+      var roadmap = parseLS('fff.roadmap.plan.v1') || parseLS('fff.currentPlan.v1') || {};
+      var latest = null;
+      var checkins = parseLS('fff.weekly.checkins.v1');
+      if(Array.isArray(checkins) && checkins.length) latest = checkins[checkins.length - 1];
+
+      var selectedGoal = '';
+      var pressed = document.querySelector('.goal-chip[aria-pressed="true"]');
+      if(pressed) selectedGoal = pressed.textContent || '';
+
+      var notes = [
+        JSON.stringify(roadmap || {}),
+        latest ? JSON.stringify(latest) : '',
+        selectedGoal,
+        value('checkinNotes'),
+        value('trainingStatus'),
+        value('trainingEnvironment')
+      ].join(' ').toLowerCase();
+
+      var equipment = [];
+      [
+        ['equipBw','bodyweight'],
+        ['equipDb','dumbbells'],
+        ['equipBand','bands'],
+        ['equipRack','rack/bar'],
+        ['equipRings','rings'],
+        ['equipBench','bench'],
+        ['equipKb','kettlebell'],
+        ['equipCardio','cardio'],
+        ['equipGymAccess','gym']
+      ].forEach(function(pair){ if(checked(pair[0])) equipment.push(pair[1]); });
+
+      function n(id, fallback){
+        var v = Number(value(id));
+        return Number.isFinite(v) && v > 0 ? v : fallback;
+      }
+
+      var recovery = n('recoveryScore', latest && latest.recovery ? Number(latest.recovery) : 3);
+      var energy = n('energyScore', latest && latest.energy ? Number(latest.energy) : 3);
+      var sleep = n('sleepScore', latest && latest.sleep ? Number(latest.sleep) : 3);
+      var emotion = lower(value('emotionalLevel') || (latest && latest.emotional_level) || 'steady');
+
+      return {
+        notes: notes,
+        equipment: equipment,
+        recoveryNeed: recovery <= 2 || sleep <= 2 || energy <= 2 || emotion === 'drained' || emotion === 'flat',
+        lowEnergy: energy <= 2 || emotion === 'drained' || emotion === 'flat',
+        beginner: /beginner|new|returning|restart|deconditioned/.test(notes),
+        operational: /operational|police|fire|army|reserve|ta|military|search|rescue|blue light|work capacity|tactical|ruck/.test(notes),
+        knee: /knee|patella|stairs|step down|squat pain/.test(notes),
+        lowerLeg: /ankle|calf|shin|achilles|foot|plantar|balance/.test(notes),
+        running: /run|running|5k|10k|marathon|endurance/.test(notes),
+        pull: /pull.?up|chin.?up|upper body|grip|biceps|back strength/.test(notes),
+        joint: /joint|mobility|stability|control|injury|pain/.test(notes)
+      };
+    }
+
+    function scoreSystem(system, profile){
+      var blob = lower([system.id, system.title, system.category, arr(system.tags).join(' '), arr(system.triggers).join(' '), system.summary].join(' '));
+      var score = 8;
+      var reasons = [];
+
+      function hit(condition, points, reason){
+        if(condition){ score += points; reasons.push(reason); }
+      }
+
+      hit(profile.operational && /operational|police|fire|army|rescue|tactical|ruck|work capacity|blue light/.test(blob), 45, 'matches your operational or work-capacity focus');
+      hit(profile.knee && /knee/.test(blob), 42, 'supports the knee issue recorded in your plan signals');
+      hit(profile.lowerLeg && /lower-leg|ankle|calf|shin|achilles|foot|balance/.test(blob), 40, 'supports lower-leg, ankle, calf, shin or balance work');
+      hit(profile.pull && /pull|upper body|grip|biceps/.test(blob), 35, 'supports pulling strength, grip or upper-body progression');
+      hit(profile.running && /running|run|endurance|conditioning/.test(blob), 30, 'supports your running or endurance direction');
+      hit(profile.recoveryNeed && /recovery|mobility|flow|joint control|fascia|lymphatic/.test(blob), 38, 'keeps training moving while recovery is limited');
+      hit(profile.joint && /joint|mobility|control|stability|physio|reset/.test(blob), 28, 'supports movement quality and injury-aware training');
+
+      if(!reasons.length && /recovery|mobility|daily/.test(blob)){
+        score += 12;
+        reasons.push('useful default support when no single issue dominates');
+      }
+
+      if(profile.recoveryNeed && /high|advanced|max/.test(blob)){
+        score -= 8;
+        reasons.push('use carefully if recovery is low');
+      }
+
+      return {
+        system: system,
+        score: Math.max(0, Math.round(score)),
+        reasons: reasons.slice(0,3)
+      };
+    }
+
+    function renderMyPlanOrchestrator(){
+      var mount = byId('recommendedSystems');
+      if(!mount) return;
+
+      var profile = buildHubProfile();
+      var scored = getRegistrySystems()
+        .map(function(system){ return scoreSystem(system, profile); })
+        .filter(function(item){ return item.score > 15; })
+        .sort(function(a,b){ return b.score - a.score; })
+        .slice(0, 5);
+
+      if(!scored.length){
+        scored = FALLBACK_SYSTEMS.slice(0,3).map(function(system){
+          return {system:system, score:25, reasons:['good general starting point for My Plan']};
+        });
+      }
+
+      mount.innerHTML = scored.map(function(item, index){
+        var s = item.system;
+        var tags = arr(s.tags).slice(0,4).map(function(tag){
+          return '<span class="orchestrator-pill">' + esc(tag) + '</span>';
+        }).join('');
+        var mins = s.durationMinutes ? '<span class="orchestrator-pill">' + esc(s.durationMinutes) + ' min</span>' : '';
+        var reasons = item.reasons.length ? item.reasons : ['recommended from your current plan context'];
+        return '<article class="orchestrator-card' + (index === 0 ? ' featured' : '') + '">' +
+          '<div class="orchestrator-score">' +
+            '<span class="orchestrator-pill accent">' + (index === 0 ? 'Top match' : 'Recommended') + '</span>' +
+            '<span class="orchestrator-pill">Fit ' + esc(item.score) + '</span>' +
+            mins +
+          '</div>' +
+          '<h3>' + esc(s.title) + '</h3>' +
+          '<p class="meta">' + esc(s.summary || 'Standalone FreeFitFuel system.') + '</p>' +
+          '<ul class="orchestrator-reasons">' + reasons.map(function(r){ return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>' +
+          '<div class="orchestrator-score">' + tags + '</div>' +
+          '<div class="orchestrator-actions">' +
+            '<a class="btn btn-primary" href="' + esc(s.url || 'recovery-training-hub.html') + '">Open system</a>' +
+            '<a class="btn" href="workouts.html">Find sessions</a>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+
+      var summary = byId('orchestratorSummary');
+      if(summary){
+        var focus = scored[0] && scored[0].system ? scored[0].system.title : 'Your systems';
+        summary.querySelectorAll('.summary-card')[0].querySelector('.metric').textContent = 'Top focus: ' + focus;
+      }
+    }
+
+    function attachOrchestratorRefresh(){
+      [
+        'checkinNotes','emotionalLevel','trainingStatus','trainingEnvironment',
+        'equipBw','equipDb','equipBand','equipRack','equipRings','equipBench',
+        'equipKb','equipCardio','equipGymAccess'
+      ].forEach(function(id){
+        var el = byId(id);
+        if(!el) return;
+        el.addEventListener('change', renderMyPlanOrchestrator);
+        el.addEventListener('input', renderMyPlanOrchestrator);
+      });
+
+      ['nutritionAdherence','trainingAdherence','recoveryScore','energyScore','hungerScore','sleepScore'].forEach(function(name){
+        document.querySelectorAll('input[name="' + name + '"]').forEach(function(el){
+          el.addEventListener('change', renderMyPlanOrchestrator);
+        });
+      });
+    }
+
+    function ready(fn){
+      if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+      else fn();
+    }
+
+    ready(function(){
+      renderMyPlanOrchestrator();
+      attachOrchestratorRefresh();
+      setTimeout(renderMyPlanOrchestrator, 250);
+      setTimeout(renderMyPlanOrchestrator, 900);
+    });
+
+    window.FFFMyPlanOrchestrator = {
+      render: renderMyPlanOrchestrator,
+      buildProfile: buildHubProfile
+    };
   })();
   </script>
 

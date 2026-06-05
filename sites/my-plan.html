@@ -3151,6 +3151,14 @@
           }else{
             dayItems.forEach(function(item){
               wrapped('• ' + compactExerciseLine(item), 9.2, false, dark, 12, 12);
+
+              if(item && item.cue){
+                wrapped('  ' + cleanText(item.cue), 8.6, false, grey, 22, 11);
+              }
+
+              if(item && Array.isArray(item.alts) && item.alts.length){
+                wrapped('  Alternatives: ' + item.alts.join(', '), 8.3, false, grey, 22, 11);
+              }
             });
           }
           y += 3;
@@ -3285,16 +3293,9 @@
       (roadmap.stages || []).forEach(function(stage, index){
         phasePage(stage, index);
       });
-
-      // Exercise appendix
-      appendixPage(collectUniqueExercises(roadmap));
-
-      // Progress tracking pages
-      (roadmap.stages || []).forEach(function(stage, index){
-        trackerPage(stage, index);
-      });
-
-      // Guidance
+      // Exercise appendix removed in PDF v3
+      // Progress trackers removed in PDF v3
+// Guidance
       guidancePage();
 
       footer();

@@ -2239,6 +2239,56 @@
       return role === 'accessory' ? pack.acc : pack.main;
     }
 
+
+    function getExerciseDbFilter(){
+      var db = window.FFFExerciseDB || window.FFF_EXERCISE_DB;
+      if(!db) return null;
+
+      if(typeof db.filterExercises === 'function'){
+        return function(q){ return db.filterExercises(q) || []; };
+      }
+
+      if(typeof db.filter === 'function'){
+        return function(q){
+          q = q || {};
+          var tokens = [];
+          if(q.family) tokens.push(q.family);
+          if(q.purpose) tokens.push(q.purpose);
+          if(q.style) tokens.push(q.style);
+          if(q.trainingStyle) tokens.push(q.trainingStyle);
+          if(q.phase) tokens.push(q.phase);
+
+          return db.filter({
+            tokens: tokens,
+            equipment: q.equipment || [],
+            injuries: q.injuries || [],
+            difficulty: q.difficulty ? [q.difficulty] : []
+          }) || [];
+        };
+      }
+
+      if(typeof db.getMyPlanLibrary === 'function'){
+        return function(q){
+          q = q || {};
+          var tokens = [];
+          if(q.family) tokens.push(q.family);
+          if(q.purpose) tokens.push(q.purpose);
+          if(q.style) tokens.push(q.style);
+          if(q.trainingStyle) tokens.push(q.trainingStyle);
+          if(q.phase) tokens.push(q.phase);
+
+          return db.getMyPlanLibrary({
+            tokens: tokens,
+            equipment: q.equipment || [],
+            injuries: q.injuries || [],
+            difficulty: q.difficulty ? [q.difficulty] : []
+          }) || [];
+        };
+      }
+
+      return null;
+    }
+
     function getRoadmapExerciseVarietyHistory(){
       try{
         var h = JSON.parse(localStorage.getItem('fff.roadmap.exercise.variety.v1') || '{}');
@@ -2301,10 +2351,11 @@
     }
 
     function dbPick(context, family, used, fallbackPurpose){
-      if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
+      var dbFilter = getExerciseDbFilter();
+      if(!dbFilter) return null;
       var q = Object.assign({}, context || {}, { family: family });
       if(fallbackPurpose) q.purpose = fallbackPurpose;
-      var list = window.FFFExerciseDB.filterExercises(q) || [];
+      var list = dbFilter(q) || [];
       if(!list.length) return null;
 
       var history = getRoadmapExerciseVarietyHistory();
@@ -2358,7 +2409,7 @@
     }
 
     function buildProgramFromExerciseDB(stageId){
-      if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
+      if(!getExerciseDbFilter()) return null;
 
       var context = dbContextForStage(stageId);
       var used = [];
@@ -2742,7 +2793,24 @@
       if (typeof renderWeightLog === 'function') renderWeightLog();
     }
 
-    function generateRoadmapWithoutPDF(staged) {
+    async function ensureExerciseDbReadyForRoadmap(){
+      try{
+        var db = window.FFFExerciseDB || window.FFF_EXERCISE_DB;
+        if(db && typeof db.ensureLoaded === 'function'){
+          await db.ensureLoaded();
+          return true;
+        }
+        if(db && typeof db.load === 'function'){
+          await db.load();
+          return true;
+        }
+      }catch(err){}
+      return !!getExerciseDbFilter();
+    }
+
+    async function generateRoadmapWithoutPDF(staged) {
+      await ensureExerciseDbReadyForRoadmap();
+      await ensureExerciseDbReadyForRoadmap();
       var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
       saveRoadmap(roadmap);
       renderCurrentPhase();
@@ -5084,12 +5152,12 @@
         });
       });
 
-      document.getElementById('btnGenerateRoadmap').addEventListener('click', function(){
-        generateRoadmapWithoutPDF(false);
+      document.getElementById('btnGenerateRoadmap').addEventListener('click', async function(){
+        await generateRoadmapWithoutPDF(false);
       });
 
-      document.getElementById('btnGenerateStaged').addEventListener('click', function(){
-        generateRoadmapWithoutPDF(true);
+      document.getElementById('btnGenerateStaged').addEventListener('click', async function(){
+        await generateRoadmapWithoutPDF(true);
       });
 
       document.getElementById('generatePDF').addEventListener('click', async function(){

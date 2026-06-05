@@ -11,6 +11,7 @@
   var KEY_CURRENT = 'fff.currentPlan.v1';
   var KEY_PERSONALISED = 'fff.personalisedPlan.v2';
   var KEY_WEEK = 'fff.buildMyWeek.v2';
+  var KEY_VARIETY = 'fff.planner.variety.v1';
 
   function readJSON(key, fallback){
     try{ var raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
@@ -30,6 +31,47 @@
       seen[k] = true;
       return true;
     });
+  }
+
+  function getVarietyHistory(){
+    var h = readJSON(KEY_VARIETY, null);
+    if(!h || typeof h !== 'object') h = {};
+    if(!Array.isArray(h.recentKeys)) h.recentKeys = [];
+    if(!Array.isArray(h.builds)) h.builds = [];
+    return h;
+  }
+
+  function saveVarietyHistory(payload){
+    payload = payload || {};
+    var h = getVarietyHistory();
+    var keys = [];
+    arr(payload.sessions).forEach(function(session){
+      arr(session.items).forEach(function(item){
+        if(item && item.key) keys.push(item.key);
+      });
+    });
+
+    h.recentKeys = unique(keys.concat(h.recentKeys)).slice(0, 80);
+    h.builds.unshift({
+      date: Date.now(),
+      mode: payload.mode || '',
+      phase: payload.phase || '',
+      packs: payload.packs || [],
+      keys: keys
+    });
+    h.builds = h.builds.slice(0, 12);
+    writeJSON(KEY_VARIETY, h);
+    return h;
+  }
+
+  function seededNoise(key, salt){
+    var str = String(key || '') + '|' + String(salt || '') + '|' + Date.now();
+    var h = 2166136261;
+    for(var i = 0; i < str.length; i++){
+      h ^= str.charCodeAt(i);
+      h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+    }
+    return ((h >>> 0) % 1000) / 1000;
   }
 
   function equipmentList(equip){
@@ -102,7 +144,9 @@
       preferredPacks: arr(options.packs),
       recovery: Number(options.recovery || 3),
       experience: options.experience || '',
-      availableTime: Number(options.availableTime || 45)
+      availableTime: Number(options.availableTime || 45),
+      varietySalt: options.varietySalt || (Date.now() + '-' + Math.random()),
+      varietyHistory: getVarietyHistory()
     };
 
     if(window.FFFExerciseDB && typeof window.FFFExerciseDB.selectRelevantPacks === 'function'){
@@ -142,8 +186,18 @@
     if(profile.recovery <= 2 && Number(ex.fatigueCost || 3) >= 5) score -= 12;
 
     if(used[ex.key]) score -= 30;
+
+    var history = profile.varietyHistory || { recentKeys: [] };
+    if(history.recentKeys && history.recentKeys.indexOf(ex.key) > -1){
+      score -= 14;
+    }
+
     score += Number(ex.movementQuality || 0);
     score -= Math.max(0, Number(ex.jointStress || 2) - 3) * 2;
+
+    // Controlled variety: keeps high-scoring suitable exercises near the top,
+    // but stops identical criteria returning the exact same list every time.
+    score += seededNoise(ex.key, profile.varietySalt) * 8;
 
     return score;
   }
@@ -312,6 +366,8 @@
     if(profile.mode === 'week') writeJSON(KEY_WEEK, payload);
     else writeJSON(KEY_PERSONALISED, payload);
 
+    saveVarietyHistory(payload);
+
     document.dispatchEvent(new CustomEvent('fff:planner-payload-built', { detail: payload }));
     return payload;
   }
@@ -354,6 +410,8 @@
     buildPayload: buildPayload,
     buildPersonalisedPlan: buildPersonalisedPlan,
     buildWeek: buildWeek,
-    readyBuildPayload: readyBuildPayload
+    readyBuildPayload: readyBuildPayload,
+    getVarietyHistory: getVarietyHistory,
+    clearVarietyHistory: function(){ writeJSON(KEY_VARIETY, { recentKeys: [], builds: [] }); return true; }
   };
 })();

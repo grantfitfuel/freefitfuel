@@ -2239,15 +2239,94 @@
       return role === 'accessory' ? pack.acc : pack.main;
     }
 
+    function getRoadmapExerciseVarietyHistory(){
+      try{
+        var h = JSON.parse(localStorage.getItem('fff.roadmap.exercise.variety.v1') || '{}');
+        if(!h || typeof h !== 'object') h = {};
+        if(!Array.isArray(h.recentKeys)) h.recentKeys = [];
+        return h;
+      }catch(err){
+        return { recentKeys: [] };
+      }
+    }
+
+    function saveRoadmapExerciseVarietyKey(key){
+      if(!key) return;
+      try{
+        var h = getRoadmapExerciseVarietyHistory();
+        h.recentKeys = [key].concat(h.recentKeys.filter(function(k){ return k !== key; })).slice(0, 80);
+        h.updatedAt = new Date().toISOString();
+        localStorage.setItem('fff.roadmap.exercise.variety.v1', JSON.stringify(h));
+      }catch(err){}
+    }
+
+    function roadmapNoise(key, family){
+      var seed = String(key || '') + '|' + String(family || '') + '|' + Date.now() + '|' + Math.random();
+      var h = 2166136261;
+      for(var i = 0; i < seed.length; i++){
+        h ^= seed.charCodeAt(i);
+        h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+      }
+      return ((h >>> 0) % 1000) / 1000;
+    }
+
+    function scoreRoadmapExerciseCandidate(ex, family, context, fallbackPurpose, recent){
+      ex = ex || {};
+      var blob = [
+        ex.key, ex.name, ex.family, ex.movement,
+        Array.isArray(ex.purposes) ? ex.purposes.join(' ') : '',
+        Array.isArray(ex.tags) ? ex.tags.join(' ') : '',
+        Array.isArray(ex.domains) ? ex.domains.join(' ') : '',
+        Array.isArray(ex.styles) ? ex.styles.join(' ') : '',
+        Array.isArray(ex.styleBias) ? ex.styleBias.join(' ') : ''
+      ].join(' ').toLowerCase();
+
+      var score = 0;
+      var fam = String(family || '').toLowerCase();
+      var purp = String(fallbackPurpose || '').toLowerCase();
+
+      if(fam && blob.indexOf(fam) > -1) score += 20;
+      if(purp && blob.indexOf(purp) > -1) score += 10;
+      score += Number(ex.movementQuality || 0);
+      score += Number(ex.recoveryFriendliness || 0) >= 4 ? 2 : 0;
+      score -= Math.max(0, Number(ex.jointStress || 2) - 3) * 2;
+      score -= Math.max(0, Number(ex.fatigueCost || 3) - 4) * 2;
+
+      if(recent.indexOf(ex.key) > -1) score -= 18;
+
+      // Controlled variation. Suitability still matters, but identical criteria will not lock the same exercise forever.
+      score += roadmapNoise(ex.key, fam) * 12;
+
+      return score;
+    }
+
     function dbPick(context, family, used, fallbackPurpose){
       if(!window.FFFExerciseDB || typeof window.FFFExerciseDB.filterExercises !== 'function') return null;
       var q = Object.assign({}, context || {}, { family: family });
       if(fallbackPurpose) q.purpose = fallbackPurpose;
       var list = window.FFFExerciseDB.filterExercises(q) || [];
-      for(var i=0;i<list.length;i++){
-        if(used.indexOf(list[i].key) === -1){ used.push(list[i].key); return list[i]; }
+      if(!list.length) return null;
+
+      var history = getRoadmapExerciseVarietyHistory();
+      var recent = Array.isArray(history.recentKeys) ? history.recentKeys : [];
+
+      var scored = list
+        .filter(function(ex){ return ex && ex.key; })
+        .map(function(ex){
+          var usedPenalty = used.indexOf(ex.key) > -1 ? -100 : 0;
+          return {
+            ex: ex,
+            score: scoreRoadmapExerciseCandidate(ex, family, context, fallbackPurpose, recent) + usedPenalty
+          };
+        })
+        .sort(function(a,b){ return b.score - a.score; });
+
+      var pick = (scored[0] && scored[0].ex) || list[0] || null;
+      if(pick && pick.key){
+        used.push(pick.key);
+        saveRoadmapExerciseVarietyKey(pick.key);
       }
-      return list[0] || null;
+      return pick;
     }
 
     function dbContextForStage(stageId){
@@ -6574,6 +6653,15 @@ function buildLibraryPayload(style, sessions, equip){
       buildProfile: buildHubProfile
     };
   })();
+  </script>
+
+  <script>
+  window.FFFRoadmapVariety = window.FFFRoadmapVariety || {
+    clear:function(){
+      try{ localStorage.removeItem('fff.roadmap.exercise.variety.v1'); return true; }
+      catch(err){ return false; }
+    }
+  };
   </script>
 
 </body>

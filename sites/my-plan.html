@@ -2810,7 +2810,6 @@
 
     async function generateRoadmapWithoutPDF(staged) {
       await ensureExerciseDbReadyForRoadmap();
-      await ensureExerciseDbReadyForRoadmap();
       var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
       saveRoadmap(roadmap);
       renderCurrentPhase();
@@ -2828,6 +2827,8 @@
         alert('PDF library could not be loaded. Please refresh and try again.');
         return;
       }
+
+      await ensureExerciseDbReadyForRoadmap();
 
       var roadmap = staged ? buildStagedRoadmap() : buildGoalRoadmap();
       saveRoadmap(roadmap);
@@ -2847,139 +2848,456 @@
       var jsPDF = window.jspdf.jsPDF;
       var doc = new jsPDF({ unit:'pt', format:'a4', compress:true });
 
-      var marginX = 56;
-      var y = 72;
-      var wrapW = 460;
+      var pageW = 595.28;
+      var pageH = 841.89;
+      var marginX = 42;
+      var y = 62;
+      var wrapW = pageW - (marginX * 2);
+      var orange = [255, 106, 0];
+      var dark = [20, 24, 30];
+      var grey = [90, 90, 95];
+      var lightGrey = [245, 245, 247];
 
-      function line(yy) {
-        doc.setDrawColor(255,106,0);
-        doc.setLineWidth(1);
-        doc.line(marginX, yy, 539, yy);
-      }
-      function addWrapped(text, step) {
-        step = step || 16;
-        var lines = doc.splitTextToSize(text, wrapW);
-        for (var i = 0; i < lines.length; i++) {
-          if (y > 770) { doc.addPage(); y = 72; }
-          doc.text(lines[i], marginX, y); y += step;
-        }
-      }
-      function newSection(pad) {
-        pad = pad || 10;
-        y += pad;
-        if (y > 730) { doc.addPage(); y = 72; }
+      function cleanText(text){
+        return String(text == null ? '' : text)
+          .replace(/\s+/g, ' ')
+          .replace(/–/g, '-')
+          .replace(/—/g, '-')
+          .trim();
       }
 
-      doc.setFont('helvetica','bold');
-      doc.setFontSize(18);
-      doc.setTextColor(255,106,0);
-      doc.text('Personalised Body Recomposition Roadmap', marginX, y);
-      y += 18;
-
-      doc.setTextColor(60);
-      doc.setFontSize(12);
-      doc.setFont('helvetica','normal');
-      doc.text(userTargetBF ? ('End target: ~' + userTargetBF + '% body fat') : ('Goal: ' + GOAL), marginX, y);
-      y += 12;
-      line(y+8);
-      y += 24;
-
-      doc.setFont('helvetica','bold');
-      doc.setFontSize(13);
-      doc.setTextColor(0);
-      doc.text('Baseline (Your Starting Point)', marginX, y);
-      y += 16;
-      doc.setFont('helvetica','normal');
-      doc.setFontSize(11);
-      doc.setTextColor(0);
-
-      [
-        'Weight: ' + (kg || '—') + ' kg',
-        'Height: ' + (cm || '—') + ' cm',
-        'Age: ' + (yrs || '—') + ' years',
-        'Sex: ' + (sx==='male' ? 'Male' : 'Female'),
-        'Body fat (approx.): ' + (currentBF != null ? currentBF + '%' : '—'),
-        'Target Body Fat: ' + (userTargetBF || '—'),
-        'Lean Body Mass: ' + (lbm!==null ? (Math.round(lbm*10)/10)+' kg' : '—'),
-        'BMR: ~' + Math.round(bmr) + ' kcal/day',
-        'Estimated TDEE (activity x' + actMult + '): ~' + Math.round(tdee) + ' kcal/day',
-        'Goal: ' + GOAL,
-        'Training status: ' + titleCase(getTrainingStatus()),
-        'Muscle gain later: ' + (wantsMuscleGain() ? 'Yes' : 'No'),
-        'Aggressiveness: ' + titleCase(getPhaseAggression())
-      ].forEach(function(t){ addWrapped('• ' + t); });
-
-      newSection(8);
-      doc.setFont('helvetica','bold');
-      doc.setFontSize(13);
-      doc.text('Roadmap', marginX, y);
-      y += 16;
-      doc.setFont('helvetica','normal');
-      doc.setFontSize(11);
-
-      function exerciseLine(item, idx){
-        item = item || {};
-        var bits = [];
-        var name = item.name || item.key || ('Exercise ' + (idx + 1));
-        bits.push(name);
-        if(item.sets || item.reps){
-          bits.push((item.sets || '—') + ' x ' + (item.reps || 'controlled reps'));
-        }
-        if(item.rir) bits.push('RIR ' + item.rir);
-        if(item.rest) bits.push('Rest ' + item.rest + (String(item.rest).indexOf('s') === -1 ? 's' : ''));
-        return bits.join(' • ');
+      function safe(value, fallback){
+        value = value == null || value === '' ? fallback : value;
+        return cleanText(value);
       }
 
-      function addExerciseDetail(item){
-        item = item || {};
-        if(item.cue) addWrapped('      Cue: ' + item.cue, 13);
-        if(item.why) addWrapped('      Why: ' + item.why, 13);
-        if(item.sourceLabel) addWrapped('      Source: ' + item.sourceLabel, 13);
-        if(Array.isArray(item.alts) && item.alts.length){
-          addWrapped('      Alternatives: ' + item.alts.join(', '), 13);
-        }
+      function setBody(size, bold, colour){
+        doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        doc.setFontSize(size || 10);
+        if(colour) doc.setTextColor(colour[0], colour[1], colour[2]);
+        else doc.setTextColor(0,0,0);
       }
 
-      roadmap.stages.forEach(function(s, i){
-        newSection(10);
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(12);
-        doc.setTextColor(0);
-        addWrapped((i+1) + '. ' + s.name + ' — BF target: ' + s.bf_target + '; Estimated duration: ' + s.weeks_min + '–' + s.weeks_max + ' weeks');
-
+      function footer(){
+        var page = doc.internal.getNumberOfPages();
         doc.setFont('helvetica','normal');
-        doc.setFontSize(10.5);
+        doc.setFontSize(8);
+        doc.setTextColor(120);
+        doc.text('FreeFitFuel™ Personalised Roadmap', marginX, pageH - 24);
+        doc.text('Page ' + page, pageW - marginX - 34, pageH - 24);
+      }
 
-        if (s.targets) {
-          addWrapped('   Calories: ' + s.targets.kcal + ' • Protein: ' + s.targets.protein + 'g • Carbs: ' + s.targets.carbs + 'g • Fat: ' + s.targets.fats + 'g', 14);
+      function addPage(title, subtitle){
+        if(doc.internal.getNumberOfPages() > 0) footer();
+        doc.addPage();
+        y = 58;
+        sectionHeader(title, subtitle);
+      }
+
+      function firstPage(title, subtitle){
+        y = 58;
+        sectionHeader(title, subtitle);
+      }
+
+      function sectionHeader(title, subtitle){
+        doc.setFillColor(20,24,30);
+        doc.rect(0,0,pageW,74,'F');
+        doc.setFillColor(255,106,0);
+        doc.rect(0,70,pageW,4,'F');
+        doc.setTextColor(255,255,255);
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(19);
+        doc.text(cleanText(title), marginX, 34);
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(9.5);
+        doc.setTextColor(225,225,225);
+        if(subtitle) doc.text(cleanText(subtitle), marginX, 52);
+        y = 102;
+      }
+
+      function ensureSpace(height){
+        if(y + height > pageH - 58){
+          footer();
+          doc.addPage();
+          y = 58;
         }
+      }
 
-        var split = Array.isArray(s.split) ? s.split : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-        var program = s.programByDay || [];
+      function textLine(text, size, bold, colour, indent, step){
+        ensureSpace(step || 15);
+        setBody(size || 10, !!bold, colour);
+        doc.text(cleanText(text), marginX + (indent || 0), y);
+        y += step || 15;
+      }
 
-        if(program && (Array.isArray(program) || typeof program === 'object')){
-          addWrapped('   Training week:', 14);
+      function wrapped(text, size, bold, colour, indent, step){
+        text = cleanText(text);
+        if(!text) return;
+        setBody(size || 10, !!bold, colour);
+        var lines = doc.splitTextToSize(text, wrapW - (indent || 0));
+        for(var i = 0; i < lines.length; i++){
+          ensureSpace(step || 13);
+          doc.text(lines[i], marginX + (indent || 0), y);
+          y += step || 13;
+        }
+      }
 
+      function smallRule(){
+        ensureSpace(10);
+        doc.setDrawColor(230);
+        doc.setLineWidth(0.6);
+        doc.line(marginX, y, pageW - marginX, y);
+        y += 13;
+      }
+
+      function pill(label, value, x, yy, w){
+        doc.setFillColor(245,245,247);
+        doc.roundedRect(x, yy, w, 42, 6, 6, 'F');
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(7.8);
+        doc.setTextColor(90);
+        doc.text(cleanText(label), x + 9, yy + 14);
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(11);
+        doc.setTextColor(20);
+        doc.text(cleanText(value), x + 9, yy + 31);
+      }
+
+      function twoColMetricRows(rows){
+        var colW = (wrapW - 12) / 2;
+        for(var i = 0; i < rows.length; i += 2){
+          ensureSpace(50);
+          pill(rows[i][0], rows[i][1], marginX, y, colW);
+          if(rows[i+1]) pill(rows[i+1][0], rows[i+1][1], marginX + colW + 12, y, colW);
+          y += 52;
+        }
+      }
+
+      function table(headers, rows, widths){
+        widths = widths || [];
+        var x = marginX;
+        var rowH = 22;
+        ensureSpace(rowH * (rows.length + 2));
+
+        doc.setFillColor(255,106,0);
+        doc.rect(x, y, wrapW, rowH, 'F');
+        doc.setTextColor(20,20,20);
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(8.5);
+
+        var cx = x;
+        headers.forEach(function(h, i){
+          doc.text(cleanText(h), cx + 5, y + 14);
+          cx += widths[i] || (wrapW / headers.length);
+        });
+        y += rowH;
+
+        rows.forEach(function(row, ri){
+          doc.setFillColor(ri % 2 === 0 ? 250 : 242, ri % 2 === 0 ? 250 : 242, ri % 2 === 0 ? 250 : 242);
+          doc.rect(x, y, wrapW, rowH, 'F');
+          doc.setFont('helvetica','normal');
+          doc.setFontSize(8.2);
+          doc.setTextColor(30);
+          cx = x;
+          row.forEach(function(cell, i){
+            var str = cleanText(cell);
+            var cellW = widths[i] || (wrapW / headers.length);
+            var clipped = str.length > 32 ? str.slice(0, 29) + '...' : str;
+            doc.text(clipped, cx + 5, y + 14);
+            cx += cellW;
+          });
+          y += rowH;
+        });
+        y += 10;
+      }
+
+      function phaseObjective(stage){
+        var id = String(stage && stage.id || '').toLowerCase();
+        if(id === 'cut') return 'Preserve muscle and training quality while reducing body fat.';
+        if(id === 'transform') return 'Improve body composition while rebuilding strength, capacity and consistency.';
+        if(id === 'maintain') return 'Stabilise the result, recover fatigue and make the routine repeatable.';
+        if(id === 'bulk') return 'Add muscle with a controlled surplus and progressive training.';
+        return cleanText(stage && stage.blurb || 'Execute the phase steadily and review progress weekly.');
+      }
+
+      function compactExerciseLine(item){
+        item = item || {};
+        var name = safe(item.name || item.key, 'Exercise');
+        var rx = '';
+        if(item.type === 'cardio'){
+          rx = [
+            item.duration_min ? item.duration_min + ' min' : '',
+            item.work_s ? 'work ' + item.work_s + 's' : '',
+            item.rest_s ? 'rest ' + item.rest_s + 's' : '',
+            item.rounds ? item.rounds + ' rounds' : ''
+          ].filter(Boolean).join(' · ');
+        }else{
+          rx = (item.sets || '—') + ' x ' + (item.reps || 'controlled reps');
+          if(item.rir) rx += ' · RIR ' + item.rir;
+          if(item.rest) rx += ' · Rest ' + item.rest + (String(item.rest).indexOf('s') === -1 && String(item.rest).indexOf('min') === -1 ? 's' : '');
+        }
+        return name + (rx ? ' — ' + rx : '');
+      }
+
+      function collectUniqueExercises(roadmap){
+        var map = {};
+        (roadmap.stages || []).forEach(function(stage){
+          var program = stage.programByDay || [];
           for(var di = 0; di < 7; di++){
-            var dayItems = program[di] || [];
-            if(!Array.isArray(dayItems)) dayItems = [];
-
-            doc.setFont('helvetica','bold');
-            addWrapped('   ' + (split[di] || ('Day ' + (di + 1))), 14);
-            doc.setFont('helvetica','normal');
-
-            if(!dayItems.length){
-              addWrapped('      Rest / recovery / optional easy movement', 13);
-            }else{
-              dayItems.forEach(function(item, exIndex){
-                addWrapped('      ' + (exIndex + 1) + ') ' + exerciseLine(item, exIndex), 13);
-                addExerciseDetail(item);
-              });
-            }
+            var items = program[di] || [];
+            if(!Array.isArray(items)) items = [];
+            items.forEach(function(item){
+              if(!item) return;
+              var key = item.key || item.name;
+              if(!key) return;
+              if(!map[key]){
+                map[key] = Object.assign({}, item);
+              }else{
+                var existing = map[key];
+                if(!existing.cue && item.cue) existing.cue = item.cue;
+                if((!existing.alts || !existing.alts.length) && item.alts) existing.alts = item.alts;
+                if(!existing.equipment && item.equipment) existing.equipment = item.equipment;
+                if(!existing.purposes && item.purposes) existing.purposes = item.purposes;
+              }
+            });
           }
+        });
+        return Object.keys(map).sort(function(a,b){
+          return safe(map[a].name || a, '').localeCompare(safe(map[b].name || b, ''));
+        }).map(function(k){ return map[k]; });
+      }
+
+      function exercisePurpose(item){
+        var bits = [];
+        if(item.family) bits.push(titleCase(item.family));
+        if(Array.isArray(item.purposes) && item.purposes.length) bits.push(item.purposes.map(titleCase).join(', '));
+        if(item.type) bits.push(titleCase(item.type));
+        return bits.length ? bits.join(' · ') : 'Training support';
+      }
+
+      function exerciseEquipment(item){
+        if(Array.isArray(item.equipment) && item.equipment.length) return item.equipment.map(titleCase).join(', ');
+        return 'As selected in plan';
+      }
+
+      function stageCoachingNotes(stage){
+        var id = String(stage && stage.id || '').toLowerCase();
+        if(id === 'cut'){
+          return [
+            'Keep protein high and preserve strength where possible.',
+            'Use easy walking or cycling to support the deficit without burying recovery.',
+            'If sleep, mood or joints crash, reduce pressure before cutting calories harder.'
+          ];
         }
+        if(id === 'transform'){
+          return [
+            'Progress slowly. Recomposition depends on repeatable training, not dramatic jumps.',
+            'Keep form strict and avoid chasing fatigue for its own sake.',
+            'Use weekly check-ins to decide whether calories need a small nudge.'
+          ];
+        }
+        if(id === 'maintain'){
+          return [
+            'Treat this as consolidation, not failure to progress.',
+            'Stabilise weight, routine, sleep and training quality.',
+            'Move on only when the result feels repeatable.'
+          ];
+        }
+        if(id === 'bulk'){
+          return [
+            'Add load, reps or control gradually. Do not add everything at once.',
+            'Keep conditioning easy enough that it supports recovery.',
+            'If waist gain climbs too quickly, trim the surplus rather than adding punishment cardio.'
+          ];
+        }
+        return [
+          'Keep the plan repeatable.',
+          'Review recovery weekly.',
+          'Adjust only one major variable at a time.'
+        ];
+      }
+
+      function phasePage(stage, index){
+        addPage((index + 1) + '. ' + safe(stage.name, 'Phase'), phaseObjective(stage));
+
+        twoColMetricRows([
+          ['Body-fat target', safe(stage.bf_target, '—')],
+          ['Estimated duration', safe(stage.weeks_min, '—') + '-' + safe(stage.weeks_max, '—') + ' weeks'],
+          ['Calories', stage.targets ? safe(stage.targets.kcal, '—') + ' kcal' : '—'],
+          ['Protein', stage.targets ? safe(stage.targets.protein, '—') + ' g' : '—'],
+          ['Carbs', stage.targets ? safe(stage.targets.carbs, '—') + ' g' : '—'],
+          ['Fat', stage.targets ? safe(stage.targets.fats, '—') + ' g' : '—']
+        ]);
+
+        wrapped('Why this phase exists: ' + phaseObjective(stage), 10, false, dark);
+        y += 4;
+        smallRule();
+
+        textLine('Weekly split', 13, true, orange, 0, 18);
+
+        var split = Array.isArray(stage.split) ? stage.split : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+        var program = stage.programByDay || [];
+
+        for(var di = 0; di < 7; di++){
+          var dayItems = program[di] || [];
+          if(!Array.isArray(dayItems)) dayItems = [];
+          ensureSpace(40 + (dayItems.length * 15));
+          setBody(10, true, dark);
+          doc.text(cleanText(split[di] || ('Day ' + (di + 1))), marginX, y);
+          y += 14;
+
+          if(!dayItems.length){
+            wrapped('• Rest / recovery / optional easy movement', 9.2, false, grey, 12, 12);
+          }else{
+            dayItems.forEach(function(item){
+              wrapped('• ' + compactExerciseLine(item), 9.2, false, dark, 12, 12);
+            });
+          }
+          y += 3;
+        }
+
+        smallRule();
+        textLine('Coaching notes', 12, true, orange, 0, 16);
+        stageCoachingNotes(stage).forEach(function(note){
+          wrapped('• ' + note, 9.5, false, dark, 10, 12);
+        });
+      }
+
+      function trackerPage(stage, index){
+        addPage('Progress tracker — ' + safe(stage.name, 'Phase ' + (index + 1)), 'Use this section when printed or saved for review.');
+
+        textLine('Phase completion checklist', 13, true, orange, 0, 18);
+        [
+          'Completed planned weeks',
+          'Hit protein target consistently',
+          'Completed planned sessions',
+          'Recovery stayed tolerable',
+          'Weekly check-ins reviewed',
+          'Ready for next phase'
+        ].forEach(function(item){
+          wrapped('□ ' + item, 10.5, false, dark, 0, 16);
+        });
+
+        y += 8;
+        textLine('Weekly tracker', 13, true, orange, 0, 18);
+        var maxWeeks = Math.max(1, Math.min(24, Number(stage.weeks_max || 12)));
+        var rows = [];
+        for(var w = 1; w <= maxWeeks; w++){
+          rows.push(['Week ' + w, '□', 'Weight:', 'Body fat:', 'Notes:']);
+        }
+        table(['Week','Done','Weight','Body fat','Notes'], rows, [68,42,95,95,wrapW-300]);
+
+        textLine('Notes', 12, true, orange, 0, 16);
+        for(var n = 0; n < 7; n++){
+          ensureSpace(26);
+          doc.setDrawColor(210);
+          doc.line(marginX, y, pageW - marginX, y);
+          y += 24;
+        }
+      }
+
+      function guidancePage(){
+        addPage('FreeFitFuel guidance', 'Simple rules for using the roadmap safely and consistently.');
+
+        var blocks = [
+          ['Hydration', 'Use the water target as a practical guide. Increase intake during heat, heavy sweat, longer walks, or harder sessions. Do not force excessive water beyond thirst and common sense.'],
+          ['Sleep', 'Poor sleep reduces training tolerance. If sleep drops badly, keep movement but reduce pressure before chasing more volume.'],
+          ['Recovery', 'Pain, unusual fatigue, sharp symptoms or worsening joint irritation should trigger a scale-down. The plan is a guide, not a command to push through warning signs.'],
+          ['Progression rules', 'Progress one lever at a time: load, reps, range, tempo or total work. If form worsens, hold or regress before progressing.'],
+          ['Weekly review', 'Use weekly average weight, waist, adherence, recovery and mood together. Do not overreact to one isolated scale reading.']
+        ];
+
+        blocks.forEach(function(block){
+          textLine(block[0], 13, true, orange, 0, 18);
+          wrapped(block[1], 10.2, false, dark, 0, 13);
+          y += 8;
+        });
+      }
+
+      function appendixPage(exercises){
+        addPage('Exercise appendix', 'Each unique exercise appears once. The roadmap pages stay clean.');
+
+        exercises.forEach(function(item, i){
+          ensureSpace(80);
+          textLine((i + 1) + '. ' + safe(item.name || item.key, 'Exercise'), 11.2, true, dark, 0, 15);
+          wrapped('Purpose: ' + exercisePurpose(item), 9.3, false, grey, 10, 12);
+          wrapped('Equipment: ' + exerciseEquipment(item), 9.3, false, grey, 10, 12);
+          if(item.cue) wrapped('Cue: ' + item.cue, 9.3, false, dark, 10, 12);
+          if(Array.isArray(item.alts) && item.alts.length){
+            wrapped('Alternatives: ' + item.alts.map(function(a){ return safe(a, ''); }).filter(Boolean).join(', '), 9.3, false, dark, 10, 12);
+          }
+          y += 6;
+        });
+      }
+
+      // Page 1 — Executive Summary
+      firstPage('FREEFITFUEL™', 'Personalised Body Recomposition Roadmap');
+
+      twoColMetricRows([
+        ['Current weight', (kg || '—') + ' kg'],
+        ['Current body fat', (currentBF != null ? currentBF + '%' : '—')],
+        ['Target body fat', (userTargetBF || '—') + (userTargetBF ? '%' : '')],
+        ['Lean body mass', (lbm !== null ? (Math.round(lbm * 10) / 10) + ' kg' : '—')],
+        ['BMR', '~' + Math.round(bmr) + ' kcal/day'],
+        ['TDEE', '~' + Math.round(tdee) + ' kcal/day'],
+        ['Goal', GOAL],
+        ['Training status', titleCase(getTrainingStatus())]
+      ]);
+
+      y += 8;
+      textLine('Roadmap overview', 14, true, orange, 0, 20);
+      table(
+        ['Phase','Duration','Calories','Focus'],
+        (roadmap.stages || []).map(function(s){
+          return [
+            safe(s.name, 'Phase'),
+            safe(s.weeks_min, '—') + '-' + safe(s.weeks_max, '—') + ' wks',
+            s.targets ? safe(s.targets.kcal, '—') : '—',
+            phaseObjective(s)
+          ];
+        }),
+        [130,80,75,wrapW-285]
+      );
+
+      wrapped('This roadmap is generated from your current inputs and the exercise plan created by FreeFitFuel. It is educational and should be adjusted around pain, medical advice, recovery and real-world tolerance.', 9.5, false, grey);
+
+      // Page 2 — Timeline
+      addPage('Roadmap timeline', 'Targets, macros and purpose by phase.');
+      table(
+        ['Phase','Weeks','Calories','Protein','Carbs','Fat','Primary objective'],
+        (roadmap.stages || []).map(function(s){
+          return [
+            safe(s.name, 'Phase'),
+            safe(s.weeks_min, '—') + '-' + safe(s.weeks_max, '—'),
+            s.targets ? safe(s.targets.kcal, '—') : '—',
+            s.targets ? safe(s.targets.protein, '—') + 'g' : '—',
+            s.targets ? safe(s.targets.carbs, '—') + 'g' : '—',
+            s.targets ? safe(s.targets.fats, '—') + 'g' : '—',
+            phaseObjective(s)
+          ];
+        }),
+        [95,45,58,58,50,42,wrapW-348]
+      );
+
+      wrapped('The timeline is a planning guide, not a promise. Move phase when progress, adherence and recovery support the change.', 10, false, dark);
+
+      // Phase pages
+      (roadmap.stages || []).forEach(function(stage, index){
+        phasePage(stage, index);
       });
 
+      // Exercise appendix
+      appendixPage(collectUniqueExercises(roadmap));
+
+      // Progress tracking pages
+      (roadmap.stages || []).forEach(function(stage, index){
+        trackerPage(stage, index);
+      });
+
+      // Guidance
+      guidancePage();
+
+      footer();
       doc.save('freefitfuel-roadmap.pdf');
 
       renderCurrentPhase();

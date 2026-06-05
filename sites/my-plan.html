@@ -3152,8 +3152,10 @@
             dayItems.forEach(function(item){
               wrapped('• ' + compactExerciseLine(item), 9.2, false, dark, 12, 12);
 
-              if(item && item.cue){
-                wrapped('  ' + cleanText(item.cue), 8.6, false, grey, 22, 11);
+              if(item && (item.description || item.instructions || item.howTo)){
+                wrapped('  How to perform: ' + cleanText(item.description || item.instructions || item.howTo), 8.8, false, grey, 22, 11);
+              } else if(item && item.cue){
+                wrapped('  How to perform: ' + cleanText(item.cue), 8.8, false, grey, 22, 11);
               }
 
               if(item && Array.isArray(item.alts) && item.alts.length){

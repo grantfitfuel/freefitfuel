@@ -9,7 +9,7 @@
   var MANIFEST = BASE + 'manifest.json';
 
   var state = {
-    version: '6.5-modular-builder-api-operational-opt-in',
+    version: '6.6-operational-explicit-user-choice',
     loaded: false,
     loading: null,
     manifest: null,

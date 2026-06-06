@@ -218,7 +218,6 @@
   function explicitOperationalIntent(options){
     options = options || {};
     if(options.operational === true || options.operationalIntent === true) return true;
-    if(arr(options.packs).map(lower).indexOf('operational-fitness') > -1) return true;
 
     var explicitText = lower([
       options.operationalPathway,
@@ -522,7 +521,7 @@
   }
 
   window.FFFPlanner = {
-    version: '2.1-modular-operational-opt-in',
+    version: '2.2-operational-explicit-user-choice',
     keys: {
       roadmap: KEY_ROADMAP,
       equipment: KEY_EQUIP,

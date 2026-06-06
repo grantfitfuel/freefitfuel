@@ -712,99 +712,109 @@
     }
 
   
-/* ===== FreeFitFuel My Plan v9 safe accordions ===== */
-.fff-panel-stack{
-  display:grid;
-  gap:12px;
-  margin-top:10px;
+
+/* ===== FreeFitFuel My Plan v10 controlled accordion repair ===== */
+.fff-v10-collapsible{
+  border-color:rgba(255,106,0,.18);
 }
-.fff-plan-panel{
-  border:1px solid rgba(255,255,255,.10);
-  background:#111418;
-  border-radius:14px;
-  overflow:hidden;
-}
-.fff-plan-panel.is-open{
-  border-color:rgba(255,106,0,.48);
-  box-shadow:0 0 0 1px rgba(255,106,0,.12);
-}
-.fff-panel-trigger{
+.fff-v10-trigger{
   width:100%;
-  min-height:58px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:13px 14px;
-  border:0;
-  border-left:5px solid rgba(255,106,0,.58);
-  background:
-    linear-gradient(90deg, rgba(255,106,0,.12), rgba(255,255,255,.025)),
-    #111418;
-  color:var(--ink);
-  font:inherit;
-  cursor:pointer;
   text-align:left;
+  border:1px solid rgba(255,106,0,.28);
+  border-left:5px solid var(--accent);
+  background:linear-gradient(180deg,rgba(255,106,0,.12),rgba(255,106,0,.045)),#111418;
+  color:var(--ink);
+  border-radius:14px;
+  padding:13px 14px;
+  min-height:58px;
+  cursor:pointer;
+  font:inherit;
+  margin:0 0 12px;
 }
-.fff-panel-trigger:hover,
-.fff-panel-trigger:focus-visible{
-  outline:none;
-  background:
-    linear-gradient(90deg, rgba(255,106,0,.19), rgba(255,255,255,.04)),
-    #141922;
+.fff-v10-trigger:hover,
+.fff-v10-trigger:focus-visible{
+  border-color:rgba(255,106,0,.58);
+  outline:2px solid rgba(255,106,0,.20);
+  outline-offset:2px;
 }
-.fff-panel-title{
+.fff-v10-title{
   display:block;
   font-weight:900;
-  letter-spacing:.01em;
+  font-size:1.02rem;
+  line-height:1.2;
 }
-.fff-panel-summary{
+.fff-v10-summary{
   display:block;
   color:var(--inkdim);
   font-size:.88rem;
-  margin-top:3px;
   font-weight:600;
+  margin-top:4px;
 }
-.fff-panel-openhint{
+.fff-v10-clickhint{
   display:inline-flex;
   align-items:center;
-  gap:6px;
-  color:#ffd6bd;
-  font-size:.82rem;
-  font-weight:800;
   white-space:nowrap;
+  color:#ffd6bd;
+  font-weight:800;
+  font-size:.84rem;
+  border:1px solid rgba(255,106,0,.30);
+  background:rgba(255,106,0,.10);
+  border-radius:999px;
+  padding:.25rem .55rem;
 }
-.fff-panel-chevron{
-  display:inline-block;
-  font-size:1.1rem;
-  transition:transform .18s ease;
+.fff-v10-chevron{
+  font-size:1.35rem;
+  line-height:1;
+  color:var(--accent);
+  margin-left:8px;
 }
-.fff-plan-panel.is-open .fff-panel-chevron{
-  transform:rotate(90deg);
+.fff-v10-collapsible:not(.is-open) > .fff-v10-body{display:none;}
+.fff-v10-collapsible.is-open > .fff-v10-trigger{
+  background:linear-gradient(180deg,rgba(255,106,0,.22),rgba(255,106,0,.08)),#111418;
+  border-color:rgba(255,106,0,.62);
 }
-.fff-panel-body{
-  display:none;
-  padding:14px;
-  border-top:1px solid rgba(255,255,255,.08);
+.fff-v10-collapsible.is-open > .fff-v10-trigger .fff-v10-clickhint{color:#111;background:var(--accent);border-color:#ff944a;}
+.fff-v10-collapsible.is-open > .fff-v10-trigger .fff-v10-chevron{transform:rotate(90deg);}
+.fff-v10-subwrap{display:grid;gap:10px;margin:0 0 12px;}
+.fff-v10-subpanel{
+  border:1px solid var(--stroke);
+  background:#10151d;
+  border-radius:14px;
+  padding:0;
 }
-.fff-plan-panel.is-open .fff-panel-body{
-  display:block;
-}
-.fff-injury-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+.fff-v10-subpanel:not(.is-open) > .fff-v10-subbody{display:none;}
+.fff-v10-subtrigger{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap:10px;
-  margin-top:10px;
+  border:0;
+  border-left:4px solid rgba(255,106,0,.55);
+  background:rgba(255,255,255,.035);
+  color:var(--ink);
+  border-radius:14px;
+  padding:12px;
+  cursor:pointer;
+  text-align:left;
+  font:inherit;
 }
-@media (max-width:860px){
-  .fff-injury-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:560px){
-  .fff-injury-grid{grid-template-columns:1fr}
-  .fff-panel-trigger{align-items:flex-start}
-  .fff-panel-openhint{white-space:normal;text-align:right}
-}
-.fff-injury-pill{
+.fff-v10-subtrigger:hover,
+.fff-v10-subtrigger:focus-visible{background:rgba(255,106,0,.075);outline:2px solid rgba(255,106,0,.16);outline-offset:2px;}
+.fff-v10-subtitle{font-weight:850;display:block;}
+.fff-v10-subsummary{display:block;color:var(--inkdim);font-size:.86rem;margin-top:3px;}
+.fff-v10-subchev{color:var(--accent);font-size:1.2rem;}
+.fff-v10-subpanel.is-open > .fff-v10-subtrigger{background:rgba(255,106,0,.12);}
+.fff-v10-subpanel.is-open > .fff-v10-subtrigger .fff-v10-subchev{transform:rotate(90deg);}
+.fff-v10-subbody{padding:12px;}
+.fff-v10-injury-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px;}
+@media (max-width:860px){.fff-v10-injury-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:560px){.fff-v10-injury-grid{grid-template-columns:1fr}.fff-v10-clickhint{display:none;}}
+.fff-v10-check{
   display:flex;
   align-items:flex-start;
   gap:.55rem;
@@ -813,28 +823,12 @@
   border-radius:12px;
   padding:.7rem .8rem;
   font-weight:700;
+  min-height:46px;
 }
-.fff-injury-pill input{
-  accent-color:var(--accent);
-  transform:scale(1.08);
-  margin-top:.1rem;
-}
-.fff-injury-pill span small{
-  display:block;
-  color:var(--inkdim);
-  font-weight:600;
-  margin-top:2px;
-  line-height:1.25;
-}
-.fff-action-card{
-  border:1px solid rgba(255,106,0,.25);
-  background:rgba(255,106,0,.07);
-  border-radius:14px;
-  padding:12px;
-  margin-top:12px;
-}
+.fff-v10-check input{accent-color:var(--accent);transform:scale(1.08);margin-top:2px;}
+.fff-v10-save-line{margin-top:10px;color:var(--inkdim);font-size:.9rem;}
 
-  </style>
+</style>
 <!-- FFF two-builder storage fix: personalised and build-your-week slots separated v2 -->
 </head>
 <body>
@@ -1451,18 +1445,7 @@
 
       <div class="setup-shell">
         <div class="card">
-          
-          <div class="fff-panel-stack" id="myPlanSetupPanels">
-            <div class="fff-plan-panel is-open" data-fff-setup-panel="profile">
-              <button class="fff-panel-trigger" type="button" aria-expanded="true" aria-controls="fffProfilePanelBody">
-                <span>
-                  <span class="fff-panel-title">Profile, goal & body setup</span>
-                  <span class="fff-panel-summary">Goal, body details, training status and roadmap pace.</span>
-                </span>
-                <span class="fff-panel-openhint"><span class="fff-panel-chevron">▶</span><span>Tap to open</span></span>
-              </button>
-              <div class="fff-panel-body" id="fffProfilePanelBody">
-<div class="toolbar" aria-label="Goal selector">
+          <div class="toolbar" aria-label="Goal selector">
             <div class="seg" role="tablist" aria-label="Goal">
               <button type="button" class="goal-chip" aria-pressed="false" data-goal="Maintain">Maintain</button>
               <button type="button" class="goal-chip" aria-pressed="false" data-goal="Cut">Cut</button>
@@ -1550,20 +1533,7 @@
           </p>
 
 
-          
-              </div>
-            </div>
-
-            <div class="fff-plan-panel" data-fff-setup-panel="equipment">
-              <button class="fff-panel-trigger" type="button" aria-expanded="false" aria-controls="fffEquipmentPanelBody">
-                <span>
-                  <span class="fff-panel-title">Equipment & training environment</span>
-                  <span class="fff-panel-summary">Home, gym, dumbbells, bands, rings, bench and available tools.</span>
-                </span>
-                <span class="fff-panel-openhint"><span class="fff-panel-chevron">▶</span><span>Tap to open</span></span>
-              </button>
-              <div class="fff-panel-body" id="fffEquipmentPanelBody">
-<div>
+          <div class="card" style="margin-top:14px">
             <h3>Equipment & training environment</h3>
             <p class="meta">Your plan should only use what you actually have. These choices are now shared with Workouts so both pages stay in sync.</p>
 
@@ -1590,57 +1560,9 @@
             </div>
 
             <p class="meta equip-note" id="equipmentSummary">Current profile: Bodyweight, Dumbbells, Bands • Environment: Home</p>
-          
-              </div>
-            </div>
-
-          <div class="fff-plan-panel" data-fff-setup-panel="injuries">
-            <button class="fff-panel-trigger" type="button" aria-expanded="false" aria-controls="fffInjuryPanelBody">
-              <span>
-                <span class="fff-panel-title">Injuries & limitations</span>
-                <span class="fff-panel-summary" id="myPlanInjurySummary">No injuries selected yet.</span>
-              </span>
-              <span class="fff-panel-openhint"><span class="fff-panel-chevron">▶</span><span>Tap to open</span></span>
-            </button>
-            <div class="fff-panel-body" id="fffInjuryPanelBody">
-              <p class="meta">Select the areas that should influence exercise choice, system recommendations and the personalised plan. This does not diagnose anything and does not replace professional medical advice.</p>
-
-              <h3>Upper body</h3>
-              <div class="fff-injury-grid">
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="shoulder"> <span>Shoulder<small>Pressing, overhead work, impingement-type issues</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="elbow"> <span>Elbow<small>Tennis elbow, golfer’s elbow, tendon irritation</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="wrist"> <span>Wrist / hand<small>Loaded hands, gripping, floor-based work</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="neck"> <span>Neck<small>Stiffness, posture, upper-trap sensitivity</small></span></label>
-              </div>
-
-              <h3 style="margin-top:14px">Lower body</h3>
-              <div class="fff-injury-grid">
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="hip"> <span>Hip<small>Deep hip, groin, glute or sitting-related pain</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="knee"> <span>Knee<small>Squats, stairs, patella, step-down issues</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="ankle"> <span>Ankle<small>Stability, sprains, balance or landing control</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="foot"> <span>Foot / plantar fascia<small>Heel pain, arch pain, morning foot pain</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="achilles"> <span>Achilles / calf<small>Tendon load, calf tightness, cramp or return-to-run</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="shin"> <span>Shin / lower leg<small>Shin splints, impact tolerance, running build-up</small></span></label>
-              </div>
-
-              <h3 style="margin-top:14px">Spine & recovery</h3>
-              <div class="fff-injury-grid">
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="lower-back"> <span>Lower back<small>Hinging, lifting, prolonged sitting or flare-ups</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="upper-back"> <span>Upper back<small>Thoracic stiffness, posture, deskbound tightness</small></span></label>
-                <label class="fff-injury-pill"><input type="checkbox" data-myplan-injury="fatigue"> <span>High fatigue / poor recovery<small>Keep intensity and progression more conservative</small></span></label>
-              </div>
-
-              <label class="field" style="margin-top:14px">Extra limitation notes
-                <textarea id="myPlanInjuryNotes" placeholder="Example: inside hip pain after sitting, knee pain on stairs, calf cramp at night, shoulder pain overhead."></textarea>
-              </label>
-            </div>
           </div>
 
-          </div>
-
-<div class="fff-action-card">
-            <div class="panel-kicker">Plan actions</div>
-            <div class="tag-row" style="margin-top:8px">
+          <div class="tag-row" style="margin-top:12px">
             <button class="btn btn-primary" id="btnGenerateRoadmap" type="button">Generate my roadmap</button>
             <button class="btn" id="btnGenerateStaged" type="button">Generate full staged roadmap</button>
             <button class="btn" id="generatePDF" type="button">Download roadmap PDF</button>
@@ -1648,7 +1570,6 @@
 
           <div class="meta" style="margin-top:10px">
             “Generate my roadmap” gives the leanest correct path for your inputs. “Generate full staged roadmap” gives the fullest relevant path for your inputs.
-          </div>
           </div>
         </div>
 
@@ -1963,120 +1884,6 @@
       updateEquipmentSummary();
       return profile;
     }
-
-    var INJURY_PROFILE_KEY = 'fff.myplan.injuries.v2';
-
-    function myPlanInjuryLabels(){
-      return {
-        shoulder:'Shoulder',
-        elbow:'Elbow',
-        wrist:'Wrist / hand',
-        neck:'Neck',
-        hip:'Hip',
-        knee:'Knee',
-        ankle:'Ankle',
-        foot:'Foot / plantar fascia',
-        achilles:'Achilles / calf',
-        shin:'Shin / lower leg',
-        'lower-back':'Lower back',
-        'upper-back':'Upper back',
-        fatigue:'High fatigue / poor recovery'
-      };
-    }
-
-    function loadMyPlanInjuryProfile(){
-      try{
-        var raw = localStorage.getItem(INJURY_PROFILE_KEY);
-        var parsed = raw ? JSON.parse(raw) : {};
-        return parsed && typeof parsed === 'object' ? parsed : {};
-      }catch(err){
-        return {};
-      }
-    }
-
-    function saveMyPlanInjuryProfile(profile){
-      try{
-        localStorage.setItem(INJURY_PROFILE_KEY, JSON.stringify(profile || {}));
-      }catch(err){}
-    }
-
-    function loadMyPlanInjuryTags(){
-      var profile = loadMyPlanInjuryProfile();
-      var labels = myPlanInjuryLabels();
-      var tags = [];
-
-      Object.keys(labels).forEach(function(key){
-        if(profile[key]) tags.push(key + ' ' + labels[key]);
-      });
-
-      if(profile.notes) tags.push(profile.notes);
-      return tags;
-    }
-
-    function getMyPlanInjuryProfileFromUI(){
-      var profile = {};
-      document.querySelectorAll('[data-myplan-injury]').forEach(function(input){
-        profile[input.getAttribute('data-myplan-injury')] = !!input.checked;
-      });
-      var notes = document.getElementById('myPlanInjuryNotes');
-      profile.notes = notes ? String(notes.value || '').trim() : '';
-      profile.updatedAt = new Date().toISOString();
-      return profile;
-    }
-
-    function applyMyPlanInjuryProfileToUI(){
-      var profile = loadMyPlanInjuryProfile();
-      document.querySelectorAll('[data-myplan-injury]').forEach(function(input){
-        input.checked = !!profile[input.getAttribute('data-myplan-injury')];
-      });
-      var notes = document.getElementById('myPlanInjuryNotes');
-      if(notes) notes.value = profile.notes || '';
-      updateMyPlanInjurySummary();
-    }
-
-    function updateMyPlanInjurySummary(){
-      var el = document.getElementById('myPlanInjurySummary');
-      if(!el) return;
-      var profile = loadMyPlanInjuryProfile();
-      var labels = myPlanInjuryLabels();
-      var chosen = [];
-
-      Object.keys(labels).forEach(function(key){
-        if(profile[key]) chosen.push(labels[key]);
-      });
-
-      if(!chosen.length && !profile.notes){
-        el.textContent = 'No injuries selected yet.';
-        return;
-      }
-
-      var text = chosen.length ? chosen.join(', ') : 'Notes only';
-      if(chosen.length > 4) text = chosen.slice(0,4).join(', ') + ' +' + (chosen.length - 4) + ' more';
-      el.textContent = chosen.length + ' selected: ' + text;
-    }
-
-    function saveMyPlanInjuriesFromUI(){
-      saveMyPlanInjuryProfile(getMyPlanInjuryProfileFromUI());
-      updateMyPlanInjurySummary();
-      try{
-        if(typeof renderAdaptiveSystems === 'function') renderAdaptiveSystems();
-        if(typeof renderRecommendedSystems === 'function') renderRecommendedSystems();
-        if(typeof renderMyPlanOrchestrator === 'function') renderMyPlanOrchestrator();
-      }catch(err){}
-    }
-
-    function bindMyPlanInjuryProfile(){
-      applyMyPlanInjuryProfileToUI();
-      document.querySelectorAll('[data-myplan-injury]').forEach(function(input){
-        input.addEventListener('change', saveMyPlanInjuriesFromUI);
-      });
-      var notes = document.getElementById('myPlanInjuryNotes');
-      if(notes){
-        notes.addEventListener('input', saveMyPlanInjuriesFromUI);
-        notes.addEventListener('change', saveMyPlanInjuriesFromUI);
-      }
-    }
-
     var CHECKIN_KEY = 'fff.weekly.checkins.v1';
     var WEIGHT_LOG_KEY = 'fff.weight.log.v1';
     var TARGET_WEIGHT_KEY = 'fff.target.weight.v1';
@@ -2703,7 +2510,7 @@
         trainingStyle: style,
         difficulty: trainingStatus,
         equipment: currentEquipmentArray(),
-        injuries: loadMyPlanInjuryTags()
+        injuries: (typeof window.getMyPlanInjuryArray === 'function' ? window.getMyPlanInjuryArray() : [])
       };
     }
 
@@ -3711,7 +3518,11 @@
         notes: notes,
         days: Array.isArray(stage.split) ? stage.split.length : 7,
         equip: equipProfile || {},
-        injuries: loadMyPlanInjuryProfile(),
+        injuries: (typeof window.getMyPlanInjuryProfile === 'function') ? window.getMyPlanInjuryProfile() : (function(){
+          try{
+            return JSON.parse(localStorage.getItem('fff.myplan.injuries.v2') || '{}');
+          }catch(err){ return {}; }
+        })(),
         varietySalt: 'personalised-' + (stageIndex || 0) + '-' + Date.now() + '-' + Math.random()
       };
     }
@@ -6696,7 +6507,6 @@ function buildLibraryPayload(style, sessions, equip){
       if(checkinNotes && checkinNotes.value) notes.push(checkinNotes.value);
       var latest = getLatestCheckin();
       if(latest && latest.notes) notes.push(latest.notes);
-      try{ notes = notes.concat(loadMyPlanInjuryTags()); }catch(err){}
       return lower(notes.join(' '));
     }
 
@@ -7245,7 +7055,6 @@ function buildLibraryPayload(style, sessions, equip){
         latest ? JSON.stringify(latest) : '',
         selectedGoal,
         value('checkinNotes'),
-        (typeof loadMyPlanInjuryTags === 'function' ? loadMyPlanInjuryTags().join(' ') : ''),
         value('trainingStatus'),
         value('trainingEnvironment')
       ].join(' ').toLowerCase();
@@ -7418,57 +7227,260 @@ function buildLibraryPayload(style, sessions, equip){
   </script>
 
 
-  <script>
-  /*
-    FreeFitFuel My Plan v9 safe UI pass.
-    This only controls visible setup panels and the new injury profile UI.
-    It does not write to fff.roadmap.plan.v1.
-  */
-  (function(){
-    function ready(fn){
-      if(document.readyState === 'loading'){
-        document.addEventListener('DOMContentLoaded', fn, { once:true });
-      }else{
-        fn();
-      }
-    }
+<script>
+/* FreeFitFuel My Plan v10 controlled accordion repair.
+   This script does not write to, remove, or rename fff.roadmap.plan.v1. */
+(function(){
+  var INJURY_KEY = 'fff.myplan.injuries.v2';
+  var ROADMAP_KEY_SAFE = 'fff.roadmap.plan.v1';
 
-    function initMyPlanSetupPanels(){
-      var root = document.getElementById('myPlanSetupPanels');
-      if(!root) return;
+  var INJURY_GROUPS = [
+    { label:'Upper body', items:[
+      ['neck','Neck'], ['shoulder','Shoulder'], ['elbow','Elbow / biceps'], ['wrist','Wrist / hand']
+    ]},
+    { label:'Spine & trunk', items:[
+      ['upperBack','Upper back'], ['lowerBack','Lower back'], ['coreControl','Core control / bracing']
+    ]},
+    { label:'Lower body', items:[
+      ['hip','Hip'], ['knee','Knee'], ['ankle','Ankle'], ['achilles','Achilles'], ['foot','Foot / plantar fascia'], ['cramp','Cramp / calves']
+    ]},
+    { label:'Recovery limits', items:[
+      ['poorSleep','Poor sleep'], ['highStress','High stress'], ['lowEnergy','Low energy'], ['returningAfterBreak','Returning after a break']
+    ]}
+  ];
 
-      var panels = Array.prototype.slice.call(root.querySelectorAll('.fff-plan-panel[data-fff-setup-panel]'));
+  function ready(fn){
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, { once:true });
+    else fn();
+  }
+  function esc(v){
+    return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
+  }
+  function textOf(el){ return el ? String(el.textContent || '').replace(/\s+/g,' ').trim() : ''; }
+  function qsa(root, sel){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
-      function openPanel(panel){
-        panels.forEach(function(p){
-          var open = p === panel;
-          p.classList.toggle('is-open', open);
-          var btn = p.querySelector('.fff-panel-trigger');
-          if(btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-        try{
-          localStorage.setItem('fff.myplan.setup.openPanel.v1', panel.getAttribute('data-fff-setup-panel') || 'profile');
-        }catch(err){}
-      }
+  function readInjuryProfile(){
+    try{
+      var raw = localStorage.getItem(INJURY_KEY);
+      var data = raw ? JSON.parse(raw) : {};
+      return data && typeof data === 'object' ? data : {};
+    }catch(err){ return {}; }
+  }
+  function saveInjuryProfile(data){
+    try{ localStorage.setItem(INJURY_KEY, JSON.stringify(data || {})); }catch(err){}
+  }
+  window.getMyPlanInjuryProfile = readInjuryProfile;
+  window.getMyPlanInjuryArray = function(){
+    var profile = readInjuryProfile();
+    return Object.keys(profile).filter(function(key){ return !!profile[key]; });
+  };
 
-      panels.forEach(function(panel){
-        var btn = panel.querySelector('.fff-panel-trigger');
-        if(!btn) return;
-        btn.addEventListener('click', function(){ openPanel(panel); });
-      });
-
-      var wanted = 'profile';
-      try{ wanted = localStorage.getItem('fff.myplan.setup.openPanel.v1') || 'profile'; }catch(err){}
-      var startPanel = panels.find(function(p){ return p.getAttribute('data-fff-setup-panel') === wanted; }) || panels[0];
-      if(startPanel) openPanel(startPanel);
-    }
-
-    ready(function(){
-      initMyPlanSetupPanels();
-      if(typeof bindMyPlanInjuryProfile === 'function') bindMyPlanInjuryProfile();
+  function injurySummary(){
+    var profile = readInjuryProfile();
+    var names = [];
+    INJURY_GROUPS.forEach(function(group){
+      group.items.forEach(function(item){ if(profile[item[0]]) names.push(item[1]); });
     });
-  })();
-  </script>
+    return names.length ? (names.length + ' selected: ' + names.slice(0,3).join(', ') + (names.length > 3 ? '…' : '')) : 'None selected yet';
+  }
+  function updateInjurySummaryText(){
+    qsa(document, '[data-fff-injury-summary]').forEach(function(el){ el.textContent = injurySummary(); });
+  }
+
+  function buildInjuryPanel(){
+    var profile = readInjuryProfile();
+    var html = '<p class="meta">Choose any current limitations so the roadmap, personalised plan, and system recommendations can bias towards safer options. This saves separately from the roadmap and must never overwrite it.</p>';
+    INJURY_GROUPS.forEach(function(group){
+      html += '<div class="plan-line"><strong>' + esc(group.label) + '</strong><div class="fff-v10-injury-grid">';
+      group.items.forEach(function(item){
+        var key = item[0], label = item[1];
+        html += '<label class="fff-v10-check"><input type="checkbox" data-fff-injury="' + esc(key) + '" ' + (profile[key] ? 'checked' : '') + '> <span>' + esc(label) + '</span></label>';
+      });
+      html += '</div></div>';
+    });
+    html += '<div class="fff-v10-save-line">Saved limitation profile: <strong data-fff-injury-summary>' + esc(injurySummary()) + '</strong></div>';
+    return html;
+  }
+
+  function makeTopAccordion(sec, key, title, summary){
+    if(!sec || sec.dataset.fffV10Ready === '1') return;
+    sec.dataset.fffV10Ready = '1';
+    sec.dataset.fffPanel = key;
+    sec.classList.add('fff-v10-collapsible');
+
+    var body = document.createElement('div');
+    body.className = 'fff-v10-body';
+    while(sec.firstChild){ body.appendChild(sec.firstChild); }
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'fff-v10-trigger';
+    btn.setAttribute('aria-expanded','false');
+    btn.innerHTML = '<span><span class="fff-v10-title">' + esc(title) + '</span><span class="fff-v10-summary">' + esc(summary || 'Tap to open this section.') + '</span></span><span><span class="fff-v10-clickhint">Tap to open</span><span class="fff-v10-chevron">▶</span></span>';
+
+    sec.appendChild(btn);
+    sec.appendChild(body);
+
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var willOpen = !sec.classList.contains('is-open');
+      qsa(document.getElementById('modePlan') || document, '.fff-v10-collapsible').forEach(function(other){
+        other.classList.remove('is-open');
+        var ob = other.querySelector(':scope > .fff-v10-trigger');
+        if(ob) ob.setAttribute('aria-expanded','false');
+      });
+      if(willOpen){
+        sec.classList.add('is-open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+  }
+
+  function findPlanSectionByHeading(label){
+    var mode = document.getElementById('modePlan') || document;
+    var target = String(label || '').toLowerCase();
+    var sections = qsa(mode, 'section.section');
+    for(var i=0;i<sections.length;i++){
+      var h = sections[i].querySelector('h2');
+      if(h && textOf(h).toLowerCase() === target) return sections[i];
+    }
+    return null;
+  }
+
+  function makeSubPanel(title, summary, nodes, extraClass){
+    var panel = document.createElement('div');
+    panel.className = 'fff-v10-subpanel ' + (extraClass || '');
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'fff-v10-subtrigger';
+    btn.setAttribute('aria-expanded','false');
+    btn.innerHTML = '<span><span class="fff-v10-subtitle">' + esc(title) + '</span><span class="fff-v10-subsummary">' + esc(summary || 'Tap to open.') + '</span></span><span class="fff-v10-subchev">▶</span>';
+    var body = document.createElement('div');
+    body.className = 'fff-v10-subbody';
+    (nodes || []).forEach(function(node){ if(node) body.appendChild(node); });
+    panel.appendChild(btn);
+    panel.appendChild(body);
+
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var willOpen = !panel.classList.contains('is-open');
+      var parent = panel.parentNode;
+      qsa(parent, ':scope > .fff-v10-subpanel').forEach(function(other){
+        other.classList.remove('is-open');
+        var ob = other.querySelector(':scope > .fff-v10-subtrigger');
+        if(ob) ob.setAttribute('aria-expanded','false');
+      });
+      if(willOpen){
+        panel.classList.add('is-open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+    return panel;
+  }
+
+  function rebuildGoalSetupSubAccordions(){
+    var sec = findPlanSectionByHeading('Goal & body setup');
+    if(!sec || sec.dataset.fffV10SubReady === '1') return;
+    sec.dataset.fffV10SubReady = '1';
+
+    var setup = sec.querySelector('.setup-shell');
+    if(!setup) return;
+    var cards = qsa(setup, ':scope > .card');
+    var mainCard = cards[0];
+    if(!mainCard) return;
+
+    var subwrap = document.createElement('div');
+    subwrap.className = 'fff-v10-subwrap';
+
+    var profileNodes = [];
+    var toolbar = mainCard.querySelector(':scope > .toolbar');
+    var formGrid = mainCard.querySelector(':scope > .form-grid');
+    if(toolbar) profileNodes.push(toolbar);
+    if(formGrid) profileNodes.push(formGrid);
+    var firstMeta = null;
+    qsa(mainCard, ':scope > p.meta').some(function(p){
+      if(textOf(p).indexOf('Conservative') > -1){ firstMeta = p; return true; }
+      return false;
+    });
+    if(firstMeta) profileNodes.push(firstMeta);
+
+    var equipmentCard = null;
+    qsa(mainCard, ':scope > .card').some(function(card){
+      var h = card.querySelector('h3');
+      if(h && textOf(h).toLowerCase().indexOf('equipment') > -1){ equipmentCard = card; return true; }
+      return false;
+    });
+
+    var injuryCard = document.createElement('div');
+    injuryCard.className = 'card';
+    injuryCard.innerHTML = buildInjuryPanel();
+
+    if(profileNodes.length){
+      subwrap.appendChild(makeSubPanel('Profile, goal & body setup', 'Goal, body measurements, body-fat estimate, training status and pace.', profileNodes));
+    }
+    if(equipmentCard){
+      subwrap.appendChild(makeSubPanel('Equipment & training environment', 'Home, gym, dumbbells, bands, rings, bench and other kit.', [equipmentCard]));
+    }
+    subwrap.appendChild(makeSubPanel('Injuries & limitations', injurySummary(), [injuryCard], 'fff-v10-injury-panel'));
+
+    mainCard.insertBefore(subwrap, mainCard.firstChild);
+
+    qsa(mainCard, '[data-fff-injury]').forEach(function(box){
+      box.addEventListener('change', function(){
+        var profile = readInjuryProfile();
+        profile[box.getAttribute('data-fff-injury')] = !!box.checked;
+        saveInjuryProfile(profile);
+        updateInjurySummaryText();
+        var injuryPanel = mainCard.querySelector('.fff-v10-injury-panel .fff-v10-subsummary');
+        if(injuryPanel) injuryPanel.textContent = injurySummary();
+        try{ if(typeof updateMacroTargets === 'function') updateMacroTargets(); }catch(err){}
+        try{ if(typeof renderAdaptiveSystems === 'function') renderAdaptiveSystems(); }catch(err){}
+        try{ if(typeof renderRecommendedSystems === 'function') renderRecommendedSystems(); }catch(err){}
+      });
+    });
+  }
+
+  function initTopAccordions(){
+    makeTopAccordion(findPlanSectionByHeading('Goal & body setup'), 'goal-body-setup', 'Goal & body setup', 'Profile, equipment, limitations and roadmap controls. Closed by default.');
+    makeTopAccordion(findPlanSectionByHeading('Physiology modifiers'), 'physiology', 'Physiology modifiers', 'Sleep, blood-sugar, hormone and hydration modifiers.');
+    makeTopAccordion(findPlanSectionByHeading('Your personalised plan'), 'personalised-plan', 'Build / personalised plan', 'Generated roadmap, exercise days and logging hand-off.');
+    makeTopAccordion(findPlanSectionByHeading('Backup / Reset'), 'backup-reset', 'Backup / Reset', 'Export, import and reset tools.');
+    makeTopAccordion(findPlanSectionByHeading('Injury Recovery & Physio'), 'injury-recovery-physio', 'Injury Recovery & Physio', 'Detailed recovery signposting and link to Physio & Recovery.');
+
+    // Deliberately leave every panel closed on page load. This prevents Goal & body setup opening by default.
+    qsa(document, '.fff-v10-collapsible').forEach(function(sec){
+      sec.classList.remove('is-open');
+      var btn = sec.querySelector(':scope > .fff-v10-trigger');
+      if(btn) btn.setAttribute('aria-expanded','false');
+    });
+  }
+
+  function protectRoadmapRenderAfterRefresh(){
+    // Do not alter localStorage. Only re-render from fff.roadmap.plan.v1 if it already exists.
+    try{
+      if(localStorage.getItem(ROADMAP_KEY_SAFE)){
+        if(typeof renderCurrentPhase === 'function') renderCurrentPhase();
+        if(typeof renderPlan === 'function') renderPlan();
+        if(typeof refreshAllCoachViews === 'function') refreshAllCoachViews();
+        if(typeof wireWorkoutPlanLogsToEngine === 'function') wireWorkoutPlanLogsToEngine();
+      }
+    }catch(err){}
+  }
+
+  ready(function(){
+    // Let the page's own initialisation attach its existing listeners first.
+    setTimeout(function(){
+      rebuildGoalSetupSubAccordions();
+      initTopAccordions();
+      updateInjurySummaryText();
+      protectRoadmapRenderAfterRefresh();
+    }, 80);
+    setTimeout(protectRoadmapRenderAfterRefresh, 500);
+    setTimeout(protectRoadmapRenderAfterRefresh, 1200);
+  });
+})();
+</script>
 
 </body>
 </html>

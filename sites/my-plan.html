@@ -6375,7 +6375,7 @@ function buildLibraryPayload(style, sessions, equip){
           '<button type="button" id="mpx-mode-guided" class="btn" style="background:var(--glass);color:var(--ink);border:1px solid var(--stroke);">Guided Build</button>' +
         '</div>' +
         '<div class="grid" style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">' +
-          '<label>Training type<select id="mpx-style" class="input"><option value="mixed">Mixed</option><option value="balanced">Balanced</option><option value="calisthenics">Calisthenics</option><option value="circuits">Circuits</option><option value="reformer">Reformer</option></select></label>' +
+          '<label>Training type<select id="mpx-style" class="input"><option value="mixed">Mixed</option><option value="balanced">Balanced</option><option value="calisthenics">Calisthenics</option><option value="circuits">Circuits</option><option value="reformer">Reformer</option><option value="operational">Operational Fitness</option></select></label>' +
           '<label>Days this week<select id="mpx-days" class="input"><option value="3">3</option><option value="4" selected>4</option><option value="5">5</option><option value="6">6</option></select></label>' +
         '</div>' +
         '<div id="mpx-guided" style="display:none;margin-top:10px;">' +
@@ -6434,6 +6434,30 @@ function buildLibraryPayload(style, sessions, equip){
         }
       }
 
+      function isOperationalWeekPayload(payload){
+        try{
+          var sessions = payload && Array.isArray(payload.sessions) ? payload.sessions : [];
+          return sessions.some(function(session){
+            var title = String(session && session.title || '').toLowerCase();
+            return title.indexOf('operational strength') > -1 ||
+                   title.indexOf('operational conditioning') > -1 ||
+                   title.indexOf('lower-body capacity') > -1;
+          });
+        }catch(err){ return false; }
+      }
+
+      function clearStaleOperationalWeekPlan(){
+        try{ localStorage.removeItem(CURRENT_PLAN_KEY); }catch(err){}
+        try{ localStorage.removeItem('fff.buildMyWeek.v2'); }catch(err){}
+        try{ localStorage.removeItem('fff.libraryPayload.build-your-week'); }catch(err){}
+        try{
+          if(localStorage.getItem('fff.libraryPayload.activeBuilder') === 'build-your-week'){
+            localStorage.removeItem('fff.libraryPayload');
+            localStorage.removeItem('fff.libraryPayload.activeBuilder');
+          }
+        }catch(err){}
+      }
+
       function restorePersistedPlan(){
         try{
           var raw = localStorage.getItem(CURRENT_PLAN_KEY);
@@ -6441,6 +6465,13 @@ function buildLibraryPayload(style, sessions, equip){
 
           var saved = JSON.parse(raw);
           if(!saved || !saved.payload || !saved.payload.sessions || !saved.payload.sessions.length) return false;
+
+          var savedStyle = String(saved.style || 'mixed').toLowerCase();
+          if(isOperationalWeekPayload(saved.payload) && savedStyle !== 'operational'){
+            clearStaleOperationalWeekPlan();
+            status.textContent = 'Cleared an old Operational Fitness weekly build. Choose Operational Fitness explicitly if you want that pathway, then build again.';
+            return false;
+          }
 
           if(saved.style) styleEl.value = saved.style;
           if(saved.days) daysEl.value = String(saved.days);
@@ -6464,6 +6495,8 @@ function buildLibraryPayload(style, sessions, equip){
         return {
           mode: 'week',
           style: style,
+          operationalIntent: String(style || '').toLowerCase() === 'operational',
+          goalCategory: String(style || '').toLowerCase() === 'operational' ? 'operational-fitness' : '',
           phase: currentStage ? (currentStage.id || currentStage.name || '') : '',
           goal: [GOAL || '', currentStage ? currentStage.name : '', currentStage ? currentStage.blurb : ''].join(' '),
           focus: currentStage ? currentStage.blurb : '',
@@ -6485,6 +6518,12 @@ function buildLibraryPayload(style, sessions, equip){
           var days = parseInt(daysEl.value || '4', 10);
 
           function finishWithSessions(sessions, sourceLabel){
+            if(String(style || '').toLowerCase() !== 'operational' && isOperationalWeekPayload({sessions:sessions})){
+              clearStaleOperationalWeekPlan();
+              status.textContent = 'Operational Fitness was blocked because it was not selected. Rebuilding a balanced week instead.';
+              sessions = buildAutoPlan(style, days);
+              sourceLabel = 'balanced fallback after operational block';
+            }
             renderCards(out, sessions);
             var equip = loadEquipment();
             var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });

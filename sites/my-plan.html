@@ -1777,6 +1777,7 @@
   <script src="/js/fff-systems.js"></script>
   <script src="js/engine/fff-state.js?v=1"></script>
   <script src="js/engine/fff-exercise-db.js?v=43"></script>
+  <script src="js/engine/fff-planner.js?v=1"></script>
   <script src="js/engine/fff-recovery.js?v=1"></script>
   <script src="js/engine/fff-mind.js?v=1"></script>
   <script src="js/engine/fff-roadmap.js?v=1"></script>
@@ -2540,7 +2541,9 @@
         trainingStyle: style,
         difficulty: trainingStatus,
         equipment: currentEquipmentArray(),
-        injuries: injuryCtx.injuries || [],
+        injuries: injuryCtx.hardInjuries || injuryCtx.injuries || [],
+        allInjuryTokens: injuryCtx.injuries || [],
+        injuryDetails: injuryCtx.activeItems || [],
         painLevel: injuryCtx.painLevel || 0,
         maxPain: injuryCtx.painLevel || 0,
         recovery: injuryCtx.recovery || ''
@@ -5831,16 +5834,34 @@
     }
 
     function loadLibrary(){
+      var injuryCtx = (typeof getMyPlanInjuryContext === 'function') ? getMyPlanInjuryContext() : { injuries: [], hardInjuries: [] };
+      var equipmentProfile = (typeof getEquipmentProfileFromUI === 'function') ? getEquipmentProfileFromUI() : loadEquipment();
+      var equipment = [];
+      try{
+        var eq = equipmentProfile.equip || equipmentProfile || {};
+        Object.keys(eq).forEach(function(k){ if(eq[k]) equipment.push(k); });
+      }catch(err){}
+      if(equipment.indexOf('bw') === -1) equipment.push('bw');
+
       if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getMyPlanLibrary === 'function'){
-        var liveLib = window.FFFExerciseDB.getMyPlanLibrary();
-        if(liveLib && Array.isArray(liveLib.items) && liveLib.items.length){
+        var liveItems = window.FFFExerciseDB.getMyPlanLibrary({
+          equipment: equipment,
+          injuries: injuryCtx.hardInjuries || injuryCtx.injuries || []
+        });
+        if(Array.isArray(liveItems) && liveItems.length){
+          var liveLib = { version: 2, source: 'fff-exercise-db', items: liveItems };
           try{ localStorage.setItem('fff.library.cache.v1', JSON.stringify(liveLib)); }catch(err){}
           return liveLib;
+        }
+        if(liveItems && Array.isArray(liveItems.items) && liveItems.items.length){
+          try{ localStorage.setItem('fff.library.cache.v1', JSON.stringify(liveItems)); }catch(err){}
+          return liveItems;
         }
       }
 
       var lib = readJSON('fff.library.cache.v1', null);
       if(lib && Array.isArray(lib.items) && lib.items.length) return lib;
+      if(Array.isArray(lib) && lib.length) return { version:2, source:'fff-library-cache-array', items:lib };
 
       return {
         version: 1,
@@ -5959,6 +5980,23 @@
       if(item.type === 'circuit' && (opts.purposes || []).indexOf('conditioning') > -1) score += 12;
       if(item.sourcePage) score += 4;
       if(item.why) score += 3;
+
+      try{
+        var injuryCtx = (typeof getMyPlanInjuryContext === 'function') ? getMyPlanInjuryContext() : null;
+        var tokens = injuryCtx ? (injuryCtx.injuries || []).join(' ').toLowerCase() : '';
+        var caution = (item.cautionIf || []).join(' ').toLowerCase();
+        if(tokens && caution){
+          (injuryCtx.activeItems || []).forEach(function(injury){
+            var areaTokens = String(injury.area || '').toLowerCase();
+            var matched = caution.indexOf(areaTokens) > -1 || tokens.indexOf(caution) > -1;
+            if(!matched) return;
+            if(injury.severity === 'significant') score -= 30;
+            else if(injury.severity === 'moderate') score -= 18;
+            else score -= 8;
+            if(injury.status === 'worsening') score -= 12;
+          });
+        }
+      }catch(err){}
 
       score -= Math.min(20, (sourceUse[source] || 0) * 7);
       score += Math.random() * 9;
@@ -6419,10 +6457,54 @@ function buildLibraryPayload(style, sessions, equip){
       btnAuto.addEventListener('click', function(){ setMode('auto'); });
       btnGuided.addEventListener('click', function(){ setMode('guided'); });
 
+      function buildWeekOptions(style, days){
+        var roadmap = null;
+        try{ roadmap = JSON.parse(localStorage.getItem(ROADMAP_KEY) || 'null'); }catch(err){}
+        var currentStage = roadmap && roadmap.stages && roadmap.stages[0] ? roadmap.stages[0] : null;
+        return {
+          mode: 'week',
+          style: style,
+          phase: currentStage ? (currentStage.id || currentStage.name || '') : '',
+          goal: [GOAL || '', currentStage ? currentStage.name : '', currentStage ? currentStage.blurb : ''].join(' '),
+          focus: currentStage ? currentStage.blurb : '',
+          notes: currentStage ? currentStage.blurb : '',
+          days: days,
+          equip: (typeof getEquipmentProfileFromUI === 'function') ? getEquipmentProfileFromUI() : loadEquipment(),
+          injuries: (function(){ try{ return JSON.parse(localStorage.getItem('fff.myplan.injuries.v2') || '{}'); }catch(err){ return {}; } })(),
+          recovery: (function(){
+            var r = document.querySelector('input[name="recoveryScore"]:checked');
+            return r ? Number(r.value || 3) : 3;
+          })(),
+          varietySalt: 'build-week-' + Date.now() + '-' + Math.random()
+        };
+      }
+
       build.addEventListener('click', function(){
         try{
           var style = styleEl.value;
           var days = parseInt(daysEl.value || '4', 10);
+
+          function finishWithSessions(sessions, sourceLabel){
+            renderCards(out, sessions);
+            var equip = loadEquipment();
+            var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });
+            status.textContent = 'Built ' + sessions.length + ' sessions using ' + style + ' mode from ' + sourceLabel + ' and your saved equipment: ' + (eqList.length ? eqList.join(', ') : 'none found');
+          }
+
+          if(currentMode === 'auto' && window.FFFPlanner && typeof window.FFFPlanner.readyBuildPayload === 'function'){
+            status.textContent = 'Building this week from the shared injury-aware planner engine…';
+            window.FFFPlanner.readyBuildPayload(buildWeekOptions(style, days))
+              .then(function(payload){
+                if(payload && Array.isArray(payload.sessions) && payload.sessions.length){
+                  finishWithSessions(payload.sessions, 'FFFPlanner');
+                }else{
+                  finishWithSessions(buildAutoPlan(style, days), 'fallback builder');
+                }
+              })
+              .catch(function(){ finishWithSessions(buildAutoPlan(style, days), 'fallback builder'); });
+            return;
+          }
+
           var sessions;
           if(currentMode === 'guided'){
             sessions = buildGuidedPlan(style, days, {
@@ -6438,10 +6520,7 @@ function buildLibraryPayload(style, sessions, equip){
             sessions = buildAutoPlan(style, days);
           }
 
-          renderCards(out, sessions);
-          var equip = loadEquipment();
-          var eqList = Object.keys(equip).filter(function(k){ return equip[k]; });
-          status.textContent = 'Built ' + sessions.length + ' sessions using ' + style + ' mode and your saved equipment: ' + (eqList.length ? eqList.join(', ') : 'none found');
+          finishWithSessions(sessions, currentMode === 'guided' ? 'guided builder' : 'fallback builder');
         }catch(err){
           status.textContent = 'Build failed: ' + (err && err.message ? err.message : 'unknown error');
         }
@@ -6460,7 +6539,6 @@ function buildLibraryPayload(style, sessions, equip){
     });
   })();
   </script>
-<script src="js/engine/fff-exercise-db.js?v=42"></script>
 <script src="js/engine/fff-engine-bridge.js?v=1"></script>
 <script src="js/engine/fff-my-plan-persistence.js?v=1"></script>
 
@@ -7402,6 +7480,16 @@ function buildLibraryPayload(style, sessions, equip){
       activeItems: active,
       selected: selected,
       injuries: injuries,
+      hardInjuries: active.filter(function(item){
+        return item.severity === 'moderate' || item.severity === 'significant' || item.status === 'worsening' ||
+          (item.symptoms && (item.symptoms.sharp_pain || item.symptoms.locking_or_catching || item.symptoms.numbness_or_tingling));
+      }).reduce(function(list,item){
+        (INJURY_ENGINE_MAP[item.area] || []).forEach(function(rule){ if(list.indexOf(rule) === -1) list.push(rule); });
+        Object.keys(item.symptoms || {}).forEach(function(symptom){
+          if(item.symptoms[symptom]) (INJURY_ENGINE_MAP[symptom] || []).forEach(function(rule){ if(list.indexOf(rule) === -1) list.push(rule); });
+        });
+        return list;
+      }, []),
       painLevel: painLevel,
       maxPain: painLevel,
       recovery: recovery,

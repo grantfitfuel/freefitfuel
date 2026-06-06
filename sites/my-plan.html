@@ -858,6 +858,21 @@
 @media (max-width:680px){.fff-injury-minirow{grid-template-columns:1fr}}
 
 
+
+/* FFF v14 per-injury severity repair */
+.fff-injury-table{display:grid;gap:10px;margin-top:10px}
+.fff-injury-row{border:1px solid var(--stroke);border-radius:14px;background:rgba(255,255,255,.035);padding:10px}
+.fff-injury-row-head{display:grid;grid-template-columns:minmax(145px,1.1fr) minmax(130px,.8fr) minmax(130px,.8fr);gap:10px;align-items:end}
+.fff-injury-area-toggle{display:flex;gap:.55rem;align-items:center;font-weight:800;color:var(--ink)}
+.fff-injury-area-toggle input{accent-color:var(--accent);transform:scale(1.08)}
+.fff-injury-row select{background:#0c1118;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);padding:.55rem .6rem;width:100%;font:inherit}
+.fff-injury-symptoms{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.fff-injury-symptom{display:inline-flex;gap:.35rem;align-items:center;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.045);padding:.3rem .55rem;font-size:.84rem;font-weight:700;color:var(--inkdim)}
+.fff-injury-symptom input{accent-color:var(--accent)}
+.fff-injury-row:not(.is-active){opacity:.72}
+.fff-injury-row:not(.is-active) .fff-injury-symptoms{display:none}
+@media (max-width:760px){.fff-injury-row-head{grid-template-columns:1fr}.fff-injury-row select{min-height:42px}}
+
 </style>
 <!-- FFF two-builder storage fix: personalised and build-your-week slots separated v2 -->
 </head>
@@ -7294,32 +7309,117 @@ function buildLibraryPayload(style, sessions, equip){
 
   function selectedBooleanKeys(profile){
     profile = profile || {};
-    return Object.keys(profile).filter(function(k){ return k !== 'severity' && k !== 'status' && !!profile[k]; });
+    if(profile.items && typeof profile.items === 'object'){
+      return Object.keys(profile.items).filter(function(k){ return profile.items[k] && profile.items[k].active; });
+    }
+    return Object.keys(profile).filter(function(k){ return k !== 'severity' && k !== 'status' && k !== 'items' && !!profile[k]; });
+  }
+
+  function legacyToPerInjuryProfile(profile){
+    profile = profile || {};
+    if(profile.items && typeof profile.items === 'object') return profile;
+
+    var items = {};
+    Object.keys(profile).forEach(function(k){
+      if(k === 'severity' || k === 'status' || k === 'items') return;
+      if(profile[k] === true){
+        items[k] = {
+          active: true,
+          severity: profile.severity || 'mild',
+          status: profile.status || 'stable',
+          symptoms: {}
+        };
+      }
+    });
+
+    ['pain','reduced_range','weakness_or_loss_of_power','swelling','clicking_or_popping','locking_or_catching','sharp_pain','worse_after_activity','worse_after_rest','cramp','numbness_or_tingling'].forEach(function(symptom){
+      if(profile[symptom]){
+        Object.keys(items).forEach(function(area){ items[area].symptoms[symptom] = true; });
+      }
+    });
+
+    return { items: items, migratedFromFlat: true };
+  }
+
+  function saveNormalisedInjuryProfile(profile){
+    var normalised = legacyToPerInjuryProfile(profile || {});
+    saveJSON(INJURY_KEY, normalised);
+    return normalised;
+  }
+
+  function activeInjuryItems(profile){
+    profile = legacyToPerInjuryProfile(profile || {});
+    return Object.keys(profile.items || {}).filter(function(area){
+      return profile.items[area] && profile.items[area].active;
+    }).map(function(area){
+      var item = profile.items[area] || {};
+      return {
+        area: area,
+        severity: item.severity || 'mild',
+        status: item.status || 'stable',
+        symptoms: item.symptoms || {}
+      };
+    });
   }
 
   function getMyPlanInjuryContext(){
-    var profile = readJSON(INJURY_KEY, {});
-    var keys = selectedBooleanKeys(profile);
+    var raw = readJSON(INJURY_KEY, {});
+    var profile = legacyToPerInjuryProfile(raw);
+    var active = activeInjuryItems(profile);
+    var selected = active.map(function(item){ return item.area; });
     var injuries = [];
-    keys.forEach(function(k){
-      (INJURY_ENGINE_MAP[k] || []).forEach(function(rule){ if(injuries.indexOf(rule) === -1) injuries.push(rule); });
+    var areaSeverity = {};
+    var areaStatus = {};
+    var symptoms = {};
+    var painLevel = 0;
+    var recovery = '';
+
+    active.forEach(function(item){
+      areaSeverity[item.area] = item.severity;
+      areaStatus[item.area] = item.status;
+      (INJURY_ENGINE_MAP[item.area] || []).forEach(function(rule){ if(injuries.indexOf(rule) === -1) injuries.push(rule); });
+
+      if(item.severity === 'significant') painLevel = Math.max(painLevel, 4);
+      else if(item.severity === 'moderate') painLevel = Math.max(painLevel, 3);
+      else if(item.severity === 'mild') painLevel = Math.max(painLevel, 2);
+
+      if(item.status === 'worsening') recovery = 'flare';
+      else if(item.status === 'stable' && recovery !== 'flare') recovery = 'stable';
+      else if(item.status === 'improving' && !recovery) recovery = 'improving';
+
+      Object.keys(item.symptoms || {}).forEach(function(symptom){
+        if(item.symptoms[symptom]){
+          symptoms[symptom] = true;
+          (INJURY_ENGINE_MAP[symptom] || []).forEach(function(rule){ if(injuries.indexOf(rule) === -1) injuries.push(rule); });
+        }
+      });
     });
-    var severity = profile.severity || '';
-    var status = profile.status || '';
-    var painLevel = severity === 'significant' ? 4 : severity === 'moderate' ? 3 : severity === 'mild' ? 2 : 0;
-    if(profile.sharp_pain || profile.locking_or_catching || profile.numbness_or_tingling) painLevel = Math.max(painLevel, 4);
-    var recovery = status === 'worsening' ? 'flare' : status === 'improving' ? 'improving' : status === 'stable' ? 'stable' : '';
-    return { profile: profile, selected: keys, injuries: injuries, painLevel: painLevel, recovery: recovery, severity: severity, status: status };
+
+    if(symptoms.sharp_pain || symptoms.locking_or_catching || symptoms.numbness_or_tingling) painLevel = Math.max(painLevel, 4);
+
+    return {
+      profile: profile,
+      activeItems: active,
+      selected: selected,
+      injuries: injuries,
+      painLevel: painLevel,
+      maxPain: painLevel,
+      recovery: recovery,
+      areaSeverity: areaSeverity,
+      areaStatus: areaStatus,
+      symptoms: symptoms,
+      severity: painLevel >= 4 ? 'significant' : painLevel === 3 ? 'moderate' : painLevel === 2 ? 'mild' : '',
+      status: recovery === 'flare' ? 'worsening' : recovery
+    };
   }
   window.getMyPlanInjuryContext = getMyPlanInjuryContext;
 
   function injurySummary(){
     var ctx = getMyPlanInjuryContext();
-    var parts = [];
-    if(ctx.selected.length) parts.push(ctx.selected.length + ' selected: ' + ctx.selected.slice(0,3).map(titleFromKey).join(', ') + (ctx.selected.length > 3 ? '…' : ''));
-    if(ctx.severity) parts.push('Severity: ' + titleFromKey(ctx.severity));
-    if(ctx.status) parts.push('Status: ' + titleFromKey(ctx.status));
-    return parts.length ? parts.join(' • ') : 'Optional pain, symptom, severity and trend bias for exercise choice.';
+    if(!ctx.activeItems.length) return 'Optional per-injury severity, status and symptom bias for exercise choice.';
+    return ctx.activeItems.slice(0,3).map(function(item){
+      return titleFromKey(item.area) + ' ' + titleFromKey(item.severity) + '/' + titleFromKey(item.status);
+    }).join(' • ') + (ctx.activeItems.length > 3 ? ' • +' + (ctx.activeItems.length - 3) + ' more' : '');
   }
 
   function makeButton(title, summary, sub){
@@ -7405,38 +7505,108 @@ function buildLibraryPayload(style, sessions, equip){
     return panel;
   }
 
-  function checkboxGrid(labels){
-    var profile = readJSON(INJURY_KEY, {});
-    return '<div class="fff-injury-grid">' + labels.map(function(label){
+  function getPerInjuryProfile(){
+    return saveNormalisedInjuryProfile(readJSON(INJURY_KEY, {}));
+  }
+
+  var FFF_INJURY_AREAS = ['Neck','Shoulder','Elbow','Wrist','Upper back','Lower back','Hip','Knee','Ankle','Foot','Achilles','Plantar fascia'];
+  var FFF_INJURY_SYMPTOMS = [
+    ['pain','Pain'],
+    ['reduced_range','Reduced range'],
+    ['weakness_or_loss_of_power','Weakness / power loss'],
+    ['swelling','Swelling'],
+    ['clicking_or_popping','Clicking / popping'],
+    ['locking_or_catching','Locking / catching'],
+    ['sharp_pain','Sharp pain'],
+    ['worse_after_activity','Worse after activity'],
+    ['worse_after_rest','Worse after rest'],
+    ['cramp','Cramp'],
+    ['numbness_or_tingling','Numbness / tingling']
+  ];
+
+  function optionList(current, labels){
+    return labels.map(function(label){
       var key = normaliseKey(label);
-      return '<label class="fff-injury-pill"><input type="checkbox" data-fff-injury="' + esc(key) + '" ' + (profile[key] ? 'checked' : '') + '> <span>' + esc(label) + '</span></label>';
+      return '<option value="' + esc(key) + '" ' + (current === key ? 'selected' : '') + '>' + esc(label) + '</option>';
+    }).join('');
+  }
+
+  function buildPerInjuryRows(){
+    var profile = getPerInjuryProfile();
+    var items = profile.items || {};
+    return '<div class="fff-injury-table">' + FFF_INJURY_AREAS.map(function(label){
+      var area = normaliseKey(label);
+      var item = items[area] || {};
+      var active = !!item.active;
+      var severity = item.severity || 'mild';
+      var status = item.status || 'stable';
+      var symptoms = item.symptoms || {};
+      return '<div class="fff-injury-row ' + (active ? 'is-active' : '') + '" data-fff-injury-row="' + esc(area) + '">' +
+        '<div class="fff-injury-row-head">' +
+          '<label class="fff-injury-area-toggle"><input type="checkbox" data-fff-injury-area="' + esc(area) + '" ' + (active ? 'checked' : '') + '> <span>' + esc(label) + '</span></label>' +
+          '<label class="field">Severity<select data-fff-injury-severity="' + esc(area) + '">' + optionList(severity, ['Mild','Moderate','Significant']) + '</select></label>' +
+          '<label class="field">Status<select data-fff-injury-status="' + esc(area) + '">' + optionList(status, ['Improving','Stable','Worsening']) + '</select></label>' +
+        '</div>' +
+        '<div class="fff-injury-symptoms" aria-label="Symptoms for ' + esc(label) + '">' +
+          FFF_INJURY_SYMPTOMS.map(function(pair){
+            return '<label class="fff-injury-symptom"><input type="checkbox" data-fff-injury-symptom="' + esc(area) + '" data-symptom="' + esc(pair[0]) + '" ' + (symptoms[pair[0]] ? 'checked' : '') + '> <span>' + esc(pair[1]) + '</span></label>';
+          }).join('') +
+        '</div>' +
+      '</div>';
     }).join('') + '</div>';
   }
 
-  function radioGrid(name, labels){
-    var profile = readJSON(INJURY_KEY, {});
-    var current = profile[name] || '';
-    return '<div class="fff-injury-grid compact">' + labels.map(function(label){
-      var key = normaliseKey(label);
-      return '<label class="fff-injury-pill"><input type="radio" name="fff-injury-' + esc(name) + '" data-fff-injury-radio="' + esc(name) + '" value="' + esc(key) + '" ' + (current === key ? 'checked' : '') + '> <span>' + esc(label) + '</span></label>';
-    }).join('') + '</div>';
+  function updateInjuryItem(area, patch){
+    var profile = getPerInjuryProfile();
+    profile.items = profile.items || {};
+    var item = profile.items[area] || {active:false,severity:'mild',status:'stable',symptoms:{}};
+    item.symptoms = item.symptoms || {};
+    Object.keys(patch || {}).forEach(function(k){ item[k] = patch[k]; });
+    profile.items[area] = item;
+    saveJSON(INJURY_KEY, profile);
+    return profile;
   }
 
   function bindInjuryInputs(card){
-    qsa(card, '[data-fff-injury]').forEach(function(box){
+    qsa(card, '[data-fff-injury-area]').forEach(function(box){
       box.addEventListener('change', function(){
-        var saved = readJSON(INJURY_KEY, {});
-        saved[box.getAttribute('data-fff-injury')] = !!box.checked;
-        saveJSON(INJURY_KEY, saved);
+        var area = box.getAttribute('data-fff-injury-area');
+        updateInjuryItem(area, {active: !!box.checked});
+        var row = box.closest('[data-fff-injury-row]');
+        if(row) row.classList.toggle('is-active', !!box.checked);
         updateInjurySummaryAndSystems();
       });
     });
-    qsa(card, '[data-fff-injury-radio]').forEach(function(box){
+    qsa(card, '[data-fff-injury-severity]').forEach(function(sel){
+      sel.addEventListener('change', function(){
+        updateInjuryItem(sel.getAttribute('data-fff-injury-severity'), {severity: sel.value || 'mild'});
+        updateInjurySummaryAndSystems();
+      });
+    });
+    qsa(card, '[data-fff-injury-status]').forEach(function(sel){
+      sel.addEventListener('change', function(){
+        updateInjuryItem(sel.getAttribute('data-fff-injury-status'), {status: sel.value || 'stable'});
+        updateInjurySummaryAndSystems();
+      });
+    });
+    qsa(card, '[data-fff-injury-symptom]').forEach(function(box){
       box.addEventListener('change', function(){
-        if(!box.checked) return;
-        var saved = readJSON(INJURY_KEY, {});
-        saved[box.getAttribute('data-fff-injury-radio')] = box.value;
-        saveJSON(INJURY_KEY, saved);
+        var area = box.getAttribute('data-fff-injury-symptom');
+        var symptom = box.getAttribute('data-symptom');
+        var profile = getPerInjuryProfile();
+        profile.items = profile.items || {};
+        var item = profile.items[area] || {active:false,severity:'mild',status:'stable',symptoms:{}};
+        item.symptoms = item.symptoms || {};
+        item.symptoms[symptom] = !!box.checked;
+        item.active = true;
+        profile.items[area] = item;
+        saveJSON(INJURY_KEY, profile);
+        var row = box.closest('[data-fff-injury-row]');
+        if(row){
+          row.classList.add('is-active');
+          var areaBox = row.querySelector('[data-fff-injury-area]');
+          if(areaBox) areaBox.checked = true;
+        }
         updateInjurySummaryAndSystems();
       });
     });
@@ -7457,12 +7627,9 @@ function buildLibraryPayload(style, sessions, equip){
     card.className = 'card';
     card.innerHTML = '' +
       '<h3>Injuries & limitations</h3>' +
-      '<p class="meta">This section feeds exercise selection, Build Your Week and system recommendations by biasing choices away from aggravating patterns and towards recovery-friendly options. It is not a diagnosis.</p>' +
+      '<p class="meta">Each affected area has its own severity, status and symptoms. This means a mild shoulder issue and a significant knee flare can bias exercise selection differently instead of being treated as one generic injury profile.</p>' +
       '<div class="fff-injury-note"><strong>Safety:</strong> stop sharp or worsening pain. Seek professional review for swelling, locking, catching, numbness, trauma, major weakness, or symptoms that do not settle.</div>' +
-      '<div class="fff-injury-section"><h4>Area affected</h4>' + checkboxGrid(['Neck','Shoulder','Elbow','Wrist','Upper back','Lower back','Hip','Knee','Ankle','Foot','Achilles','Plantar fascia']) + '</div>' +
-      '<div class="fff-injury-section"><h4>Symptoms or limits</h4>' + checkboxGrid(['Pain','Reduced range','Weakness or loss of power','Swelling','Clicking or popping','Locking or catching','Sharp pain','Worse after activity','Worse after rest','Cramp','Numbness or tingling']) + '</div>' +
-      '<div class="fff-injury-section"><h4>Severity</h4>' + radioGrid('severity', ['Mild','Moderate','Significant']) + '</div>' +
-      '<div class="fff-injury-section"><h4>Current status</h4>' + radioGrid('status', ['Improving','Stable','Worsening']) + '</div>' +
+      buildPerInjuryRows() +
       '<div class="tag-row" style="margin-top:12px"><a class="btn" href="physio.html">Open Physio & Recovery</a></div>';
     bindInjuryInputs(card);
     return card;
@@ -7551,21 +7718,49 @@ function buildLibraryPayload(style, sessions, equip){
 
   function injurySelectionScore(item){
     var ctx = getMyPlanInjuryContext();
-    if(!ctx.selected.length && !ctx.injuries.length) return 0;
+    if(!ctx.activeItems.length && !ctx.injuries.length) return 0;
     var blob = injuryBlob(item);
-    var penalty = 0;
-    ctx.injuries.forEach(function(rule){
-      if(blob.indexOf(rule) > -1) penalty -= ctx.painLevel >= 3 ? 12 : 6;
+    var score = 0;
+
+    function severityWeight(sev){
+      if(sev === 'significant') return 16;
+      if(sev === 'moderate') return 10;
+      if(sev === 'mild') return 5;
+      return 0;
+    }
+
+    ctx.activeItems.forEach(function(injury){
+      var area = injury.area || '';
+      var areaText = area.replace(/_/g, '-');
+      var sev = severityWeight(injury.severity);
+      var worsening = injury.status === 'worsening';
+      var improving = injury.status === 'improving';
+      var symptoms = injury.symptoms || {};
+
+      (INJURY_ENGINE_MAP[area] || []).forEach(function(rule){
+        if(blob.indexOf(rule) > -1) score -= sev + (worsening ? 6 : 0);
+      });
+
+      if(areaText && blob.indexOf(areaText) > -1) score -= Math.max(4, sev / 2) + (worsening ? 4 : 0);
+
+      if((symptoms.sharp_pain || symptoms.locking_or_catching || symptoms.numbness_or_tingling) && /jump|plyo|sprint|ballistic|explosive|depth|max|heavy/.test(blob)){
+        score -= 20;
+      }
+      if(symptoms.locking_or_catching && /deep|jump|plyo|lunge|split|squat/.test(blob)) score -= 14;
+      if(symptoms.reduced_range && /deep|full-rom|end-range|overhead/.test(blob)) score -= 10;
+      if(symptoms.weakness_or_loss_of_power && /max|heavy|explosive|ballistic/.test(blob)) score -= 10;
+      if(symptoms.swelling && /jump|plyo|running|sprint|impact|loaded/.test(blob)) score -= 12;
+
+      if(/knee|ankle|achilles|foot|plantar_fascia|hip/.test(area) && /low-impact|supported|isometric|recovery|mobility|tempo-control|controlled/.test(blob)){
+        score += improving ? 10 : 7;
+      }
+      if(/shoulder|elbow|wrist|neck|upper_back|lower_back/.test(area) && /neutral-grip|supported|banded-light|scapular-control|isometric|mobility/.test(blob)){
+        score += improving ? 10 : 7;
+      }
     });
-    ctx.selected.forEach(function(key){
-      var body = key.replace(/_/g,'-');
-      if(blob.indexOf(body) > -1 && (ctx.severity === 'significant' || ctx.status === 'worsening')) penalty -= 8;
-    });
-    if(ctx.profile.sharp_pain && /jump|plyo|sprint|ballistic|explosive|depth/.test(blob)) penalty -= 16;
-    if(ctx.profile.locking_or_catching && /deep|jump|plyo|lunge|split|squat/.test(blob)) penalty -= 12;
-    if((ctx.profile.knee || ctx.profile.ankle || ctx.profile.achilles || ctx.profile.plantar_fascia) && /low-impact|supported|isometric|recovery|mobility|tempo-control|controlled/.test(blob)) penalty += 8;
-    if((ctx.profile.shoulder || ctx.profile.elbow || ctx.profile.wrist) && /neutral-grip|supported|banded-light|scapular-control|isometric/.test(blob)) penalty += 8;
-    return penalty;
+
+    if(ctx.recovery === 'flare' && /recovery|mobility|isometric|supported|low-impact/.test(blob)) score += 8;
+    return score;
   }
 
   function installInjuryExerciseBridge(){

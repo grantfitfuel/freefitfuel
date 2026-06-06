@@ -711,7 +711,20 @@
       min-height:40px;
     }
 
-  </style>
+  
+/* FFF UX v5 */
+.fff-accordion-toggle{cursor:pointer}
+.fff-accordion-body{display:none}
+.fff-accordion-open .fff-accordion-body{display:block}
+.sticky-plan-summary{
+position:sticky;top:0;z-index:50;
+background:#111418;
+border:1px solid rgba(255,106,0,.25);
+padding:10px;border-radius:12px;
+margin-bottom:12px;
+}
+
+</style>
 <!-- FFF two-builder storage fix: personalised and build-your-week slots separated v2 -->
 </head>
 <body>
@@ -7108,6 +7121,49 @@ function buildLibraryPayload(style, sessions, equip){
     }
   };
   </script>
+
+
+<script>
+(function(){
+function initFFFAccordion(){
+  var sections=document.querySelectorAll('.section');
+  var targets=['Profile','Goals','Equipment','Injuries','Physiology','Progress','Backup'];
+  var openIndex=parseInt(localStorage.getItem('fffAccordionOpen')||'0',10);
+
+  sections.forEach(function(sec,i){
+    var h=sec.querySelector('h2');
+    if(!h) return;
+    var txt=(h.textContent||'');
+    if(!targets.some(t=>txt.indexOf(t)>=0)) return;
+
+    sec.classList.add('fff-accordion');
+    var head=sec.querySelector('.section-head')||h.parentElement;
+    if(head) head.classList.add('fff-accordion-toggle');
+
+    var body=document.createElement('div');
+    body.className='fff-accordion-body';
+
+    while(sec.children.length>1){
+      body.appendChild(sec.children[1]);
+    }
+    sec.appendChild(body);
+
+    function openMe(){
+      document.querySelectorAll('.fff-accordion').forEach(function(x){
+        x.classList.remove('fff-accordion-open');
+      });
+      sec.classList.add('fff-accordion-open');
+      localStorage.setItem('fffAccordionOpen',i);
+    }
+
+    head.addEventListener('click',openMe);
+
+    if(i===openIndex){ sec.classList.add('fff-accordion-open'); }
+  });
+}
+window.addEventListener('load',initFFFAccordion);
+})();
+</script>
 
 </body>
 </html>

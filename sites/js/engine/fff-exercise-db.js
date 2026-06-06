@@ -1,4 +1,4 @@
-/* FreeFitFuel modular exercise database loader v6.4
+/* FreeFitFuel modular exercise database loader v6.5
    Single exercise API for Workouts, Personalised Plan and Build My Week.
    Exercises live in /sites/data/exercises/*.json. No hard-coded exercise pool here.
 */
@@ -9,7 +9,7 @@
   var MANIFEST = BASE + 'manifest.json';
 
   var state = {
-    version: '6.4-modular-builder-api',
+    version: '6.5-modular-builder-api-operational-opt-in',
     loaded: false,
     loading: null,
     manifest: null,
@@ -293,7 +293,19 @@
 
     function add(id){ if(packs.indexOf(id) === -1) packs.push(id); }
 
-    if(/operational|police|fire|army|reserve|ta|military|rescue|ruck|tactical|work capacity|blue light/.test(text)) add('operational-fitness');
+    var explicitOperational = profile.operationalIntent === true || profile.operational === true;
+    var explicitPathway = lower([
+      profile.operationalPathway,
+      profile.pathway,
+      profile.selectedPathway,
+      profile.goalIntent,
+      profile.goalCategory,
+      profile.trainingPathway,
+      profile.style
+    ].join(' '));
+    if(/\b(operational fitness|police fitness|fire fitness|fire and rescue|fire & rescue|army reserve|military conditioning|search and rescue|blue-light resilience|blue light resilience)\b/.test(explicitPathway)) explicitOperational = true;
+    if(/^(operational|operational-fitness|police|fire|fire-rescue|army|army-reserve|military|rescue|blue-light)$/.test(lower(profile.style || ''))) explicitOperational = true;
+    if(explicitOperational) add('operational-fitness');
     if(/knee|patella|squat pain|stairs|step down/.test(text)) add('knee-capacity-reset');
     if(/ankle|calf|shin|achilles|foot|plantar|balance|lower leg/.test(text)) add('lower-leg-stability');
     if(/pull.?up|chin.?up|upper body|grip|biceps|back/.test(text)) add('pullup-upperbody');

@@ -1,4 +1,4 @@
-// FreeFitFuel Engine — Modular Planner Layer v2
+// FreeFitFuel Engine — Modular Planner Layer v2.1
 // Purpose: Personalised Plan and Build My Week choose exercises from modular packs.
 // Replaces the old hard-coded LIB planner.
 (function(){
@@ -215,6 +215,28 @@
     return 'recomp';
   }
 
+  function explicitOperationalIntent(options){
+    options = options || {};
+    if(options.operational === true || options.operationalIntent === true) return true;
+    if(arr(options.packs).map(lower).indexOf('operational-fitness') > -1) return true;
+
+    var explicitText = lower([
+      options.operationalPathway,
+      options.pathway,
+      options.selectedPathway,
+      options.goalIntent,
+      options.goalCategory,
+      options.trainingPathway
+    ].join(' '));
+
+    if(/\b(operational fitness|police fitness|fire fitness|fire and rescue|fire & rescue|army reserve|military conditioning|search and rescue|blue-light resilience|blue light resilience)\b/.test(explicitText)) return true;
+
+    var style = lower(options.style || '');
+    if(/^(operational|operational-fitness|police|fire|fire-rescue|army|army-reserve|military|rescue|blue-light)$/.test(style)) return true;
+
+    return false;
+}
+
   function buildProfile(options){
     options = options || {};
     var roadmap = readJSON(KEY_ROADMAP, {}) || {};
@@ -228,6 +250,7 @@
     ].join(' '));
 
     var rawInjuries = options.injuries || readJSON(KEY_INJURY, null) || readJSON(KEY_INJURY_LEGACY, {}) || {};
+    var operationalIntent = explicitOperationalIntent(options);
     var injuries = hardInjuryTokens(rawInjuries);
     var allInjuryTokens = injuryTokens(rawInjuries);
     var equip = equipmentList(options.equip);
@@ -243,6 +266,7 @@
       injuryDetails: injuryDetails(rawInjuries),
       rawInjuries: rawInjuries,
       goalText: goalText,
+      operationalIntent: operationalIntent,
       preferredPacks: arr(options.packs),
       recovery: Number(options.recovery || 3),
       experience: options.experience || '',
@@ -256,7 +280,8 @@
         goal: goalText,
         style: profile.style,
         notes: goalText,
-        injuries: allInjuryTokens
+        injuries: allInjuryTokens,
+        operationalIntent: operationalIntent
       })));
     }else{
       profile.packs = unique(arr(options.packs).concat(['core-library']));
@@ -378,7 +403,7 @@
   }
 
   function sessionTemplates(profile){
-    var operational = /operational|police|fire|army|rescue|ruck|tactical|work capacity/.test(profile.goalText);
+    var operational = !!profile.operationalIntent;
     var running = /run|running|endurance|5k|10k|marathon/.test(profile.goalText);
     var injury = profile.injuries.length > 0;
 
@@ -497,7 +522,7 @@
   }
 
   window.FFFPlanner = {
-    version: '2.0-modular',
+    version: '2.1-modular-operational-opt-in',
     keys: {
       roadmap: KEY_ROADMAP,
       equipment: KEY_EQUIP,
@@ -510,6 +535,7 @@
     library: [],
     injuryTokens: injuryTokens,
     hardInjuryTokens: hardInjuryTokens,
+    explicitOperationalIntent: explicitOperationalIntent,
     injuryDetails: injuryDetails,
     currentPhase: currentPhase,
     buildProfile: buildProfile,

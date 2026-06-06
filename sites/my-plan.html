@@ -2518,13 +2518,17 @@
       if(stageId === 'cut') style = 'fat-loss-conditioning';
       if(trainingStatus === 'beginner') style = 'low-overwhelm';
 
+      var injuryCtx = (typeof getMyPlanInjuryContext === 'function') ? getMyPlanInjuryContext() : { injuries: [], painLevel: 0, recovery: '' };
       return {
         phase: stageId,
         style: style,
         trainingStyle: style,
         difficulty: trainingStatus,
         equipment: currentEquipmentArray(),
-        injuries: []
+        injuries: injuryCtx.injuries || [],
+        painLevel: injuryCtx.painLevel || 0,
+        maxPain: injuryCtx.painLevel || 0,
+        recovery: injuryCtx.recovery || ''
       };
     }
 
@@ -7239,18 +7243,19 @@ function buildLibraryPayload(style, sessions, equip){
   };
   </script>
 
-
 <script>
-/* FFF v12 controlled My Plan repair
-   Acceptance criteria covered in this block:
-   - Goal & body setup starts closed.
-   - One top-level Plan accordion open at a time across the whole document, including dynamic Build Your Week.
-   - Equipment and Injuries sub-panels close each other.
-   - One useful injury panel only: area, symptoms, severity, and status/trend.
-   - Injury data uses fff.myplan.injuries.v2 only.
-   - This block does not write to or clear fff.roadmap.plan.v1.
+/* FFF v13 controlled accordion + injury selection bridge
+   Verification target:
+   - no duplicate large Injury Recovery block
+   - one rich injury panel inside Goal & body setup
+   - Goal, Physiology, Personalised Plan, Backup and Build Your Week accordioned
+   - true single-open top accordions
+   - equipment/profile/injuries are single-open sub-panels
+   - injury profile feeds roadmap exercise selection and Build Your Week scoring
 */
 (function(){
+  'use strict';
+
   var INJURY_KEY = 'fff.myplan.injuries.v2';
   var ROADMAP_KEY_SAFE = 'fff.roadmap.plan.v1';
 
@@ -7260,18 +7265,62 @@ function buildLibraryPayload(style, sessions, equip){
   }
   function qsa(root, sel){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function text(el){ return (el && el.textContent ? el.textContent : '').replace(/\s+/g,' ').trim(); }
-  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  function sectionByH2(title){
-    var found = null;
-    qsa(document, 'section').some(function(sec){
-      var h = sec.querySelector(':scope > h2, :scope > .section-head h2');
-      if(h && text(h) === title){ found = sec; return true; }
-      return false;
-    });
-    return found;
-  }
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
   function saveJSON(key, value){ try{ localStorage.setItem(key, JSON.stringify(value)); }catch(err){} }
   function readJSON(key, fallback){ try{ var raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }catch(err){ return fallback; } }
+  function slug(v){ return String(v || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+  function normaliseKey(label){ return String(label || '').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); }
+  function titleFromKey(key){ return String(key || '').replace(/_/g,' ').replace(/-/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }); }
+
+  var INJURY_ENGINE_MAP = {
+    neck:['shoulder-impingement','rotator-cuff-irritation'],
+    shoulder:['shoulder-impingement','rotator-cuff-irritation'],
+    elbow:['tennis-elbow','golfers-elbow','distal-biceps-tendon-irritation'],
+    wrist:['wrist-pain'],
+    upper_back:['low-back-non-specific'],
+    lower_back:['low-back-non-specific','disc-sensitivity'],
+    hip:['hip-flexor-tendon-pain','hip-tendon-pain-reduced-rom','glute-med-tendinopathy'],
+    knee:['knee-pain-general','patellar-tendon-pain'],
+    ankle:['achilles-calf-sensitivity'],
+    foot:['plantar-fasciitis'],
+    achilles:['achilles-calf-sensitivity'],
+    plantar_fascia:['plantar-fasciitis'],
+    clicking_or_popping:['clicky-knees-painless'],
+    locking_or_catching:['clicky-knees-painful'],
+    sharp_pain:['knee-pain-general'],
+    cramp:['achilles-calf-sensitivity'],
+    numbness_or_tingling:['disc-sensitivity']
+  };
+
+  function selectedBooleanKeys(profile){
+    profile = profile || {};
+    return Object.keys(profile).filter(function(k){ return k !== 'severity' && k !== 'status' && !!profile[k]; });
+  }
+
+  function getMyPlanInjuryContext(){
+    var profile = readJSON(INJURY_KEY, {});
+    var keys = selectedBooleanKeys(profile);
+    var injuries = [];
+    keys.forEach(function(k){
+      (INJURY_ENGINE_MAP[k] || []).forEach(function(rule){ if(injuries.indexOf(rule) === -1) injuries.push(rule); });
+    });
+    var severity = profile.severity || '';
+    var status = profile.status || '';
+    var painLevel = severity === 'significant' ? 4 : severity === 'moderate' ? 3 : severity === 'mild' ? 2 : 0;
+    if(profile.sharp_pain || profile.locking_or_catching || profile.numbness_or_tingling) painLevel = Math.max(painLevel, 4);
+    var recovery = status === 'worsening' ? 'flare' : status === 'improving' ? 'improving' : status === 'stable' ? 'stable' : '';
+    return { profile: profile, selected: keys, injuries: injuries, painLevel: painLevel, recovery: recovery, severity: severity, status: status };
+  }
+  window.getMyPlanInjuryContext = getMyPlanInjuryContext;
+
+  function injurySummary(){
+    var ctx = getMyPlanInjuryContext();
+    var parts = [];
+    if(ctx.selected.length) parts.push(ctx.selected.length + ' selected: ' + ctx.selected.slice(0,3).map(titleFromKey).join(', ') + (ctx.selected.length > 3 ? '…' : ''));
+    if(ctx.severity) parts.push('Severity: ' + titleFromKey(ctx.severity));
+    if(ctx.status) parts.push('Status: ' + titleFromKey(ctx.status));
+    return parts.length ? parts.join(' • ') : 'Optional pain, symptom, severity and trend bias for exercise choice.';
+  }
 
   function makeButton(title, summary, sub){
     var btn = document.createElement('button');
@@ -7296,14 +7345,24 @@ function buildLibraryPayload(style, sessions, equip){
   }
 
   function closeOtherTopAccordions(current){
-    qsa(document, '.fff-plan-accordion').forEach(function(other){
-      if(other !== current) setAccOpen(other, false);
+    qsa(document, '.fff-plan-accordion').forEach(function(other){ if(other !== current) setAccOpen(other, false); });
+  }
+
+  function sectionByH2(title){
+    var wanted = String(title || '').toLowerCase();
+    var found = null;
+    qsa(document, 'section').some(function(sec){
+      if(sec.classList.contains('fff-plan-accordion')) return false;
+      var h2 = sec.querySelector(':scope > .section-head h2, :scope > h2');
+      if(h2 && text(h2).toLowerCase() === wanted){ found = sec; return true; }
+      return false;
     });
+    return found;
   }
 
   function makeTopAccordion(sec, title, summary){
-    if(!sec || sec.dataset.fffV12Acc === '1' || sec.dataset.fffV11Acc === '1') return;
-    sec.dataset.fffV12Acc = '1';
+    if(!sec || sec.dataset.fffV13Acc === '1') return;
+    sec.dataset.fffV13Acc = '1';
     sec.classList.add('fff-plan-accordion');
 
     var oldHead = sec.querySelector(':scope > .section-head');
@@ -7312,8 +7371,8 @@ function buildLibraryPayload(style, sessions, equip){
     body.className = 'fff-acc-body';
     var control = makeButton(title, summary, false);
 
-    if(oldHead){ oldHead.remove(); }
-    else if(firstH2){ firstH2.remove(); }
+    if(oldHead) oldHead.remove();
+    else if(firstH2) firstH2.remove();
 
     while(sec.firstChild){ body.appendChild(sec.firstChild); }
     sec.appendChild(control);
@@ -7340,35 +7399,15 @@ function buildLibraryPayload(style, sessions, equip){
     setAccOpen(panel, false);
     btn.addEventListener('click', function(){
       var willOpen = !panel.classList.contains('is-open');
-      var holder = panel.parentNode;
-      qsa(holder, ':scope > .fff-setup-subacc').forEach(function(other){ if(other !== panel) setAccOpen(other, false); });
+      qsa(panel.parentNode, ':scope > .fff-setup-subacc').forEach(function(other){ if(other !== panel) setAccOpen(other, false); });
       setAccOpen(panel, willOpen);
     });
     return panel;
   }
 
-  function normaliseKey(label){ return label.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); }
-  function titleFromKey(key){ return String(key || '').replace(/_/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }); }
-  function profileSelectedKeys(profile){
-    profile = profile || {};
-    return Object.keys(profile).filter(function(k){
-      if(k === 'severity' || k === 'status') return false;
-      return !!profile[k];
-    });
-  }
-  function injurySummary(){
+  function checkboxGrid(labels){
     var profile = readJSON(INJURY_KEY, {});
-    var selected = profileSelectedKeys(profile);
-    var parts = [];
-    if(selected.length) parts.push(selected.length + ' selected: ' + selected.slice(0,3).map(titleFromKey).join(', ') + (selected.length > 3 ? '…' : ''));
-    if(profile.severity) parts.push('Severity: ' + titleFromKey(profile.severity));
-    if(profile.status) parts.push('Status: ' + titleFromKey(profile.status));
-    return parts.length ? parts.join(' • ') : 'Optional injury, symptom, severity and trend bias for exercise choice.';
-  }
-
-  function checkboxGrid(labels, sectionClass){
-    var profile = readJSON(INJURY_KEY, {});
-    return '<div class="fff-injury-grid ' + (sectionClass || '') + '">' + labels.map(function(label){
+    return '<div class="fff-injury-grid">' + labels.map(function(label){
       var key = normaliseKey(label);
       return '<label class="fff-injury-pill"><input type="checkbox" data-fff-injury="' + esc(key) + '" ' + (profile[key] ? 'checked' : '') + '> <span>' + esc(label) + '</span></label>';
     }).join('') + '</div>';
@@ -7397,8 +7436,6 @@ function buildLibraryPayload(style, sessions, equip){
         if(!box.checked) return;
         var saved = readJSON(INJURY_KEY, {});
         saved[box.getAttribute('data-fff-injury-radio')] = box.value;
-        // Also expose useful boolean flags for simple downstream matching.
-        saved[box.getAttribute('data-fff-injury-radio') + '_' + box.value] = true;
         saveJSON(INJURY_KEY, saved);
         updateInjurySummaryAndSystems();
       });
@@ -7406,13 +7443,13 @@ function buildLibraryPayload(style, sessions, equip){
   }
 
   function updateInjurySummaryAndSystems(){
-    var panel = document.getElementById('fff-v12-injury-subpanel');
+    var panel = document.getElementById('fff-v13-injury-subpanel');
     if(panel){
       var summary = panel.querySelector('.fff-sub-summary');
       if(summary) summary.textContent = injurySummary();
     }
     try{ if(typeof window.renderAdaptiveSystems === 'function') window.renderAdaptiveSystems(); }catch(err){}
-    try{ if(window.FFFMyPlanOrchestrator && typeof window.FFFMyPlanOrchestrator.render === 'function') window.FFFMyPlanOrchestrator.render(); }catch(err){}
+    try{ if(typeof window.renderRecommendedSystems === 'function') window.renderRecommendedSystems(); }catch(err){}
   }
 
   function buildInjuryCard(){
@@ -7420,10 +7457,10 @@ function buildLibraryPayload(style, sessions, equip){
     card.className = 'card';
     card.innerHTML = '' +
       '<h3>Injuries & limitations</h3>' +
-      '<p class="meta">Use this to bias My Plan away from aggravating choices and towards suitable recovery systems. This is not diagnosis and does not replace clinical review.</p>' +
-      '<div class="fff-injury-note"><strong>Important:</strong> stop sharp or worsening pain. Seek professional review for swelling, locking, catching, numbness, trauma, major weakness, or symptoms that do not settle.</div>' +
-      '<div class="fff-injury-section"><h4>Area affected</h4>' + checkboxGrid(['Neck','Shoulder','Elbow','Wrist','Upper back','Lower back','Hip','Knee','Ankle','Foot','Achilles','Plantar fascia'], '') + '</div>' +
-      '<div class="fff-injury-section"><h4>Symptoms or limits</h4>' + checkboxGrid(['Pain','Reduced range','Weakness or loss of power','Swelling','Clicking or popping','Locking or catching','Sharp pain','Worse after activity','Worse after rest','Cramp','Numbness or tingling'], '') + '</div>' +
+      '<p class="meta">This section feeds exercise selection, Build Your Week and system recommendations by biasing choices away from aggravating patterns and towards recovery-friendly options. It is not a diagnosis.</p>' +
+      '<div class="fff-injury-note"><strong>Safety:</strong> stop sharp or worsening pain. Seek professional review for swelling, locking, catching, numbness, trauma, major weakness, or symptoms that do not settle.</div>' +
+      '<div class="fff-injury-section"><h4>Area affected</h4>' + checkboxGrid(['Neck','Shoulder','Elbow','Wrist','Upper back','Lower back','Hip','Knee','Ankle','Foot','Achilles','Plantar fascia']) + '</div>' +
+      '<div class="fff-injury-section"><h4>Symptoms or limits</h4>' + checkboxGrid(['Pain','Reduced range','Weakness or loss of power','Swelling','Clicking or popping','Locking or catching','Sharp pain','Worse after activity','Worse after rest','Cramp','Numbness or tingling']) + '</div>' +
       '<div class="fff-injury-section"><h4>Severity</h4>' + radioGrid('severity', ['Mild','Moderate','Significant']) + '</div>' +
       '<div class="fff-injury-section"><h4>Current status</h4>' + radioGrid('status', ['Improving','Stable','Worsening']) + '</div>' +
       '<div class="tag-row" style="margin-top:12px"><a class="btn" href="physio.html">Open Physio & Recovery</a></div>';
@@ -7433,8 +7470,8 @@ function buildLibraryPayload(style, sessions, equip){
 
   function rebuildSetupSubAccordions(){
     var setup = sectionByH2('Goal & body setup');
-    if(!setup || setup.dataset.fffV12Setup === '1' || setup.dataset.fffV11Setup === '1') return;
-    setup.dataset.fffV12Setup = '1';
+    if(!setup || setup.dataset.fffV13Setup === '1') return;
+    setup.dataset.fffV13Setup = '1';
 
     var shell = setup.querySelector('.setup-shell');
     if(!shell) return;
@@ -7442,7 +7479,7 @@ function buildLibraryPayload(style, sessions, equip){
     if(!mainCard) return;
 
     var equipmentCard = null;
-    qsa(mainCard, '.card').some(function(card){
+    qsa(mainCard, ':scope > .card').some(function(card){
       var h3 = card.querySelector('h3');
       if(h3 && text(h3) === 'Equipment & training environment'){ equipmentCard = card; return true; }
       return false;
@@ -7467,11 +7504,9 @@ function buildLibraryPayload(style, sessions, equip){
     mainCard.innerHTML = '';
     var panels = document.createElement('div');
     panels.className = 'fff-setup-panel-stack';
-    panels.appendChild(makeSubPanel('Profile, goal & body setup', 'Goal, body details, body fat, training status and aggression.', profileNodes, 'fff-v12-profile-subpanel'));
-    if(equipmentCard){
-      panels.appendChild(makeSubPanel('Equipment & training environment', 'Home, gym, dumbbells, bands, rings, bench and other kit.', [equipmentCard], 'fff-v12-equipment-subpanel'));
-    }
-    panels.appendChild(makeSubPanel('Injuries & limitations', injurySummary(), [buildInjuryCard()], 'fff-v12-injury-subpanel'));
+    panels.appendChild(makeSubPanel('Profile, goal & body setup', 'Goal, body details, body fat, training status and aggression.', profileNodes, 'fff-v13-profile-subpanel'));
+    if(equipmentCard){ panels.appendChild(makeSubPanel('Equipment & training environment', 'Home, gym, dumbbells, bands, rings, bench and other kit.', [equipmentCard], 'fff-v13-equipment-subpanel')); }
+    panels.appendChild(makeSubPanel('Injuries & limitations', injurySummary(), [buildInjuryCard()], 'fff-v13-injury-subpanel'));
     mainCard.appendChild(panels);
 
     var controls = document.createElement('div');
@@ -7483,13 +7518,11 @@ function buildLibraryPayload(style, sessions, equip){
     mainCard.appendChild(controls);
   }
 
-  function removeLiveLargeInjuryBlocks(){
+  function removeLargeInjuryBlocks(){
     qsa(document, 'section, .section, .card').forEach(function(el){
-      if(el.id === 'fff-v12-injury-subpanel' || el.closest('#fff-v12-injury-subpanel')) return;
+      if(el.id === 'fff-v13-injury-subpanel' || el.closest('#fff-v13-injury-subpanel')) return;
       var t = text(el).toLowerCase();
-      if(t.indexOf('injuries, symptoms and movement limits') > -1 || t.indexOf('injury recovery & physio') > -1){
-        el.remove();
-      }
+      if(t.indexOf('injury recovery & physio') > -1 || t.indexOf('injuries, symptoms and movement limits') > -1){ el.remove(); }
     });
   }
 
@@ -7506,7 +7539,62 @@ function buildLibraryPayload(style, sessions, equip){
       var sec = sectionByH2(title);
       if(sec) makeTopAccordion(sec, title, targets[title]);
     });
-    removeLiveLargeInjuryBlocks();
+    var builder = document.getElementById('mpx-builder');
+    if(builder && builder.dataset.fffV13Acc !== '1') makeTopAccordion(builder, 'Build Your Week', targets['Build Your Week']);
+    removeLargeInjuryBlocks();
+  }
+
+  function injuryBlob(item){
+    item = item || {};
+    return [item.key,item.name,item.family,item.type,(item.tags||[]).join(' '),(item.cautionIf||[]).join(' '),(item.purposes||[]).join(' '),(item.domains||[]).join(' ')].join(' ').toLowerCase();
+  }
+
+  function injurySelectionScore(item){
+    var ctx = getMyPlanInjuryContext();
+    if(!ctx.selected.length && !ctx.injuries.length) return 0;
+    var blob = injuryBlob(item);
+    var penalty = 0;
+    ctx.injuries.forEach(function(rule){
+      if(blob.indexOf(rule) > -1) penalty -= ctx.painLevel >= 3 ? 12 : 6;
+    });
+    ctx.selected.forEach(function(key){
+      var body = key.replace(/_/g,'-');
+      if(blob.indexOf(body) > -1 && (ctx.severity === 'significant' || ctx.status === 'worsening')) penalty -= 8;
+    });
+    if(ctx.profile.sharp_pain && /jump|plyo|sprint|ballistic|explosive|depth/.test(blob)) penalty -= 16;
+    if(ctx.profile.locking_or_catching && /deep|jump|plyo|lunge|split|squat/.test(blob)) penalty -= 12;
+    if((ctx.profile.knee || ctx.profile.ankle || ctx.profile.achilles || ctx.profile.plantar_fascia) && /low-impact|supported|isometric|recovery|mobility|tempo-control|controlled/.test(blob)) penalty += 8;
+    if((ctx.profile.shoulder || ctx.profile.elbow || ctx.profile.wrist) && /neutral-grip|supported|banded-light|scapular-control|isometric/.test(blob)) penalty += 8;
+    return penalty;
+  }
+
+  function installInjuryExerciseBridge(){
+    try{
+      if(typeof window.scoreBuilderItem === 'function' && !window.scoreBuilderItem.__fffV13InjuryWrapped){
+        var originalScoreBuilderItem = window.scoreBuilderItem;
+        window.scoreBuilderItem = function(item, opts, used, sourceUse){
+          return originalScoreBuilderItem(item, opts, used, sourceUse) + injurySelectionScore(item);
+        };
+        window.scoreBuilderItem.__fffV13InjuryWrapped = true;
+      }
+    }catch(err){}
+
+    try{
+      if(typeof window.buildPersonalisedPlanOptions === 'function' && !window.buildPersonalisedPlanOptions.__fffV13InjuryWrapped){
+        var originalBuildOptions = window.buildPersonalisedPlanOptions;
+        window.buildPersonalisedPlanOptions = function(stage, stageIndex){
+          var opts = originalBuildOptions(stage, stageIndex) || {};
+          var ctx = getMyPlanInjuryContext();
+          opts.injuries = ctx.injuries;
+          opts.injuryProfile = ctx.profile;
+          opts.painLevel = ctx.painLevel;
+          opts.maxPain = ctx.painLevel;
+          opts.recovery = ctx.recovery || opts.recovery;
+          return opts;
+        };
+        window.buildPersonalisedPlanOptions.__fffV13InjuryWrapped = true;
+      }
+    }catch(err){}
   }
 
   function restoreRoadmapRender(){
@@ -7521,14 +7609,11 @@ function buildLibraryPayload(style, sessions, equip){
   }
 
   ready(function(){
+    installInjuryExerciseBridge();
     applyTopAccordions();
     restoreRoadmapRender();
-    setTimeout(function(){ applyTopAccordions(); restoreRoadmapRender(); }, 250);
-    setTimeout(function(){ applyTopAccordions(); restoreRoadmapRender(); }, 900);
-    setTimeout(function(){ applyTopAccordions(); restoreRoadmapRender(); }, 1600);
-    setTimeout(function(){ applyTopAccordions(); restoreRoadmapRender(); }, 2600);
-
-    var observer = new MutationObserver(function(){ applyTopAccordions(); removeLiveLargeInjuryBlocks(); });
+    [250,900,1600,2600].forEach(function(delay){ setTimeout(function(){ installInjuryExerciseBridge(); applyTopAccordions(); restoreRoadmapRender(); }, delay); });
+    var observer = new MutationObserver(function(){ installInjuryExerciseBridge(); applyTopAccordions(); removeLargeInjuryBlocks(); });
     observer.observe(document.body, {childList:true, subtree:true});
   });
 })();

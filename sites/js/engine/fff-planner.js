@@ -6,7 +6,8 @@
 
   var KEY_ROADMAP = 'fff.roadmap.plan.v1';
   var KEY_EQUIP = 'fff.equipment.profile.v1';
-  var KEY_INJURY = 'fff.injury.profile.v1';
+  var KEY_INJURY = 'fff.myplan.injuries.v2';
+  var KEY_INJURY_LEGACY = 'fff.injury.profile.v1';
   var KEY_LIBRARY = 'fff.libraryPayload';
   var KEY_CURRENT = 'fff.currentPlan.v1';
   var KEY_PERSONALISED = 'fff.personalisedPlan.v2';
@@ -89,12 +90,76 @@
     }));
   }
 
-  function injuryTokens(profile){
-    profile = profile || readJSON(KEY_INJURY, {}) || readJSON('fff.myplan.injuries.v2', {});
+  function injuryDetails(profile){
+    profile = profile || readJSON(KEY_INJURY, null) || readJSON(KEY_INJURY_LEGACY, {}) || {};
+    var items = profile.items || {};
     var out = [];
-    arr(profile.selected || profile.issues || profile.injuries).forEach(function(x){ out.push(lower(x)); });
+
+    function add(area, item){
+      item = item || {};
+      if(!area) return;
+      var active = item.active !== false;
+      if(profile.selected && Array.isArray(profile.selected)) active = profile.selected.indexOf(area) > -1;
+      if(!active && item !== true) return;
+      out.push({
+        area: lower(area),
+        severity: lower(item.severity || profile.severity || 'mild'),
+        status: lower(item.status || profile.status || 'stable'),
+        symptoms: item.symptoms || profile.symptoms || {}
+      });
+    }
+
+    if(items && typeof items === 'object'){
+      Object.keys(items).forEach(function(area){ add(area, items[area]); });
+    }
+
+    arr(profile.selected || profile.issues || profile.injuries).forEach(function(area){
+      if(!out.some(function(x){ return x.area === lower(area); })) add(area, {active:true});
+    });
+
     Object.keys(profile || {}).forEach(function(k){
-      if(profile[k] === true) out.push(lower(k));
+      if(profile[k] === true && !out.some(function(x){ return x.area === lower(k); })) add(k, {active:true});
+    });
+
+    return out;
+  }
+
+  function mapInjuryAreaToTokens(area){
+    var out = [area];
+    if(/biceps|elbow|forearm/.test(area)) out.push('elbow-tendon-pain','biceps-pain');
+    if(/hip|groin/.test(area)) out.push('hip-tendon-pain-reduced-rom','hip-pain');
+    if(/knee|patella/.test(area)) out.push('clicky-knees-painful','knee-pain');
+    if(/ankle/.test(area)) out.push('ankle-pain');
+    if(/achilles/.test(area)) out.push('achilles-pain');
+    if(/shin/.test(area)) out.push('shin-splints');
+    if(/back|lumbar/.test(area)) out.push('low-back-non-specific');
+    if(/shoulder/.test(area)) out.push('shoulder-impingement');
+    if(/neck/.test(area)) out.push('neck-pain');
+    if(/wrist/.test(area)) out.push('wrist-pain');
+    if(/foot|plantar/.test(area)) out.push('foot-pain','plantar-fasciitis');
+    return out;
+  }
+
+  function symptomTokens(symptoms){
+    var out = [];
+    symptoms = symptoms || {};
+    Object.keys(symptoms).forEach(function(k){
+      if(!symptoms[k]) return;
+      out.push(lower(k));
+      if(k === 'sharp_pain') out.push('sharp-pain');
+      if(k === 'locking_or_catching') out.push('locking','catching');
+      if(k === 'numbness_or_tingling') out.push('numbness','tingling');
+      if(k === 'reduced_range') out.push('reduced-rom');
+    });
+    return out;
+  }
+
+  function injuryTokens(profile){
+    var details = injuryDetails(profile);
+    var out = [];
+    details.forEach(function(item){
+      out = out.concat(mapInjuryAreaToTokens(item.area));
+      out = out.concat(symptomTokens(item.symptoms));
     });
     var blob = lower(JSON.stringify(profile || {}));
     if(/biceps|elbow|forearm/.test(blob)) out.push('elbow-tendon-pain','biceps-pain');
@@ -106,6 +171,38 @@
     if(/back/.test(blob)) out.push('low-back-non-specific');
     if(/shoulder/.test(blob)) out.push('shoulder-impingement');
     return unique(out);
+  }
+
+  function hardInjuryTokens(profile){
+    var details = injuryDetails(profile);
+    var out = [];
+    details.forEach(function(item){
+      var severe = item.severity === 'moderate' || item.severity === 'significant' || item.status === 'worsening';
+      var symptoms = item.symptoms || {};
+      if(symptoms.sharp_pain || symptoms.locking_or_catching || symptoms.numbness_or_tingling) severe = true;
+      if(severe){
+        out = out.concat(mapInjuryAreaToTokens(item.area));
+        out = out.concat(symptomTokens(symptoms));
+      }
+    });
+    return unique(out);
+  }
+
+  function injuryPenaltyForExercise(ex, profile){
+    var details = injuryDetails(profile && profile.rawInjuries);
+    if(!details.length || !ex) return 0;
+    var caution = arr(ex.cautionIf).map(lower).join(' ');
+    var penalty = 0;
+    details.forEach(function(item){
+      var tokens = mapInjuryAreaToTokens(item.area).concat(symptomTokens(item.symptoms));
+      var match = tokens.some(function(t){ return caution.indexOf(lower(t)) > -1 || lower(t).indexOf(caution) > -1; });
+      if(!match) return;
+      if(item.severity === 'significant') penalty += 30;
+      else if(item.severity === 'moderate') penalty += 18;
+      else penalty += 8;
+      if(item.status === 'worsening') penalty += 12;
+    });
+    return penalty;
   }
 
   function currentPhase(){
@@ -130,7 +227,9 @@
       JSON.stringify(roadmap || {})
     ].join(' '));
 
-    var injuries = injuryTokens(options.injuries);
+    var rawInjuries = options.injuries || readJSON(KEY_INJURY, null) || readJSON(KEY_INJURY_LEGACY, {}) || {};
+    var injuries = hardInjuryTokens(rawInjuries);
+    var allInjuryTokens = injuryTokens(rawInjuries);
     var equip = equipmentList(options.equip);
 
     var profile = {
@@ -140,6 +239,9 @@
       days: Math.max(1, Math.min(7, parseInt(options.days || 4, 10))),
       equipment: equip,
       injuries: injuries,
+      allInjuryTokens: allInjuryTokens,
+      injuryDetails: injuryDetails(rawInjuries),
+      rawInjuries: rawInjuries,
       goalText: goalText,
       preferredPacks: arr(options.packs),
       recovery: Number(options.recovery || 3),
@@ -154,7 +256,7 @@
         goal: goalText,
         style: profile.style,
         notes: goalText,
-        injuries: injuries
+        injuries: allInjuryTokens
       })));
     }else{
       profile.packs = unique(arr(options.packs).concat(['core-library']));
@@ -176,7 +278,7 @@
       arr(ex.muscles).join(' ')
     ].join(' '));
 
-    tokens.forEach(function(t){
+    tokens.concat(profile.allInjuryTokens || []).forEach(function(t){
       if(blob.indexOf(lower(t)) > -1) score += 12;
     });
 
@@ -194,6 +296,7 @@
 
     score += Number(ex.movementQuality || 0);
     score -= Math.max(0, Number(ex.jointStress || 2) - 3) * 2;
+    score -= injuryPenaltyForExercise(ex, profile);
 
     // Controlled variety: keeps high-scoring suitable exercises near the top,
     // but stops identical criteria returning the exact same list every time.
@@ -347,6 +450,8 @@
       packs: profile.packs,
       equipment: profile.equipment,
       injuryProfile: profile.injuries,
+      injuryDetails: profile.injuryDetails,
+      allInjuryTokens: profile.allInjuryTokens,
       sessions: sessions.map(function(s, idx){
         s.day = s.day || idx + 1;
         return s;
@@ -404,6 +509,8 @@
     },
     library: [],
     injuryTokens: injuryTokens,
+    hardInjuryTokens: hardInjuryTokens,
+    injuryDetails: injuryDetails,
     currentPhase: currentPhase,
     buildProfile: buildProfile,
     buildSessions: buildSessions,

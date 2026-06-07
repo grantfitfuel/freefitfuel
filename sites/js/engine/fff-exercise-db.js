@@ -9,7 +9,7 @@
   var MANIFEST = BASE + 'manifest.json';
 
   var state = {
-    version: '6.6-operational-explicit-user-choice',
+    version: '6.7-system-metadata-linked',
     loaded: false,
     loading: null,
     manifest: null,
@@ -66,6 +66,10 @@
       regressions: unique(arr(ex.regressions)),
       progressions: unique(arr(ex.progressions)),
       alternatives: unique(arr(ex.alternatives)),
+      systems: unique(arr(ex.systems || ex.systemIds)),
+      sourceModules: arr(ex.sourceModules).filter(function(m){ return m && (m.id || m.url || m.label); }),
+      sourcePage: ex.sourcePage || '',
+      sourceLabel: ex.sourceLabel || '',
       aliases: unique(arr(ex.aliases).concat([ex.name, key]))
     });
 
@@ -81,6 +85,10 @@
       out.tags.join(' '),
       out.domains.join(' '),
       out.styleBias.join(' '),
+      out.systems.join(' '),
+      out.sourceModules.map(function(m){ return [m.id,m.label,m.url].join(' '); }).join(' '),
+      out.sourcePage,
+      out.sourceLabel,
       out.muscles.join(' '),
       out.difficulty.join(' ')
     ].join(' '));
@@ -224,6 +232,7 @@
     var packIds = arr(criteria.packIds || criteria.packs);
     var tokens = arr(criteria.tokens || criteria.goals || criteria.purposes || criteria.tags);
     var equipment = arr(criteria.equipment);
+    var systems = arr(criteria.systems || criteria.systemIds).map(lower);
     var injuries = arr(criteria.injuries || criteria.injuryTokens);
     var difficulty = arr(criteria.difficulty).map(lower);
     var limit = Number(criteria.limit) || 0;
@@ -231,6 +240,7 @@
     var list = getAll().filter(function(ex){
       if(packIds.length && packIds.indexOf(ex.packId) === -1) return false;
       if(tokens.length && !tokenMatch(ex, tokens)) return false;
+      if(systems.length && !arr(ex.systems).some(function(s){ return systems.indexOf(lower(s)) > -1; })) return false;
       if(equipment.length && !equipmentAllowed(ex, equipment)) return false;
       if(injuries.length && !injuryAllowed(ex, injuries)) return false;
       if(difficulty.length && !arr(ex.difficulty).some(function(d){ return difficulty.indexOf(lower(d)) > -1; })) return false;
@@ -261,6 +271,10 @@
         primaryMuscles: ex.primaryMuscles || [],
         secondaryMuscles: ex.secondaryMuscles || [],
         cautionIf: ex.cautionIf || [],
+        systems: ex.systems || [],
+        sourceModules: ex.sourceModules || [],
+        sourcePage: ex.sourcePage || '',
+        sourceLabel: ex.sourceLabel || '',
         regressions: ex.regressions || [],
         progressions: ex.progressions || [],
         alternatives: ex.alternatives || [],

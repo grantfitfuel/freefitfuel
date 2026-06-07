@@ -3564,37 +3564,11 @@
     }
 
     function openPersonalisedPlanInWorkouts(stage, stageIndex, exerciseName){
-      var fallbackPayload = buildWorkoutPayloadFromRoadmapStage(stage, stageIndex);
-
-      function finish(payload){
-        savePersonalisedWorkoutPayload(payload || fallbackPayload, exerciseName);
-        window.location.href = 'workouts.html';
-      }
-
-      try{
-        if(window.FFFPlanner && typeof window.FFFPlanner.readyBuildPayload === 'function'){
-          window.FFFPlanner.readyBuildPayload(buildPersonalisedPlanOptions(stage, stageIndex))
-            .then(function(payload){
-              if(payload && Array.isArray(payload.sessions) && payload.sessions.length){
-                finish(payload);
-              }else{
-                finish(fallbackPayload);
-              }
-            })
-            .catch(function(){
-              finish(fallbackPayload);
-            });
-          return;
-        }
-
-        if(window.FFFPlanner && typeof window.FFFPlanner.buildPersonalisedPlan === 'function'){
-          var directPayload = window.FFFPlanner.buildPersonalisedPlan(buildPersonalisedPlanOptions(stage, stageIndex));
-          finish(directPayload || fallbackPayload);
-          return;
-        }
-      }catch(err){}
-
-      finish(fallbackPayload);
+      // IMPORTANT: this must send the exact visible Personalised Plan / Roadmap stage to Workouts.
+      // Do not regenerate through FFFPlanner here, because that creates a different plan from the one the user clicked.
+      var exactPayload = buildWorkoutPayloadFromRoadmapStage(stage, stageIndex);
+      savePersonalisedWorkoutPayload(exactPayload, exerciseName);
+      window.location.href = 'workouts.html?builder=personalised-plan&t=' + Date.now();
     }
 
 
@@ -6264,7 +6238,7 @@ function buildLibraryPayload(style, sessions, equip){
         saveBuildYourWeekNamedPayload(payload);
         if(quickName) localStorage.setItem('fff.quickLog', quickName);
       }catch(err){}
-      window.location.href = 'workouts.html';
+      window.location.href = 'workouts.html?builder=build-your-week&t=' + Date.now();
     }
 
     function renderCards(mount, sessions){

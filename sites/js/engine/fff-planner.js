@@ -1,4 +1,4 @@
-// FreeFitFuel Engine — Modular Planner Layer v2.3
+// FreeFitFuel Engine — Modular Planner Layer v2.1
 // Purpose: Personalised Plan and Build My Week choose exercises from modular packs.
 // Replaces the old hard-coded LIB planner.
 (function(){
@@ -126,17 +126,21 @@
 
   function mapInjuryAreaToTokens(area){
     var out = [area];
-    if(/biceps|elbow|forearm/.test(area)) out.push('elbow-tendon-pain','biceps-pain');
-    if(/hip|groin/.test(area)) out.push('hip-tendon-pain-reduced-rom','hip-pain');
-    if(/knee|patella/.test(area)) out.push('clicky-knees-painful','knee-pain');
+    if(/biceps|upper_arm|upper arm|elbow|forearm/.test(area)) out.push('elbow-tendon-pain','biceps-pain','distal-biceps-tendon-irritation','forearm-pain');
+    if(/wrist|hand/.test(area)) out.push('wrist-pain','hand-pain','grip-pain');
+    if(/chest|rib/.test(area)) out.push('chest-rib-sensitivity','pressing-pain');
+    if(/hip|groin/.test(area)) out.push('hip-tendon-pain-reduced-rom','hip-pain','groin-strain');
+    if(/knee|patella/.test(area)) out.push('clicky-knees-painful','knee-pain','patellar-tendon-pain');
     if(/ankle/.test(area)) out.push('ankle-pain');
-    if(/achilles/.test(area)) out.push('achilles-pain');
-    if(/shin/.test(area)) out.push('shin-splints');
-    if(/back|lumbar/.test(area)) out.push('low-back-non-specific');
-    if(/shoulder/.test(area)) out.push('shoulder-impingement');
-    if(/neck/.test(area)) out.push('neck-pain');
-    if(/wrist/.test(area)) out.push('wrist-pain');
+    if(/achilles/.test(area)) out.push('achilles-pain','achilles-calf-sensitivity');
+    if(/shin/.test(area)) out.push('shin-splints','lower-leg-sensitivity');
+    if(/calf/.test(area)) out.push('calf-strain','achilles-calf-sensitivity');
     if(/foot|plantar/.test(area)) out.push('foot-pain','plantar-fasciitis');
+    if(/upper_back|mid_back|thoracic/.test(area)) out.push('upper-back-stiffness','thoracic-mobility-limitation');
+    if(/lower_back|back|lumbar/.test(area)) out.push('low-back-non-specific','disc-sensitivity');
+    if(/shoulder/.test(area)) out.push('shoulder-impingement','rotator-cuff-irritation');
+    if(/neck/.test(area)) out.push('neck-pain','shoulder-impingement');
+    if(/fatigue|recovery/.test(area)) out.push('fatigue','recovery-limited','deload-needed');
     return out;
   }
 
@@ -162,14 +166,18 @@
       out = out.concat(symptomTokens(item.symptoms));
     });
     var blob = lower(JSON.stringify(profile || {}));
-    if(/biceps|elbow|forearm/.test(blob)) out.push('elbow-tendon-pain','biceps-pain');
-    if(/hip/.test(blob)) out.push('hip-tendon-pain-reduced-rom','hip-pain');
+    if(/biceps|elbow|forearm/.test(blob)) out.push('elbow-tendon-pain','biceps-pain','forearm-pain');
+    if(/wrist|hand|grip/.test(blob)) out.push('wrist-pain','hand-pain','grip-pain');
+    if(/hip|groin/.test(blob)) out.push('hip-tendon-pain-reduced-rom','hip-pain','groin-strain');
     if(/knee/.test(blob)) out.push('clicky-knees-painful','knee-pain');
     if(/ankle/.test(blob)) out.push('ankle-pain');
-    if(/achilles/.test(blob)) out.push('achilles-pain');
+    if(/achilles/.test(blob)) out.push('achilles-pain','achilles-calf-sensitivity');
+    if(/calf/.test(blob)) out.push('calf-strain','achilles-calf-sensitivity');
     if(/shin/.test(blob)) out.push('shin-splints');
-    if(/back/.test(blob)) out.push('low-back-non-specific');
-    if(/shoulder/.test(blob)) out.push('shoulder-impingement');
+    if(/upper_back|mid_back|thoracic/.test(blob)) out.push('upper-back-stiffness','thoracic-mobility-limitation');
+    if(/lower_back|back|lumbar/.test(blob)) out.push('low-back-non-specific','disc-sensitivity');
+    if(/shoulder/.test(blob)) out.push('shoulder-impingement','rotator-cuff-irritation');
+    if(/fatigue|recovery/.test(blob)) out.push('fatigue','recovery-limited','deload-needed');
     return unique(out);
   }
 
@@ -236,42 +244,6 @@
     return false;
 }
 
-
-  function inferSystemBias(options, rawInjuries, allInjuryTokens){
-    options = options || {};
-    var out = [];
-    function add(id){ if(id && out.indexOf(id) === -1) out.push(id); }
-    arr(options.systems || options.systemIds || options.preferredSystems).forEach(add);
-
-    var text = lower([
-      options.goal, options.style, options.focus, options.notes,
-      arr(options.goals).join(' '), arr(allInjuryTokens).join(' '), JSON.stringify(rawInjuries || {})
-    ].join(' '));
-
-    if(/knee|patella|stairs|step.?down|squat pain/.test(text)) add('knee-capacity-reset');
-    if(/hip|knee|cramp|sitting stiffness|walking pain/.test(text)) add('hip-knee-pain-reset');
-    if(/ankle|calf|shin|achilles|foot|toe|plantar|balance|lower leg|running/.test(text)) add('lower-leg-stability-system');
-    if(/pull.?up|chin.?up|scapular|grip|lat|upper body strength/.test(text)) add('pull-up-progression-pathway');
-    if(/biceps|elbow|forearm|wrist|pressing pain|bench pain/.test(text)) add('biceps-elbow-pain-protocol');
-    if(/joint|control|mobility|stiff|range|warm.?up|beginner|over.?40/.test(text)) add('joint-control-foundations');
-    if(/recovery|fatigue|low energy|stress|sleep|easy day/.test(text)) add('daily-recovery-flow');
-    if(/fascia|deskbound|whole body|posture|stiffness|flow/.test(text)) add('fascia-flow-reset');
-    if(/lymph|circulation|walking|tai chi|low impact|gentle/.test(text)) add('lymphatic-recovery-flow');
-    if(/desk|sitting|chair|neck|hips|back|posture|work break/.test(text)) add('deskbound-reset-flow');
-    return out;
-  }
-
-  function systemsFromSessions(sessions){
-    var map = {};
-    arr(sessions).forEach(function(session){
-      arr(session.items).forEach(function(item){
-        arr(item.systems).forEach(function(id){ map[id] = true; });
-        arr(item.sourceModules).forEach(function(m){ if(m && m.id) map[m.id] = true; });
-      });
-    });
-    return Object.keys(map);
-  }
-
   function buildProfile(options){
     options = options || {};
     var roadmap = readJSON(KEY_ROADMAP, {}) || {};
@@ -288,7 +260,6 @@
     var operationalIntent = explicitOperationalIntent(options);
     var injuries = hardInjuryTokens(rawInjuries);
     var allInjuryTokens = injuryTokens(rawInjuries);
-    var systemBias = inferSystemBias(options, rawInjuries, allInjuryTokens);
     var equip = equipmentList(options.equip);
 
     var profile = {
@@ -299,7 +270,6 @@
       equipment: equip,
       injuries: injuries,
       allInjuryTokens: allInjuryTokens,
-      systems: systemBias,
       injuryDetails: injuryDetails(rawInjuries),
       rawInjuries: rawInjuries,
       goalText: goalText,
@@ -337,20 +307,11 @@
       arr(ex.domains).join(' '),
       arr(ex.styles).join(' '),
       arr(ex.styleBias).join(' '),
-      arr(ex.systems).join(' '),
-      arr(ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
-      ex.sourcePage || '',
-      ex.sourceLabel || '',
       arr(ex.muscles).join(' ')
     ].join(' '));
 
     tokens.concat(profile.allInjuryTokens || []).forEach(function(t){
       if(blob.indexOf(lower(t)) > -1) score += 12;
-    });
-
-    arr(profile.systems).forEach(function(systemId){
-      if(arr(ex.systems).indexOf(systemId) > -1) score += 18;
-      if(blob.indexOf(lower(systemId)) > -1) score += 8;
     });
 
     if(profile.phase === 'cut' && /strength|compound|carry|conditioning|work-capacity/.test(blob)) score += 4;
@@ -425,10 +386,6 @@
       progressions: ex.progressions || [],
       alternatives: ex.alternatives || [],
       cautionIf: ex.cautionIf || [],
-      systems: ex.systems || [],
-      sourceModules: ex.sourceModules || [],
-      sourcePage: ex.sourcePage || ((ex.sourceModules && ex.sourceModules[0] && ex.sourceModules[0].url) || ''),
-      sourceLabel: ex.sourceLabel || ((ex.sourceModules && ex.sourceModules[0] && ex.sourceModules[0].label) || ''),
       fatigueCost: ex.fatigueCost,
       jointStress: ex.jointStress,
       recoveryFriendliness: ex.recoveryFriendliness
@@ -527,8 +484,6 @@
       injuryProfile: profile.injuries,
       injuryDetails: profile.injuryDetails,
       allInjuryTokens: profile.allInjuryTokens,
-      systemBias: profile.systems,
-      recommendedSystems: systemsFromSessions(sessions),
       sessions: sessions.map(function(s, idx){
         s.day = s.day || idx + 1;
         return s;
@@ -574,7 +529,7 @@
   }
 
   window.FFFPlanner = {
-    version: '2.3-system-metadata-linked',
+    version: '2.2-operational-explicit-user-choice',
     keys: {
       roadmap: KEY_ROADMAP,
       equipment: KEY_EQUIP,

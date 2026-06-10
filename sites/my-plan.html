@@ -5128,6 +5128,28 @@
       }
     }
 
+    function getExplicitBicepsElbowSignals(){
+      var ctx = null;
+      try{ ctx = (typeof window.getMyPlanInjuryContext === 'function') ? window.getMyPlanInjuryContext() : null; }catch(err){}
+      var active = (ctx && Array.isArray(ctx.activeItems)) ? ctx.activeItems : [];
+      var selectedText = active.map(function(item){ return String(item.area || ''); }).join(' ').toLowerCase();
+      var notes = '';
+      try{ notes = String((document.getElementById('checkinNotes') || {}).value || '').toLowerCase(); }catch(err){}
+      try{
+        var latest = getLatestCheckinSafe ? getLatestCheckinSafe() : null;
+        if(latest && latest.notes) notes += ' ' + String(latest.notes).toLowerCase();
+      }catch(err){}
+      var elbow = /(^|[_\s-])(elbow|forearm)([_\s-]|$)|tennis elbow|golfers elbow|golfer's elbow/.test(selectedText + ' ' + notes);
+      var biceps = /bicep|biceps|upper[_\s-]*arm/.test(selectedText + ' ' + notes);
+      var pressing = /pressing pain|bench pain|pain pressing|pain during press|pain on press|outer bicep|distal bicep|tendon pain/.test(notes);
+      return { elbow: elbow, biceps: biceps, pressing: pressing, any: elbow || biceps || pressing };
+    }
+
+    function isBicepsElbowSystem(system){
+      var blob = String((system && (system.id + ' ' + system.title + ' ' + system.shortTitle)) || '').toLowerCase();
+      return /biceps-elbow|biceps \/ elbow|elbow pain protocol|biceps elbow/.test(blob);
+    }
+
     function buildSystemRecommendationProfile(){
       var profile = {};
       var latest = getLatestCheckinSafe();
@@ -5142,6 +5164,7 @@
       var trainingStatus = String((document.getElementById('trainingStatus') || {}).value || '').toLowerCase();
       var goalText = String(GOAL || '').toLowerCase();
       var equipment = loadEquipmentProfile ? loadEquipmentProfile() : null;
+      var explicitArmSignals = getExplicitBicepsElbowSignals();
 
       if(recoveryScore <= 3 || sleepScore <= 2) profile.recoveryNeed = true;
       if(energyScore <= 2 || emotion === 'drained' || emotion === 'flat') profile.lowEnergy = true;
@@ -5158,9 +5181,9 @@
       if(notes.match(/stiff|tight|mobility|restricted|fascia|sitting/)) profile.stiffness = true;
       if(notes.match(/desk|sitting|sedentary|office/)) profile.deskbound = true;
       if(notes.match(/pull.?up|chin.?up/) || roadmapText.indexOf('pull-up') > -1 || roadmapText.indexOf('pull up') > -1) profile.pullUpGoal = true;
-      if(notes.match(/elbow|tennis elbow/)) profile.elbowPain = true;
-      if(notes.match(/bicep|biceps/)) profile.bicepsPain = true;
-      if(notes.match(/press|bench|pressing pain/)) profile.pressingPain = true;
+      if(explicitArmSignals.elbow) profile.elbowPain = true;
+      if(explicitArmSignals.biceps) profile.bicepsPain = true;
+      if(explicitArmSignals.pressing) profile.pressingPain = true;
       if(notes.match(/balance|ankle|calf|foot|feet/)) profile.balanceNeed = true;
       if(notes.match(/lower leg|shin|ankle|calf|foot|feet/)) profile.lowerLegWeakness = true;
       if(notes.match(/acute|severe|swelling|redness|locking|numbness|chest pain|dizzy|dizziness/)) profile.acuteInjury = true;
@@ -5204,6 +5227,7 @@
       for(var i = 0; i < avoid.length; i++){
         if(profile[avoid[i]]) return -999;
       }
+      if(isBicepsElbowSystem(system) && !(profile.elbowPain || profile.bicepsPain || profile.pressingPain)) return -999;
       var score = 0;
       (hooks.suggestedWhen || []).forEach(function(flag){
         if(profile[flag]) score += 4;
@@ -6633,6 +6657,23 @@ function buildLibraryPayload(style, sessions, equip){
       return lower(notes.join(' '));
     }
 
+    function getExplicitArmInjurySignals(){
+      var ctx = null;
+      try{ ctx = (typeof window.getMyPlanInjuryContext === 'function') ? window.getMyPlanInjuryContext() : null; }catch(err){}
+      var active = (ctx && Array.isArray(ctx.activeItems)) ? ctx.activeItems : [];
+      var selectedText = active.map(function(item){ return String(item.area || ''); }).join(' ').toLowerCase();
+      var notes = getActiveNotes ? getActiveNotes() : '';
+      var elbow = /(^|[_\s-])(elbow|forearm)([_\s-]|$)|tennis elbow|golfers elbow|golfer's elbow/.test(selectedText + ' ' + notes);
+      var biceps = /bicep|biceps|upper[_\s-]*arm/.test(selectedText + ' ' + notes);
+      var pressing = /pressing pain|bench pain|pain pressing|pain during press|pain on press|outer bicep|distal bicep|tendon pain/.test(notes);
+      return { elbow: elbow, biceps: biceps, pressing: pressing, any: elbow || biceps || pressing };
+    }
+
+    function adaptiveIsBicepsElbowSystem(system){
+      var blob = lower([system && system.id, system && system.title, system && system.shortTitle].join(' '));
+      return /biceps-elbow|biceps \/ elbow|elbow pain protocol|biceps elbow/.test(blob);
+    }
+
     function getEquipmentState(){
       try{
         if(typeof getEquipmentProfileFromUI === 'function'){
@@ -6652,6 +6693,7 @@ function buildLibraryPayload(style, sessions, equip){
       var currentStage = roadmap && roadmap.stages && roadmap.stages[0] ? roadmap.stages[0] : null;
       var notes = getActiveNotes();
       var equipment = getEquipmentState();
+      var armSignals = getExplicitArmInjurySignals();
 
       var recovery = latest && latest.recovery != null ? Number(latest.recovery) : readRadio('recoveryScore', 3);
       var energy = latest && latest.energy != null ? Number(latest.energy) : readRadio('energyScore', 3);
@@ -6684,7 +6726,7 @@ function buildLibraryPayload(style, sessions, equip){
 
         kneePain: /knee|knees|patella|stairs|squat pain|lower body pain/.test(notes),
         hipPain: /hip|groin|inside hip|glute|sciatic/.test(notes),
-        elbowPain: /elbow|tennis elbow|outer bicep|biceps pain|pressing pain|tendon/.test(notes),
+        elbowPain: armSignals.any,
         stiffness: /stiff|tight|mobility|fascia|desk|sitting|sedentary|neck|posture/.test(notes),
         cramp: /cramp|calf cramp|spasm/.test(notes),
         pullUpGoal: /pull.?up|chin.?up|lat activation|scapular|calisthenics/.test(notes),
@@ -6892,6 +6934,8 @@ function buildLibraryPayload(style, sessions, equip){
       var reasons = [];
       var warnings = [];
 
+      if(adaptiveIsBicepsElbowSystem(system) && !(profile.flags && profile.flags.elbowPain)) return { system: system, score: -999, priority: 'blocked', reasons: ['requires biceps, elbow, forearm or pressing-pain signal'], warnings: [] };
+
       if(!system || !system.planHooks || !system.planHooks.myPlanDrawsFrom){
         total -= 25;
         warnings.push('not currently marked for My Plan use');
@@ -7056,6 +7100,23 @@ function buildLibraryPayload(style, sessions, equip){
       try{return JSON.parse(localStorage.getItem(key) || 'null');}catch(e){return null;}
     }
 
+    function getExplicitArmHubSignals(){
+      var ctx = null;
+      try{ ctx = (typeof window.getMyPlanInjuryContext === 'function') ? window.getMyPlanInjuryContext() : null; }catch(err){}
+      var active = (ctx && Array.isArray(ctx.activeItems)) ? ctx.activeItems : [];
+      var selectedText = active.map(function(item){ return String(item.area || ''); }).join(' ').toLowerCase();
+      var userNotes = lower([value('checkinNotes'), getLS('fff.weekly.checkins.v1')].join(' '));
+      var elbow = /(^|[_\s-])(elbow|forearm)([_\s-]|$)|tennis elbow|golfers elbow|golfer's elbow/.test(selectedText + ' ' + userNotes);
+      var biceps = /bicep|biceps|upper[_\s-]*arm/.test(selectedText + ' ' + userNotes);
+      var pressing = /pressing pain|bench pain|pain pressing|pain during press|pain on press|outer bicep|distal bicep|tendon pain/.test(userNotes);
+      return { elbow: elbow, biceps: biceps, pressing: pressing, any: elbow || biceps || pressing };
+    }
+
+    function isHubBicepsElbowSystem(system){
+      var blob = lower([system && system.id, system && system.title, system && system.shortTitle].join(' '));
+      return /biceps-elbow|biceps \/ elbow|elbow pain protocol|biceps elbow/.test(blob);
+    }
+
     var FALLBACK_SYSTEMS = [
       {
         id:'operational-fitness',
@@ -7204,6 +7265,7 @@ function buildLibraryPayload(style, sessions, equip){
       var energy = n('energyScore', latest && latest.energy ? Number(latest.energy) : 3);
       var sleep = n('sleepScore', latest && latest.sleep ? Number(latest.sleep) : 3);
       var emotion = lower(value('emotionalLevel') || (latest && latest.emotional_level) || 'steady');
+      var armSignals = getExplicitArmHubSignals();
 
       return {
         notes: notes,
@@ -7215,7 +7277,8 @@ function buildLibraryPayload(style, sessions, equip){
         knee: /knee|patella|stairs|step down|squat pain/.test(notes),
         lowerLeg: /ankle|calf|shin|achilles|foot|plantar|balance/.test(notes),
         running: /run|running|5k|10k|marathon|endurance/.test(notes),
-        pull: /pull.?up|chin.?up|upper body|grip|biceps|back strength/.test(notes),
+        pull: /pull.?up|chin.?up|upper body|grip|back strength/.test(notes),
+        elbowBicepsPain: armSignals.any,
         joint: /joint|mobility|stability|control|injury|pain/.test(notes)
       };
     }
@@ -7225,6 +7288,10 @@ function buildLibraryPayload(style, sessions, equip){
       var score = 8;
       var reasons = [];
 
+      if(isHubBicepsElbowSystem(system) && !profile.elbowBicepsPain){
+        return { system: system, score: 0, reasons: [] };
+      }
+
       function hit(condition, points, reason){
         if(condition){ score += points; reasons.push(reason); }
       }
@@ -7232,7 +7299,8 @@ function buildLibraryPayload(style, sessions, equip){
       hit(profile.operational && /operational|police|fire|army|rescue|tactical|ruck|work capacity|blue light/.test(blob), 45, 'matches your operational or work-capacity focus');
       hit(profile.knee && /knee/.test(blob), 42, 'supports the knee issue recorded in your plan signals');
       hit(profile.lowerLeg && /lower-leg|ankle|calf|shin|achilles|foot|balance/.test(blob), 40, 'supports lower-leg, ankle, calf, shin or balance work');
-      hit(profile.pull && /pull|upper body|grip|biceps/.test(blob), 35, 'supports pulling strength, grip or upper-body progression');
+      hit(profile.pull && /pull|upper body|grip/.test(blob), 35, 'supports pulling strength, grip or upper-body progression');
+      hit(profile.elbowBicepsPain && /biceps-elbow|biceps|elbow|tendon/.test(blob), 45, 'matches a selected biceps, elbow, forearm or pressing-pain signal');
       hit(profile.running && /running|run|endurance|conditioning/.test(blob), 30, 'supports your running or endurance direction');
       hit(profile.recoveryNeed && /recovery|mobility|flow|joint control|fascia|lymphatic/.test(blob), 38, 'keeps training moving while recovery is limited');
       hit(profile.joint && /joint|mobility|control|stability|physio|reset/.test(blob), 28, 'supports movement quality and injury-aware training');
@@ -7379,23 +7447,31 @@ function buildLibraryPayload(style, sessions, equip){
   function titleFromKey(key){ return String(key || '').replace(/_/g,' ').replace(/-/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }); }
 
   var INJURY_ENGINE_MAP = {
-    neck:['shoulder-impingement','rotator-cuff-irritation'],
+    neck:['neck-pain','shoulder-impingement','rotator-cuff-irritation'],
     shoulder:['shoulder-impingement','rotator-cuff-irritation'],
-    elbow:['tennis-elbow','golfers-elbow','distal-biceps-tendon-irritation'],
-    wrist:['wrist-pain'],
-    upper_back:['low-back-non-specific'],
+    upper_arm_biceps:['biceps-pain','distal-biceps-tendon-irritation','elbow-tendon-pain'],
+    elbow:['tennis-elbow','golfers-elbow','distal-biceps-tendon-irritation','elbow-tendon-pain','biceps-pain'],
+    forearm:['forearm-pain','tennis-elbow','golfers-elbow','elbow-tendon-pain'],
+    wrist_hand:['wrist-pain','hand-pain','grip-pain'],
+    chest_ribs:['chest-rib-sensitivity','pressing-pain'],
+    upper_back:['upper-back-stiffness','thoracic-mobility-limitation','low-back-non-specific'],
+    mid_back:['thoracic-mobility-limitation','upper-back-stiffness'],
     lower_back:['low-back-non-specific','disc-sensitivity'],
-    hip:['hip-flexor-tendon-pain','hip-tendon-pain-reduced-rom','glute-med-tendinopathy'],
-    knee:['knee-pain-general','patellar-tendon-pain'],
-    ankle:['achilles-calf-sensitivity'],
-    foot:['plantar-fasciitis'],
-    achilles:['achilles-calf-sensitivity'],
-    plantar_fascia:['plantar-fasciitis'],
+    hip:['hip-flexor-tendon-pain','hip-tendon-pain-reduced-rom','glute-med-tendinopathy','hip-pain'],
+    groin:['groin-strain','hip-tendon-pain-reduced-rom','hip-pain'],
+    knee:['knee-pain-general','patellar-tendon-pain','clicky-knees-painful'],
+    shin:['shin-splints','lower-leg-sensitivity'],
+    calf:['calf-strain','achilles-calf-sensitivity'],
+    achilles:['achilles-calf-sensitivity','achilles-pain'],
+    ankle:['ankle-pain','achilles-calf-sensitivity'],
+    foot:['foot-pain','plantar-fasciitis'],
+    plantar_fascia:['plantar-fasciitis','foot-pain'],
+    general_fatigue_recovery:['fatigue','recovery-limited','deload-needed'],
     clicking_or_popping:['clicky-knees-painless'],
     locking_or_catching:['clicky-knees-painful'],
-    sharp_pain:['knee-pain-general'],
-    cramp:['achilles-calf-sensitivity'],
-    numbness_or_tingling:['disc-sensitivity']
+    sharp_pain:['sharp-pain','knee-pain-general'],
+    cramp:['cramp','achilles-calf-sensitivity'],
+    numbness_or_tingling:['numbness','tingling','disc-sensitivity']
   };
 
   function selectedBooleanKeys(profile){
@@ -7610,7 +7686,28 @@ function buildLibraryPayload(style, sessions, equip){
     return saveNormalisedInjuryProfile(readJSON(INJURY_KEY, {}));
   }
 
-  var FFF_INJURY_AREAS = ['Neck','Shoulder','Elbow','Wrist','Upper back','Lower back','Hip','Knee','Ankle','Foot','Achilles','Plantar fascia'];
+  var FFF_INJURY_AREAS = [
+    'Neck',
+    'Shoulder',
+    'Upper arm / Biceps',
+    'Elbow',
+    'Forearm',
+    'Wrist / Hand',
+    'Chest / Ribs',
+    'Upper back',
+    'Mid back',
+    'Lower back',
+    'Hip',
+    'Groin',
+    'Knee',
+    'Shin',
+    'Calf',
+    'Achilles',
+    'Ankle',
+    'Foot',
+    'Plantar fascia',
+    'General fatigue / recovery'
+  ];
   var FFF_INJURY_SYMPTOMS = [
     ['pain','Pain'],
     ['reduced_range','Reduced range'],
@@ -7855,7 +7952,7 @@ function buildLibraryPayload(style, sessions, equip){
       if(/knee|ankle|achilles|foot|plantar_fascia|hip/.test(area) && /low-impact|supported|isometric|recovery|mobility|tempo-control|controlled/.test(blob)){
         score += improving ? 10 : 7;
       }
-      if(/shoulder|elbow|wrist|neck|upper_back|lower_back/.test(area) && /neutral-grip|supported|banded-light|scapular-control|isometric|mobility/.test(blob)){
+      if(/shoulder|upper_arm_biceps|elbow|forearm|wrist_hand|neck|upper_back|mid_back|lower_back|chest_ribs/.test(area) && /neutral-grip|supported|banded-light|scapular-control|isometric|mobility/.test(blob)){
         score += improving ? 10 : 7;
       }
     });

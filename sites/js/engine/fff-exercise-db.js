@@ -227,6 +227,32 @@
     });
   }
 
+
+  function isFootIntrinsicDrill(ex){
+    var blob = lower([
+      ex && ex.key,
+      ex && ex.name,
+      ex && ex.family,
+      arr(ex && ex.tags).join(' '),
+      arr(ex && ex.purposes).join(' '),
+      arr(ex && ex.systems).join(' '),
+      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' ')
+    ].join(' '));
+    return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
+  }
+
+  function hasExplicitFootLowerLegInjury(criteria){
+    criteria = criteria || {};
+    if(criteria.allowFootIntrinsic === true) return true;
+    var injuries = arr(criteria.injuries || criteria.injuryTokens).map(lower).join(' ');
+    return /(foot|toe|plantar|plantar-fasciitis|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)/.test(injuries);
+  }
+
+  function footIntrinsicAllowed(ex, criteria){
+    if(!isFootIntrinsicDrill(ex)) return true;
+    return hasExplicitFootLowerLegInjury(criteria);
+  }
+
   function filter(criteria){
     criteria = criteria || {};
     var packIds = arr(criteria.packIds || criteria.packs);
@@ -239,6 +265,7 @@
 
     var list = getAll().filter(function(ex){
       if(packIds.length && packIds.indexOf(ex.packId) === -1) return false;
+      if(!footIntrinsicAllowed(ex, criteria)) return false;
       if(tokens.length && !tokenMatch(ex, tokens)) return false;
       if(systems.length && !arr(ex.systems).some(function(s){ return systems.indexOf(lower(s)) > -1; })) return false;
       if(equipment.length && !equipmentAllowed(ex, equipment)) return false;
@@ -348,6 +375,8 @@
     selectRelevantPacks: selectRelevantPacks,
     equipmentAllowed: equipmentAllowed,
     injuryAllowed: injuryAllowed,
+    isFootIntrinsicDrill: isFootIntrinsicDrill,
+    footIntrinsicAllowed: footIntrinsicAllowed,
     _state: state
   };
 

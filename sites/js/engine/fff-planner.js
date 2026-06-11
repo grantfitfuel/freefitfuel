@@ -337,7 +337,7 @@
       arr(ex && ex.purposes).join(' '),
       arr(ex && ex.systems).join(' ')
     ].join(' '));
-    return /toe|big-toe|short-foot|towel-scrunch|foot-intrinsic|foot-control|plantar/.test(blob);
+    return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
   }
 
   function sessionSlot(title, subtitle, tokens){
@@ -476,7 +476,10 @@
   function choose(pool, tokens, profile, used, count, slot){
     count = count || 1;
     var scored = arr(pool)
-      .filter(function(ex){ return roleAllowedForSlot(ex, slot || 'strength', tokens, profile); })
+      .filter(function(ex){
+        if(isFootIntrinsicDrill(ex) && !hasExplicitFootLowerLegSignal(profile)) return false;
+        return roleAllowedForSlot(ex, slot || 'strength', tokens, profile);
+      })
       .map(function(ex){ return { ex: ex, score: scoreExercise(ex, tokens, profile, used, slot || 'strength') }; })
       .filter(function(item){ return item.score > -20; })
       .sort(function(a,b){ return b.score - a.score; });

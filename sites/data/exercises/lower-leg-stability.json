@@ -1512,9 +1512,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -1534,7 +1535,9 @@
     ],
     "tags": [
       "band",
-      "toe-spread"
+      "toe-spread",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -1603,12 +1606,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "bent-knee-calf-raise",
@@ -1852,9 +1870,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -1873,7 +1892,9 @@
       "plantar-fascia"
     ],
     "tags": [
-      "big-toe"
+      "big-toe",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -1940,14 +1961,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "big-toe-press",
@@ -1964,9 +2000,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -1986,7 +2023,9 @@
       "big-toe-pain"
     ],
     "tags": [
-      "big-toe"
+      "big-toe",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -2053,14 +2092,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "big-toe-press-calf-raise",
@@ -2077,9 +2131,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "calves",
@@ -2102,7 +2157,9 @@
     ],
     "tags": [
       "big-toe",
-      "calf"
+      "calf",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -2169,14 +2226,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "calf-isometric-hold",
@@ -4510,9 +4582,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -4531,7 +4604,9 @@
       "plantar-fascia"
     ],
     "tags": [
-      "toe-control"
+      "toe-control",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -4598,14 +4673,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "loaded-knee-to-wall",
@@ -5255,8 +5345,8 @@
       "operational-fitness"
     ],
     "purposes": [
-      "strength",
-      "conditioning"
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "full-body"
@@ -5271,7 +5361,9 @@
     ],
     "cautionIf": [],
     "tags": [
-      "lower-leg-stability"
+      "lower-leg-stability",
+      "foot",
+      "foot-intrinsics"
     ],
     "aliases": [
       "Lower Leg Stability Exercise 12",
@@ -5331,12 +5423,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "lower-leg-stability-exercise-13",
@@ -5632,8 +5739,8 @@
       "operational-fitness"
     ],
     "purposes": [
-      "strength",
-      "conditioning"
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "full-body"
@@ -5648,7 +5755,9 @@
     ],
     "cautionIf": [],
     "tags": [
-      "lower-leg-stability"
+      "lower-leg-stability",
+      "foot",
+      "foot-intrinsics"
     ],
     "aliases": [
       "Lower Leg Stability Exercise 3",
@@ -5708,12 +5817,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "lower-leg-stability-exercise-4",
@@ -6009,8 +6133,8 @@
       "operational-fitness"
     ],
     "purposes": [
-      "strength",
-      "conditioning"
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "full-body"
@@ -6025,7 +6149,9 @@
     ],
     "cautionIf": [],
     "tags": [
-      "lower-leg-stability"
+      "lower-leg-stability",
+      "foot",
+      "foot-intrinsics"
     ],
     "aliases": [
       "Lower Leg Stability Exercise 7",
@@ -6085,12 +6211,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "lower-leg-stability-exercise-8",
@@ -6295,9 +6436,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -6317,7 +6459,8 @@
     ],
     "tags": [
       "coordination",
-      "foot"
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -6384,14 +6527,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "multi-direction-band-balance",
@@ -6982,9 +7140,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -7003,7 +7162,8 @@
       "plantar-fascia"
     ],
     "tags": [
-      "foot-intrinsics"
+      "foot-intrinsics",
+      "foot"
     ],
     "alternatives": [
       "tripod-foot-drill"
@@ -7072,12 +7232,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "short-foot-hold",
@@ -7094,9 +7269,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -7115,7 +7291,9 @@
       "plantar-fascia"
     ],
     "tags": [
-      "arch-control"
+      "arch-control",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -7184,12 +7362,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "single-leg-ankle-car",
@@ -8740,9 +8933,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -8765,7 +8959,9 @@
     ],
     "tags": [
       "single-leg",
-      "arch-control"
+      "arch-control",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -8834,12 +9030,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "single-leg-soleus-raise",
@@ -10939,9 +11150,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -10960,7 +11172,9 @@
       "plantar-fascia"
     ],
     "tags": [
-      "toe-spread"
+      "toe-spread",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -11029,12 +11243,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "toe-spread-hold",
@@ -11051,9 +11280,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -11072,7 +11302,9 @@
       "plantar-fascia"
     ],
     "tags": [
-      "toe-spread"
+      "toe-spread",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -11141,12 +11373,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "toe-up-wall-sit",
@@ -11276,10 +11523,9 @@
       "rebuild-recovery"
     ],
     "purposes": [
-      "strength",
-      "conditioning",
-      "hypertrophy",
-      "recovery"
+      "recovery",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -11299,7 +11545,8 @@
     ],
     "tags": [
       "foot",
-      "toe-control"
+      "toe-control",
+      "foot-intrinsics"
     ],
     "alternatives": [
       "short-foot-drill"
@@ -11369,12 +11616,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "towel-scrunch",
@@ -11391,9 +11653,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -11413,7 +11676,8 @@
     ],
     "tags": [
       "towel",
-      "foot"
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -11482,12 +11746,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "tripod-foot-balance",
@@ -11504,9 +11783,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -11530,7 +11810,9 @@
     ],
     "tags": [
       "balance",
-      "tripod-foot"
+      "tripod-foot",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -11597,14 +11879,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "tripod-foot-drill",
@@ -11621,9 +11918,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -11644,7 +11942,9 @@
       "plantar-fascia"
     ],
     "tags": [
-      "tripod-foot"
+      "tripod-foot",
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -11711,14 +12011,29 @@
     ],
     "sourcePage": "/systems/lower-leg-stability-system.html",
     "sourceLabel": "Lower-Leg Stability System",
-    "plannerRole": "mobility",
+    "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
+      "activation",
       "mobility",
       "recovery",
-      "rehab"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "wall-drive-march",
@@ -12664,9 +12979,10 @@
     ],
     "purposes": [
       "injury-resilience",
-      "strength",
       "balance",
-      "return-to-running"
+      "return-to-running",
+      "activation",
+      "rehab"
     ],
     "muscles": [
       "foot-intrinsics",
@@ -12686,7 +13002,8 @@
     ],
     "tags": [
       "towel",
-      "foot"
+      "foot",
+      "foot-intrinsics"
     ],
     "alternatives": [],
     "regressions": [
@@ -12755,12 +13072,27 @@
     "sourceLabel": "Lower-Leg Stability System",
     "plannerRole": "activation",
     "allowedSlots": [
-      "warm-up",
-      "rehab",
+      "activation",
+      "mobility",
       "recovery",
-      "mobility"
+      "rehab",
+      "warmup",
+      "warm-up"
     ],
-    "notMainLift": true
+    "notMainLift": true,
+    "bodyRegion": "foot",
+    "primaryRegion": "foot",
+    "requiresInjurySignal": [
+      "foot",
+      "toe",
+      "plantar",
+      "ankle",
+      "achilles",
+      "shin",
+      "calf",
+      "lower-leg",
+      "balance"
+    ]
   },
   {
     "key": "y-balance",

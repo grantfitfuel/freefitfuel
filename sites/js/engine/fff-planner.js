@@ -298,7 +298,117 @@
     return profile;
   }
 
-  function scoreExercise(ex, tokens, profile, used){
+
+  function exerciseRole(ex){
+    return lower((ex && (ex.plannerRole || ex.plannerTier || ex.type)) || '');
+  }
+
+  function tokenBlob(tokens){
+    return lower(arr(tokens).join(' '));
+  }
+
+  function selectedInjuryAreas(profile){
+    return injuryDetails(profile && profile.rawInjuries).map(function(item){ return lower(item.area); });
+  }
+
+  function hasExplicitFootLowerLegSignal(profile){
+    var areas = selectedInjuryAreas(profile).join(' ');
+    var tokens = arr(profile && profile.allInjuryTokens).map(lower).join(' ');
+    return /\b(foot|toe|plantar|plantar-fascia|ankle|achilles|shin|calf|lower-leg|balance)\b/.test(areas + ' ' + tokens);
+  }
+
+  function isFootIntrinsicDrill(ex){
+    var blob = lower([
+      ex && ex.key,
+      ex && ex.name,
+      ex && ex.family,
+      arr(ex && ex.tags).join(' '),
+      arr(ex && ex.purposes).join(' '),
+      arr(ex && ex.systems).join(' ')
+    ].join(' '));
+    return /toe|big-toe|short-foot|towel-scrunch|foot-intrinsic|foot-control|plantar/.test(blob);
+  }
+
+  function sessionSlot(title, subtitle, tokens){
+    var text = lower([title, subtitle, tokenBlob(tokens)].join(' '));
+    if(/recovery|mobility|flow|breathing|fascia|lymphatic|joint-control/.test(text)) return 'recovery';
+    if(/pain-aware|targeted|physio|rehab|capacity|stability|balance/.test(text)) return 'rehab';
+    if(/conditioning|run|running|zone|interval|carry|loaded|ruck|crawl|shuttle|work-capacity|capacity day/.test(text)) return 'conditioning';
+    return 'strength';
+  }
+
+  function roleAllowedForSlot(ex, slot, tokens, profile){
+    var role = exerciseRole(ex);
+    var allowed = arr(ex && ex.allowedSlots).map(lower);
+
+    // Foot/toe micro-drills must never appear unless the user has an explicit foot, ankle,
+    // Achilles, plantar, shin, calf, balance or lower-leg signal. Knee alone is not enough.
+    if(isFootIntrinsicDrill(ex) && !hasExplicitFootLowerLegSignal(profile)) return false;
+
+    // Micro drills are never headline strength or conditioning picks.
+    if(ex && ex.notMainLift && (slot === 'strength' || slot === 'conditioning')) return false;
+
+    if(slot === 'strength'){
+      return ['main','secondary','accessory','skill'].indexOf(role) > -1 ||
+             allowed.indexOf('main') > -1 ||
+             allowed.indexOf('secondary') > -1 ||
+             allowed.indexOf('accessory') > -1 ||
+             allowed.indexOf('strength') > -1;
+    }
+
+    if(slot === 'conditioning'){
+      if(['activation','mobility','recovery','rehab'].indexOf(role) > -1) return false;
+      return ['conditioning','main','secondary','accessory','skill'].indexOf(role) > -1 ||
+             allowed.indexOf('conditioning') > -1;
+    }
+
+    if(slot === 'rehab'){
+      return ['rehab','mobility','activation','accessory'].indexOf(role) > -1 ||
+             allowed.indexOf('rehab') > -1 ||
+             allowed.indexOf('mobility') > -1 ||
+             allowed.indexOf('activation') > -1;
+    }
+
+    if(slot === 'recovery'){
+      return ['recovery','mobility','activation','rehab'].indexOf(role) > -1 ||
+             allowed.indexOf('recovery') > -1 ||
+             allowed.indexOf('mobility') > -1 ||
+             allowed.indexOf('warmup') > -1 ||
+             allowed.indexOf('warm-up') > -1;
+    }
+
+    return true;
+  }
+
+  function roleScoreForSlot(ex, slot){
+    var role = exerciseRole(ex);
+    if(slot === 'strength'){
+      if(role === 'main') return 14;
+      if(role === 'secondary' || role === 'accessory' || role === 'skill') return 8;
+      return -40;
+    }
+    if(slot === 'conditioning'){
+      if(role === 'conditioning') return 14;
+      if(role === 'main' || role === 'accessory') return 5;
+      return -35;
+    }
+    if(slot === 'rehab'){
+      if(role === 'rehab') return 14;
+      if(role === 'mobility') return 8;
+      if(role === 'accessory') return 4;
+      if(role === 'activation') return 1;
+      return -20;
+    }
+    if(slot === 'recovery'){
+      if(role === 'recovery') return 14;
+      if(role === 'mobility') return 10;
+      if(role === 'activation' || role === 'rehab') return 6;
+      return -25;
+    }
+    return 0;
+  }
+
+  function scoreExercise(ex, tokens, profile, used, slot){
     var score = 0;
     var blob = lower([
       ex.key, ex.name, ex.family, ex.movement,
@@ -307,12 +417,18 @@
       arr(ex.domains).join(' '),
       arr(ex.styles).join(' '),
       arr(ex.styleBias).join(' '),
+      arr(ex.systems).join(' '),
+      arr(ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
+      ex.sourcePage || '',
+      ex.sourceLabel || '',
       arr(ex.muscles).join(' ')
     ].join(' '));
 
     tokens.concat(profile.allInjuryTokens || []).forEach(function(t){
       if(blob.indexOf(lower(t)) > -1) score += 12;
     });
+
+    score += roleScoreForSlot(ex, slot || 'strength');
 
     if(profile.phase === 'cut' && /strength|compound|carry|conditioning|work-capacity/.test(blob)) score += 4;
     if(profile.phase === 'build' && /hypertrophy|strength|push|pull|squat|hinge|lunge/.test(blob)) score += 4;
@@ -346,10 +462,11 @@
     });
   }
 
-  function choose(pool, tokens, profile, used, count){
+  function choose(pool, tokens, profile, used, count, slot){
     count = count || 1;
     var scored = arr(pool)
-      .map(function(ex){ return { ex: ex, score: scoreExercise(ex, tokens, profile, used) }; })
+      .filter(function(ex){ return roleAllowedForSlot(ex, slot || 'strength', tokens, profile); })
+      .map(function(ex){ return { ex: ex, score: scoreExercise(ex, tokens, profile, used, slot || 'strength') }; })
       .filter(function(item){ return item.score > -20; })
       .sort(function(a,b){ return b.score - a.score; });
 
@@ -388,14 +505,26 @@
       cautionIf: ex.cautionIf || [],
       fatigueCost: ex.fatigueCost,
       jointStress: ex.jointStress,
-      recoveryFriendliness: ex.recoveryFriendliness
+      recoveryFriendliness: ex.recoveryFriendliness,
+      plannerRole: ex.plannerRole || '',
+      allowedSlots: ex.allowedSlots || [],
+      notMainLift: !!ex.notMainLift,
+      systems: ex.systems || [],
+      sourceModules: ex.sourceModules || [],
+      sourcePage: ex.sourcePage || '',
+      sourceLabel: ex.sourceLabel || ''
     };
   }
 
   function buildSession(title, subtitle, tokenGroups, pool, profile, used){
     var items = [];
     tokenGroups.forEach(function(group){
-      choose(pool, group, profile, used, 1).forEach(function(ex){ items.push(exercisePayload(ex)); });
+      var slot = sessionSlot(title, subtitle, group);
+      var picked = choose(pool, group, profile, used, 1, slot);
+      if(!picked.length && slot === 'strength'){
+        picked = choose(pool, group, profile, used, 1, 'rehab');
+      }
+      picked.forEach(function(ex){ items.push(exercisePayload(ex)); });
     });
 
     return {
@@ -529,7 +658,7 @@
   }
 
   window.FFFPlanner = {
-    version: '2.2-operational-explicit-user-choice',
+    version: '2.5-region-role-slot-guard',
     keys: {
       roadmap: KEY_ROADMAP,
       equipment: KEY_EQUIP,

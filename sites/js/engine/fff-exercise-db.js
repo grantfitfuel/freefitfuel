@@ -287,7 +287,11 @@
         fatigueCost: ex.fatigueCost || 3,
         skillDemand: ex.skillDemand || 2,
         recoveryFriendliness: ex.recoveryFriendliness || 3,
-        movementQuality: ex.movementQuality || 4
+        movementQuality: ex.movementQuality || 4,
+        plannerRole: ex.plannerRole || '',
+        allowedSlots: ex.allowedSlots || [],
+        notMainLift: !!ex.notMainLift,
+        plannerTier: ex.plannerTier || ''
       };
     });
   }

@@ -1,10 +1,10 @@
 {
-  "version": "6.4-pack6c-expanded",
+  "version": "7.0-core-library-1000-role-slots",
   "packs": [
     {
       "id": "core-library",
       "file": "core-library.json",
-      "count": 103
+      "count": 1000
     },
     {
       "id": "knee-capacity-reset",
@@ -37,5 +37,5 @@
       "count": 8
     }
   ],
-  "note": "Pack 6 Operational Fitness cleanup merged. Numbered scaffold records removed and replaced with named FreeFitFuel operational records."
+  "note": "Core Library expanded to 1000 exercises; plannerRole, allowedSlots and notMainLift metadata added across all exercise packs."
 }

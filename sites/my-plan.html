@@ -5831,6 +5831,54 @@
       }
     }
 
+
+    function mpxLower(v){ return String(v == null ? '' : v).toLowerCase(); }
+    function mpxArr(v){ return Array.isArray(v) ? v : (v == null ? [] : [v]); }
+    function mpxActiveInjuryAreas(){
+      try{
+        var ctx = (typeof getMyPlanInjuryContext === 'function') ? getMyPlanInjuryContext() : null;
+        if(ctx && Array.isArray(ctx.activeItems)) return ctx.activeItems.map(function(item){ return mpxLower(item.area); });
+        if(ctx && Array.isArray(ctx.selected)) return ctx.selected.map(mpxLower);
+        var raw = readJSON('fff.myplan.injuries.v2', {}) || {};
+        if(raw.items){
+          return Object.keys(raw.items).filter(function(k){ return raw.items[k] && raw.items[k].active; }).map(mpxLower);
+        }
+      }catch(err){}
+      return [];
+    }
+    function mpxHasExplicitFootLowerLeg(){
+      return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)\b/.test(mpxActiveInjuryAreas().join(' '));
+    }
+    function mpxIsFootIntrinsicDrill(item){
+      var blob = mpxLower([
+        item && item.key,
+        item && item.name,
+        item && item.family,
+        mpxArr(item && item.tags).join(' '),
+        mpxArr(item && item.purposes).join(' '),
+        mpxArr(item && item.systems).join(' '),
+        mpxArr(item && item.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' ')
+      ].join(' '));
+      return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|single\s*-?\s*leg\s*-?\s*short\s*-?\s*foot|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
+    }
+    function mpxIsLowerLegMicroDrill(item){
+      var blob = mpxLower([
+        item && item.key,
+        item && item.name,
+        item && item.family,
+        mpxArr(item && item.tags).join(' '),
+        mpxArr(item && item.purposes).join(' '),
+        mpxArr(item && item.systems).join(' '),
+        mpxArr(item && item.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' ')
+      ].join(' '));
+      if(mpxIsFootIntrinsicDrill(item)) return true;
+      return /(tibialis\s*-?\s*(walk|march|raise)|single\s*-?\s*leg\s*-?\s*tibialis|band\s*-?\s*dorsiflexion|dorsiflexion|heel\s*-?\s*walk|ankle\s*-?\s*(alphabet|circle|mobility|rocker)|calf\s*-?\s*isometric|soleus\s*-?\s*raise)/.test(blob);
+    }
+    function mpxBuilderItemAllowedForInjuries(item){
+      if(!mpxIsLowerLegMicroDrill(item)) return true;
+      return mpxHasExplicitFootLowerLeg();
+    }
+
     function loadLibrary(){
       var injuryCtx = (typeof getMyPlanInjuryContext === 'function') ? getMyPlanInjuryContext() : { injuries: [], hardInjuries: [] };
       var equipmentProfile = (typeof getEquipmentProfileFromUI === 'function') ? getEquipmentProfileFromUI() : loadEquipment();
@@ -5842,12 +5890,32 @@
       if(equipment.indexOf('bw') === -1) equipment.push('bw');
 
       if(window.FFFExerciseDB && typeof window.FFFExerciseDB.getMyPlanLibrary === 'function'){
+        var activeAreas = mpxActiveInjuryAreas();
+        var relevantPacks = ['core-library'];
+        try{
+          if(window.FFFExerciseDB && typeof window.FFFExerciseDB.selectRelevantPacks === 'function'){
+            relevantPacks = window.FFFExerciseDB.selectRelevantPacks({
+              goal: GOAL || '',
+              style: 'mixed',
+              focus: '',
+              notes: '',
+              injuries: injuryCtx.hardInjuries || injuryCtx.injuries || [],
+              activeInjuryAreas: activeAreas
+            });
+          }
+          if(!mpxHasExplicitFootLowerLeg()) relevantPacks = relevantPacks.filter(function(id){ return id !== 'lower-leg-stability'; });
+          if(relevantPacks.indexOf('core-library') === -1) relevantPacks.unshift('core-library');
+        }catch(err){ relevantPacks = ['core-library']; }
         var liveItems = window.FFFExerciseDB.getMyPlanLibrary({
+          packs: relevantPacks,
           equipment: equipment,
-          injuries: injuryCtx.hardInjuries || injuryCtx.injuries || []
+          injuries: injuryCtx.hardInjuries || injuryCtx.injuries || [],
+          activeInjuryAreas: activeAreas,
+          allowLowerLegMicro: mpxHasExplicitFootLowerLeg(),
+          allowFootIntrinsic: mpxHasExplicitFootLowerLeg()
         });
         if(Array.isArray(liveItems) && liveItems.length){
-          var liveLib = { version: 2, source: 'fff-exercise-db', items: liveItems };
+          var liveLib = { version: 2, source: 'fff-exercise-db', items: liveItems.filter(mpxBuilderItemAllowedForInjuries) };
           try{ localStorage.setItem('fff.library.cache.v1', JSON.stringify(liveLib)); }catch(err){}
           return liveLib;
         }
@@ -5858,8 +5926,8 @@
       }
 
       var lib = readJSON('fff.library.cache.v1', null);
-      if(lib && Array.isArray(lib.items) && lib.items.length) return lib;
-      if(Array.isArray(lib) && lib.length) return { version:2, source:'fff-library-cache-array', items:lib };
+      if(lib && Array.isArray(lib.items) && lib.items.length){ lib.items = lib.items.filter(mpxBuilderItemAllowedForInjuries); return lib; }
+      if(Array.isArray(lib) && lib.length) return { version:2, source:'fff-library-cache-array', items:lib.filter(mpxBuilderItemAllowedForInjuries) };
 
       return {
         version: 1,
@@ -5895,6 +5963,7 @@
 
     function itemAllowed(item, style, equip){
       if(!item) return false;
+      if(!mpxBuilderItemAllowedForInjuries(item)) return false;
 
       var itemStyles = item.styles || [];
       var itemDomains = item.domains || [];
@@ -6002,7 +6071,7 @@
     }
 
     function chooseWeighted(items, opts, used, sourceUse){
-      items = (items || []).filter(Boolean);
+      items = (items || []).filter(function(item){ return item && mpxBuilderItemAllowedForInjuries(item); });
       if(!items.length) return null;
       var ranked = items.slice().sort(function(a,b){
         return scoreBuilderItem(b, opts, used, sourceUse) - scoreBuilderItem(a, opts, used, sourceUse);

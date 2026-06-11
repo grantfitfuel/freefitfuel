@@ -227,7 +227,6 @@
     });
   }
 
-
   function isFootIntrinsicDrill(ex){
     var blob = lower([
       ex && ex.key,
@@ -238,18 +237,34 @@
       arr(ex && ex.systems).join(' '),
       arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' ')
     ].join(' '));
-    return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
+    return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|single\s*-?\s*leg\s*-?\s*short\s*-?\s*foot|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
+  }
+
+  function isLowerLegMicroDrill(ex){
+    var blob = lower([
+      ex && ex.key,
+      ex && ex.name,
+      ex && ex.family,
+      arr(ex && ex.tags).join(' '),
+      arr(ex && ex.purposes).join(' '),
+      arr(ex && ex.systems).join(' '),
+      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' ')
+    ].join(' '));
+    if(isFootIntrinsicDrill(ex)) return true;
+    return /(tibialis\s*-?\s*(walk|march|raise)|single\s*-?\s*leg\s*-?\s*tibialis|band\s*-?\s*dorsiflexion|dorsiflexion|heel\s*-?\s*walk|ankle\s*-?\s*(alphabet|circle|mobility|rocker)|calf\s*-?\s*isometric|soleus\s*-?\s*raise)/.test(blob);
   }
 
   function hasExplicitFootLowerLegInjury(criteria){
     criteria = criteria || {};
-    if(criteria.allowFootIntrinsic === true) return true;
+    if(criteria.allowFootIntrinsic === true || criteria.allowLowerLegMicro === true) return true;
+    var direct = arr(criteria.activeInjuryAreas || criteria.selectedInjuryAreas || criteria.explicitInjuryAreas).map(lower).join(' ');
     var injuries = arr(criteria.injuries || criteria.injuryTokens).map(lower).join(' ');
-    return /(foot|toe|plantar|plantar-fasciitis|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)/.test(injuries);
+    var text = (direct || injuries || '');
+    return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)\b/.test(text);
   }
 
   function footIntrinsicAllowed(ex, criteria){
-    if(!isFootIntrinsicDrill(ex)) return true;
+    if(!isLowerLegMicroDrill(ex)) return true;
     return hasExplicitFootLowerLegInjury(criteria);
   }
 
@@ -376,6 +391,7 @@
     equipmentAllowed: equipmentAllowed,
     injuryAllowed: injuryAllowed,
     isFootIntrinsicDrill: isFootIntrinsicDrill,
+    isLowerLegMicroDrill: isLowerLegMicroDrill,
     footIntrinsicAllowed: footIntrinsicAllowed,
     _state: state
   };

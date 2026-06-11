@@ -302,6 +302,9 @@
       profile.packs = unique(arr(options.packs).concat(['core-library']));
     }
 
+    if(!hasExplicitFootLowerLegSignal(profile)){
+      profile.packs = profile.packs.filter(function(id){ return id !== 'lower-leg-stability'; });
+    }
     if(!profile.packs.length) profile.packs = ['core-library'];
     return profile;
   }
@@ -320,10 +323,6 @@
   }
 
   function hasExplicitFootLowerLegSignal(profile){
-    // Use ONLY actively selected injury areas here.
-    // Do not infer foot/toe permission from generated tokens, pack names, system names,
-    // or inactive injury rows stored inside the profile object. Knee pain alone must not
-    // unlock foot-intrinsic drills such as Big Toe Lift, Toe Spread Hold or Short Foot.
     var areas = selectedInjuryAreas(profile).join(' ');
     return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)\b/.test(areas);
   }
@@ -337,7 +336,25 @@
       arr(ex && ex.purposes).join(' '),
       arr(ex && ex.systems).join(' ')
     ].join(' '));
-    return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
+    return /(toe\s*-?\s*(yoga|spread|lift|extension|curl|raise|abduction)|big\s*-?\s*toe|little\s*-?\s*toe|short\s*-?\s*(toe|foot)|single\s*-?\s*leg\s*-?\s*short\s*-?\s*foot|towel\s*-?\s*scrunch|marble\s*-?\s*pick|tripod\s*-?\s*foot|foot\s*-?\s*(intrinsic|control)|plantar)/.test(blob);
+  }
+
+  function isLowerLegMicroDrill(ex){
+    var blob = lower([
+      ex && ex.key,
+      ex && ex.name,
+      ex && ex.family,
+      arr(ex && ex.tags).join(' '),
+      arr(ex && ex.purposes).join(' '),
+      arr(ex && ex.systems).join(' ')
+    ].join(' '));
+    if(isFootIntrinsicDrill(ex)) return true;
+    return /(tibialis\s*-?\s*(walk|march|raise)|single\s*-?\s*leg\s*-?\s*tibialis|band\s*-?\s*dorsiflexion|dorsiflexion|heel\s*-?\s*walk|ankle\s*-?\s*(alphabet|circle|mobility|rocker)|calf\s*-?\s*isometric|soleus\s*-?\s*raise)/.test(blob);
+  }
+
+  function lowerLegMicroAllowed(ex, profile){
+    if(!isLowerLegMicroDrill(ex)) return true;
+    return hasExplicitFootLowerLegSignal(profile);
   }
 
   function sessionSlot(title, subtitle, tokens){
@@ -354,7 +371,7 @@
 
     // Foot/toe micro-drills must never appear unless the user has an explicit foot, ankle,
     // Achilles, plantar, shin, calf, balance or lower-leg signal. Knee alone is not enough.
-    if(isFootIntrinsicDrill(ex) && !hasExplicitFootLowerLegSignal(profile)) return false;
+    if(!lowerLegMicroAllowed(ex, profile)) return false;
 
     // Micro drills are never headline strength or conditioning picks.
     if(ex && ex.notMainLift && (slot === 'strength' || slot === 'conditioning')) return false;
@@ -469,7 +486,10 @@
     return window.FFFExerciseDB.getMyPlanLibrary({
       packs: profile.packs,
       equipment: profile.equipment,
-      injuries: profile.injuries
+      injuries: profile.injuries,
+      activeInjuryAreas: selectedInjuryAreas(profile),
+      allowLowerLegMicro: hasExplicitFootLowerLegSignal(profile),
+      allowFootIntrinsic: hasExplicitFootLowerLegSignal(profile)
     });
   }
 
@@ -477,7 +497,7 @@
     count = count || 1;
     var scored = arr(pool)
       .filter(function(ex){
-        if(isFootIntrinsicDrill(ex) && !hasExplicitFootLowerLegSignal(profile)) return false;
+        if(!lowerLegMicroAllowed(ex, profile)) return false;
         return roleAllowedForSlot(ex, slot || 'strength', tokens, profile);
       })
       .map(function(ex){ return { ex: ex, score: scoreExercise(ex, tokens, profile, used, slot || 'strength') }; })

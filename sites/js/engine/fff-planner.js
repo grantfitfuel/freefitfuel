@@ -165,19 +165,27 @@
       out = out.concat(mapInjuryAreaToTokens(item.area));
       out = out.concat(symptomTokens(item.symptoms));
     });
-    var blob = lower(JSON.stringify(profile || {}));
-    if(/biceps|elbow|forearm/.test(blob)) out.push('elbow-tendon-pain','biceps-pain','forearm-pain');
-    if(/wrist|hand|grip/.test(blob)) out.push('wrist-pain','hand-pain','grip-pain');
-    if(/hip|groin/.test(blob)) out.push('hip-tendon-pain-reduced-rom','hip-pain','groin-strain');
-    if(/knee/.test(blob)) out.push('clicky-knees-painful','knee-pain');
-    if(/ankle/.test(blob)) out.push('ankle-pain');
-    if(/achilles/.test(blob)) out.push('achilles-pain','achilles-calf-sensitivity');
-    if(/calf/.test(blob)) out.push('calf-strain','achilles-calf-sensitivity');
-    if(/shin/.test(blob)) out.push('shin-splints');
-    if(/upper_back|mid_back|thoracic/.test(blob)) out.push('upper-back-stiffness','thoracic-mobility-limitation');
-    if(/lower_back|back|lumbar/.test(blob)) out.push('low-back-non-specific','disc-sensitivity');
-    if(/shoulder/.test(blob)) out.push('shoulder-impingement','rotator-cuff-irritation');
-    if(/fatigue|recovery/.test(blob)) out.push('fatigue','recovery-limited','deload-needed');
+    // Legacy fallback only.
+    // The current per-injury UI stores an items object containing many inactive rows.
+    // Scanning the whole JSON object falsely detects inactive areas such as foot/plantar
+    // and unlocks foot drills for unrelated injuries. Only use fuzzy blob scanning when
+    // the old legacy shape is present and there is no items object to read precisely.
+    if(!profile || !profile.items){
+      var blob = lower(JSON.stringify(profile || {}));
+      if(/biceps|elbow|forearm/.test(blob)) out.push('elbow-tendon-pain','biceps-pain','forearm-pain');
+      if(/wrist|hand|grip/.test(blob)) out.push('wrist-pain','hand-pain','grip-pain');
+      if(/hip|groin/.test(blob)) out.push('hip-tendon-pain-reduced-rom','hip-pain','groin-strain');
+      if(/knee/.test(blob)) out.push('clicky-knees-painful','knee-pain');
+      if(/ankle/.test(blob)) out.push('ankle-pain');
+      if(/achilles/.test(blob)) out.push('achilles-pain','achilles-calf-sensitivity');
+      if(/calf/.test(blob)) out.push('calf-strain','achilles-calf-sensitivity');
+      if(/shin/.test(blob)) out.push('shin-splints');
+      if(/foot|plantar/.test(blob)) out.push('foot-pain','plantar-fasciitis');
+      if(/upper_back|mid_back|thoracic/.test(blob)) out.push('upper-back-stiffness','thoracic-mobility-limitation');
+      if(/lower_back|back|lumbar/.test(blob)) out.push('low-back-non-specific','disc-sensitivity');
+      if(/shoulder/.test(blob)) out.push('shoulder-impingement','rotator-cuff-irritation');
+      if(/fatigue|recovery/.test(blob)) out.push('fatigue','recovery-limited','deload-needed');
+    }
     return unique(out);
   }
 
@@ -312,9 +320,12 @@
   }
 
   function hasExplicitFootLowerLegSignal(profile){
+    // Use ONLY actively selected injury areas here.
+    // Do not infer foot/toe permission from generated tokens, pack names, system names,
+    // or inactive injury rows stored inside the profile object. Knee pain alone must not
+    // unlock foot-intrinsic drills such as Big Toe Lift, Toe Spread Hold or Short Foot.
     var areas = selectedInjuryAreas(profile).join(' ');
-    var tokens = arr(profile && profile.allInjuryTokens).map(lower).join(' ');
-    return /\b(foot|toe|plantar|plantar-fascia|ankle|achilles|shin|calf|lower-leg|balance)\b/.test(areas + ' ' + tokens);
+    return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)\b/.test(areas);
   }
 
   function isFootIntrinsicDrill(ex){

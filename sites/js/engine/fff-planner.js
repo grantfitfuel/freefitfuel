@@ -267,12 +267,16 @@
     options = options || {};
     var roadmap = readJSON(KEY_ROADMAP, {}) || {};
     var phase = options.phase || currentPhase();
+    // Do not feed the full saved roadmap JSON back into fresh Build My Week / plan routing.
+    // Old saved text can contain stale running, balance or lower-leg wording and wrongly unlock packs.
     var goalText = lower([
       options.goal,
       options.style,
       options.focus,
-      phase,
-      JSON.stringify(roadmap || {})
+      options.goalIntent,
+      options.goalCategory,
+      options.trainingPathway,
+      phase
     ].join(' '));
 
     var rawInjuries = options.injuries || readJSON(KEY_INJURY, null) || readJSON(KEY_INJURY_LEGACY, {}) || {};
@@ -335,7 +339,7 @@
 
   function hasExplicitFootLowerLegSignal(profile){
     var areas = selectedInjuryAreas(profile).join(' ');
-    return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)\b/.test(areas);
+    return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg)\b/.test(areas);
   }
 
   function isFootIntrinsicDrill(ex){
@@ -368,10 +372,53 @@
     return hasExplicitFootLowerLegSignal(profile);
   }
 
+  function isLowerLegStabilityExercise(ex){
+    var blob = lower([
+      ex && ex.packId,
+      arr(ex && ex.systems).join(' '),
+      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
+      ex && ex.sourcePage,
+      ex && ex.sourceLabel
+    ].join(' '));
+    return /lower-leg-stability|lower leg stability/.test(blob);
+  }
+
+  function lowerLegSystemAllowed(ex, profile){
+    if(!isLowerLegStabilityExercise(ex)) return true;
+    return hasExplicitFootLowerLegSignal(profile);
+  }
+
+  function isRunningSupportExercise(ex){
+    var blob = lower([
+      ex && ex.packId,
+      arr(ex && ex.systems).join(' '),
+      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
+      ex && ex.sourcePage,
+      ex && ex.sourceLabel,
+      arr(ex && ex.tags).join(' '),
+      arr(ex && ex.purposes).join(' ')
+    ].join(' '));
+    return /running-conditioning|running support|run support|return-to-running/.test(blob);
+  }
+
+  function hasExplicitRunningSignal(profile){
+    var text = lower([
+      profile && profile.goalText,
+      profile && profile.style,
+      arr(profile && profile.preferredPacks).join(' ')
+    ].join(' '));
+    return /\b(running|run|5k|10k|half marathon|marathon|endurance)\b/.test(text);
+  }
+
+  function runningSystemAllowed(ex, profile){
+    if(!isRunningSupportExercise(ex)) return true;
+    return hasExplicitRunningSignal(profile);
+  }
+
   function sessionSlot(title, subtitle, tokens){
     var text = lower([title, subtitle, tokenBlob(tokens)].join(' '));
     if(/recovery|mobility|flow|breathing|fascia|lymphatic|joint-control/.test(text)) return 'recovery';
-    if(/pain-aware|targeted|physio|rehab|capacity|stability|balance/.test(text)) return 'rehab';
+    if(/pain-aware|targeted|physio|rehab|capacity/.test(text)) return 'rehab';
     if(/conditioning|run|running|zone|interval|carry|loaded|ruck|crawl|shuttle|work-capacity|capacity day/.test(text)) return 'conditioning';
     return 'strength';
   }
@@ -381,7 +428,7 @@
     var allowed = arr(ex && ex.allowedSlots).map(lower);
 
     // Foot/toe micro-drills must never appear unless the user has an explicit foot, ankle,
-    // Achilles, plantar, shin, calf, balance or lower-leg signal. Knee alone is not enough.
+    // Achilles, plantar, shin, calf or lower-leg signal. Knee alone is not enough.
     if(!lowerLegMicroAllowed(ex, profile)) return false;
 
     // Micro drills are never headline strength or conditioning picks.
@@ -472,9 +519,9 @@
     if(/calisthenics|bodyweight/.test(profile.style || '')){
       var eqBlob = arr(ex.equipment).map(lower).join(' ');
       var styleBlob = lower([arr(ex.styles).join(' '), arr(ex.styleBias).join(' '), arr(ex.domains).join(' ')].join(' '));
-      if(/bw|bodyweight|rings|bar/.test(eqBlob + ' ' + styleBlob)) score += 16;
-      if(/db|dumbbell|kb|kettlebell/.test(eqBlob) && !/bw|bodyweight/.test(eqBlob + ' ' + styleBlob)) score -= 12;
-      if(/band/.test(eqBlob) && !/bw|bodyweight/.test(eqBlob + ' ' + styleBlob)) score -= 6;
+      if(/\bbw\b|bodyweight|rings|bar/.test(eqBlob + ' ' + styleBlob)) score += 16;
+      if(/\bdb\b|dumbbell|\bkb\b|kettlebell/.test(eqBlob) && !/\bbw\b|bodyweight/.test(eqBlob + ' ' + styleBlob)) score -= 12;
+      if(/\bband\b/.test(eqBlob) && !/\bbw\b|bodyweight/.test(eqBlob + ' ' + styleBlob)) score -= 6;
     }
 
     if(profile.phase === 'cut' && /strength|compound|carry|conditioning|work-capacity/.test(blob)) score += 4;
@@ -508,7 +555,9 @@
       injuries: profile.injuries,
       activeInjuryAreas: selectedInjuryAreas(profile),
       allowLowerLegMicro: hasExplicitFootLowerLegSignal(profile),
-      allowFootIntrinsic: hasExplicitFootLowerLegSignal(profile)
+      allowFootIntrinsic: hasExplicitFootLowerLegSignal(profile),
+      allowLowerLegSystem: hasExplicitFootLowerLegSignal(profile),
+      allowRunningSupport: hasExplicitRunningSignal(profile)
     });
   }
 
@@ -517,6 +566,8 @@
     var scored = arr(pool)
       .filter(function(ex){
         if(!lowerLegMicroAllowed(ex, profile)) return false;
+        if(!lowerLegSystemAllowed(ex, profile)) return false;
+        if(!runningSystemAllowed(ex, profile)) return false;
         return roleAllowedForSlot(ex, slot || 'strength', tokens, profile);
       })
       .map(function(ex){ return { ex: ex, score: scoreExercise(ex, tokens, profile, used, slot || 'strength') }; })
@@ -719,7 +770,7 @@
   }
 
   window.FFFPlanner = {
-    version: '2.6-active-injury-calisthenics-routing-fix',
+    version: '2.8-system-routing-audit-fix',
     keys: {
       roadmap: KEY_ROADMAP,
       equipment: KEY_EQUIP,

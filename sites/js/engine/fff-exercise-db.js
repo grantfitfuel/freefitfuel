@@ -9,7 +9,7 @@
   var MANIFEST = BASE + 'manifest.json';
 
   var state = {
-    version: '6.8-core-cleaned-pack-routing',
+    version: '6.9-system-routing-audit-fix',
     loaded: false,
     loading: null,
     manifest: null,
@@ -260,12 +260,59 @@
     var direct = arr(criteria.activeInjuryAreas || criteria.selectedInjuryAreas || criteria.explicitInjuryAreas).map(lower).join(' ');
     var injuries = arr(criteria.injuries || criteria.injuryTokens).map(lower).join(' ');
     var text = (direct || injuries || '');
-    return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg|balance)\b/.test(text);
+    return /\b(foot|toe|plantar|plantar-fascia|plantar fascia|ankle|achilles|shin|calf|lower-leg|lower leg)\b/.test(text);
   }
 
   function footIntrinsicAllowed(ex, criteria){
     if(!isLowerLegMicroDrill(ex)) return true;
     return hasExplicitFootLowerLegInjury(criteria);
+  }
+
+  function isLowerLegStabilityExercise(ex){
+    var blob = lower([
+      ex && ex.packId,
+      arr(ex && ex.systems).join(' '),
+      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
+      ex && ex.sourcePage,
+      ex && ex.sourceLabel
+    ].join(' '));
+    return /lower-leg-stability|lower leg stability/.test(blob);
+  }
+
+  function lowerLegSystemAllowed(ex, criteria){
+    if(!isLowerLegStabilityExercise(ex)) return true;
+    criteria = criteria || {};
+    if(criteria.allowLowerLegSystem === true) return true;
+    return hasExplicitFootLowerLegInjury(criteria);
+  }
+
+  function isRunningSupportExercise(ex){
+    var blob = lower([
+      ex && ex.packId,
+      arr(ex && ex.systems).join(' '),
+      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
+      ex && ex.sourcePage,
+      ex && ex.sourceLabel,
+      arr(ex && ex.tags).join(' '),
+      arr(ex && ex.purposes).join(' ')
+    ].join(' '));
+    return /running-conditioning|running support|run support|return-to-running/.test(blob);
+  }
+
+  function runningSystemAllowed(ex, criteria){
+    if(!isRunningSupportExercise(ex)) return true;
+    criteria = criteria || {};
+    if(criteria.allowRunningSupport === true) return true;
+    var text = lower([
+      criteria.goal,
+      criteria.style,
+      criteria.focus,
+      criteria.notes,
+      arr(criteria.goals).join(' '),
+      arr(criteria.purposes).join(' '),
+      arr(criteria.tags).join(' ')
+    ].join(' '));
+    return /\b(running|run|5k|10k|half marathon|marathon|endurance)\b/.test(text);
   }
 
   function filter(criteria){
@@ -281,6 +328,8 @@
     var list = getAll().filter(function(ex){
       if(packIds.length && packIds.indexOf(ex.packId) === -1) return false;
       if(!footIntrinsicAllowed(ex, criteria)) return false;
+      if(!lowerLegSystemAllowed(ex, criteria)) return false;
+      if(!runningSystemAllowed(ex, criteria)) return false;
       if(tokens.length && !tokenMatch(ex, tokens)) return false;
       if(systems.length && !arr(ex.systems).some(function(s){ return systems.indexOf(lower(s)) > -1; })) return false;
       if(equipment.length && !equipmentAllowed(ex, equipment)) return false;
@@ -370,7 +419,7 @@
     if(/ankle|calf|shin|achilles|foot|plantar|lower leg/.test(text)) add('lower-leg-stability');
     if(/pull.?up|chin.?up|upper body|grip|biceps|back/.test(text)) add('pullup-upperbody');
     if(/recover|mobility|stress|sleep|fatigue|stiff|pain|flow/.test(text)) add('recovery-mobility');
-    if(/run|running|5k|10k|marathon|endurance|conditioning/.test(text)) add('running-conditioning');
+    if(/\b(run|running|5k|10k|half marathon|marathon|endurance)\b/.test(text)) add('running-conditioning');
 
     return packs;
   }
@@ -393,6 +442,8 @@
     isFootIntrinsicDrill: isFootIntrinsicDrill,
     isLowerLegMicroDrill: isLowerLegMicroDrill,
     footIntrinsicAllowed: footIntrinsicAllowed,
+    lowerLegSystemAllowed: lowerLegSystemAllowed,
+    runningSystemAllowed: runningSystemAllowed,
     _state: state
   };
 

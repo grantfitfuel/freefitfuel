@@ -255,13 +255,19 @@
   function buildProfile(options){
     options = options || {};
     var roadmap = readJSON(KEY_ROADMAP, {}) || {};
+    var stage = roadmap && Array.isArray(roadmap.stages) && roadmap.stages[0] ? roadmap.stages[0] : null;
     var phase = options.phase || currentPhase();
+    // Do not feed the full saved roadmap/exercise payload back into the planner.
+    // That contaminated new builds with old exercise/system text such as lower-leg/balance
+    // and caused unrelated rehab packs to reappear for profiles like calisthenics + knee/shoulder/biceps.
+    var roadmapContext = stage ? [stage.id, stage.name, stage.blurb].join(' ') : '';
     var goalText = lower([
       options.goal,
       options.style,
       options.focus,
+      options.notes,
       phase,
-      JSON.stringify(roadmap || {})
+      roadmapContext
     ].join(' '));
 
     var rawInjuries = options.injuries || readJSON(KEY_INJURY, null) || readJSON(KEY_INJURY_LEGACY, {}) || {};
@@ -555,9 +561,8 @@
     tokenGroups.forEach(function(group){
       var slot = sessionSlot(title, subtitle, group);
       var picked = choose(pool, group, profile, used, 1, slot);
-      if(!picked.length && slot === 'strength'){
-        picked = choose(pool, group, profile, used, 1, 'rehab');
-      }
+      // Do not silently fall back from normal strength work into rehab drills.
+      // If a strength token has no match, leave that slot empty rather than filling it with unrelated micro-work.
       picked.forEach(function(ex){ items.push(exercisePayload(ex)); });
     });
 
@@ -576,31 +581,67 @@
     var operational = !!profile.operationalIntent;
     var running = /run|running|endurance|5k|10k|marathon/.test(profile.goalText);
     var injury = profile.injuries.length > 0;
+    var styleText = lower(profile.style + ' ' + profile.goalText);
+    var calisthenics = /calisthenics|bodyweight/.test(styleText);
+    var areas = selectedInjuryAreas(profile).join(' ');
+    var hasKnee = /knee|patella/.test(areas);
+    var hasShoulder = /shoulder|neck/.test(areas);
+    var hasArm = /biceps|upper arm|upper_arm|elbow|forearm|wrist|hand/.test(areas);
+    var hasHipBack = /hip|groin|back|lumbar|thoracic/.test(areas);
+    var hasLowerLeg = hasExplicitFootLowerLegSignal(profile);
+
+    function kneeGroups(){
+      return hasKnee ? [['knee','step-up'], ['split-squat','lunge'], ['squat','supported']] : [['squat','lunge'], ['hinge','glute'], ['core']];
+    }
+    function upperGroups(){
+      if(hasShoulder && hasArm) return [['shoulder','scapular'], ['elbow','biceps'], ['row','pull']];
+      if(hasShoulder) return [['shoulder','scapular'], ['push','supported'], ['row','pull']];
+      if(hasArm) return [['elbow','biceps'], ['row','pull'], ['grip','controlled']];
+      return [['push'], ['pull'], ['core']];
+    }
 
     if(operational){
       return [
         ['Operational Strength', 'Carries, crawling, loaded movement and practical strength.', [['carry','loaded'], ['crawl','ground-to-feet'], ['core','brace']]],
         ['Operational Conditioning', 'Repeatable work capacity without needless chaos.', [['conditioning','shuttle'], ['work-capacity','circuit'], ['breathing','recovery']]],
         ['Lower-Body Capacity', 'Stairs, step-ups, hill or ruck support where appropriate.', [['step-up','stairs'], ['ruck','march'], ['hip','knee']]],
-        ['Recovery / Joint Control', 'Keeps the plan repeatable.', [['recovery','mobility'], ['joint-control','balance'], ['fascia','lymphatic']]]
+        ['Recovery / Joint Control', 'Keeps the plan repeatable.', [['recovery','mobility'], ['joint-control'], ['fascia','lymphatic']]]
       ];
     }
 
     if(running){
       return [
-        ['Run Support Strength', 'Lower-leg, knee and hip capacity for running.', [['lower-leg','calf','shin'], ['knee','step-down'], ['hip','glute']]],
+        ['Run Support Strength', 'Lower-leg, knee and hip capacity for running.', hasLowerLeg ? [['lower-leg','calf','shin'], ['knee','step-down'], ['hip','glute']] : [['knee','step-down'], ['hip','glute'], ['core','anti-rotation']]],
         ['Conditioning', 'Aerobic or interval support matched to recovery.', [['running','conditioning'], ['zone-2','endurance'], ['breathing']]],
-        ['Core + Control', 'Trunk and joint control for better mechanics.', [['core','anti-rotation'], ['balance','stability'], ['mobility']]],
+        ['Core + Control', 'Trunk and joint control for better mechanics.', hasLowerLeg ? [['core','anti-rotation'], ['balance','stability'], ['mobility']] : [['core','anti-rotation'], ['joint-control'], ['mobility']]],
         ['Recovery Flow', 'Low-cost movement to keep frequency sustainable.', [['recovery','mobility'], ['fascia'], ['lymphatic']]]
+      ];
+    }
+
+    if(injury && calisthenics){
+      return [
+        ['Pain-Aware Calisthenics Strength', 'Bodyweight strength matched to your current limitations.', [['calisthenics','push'], ['calisthenics','pull'], ['core','brace']]],
+        ['Knee-Friendly Lower Body', 'Knee-relevant lower-body work without foot-drill spam.', kneeGroups()],
+        ['Shoulder / Arm Support', 'Upper-body work adjusted around shoulder, biceps and elbow signals.', upperGroups()],
+        ['Recovery Flow', 'Keeps consistency without turning the week into lower-leg rehab.', [['recovery'], ['mobility'], ['breathing']]]
       ];
     }
 
     if(injury){
       return [
         ['Pain-Aware Strength', 'Build strength without ignoring current warning signs.', [['strength'], ['supported'], ['control']]],
-        ['Targeted Capacity', 'Uses the relevant physio-style packs first.', [['knee','hip','ankle','elbow'], ['stability','balance'], ['mobility']]],
+        ['Targeted Capacity', 'Uses the relevant injury signals only.', (hasLowerLeg ? [['knee','hip'], ['ankle','calf','shin'], ['mobility']] : [['knee','hip'], ['elbow','shoulder'], ['mobility']])],
         ['Upper / Lower Balance', 'Keeps training rounded around the limitation.', [['push'], ['pull'], ['hinge','squat']]],
         ['Recovery Flow', 'Protects consistency while symptoms settle.', [['recovery'], ['joint-control'], ['breathing']]]
+      ];
+    }
+
+    if(calisthenics){
+      return [
+        ['Upper Calisthenics', 'Push and pull bodyweight work chosen from the core library.', [['calisthenics','push'], ['calisthenics','pull'], ['core']]],
+        ['Lower Calisthenics', 'Squat, lunge, hinge and single-leg bodyweight work.', [['calisthenics','squat'], ['calisthenics','lunge'], ['hinge','glute']]],
+        ['Calisthenics Conditioning', 'Bodyweight conditioning without operational hijack.', [['conditioning','bodyweight'], ['crawl','locomotion'], ['carry']]],
+        ['Recovery / Mobility', 'Keeps the plan repeatable.', [['recovery'], ['mobility'], ['joint-control']]]
       ];
     }
 

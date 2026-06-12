@@ -9,7 +9,7 @@
   var MANIFEST = BASE + 'manifest.json';
 
   var state = {
-    version: '6.7-system-metadata-linked',
+    version: '6.8-core-cleaned-pack-routing',
     loaded: false,
     loading: null,
     manifest: null,
@@ -367,7 +367,7 @@
     if(/^(operational|operational-fitness|police|fire|fire-rescue|army|army-reserve|military|rescue|blue-light)$/.test(lower(profile.style || ''))) explicitOperational = true;
     if(explicitOperational) add('operational-fitness');
     if(/knee|patella|squat pain|stairs|step down/.test(text)) add('knee-capacity-reset');
-    if(/ankle|calf|shin|achilles|foot|plantar|balance|lower leg/.test(text)) add('lower-leg-stability');
+    if(/ankle|calf|shin|achilles|foot|plantar|lower leg/.test(text)) add('lower-leg-stability');
     if(/pull.?up|chin.?up|upper body|grip|biceps|back/.test(text)) add('pullup-upperbody');
     if(/recover|mobility|stress|sleep|fatigue|stiff|pain|flow/.test(text)) add('recovery-mobility');
     if(/run|running|5k|10k|marathon|endurance|conditioning/.test(text)) add('running-conditioning');

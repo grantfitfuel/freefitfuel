@@ -1,5 +1,5 @@
 {
-  "version": "7.0-core-calisthenics-expanded",
+  "version": "7.1-calisthenics-routing-audit",
   "packs": [
     {
       "id": "core-library",
@@ -37,5 +37,5 @@
       "count": 8
     }
   ],
-  "note": "Core library audited: foot/ankle intrinsic rehab drills removed from core; lower-leg system metadata stripped from core. Planner route decontaminated."
+  "note": "Planner routing audited: calisthenics is strength-first; running/lower-leg/recovery packs require explicit current signals; core source metadata normalised."
 }

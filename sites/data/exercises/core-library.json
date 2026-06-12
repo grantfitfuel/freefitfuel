@@ -2618,7 +2618,6 @@
     "systems": [
       "knee-capacity-reset",
       "hip-knee-pain-reset",
-      "lower-leg-stability-system",
       "joint-control-foundations"
     ],
     "sourceModules": [
@@ -2631,11 +2630,6 @@
         "id": "hip-knee-pain-reset",
         "label": "Hip & Knee Pain Reset",
         "url": "/systems/hip-knee-pain-reset.html"
-      },
-      {
-        "id": "lower-leg-stability-system",
-        "label": "Lower-Leg Stability System",
-        "url": "/systems/lower-leg-stability-system.html"
       },
       {
         "id": "joint-control-foundations",
@@ -5853,7 +5847,6 @@
     "systems": [
       "knee-capacity-reset",
       "hip-knee-pain-reset",
-      "lower-leg-stability-system",
       "joint-control-foundations"
     ],
     "sourceModules": [
@@ -5866,11 +5859,6 @@
         "id": "hip-knee-pain-reset",
         "label": "Hip & Knee Pain Reset",
         "url": "/systems/hip-knee-pain-reset.html"
-      },
-      {
-        "id": "lower-leg-stability-system",
-        "label": "Lower-Leg Stability System",
-        "url": "/systems/lower-leg-stability-system.html"
       },
       {
         "id": "joint-control-foundations",
@@ -6947,7 +6935,6 @@
     "cue": "Use the back foot lightly while the front hip does most work.",
     "systems": [
       "hip-knee-pain-reset",
-      "lower-leg-stability-system",
       "joint-control-foundations",
       "daily-recovery-flow"
     ],
@@ -6956,11 +6943,6 @@
         "id": "hip-knee-pain-reset",
         "label": "Hip & Knee Pain Reset",
         "url": "/systems/hip-knee-pain-reset.html"
-      },
-      {
-        "id": "lower-leg-stability-system",
-        "label": "Lower-Leg Stability System",
-        "url": "/systems/lower-leg-stability-system.html"
       },
       {
         "id": "joint-control-foundations",
@@ -9733,7 +9715,6 @@
     "cue": "Crush elbows to toes, squeeze glutes, and keep the hold short.",
     "systems": [
       "hip-knee-pain-reset",
-      "lower-leg-stability-system",
       "pull-up-progression-pathway",
       "biceps-elbow-pain-protocol",
       "joint-control-foundations",
@@ -9744,11 +9725,6 @@
         "id": "hip-knee-pain-reset",
         "label": "Hip & Knee Pain Reset",
         "url": "/systems/hip-knee-pain-reset.html"
-      },
-      {
-        "id": "lower-leg-stability-system",
-        "label": "Lower-Leg Stability System",
-        "url": "/systems/lower-leg-stability-system.html"
       },
       {
         "id": "pull-up-progression-pathway",
@@ -9971,7 +9947,6 @@
     "systems": [
       "knee-capacity-reset",
       "hip-knee-pain-reset",
-      "lower-leg-stability-system",
       "pull-up-progression-pathway",
       "joint-control-foundations"
     ],
@@ -9985,11 +9960,6 @@
         "id": "hip-knee-pain-reset",
         "label": "Hip & Knee Pain Reset",
         "url": "/systems/hip-knee-pain-reset.html"
-      },
-      {
-        "id": "lower-leg-stability-system",
-        "label": "Lower-Leg Stability System",
-        "url": "/systems/lower-leg-stability-system.html"
       },
       {
         "id": "pull-up-progression-pathway",
@@ -10592,7 +10562,6 @@
     "cue": "Reach one leg back like a counterweight and keep hips square.",
     "systems": [
       "hip-knee-pain-reset",
-      "lower-leg-stability-system",
       "joint-control-foundations",
       "daily-recovery-flow"
     ],
@@ -10601,11 +10570,6 @@
         "id": "hip-knee-pain-reset",
         "label": "Hip & Knee Pain Reset",
         "url": "/systems/hip-knee-pain-reset.html"
-      },
-      {
-        "id": "lower-leg-stability-system",
-        "label": "Lower-Leg Stability System",
-        "url": "/systems/lower-leg-stability-system.html"
       },
       {
         "id": "joint-control-foundations",
@@ -128497,148 +128461,6 @@
     "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation."
   },
   {
-    "key": "ankle-rocker",
-    "name": "Ankle Rocker",
-    "family": "mobility",
-    "movement": "mobility",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics",
-      "mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "activation",
-      "recovery"
-    ],
-    "muscles": [
-      "mobility",
-      "stability"
-    ],
-    "primaryMuscles": [
-      "mobility"
-    ],
-    "secondaryMuscles": [
-      "stability"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility",
-      "activation",
-      "calisthenics"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Ankle Rocker",
-      "ankle-rocker"
-    ],
-    "yt": "Ankle Rocker exercise form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recovery"
-    ],
-    "plannerRole": "activation",
-    "allowedSlots": [
-      "warmup",
-      "mobility",
-      "recovery",
-      "rehab"
-    ],
-    "notMainLift": true,
-    "systems": [
-      "recovery-mobility",
-      "joint-control-foundations",
-      "lower-leg-stability"
-    ],
-    "sourceModules": [],
-    "sourcePage": "workouts.html",
-    "sourceLabel": "FreeFitFuel Core Library",
-    "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation."
-  },
-  {
-    "key": "knee-to-wall-ankle-mobilisation",
-    "name": "Knee-to-Wall Ankle Mobilisation",
-    "family": "mobility",
-    "movement": "mobility",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics",
-      "mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "activation",
-      "recovery"
-    ],
-    "muscles": [
-      "mobility",
-      "stability"
-    ],
-    "primaryMuscles": [
-      "mobility"
-    ],
-    "secondaryMuscles": [
-      "stability"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility",
-      "activation",
-      "calisthenics"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Knee-to-Wall Ankle Mobilisation",
-      "knee-to-wall-ankle-mobilisation"
-    ],
-    "yt": "Knee-to-Wall Ankle Mobilisation exercise form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recovery"
-    ],
-    "plannerRole": "activation",
-    "allowedSlots": [
-      "warmup",
-      "mobility",
-      "recovery",
-      "rehab"
-    ],
-    "notMainLift": true,
-    "systems": [
-      "recovery-mobility",
-      "joint-control-foundations",
-      "lower-leg-stability"
-    ],
-    "sourceModules": [],
-    "sourcePage": "workouts.html",
-    "sourceLabel": "FreeFitFuel Core Library",
-    "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation."
-  },
-  {
     "key": "thoracic-rotation-reach",
     "name": "Thoracic Rotation Reach",
     "family": "mobility",
@@ -129197,362 +129019,6 @@
     "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
     "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
     "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation."
-  },
-  {
-    "key": "toe-yoga",
-    "name": "Toe Yoga",
-    "family": "mobility",
-    "movement": "mobility",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics",
-      "mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "activation",
-      "recovery",
-      "rehab"
-    ],
-    "muscles": [
-      "mobility",
-      "stability"
-    ],
-    "primaryMuscles": [
-      "mobility"
-    ],
-    "secondaryMuscles": [
-      "stability"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility",
-      "activation",
-      "calisthenics",
-      "foot",
-      "foot-intrinsics"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Toe Yoga",
-      "toe-yoga"
-    ],
-    "yt": "Toe Yoga exercise form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recovery"
-    ],
-    "plannerRole": "activation",
-    "allowedSlots": [
-      "activation",
-      "mobility",
-      "recovery",
-      "rehab",
-      "warmup",
-      "warm-up"
-    ],
-    "notMainLift": true,
-    "systems": [
-      "recovery-mobility",
-      "joint-control-foundations",
-      "lower-leg-stability"
-    ],
-    "sourceModules": [],
-    "sourcePage": "workouts.html",
-    "sourceLabel": "FreeFitFuel Core Library",
-    "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation.",
-    "bodyRegion": "foot",
-    "primaryRegion": "foot",
-    "requiresInjurySignal": [
-      "foot",
-      "toe",
-      "plantar",
-      "ankle",
-      "achilles",
-      "shin",
-      "calf",
-      "lower-leg",
-      "balance"
-    ]
-  },
-  {
-    "key": "short-foot-drill",
-    "name": "Short Foot Drill",
-    "family": "mobility",
-    "movement": "mobility",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics",
-      "mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "activation",
-      "recovery",
-      "rehab"
-    ],
-    "muscles": [
-      "mobility",
-      "stability"
-    ],
-    "primaryMuscles": [
-      "mobility"
-    ],
-    "secondaryMuscles": [
-      "stability"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility",
-      "activation",
-      "calisthenics",
-      "foot",
-      "foot-intrinsics"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Short Foot Drill",
-      "short-foot-drill"
-    ],
-    "yt": "Short Foot Drill exercise form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recovery"
-    ],
-    "plannerRole": "activation",
-    "allowedSlots": [
-      "activation",
-      "mobility",
-      "recovery",
-      "rehab",
-      "warmup",
-      "warm-up"
-    ],
-    "notMainLift": true,
-    "systems": [
-      "recovery-mobility",
-      "joint-control-foundations",
-      "lower-leg-stability"
-    ],
-    "sourceModules": [],
-    "sourcePage": "workouts.html",
-    "sourceLabel": "FreeFitFuel Core Library",
-    "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation.",
-    "bodyRegion": "foot",
-    "primaryRegion": "foot",
-    "requiresInjurySignal": [
-      "foot",
-      "toe",
-      "plantar",
-      "ankle",
-      "achilles",
-      "shin",
-      "calf",
-      "lower-leg",
-      "balance"
-    ]
-  },
-  {
-    "key": "towel-scrunch",
-    "name": "Towel Scrunch",
-    "family": "mobility",
-    "movement": "mobility",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics",
-      "mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "activation",
-      "recovery",
-      "rehab"
-    ],
-    "muscles": [
-      "mobility",
-      "stability"
-    ],
-    "primaryMuscles": [
-      "mobility"
-    ],
-    "secondaryMuscles": [
-      "stability"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility",
-      "activation",
-      "calisthenics",
-      "foot",
-      "foot-intrinsics"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Towel Scrunch",
-      "towel-scrunch"
-    ],
-    "yt": "Towel Scrunch exercise form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recovery"
-    ],
-    "plannerRole": "activation",
-    "allowedSlots": [
-      "activation",
-      "mobility",
-      "recovery",
-      "rehab",
-      "warmup",
-      "warm-up"
-    ],
-    "notMainLift": true,
-    "systems": [
-      "recovery-mobility",
-      "joint-control-foundations",
-      "lower-leg-stability"
-    ],
-    "sourceModules": [],
-    "sourcePage": "workouts.html",
-    "sourceLabel": "FreeFitFuel Core Library",
-    "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation.",
-    "bodyRegion": "foot",
-    "primaryRegion": "foot",
-    "requiresInjurySignal": [
-      "foot",
-      "toe",
-      "plantar",
-      "ankle",
-      "achilles",
-      "shin",
-      "calf",
-      "lower-leg",
-      "balance"
-    ]
-  },
-  {
-    "key": "single-toe-lift",
-    "name": "Single-Toe Lift",
-    "family": "mobility",
-    "movement": "mobility",
-    "equipment": [
-      "bw"
-    ],
-    "styles": [
-      "calisthenics",
-      "mobility"
-    ],
-    "purposes": [
-      "mobility",
-      "activation",
-      "recovery",
-      "rehab"
-    ],
-    "muscles": [
-      "mobility",
-      "stability"
-    ],
-    "primaryMuscles": [
-      "mobility"
-    ],
-    "secondaryMuscles": [
-      "stability"
-    ],
-    "difficulty": [
-      "beginner"
-    ],
-    "cautionIf": [],
-    "tags": [
-      "mobility",
-      "activation",
-      "calisthenics",
-      "foot",
-      "foot-intrinsics"
-    ],
-    "alternatives": [],
-    "regressions": [],
-    "progressions": [],
-    "aliases": [
-      "Single-Toe Lift",
-      "single-toe-lift"
-    ],
-    "yt": "Single-Toe Lift exercise form",
-    "phaseUse": [
-      "cut",
-      "transform",
-      "maintain",
-      "bulk",
-      "recovery"
-    ],
-    "plannerRole": "activation",
-    "allowedSlots": [
-      "activation",
-      "mobility",
-      "recovery",
-      "rehab",
-      "warmup",
-      "warm-up"
-    ],
-    "notMainLift": true,
-    "systems": [
-      "recovery-mobility",
-      "joint-control-foundations",
-      "lower-leg-stability"
-    ],
-    "sourceModules": [],
-    "sourcePage": "workouts.html",
-    "sourceLabel": "FreeFitFuel Core Library",
-    "coachingCue": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "howTo": "Use this as a warm-up or recovery drill. Keep it gentle, precise and pain-free rather than treating it as a main exercise.",
-    "why": "Added to broaden the FreeFitFuel calisthenics progression library for home training variation.",
-    "bodyRegion": "foot",
-    "primaryRegion": "foot",
-    "requiresInjurySignal": [
-      "foot",
-      "toe",
-      "plantar",
-      "ankle",
-      "achilles",
-      "shin",
-      "calf",
-      "lower-leg",
-      "balance"
-    ]
   },
   {
     "key": "iso-hold-bodyweight-squat",

@@ -263,12 +263,33 @@
     return false;
 }
 
+  function explicitRunningIntent(options){
+    options = options || {};
+    var text = lower([
+      options.goal,
+      options.focus,
+      options.goalIntent,
+      options.goalCategory,
+      options.trainingPathway,
+      options.pathway,
+      options.selectedPathway,
+      options.style === 'running' ? options.style : ''
+    ].join(' '));
+    return /\b(run|running|runner|5k|10k|half marathon|marathon|endurance|walking plan|walk-run|couch to 5k)\b/.test(text);
+  }
+
+  function explicitRecoveryIntent(options){
+    options = options || {};
+    var text = lower([options.goal, options.focus, options.goalIntent, options.goalCategory, options.trainingPathway, options.pathway, options.selectedPathway, options.style].join(' '));
+    return /\b(recovery|mobility|stretching|deload|fatigue|sleep|stress|stiffness|yoga|tai chi|qi gong)\b/.test(text);
+  }
+
   function buildProfile(options){
     options = options || {};
     var roadmap = readJSON(KEY_ROADMAP, {}) || {};
     var phase = options.phase || currentPhase();
-    // Do not feed the full saved roadmap JSON back into fresh Build My Week / plan routing.
-    // Old saved text can contain stale running, balance or lower-leg wording and wrongly unlock packs.
+    // Build My Week routing must be based on the current controls, not old saved roadmap text.
+    // Old roadmap JSON previously leaked words like run/running into calisthenics builds.
     var goalText = lower([
       options.goal,
       options.style,
@@ -276,6 +297,8 @@
       options.goalIntent,
       options.goalCategory,
       options.trainingPathway,
+      options.pathway,
+      options.selectedPathway,
       phase
     ].join(' '));
 
@@ -296,6 +319,8 @@
       injuryDetails: injuryDetails(rawInjuries),
       rawInjuries: rawInjuries,
       goalText: goalText,
+      explicitRunning: explicitRunningIntent(options),
+      explicitRecovery: explicitRecoveryIntent(options),
       operationalIntent: operationalIntent,
       preferredPacks: arr(options.packs),
       recovery: Number(options.recovery || 3),
@@ -311,6 +336,9 @@
         style: profile.style,
         notes: goalText,
         injuries: allInjuryTokens,
+        activeInjuryAreas: injuryDetails(rawInjuries).map(function(item){ return item.area; }),
+        explicitRunning: explicitRunningIntent(options),
+        explicitRecovery: explicitRecoveryIntent(options),
         operationalIntent: operationalIntent
       })));
     }else{
@@ -372,53 +400,43 @@
     return hasExplicitFootLowerLegSignal(profile);
   }
 
-  function isLowerLegStabilityExercise(ex){
-    var blob = lower([
-      ex && ex.packId,
-      arr(ex && ex.systems).join(' '),
-      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
-      ex && ex.sourcePage,
-      ex && ex.sourceLabel
-    ].join(' '));
-    return /lower-leg-stability|lower leg stability/.test(blob);
+  function activeAreaBlob(profile){
+    return selectedInjuryAreas(profile).join(' ');
   }
 
-  function lowerLegSystemAllowed(ex, profile){
-    if(!isLowerLegStabilityExercise(ex)) return true;
-    return hasExplicitFootLowerLegSignal(profile);
-  }
+  function packAllowedForProfile(ex, profile, slot){
+    var pack = lower((ex && ex.packId) || '');
+    var source = lower([ex && ex.sourceLabel, ex && ex.sourcePage, arr(ex && ex.systems).join(' '), arr(ex && ex.sourceModules).map(function(m){return m ? [m.id,m.label,m.url].join(' ') : '';}).join(' ')].join(' '));
+    var areas = activeAreaBlob(profile);
+    var isCal = /calisthenics|bodyweight/.test(profile && profile.style || '');
+    var isRecoverySlot = slot === 'recovery';
+    var isRehabSlot = slot === 'rehab';
 
-  function isRunningSupportExercise(ex){
-    var blob = lower([
-      ex && ex.packId,
-      arr(ex && ex.systems).join(' '),
-      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
-      ex && ex.sourcePage,
-      ex && ex.sourceLabel,
-      arr(ex && ex.tags).join(' '),
-      arr(ex && ex.purposes).join(' ')
-    ].join(' '));
-    return /running-conditioning|running support|run support|return-to-running/.test(blob);
-  }
-
-  function hasExplicitRunningSignal(profile){
-    var text = lower([
-      profile && profile.goalText,
-      profile && profile.style,
-      arr(profile && profile.preferredPacks).join(' ')
-    ].join(' '));
-    return /\b(running|run|5k|10k|half marathon|marathon|endurance)\b/.test(text);
-  }
-
-  function runningSystemAllowed(ex, profile){
-    if(!isRunningSupportExercise(ex)) return true;
-    return hasExplicitRunningSignal(profile);
+    if(pack === 'lower-leg-stability' || /lower-leg-stability/.test(source)){
+      return hasExplicitFootLowerLegSignal(profile) || profile.explicitRunning === true;
+    }
+    if(pack === 'running-conditioning' || /running-conditioning|running & conditioning|running/.test(source)){
+      return profile.explicitRunning === true;
+    }
+    if(pack === 'recovery-mobility' || /daily recovery flow|recovery-mobility|lymphatic|fascia/.test(source)){
+      return profile.explicitRecovery === true || isRecoverySlot;
+    }
+    if(pack === 'knee-capacity-reset' || /knee-capacity-reset|knee capacity/.test(source)){
+      return /knee|patella|hip|groin/.test(areas) || !isCal;
+    }
+    if(/biceps|elbow|forearm/.test(source)){
+      return /biceps|upper arm|upper_arm|elbow|forearm|wrist|hand/.test(areas);
+    }
+    if(isCal && (isRehabSlot || isRecoverySlot)){
+      return true;
+    }
+    return true;
   }
 
   function sessionSlot(title, subtitle, tokens){
     var text = lower([title, subtitle, tokenBlob(tokens)].join(' '));
     if(/recovery|mobility|flow|breathing|fascia|lymphatic|joint-control/.test(text)) return 'recovery';
-    if(/pain-aware|targeted|physio|rehab|capacity/.test(text)) return 'rehab';
+    if(/pain-aware|targeted|physio|rehab|capacity|stability|balance/.test(text)) return 'rehab';
     if(/conditioning|run|running|zone|interval|carry|loaded|ruck|crawl|shuttle|work-capacity|capacity day/.test(text)) return 'conditioning';
     return 'strength';
   }
@@ -428,7 +446,7 @@
     var allowed = arr(ex && ex.allowedSlots).map(lower);
 
     // Foot/toe micro-drills must never appear unless the user has an explicit foot, ankle,
-    // Achilles, plantar, shin, calf or lower-leg signal. Knee alone is not enough.
+    // Achilles, plantar, shin, calf, balance or lower-leg signal. Knee alone is not enough.
     if(!lowerLegMicroAllowed(ex, profile)) return false;
 
     // Micro drills are never headline strength or conditioning picks.
@@ -519,9 +537,12 @@
     if(/calisthenics|bodyweight/.test(profile.style || '')){
       var eqBlob = arr(ex.equipment).map(lower).join(' ');
       var styleBlob = lower([arr(ex.styles).join(' '), arr(ex.styleBias).join(' '), arr(ex.domains).join(' ')].join(' '));
-      if(/\bbw\b|bodyweight|rings|bar/.test(eqBlob + ' ' + styleBlob)) score += 16;
-      if(/\bdb\b|dumbbell|\bkb\b|kettlebell/.test(eqBlob) && !/\bbw\b|bodyweight/.test(eqBlob + ' ' + styleBlob)) score -= 12;
-      if(/\bband\b/.test(eqBlob) && !/\bbw\b|bodyweight/.test(eqBlob + ' ' + styleBlob)) score -= 6;
+      var packBlob = lower([ex.packId, ex.sourceLabel, arr(ex.systems).join(' ')].join(' '));
+      if(/bw|bodyweight|rings|bar|calisthenics/.test(eqBlob + ' ' + styleBlob)) score += 22;
+      if(/calisthenics/.test(styleBlob)) score += 12;
+      if(/db|dumbbell|kb|kettlebell/.test(eqBlob) && !/bw|bodyweight|rings|bar/.test(eqBlob + ' ' + styleBlob)) score -= 10;
+      if(/band/.test(eqBlob) && !/bw|bodyweight|rings|bar/.test(eqBlob + ' ' + styleBlob)) score -= 4;
+      if((slot === 'strength' || slot === 'conditioning') && /recovery|mobility|rehab|lower-leg-stability|daily-recovery-flow|fascia|lymphatic/.test(packBlob)) score -= 70;
     }
 
     if(profile.phase === 'cut' && /strength|compound|carry|conditioning|work-capacity/.test(blob)) score += 4;
@@ -555,9 +576,7 @@
       injuries: profile.injuries,
       activeInjuryAreas: selectedInjuryAreas(profile),
       allowLowerLegMicro: hasExplicitFootLowerLegSignal(profile),
-      allowFootIntrinsic: hasExplicitFootLowerLegSignal(profile),
-      allowLowerLegSystem: hasExplicitFootLowerLegSignal(profile),
-      allowRunningSupport: hasExplicitRunningSignal(profile)
+      allowFootIntrinsic: hasExplicitFootLowerLegSignal(profile)
     });
   }
 
@@ -566,8 +585,7 @@
     var scored = arr(pool)
       .filter(function(ex){
         if(!lowerLegMicroAllowed(ex, profile)) return false;
-        if(!lowerLegSystemAllowed(ex, profile)) return false;
-        if(!runningSystemAllowed(ex, profile)) return false;
+        if(!packAllowedForProfile(ex, profile, slot || 'strength')) return false;
         return roleAllowedForSlot(ex, slot || 'strength', tokens, profile);
       })
       .map(function(ex){ return { ex: ex, score: scoreExercise(ex, tokens, profile, used, slot || 'strength') }; })
@@ -643,7 +661,7 @@
 
   function sessionTemplates(profile){
     var operational = !!profile.operationalIntent;
-    var running = /run|running|endurance|5k|10k|marathon/.test(profile.goalText);
+    var running = profile.explicitRunning === true;
     var injury = profile.injuries.length > 0;
 
     if(operational){
@@ -665,12 +683,15 @@
     }
 
     if(/calisthenics|bodyweight/.test(profile.style || '')){
-      return [
-        ['Calisthenics Push + Pull', 'Bodyweight-first upper-body work with injury-aware substitutions.', [['push','bodyweight'], ['pull','row'], ['core','brace']]],
-        ['Calisthenics Legs', 'Squat, lunge, hinge and single-leg work without lower-leg rehab spam.', [['squat','lunge'], ['hinge','glute'], ['knee','step-up']]],
-        ['Core + Locomotion', 'Trunk strength, crawling and controlled movement.', [['core','hollow'], ['crawl','locomotion'], ['anti-rotation','control']]],
-        ['Recovery / Joint Control', 'Low-cost support work matched to the selected injuries.', [['recovery','mobility'], ['shoulder','joint-control'], ['knee','control']]]
+      var cal = [
+        ['Calisthenics Push + Pull', 'Bodyweight-first upper-body strength with injury-aware substitutions.', [['push','bodyweight','calisthenics'], ['pull','row','calisthenics'], ['core','brace','calisthenics']]],
+        ['Calisthenics Legs', 'Squat, lunge, hinge and single-leg strength.', [['squat','lunge','calisthenics'], ['hinge','glute','bodyweight'], ['single-leg','step-up','knee']]],
+        ['Calisthenics Skill + Core', 'Pulling skill, trunk control and locomotion.', [['vertical-pull','skill','calisthenics'], ['crawl','locomotion','bodyweight'], ['anti-rotation','core','control']]]
       ];
+      if(injury){
+        cal.push(['Injury Support Accessories', 'Targeted support for the selected knee, shoulder and biceps areas only.', [['knee','capacity','supported'], ['shoulder','rotator','control'], ['biceps','elbow','forearm']]]);
+      }
+      return cal;
     }
 
     if(injury){
@@ -703,7 +724,11 @@
     });
 
     if(profile.days > sessions.length){
-      sessions.push(buildSession('Optional Capacity Day', 'Only use if recovery is good.', [['conditioning'], ['carry','loaded'], ['recovery']], pool, profile, used));
+      if(/calisthenics|bodyweight/.test(profile.style || '')){
+        sessions.push(buildSession('Calisthenics Conditioning', 'Bodyweight capacity without turning the week into rehab.', [['conditioning','bodyweight'], ['carry','core'], ['crawl','locomotion']], pool, profile, used));
+      }else{
+        sessions.push(buildSession('Optional Capacity Day', 'Only use if recovery is good.', [['conditioning'], ['carry','loaded'], ['recovery']], pool, profile, used));
+      }
     }
 
     return sessions.slice(0, profile.days);
@@ -770,7 +795,7 @@
   }
 
   window.FFFPlanner = {
-    version: '2.8-system-routing-audit-fix',
+    version: '2.9-calisthenics-strength-routing-audit',
     keys: {
       roadmap: KEY_ROADMAP,
       equipment: KEY_EQUIP,
@@ -784,6 +809,7 @@
     injuryTokens: injuryTokens,
     hardInjuryTokens: hardInjuryTokens,
     explicitOperationalIntent: explicitOperationalIntent,
+    explicitRunningIntent: explicitRunningIntent,
     injuryDetails: injuryDetails,
     currentPhase: currentPhase,
     buildProfile: buildProfile,

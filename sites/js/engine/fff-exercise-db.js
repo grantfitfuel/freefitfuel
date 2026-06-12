@@ -9,7 +9,7 @@
   var MANIFEST = BASE + 'manifest.json';
 
   var state = {
-    version: '6.9-system-routing-audit-fix',
+    version: '6.9-calisthenics-routing-audit',
     loaded: false,
     loading: null,
     manifest: null,
@@ -268,53 +268,6 @@
     return hasExplicitFootLowerLegInjury(criteria);
   }
 
-  function isLowerLegStabilityExercise(ex){
-    var blob = lower([
-      ex && ex.packId,
-      arr(ex && ex.systems).join(' '),
-      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
-      ex && ex.sourcePage,
-      ex && ex.sourceLabel
-    ].join(' '));
-    return /lower-leg-stability|lower leg stability/.test(blob);
-  }
-
-  function lowerLegSystemAllowed(ex, criteria){
-    if(!isLowerLegStabilityExercise(ex)) return true;
-    criteria = criteria || {};
-    if(criteria.allowLowerLegSystem === true) return true;
-    return hasExplicitFootLowerLegInjury(criteria);
-  }
-
-  function isRunningSupportExercise(ex){
-    var blob = lower([
-      ex && ex.packId,
-      arr(ex && ex.systems).join(' '),
-      arr(ex && ex.sourceModules).map(function(m){ return m ? [m.id,m.label,m.url].join(' ') : ''; }).join(' '),
-      ex && ex.sourcePage,
-      ex && ex.sourceLabel,
-      arr(ex && ex.tags).join(' '),
-      arr(ex && ex.purposes).join(' ')
-    ].join(' '));
-    return /running-conditioning|running support|run support|return-to-running/.test(blob);
-  }
-
-  function runningSystemAllowed(ex, criteria){
-    if(!isRunningSupportExercise(ex)) return true;
-    criteria = criteria || {};
-    if(criteria.allowRunningSupport === true) return true;
-    var text = lower([
-      criteria.goal,
-      criteria.style,
-      criteria.focus,
-      criteria.notes,
-      arr(criteria.goals).join(' '),
-      arr(criteria.purposes).join(' '),
-      arr(criteria.tags).join(' ')
-    ].join(' '));
-    return /\b(running|run|5k|10k|half marathon|marathon|endurance)\b/.test(text);
-  }
-
   function filter(criteria){
     criteria = criteria || {};
     var packIds = arr(criteria.packIds || criteria.packs);
@@ -327,9 +280,9 @@
 
     var list = getAll().filter(function(ex){
       if(packIds.length && packIds.indexOf(ex.packId) === -1) return false;
+      if((ex.packId === 'lower-leg-stability' || /lower-leg-stability/.test(ex.searchBlob)) && !hasExplicitFootLowerLegInjury(criteria) && criteria.explicitRunning !== true) return false;
+      if((ex.packId === 'running-conditioning' || /running-conditioning|running & conditioning/.test(ex.searchBlob)) && criteria.explicitRunning !== true) return false;
       if(!footIntrinsicAllowed(ex, criteria)) return false;
-      if(!lowerLegSystemAllowed(ex, criteria)) return false;
-      if(!runningSystemAllowed(ex, criteria)) return false;
       if(tokens.length && !tokenMatch(ex, tokens)) return false;
       if(systems.length && !arr(ex.systems).some(function(s){ return systems.indexOf(lower(s)) > -1; })) return false;
       if(equipment.length && !equipmentAllowed(ex, equipment)) return false;
@@ -415,11 +368,16 @@
     if(/\b(operational fitness|police fitness|fire fitness|fire and rescue|fire & rescue|army reserve|military conditioning|search and rescue|blue-light resilience|blue light resilience)\b/.test(explicitPathway)) explicitOperational = true;
     if(/^(operational|operational-fitness|police|fire|fire-rescue|army|army-reserve|military|rescue|blue-light)$/.test(lower(profile.style || ''))) explicitOperational = true;
     if(explicitOperational) add('operational-fitness');
-    if(/knee|patella|squat pain|stairs|step down/.test(text)) add('knee-capacity-reset');
-    if(/ankle|calf|shin|achilles|foot|plantar|lower leg/.test(text)) add('lower-leg-stability');
-    if(/pull.?up|chin.?up|upper body|grip|biceps|back/.test(text)) add('pullup-upperbody');
-    if(/recover|mobility|stress|sleep|fatigue|stiff|pain|flow/.test(text)) add('recovery-mobility');
-    if(/\b(run|running|5k|10k|half marathon|marathon|endurance)\b/.test(text)) add('running-conditioning');
+    var activeAreas = arr(profile.activeInjuryAreas || profile.selectedInjuryAreas || profile.explicitInjuryAreas).map(lower).join(' ');
+    var explicitLowerLeg = /\b(foot|toe|plantar|ankle|achilles|shin|calf|lower-leg|lower leg)\b/.test(activeAreas);
+    var explicitRunning = profile.explicitRunning === true;
+    var explicitRecovery = profile.explicitRecovery === true;
+
+    if(/knee|patella|squat pain|stairs|step down/.test(text) || /knee|patella|hip|groin/.test(activeAreas)) add('knee-capacity-reset');
+    if(explicitLowerLeg) add('lower-leg-stability');
+    if(/pull.?up|chin.?up|upper body|grip|biceps|back/.test(text) || /shoulder|biceps|upper arm|upper_arm|elbow|forearm|wrist|hand/.test(activeAreas)) add('pullup-upperbody');
+    if(explicitRecovery || /recover|mobility|stress|sleep|fatigue|stiff|flow/.test(text)) add('recovery-mobility');
+    if(explicitRunning) add('running-conditioning');
 
     return packs;
   }
@@ -442,8 +400,6 @@
     isFootIntrinsicDrill: isFootIntrinsicDrill,
     isLowerLegMicroDrill: isLowerLegMicroDrill,
     footIntrinsicAllowed: footIntrinsicAllowed,
-    lowerLegSystemAllowed: lowerLegSystemAllowed,
-    runningSystemAllowed: runningSystemAllowed,
     _state: state
   };
 
